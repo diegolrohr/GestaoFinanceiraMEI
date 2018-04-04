@@ -119,11 +119,11 @@
     <None Include="Web References\SOAManager\SOAManager.disco" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Utils.Helpers\Fly01.Core.Helpers.csproj">
+    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{57533a41-3be1-4e60-84d1-62410484621e}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Utils.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>

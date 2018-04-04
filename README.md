@@ -55,25 +55,30 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
     Fly01.Faturamento.API
     Fly01.Financeiro.API
     ```
+    
 # Packages necessários por projeto.
 
   - .Domain
     ```
         Install-Package Newtonsoft.Json -Version 11.0.2
     ```
+    
   - .DAL
     ```
         Install-Package EntityFramework -Version 6.2.0
     ```
+    
   - .BL
     ```
         Install-Package EntityFramework -Version 6.2.0
         Install-Package Newtonsoft.Json -Version 11.0.2
     ```
+    
   - .Entities
     ```
         Install-Package Newtonsoft.Json -Version 11.0.2
     ```
+    
   - .[ProjectName]
     ```
         Install-Package Fly01.uiJS -Version 2.0.1.1
@@ -83,6 +88,7 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
         Install-Package MicrosoftReportViewerWebForms -Version 11.0.0.0
         Install-Package Newtonsoft.Json -Version 11.0.2
     ```
+    
   - .API
     ```
         Install-Package EntityFramework -Version 6.2.0
@@ -98,3 +104,52 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
         Install-Package Microsoft.Owin.Cors -Version 4.0.0
         Install-Package Newtonsoft.Json -Version 11.0.2
     ```
+
+
+# Configurando o IIS.
+    * Para corrigir as rotas apontadas nos caminhos físicos das aplicações, é necessário que os caminhos físicos atuais sejam alterados da seguinte forma:
+    - Compras
+        - Atual
+            - ..\appcompras\Fly01.Compras
+        - Novo
+            - ..\Fly01.Apps\appcompras\Fly01.Compras
+    - ComprasApi
+        - Atual
+            - ..\appcompras\Fly01.Compras.API
+        - Novo
+            - ..\Fly01.Apps\appcompras\Fly01.Compras.API
+    - EmissaoNfeApi
+        - Atual
+            - ..\Fly01.EmissaoNFE\Fly01.EmissaoNFE.API
+        - Novo
+            - ..\Fly01.Apps\appemissaoNFE\Fly01.EmissaoNFE.API
+    - Estoque
+        - Atual
+            - ..\appestoque\Fly01.Estoque
+        - Novo
+            - ..\Fly01.Apps\appestoque\Fly01.Estoque
+    - EstoqueApi
+        - Atual
+            - ..\appestoque\Fly01.Estoque.API
+        - Novo
+            - ..\Fly01.Apps\appestoque\Fly01.Estoque.API
+    - Faturamento
+        - Atual
+            - ..\appfaturamento\Fly01.Faturamento
+        - Novo
+            - ..\Fly01.Apps\appfaturamento\Fly01.Faturamento
+    - FaturamentoApi
+        - Atual
+            - ..\appfaturamento\Fly01.Faturamento.API
+        - Novo
+            - ..\Fly01.Apps\appfaturamento\Fly01.Faturamento.API
+    - Financeiro
+        - Atual
+            - ..\appfinanceiro\Fly01.Financeiro
+        - Novo
+            - ..\Fly01.Apps\appfinanceiro\Fly01.Financeiro
+    - FinanceiroApi
+        - Atual
+            - ..\appfinanceiro\Fly01.Financeiro.API
+        - Novo
+            - ..\Fly01.Apps\appfinanceiro\Fly01.Financeiro.API

@@ -7,8 +7,6 @@ using Fly01.Core.ValueObjects;
 using Fly01.Core.Api.BL;
 using Fly01.Core.Notifications;
 using Fly01.Financeiro.Domain.Entities;
-using System.Web.Http.Results;
-using System.Web.Mvc;
 
 namespace Fly01.Financeiro.BL
 {

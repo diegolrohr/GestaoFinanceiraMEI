@@ -107,7 +107,8 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
 
 
 # Configurando o IIS.
-    * Para corrigir as rotas apontadas nos caminhos físicos das aplicações, é necessário que os caminhos físicos atuais sejam alterados da seguinte forma:
+    * Para corrigir as rotas apontadas nos Sites é necessário que os caminhos físicos
+    atuais sejam alterados da seguinte forma, através das Configurações Básicas de cada App no IIS:
     
     - Compras
         - Atual

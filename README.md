@@ -87,6 +87,7 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
         Install-Package Microsoft.AspNet.WebApi -Version 5.2.4
         Install-Package MicrosoftReportViewerWebForms -Version 11.0.0.0
         Install-Package Newtonsoft.Json -Version 11.0.2
+        Install-Package System.IO.Compression.ZipFile -Version 4.3.0
     ```
     
   - .API
@@ -103,6 +104,7 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
         Install-Package Microsoft.Owin -Version 4.0.0
         Install-Package Microsoft.Owin.Cors -Version 4.0.0
         Install-Package Newtonsoft.Json -Version 11.0.2
+        Install-Package Microsoft.Extensions.DependencyInjection -Version 1.1.0
     ```
 
 

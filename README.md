@@ -4,11 +4,13 @@
 
 Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly01:
   * Core
-    ```sh
+   ```javascript
+
         Fly01.Core
         Fly01.Core.Helpers
         Fly01.Core.Notifications
         Fly01.Core.SOAManager
+    ```
   * Domain
     ```sh
         Fly01.Compras.Domain
@@ -16,6 +18,7 @@ Fly01.Apps é a consolidação em uma única solução dos seguintes projeto Fly
         Fly01.Estoque.Domain
         Fly01.Faturamento.Domain
         Fly01.Financeiro.Domain
+    ```
   * Infrastructure
     ```sh
         Fly01.Compras.BL

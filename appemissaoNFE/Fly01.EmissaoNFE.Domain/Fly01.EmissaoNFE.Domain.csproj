@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.EmissaoNFE.Domain</RootNamespace>
+    <AssemblyName>Fly01.EmissaoNFE.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <OutputPath>bin\Homologacao\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Entities\Cfop.cs" />
+    <Compile Include="Entities\Cidade.cs" />
+    <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Entities\Fcp.cs" />
+    <Compile Include="Entities\Ncm.cs" />
+    <Compile Include="Entities\Ipi.cs" />
+    <Compile Include="Entities\NFe\Cobranca.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINS.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINSNT.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINSQtde.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINSAliq.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINSOutr.cs" />
+    <Compile Include="Entities\NFe\COFINS\COFINSPai.cs" />
+    <Compile Include="Entities\NFe\Destinatario.cs" />
+    <Compile Include="Entities\NFe\Detalhe.cs" />
+    <Compile Include="Entities\NFe\Duplicata.cs" />
+    <Compile Include="Entities\NFe\Emitente.cs" />
+    <Compile Include="Entities\NFe\Endereco.cs" />
+    <Compile Include="Entities\NFe\Fatura.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSPai.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMS.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN103.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN102.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN101.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN203.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN202.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN201.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN300.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN400.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN500.cs" />
+    <Compile Include="Entities\NFe\ICMS\ICMSSN900.cs" />
+    <Compile Include="Entities\NFe\II.cs" />
+    <Compile Include="Entities\NFe\PIS\PISQtde.cs" />
+    <Compile Include="Entities\NFe\PIS\PISAliq.cs" />
+    <Compile Include="Entities\NFe\PIS\PISNT.cs" />
+    <Compile Include="Entities\NFe\Totais\ICMSTOT.cs" />
+    <Compile Include="Entities\NFe\Identificador.cs" />
+    <Compile Include="Entities\NFe\Imposto.cs" />
+    <Compile Include="Entities\NFe\InfoNFe.cs" />
+    <Compile Include="Entities\NFe\InformacoesAdicionais.cs" />
+    <Compile Include="Entities\NFe\IPI\IPIPai.cs" />
+    <Compile Include="Entities\NFe\IPI\IPI.cs" />
+    <Compile Include="Entities\NFe\IPI\IPINT.cs" />
+    <Compile Include="Entities\NFe\IPI\IPITrib.cs" />
+    <Compile Include="Entities\NFe\NFe.cs" />
+    <Compile Include="Entities\NFe\ObservacaoContribuinte.cs" />
+    <Compile Include="Entities\NFe\ObservacaoDoFisco.cs" />
+    <Compile Include="Entities\NFe\PISST.cs" />
+    <Compile Include="Entities\NFe\PIS\PIS.cs" />
+    <Compile Include="Entities\NFe\PIS\PISPai.cs" />
+    <Compile Include="Entities\NFe\PIS\PISOutr.cs" />
+    <Compile Include="Entities\NFe\ProcessoReferenciado.cs" />
+    <Compile Include="Entities\NFe\Produto.cs" />
+    <Compile Include="Entities\NFe\Total.cs" />
+    <Compile Include="Entities\NFe\Transportadora.cs" />
+    <Compile Include="Entities\NFe\Transporte.cs" />
+    <Compile Include="Entities\TabelaIcms.cs" />
+    <Compile Include="Entities\Icms.cs" />
+    <Compile Include="Entities\SubstituicaoTributaria.cs" />
+    <Compile Include="Enums\CompoemValorTotal.cs" />
+    <Compile Include="Enums\CSTPISCOFINS.cs" />
+    <Compile Include="Enums\CSTIPI.cs" />
+    <Compile Include="Enums\CSOSN.cs" />
+    <Compile Include="Enums\CRT.cs" />
+    <Compile Include="Enums\IndInscricaoEstadual.cs" />
+    <Compile Include="Enums\ModalidadeDeterminacaoBCICMSST.cs" />
+    <Compile Include="Enums\ModalidadeDeterminacaoBCICMS.cs" />
+    <Compile Include="Enums\MotivoDesoneracaoICMS.cs" />
+    <Compile Include="Enums\OrigemMercadoria.cs" />
+    <Compile Include="Enums\OrigemProcesso.cs" />
+    <Compile Include="Enums\StatusNotaFiscal.cs" />
+    <Compile Include="Enums\TipoAliquota.cs" />
+    <Compile Include="Enums\TipoAmbiente.cs" />
+    <Compile Include="Enums\TipoCFOP.cs" />
+    <Compile Include="Enums\TipoFinalidadeEmissaoNFe.cs" />
+    <Compile Include="Enums\TipoPresencaComprador.cs" />
+    <Compile Include="Enums\TipoImpressaoDanfe.cs" />
+    <Compile Include="Enums\TipoDestinoOperacao.cs" />
+    <Compile Include="Enums\TipoNota.cs" />
+    <Compile Include="Enums\TipoFormaPagamento.cs" />
+    <Compile Include="Enums\TipoRegimeTributario.cs" />
+    <Compile Include="Enums\TipoVersaoNFe.cs" />
+    <Compile Include="Enums\TipoModalidade.cs" />
+    <Compile Include="Enums\TipoFusoHorario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Entities\Tributacao.cs" />
+    <Compile Include="ViewModel\DifalRetornoVM.cs" />
+    <Compile Include="ViewModel\ItemTransmissaoRetornoVM.cs" />
+    <Compile Include="ViewModel\ItemTransmissaoVM.cs" />
+    <Compile Include="ViewModel\RegimeTributarioVM.cs" />
+    <Compile Include="ViewModel\TransmissaoRetornoVM.cs" />
+    <Compile Include="ViewModel\TransmissaoVM.cs" />
+    <Compile Include="ViewModel\TributacaoRetornoBaseVM.cs" />
+    <Compile Include="ViewModel\TributacaoRetornoVM.cs" />
+    <Compile Include="ViewModel\CancelarFaixaRetornoVM.cs" />
+    <Compile Include="ViewModel\CancelarFaixaVM.cs" />
+    <Compile Include="ViewModel\ListMonitorRetornoVM.cs" />
+    <Compile Include="ViewModel\NFESVM.cs" />
+    <Compile Include="ViewModel\PDFVM.cs" />
+    <Compile Include="ViewModel\ListSchemaXMLRetornoVM.cs" />
+    <Compile Include="ViewModel\SchemaXMLRetornoVM.cs" />
+    <Compile Include="ViewModel\SchemaXMLMensagemVM.cs" />
+    <Compile Include="ViewModel\SchemaXMLVM.cs" />
+    <Compile Include="ViewModel\XMLVM.cs" />
+    <Compile Include="ViewModel\DanfeVM.cs" />
+    <Compile Include="ViewModel\CertificadoRetornoVM.cs" />
+    <Compile Include="ViewModel\EmailRetornoVM.cs" />
+    <Compile Include="ViewModel\EmailVM.cs" />
+    <Compile Include="ViewModel\CceVM.cs" />
+    <Compile Include="ViewModel\EntidadeRetornoVM.cs" />
+    <Compile Include="ViewModel\MonitorRetornoVM.cs" />
+    <Compile Include="ViewModel\MonitorVM.cs" />
+    <Compile Include="ViewModel\ParametroVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
+    <Compile Include="ViewModel\CertificadoVM.cs" />
+    <Compile Include="ViewModel\EntidadeVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+      <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
+      <Name>Fly01.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

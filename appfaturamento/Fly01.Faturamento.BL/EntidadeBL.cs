@@ -6,7 +6,7 @@ using Fly01.Core.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
-using EmpresaVM = Fly01.Utils.VM.EmpresaVM;
+using EmpresaVM = Fly01.Core.VM.EmpresaVM;
 
 namespace Fly01.Faturamento.BL
 {

@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using EmpresaVM = Fly01.Utils.VM.EmpresaVM;
+using EmpresaVM = Fly01.Core.VM.EmpresaVM;
 
 namespace Fly01.Faturamento.BL
 {

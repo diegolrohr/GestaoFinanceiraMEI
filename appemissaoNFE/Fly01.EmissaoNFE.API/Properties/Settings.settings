@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fly01.EmissaoNFE.API.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Fly01_EmissaoNFE_API_SPEDADM_SPEDADM" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://POAD040100155:8080/SPEDADM.apw</Value>
+    </Setting>
+    <Setting Name="Fly01_EmissaoNFE_API_SPEDCFGNFE_SPEDCFGNFE" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://POAD040100155:8080/SPEDCFGNFE.apw</Value>
+    </Setting>
+    <Setting Name="Fly01_EmissaoNFE_API_NFESBRA_NFESBRA" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://poad040100155:8080/NFESBRA.apw</Value>
+    </Setting>
+    <Setting Name="Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sped.homologacao.totvs.com.br:8087/nfe/NFESBRA.apw</Value>
+    </Setting>
+    <Setting Name="Fly01_EmissaoNFE_API_SPEDADMProd_SPEDADM" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sped.homologacao.totvs.com.br:8087/nfe/SPEDADM.apw</Value>
+    </Setting>
+    <Setting Name="Fly01_EmissaoNFE_API_SPEDCFGNFEProd_SPEDCFGNFE" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sped.homologacao.totvs.com.br:8087/nfe/SPEDCFGNFE.apw</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

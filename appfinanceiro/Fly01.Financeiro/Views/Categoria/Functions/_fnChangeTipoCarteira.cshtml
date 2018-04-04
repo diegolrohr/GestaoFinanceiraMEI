@@ -1,0 +1,5 @@
+﻿<script>
+	function fnChangeTipoCarteira(event) {
+		$("#categoriaPaiDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
+	}
+</script>

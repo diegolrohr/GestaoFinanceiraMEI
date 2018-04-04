@@ -1,0 +1,132 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    var justSavePedidoToGoStepProdutos = false;
+    var onCancelMustDelete = false;
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
+    function fnBindStepsWizard() {
+        function savePedido() {
+            if (isCreate() && ($("li#stepTransporte").hasClass("active"))) {
+                justSavePedidoToGoStepProdutos = true;
+                return $("form#fly01frm").submit();
+            }
+        }
+        $('li#stepProdutos').click(function () {
+            savePedido();
+        });
+        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            savePedido();
+        });
+    }
+
+    function validaGeraFinanceiro() {
+        if ($('input#geraFinanceiro:checked').val() == "true" &&
+            (
+                ($('input#formaPagamentoDescricao').val() == "") ||
+                ($('input#condicaoParcelamentoDescricao').val() == "") ||
+                ($('input#categoriaDescricao').val() == "") ||
+                ($('input#dataVencimento').val() == "")
+            )) {
+            fly01.toast("Pedido que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento", 'error');
+            return false;
+        }
+        return true;
+    }
+
+    function fnBindOverrideSubmit() {
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+            if (!validaGeraFinanceiro()) return false;
+
+            $('body').removeClass('loaded');
+
+            $('input#numero').removeAttr('disabled');
+            $('input#orcamentoOrigemNumero').removeAttr('disabled');
+
+            var jsonData = $(this).serializeObject();
+            if ($('input#finalizarPedido:checked').val() == "true") {
+                jsonData.status = "Finalizado";
+            }
+
+            $('input#numero').attr('disabled', 'disabled');
+            $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
+            fly01.core.updateTextFields();
+
+            var url;
+            if (isCreate()) {
+                url = '@Url.Action("Create", "Pedido")';
+            }
+            else {
+                url = '@Url.Action("Edit", "Pedido")';
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify({ 'entityVM': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        $('body').addClass('loaded');
+
+                        var strMsg = "Cadastrado com sucesso.";
+                        if (data.message !== "" && !onCancelMustDelete) strMsg = data.message;
+                        //fica na página ou volta pra lista
+                        if (justSavePedidoToGoStepProdutos) {
+                            justSavePedidoToGoStepProdutos = false;
+                            onCancelMustDelete = true;
+                            $("form#fly01frm input#id").val(data.id);
+                            $("form#fly01frm input#numero").val(data.numero);
+                            fly01._.dtPedidoItens.refresh();
+
+                            var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                            window.history.pushState({}, document.title, url);
+
+                            return true;
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List","Home")");
+                        }
+                    } else {
+                        $('body').addClass('loaded');
+                        fly01.fns.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    $('body').addClass('loaded');
+                }
+            });
+        });
+    }
+
+    function fnFormReadyPedido() {
+        
+        if (isCreate()) {
+            var today = new Date();
+            $("input#geraFinanceiro").prop("checked", true);
+            $("input#movimentaEstoque").prop("checked", true);
+            fly01._.data.set(today);
+            fly01.core.updateTextFields();
+            fnBindStepsWizard();
+        }
+        else {
+            fly01._.dtPedidoItens.refresh();
+        }
+        fnBindOverrideSubmit();
+        fnValidaCamposGeraFinanceiro();
+    }
+</script>

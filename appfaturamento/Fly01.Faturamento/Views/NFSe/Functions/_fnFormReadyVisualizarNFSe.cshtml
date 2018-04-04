@@ -1,0 +1,79 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function calculaTotalNFSeVisualizar() {
+        var valorFrete = 0;
+        if ($('select#tipoFrete').val() == "CIF") {
+            valorFrete = parseFloat(noComma($('form#fly01mdlfrmVisualizarNFSe input#valorFrete').val()));
+        }
+
+        var idNFSe = $("form#fly01mdlfrmVisualizarNFSe input#id").val();
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
+            type: "GET",
+            data: { id: idNFSe, valorFreteCIF: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmVisualizarNFSe input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmVisualizarNFSe input#totalNotaFiscal').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.core.updateTextFields();
+            }
+            else {
+                fly01.fns.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnFormReadyVisualizarNFSe() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetNFSeServicos", "NFSeServico")?id=" + $('#fly01mdlfrmVisualizarNFSe #id').val(),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#nfseServicosDataTable").DataTable().destroy();
+
+                    var table = $("#nfseServicosDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Serviço", data: "servico_descricao" },
+                            { title: "Grupo Tributário", data: "grupoTributario_descricao" },
+                            { title: "Quant.", data: "quantidade" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Desconto", data: "desconto" },
+                            { title: "Total", data: "total" }
+                        ]
+                    });
+                } else {
+                    fly01.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+        calculaTotalNFSeVisualizar();
+    }
+</script>

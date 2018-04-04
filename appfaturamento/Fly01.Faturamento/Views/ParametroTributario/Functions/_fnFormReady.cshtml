@@ -1,0 +1,29 @@
+﻿<script>
+    function fnFormReady() {
+
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroTributario")',
+            type: "GET",
+            success: function (data) {
+                $('#registroSimplificadoMT').attr('checked', data.registroSimplificadoMT);
+                $("input#aliquotaSimplesNacional").val(data.aliquotaSimplesNacional);
+                $("input#aliquotaFCP").val(data.aliquotaFCP);
+                $("input#aliquotaISS").val(data.aliquotaISS);
+                $("input#aliquotaPISPASEP").val(data.aliquotaPISPASEP);
+                $("input#aliquotaCOFINS").val(data.aliquotaCOFINS);
+                $("input#numeroRetornoNF").val(data.numeroRetornoNF);
+                $("#mensagemPadraoNota").val(data.mensagemPadraoNota);
+                $('select#tipoModalidade').val(data.tipoModalidade);
+                $('select#tipoModalidade').material_select();
+                $('select#tipoVersaoNFe').val(data.tipoVersaoNFe);
+                $('select#tipoVersaoNFe').material_select();
+                $('select#tipoAmbiente').val(data.tipoAmbiente);
+                $('select#tipoAmbiente').material_select();
+                fly01.core.updateTextFields();
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+    }
+</script>

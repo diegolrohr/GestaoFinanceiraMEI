@@ -1,0 +1,18 @@
+﻿
+<script>
+    function fnChangeTipoRepeticao() {
+        if ($('select#tipoRepeticao').val() == "P") {
+            $('input#numeroRepeticoes').attr('readonly', 'readonly');
+            $('#periodoFimField').show();
+
+            calculaQuantidadeRepeticoes();
+        }
+        else {
+            $('#periodoFimField').hide();
+            $('input#numeroRepeticoes').removeAttr('disabled');
+            $('input#numeroRepeticoes').removeAttr('readonly');
+            
+            validaLimiteRepeticoes($('input#numeroRepeticoes').val());
+        }
+    }
+</script>

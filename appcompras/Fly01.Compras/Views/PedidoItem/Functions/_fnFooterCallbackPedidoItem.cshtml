@@ -1,0 +1,42 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+    @Html.Partial("~/Views/Pedido/Functions/_fnChangeFrete.cshtml");
+
+    function setDisplayTotal(displayTotal, tfoot) {
+        if (displayTotal.indexOf(',') < 0) {
+            displayTotal += ',00';
+        }
+
+        $(tfoot).find('th').eq(0).html("Total: R$" + displayTotal);
+        $('input#totalProdutos').val(displayTotal);
+        fnChangeFrete();
+    }
+
+    function fnFooterCallbackPedidoItem(tfoot, data, start, end, display) {
+        var displayTotal = '0,00';
+
+        var idPedido = $("form#fly01frm input#id").val();
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalPedidoItens", "Pedido")',
+            type: "GET",
+            data: { id: idPedido }
+        })
+        .done(function (data) {
+            if (data.success) {
+                displayTotal = data.totalPedidoItens.formatMoneyMask(2, 3, '', ',');
+                setDisplayTotal(displayTotal, tfoot);
+            }
+            else {
+                fly01.toast(data.message, "error");
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+</script>

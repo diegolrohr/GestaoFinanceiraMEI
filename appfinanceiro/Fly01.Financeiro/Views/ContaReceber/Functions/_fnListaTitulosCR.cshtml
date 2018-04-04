@@ -1,0 +1,33 @@
+﻿<script>
+    function fnAtualizaValorAcumulado(valorAcumulado) {
+        $('#contasFinanceirasIds').val(rows_selected);
+
+        if (valorAcumulado < 0.01)
+            $('#valorAcumulado').val(0);
+        else
+            $('#valorAcumulado').val(valorAcumulado);
+
+        renegociacaoCalculaValorFinal();
+        fly01.core.updateTextFields();
+    }
+
+    function CallLoadTitulosAbertos() {
+        //exibe para ver que não tem títulos
+        $('#selecaoTitulosLabelField').show();
+        $('#datatableSelecaoTitulos_wrapper').show();
+        fly01._.datatableSelecaoTitulos.selected = [];
+        fly01._.datatableSelecaoTitulos.refresh();
+        exibeCampos();
+        $('#save').removeAttr('disabled');
+    }
+
+    function fnListaTitulosCR() {
+        limpaCampos();
+        if ($('#renegociacaoPessoaId').val().length > 0) {
+            CallLoadTitulosAbertos();
+        }
+        else {
+            fly01.toast("Informe o pagador.", 'error');
+        }
+    }
+</script>

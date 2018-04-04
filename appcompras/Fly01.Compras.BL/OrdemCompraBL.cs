@@ -1,0 +1,29 @@
+﻿using Fly01.Compras.DAL;
+using Fly01.Compras.Domain.Entities;
+using Fly01.Core.Api.BL;
+using Fly01.Core.Notifications;
+
+namespace Fly01.Compras.BL
+{
+    public class OrdemCompraBL : PlataformaBaseBL<OrdemCompra>
+    {
+        public OrdemCompraBL(AppDataContext context) : base(context)
+        {
+        }
+
+        public override void Insert(OrdemCompra entity)
+        {
+            entity.Fail(true, new Error("Não é possível inserir, somente em orçamento ou pedido"));
+        }
+
+        public override void Update(OrdemCompra entity)
+        {
+            entity.Fail(true, new Error("Não é possível atualizar, somente em orçamento ou pedido"));
+        }
+
+        public override void Delete(OrdemCompra entity)
+        {
+            entity.Fail(true, new Error("Não é possível deletar, somente em orçamento ou pedido"));
+        }
+    }
+}

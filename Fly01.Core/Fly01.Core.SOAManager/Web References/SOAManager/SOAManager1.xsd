@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://TotvsSOA.DataContracts/v1" elementFormDefault="qualified" targetNamespace="http://TotvsSOA.DataContracts/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" />
+  <xs:complexType name="SOAConnectionData">
+    <xs:sequence>
+      <xs:element name="ClientId" nillable="true" type="xs:string" />
+      <xs:element name="Username" nillable="true" type="xs:string" />
+      <xs:element name="Password" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SOAConnectionData" nillable="true" type="tns:SOAConnectionData" />
+  <xs:complexType name="SOAServiceData">
+    <xs:sequence>
+      <xs:element name="ServiceExecutionId" nillable="true" type="xs:string" />
+      <xs:element name="ServiceType" nillable="true" type="xs:string" />
+      <xs:element name="ServiceName" nillable="true" type="xs:string" />
+      <xs:element name="ServiceVersion" type="xs:int" />
+      <xs:element name="ServiceTitle" nillable="true" type="xs:string" />
+      <xs:element name="CurrentState" nillable="true" type="xs:string" />
+      <xs:element name="CurrentStateDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Data" nillable="true" type="tns:ArrayOfSOAData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SOAServiceData" nillable="true" type="tns:SOAServiceData" />
+  <xs:complexType name="ArrayOfSOAData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SOAData" nillable="true" type="tns:SOAData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSOAData" nillable="true" type="tns:ArrayOfSOAData" />
+  <xs:complexType name="SOAData">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" name="DataKind" type="q1:SOADataKind" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" name="DataType" type="q2:SOADataType" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element name="Name" nillable="true" type="xs:string" />
+      <xs:element name="StateName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ListItems" nillable="true" type="tns:ArrayOfSOADataListItem" />
+      <xs:element minOccurs="0" name="Columns" nillable="true" type="tns:ArrayOfSOAData" />
+      <xs:element minOccurs="0" name="Required" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SOAData" nillable="true" type="tns:SOAData" />
+  <xs:complexType name="ArrayOfSOADataListItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SOADataListItem" nillable="true" type="tns:SOADataListItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSOADataListItem" nillable="true" type="tns:ArrayOfSOADataListItem" />
+  <xs:complexType name="SOADataListItem">
+    <xs:sequence>
+      <xs:element name="Code" nillable="true" type="xs:string" />
+      <xs:element name="Description" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SOADataListItem" nillable="true" type="tns:SOADataListItem" />
+  <xs:complexType name="ArrayOfSOAServiceInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SOAServiceInfo" nillable="true" type="tns:SOAServiceInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSOAServiceInfo" nillable="true" type="tns:ArrayOfSOAServiceInfo" />
+  <xs:complexType name="SOAServiceInfo">
+    <xs:sequence>
+      <xs:element name="ServiceType" nillable="true" type="xs:string" />
+      <xs:element name="ServiceName" nillable="true" type="xs:string" />
+      <xs:element name="ServiceVersion" type="xs:int" />
+      <xs:element name="ServiceTitle" nillable="true" type="xs:string" />
+      <xs:element name="ServiceProvider" nillable="true" type="xs:string" />
+      <xs:element name="ServiceDescription" nillable="true" type="xs:string" />
+      <xs:element name="ServiceTags" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SOAServiceInfo" nillable="true" type="tns:SOAServiceInfo" />
+</xs:schema>

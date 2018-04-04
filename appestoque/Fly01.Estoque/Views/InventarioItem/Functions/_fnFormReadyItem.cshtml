@@ -1,0 +1,89 @@
+﻿<script>
+    function afterInsert() {
+        fly01._.dtInventarioItem.refresh();
+    }
+
+    function fnOverrideSubmitItem() {
+        var myForm = "form#fly01frmInventarioItem";
+
+        $(myForm).off("submit");
+        $(myForm).on("submit", function (e) {
+            var that = $(this);
+
+            if (!that.valid())
+                return;
+
+            e.preventDefault();
+
+            fly01.loading.start();
+            
+            var action = "@Url.Action("Create", "InventarioItem")";
+            
+            var formData = JSON.parse('{}');
+
+            formData.produtoId = $('#produtoId').val();
+            formData.inventarioId = $('input#id').val();
+            formData.saldoInventariado = parseFloat($('#saldoProduto').val());
+
+            $.ajax({
+                type: that.attr("method"),
+                contentType: 'application/json',
+                dataType: 'json',
+                url: action,
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    if (data.success) {
+                        fly01.toast(data.message, "success");
+                        afterInsert();
+                    } else {
+                        fly01.loading.stop();
+
+                        try {
+                            var jsonMessage = JSON.parse(data.message);
+                            var validator = that.validate();
+                            var errors = {};
+                            jsonMessage.innerMessage.filter(x => ((x.dataField || "") != "")).forEach(element => {
+                                if ($("#" + element.dataField).length > 0) {
+                                    errors[element.dataField] = element.message;
+                                }
+                                else {
+                                    fly01.toast(element.message, "error", 8000);
+                                }
+                            });
+                            validator.showErrors(errors);
+                            jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
+                                fly01.toast(element.message, "error", 8000);
+                            });
+                        } catch (e) {
+                            fly01.toast(data.message, "error");
+                        }
+                        
+                    }
+
+                    fly01.loading.stop();
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    fly01.loading.stop();
+                }
+            })
+        });
+    }
+
+    function fnInventarioFechadoItem() {
+        if ($('input#inventarioStatus').val() !== "Finalizado")
+            return;
+
+        $('form#fly01frmInventarioItem').children().children('input').attr("disabled", "disabled");
+        
+        $('table#dtInventarioItem').children().slice(1).on('change', function () {
+            $('form.saldoInventariadoForm').children().attr("disabled", "disabled");
+        });
+    }
+
+    function fnFormReadyItem() {
+        fnOverrideSubmitItem();
+        fnInventarioFechadoItem();
+    }
+
+</script>

@@ -1,0 +1,171 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    var justSaveOrcamentoToGoStepProdutos = false;
+    var onCancelMustDeleteOrcamento = false;
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
+    function calculaTotalOrcamento() {
+        var valorFrete = 0;
+        if ($('select#tipoFrete').val() == "CIF") {
+            valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
+        }
+
+        var idPedido = $("form#fly01frm input#id").val();
+        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
+            type: "GET",
+            data: { id: idPedido, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.core.updateTextFields();
+            }
+            else {
+                $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
+                fly01.fns.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnBindStepsWizard() {
+        function saveOrcamento() {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
+                justSaveOrcamentoToGoStepProdutos = true;
+                return $("form#fly01frm").submit();
+            }
+        }
+        $('li#stepProdutos div.step-title').click(function () {
+            saveOrcamento();
+        });
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            saveOrcamento();
+        });
+    }
+
+    function fnBindOverrideSubmit() {
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+
+            fly01.loading.start();
+
+            $('input#numero').removeAttr('disabled');
+            var jsonData = $(this).serializeObject();
+            $('input#numero').attr('disabled', 'disabled');
+
+            fly01.core.updateTextFields();
+
+            var url;
+            if (isCreate()) {
+                url = '@Url.Action("Create", "Orcamento")';
+            }
+            else {
+                url = '@Url.Action("Edit", "Orcamento")';
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify({ 'entityVM': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        fly01.loading.stop();
+
+                        var strMsg = "Cadastrado com sucesso.";
+                        if (data.message !== "" && !onCancelMustDeleteOrcamento) strMsg = data.message;
+                        //fica na página ou volta pra lista
+                        if (justSaveOrcamentoToGoStepProdutos) {
+                            justSaveOrcamentoToGoStepProdutos = false;
+                            onCancelMustDeleteOrcamento = true;
+                            $("form#fly01frm input#id").val(data.id);
+                            $("form#fly01frm input#numero").val(data.numero);
+                            fly01._.dtOrdemVendaProdutos.refresh();
+                            fly01._.dtOrdemVendaServicos.refresh();
+
+                            var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                            window.history.pushState({}, document.title, url);
+
+                            return true;
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List","OrdemVenda")");
+                        }
+                    } else {
+                        if (justSaveOrcamentoToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
+                        fly01.loading.stop();
+                        fly01.fns.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    fly01.loading.stop();
+                }
+            });
+        });
+    }
+
+    function fnFormReadyOrcamento() {
+
+        if (isCreate()) {
+            var today = new Date();
+            $("input#geraNotaFiscal").prop("checked", true);
+            fly01._.dataVencimento.set(today);
+            fly01._.data.set(today);
+            fly01.core.updateTextFields();
+            fnBindStepsWizard();
+        }
+        else {
+            fly01._.dtOrdemVendaProdutos.refresh();
+            fly01._.dtOrdemVendaServicos.refresh();
+        }
+        fnBindOverrideSubmit();
+        fnChangeFrete();
+
+        $('li#stepFinalizar div.step-title').click(function () {
+            if (!isCreate()) {
+                calculaTotalOrcamento();
+            }
+        });
+        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate()) {
+                calculaTotalOrcamento();
+            }
+        });
+    }
+</script>

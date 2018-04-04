@@ -1,0 +1,31 @@
+﻿<script>
+function fnExcluir(idRecord) {
+    fly01.modal.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\""+idRecord+"\")");
+}
+function fnExcluirConfirmed(idRecord) {
+    $('body').removeClass('loaded');
+    if (idRecord) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Index")/Delete",
+            data: { id: idRecord },
+            success: function (data) {
+                $('body').addClass('loaded');
+                if (data.success) {
+                    fly01.toast("Excluído com sucesso.", "success");
+                    //var idRec = JSON.parse("{\"" + this.data.replace(/ /g, "\", \"").replace(/=/g, "\": \"") + "\"}").id;
+                    var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
+                    fly01._[dtId].refresh();
+                }
+                else {
+                    fly01.fns.submitErrorHandler(null, data.message);
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $('body').addClass('loaded');
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+}
+</script>

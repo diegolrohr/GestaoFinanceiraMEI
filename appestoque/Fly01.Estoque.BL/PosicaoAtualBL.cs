@@ -1,0 +1,29 @@
+﻿using Fly01.Estoque.Domain.Entities;
+using Fly01.Core;
+using Fly01.Core.Api.BL;
+using System.Linq;
+
+namespace Fly01.Estoque.BL
+{
+    public class PosicaoAtualBL : PlataformaBaseBL<PosicaoAtual>
+    {
+        protected ProdutoBL ProdutoBL;
+
+        public PosicaoAtualBL(AppDataContextBase context, ProdutoBL produtoBL)
+            : base(context)
+        {
+            ProdutoBL = produtoBL;
+        }
+
+        public PosicaoAtual Get()
+        {
+            var posicaoAtual = new PosicaoAtual(ProdutoBL.AllIncluding(x => x.UnidadeMedida).ToList())
+            {
+                PlataformaId = PlataformaUrl, // TODO: Ver se tem como não precisar passar PlataformaId
+                UsuarioInclusao = AppUser // TODO: Ver se tem como não precisar passar UsuarioInclusao
+            };
+
+            return posicaoAtual;
+        }
+    }
+}

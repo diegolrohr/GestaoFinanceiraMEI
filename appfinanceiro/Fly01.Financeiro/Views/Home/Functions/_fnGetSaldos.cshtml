@@ -1,0 +1,37 @@
+﻿<script>
+    function getSaldos(dataInicial, dataFinal) {
+        var inicial = isValidDate(dataInicial.toString()) ? dataInicial : formatDate(dataInicial);
+        var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+
+        $.ajax({
+            url: "@Url.Action("LoadChangeSaldos", "FluxoCaixa")?dataInicial=" + inicial + "&dataFinal=" + final,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardCP.info(data.TotalPagamentos);
+                fly01._.fly01cardCR.info(data.TotalRecebimentos);
+                fly01._.fly01cardSC.info(data.SaldoFinal);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function isValidDate(dateString) {
+        var regEx = /^\d{4}-\d{2}-\d{2}$/;
+        return dateString.match(regEx) != null;
+    }
+
+</script>

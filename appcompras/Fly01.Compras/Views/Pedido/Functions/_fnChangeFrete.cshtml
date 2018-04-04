@@ -1,0 +1,24 @@
+﻿<script>
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function fnChangeFrete() {
+        var valorFrete = parseFloat(noComma($('input#valorFrete').val()));
+        var valorTotal = parseFloat(noComma($('input#totalProdutos').val()));
+        
+        $('input#totalFrete').val(0);
+        $('input#valorFrete').removeAttr('disabled');
+        if ($('select#tipoFrete').val() == "FOB") {
+            $('input#totalFrete').val(valorFrete);
+            valorTotal += valorFrete;
+        }
+        else if ($('select#tipoFrete').val() == "SemFrete") {
+            $('input#valorFrete').val(0);
+            $('input#valorFrete').attr('disabled', 'disabled');
+        }
+        $('input#totalPedido').val(valorTotal);
+        fly01.core.updateTextFields();
+    }
+</script>

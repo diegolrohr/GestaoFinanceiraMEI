@@ -1,0 +1,51 @@
+﻿<script>
+    function fnAtualizaCertificado(input) {
+        if ($("#senha").val() == "") {
+            fly01.toast('Informe a senha do certificado.', 'error');
+            return;
+        }
+        $("#cardCertificado").loading("start");
+        if (!window.FileReader) return; // Browser is not compatible
+        if ($("#certificado")[0].files[0] == null) {
+            $("#cardCertificado").loading("stop");
+            fly01.toast('Selecione um arquivo de certificado e informe a senha para atualizar', 'error');
+            return;
+        }
+        var reader = new FileReader();
+        // Read file into memory as UTF-8
+        reader.readAsDataURL($("#certificado")[0].files[0]);
+        // Handle errors load
+        reader.onload = processData;
+        reader.onerror = errorHandler;
+    }
+
+    function processData(event) {
+        var pfx = event.target.result;
+        var senha = $("#senha").val();
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ImportaCertificado", "CertificadoDigital")",
+            data: {
+                conteudo: pfx,
+                senha: senha
+            },
+            success: function (response) {
+                if (response.success) {
+                    fnGetStatusCertificado(true);
+                    fly01.core.updateTextFields();
+                }
+                else {
+                    fnGetStatusCertificado(false);
+                    fly01.fns.submitErrorHandler(null, response.message);
+                }
+            }
+        });
+    }
+
+    function errorHandler(evt) {
+        if (evt.target.error.name == "NotReadableError") {
+            alert("Não foi possível ler o arquivo!");
+        }
+    }
+</script>

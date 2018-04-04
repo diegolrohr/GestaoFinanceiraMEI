@@ -1,0 +1,70 @@
+﻿<script>
+    function saveCheque() {
+        var result = false;
+
+        var dataRow = {
+            Id: $('#CreateOrEditCheque #RecordId').val(),
+            DonwtownDate: $('#CreateOrEditCheque #DonwtownDate').val(),
+            Person: $('#CreateOrEditCheque #Person').val(),
+            BankCode: $('#CreateOrEditCheque #BankCode').val(),
+            BankDescription: $('#CreateOrEditCheque #BankDescription').val(),
+            ContaFinanceiraId: $('#CreateOrEditCheque #ContaFinanceiraId').val(),
+            CheckNumber: $('#CreateOrEditCheque #CheckNumber').val(),
+            CheckDate: $('#CreateOrEditCheque #CheckDate').val(),
+            AgencyNumber: $('#CreateOrEditCheque #AgencyNumber').val(),
+            AccountNum: $('#CreateOrEditCheque #AccountNum').val(),
+            Value: $('#CreateOrEditCheque #Value').val(),
+            Historic: $('#CreateOrEditCheque #Historic').val()
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("IncluirCheque", "ContaReceber")',
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(dataRow),
+            success: function (data) {
+                if (data.success) {
+                    bootbox.hideAll();
+
+                    $("#datatable-records").DataTable().ajax.reload(null, false);
+                    ShowSuccess(data.message);
+                } else {
+                    ShowErrorGenerico("#CreateOrEditCheque", data.message);
+                }
+            }
+        });
+
+        return result;
+    }
+    function showPopUpIncluirCheque(id) {
+        var tituloJanela = 'Incluir Cheque';
+
+        $.ajax({
+            data: { id: id },
+            type: 'GET',
+            url: '@Url.Action("IncluirCheque", "ContaReceber")',
+            success: function (dataHtml) {
+                bootbox.dialog({
+                    title: tituloJanela,
+                    message: dataHtml,
+                    buttons: {
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'button btn btn-default',
+                        },
+                        success: {
+                            label: "Salvar",
+                            className: "btn btn-primary",
+                            callback: function () {
+                                var result = saveCheque();
+
+                                return result;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

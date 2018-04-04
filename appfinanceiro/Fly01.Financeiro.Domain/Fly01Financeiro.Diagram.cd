@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Fly01.Financeiro.Domain.Base.ContextoBase">
+    <Position X="1" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAABAAAAAAAAAJAAAAQAAAAABAA=</HashCode>
+      <FileName>Base\ContextoBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Base.ContextoEntidade" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\ContextoEntidade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Base.ContextoPlataforma">
+    <Position X="10.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\ContextoPlataforma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Banco">
+    <Position X="22.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Banco.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Categoria">
+    <Position X="18" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAQAAAAAAAAAAAAAAAAwAAAAAAAAAAAA=</HashCode>
+      <FileName>Categoria.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CategoriaPai" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.CondicaoParcelamento">
+    <Position X="3.25" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CondicaoParcelamento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.ContaBancaria">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAABAAAAAAAAAAAAAQgAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ContaBancaria.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Banco" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.ContaFinanceira">
+    <Position X="10.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAghABAAABAAAkAABAAAQAEAAAAABAAAAEQAAAAsA=</HashCode>
+      <FileName>ContaFinanceira.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Categoria" />
+      <Property Name="CondicaoParcelamento" />
+      <Property Name="FormaPagamento" />
+      <Property Name="Pessoa" />
+      <Property Name="StatusContaBancaria" />
+      <Property Name="TipoContaFinanceira" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.ContaPagar">
+    <Position X="8.25" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>ContaPagar.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContaBancaria" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.ContaReceber">
+    <Position X="10.75" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>ContaReceber.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContaBancaria" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.DadosContato" Collapsed="true">
+    <Position X="25.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgCAAEAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>DadosContato.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.DadosEndereco" Collapsed="true">
+    <Position X="27" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAABAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAg=</HashCode>
+      <FileName>DadosEndereco.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Pessoa">
+    <Position X="15.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAGAAAIAEAAAAAACAAACAAAIAgA=</HashCode>
+      <FileName>Pessoa.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TipoPessoa" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.SaldoHistorico">
+    <Position X="20.25" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAABAAAAAAAAAAAAAAAACAhAAAAIAAAAAAAA=</HashCode>
+      <FileName>SaldoHistorico.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContaBancaria" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Fly01.Financeiro.Domain.Transferencia">
+    <Position X="13.25" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAQAgAAABAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Transferencia.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContaDestino" />
+      <Property Name="ContaOrigem" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Fly01.Financeiro.Domain.FormaPagamento" Collapsed="true">
+    <Position X="7.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAAgAAAAAAAAAAAAAAAAAAAAAAQJAAAAAAAAAAAA=</HashCode>
+      <FileName>FormaPagamento.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Fly01.Financeiro.Domain.StatusContaBancaria" Collapsed="true">
+    <Position X="7.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAQ=</HashCode>
+      <FileName>StatusContaBancaria.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Fly01.Financeiro.Domain.TipoCarteira" Collapsed="true">
+    <Position X="25.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>TipoCarteira.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Fly01.Financeiro.Domain.TipoContaFinanceira" Collapsed="true">
+    <Position X="13.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAABAAAAAAAAEAAA=</HashCode>
+      <FileName>TipoContaFinanceira.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Fly01.Financeiro.Domain.TipoPessoa" Collapsed="true">
+    <Position X="15.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TipoPessoa.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

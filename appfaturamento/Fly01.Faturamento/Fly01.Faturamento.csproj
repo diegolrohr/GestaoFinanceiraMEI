@@ -1,0 +1,636 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2CAB2D20-F8DA-4349-8DC4-1818CF874E84}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.Faturamento</RootNamespace>
+    <AssemblyName>Fly01.Faturamento</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fly01.uiJS, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fly01.uiJS.2.0.0.8\lib\net452\Fly01.uiJS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fly01.Utils, Version=2.1.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fly01.Utils.2.1.0.2\lib\net471\Fly01.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Fly01.Utils.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fly01.Utils.2.1.0.2\lib\net471\Fly01.Utils.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Fly01.Utils.Notifications, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fly01.Utils.2.1.0.2\lib\net471\Fly01.Utils.Notifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Fly01.Utils.SOAManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fly01.Utils.2.1.0.2\lib\net471\Fly01.Utils.SOAManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.4\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.4\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.OData.Core, Version=7.4.0.20119, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Core.7.4.0\lib\portable-net45+win8+wpa81\Microsoft.OData.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.OData.Edm, Version=7.4.0.20119, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Edm.7.4.0\lib\portable-net45+win8+wpa81\Microsoft.OData.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReportViewerCommon.11.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Spatial, Version=7.4.0.20119, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Spatial.7.4.0\lib\portable-net45+win8+wpa81\Microsoft.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.RedisSessionStateProvider, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.RedisSessionStateProvider.2.0.1\lib\net40\Microsoft.Web.RedisSessionStateProvider.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.4\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ReportViewerForMvc, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReportViewerForMvc.1.0.1\lib\net45\ReportViewerForMvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.StrongName.1.0.488\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.1.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Expressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Expressions.4.1.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.1.0\lib\net462\System.Reflection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.OData, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.OData.6.0.0\lib\net45\System.Web.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TOTVS.S1.Messenger.Library, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TOTVS.S1.Messenger.Library.2.0.1\lib\net35\TOTVS.S1.Messenger.Library.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TOTVS.S1.SaaS.Commons, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TOTVS.S1.SaaS.Commons.1.1.2\lib\net35\TOTVS.S1.SaaS.Commons.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.2.7.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor.Web.Optimization, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YUICompressor.NET.Web.Optimization.2.7.0.0\lib\NET45\Yahoo.Yui.Compressor.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Context\" />
+    <Folder Include="Views\NFeProduto\Functions\" />
+    <Folder Include="Views\NFSeServico\Functions\" />
+    <Folder Include="Views\Servico\Functions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AutoCompleteController.cs" />
+    <Compile Include="Controllers\Base\GenericAppController.cs" />
+    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\CategoriaController.cs" />
+    <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
+    <Compile Include="Controllers\NFeController.cs" />
+    <Compile Include="Controllers\NFeProdutoController.cs" />
+    <Compile Include="Controllers\NFSeController.cs" />
+    <Compile Include="Controllers\NFSeServicoController.cs" />
+    <Compile Include="Controllers\NotaFiscalController.cs" />
+    <Compile Include="Controllers\CertificadoDigitalController.cs" />
+    <Compile Include="Controllers\SerieNotaFiscalInutilizadaController.cs" />
+    <Compile Include="Controllers\SerieNotaFiscalController.cs" />
+    <Compile Include="Controllers\TransportadoraController.cs" />
+    <Compile Include="Controllers\OrdemVendaServicoController.cs" />
+    <Compile Include="Controllers\OrdemVendaProdutoController.cs" />
+    <Compile Include="Controllers\PedidoController.cs" />
+    <Compile Include="Controllers\OrcamentoController.cs" />
+    <Compile Include="Controllers\OrdemVendaController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
+    <Compile Include="Controllers\FormaPagamentoController.cs" />
+    <Compile Include="Controllers\FornecedorController.cs" />
+    <Compile Include="Controllers\GrupoProdutoController.cs" />
+    <Compile Include="Controllers\ParametroTributarioController.cs" />
+    <Compile Include="Controllers\GrupoTributarioController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CfopController.cs" />
+    <Compile Include="Controllers\NCMController.cs" />
+    <Compile Include="Controllers\SubstituicaoTributariaController.cs" />
+    <Compile Include="Controllers\ServicoController.cs" />
+    <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\EmailFilesHelper.cs" />
+    <Compile Include="Models\JQueryDataTable\JQueryDataTableColumn.cs" />
+    <Compile Include="Models\JQueryDataTable\JQueryDataTableParams.cs" />
+    <Compile Include="Models\JQueryDataTable\JQueryDataTableParamsColumn.cs" />
+    <Compile Include="Models\JQueryDataTable\JQueryDataTableParamsColumnSearch.cs" />
+    <Compile Include="Models\JQueryDataTable\JQueryDataTableParamsOrder.cs" />
+    <Compile Include="Models\Reports\ReportOrcamentoPedido.cs" />
+    <Compile Include="Models\Reports\WebReportViewer.cs" />
+    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
+    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
+    <Compile Include="Models\Tasks\Base\TaskItemBase.cs" />
+    <Compile Include="Models\Tasks\Base\TaskType.cs" />
+    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
+    <Compile Include="Models\ViewModel\ImprimirOrcamentoPedidoVM.cs" />
+    <Compile Include="Models\ViewModel\ValidateVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetReports1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetReports.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <EmbeddedResource Include="MailTemplates\Templates\OrdemVenda.html" />
+    <Content Include="ReportViewerWebForm.aspx" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="packages.config" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\PublishProfiles\Producao.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSetReports.xsc">
+      <DependentUpon>DataSetReports.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSetReports.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetReports1.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Reports\DataSetReports.xss">
+      <DependentUpon>DataSetReports.xsd</DependentUpon>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_StatusMsg.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\appcompras\Fly01.Compras.Entities\Fly01.Compras.Entities.csproj">
+      <Project>{b2c14507-5d6f-4539-8c37-b491cb68ebe9}</Project>
+      <Name>Fly01.Compras.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_TaskItem.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
+    <Content Include="Views\Shared\Create.cshtml" />
+    <Content Include="Views\Shared\Edit.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnCancelar.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnEditar.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnExcluir.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnImportarCadastro.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnImprimir.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnMain.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnNovo.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\Shared\Functions\___format.cshtml" />
+    <Content Include="Views\Shared\Head\_Default.cshtml" />
+    <Content Include="Views\Shared\Index.cshtml" />
+    <Content Include="Views\Shared\Scripts\_Default.cshtml" />
+    <Content Include="Views\Home\_List.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowCOFINS.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowICMS.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowIPI.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowISS.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowPIS.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Fornecedor\ImportaCadastro.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeGrupoProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeNCM.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeSaldoProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
+    <Content Include="Views\GrupoProduto\Functions\_fnChangeNCM.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnEditarOrcamento.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnNovoOrcamento.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnNovoPedido.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnEditarPedido.cshtml" />
+    <Content Include="Views\Orcamento\Create.cshtml" />
+    <Content Include="Views\Orcamento\Edit.cshtml" />
+    <Content Include="Views\Orcamento\Index.cshtml" />
+    <Content Include="Views\Pedido\Create.cshtml" />
+    <Content Include="Views\Pedido\Edit.cshtml" />
+    <Content Include="Views\Pedido\Index.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnCancelarOrcamento.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaProduto.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFrete.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaServico.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnChangeFrete.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrdemVendaProduto.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrdemVendaServico.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnEditarOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemVendaServico\Functions\_fnEditarOrdemVendaServico.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnExcluirOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemVendaServico\Functions\_fnExcluirOrdemVendaServico.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFinalizarPedido.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnConverterParaPedido.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFormReadyPedido.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnFormReadyOrcamento.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnFormReadyOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemVendaServico\Functions\_fnFormReadyOrdemVendaServico.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnChangeProduto.cshtml" />
+    <Content Include="Views\OrdemVendaServico\Functions\_fnChangeServico.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnChangeTotalProduto.cshtml" />
+    <Content Include="Views\OrdemVendaServico\Functions\_fnChangeTotalServico.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFormReadyVisualizarOrdemVenda.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnChangeCondicoesParcelamento.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnChangeTipoSimulacao.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\CondicaoParcelamento\Functions\_fnSimulaParcelamento.cshtml" />
+    <Content Include="Views\Categoria\Functions\_fnChangeTipoCarteira.cshtml" />
+    <Content Include="Views\Categoria\Functions\_fnRenderGroup.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFinalizarFaturarPedido.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\SubstituicaoTributaria\Functions\_fnChangeNCM.cshtml" />
+    <Content Include="Views\SubstituicaoTributaria\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Categoria\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvarConfirmacao.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnNovoPedido.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnVisualizarNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnVisualizarNFSe.cshtml" />
+    <Content Include="Views\NFSe\Functions\_fnFormReadyVisualizarNFSe.cshtml" />
+    <Content Include="Views\NFe\Index.cshtml" />
+    <Content Include="Views\NFSe\Index.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnChangeSerieNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnTransmitirNFe.cshtml" />
+    <Content Include="Views\NFSe\Functions\_fnChangeSerieNFSe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnTransmitirNFSe.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnFormReadyTransmitirNFe.cshtml" />
+    <Content Include="Views\NFSe\Functions\_fnFormReadyTransmitirNFSe.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnAtualizaCertificado.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnClickGeraNotaFiscal.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnClickGeraNotaFiscal.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarPDFNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarPDFNFSe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLNFSe.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFooterCallbackEstoqueNegativo.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnAtualizarStatus.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnCancelarNFe.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnCancelarNFSe.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
+    <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\OrdemVendaProduto\Functions\_fnChangeGrupoTribProduto.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeGrupoTribPadrao.cshtml" />
+    <None Include="Web.Homologacao.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\ReportOrder.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ReportOrcamentoPedido.rdlc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != '' And Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')" />
+  <Import Project="$(SolutionDir)\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets" Condition="('$(VSToolsPath)' == '' Or !Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')) And Exists('$(SolutionDir)\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets')" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61954</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Fly01.Faturamento</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/Fly01.Faturamento</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,111 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    var justSaveOrcamentoToGoStepProdutos = false;
+    var onCancelMustDelete = false;
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
+    function fnBindStepsWizard() {
+        function saveOrcamento() {
+            if (isCreate() && ($("li#stepFinanceiro").hasClass("active"))) {
+                justSaveOrcamentoToGoStepProdutos = true;
+                return $("form#fly01frm").submit();
+            }
+        }
+
+        $('li#stepProdutos').click(function () {
+            saveOrcamento();
+        });
+        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            saveOrcamento();
+        });
+    }
+
+    function fnBindOverrideSubmit() {
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+
+            $('body').removeClass('loaded');
+            $('input#numero').removeAttr('disabled');
+
+            var jsonData = $(this).serializeObject();
+            if ($('input#finalizarOrcamento:checked').val() == "true") {
+                jsonData.status = "Finalizado";
+            }
+
+            $('input#numero').attr('disabled', 'disabled');
+            fly01.core.updateTextFields();
+
+            var url;
+            if (isCreate()) {
+                url = '@Url.Action("Create", "Orcamento")';
+            }
+            else {
+                url = '@Url.Action("Edit", "Orcamento")';
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify({ 'entityVM': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        $('body').addClass('loaded');
+
+                        var strMsg = "Cadastrado com sucesso.";
+                        if (data.message !== "" && !onCancelMustDelete) strMsg = data.message;
+                        //fica na página ou volta pra lista
+                        if (justSaveOrcamentoToGoStepProdutos) {
+                            justSaveOrcamentoToGoStepProdutos = false;
+                            onCancelMustDelete = true;
+                            $("form#fly01frm input#id").val(data.id);
+                            $("form#fly01frm input#numero").val(data.numero);
+                            fly01._.dtOrcamentoItens.refresh();
+
+                            var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                            window.history.pushState({}, document.title, url);
+
+                            return true;
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List", "Home")");
+                        }
+                    } else {
+                        $('body').addClass('loaded');
+                        fly01.fns.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    $('body').addClass('loaded');
+                }
+            });
+        });
+    }
+
+    function fnFormReadyOrcamento() {
+        if (isCreate()) {
+            var today = new Date();
+            fly01._.data.set(today);
+            fly01.core.updateTextFields();
+            fnBindStepsWizard();
+        }
+        else {
+            fly01._.dtOrcamentoItens.refresh();
+        }
+        fnBindOverrideSubmit();
+    }
+</script>

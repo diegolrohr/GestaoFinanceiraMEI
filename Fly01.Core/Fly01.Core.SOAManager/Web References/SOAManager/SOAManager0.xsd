@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="SOADataKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Param" />
+      <xs:enumeration value="Info" />
+      <xs:enumeration value="Result" />
+      <xs:enumeration value="Internal" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SOADataKind" nillable="true" type="tns:SOADataKind" />
+  <xs:simpleType name="SOADataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Boolean" />
+      <xs:enumeration value="Integer" />
+      <xs:enumeration value="Number" />
+      <xs:enumeration value="DateTime" />
+      <xs:enumeration value="String" />
+      <xs:enumeration value="List" />
+      <xs:enumeration value="Image" />
+      <xs:enumeration value="Table" />
+      <xs:enumeration value="Password" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SOADataType" nillable="true" type="tns:SOADataType" />
+  <xs:simpleType name="SOAResultType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Continue" />
+      <xs:enumeration value="Finished" />
+      <xs:enumeration value="Error" />
+      <xs:enumeration value="Warning" />
+      <xs:enumeration value="InvalidParam" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SOAResultType" nillable="true" type="tns:SOAResultType" />
+  <xs:simpleType name="SOASearchType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="All" />
+      <xs:enumeration value="ServiceType" />
+      <xs:enumeration value="ServiceName" />
+      <xs:enumeration value="ServiceTitle" />
+      <xs:enumeration value="Description" />
+      <xs:enumeration value="Provider" />
+      <xs:enumeration value="Tag" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SOASearchType" nillable="true" type="tns:SOASearchType" />
+</xs:schema>

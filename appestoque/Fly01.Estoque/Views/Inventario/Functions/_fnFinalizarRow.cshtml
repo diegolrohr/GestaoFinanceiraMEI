@@ -1,0 +1,60 @@
+﻿<script>
+
+    function fnFinalizarRow(idRecord) {
+        var data, length = fly01._.fly01dt.data().length;
+
+        for (var i = 0; ((i < length) && (!data)) ; i++)
+            if (fly01._.fly01dt.data()[i].id === idRecord)
+                data = fly01._.fly01dt.data()[i];
+
+        var formData = {
+            'id': data.id,
+            'inventarioStatus': "Finalizado",
+            'descricao': data.descricao
+        };
+
+        callbackConfirmaFinalizacao = function () {
+            fnFinalizaInventarioConfirmedRow(formData);
+        }
+
+        fly01.modal.confirm("Confirmar Finalização", "Deseja realmente finalizar este inventário?", "callbackConfirmaFinalizacao()");
+    }
+    
+    function fnFinalizaInventarioConfirmedRow(formData) {
+        fly01.loading.start();
+        
+        var action = "@Url.Action("Edit", "Inventario")" + "/{" + formData.id + "}";  
+
+        $.ajax({
+            type: "POST",
+            url: action,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(formData),
+            success: function (data) {
+                fly01.loading.stop();
+                if (data.success) {
+                    fly01.toast("Inventário finalizado com sucesso", "success");
+
+
+                    fly01.go("@Url.Action("List", "Inventario")");
+                }
+                else {
+                    try {
+                        var jsonMessage = JSON.parse(data.message);
+                        
+                        jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
+                            fly01.toast(element.message, "error", 8000);
+                        });
+                    } catch (e) {
+                        fly01.toast(data.message, "error");
+                    }
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+</script>

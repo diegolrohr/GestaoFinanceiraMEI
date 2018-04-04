@@ -1,0 +1,235 @@
+﻿using Fly01.Core.Api.BL;
+using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Notifications;
+using Fly01.Faturamento.DAL;
+using System;
+using System.Linq;
+using Fly01.Faturamento.Domain.Enums;
+using System.Data.Entity;
+using Fly01.Core.ValueObjects;
+using Fly01.Core.Helpers;
+using Fly01.Core;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using Fly01.EmissaoNFE.Domain.ViewModel;
+using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
+
+namespace Fly01.Faturamento.BL
+{
+    public class NotaFiscalBL : PlataformaBaseBL<NotaFiscal>
+    {
+        protected NFeBL NFeBL { get; set; }
+        protected NFSeBL NFSeBL { get; set; }
+        protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
+        protected TotalTributacaoBL TotalTributacaoBL { get; set; }
+
+        public NotaFiscalBL(AppDataContext context, NFeBL nfeBL, NFSeBL nfseBL, CertificadoDigitalBL certificadoDigitalBL, TotalTributacaoBL totalTributacaoBL) : base(context)
+        {
+            NFeBL = nfeBL;
+            NFSeBL = nfseBL;
+            CertificadoDigitalBL = certificadoDigitalBL;
+            TotalTributacaoBL = totalTributacaoBL;
+        }
+
+        public IQueryable<NotaFiscal> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+
+        public override void Insert(NotaFiscal entity)
+        {
+            entity.Fail(true, new Error("Não é possível inserir, somente em NFe ou NFSe"));
+        }
+
+        public override void Update(NotaFiscal entity)
+        {
+            entity.Fail(true, new Error("Não é possível atualizar, somente em NFe ou NFSe"));
+        }
+
+        public override void Delete(NotaFiscal entity)
+        {
+            entity.Fail(true, new Error("Não é possível deletar, somente em NFe ou NFSe"));
+        }
+
+        public TotalNotaFiscal CalculaTotalNotaFiscal(Guid notaFiscalId, double? valorFreteCIF = 0)
+        {
+            if (All.Where(x => x.Id == notaFiscalId).FirstOrDefault().TipoNotaFiscal == TipoNotaFiscal.NFe)
+            {
+                return NFeBL.CalculaTotalNFe(notaFiscalId, valorFreteCIF);
+            }
+            else
+            {
+                return NFSeBL.CalculaTotalNFSe(notaFiscalId);
+            }
+        }
+
+        public object NotaFiscalXML(Guid id)
+        {
+            try
+            {
+                var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+                if (!string.IsNullOrEmpty(notaFiscal.XML))
+                {
+                    return new { xml = notaFiscal.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                }
+                else
+                {
+                    if (!TotalTributacaoBL.ConfiguracaoTSSOK())
+                    {
+                        throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    }
+                    else
+                    {
+                        var header = new Dictionary<string, string>()
+                        {
+                            { "AppUser", AppUser },
+                            { "PlataformaUrl", PlataformaUrl }
+                        };
+                        var danfe = new DanfeVM()
+                        {
+                            Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
+                            Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
+                            EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                            DanfeId = notaFiscal.SefazId.ToString()
+                        };
+
+                        var response = RestHelper.ExecutePostRequest<XMLVM>(AppDefaults.UrlEmissaoNfeApi, "danfeXML", JsonConvert.SerializeObject(danfe), null, header);
+                        if (string.IsNullOrEmpty(response.XML))
+                        {
+                            throw new BusinessException("XML vazio/inválido");
+                        }
+                        else
+                        {
+                            if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
+                            {
+                                var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                NFe.XML = response.XML;
+                                NFeBL.Update(NFe);
+                            }
+                            else
+                            {
+                                var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                NFSe.XML = response.XML;
+                                NFSeBL.Update(NFSe);
+                            }
+                            return new { xml = response.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Não foi possível realizar o download do XML. " + ex.Message);
+            }
+        }
+
+        public object NotaFiscalPDF(Guid id)
+        {
+            try
+            {
+                var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+                if (!string.IsNullOrEmpty(notaFiscal.PDF))
+                {
+                    return new { pdf = notaFiscal.PDF, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                }
+                else
+                {
+                    if (!TotalTributacaoBL.ConfiguracaoTSSOK())
+                    {
+                        throw new BusinessException("Configuração inválida para comunicação com TSS");
+                    }
+                    else
+                    {
+                        var header = new Dictionary<string, string>()
+                        {
+                            { "AppUser", AppUser },
+                            { "PlataformaUrl", PlataformaUrl }
+                        };
+                        var danfe = new DanfeVM()
+                        {
+                            Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
+                            Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
+                            EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                            DanfeId = notaFiscal.SefazId.ToString()
+                        };
+
+                        var response = RestHelper.ExecutePostRequest<PDFVM>(AppDefaults.UrlEmissaoNfeApi, "danfePDF", JsonConvert.SerializeObject(danfe), null, header);
+                        if (string.IsNullOrEmpty(response.PDF))
+                        {
+                            throw new BusinessException("PDF vazio/inválido");
+                        }
+                        else
+                        {
+                            if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
+                            {
+                                var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                NFe.PDF = response.PDF;
+                                NFeBL.Update(NFe);
+                            }
+                            else
+                            {
+                                var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                NFSe.PDF = response.PDF;
+                                NFSeBL.Update(NFSe);
+                            }
+                            return new { pdf = response.PDF, numNotaFiscal = notaFiscal.NumNotaFiscal };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Não foi possível realizar o download do PDF. " + ex.Message);
+            }
+        }
+
+        public void NotaFiscalCancelar(Guid id)
+        {
+            var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
+
+            if (notaFiscal.Status != StatusNotaFiscal.Autorizada && notaFiscal.Status != StatusNotaFiscal.FalhaNoCancelamento)
+            {
+                throw new BusinessException("Somente nota fiscal com status Autorizada ou Falha no Cancelamento, pode ser cancelada");
+            }
+            else if (!TotalTributacaoBL.ConfiguracaoTSSOK())
+            {
+                throw new BusinessException("Configuração inválida para comunicação com TSS");
+            }
+            else
+            {
+                try
+                {
+                    var header = new Dictionary<string, string>()
+                        {
+                            { "AppUser", AppUser },
+                            { "PlataformaUrl", PlataformaUrl }
+                        };
+
+                    var cancelar = new CancelarFaixaVM()
+                    {
+                        Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
+                        Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
+                        EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                        NotaInicial = notaFiscal.SefazId.ToString(),
+                        NotaFinal = notaFiscal.SefazId.ToString()
+                    };
+
+                    RestHelper.ExecutePostRequest<CancelarFaixaRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
+                    if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
+                    {
+                        var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        NFe.Status = StatusNotaFiscal.EmCancelamento;
+                        NFeBL.Update(NFe);
+                    }
+                    else
+                    {
+                        var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        NFSe.Status = StatusNotaFiscal.EmCancelamento;
+                        NFSeBL.Update(NFSe);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new BusinessException("Erro ao cancelar a nota fiscal: " + ex.Message);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+﻿<script>
+    function fnTotais() {
+        $.ajax({
+            url: '@Url.Action("Totais", "PosicaoAtual")',
+            type: "GET",
+            success: function (data) {
+                if (data.estoqueTotal == 0)
+                {
+                    data.estoqueTotal = "0"
+                }
+                fly01._.fly01cardEstoque.info(data.estoqueTotal);
+                fly01._.fly01cardCustos.info(data.custoTotal);
+                fly01._.fly01cardVendas.info(data.vendaTotal);
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+    }
+</script>

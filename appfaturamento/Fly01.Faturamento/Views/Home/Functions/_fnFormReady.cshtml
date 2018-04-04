@@ -1,0 +1,23 @@
+﻿<script>
+    function fnFormReady() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("StatusCard", "Home")',
+            success: function (data) {
+                if (data.numeroNFNaoTransmitidas == "0") {
+                    fly01._.cardNotaFiscal.setColor("green");
+                    fly01._.cardNotaFiscal.info("<h4><strong>Não há Notas Fiscais não transmitidas</strong></h4>");
+                }
+                else if (data.numeroNFNaoTransmitidas == "1") {
+                    fly01._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Nota Fiscal não transmitida.</h4>");
+                }
+                else {
+                    fly01._.cardNotaFiscal.info("<h4>Você tem <strong>" + data.numeroNFNaoTransmitidas + "</strong> Notas Fiscais não transmitidas.</h4>");
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+    }
+</script>

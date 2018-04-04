@@ -1,0 +1,45 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function calculaTotalNFeTransmitir() {
+        var valorFrete = 0;
+        if ($('input#tipoFreteNFe').val() == "CIF") {
+            valorFrete = parseFloat(noComma($('form#fly01mdlfrmTransmitirNFe input#valorFreteNFe').val()));
+        }
+
+        var idNFe = $("form#fly01mdlfrmTransmitirNFe input#idNFe").val();
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
+            type: "GET",
+            data: { id: idNFe, valorFreteCIF: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmTransmitirNFe input#totalFreteNFe').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmTransmitirNFe input#totalNotaFiscalNFe').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.core.updateTextFields();
+            }
+            else {
+                fly01.fns.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnFormReadyTransmitirNFe() {
+        calculaTotalNFeTransmitir();
+    }
+</script>

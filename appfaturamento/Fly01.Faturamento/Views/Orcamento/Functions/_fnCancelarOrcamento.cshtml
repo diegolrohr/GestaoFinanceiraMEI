@@ -1,0 +1,30 @@
+﻿<script>
+    function fnCancelarOrcamento() {
+        var idRecord = $('form#fly01frm input#id').val();
+        if (onCancelMustDeleteOrcamento) {
+            fly01.loading.start();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Delete", "Orcamento")",
+                data: { id: idRecord },
+                success: function (data) {
+                    fly01.loading.stop();
+                    if (data.success) {
+                        fly01.toast("Cancelado com sucesso.", "success");
+                        fly01.go("@Url.Action("List", "OrdemVenda")");
+                    }
+                    else {
+                        fly01.fns.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    fly01.loading.stop();
+                    fly01.toast(textStatus, "error");
+                }
+            });
+        }
+        else {
+            fly01.go("@Url.Action("List", "OrdemVenda")");
+        }
+    }
+</script>

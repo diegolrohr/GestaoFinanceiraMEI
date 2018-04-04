@@ -1,0 +1,11 @@
+﻿<script>
+    function fnSalvarConfirmacao() {
+        if ($("form#fly01frm").valid()) {
+            fly01.modal.confirm("Confirmar Inutilização de Nota Fiscal", "Após Inutilização da Nota Fiscal, essa operação não poderá ser desfeita", "fnSerieNFInutilizada()");
+        }
+    }
+
+    function fnSerieNFInutilizada() {
+        $("form#fly01frm").submit();
+    }
+</script>

@@ -1,0 +1,98 @@
+﻿using Fly01.Core.Api.BL;
+using Fly01.Core.ValueObjects;
+using System.Linq;
+using System;
+using Fly01.Financeiro.API.Models.DAL;
+using Fly01.Financeiro.Domain.Entities;
+using Fly01.Financeiro.Domain.Enums;
+
+namespace Fly01.Financeiro.BL
+{
+    public class ConciliacaoBancariaTransacaoBL : PlataformaBaseBL<ConciliacaoBancariaTransacao>
+    {
+        protected ConciliacaoBancariaItemContaFinanceiraBL conciliacaoBancariaItemContaFinanceiraBL { get; set; }
+        protected ContaPagarBL contaPagarBL { get; set; }
+        protected ContaReceberBL contaReceberBL { get; set; }
+        protected CondicaoParcelamentoBL condicaoParcelamentoBL { get; set; }
+
+        public ConciliacaoBancariaTransacaoBL(AppDataContext Context, ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL, ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL, CondicaoParcelamentoBL CondicaoParcelamentoBL) : base(Context)
+        {
+            conciliacaoBancariaItemContaFinanceiraBL = ConciliacaoBancariaItemContaFinanceiraBL;
+            contaPagarBL = ContaPagarBL;
+            contaReceberBL = ContaReceberBL;
+            condicaoParcelamentoBL = CondicaoParcelamentoBL;
+        }
+                
+        public override void Insert(ConciliacaoBancariaTransacao entity)
+        {
+            try
+            {
+                entity.PlataformaId = PlataformaUrl;
+                entity.DataInclusao = DateTime.Now;
+                entity.DataAlteracao = null;
+                entity.DataExclusao = null;
+                entity.UsuarioInclusao = AppUser;
+                entity.UsuarioAlteracao = null;
+                entity.UsuarioExclusao = null;
+                entity.Ativo = true;
+                entity.Id = Guid.NewGuid();
+
+                CondicaoParcelamento condicaoAVista = condicaoParcelamentoBL.All.Where(x => x.Id == entity.CondicaoParcelamentoId && (x.QtdParcelas == 1 || x.CondicoesParcelamento.Equals("0"))).FirstOrDefault();
+                if (condicaoAVista == null)
+                    throw new BusinessException("Condição de parcelamento inválida para a transação");
+
+                ContaFinanceira contaFinanceira = (entity.TipoContaFinanceira == "ContaPagar") 
+                    ? (ContaFinanceira) new ContaPagar()
+                    : (ContaFinanceira) new ContaReceber();
+
+                contaFinanceira.Id = Guid.NewGuid();
+                contaFinanceira.ValorPrevisto = entity.ValorPrevisto;
+                contaFinanceira.CategoriaId = entity.CategoriaId;
+                contaFinanceira.FormaPagamentoId = entity.FormaPagamentoId;
+                contaFinanceira.CondicaoParcelamentoId = entity.CondicaoParcelamentoId;
+                contaFinanceira.PessoaId = entity.PessoaId;
+                contaFinanceira.DataEmissao = DateTime.Now;
+                contaFinanceira.DataVencimento = entity.DataVencimento;
+                contaFinanceira.Descricao = entity.Descricao;
+                //a baixa não atualiza a conta, pois ela está referenciada pela navigation
+                //a conta não está salva ainda
+                contaFinanceira.StatusContaBancaria = StatusContaBancaria.Pago;
+                contaFinanceira.ValorPago = entity.ValorPrevisto;
+
+                if (entity.TipoContaFinanceira == "ContaPagar")
+                {
+                    contaPagarBL.Insert((ContaPagar)contaFinanceira);
+                }        
+                else
+                {
+                    contaReceberBL.Insert((ContaReceber)contaFinanceira);
+                }
+
+                contaFinanceira.ValorPago = null;
+
+                ConciliacaoBancariaItemContaFinanceira CBItemContaFinanceira = new ConciliacaoBancariaItemContaFinanceira()
+                {
+                    ConciliacaoBancariaItemId = entity.ConciliacaoBancariaItemId,
+                    ValorConciliado = entity.ValorConciliado,
+                    ContaFinanceira = contaFinanceira //passado via navigation para as demais validações que a esperam
+                };
+                conciliacaoBancariaItemContaFinanceiraBL.Insert(CBItemContaFinanceira);
+                               
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public override void Update(ConciliacaoBancariaTransacao entity)
+        {
+            throw new BusinessException("Não é possível atualizar este tipo de registro");
+        }
+
+        public override void Delete(ConciliacaoBancariaTransacao entity)
+        {
+            throw new BusinessException("Não é possível deletar este tipo de registro");
+        }
+    }
+}

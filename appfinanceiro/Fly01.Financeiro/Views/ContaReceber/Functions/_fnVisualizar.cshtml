@@ -1,0 +1,7 @@
+﻿
+<script>
+    function fnVisualizar(idRecord) {
+        var url = "@Url.Action("ModalVisualizarConta", "ContaReceber", new { contaController = "ContaReceber" })";
+        fly01.call(fly01.modal.form, url, idRecord);
+    }
+</script>

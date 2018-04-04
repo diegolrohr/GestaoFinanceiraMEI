@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://TotvsSOA.ServiceContracts/v1" elementFormDefault="qualified" targetNamespace="http://TotvsSOA.ServiceContracts/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd2" namespace="http://TotvsSOA.DataContracts/v1" />
+  <xs:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" />
+  <xs:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="SOAManagerExecuteRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ConnectionData" nillable="true" type="q1:SOAConnectionData" />
+        <xs:element xmlns:q2="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ServiceData" nillable="true" type="q2:SOAServiceData" />
+        <xs:element minOccurs="0" name="DebugMode" type="xs:boolean" />
+        <xs:element minOccurs="0" name="ClientAddress" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerExecuteResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" minOccurs="0" name="ResultType" type="q3:SOAResultType" />
+        <xs:element minOccurs="0" name="ResultMessage" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ResultMessageCode" type="xs:int" />
+        <xs:element xmlns:q4="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ServiceData" nillable="true" type="q4:SOAServiceData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ConnectionData" nillable="true" type="q5:SOAConnectionData" />
+        <xs:element minOccurs="0" name="ServiceType" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ServiceName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ServiceVersion" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ServiceData" nillable="true" type="q6:SOAServiceData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceNamesRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ConnectionData" nillable="true" type="q7:SOAConnectionData" />
+        <xs:element minOccurs="0" name="ServiceType" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceNamesResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ServiceNames" nillable="true" type="q8:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceTypesRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ConnectionData" nillable="true" type="q9:SOAConnectionData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServiceTypesResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ServiceTypes" nillable="true" type="q10:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServicesInfoRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ConnectionData" nillable="true" type="q11:SOAConnectionData" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" minOccurs="0" name="SearchType" type="q12:SOASearchType" />
+        <xs:element minOccurs="0" name="SearchValue" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerGetServicesInfoResult">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://TotvsSOA.DataContracts/v1" minOccurs="0" name="ServicesInfo" nillable="true" type="q13:ArrayOfSOAServiceInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerCreateUserRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClientID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CompanyName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="EMail" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SOAManagerActivateUserRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ClientID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ConfirmID" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://TotvsSOA.ServiceContracts/v1" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:i0="http://tempuri.org/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SOAManager" targetNamespace="http://TotvsSOA.ServiceContracts/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://tempuri.org/" location="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?wsdl=wsdl0" />
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://TotvsSOA.ServiceContracts/v1/Imports">
+      <xsd:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd0" namespace="http://TotvsSOA.ServiceContracts/v1" />
+      <xsd:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd2" namespace="http://TotvsSOA.DataContracts/v1" />
+      <xsd:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TotvsSOA.Classes" />
+      <xsd:import schemaLocation="http://localhost:8055/TotvsSOA.Host/SOAManager.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SOAManagerExecuteRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerExecuteRequest" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerExecuteResult">
+    <wsdl:part name="parameters" element="tns:SOAManagerExecuteResult" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceRequest" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceResult">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceResult" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceNamesRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceNamesRequest" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceNamesResult">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceNamesResult" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceTypesRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceTypesRequest" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServiceTypesResult">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServiceTypesResult" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServicesInfoRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServicesInfoRequest" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerGetServicesInfoResult">
+    <wsdl:part name="parameters" element="tns:SOAManagerGetServicesInfoResult" />
+  </wsdl:message>
+  <wsdl:message name="SOAManagerCreateUserRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerCreateUserRequest" />
+  </wsdl:message>
+  <wsdl:message name="ISOAManager_CreateUser_OutputMessage" />
+  <wsdl:message name="SOAManagerActivateUserRequest">
+    <wsdl:part name="parameters" element="tns:SOAManagerActivateUserRequest" />
+  </wsdl:message>
+  <wsdl:message name="ISOAManager_ActivateUser_OutputMessage" />
+  <wsdl:portType name="ISOAManager">
+    <wsdl:operation name="Execute">
+      <wsdl:input wsam:Action="Execute" name="SOAManagerExecuteRequest" message="tns:SOAManagerExecuteRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/ExecuteResponse" name="SOAManagerExecuteResult" message="tns:SOAManagerExecuteResult" />
+    </wsdl:operation>
+    <wsdl:operation name="GetService">
+      <wsdl:input wsam:Action="GetService" name="SOAManagerGetServiceRequest" message="tns:SOAManagerGetServiceRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/GetServiceResponse" name="SOAManagerGetServiceResult" message="tns:SOAManagerGetServiceResult" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceNames">
+      <wsdl:input wsam:Action="GetServiceNames" name="SOAManagerGetServiceNamesRequest" message="tns:SOAManagerGetServiceNamesRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/GetServiceNamesResponse" name="SOAManagerGetServiceNamesResult" message="tns:SOAManagerGetServiceNamesResult" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceTypes">
+      <wsdl:input wsam:Action="GetServiceTypes" name="SOAManagerGetServiceTypesRequest" message="tns:SOAManagerGetServiceTypesRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/GetServiceTypesResponse" name="SOAManagerGetServiceTypesResult" message="tns:SOAManagerGetServiceTypesResult" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServicesInfo">
+      <wsdl:input wsam:Action="GetServiceInfos" name="SOAManagerGetServicesInfoRequest" message="tns:SOAManagerGetServicesInfoRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/GetServicesInfoResponse" name="SOAManagerGetServicesInfoResult" message="tns:SOAManagerGetServicesInfoResult" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input wsam:Action="CreateUser" name="SOAManagerCreateUserRequest" message="tns:SOAManagerCreateUserRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/CreateUserResponse" message="tns:ISOAManager_CreateUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActivateUser">
+      <wsdl:input wsam:Action="ActivateUser" name="SOAManagerActivateUserRequest" message="tns:SOAManagerActivateUserRequest" />
+      <wsdl:output wsam:Action="http://TotvsSOA.ServiceContracts/v1/ISOAManager/ActivateUserResponse" message="tns:ISOAManager_ActivateUser_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="SOAManager">
+    <wsdl:port name="BasicHttpBinding_ISOAManager" binding="i0:BasicHttpBinding_ISOAManager">
+      <soap:address location="http://localhost:8055/TotvsSOA.Host/SOAManager.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

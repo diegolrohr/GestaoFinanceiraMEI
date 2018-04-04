@@ -1,0 +1,7 @@
+﻿<script>
+    function showPopUpRecibo(id) {
+        var url = '@Url.Action("PrintRecibo", "ContaReceber")?id=' + id;
+
+        callPrintDialog(url, 'Emissão de Recibo');
+    }
+</script>

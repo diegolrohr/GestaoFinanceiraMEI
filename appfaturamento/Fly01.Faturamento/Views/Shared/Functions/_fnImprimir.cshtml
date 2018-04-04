@@ -1,0 +1,24 @@
+﻿<script>
+    function fnImprimir(pUrl) {
+        var url = '@Url.Action("DownloadPDF")?fileName=' + pUrl;
+
+        function openNewBackgroundTab() {
+            var a = document.createElement("a");
+            a.href = url;
+            a.target = "_blank";
+
+            var event = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+
+            a.dispatchEvent(event);
+        }
+
+        var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+        if (!is_chrome) {
+            //depende da configuração do browser de (blank)abrir em nova aba ou janela
+            var win = window.open(url, '_blank');
+        }
+        else {
+            openNewBackgroundTab();
+        }
+    }
+</script>

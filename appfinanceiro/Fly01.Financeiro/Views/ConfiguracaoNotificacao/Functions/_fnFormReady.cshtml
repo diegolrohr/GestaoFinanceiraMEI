@@ -1,0 +1,18 @@
+﻿<script>
+    function fnFormReady() {
+        if ($('#notificaViaSMS').is(':checked'))
+            $("input#contatoDestino").removeAttr("disabled");
+        else 
+            fnChangeCheckButtonSMS();
+
+        if ($('#notificaViaEmail').is(':checked'))
+            $("input#emailDestino").removeAttr("disabled");
+        else 
+            fnChangeCheckButton();
+        
+    }
+
+    $(function () {
+        fly01._.fly01frm.refresh('1');
+    });
+</script>

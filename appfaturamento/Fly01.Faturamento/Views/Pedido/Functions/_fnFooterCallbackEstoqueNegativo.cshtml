@@ -1,0 +1,16 @@
+﻿<script>
+    function fnFooterCallbackEstoqueNegativo(tfoot, data, start, end, display) {
+        if (fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal == 0) {
+            $('#infoEstoqueNegativoField').hide();
+            $('#produtosEstoqueNegativoLabelField').hide();
+            $('#ajusteEstoqueAutomaticoField').hide();
+            $('#produtosEstoqueNegativoField').hide();
+        }
+        else {
+            $('#infoEstoqueNegativoField').show();
+            $('#produtosEstoqueNegativoLabelField').show();
+            $('#ajusteEstoqueAutomaticoField').show();
+            $('#produtosEstoqueNegativoField').show();
+        }
+    }
+</script>

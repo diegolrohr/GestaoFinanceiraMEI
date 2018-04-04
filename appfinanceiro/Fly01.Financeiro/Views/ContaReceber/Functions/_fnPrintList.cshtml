@@ -1,0 +1,42 @@
+﻿<script>
+    function fnPrintList() {
+        if (dataTableVazio()) {
+            ShowWarning('Nenhum registro para imprimir');
+        }
+        else {
+            var url = '@Url.Action("PrintListGrid", "ContaRecebr")';
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { queryStringGrid: queryStringGrid },
+                success: function (modalHtml) {
+                    bootbox.dialog({
+                        size: "large",
+                        animate: true,
+                        title: 'Lista de Contas a Recebr',
+                        message: modalHtml,
+                        closeButton: false,
+                        buttons: {
+                            cancel: {
+                                label: "Fechar",
+                                className: "button btn btn-default"
+                            },
+                            print: {
+                                label: "Imprimir",
+                                className: "button btn btn-primary",
+                                callback: function () {
+                                    $("#contentPrintReport").get(0).contentWindow.print();
+                                    return false;
+                                }
+                            }
+                        },
+                        callback: function () {
+                            //
+                        }
+                    });
+                }
+            });
+        };
+    }
+</script>

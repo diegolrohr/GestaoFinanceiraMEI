@@ -1,0 +1,28 @@
+﻿@model Fly01.Compras.Models.SSO.SAMLRequestAuthVM
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery.js"></script>
+    <title>Fly01 Compras</title>
+    <script type="text/javascript">
+        $(function () {
+            $('#formSSO').submit();
+
+            // Limpa os caches, como por exemplo batches
+            localStorage.clear();
+        });
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { action = Model.loginUrlSSO, id = "formSSO" }))
+    {
+        @Html.Hidden("AppJWTAccessURL", (string)ViewBag.AppJWTAccessURL)
+    }
+</body>
+</html>

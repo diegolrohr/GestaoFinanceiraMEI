@@ -1,0 +1,39 @@
+﻿using System;
+
+namespace Fly01.Faturamento.Models.ViewModel
+{
+    public class ImprimirOrcamentoPedidoVM
+    {
+        public string Id { get; set; }
+        public string CategoriaDescricao { get; set; }
+        public string ClienteNome { get; set; }
+        public string NumeroNota { get; set; }
+        public string Data { get; set; }
+        public string CondicaoParcelamentoDescricao { get; set; }
+        public int? CondicaoParcelamentoQtdParcelas { get; set; }
+        public string FormaPagamentoDescricao { get; set; }
+        public double PesoBruto { get; set; }
+        public double PesoLiquido { get; set; }
+        public string Status { get; set; }
+        public string TipoOrdemVenda { get; set; }
+        public string TipoFrete { get; set; }
+        public string PlacaVeiculo { get; set; }
+        public string EstadoPlacaVeiculo { get; set; }
+        public int QuantidadeVolumes { get; set; }
+        public double ValorFrete { get; set; }
+        public string TransportadoraNome { get; set; }
+        public string Observacao { get; set; }
+        public Guid? ItemId { get; set; }
+        public double ItemQtd { get; set; }
+        public double ItemValor { get; set; }
+        public double ItemDesconto { get; set; }
+        public double ItemTotal { get; set; }
+        public string ItemNome { get; set; }
+        public double Total { get; set; }
+        public double ValorFreteCIF { get; set; }
+        public double TotalImpostosServicos { get; set; }
+        public double TotalServicos { get; set; }
+        public double TotalImpostosProdutos { get; set; }
+        public double TotalProdutos { get; set; }
+    }
+}

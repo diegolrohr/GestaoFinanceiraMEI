@@ -1,0 +1,5 @@
+﻿<script>
+	function fnEntradaSaida(event) {
+		$("#tipoMovimentoDescricao").data("url-post", "@Url.Action("NovoTipoMovimento")?tipo=" + $("#tipoEntradaSaida").val());
+	}
+</script>

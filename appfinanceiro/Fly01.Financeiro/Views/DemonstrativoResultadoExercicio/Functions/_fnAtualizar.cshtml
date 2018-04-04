@@ -1,0 +1,79 @@
+﻿<script>
+
+    function __getTotais() {
+        var dataInicialDisplay = moment($('input#dataInicial').val(), "DD/MM/YYYY");
+        var dataInicial = moment(dataInicialDisplay).format('YYYY-MM-DD');
+        var dataFinalDisplay = moment($('input#dataFinal').val(), "DD/MM/YYYY");
+        var dataFinal = moment(dataFinalDisplay).format('YYYY-MM-DD');
+
+        if (dataInicial > dataFinal) {
+            dataInicial = moment(dataFinalDisplay).format('YYYY-MM-DD');
+            dataFinal = moment(dataInicialDisplay).format('YYYY-MM-DD');
+            $('input#dataInicial').val(moment(dataInicial).format("DD/MM/YYYY"));
+            $('input#dataFinal').val(moment(dataFinal).format("DD/MM/YYYY"));
+        }
+
+        $.ajax({
+            url: '@Url.Action("Total", "ReceitaPorCategoria")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardReceitas.info(data.total);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("Total", "DespesaPorCategoria")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardDespesas.info(data.total);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("Total", "DemonstrativoResultadoExercicio")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardTotal.info(data.total);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+    }
+
+    function datasValidas() {
+        var dataInicial = $('input#dataInicial').val(),
+            dataFinal = $('input#dataFinal').val();
+
+        if (dataInicial.length != 10 || dataFinal.length != 10)
+            return false;
+
+        var dataInicialDisplay = moment($('input#dataInicial').val(), "DD/MM/YYYY"),
+            dataFinalDisplay = moment($('input#dataFinal').val(), "DD/MM/YYYY");
+        
+        if (dataInicialDisplay.isValid() && dataFinalDisplay.isValid())
+            return true;
+        else
+            return false;
+    }
+
+    function fnAtualizar($event) {
+        if (!datasValidas()) {
+            if (!$event)
+                fly01.toast("Informe a data inicial e a data final.", 'error');
+            else
+                return;
+        }
+        else {
+            __getTotais();
+            fly01._.fly01dtreceitas.refresh();
+            fly01._.fly01dtdespesas.refresh();
+        }
+    }
+</script>

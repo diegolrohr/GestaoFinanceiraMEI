@@ -1,0 +1,79 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function calculaTotalNFeVisualizar() {
+        var valorFrete = 0;
+        if ($('select#tipoFrete').val() == "CIF") {
+            valorFrete = parseFloat(noComma($('form#fly01mdlfrmVisualizarNFe input#valorFrete').val()));
+        }
+
+        var idNFe = $("form#fly01mdlfrmVisualizarNFe input#id").val();
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
+            type: "GET",
+            data: { id: idNFe, valorFreteCIF: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmVisualizarNFe input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmVisualizarNFe input#totalNotaFiscal').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.core.updateTextFields();
+            }
+            else {
+                fly01.fns.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnFormReadyVisualizarNFe() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetNFeProdutos", "NFeProduto")?id=" + $('#fly01mdlfrmVisualizarNFe #id').val(),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#nfeProdutosDataTable").DataTable().destroy();
+
+                    var table = $("#nfeProdutosDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Produto", data: "produto_descricao" },
+                            { title: "Grupo Tributário", data: "grupoTributario_descricao" },
+                            { title: "Quant.", data: "quantidade" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Desconto", data: "desconto" },
+                            { title: "Total", data: "total" }
+                        ]
+                    });
+                } else {
+                    fly01.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+        calculaTotalNFeVisualizar();
+    }
+</script>

@@ -1,0 +1,24 @@
+﻿<script>
+	function fnFormReady() {
+		fnChangeTipoProduto();
+
+        if (isCreate()) {
+            $("#saldoProdutoField").prop('disabled', false);
+        } else {
+            $("#saldoProdutoField").val($("#saldoProduto").val());
+        }
+
+        if ($('input#ncmId').val() == "") {
+            $('input#cestId').attr('disabled', 'disabled');;
+            $('input#cestDescricao').attr('disabled', 'disabled');
+        }  
+
+    }
+
+    function isCreate() {
+        var idSelector = "input#id";
+        var id = $(idSelector).val();
+        if (id.length == 0) return true;
+        return false;
+    }
+</script>

@@ -1,0 +1,8 @@
+﻿<script>
+    function fnFormReady() {
+        if ($('input#id').val() != "") {
+            $("select#tipoOperacaoSerieNotaFiscal option:not(:selected)").attr("disabled", "disabled");
+            $('select#tipoOperacaoSerieNotaFiscal').material_select();
+        }
+    }
+</script>

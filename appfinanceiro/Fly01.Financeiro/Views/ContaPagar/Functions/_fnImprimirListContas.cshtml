@@ -1,0 +1,9 @@
+﻿<script>
+    @Html.Partial("Functions/_fnImprimir");
+
+    function fnImprimirListContas() {
+        var url = '@Url.Action("ImprimirListContas", "ContaPagar")';
+        fnImprimir(url);
+    }
+</script>
+

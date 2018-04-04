@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("Head/_Default")
+</head>
+<body>
+    <div id="login-page" class="container">
+        @RenderBody()
+    </div>
+    @Html.Partial("Scripts/_Default")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

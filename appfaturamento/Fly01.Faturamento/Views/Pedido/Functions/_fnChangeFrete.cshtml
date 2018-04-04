@@ -1,0 +1,15 @@
+﻿<script>
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function fnChangeFrete() {
+        $('input#valorFrete').removeAttr('disabled');
+
+        if ($('select#tipoFrete').val() == "SemFrete") {
+            $('input#valorFrete').val(0);
+            $('input#valorFrete').attr('disabled', 'disabled');
+        }
+        fly01.core.updateTextFields();
+    }
+</script>

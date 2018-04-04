@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fly01.Compras.Domain</RootNamespace>
+    <AssemblyName>Fly01.Compras.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <OutputPath>bin\Homologacao\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
+    <Compile Include="Entities\Arquivo.cs" />
+    <Compile Include="Entities\Cest.cs" />
+    <Compile Include="Entities\Cidade.cs" />
+    <Compile Include="Entities\Cfop.cs" />
+    <Compile Include="Entities\ContaFinanceira.cs" />
+    <Compile Include="Entities\ContaPagar.cs" />
+    <Compile Include="Entities\GrupoTributario.cs" />
+    <Compile Include="Entities\Movimento.cs" />
+    <Compile Include="Entities\Pedido.cs" />
+    <Compile Include="Entities\PedidoItem.cs" />
+    <Compile Include="Entities\OrcamentoItem.cs" />
+    <Compile Include="Entities\OrdemCompraItem.cs" />
+    <Compile Include="Entities\Orcamento.cs" />
+    <Compile Include="Entities\OrdemCompra.cs" />
+    <Compile Include="Entities\Categoria.cs" />
+    <Compile Include="Entities\SubstituicaoTributaria.cs" />
+    <Compile Include="Enums\TipoCFOP.cs" />
+    <Compile Include="Enums\StatusContaBancaria.cs" />
+    <Compile Include="Enums\TipoCarteira.cs" />
+    <Compile Include="Entities\CondicaoParcelamento.cs" />
+    <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
+    <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
+    <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Entities\FormaPagamento.cs" />
+    <Compile Include="Entities\GrupoProduto.cs" />
+    <Compile Include="Entities\Ncm.cs" />
+    <Compile Include="Entities\Pessoa.cs" />
+    <Compile Include="Entities\Produto.cs" />
+    <Compile Include="Entities\UnidadeMedida.cs" />
+    <Compile Include="Enums\TipoIndicacaoInscricaoEstadual.cs" />
+    <Compile Include="Enums\TipoContaFinanceira.cs" />
+    <Compile Include="Enums\TipoFormaPagamento.cs" />
+    <Compile Include="Enums\StatusOrdemCompra.cs" />
+    <Compile Include="Enums\TipoFrete.cs" />
+    <Compile Include="Enums\TipoOrdemCompra.cs" />
+    <Compile Include="Enums\TipoCFPS.cs" />
+    <Compile Include="Enums\TipoPeriodicidade.cs" />
+    <Compile Include="Enums\TipoProduto.cs" />
+    <Compile Include="Enums\TipoPagamentoImpostoISS.cs" />
+    <Compile Include="Enums\TipoTributacaoISS.cs" />
+    <Compile Include="Enums\TipoTributacaoPISCOFINS.cs" />
+    <Compile Include="Enums\TipoTributacaoIPI.cs" />
+    <Compile Include="Enums\TipoTributacaoICMS.cs" />
+    <Compile Include="Enums\TipoSimulacao.cs" />
+    <Compile Include="Enums\TipoPessoa.cs" />
+    <Compile Include="Enums\TipoSubstituicaoTributaria.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Utils\Fly01.Utils\Fly01.Core.csproj">
+      <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
+      <Name>Fly01.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

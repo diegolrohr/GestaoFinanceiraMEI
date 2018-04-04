@@ -16,11 +16,6 @@ namespace Fly01.Compras.Controllers.Base
         protected string AppEntitiesResourceName { get; set; }
         protected string AppViewModelResourceName { get; set; }
 
-        public virtual ActionResult Index()
-        {
-            return View();
-        }
-
         public virtual ContentResult Functions(string fns)
         {
             string content = fns.Split(',')
@@ -108,5 +103,108 @@ namespace Fly01.Compras.Controllers.Base
 
             return items;
         }
+
+        /// <summary>
+        /// Função responsável por carregar as depencias do entidade
+        /// Isso é necessário quando a entidade em questão possui combos,
+        /// para isso utiliza-se do ViewBag.
+        /// </summary>
+        protected virtual void LoadDependence() { }
+
+        //public virtual ContentResult Json(Guid id)
+        //{
+        //    T entity = Get(id);
+        //    var x = Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
+        //    return x;
+        //}
+
+        //protected T Get(Guid id)
+        //{
+        //    string resourceName = AppDefaults.GetResourceName(typeof(T));
+        //    string resourceById = String.Format("{0}/{1}", ResourceName, id);
+
+        //    if (string.IsNullOrEmpty(ExpandProperties))
+        //    {
+        //        return RestHelper.ExecuteGetRequest<T>(resourceById);
+        //    }
+        //    else
+        //    {
+        //        var queryString = new Dictionary<string, string> {
+        //            { "$expand", ExpandProperties }
+        //        };
+        //        return RestHelper.ExecuteGetRequest<T>(resourceById, queryString);
+        //    }
+        //}
+
+        #region Views Methods
+
+        public virtual ActionResult Index()
+        {
+            return View();
+        }
+
+        //public virtual ActionResult List()
+        //{
+        //    return PartialView("_List");
+        //}
+
+        //public virtual ActionResult Create()
+        //{
+        //    return View("Create");
+        //}
+
+        //public virtual ActionResult Edit(Guid id)
+        //{
+        //    return View("Edit", id);
+        //}
+
+        //[HttpPost]
+        //public virtual JsonResult Delete(Guid id)
+        //{
+        //    try
+        //    {
+        //        RestHelper.ExecuteDeleteRequest(string.Format("{0}/{1}", ResourceName, id));
+        //        return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Delete);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+        //        return JsonResponseStatus.GetFailure(error.Message);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public virtual JsonResult Create(T entityVM)
+        //{
+        //    try
+        //    {
+        //        RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+        //        return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+        //        return JsonResponseStatus.GetFailure(error.Message);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public virtual JsonResult Edit(T entityVM)
+        //{
+        //    try
+        //    {
+        //        var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+        //        RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSettingsEdit));
+
+        //        return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+        //        return JsonResponseStatus.GetFailure(error.Message);
+        //    }
+        //}
+
+        #endregion
     }
 }

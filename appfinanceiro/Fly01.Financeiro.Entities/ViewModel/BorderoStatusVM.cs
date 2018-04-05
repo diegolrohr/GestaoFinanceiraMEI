@@ -1,5 +1,5 @@
 ﻿using System;
-using Fly01.Core.Helpers;
+using Fly01.Core.Attribute;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {

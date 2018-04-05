@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Api;
 using Fly01.Core.VM;
 using Newtonsoft.Json;
+using Fly01.Core.Attribute;
 
 namespace Fly01.Financeiro.Entities.ViewModel.Base
 {
     [Serializable]
-    public class ContaFinanceiraVM : DomainBaseVM //abstract
+    public class ContaFinanceiraVM : DomainBaseVM
     {
         [JsonProperty("contaFinanceiraRepeticaoPaiId")]
         public Guid? ContaFinanceiraRepeticaoPaiId { get; set; }

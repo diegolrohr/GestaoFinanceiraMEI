@@ -1,9 +1,10 @@
 ﻿using Fly01.Compras.Controllers.Base;
 using Fly01.Compras.Entities.ViewModel;
+using Fly01.Core.API;
+using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -142,7 +143,7 @@ namespace Fly01.Compras.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ",  Request.QueryString["dataFinal"]);
+            filters.Add("data le ", Request.QueryString["dataFinal"]);
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);

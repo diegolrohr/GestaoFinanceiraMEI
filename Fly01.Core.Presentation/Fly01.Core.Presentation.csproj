@@ -92,7 +92,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\FilterConfig.cs" />
     <Compile Include="Application\GlobalHttpApplication.cs" />
+    <Compile Include="Application\RouteConfig.cs" />
+    <Compile Include="Application\WebAPIConfig.cs" />
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />
     <Compile Include="CustomDirectRouteProvider.cs" />

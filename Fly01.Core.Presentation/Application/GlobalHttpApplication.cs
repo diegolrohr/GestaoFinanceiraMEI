@@ -12,7 +12,6 @@ using Fly01.Core.Config;
 using Fly01.Core.Rest;
 using Fly01.Core.VM;
 
-
 namespace Fly01.Core.Presentation.Application
 {
     public class GlobalHttpApplication : HttpApplication
@@ -102,14 +101,9 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.AppIdSaude = ConfigurationManager.AppSettings["AppIdSaude"];
             AppDefaults.RootPathApplication = ConfigurationManager.AppSettings["RootPathApplication"];
 
-            //AreaRegistration.RegisterAllAreas();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(WebAPIConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            //BundleTable.EnableOptimizations = false;
-
             AntiForgeryConfig.SuppressIdentityHeuristicChecks = true;
         }
 

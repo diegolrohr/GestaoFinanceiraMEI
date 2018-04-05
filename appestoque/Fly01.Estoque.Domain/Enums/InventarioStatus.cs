@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core.Attribute;
 
 namespace Fly01.Estoque.Domain.Enums
 {

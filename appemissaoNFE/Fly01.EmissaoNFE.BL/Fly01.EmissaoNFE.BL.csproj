@@ -92,6 +92,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+      <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
+      <Name>Fly01.Core.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+      <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
+      <Name>Fly01.Core.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>

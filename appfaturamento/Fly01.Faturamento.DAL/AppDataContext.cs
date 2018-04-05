@@ -1,8 +1,8 @@
 ﻿using Fly01.Faturamento.Domain.Entities;
-using Fly01.Core;
 using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Fly01.Core.Domain;
 
 namespace Fly01.Faturamento.DAL
 {

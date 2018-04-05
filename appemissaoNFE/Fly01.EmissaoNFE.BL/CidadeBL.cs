@@ -1,5 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using System.Data.Entity;
 
 namespace Fly01.EmissaoNFE.BL

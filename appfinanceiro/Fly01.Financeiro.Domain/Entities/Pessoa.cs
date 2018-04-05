@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Api.Domain;
+using Fly01.Core.Domain;
 using Fly01.Financeiro.Domain.Enums;
 using Newtonsoft.Json;
 

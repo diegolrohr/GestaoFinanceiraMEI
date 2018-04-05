@@ -1,6 +1,6 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
+using Fly01.Core.Domain;
+using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 
 namespace Fly01.EmissaoNFE.BL

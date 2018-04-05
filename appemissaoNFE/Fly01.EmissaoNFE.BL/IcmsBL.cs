@@ -1,7 +1,7 @@
 ﻿using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core;
+using Fly01.Core.Domain;
 using System;
 using System.Linq;
 

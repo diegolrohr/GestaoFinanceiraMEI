@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Api.Domain;
+﻿using Fly01.Core.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

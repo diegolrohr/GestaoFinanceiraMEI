@@ -1,7 +1,7 @@
 ﻿using System;
 using Fly01.Core.VM;
 using Newtonsoft.Json;
-using Fly01.Core.Api;
+using Fly01.Core.Attribute;
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {

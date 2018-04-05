@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.VM;
 using Newtonsoft.Json;
-using Fly01.Core.Api;
+using Fly01.Core.Attribute;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {

@@ -54,7 +54,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\CityVM.cs" />
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\EnquadramentoLegalIPIVM.cs" />
     <Compile Include="ViewModel\InventarioItemVM.cs" />
@@ -86,6 +85,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.VM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>

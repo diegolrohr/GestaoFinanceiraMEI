@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Fly01.Core.Api;
-using Fly01.Core.Helpers;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Fly01.Compras.Controllers.Base;
@@ -10,6 +8,9 @@ using Fly01.Compras.Entities.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Rest;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {

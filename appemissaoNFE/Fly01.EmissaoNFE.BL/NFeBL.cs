@@ -4,7 +4,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.PIS;
 using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core;
+using Fly01.Core.Domain;
 using Fly01.Core.Helpers;
 using System;
 using System.IO;

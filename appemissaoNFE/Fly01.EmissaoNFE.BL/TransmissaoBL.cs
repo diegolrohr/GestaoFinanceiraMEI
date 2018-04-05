@@ -1,12 +1,13 @@
 ﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
+using Fly01.Core.Domain;
+using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
+using Fly01.Core.API;
 
 namespace Fly01.EmissaoNFE.BL
 {

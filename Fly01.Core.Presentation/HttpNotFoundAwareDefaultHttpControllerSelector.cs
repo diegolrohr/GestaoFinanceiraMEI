@@ -1,10 +1,6 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
+﻿using System.Net.Http;
 
-namespace Fly01.Core.Attribute
+namespace Fly01.Core.Presentation
 {
     public class HttpNotFoundAwareDefaultHttpControllerSelector : DefaultHttpControllerSelector
     {

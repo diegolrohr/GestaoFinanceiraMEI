@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using Newtonsoft.Json.Linq;
 using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
+using Fly01.Core.Mensageria;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -84,7 +85,12 @@ namespace Fly01.Core.ServiceBus
                     catch (Exception ex)
                     {
                         response = ex.Message;
-                        SlackClient.PostMessageErrorRabbit(Message, response, ex.StackTrace);
+                        SlackClient.PostMessageErrorRabbit(Message, 
+                            response, 
+                            ex.StackTrace, 
+                            RabbitConfig.Factory?.VirtualHost,
+                            RabbitConfig.QueueName
+                            );
                         channel.BasicNack(ea.DeliveryTag, false, true);
                     }
                     finally

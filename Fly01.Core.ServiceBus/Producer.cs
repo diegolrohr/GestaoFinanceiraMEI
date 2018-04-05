@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using Newtonsoft.Json;
 using System;
+using Fly01.Core.Mensageria;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -28,7 +29,12 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                SlackClient.PostMessageErrorRabbit(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), ex.Message, ex.StackTrace);
+                SlackClient.PostMessageErrorRabbit(
+                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), 
+                    ex.Message, 
+                    ex.StackTrace,
+                    RabbitConfig.Factory?.VirtualHost,
+                    RabbitConfig.QueueName);
             }
         }
     }

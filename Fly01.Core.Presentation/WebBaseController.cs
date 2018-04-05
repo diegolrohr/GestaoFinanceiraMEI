@@ -1,18 +1,9 @@
-﻿using Fly01.uiJS.Defaults;
-using Fly01.Core.Api;
-using Fly01.Core.Helpers;
-using Fly01.Core.JQueryDataTable;
-using Fly01.Core.SOAManager;
-using Fly01.Core.VM;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace Fly01.Core.Presentation
 {

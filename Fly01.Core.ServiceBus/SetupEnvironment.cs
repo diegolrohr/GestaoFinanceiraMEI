@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using Fly01.Core.Mensageria;
+using RabbitMQ.Client;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -24,13 +25,13 @@ namespace Fly01.Core.ServiceBus
             }
             catch (System.Exception ex)
             {
-                SlackClient.PostMessageErrorRabbit($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex.Message, ex.StackTrace);
+                SlackClient.PostMessageErrorRabbit(
+                    $"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", 
+                    ex.Message, 
+                    ex.StackTrace, 
+                    RabbitConfig.Factory?.VirtualHost,
+                    RabbitConfig.QueueName);
             }
-
-            //var properties = channel.CreateBasicProperties();
-
-            //properties.Headers = new Dictionary<string, object>();
-            //properties.Headers.Add("latitude", 51.5252949);
         }
     }
 }

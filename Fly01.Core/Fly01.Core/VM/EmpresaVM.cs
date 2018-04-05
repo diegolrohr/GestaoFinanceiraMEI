@@ -73,36 +73,4 @@ namespace Fly01.Core.VM
         public virtual CidadeVM Cidade { get; set; }
         #endregion
     }
-
-    public class CidadeVM
-    {
-        [JsonProperty("nome")]
-        public string Nome { get; set; }
-
-        [JsonProperty("codigoIbge")]
-        public string CodigoIbge { get; set; }
-
-        [JsonProperty("estadoId")]
-        public int EstadoId { get; set; }
-
-        #region Navigation Properties
-        [JsonProperty("estado")]
-        public virtual EstadoVM Estado { get; set; }
-        #endregion
-    }
-
-    public class EstadoVM
-    {
-        [JsonProperty("sigla")]
-        public string Sigla { get; set; }
-
-        [JsonProperty("nome")]
-        public string Nome { get; set; }
-
-        [JsonProperty("utcId")]
-        public string UtcId { get; set; }
-
-        [JsonProperty("codigoIbge")]
-        public string CodigoIbge { get; set; }
-    }
 }

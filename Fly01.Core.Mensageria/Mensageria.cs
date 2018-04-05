@@ -3,7 +3,7 @@ using System.Configuration;
 using TOTVS.S1.Messenger.Library;
 using TOTVS.S1.Messenger.Library.Entities;
 
-namespace Fly01.Core.Messages
+namespace Fly01.Core.Mensageria
 {
     public static class Mensageria
     {

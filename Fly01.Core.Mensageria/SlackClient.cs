@@ -2,15 +2,15 @@
 using Newtonsoft.Json;
 using System.Collections.Specialized;
 
-namespace Fly01.Core.ServiceBus
+namespace Fly01.Core.Mensageria
 {
     public static class SlackClient
     {
-        public static void PostMessageErrorRabbit(string data, string errorMessage, string errorStackTrace)
+        public static void PostMessageErrorRabbit(string data, string errorMessage, string errorStackTrace, string hostName, string queueName)
         {
             var slackChannel = "";
 
-            if (RabbitConfig.Factory?.VirtualHost == "prod")
+            if (hostName == "prod")
                 slackChannel = "https://hooks.slack.com/services/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";
             else
                 slackChannel = "https://hooks.slack.com/services/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";
@@ -43,12 +43,12 @@ namespace Fly01.Core.ServiceBus
                                 },
                                 new {
                                     title = "Host",
-                                    value = RabbitConfig.Factory?.VirtualHost
+                                    value = hostName
                                 },
                                 new
                                 {
                                     title = "Fila",
-                                    value = RabbitConfig.QueueName
+                                    value = queueName
                                 }
                             }
                         }

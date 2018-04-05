@@ -3,10 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System;
-using Fly01.Core.Helpers;
 using System.Globalization;
 
-namespace Fly01.Core
+namespace Fly01.Core.Helpers
 {
     public class OFXLancamento
     {

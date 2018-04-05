@@ -1,5 +1,5 @@
-﻿using Fly01.Financeiro.Domain.Enums;
-using Fly01.Core.ValueObjects;
+﻿using Fly01.Core.Notifications;
+using Fly01.Financeiro.Domain.Enums;
 using System;
 
 namespace Fly01.Financeiro.BL

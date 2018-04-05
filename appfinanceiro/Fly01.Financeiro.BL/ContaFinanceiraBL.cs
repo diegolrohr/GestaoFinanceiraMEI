@@ -1,10 +1,9 @@
 ﻿using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using System.Linq;
 using System.Linq.Expressions;
 using System;
 using Fly01.Financeiro.Domain.Entities;
-using System.Collections.Generic;
 using Fly01.Financeiro.Domain.Enums;
 
 namespace Fly01.Financeiro.BL

@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Api.BL;
-using Fly01.Core.ValueObjects;
+﻿using Fly01.Core.BL;
 using System;
 using System.Linq;
 using Fly01.Financeiro.API.Models.DAL;

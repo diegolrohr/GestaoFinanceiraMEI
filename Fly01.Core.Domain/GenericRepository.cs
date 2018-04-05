@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Api.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Fly01.Core.Base
+namespace Fly01.Core.Domain
 {
     public class GenericRepository<TEntity> where TEntity : DomainBase
     {

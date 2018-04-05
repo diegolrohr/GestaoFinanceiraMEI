@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using Fly01.Core.Api.Domain;
-using System.Linq.Expressions;
-using Fly01.Core.ValueObjects;
+﻿using Fly01.Core.Domain;
 using Fly01.Core.Helpers;
+using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Fly01.Core.BL
 {

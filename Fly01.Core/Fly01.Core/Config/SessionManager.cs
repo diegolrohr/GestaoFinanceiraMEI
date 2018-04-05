@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fly01.Core.VM;
+using System;
 using System.Web;
 
 namespace Fly01.Core.Config

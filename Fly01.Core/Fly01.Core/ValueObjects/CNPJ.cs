@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Fly01.Core.Interfaces.ValueObjects;
+using Fly01.Core.ValueObjects.Interfaces;
 
 namespace Fly01.Core.ValueObjects
 {

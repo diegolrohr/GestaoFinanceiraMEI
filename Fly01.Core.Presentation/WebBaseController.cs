@@ -1,9 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using Fly01.Core.VM;
+using System.Web.Mvc;
+using System.Reflection;
+using Fly01.Core.Helpers;
+using System.Collections.Generic;
+using Fly01.Core.SOAManager;
+using Fly01.Core.Rest;
+using Newtonsoft.Json;
+using Fly01.uiJS.Defaults;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Attribute;
+using Fly01.Core.Presentation.Commons;
+using System.Web.Script.Serialization;
 
 namespace Fly01.Core.Presentation
 {
@@ -14,7 +25,6 @@ namespace Fly01.Core.Presentation
         protected string APIEnumResourceName { get; set; }
         protected string AppEntitiesResourceName { get; set; }
         protected string AppViewModelResourceName { get; set; }
-
 
         #region BUSCA DE DADOS MASHUP
 

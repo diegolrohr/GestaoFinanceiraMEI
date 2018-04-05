@@ -32,92 +32,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Attribute\APIEnumAttribute.cs" />
-    <Compile Include="Helpers\APIEnumData.cs" />
-    <Compile Include="Helpers\APIErrorInfo.cs" />
-    <Compile Include="Attribute\AllowCrossSiteJsonAttribute.cs" />
-    <Compile Include="Attribute\CustomExceptionFilter.cs" />
-    <Compile Include="Helpers\JsonResponseStatus.cs" />
-    <Compile Include="Helpers\ReponseEmailNotification.cs" />
-    <Compile Include="Helpers\RequestBodyBasicAuth.cs" />
-    <Compile Include="Helpers\ValidatorUtils.cs" />
     <Compile Include="AppDefaults.cs" />
-    <Compile Include="Helpers\ArquivoOFX.cs" />
     <Compile Include="Base\ContextInitialize.cs" />
-    <Compile Include="Helpers\FormatterUtils.cs" />
-    <Compile Include="Helpers\ODataStringFormater.cs" />
-    <Compile Include="Helpers\AutoCompleteHelper.cs" />
-    <Compile Include="Helpers\Base64Helper.cs" />
-    <Compile Include="Helpers\ConversorHelper.cs" />
-    <Compile Include="Helpers\CSVUtility.cs" />
-    <Compile Include="Helpers\DropDownListStateHelper.cs" />
-    <Compile Include="Helpers\EnumHelper.cs" />
-    <Compile Include="Helpers\ErrorInfo.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\ExtensoHelper.cs" />
-    <Compile Include="Helpers\GuidHelper.cs" />
-    <Compile Include="Helpers\HintHelper.cs" />
-    <Compile Include="Helpers\HtmlRemoval.cs" />
-    <Compile Include="Helpers\HttpErrorHelper.cs" />
-    <Compile Include="Helpers\HttpResponseBaseExtensions.cs" />
-    <Compile Include="Helpers\ImportHelper.cs" />
-    <Compile Include="Helpers\InputMask.cs" />
-    <Compile Include="Helpers\JsonContent.cs" />
-    <Compile Include="Helpers\JWTHelper.cs" />
-    <Compile Include="Helpers\MessengerHelper.cs" />
-    <Compile Include="Helpers\PagedResult.cs" />
-    <Compile Include="Helpers\PostResponseAPI.cs" />
-    <Compile Include="Helpers\Reflection.cs" />
-    <Compile Include="Helpers\Reports\IReportInfo.cs" />
-    <Compile Include="Helpers\Reports\ReportConfig.cs" />
-    <Compile Include="Helpers\Reports\ReportFieldValueVM.cs" />
-    <Compile Include="Helpers\Reports\ReportViewerHelper.cs" />
-    <Compile Include="Helpers\ResponseAPI.cs" />
-    <Compile Include="Helpers\RestHelper.cs" />
-    <Compile Include="Helpers\SubtitleAttribute.cs" />
-    <Compile Include="Helpers\SystemValueHelper.cs" />
-    <Compile Include="ValueObjects\BusinessException.cs" />
+    <Compile Include="Attribute\InputMask.cs" />
+    <Compile Include="Attribute\SubtitleAttribute.cs" />
     <Compile Include="Config\ProxyConfig.cs" />
     <Compile Include="Config\SessionManager.cs" />
-    <Compile Include="Config\UserDataVM.cs" />
     <Compile Include="ValueObjects\InscricaoEstadualHelper.cs" />
-    <Compile Include="VM\AppsInstaladosVM.cs" />
-    <Compile Include="VM\AppsInstaladoslataformaVM.cs" />
-    <Compile Include="VM\CidadeVM.cs" />
-    <Compile Include="VM\EmpresaVM.cs" />
-    <Compile Include="VM\EstadoVM.cs" />
-    <Compile Include="VM\FileVM.cs" />
+    <Compile Include="ValueObjects\Interfaces\IDocumento.cs" />
     <Compile Include="ResultBase.cs" />
-    <Compile Include="VM\BatchDataVM.cs" />
-    <Compile Include="VM\BatchEntryVM.cs" />
-    <Compile Include="VM\BatchItemVM.cs" />
-    <Compile Include="VM\BatchReturnVM.cs" />
-    <Compile Include="VM\BatchVM.cs" />
-    <Compile Include="VM\DomainBaseVM.cs" />
-    <Compile Include="VM\KeyValueVM.cs" />
-    <Compile Include="Base\LogEvent.cs" />
-    <Compile Include="Base\LogMongoHelper.cs" />
-    <Compile Include="VM\NotificationVM.cs" />
-    <Compile Include="VM\SystemValueVM.cs" />
     <Compile Include="ValueObjects\CNPJ.cs" />
     <Compile Include="ValueObjects\CPF.cs" />
-    <Compile Include="Interfaces\ValueObjects\IDocumento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VM\TokenDataVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.VM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

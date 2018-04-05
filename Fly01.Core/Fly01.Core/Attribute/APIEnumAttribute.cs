@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Fly01.Core.Attribute
+﻿namespace Fly01.Core.Attribute
 {
-    public class APIEnumAttribute : Attribute
+    public class APIEnumAttribute : System.Attribute
     {
         private string EnumContext { get; set; }
 

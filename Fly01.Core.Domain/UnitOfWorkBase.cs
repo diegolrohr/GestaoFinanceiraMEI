@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
-namespace Fly01.Core.Base
+namespace Fly01.Core.Domain
 {
     public abstract class UnitOfWorkBase : IDisposable
     {

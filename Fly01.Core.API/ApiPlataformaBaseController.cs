@@ -3,15 +3,13 @@ using System.Net;
 using System.Linq;
 using System.Web.Http;
 using System.Web.OData;
-using Fly01.Core.Api.Domain;
+using Fly01.Core.Domain;
 using System.Threading.Tasks;
-using System.Web.OData.Routing;
-using System.Data.Entity.Infrastructure;
-using Fly01.Core.ValueObjects;
 using Fly01.Core.Notifications;
+using System.Web.OData.Routing;
 using System.Web.Http.ModelBinding;
-using Fly01.Core.Api;
 using Fly01.Core.ServiceBus;
+using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Core.API
 {

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Data.Entity;
 
-namespace Fly01.Core.Base
+namespace Fly01.Core.Domain
 {
     public class GenericFinder<TEntity> where TEntity : class 
     {

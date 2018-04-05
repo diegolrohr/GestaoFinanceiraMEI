@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Dynamic;
-using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Core.Domain
 {

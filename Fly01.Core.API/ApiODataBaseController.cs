@@ -2,12 +2,11 @@
 using System.Net;
 using System.Linq;
 using System.Web.Http;
-using Fly01.Core.Api;
 using System.Web.OData;
 using Fly01.Core.Base;
-using Fly01.Core.Api.Domain;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Fly01.Core.Domain;
 using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Core.API

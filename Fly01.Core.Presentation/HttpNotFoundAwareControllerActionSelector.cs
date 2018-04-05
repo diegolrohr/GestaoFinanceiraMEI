@@ -1,4 +1,7 @@
-﻿namespace Fly01.Core.Presentation
+﻿using System.Web.Http;
+using System.Web.Http.Controllers;
+
+namespace Fly01.Core.Presentation
 {
     public class HttpNotFoundAwareControllerActionSelector : ApiControllerActionSelector
     {

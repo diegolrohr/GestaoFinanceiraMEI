@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using Fly01.Core.Base;
+﻿using Fly01.Core.Domain;
+using Fly01.Core.Notifications;
+using System;
 using System.Data.Entity;
-using Fly01.Core.Api.Domain;
+using System.Linq;
 using System.Linq.Expressions;
-using Fly01.Core.ValueObjects;
 
 namespace Fly01.Core.BL
 {

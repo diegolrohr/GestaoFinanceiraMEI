@@ -1,7 +1,6 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Compras.Domain.Entities;
 using Fly01.Core.Notifications;
-using Fly01.Core.ValueObjects;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;

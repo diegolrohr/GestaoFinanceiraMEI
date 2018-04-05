@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Fly01.Compras.BL;
-using Fly01.Core.Api.BL;
-using Fly01.Core.Api.Domain;
 using System.Threading.Tasks;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.BL;
+using Fly01.Core.Domain;
+using Fly01.Core.API;
 
 namespace Fly01.Compras.API.Controllers.Api
 {

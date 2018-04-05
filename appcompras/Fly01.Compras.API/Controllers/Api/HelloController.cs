@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.BL;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using Newtonsoft.Json;
 using System;
 using System.IO;

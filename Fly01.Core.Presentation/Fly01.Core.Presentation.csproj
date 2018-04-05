@@ -93,7 +93,6 @@
   <ItemGroup>
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />
-    <Compile Include="CustomDirectRouteProvider.cs" />
     <Compile Include="Commons\CSVUtility.cs" />
     <Compile Include="Commons\DropDownListStateHelper.cs" />
     <Compile Include="Commons\HintHelper.cs" />

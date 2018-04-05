@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Domain.Entities;
-using Fly01.Core.Api;
+using Fly01.Core.API;
 using Microsoft.OData.Edm;
 using Microsoft.OData.UriParser;
 using System.Web.Http;

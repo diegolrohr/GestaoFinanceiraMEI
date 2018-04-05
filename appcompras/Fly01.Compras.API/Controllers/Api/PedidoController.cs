@@ -7,7 +7,6 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.Http.ModelBinding;
 using System.Linq;
-using Fly01.Core.ValueObjects;
 using Fly01.Core.Notifications;
 using System.Data.Entity.Infrastructure;
 

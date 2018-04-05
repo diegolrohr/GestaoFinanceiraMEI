@@ -122,12 +122,24 @@
     <Folder Include="Views\SubstituicaoTributaria\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+      <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
+      <Name>Fly01.Core.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+      <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
+      <Name>Fly01.Core.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
+      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
-      <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
+      <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Compras.BL\Fly01.Compras.BL.csproj">
@@ -191,6 +203,11 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Linq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Linq.4.1.0\lib\net463\System.Linq.dll</HintPath>
       <Private>True</Private>

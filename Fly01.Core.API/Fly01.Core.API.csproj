@@ -141,6 +141,7 @@
     <Compile Include="ApiDomainBaseController.cs" />
     <Compile Include="ApiODataBaseController.cs" />
     <Compile Include="ApiPlataformaBaseController.cs" />
+    <Compile Include="CustomDirectRouteProvider.cs" />
     <Compile Include="CustomExceptionFilter.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="HttpErrorHelper.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Web;
-using Fly01.Core.Helpers.Reports;
 using Microsoft.Reporting.WebForms;
+using Fly01.Core.Reports;
 
 namespace Fly01.Financeiro.Models.Reports
 {

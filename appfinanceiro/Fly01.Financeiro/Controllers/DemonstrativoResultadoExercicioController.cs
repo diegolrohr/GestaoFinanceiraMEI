@@ -6,7 +6,6 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
 using Microsoft.Reporting.WebForms;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -203,9 +203,7 @@ namespace Fly01.Financeiro.Controllers
                 { "$select", "soma" }
             };
 
-            var total = RestHelper
-                .ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>
-                    ("MovimentacaoPorCategoria", queryString)
+            var total = RestHelper.ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>("MovimentacaoPorCategoria", queryString)
                 .Data
                 .Where(x => x.CategoriaPaiId == null)
                 .Sum(x => x.Soma)

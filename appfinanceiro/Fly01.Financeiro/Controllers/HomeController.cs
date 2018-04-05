@@ -5,12 +5,11 @@ using System.Web.Mvc;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Api;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -21,7 +20,6 @@ namespace Fly01.Financeiro.Controllers
             return Request.IsAjaxRequest() ? Go() : base.Index();
         }
 
-        [AllowCrossSiteJson]
         public ContentResult Go()
         {
             return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
@@ -242,17 +240,6 @@ namespace Fly01.Financeiro.Controllers
         {
             List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/financeiro", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
             appsList.RemoveAll(x => x.Id == AppDefaults.AppIdFinanceiro);
-            string jwt = JWTHelper.Encode(new Dictionary<string, string>
-                {
-                    { "Email", SessionManager.Current.UserData.PlatformUser },
-                    { "RazaoSocial", SessionManager.Current.UserData.TokenData.Username },
-                    { "Fly01Url", SessionManager.Current.UserData.PlatformUrl }
-                }, "http://gestao.fly01.com.br/", DateTime.Now.AddDays(1));
-
-            foreach (var app in appsList.Where(x => x.Target.Go != null))
-            {
-                app.Target.Go = String.Format("{0}?t={1}", app.Target.Go, jwt);
-            }
 
             return appsList;
         }

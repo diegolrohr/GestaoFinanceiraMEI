@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fly01.Core.Domain;
+using System;
 
 namespace Fly01.Compras.Domain.Entities
 {

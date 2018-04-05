@@ -4,12 +4,13 @@ using System.Linq;
 using System.Web.Mvc;
 using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.Core;
-using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Faturamento.Controllers.Base;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {

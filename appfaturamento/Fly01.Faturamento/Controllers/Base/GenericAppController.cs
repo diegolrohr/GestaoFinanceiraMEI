@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers.Base
 {

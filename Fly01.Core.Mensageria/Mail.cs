@@ -10,7 +10,6 @@ namespace Fly01.Core.Mensageria
     public class Mail
     {
         public static void Send(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail, Stream anexo)
-        //public static void Send(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail, FileStreamResult anexo)
         {
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);

@@ -1,9 +1,6 @@
-﻿using Fly01.Core.Helpers.Reports;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using Microsoft.Reporting.WebForms;
+using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.Models.Reports
 {

@@ -1,12 +1,12 @@
 ﻿using Fly01.Faturamento.DAL;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
-using Fly01.Core.Helpers;
+using Fly01.Core.BL;
 using System.Collections.Generic;
 using System.Linq;
 using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
 using EmpresaVM = Fly01.Core.VM.EmpresaVM;
+using Fly01.Core;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.BL
 {

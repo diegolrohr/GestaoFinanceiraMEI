@@ -3,7 +3,7 @@ using Fly01.Core.Base;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-
+using Fly01.Core.Domain;
 
 namespace Fly01.Faturamento.BL
 {

@@ -2,15 +2,16 @@
 using Fly01.Faturamento.DAL;
 using Fly01.Faturamento.Domain.Entities;
 using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using Fly01.Core.Helpers;
-using Fly01.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
+using Fly01.Core.Rest;
+using Fly01.Core;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Faturamento.BL
 {

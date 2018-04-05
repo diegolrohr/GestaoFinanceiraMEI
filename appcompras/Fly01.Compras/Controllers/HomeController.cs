@@ -38,7 +38,7 @@ namespace Fly01.Compras.Controllers
         {
             List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/compras", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
             appsList.RemoveAll(x => x.Id == AppDefaults.AppIdCompras);
-            
+
             return appsList;
         }
 

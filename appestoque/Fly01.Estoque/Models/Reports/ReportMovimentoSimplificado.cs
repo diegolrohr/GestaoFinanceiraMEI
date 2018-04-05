@@ -1,6 +1,6 @@
 ﻿using System.Web;
 using Microsoft.Reporting.WebForms;
-using Fly01.Core.Helpers.Reports;
+using Fly01.Core.Reports;
 
 namespace Fly01.Estoque.Models.Reports
 {

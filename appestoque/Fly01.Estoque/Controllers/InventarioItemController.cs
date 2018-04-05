@@ -1,13 +1,7 @@
 ﻿using Fly01.Estoque.Controllers.Base;
 using Fly01.Estoque.Entities.ViewModel;
-using Fly01.Core;
-using Fly01.Core.Api;
-using Fly01.Core.Helpers;
-using Fly01.Core.JQueryDataTable;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers

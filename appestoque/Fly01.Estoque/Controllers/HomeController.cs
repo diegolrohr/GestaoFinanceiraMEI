@@ -3,14 +3,12 @@ using Fly01.Core;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
 using System.Collections.Generic;
-using System.Linq;
 using Fly01.Estoque.Controllers.Base;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Api;
+using Fly01.Core.Rest;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -21,7 +19,6 @@ namespace Fly01.Estoque.Controllers
             return Request.IsAjaxRequest() ? Go() : base.Index();
         }
 
-        [AllowCrossSiteJson]
         public ContentResult Go()
         {
             return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
@@ -216,17 +213,6 @@ namespace Fly01.Estoque.Controllers
         {
             List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/estoque", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
             appsList.RemoveAll(x => x.Id == AppDefaults.AppIdEstoque);
-            string jwt = JWTHelper.Encode(new Dictionary<string, string>
-                {
-                    { "Email", SessionManager.Current.UserData.PlatformUser },
-                    { "RazaoSocial", SessionManager.Current.UserData.TokenData.Username },
-                    { "Fly01Url", SessionManager.Current.UserData.PlatformUrl }
-                }, "http://gestao.fly01.com.br/", DateTime.Now.AddDays(1));
-
-            foreach (var app in appsList.Where(x => x.Target.Go != null))
-            {
-                app.Target.Go = String.Format("{0}?t={1}", app.Target.Go, jwt);
-            }
 
             return appsList;
         }

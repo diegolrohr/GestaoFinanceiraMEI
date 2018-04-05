@@ -1,10 +1,11 @@
 ﻿using Fly01.Estoque.Controllers.Base;
 using Fly01.Estoque.Entities.ViewModel;
 using Fly01.Core;
-using Fly01.Core.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -47,27 +48,6 @@ namespace Fly01.Estoque.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult City(string term, string prefilter = "")
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(CityVM));
-
-            Dictionary<string, string> queryString = new Dictionary<string, string>();
-            queryString.Add("description", term);
-            queryString.Add("justFields", "description,state");
-            queryString.Add("order", "description");
-            queryString.Add("active", "1");
-            queryString.Add("max", "20");
-            if (!string.IsNullOrWhiteSpace(prefilter))
-            {
-                queryString.AddParam("state", prefilter);
-            }
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBaseFirst<CityVM>>(AppDefaults.UrlGateway.Replace("/v2/estoque/", "/v1/"), resourceName, RestHelper.DefaultHeader, queryString).Data
-                                select new { id = item.Description, label = item.Description, detail = item.State };
 
             return GetJson(filterObjects);
         }

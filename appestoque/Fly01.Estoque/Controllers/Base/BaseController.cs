@@ -1,5 +1,4 @@
 ﻿using Fly01.Core;
-using Fly01.Core.Controllers.Web;
 using Fly01.uiJS.Classes;
 using Fly01.Core.VM;
 using Newtonsoft.Json;
@@ -7,8 +6,9 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
 using Fly01.Core.Config;
+using Fly01.Core.Presentation;
+using Fly01.Core.Rest;
 
 namespace Fly01.Estoque.Controllers.Base
 {

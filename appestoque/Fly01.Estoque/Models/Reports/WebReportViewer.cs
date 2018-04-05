@@ -1,9 +1,9 @@
 ﻿using Fly01.Estoque.Reports;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers.Reports;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
+using Fly01.Core.Reports;
 
 namespace Fly01.Estoque.Models.Reports
 {

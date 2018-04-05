@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Api.BL;
+﻿using Fly01.Core.BL;
 using System.Data.Entity;
 using Fly01.Estoque.Domain.Entities;
 

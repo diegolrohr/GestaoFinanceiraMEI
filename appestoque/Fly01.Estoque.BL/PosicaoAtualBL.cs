@@ -1,6 +1,6 @@
 ﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
+using Fly01.Core.Domain;
+using Fly01.Core.BL;
 using System.Linq;
 
 namespace Fly01.Estoque.BL

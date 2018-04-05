@@ -1,8 +1,8 @@
 ﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using System;
 using System.Linq;
-using Fly01.Core;
+using Fly01.Core.Domain;
 using Fly01.Estoque.Domain.Enums;
 using Fly01.Core.Notifications;
 using System.Data.Entity;

@@ -129,6 +129,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>

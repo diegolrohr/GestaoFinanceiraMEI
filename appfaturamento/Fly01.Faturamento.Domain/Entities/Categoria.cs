@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Api.Domain;
+using Fly01.Core.Domain;
 using Fly01.Faturamento.Domain.Enums;
 
 namespace Fly01.Faturamento.Domain.Entities

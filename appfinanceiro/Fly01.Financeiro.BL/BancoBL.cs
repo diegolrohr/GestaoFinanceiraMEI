@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.Domain.Entities;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL

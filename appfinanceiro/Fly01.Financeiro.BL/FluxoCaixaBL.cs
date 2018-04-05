@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data.Entity;
 using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using Fly01.Financeiro.Domain.Entities;
 using Fly01.Financeiro.Domain.Enums;
 

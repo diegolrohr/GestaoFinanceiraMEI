@@ -1,10 +1,10 @@
 ﻿using Fly01.Financeiro.Domain.Entities;
 using Fly01.Financeiro.Domain.Enums;
-using Fly01.Core.Api.Domain;
-using Fly01.Core.ValueObjects;
+using Fly01.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {

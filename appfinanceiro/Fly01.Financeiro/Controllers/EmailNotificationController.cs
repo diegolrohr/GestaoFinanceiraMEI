@@ -6,15 +6,16 @@ using System.Web.Mvc;
 using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.Financeiro.Models.Utils;
 using Fly01.Core;
-using Fly01.Core.Api;
 using Fly01.Core.Helpers;
 using Fly01.Core.VM;
 using Newtonsoft.Json;
+using Fly01.Core.Rest;
+using Fly01.Core.Mensageria;
 
 namespace Fly01.Financeiro.Controllers
 {
     [AllowAnonymous]
-    public class EmailNotificationController// : GenericAppController
+    public class EmailNotificationController
     {
         private void NotifyUsers(List<ContaPagarVM> recordsToExport, List<UserEnvironmentVM> users)
         {

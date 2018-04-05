@@ -5,8 +5,8 @@ using System.Web.Mvc;
 using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
-using Fly01.Core.JQueryDataTable;
-using System.Globalization;
+using Fly01.Core.Rest;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {

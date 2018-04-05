@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -52,9 +53,7 @@ namespace Fly01.Financeiro.Controllers
             _somaRealizados = true;
             _somaPrevistos = false;
 
-            var total = RestHelper
-                           .ExecuteGetRequest<ResultBase<ReceitaPorCategoriaVM>>
-                               ("ReceitaPorCategoria", GetQueryStringDefaultGridLoad())
+            var total = RestHelper.ExecuteGetRequest<ResultBase<ReceitaPorCategoriaVM>>("ReceitaPorCategoria", GetQueryStringDefaultGridLoad())
                                    .Data
                                    .Where(x => x.CategoriaPaiId == null)
                                    .Sum(x => x.Soma)

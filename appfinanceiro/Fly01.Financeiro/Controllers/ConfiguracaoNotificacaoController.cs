@@ -11,6 +11,7 @@ using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System.Globalization;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {

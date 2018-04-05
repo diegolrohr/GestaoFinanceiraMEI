@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Helpers.Reports;
+﻿using Fly01.Core.Reports;
 using Microsoft.Reporting.WebForms;
 using System.Web;
 

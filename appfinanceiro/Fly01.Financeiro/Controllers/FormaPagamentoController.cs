@@ -8,6 +8,8 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.API;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -143,6 +145,5 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
     }
 }

@@ -5,7 +5,8 @@ using Fly01.Financeiro.Models.SSO;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers;
+using Fly01.Core.Rest;
+using Fly01.Core.VM;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -14,18 +15,6 @@ namespace Fly01.Financeiro.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl, string email = "")
         {
-            if (Request.QueryString["t"] != null)
-            {
-                string t = Request.QueryString.Get("t");
-
-                var claimsPrincipal = JWTHelper.Decode(t, "http://gestao.fly01.com.br/");
-
-                var userName = JWTHelper.GetClaimValue(claimsPrincipal, "RazaoSocial");
-                string platformUser = JWTHelper.GetClaimValue(claimsPrincipal, "Email");
-                string fly01Url = JWTHelper.GetClaimValue(claimsPrincipal, "Fly01Url");
-
-                return LoginGateway(fly01Url, platformUser, userName, returnUrl);
-            }
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -52,7 +41,6 @@ namespace Fly01.Financeiro.Controllers
             userData.PlatformUrl = platformUrl;
 
             SessionManager.Current.UserData = userData;
-            Response.SetAuthCookie(platformUser, true, new UserDataVM());
 
             string decodedUrl = "";
 

@@ -4,9 +4,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
-using Fly01.Core.Api;
 using Fly01.Core.Helpers;
-using Fly01.Core.JQueryDataTable;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,14 +12,17 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core.API;
+using Fly01.Core.Rest;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
-    public abstract class ContaFinanceiraController<TEntity, TEntityBaixa, TEntityRenegociacao, TEntityCompensacao> : BaseController<TEntity>
+    public abstract class ContaFinanceiraController<TEntity, TEntityBaixa, TEntityRenegociacao> : BaseController<TEntity>
         where TEntity : ContaFinanceiraVM
         where TEntityBaixa : ContaFinanceiraBaixaVM
         where TEntityRenegociacao : ContaFinanceiraRenegociacaoVM
-        where TEntityCompensacao : ContaFinanceiraCompensacaoBaseVM
     {
         /// <summary>
         /// Construtor
@@ -70,7 +71,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
             };
         }
-
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()
         {
             return x => new
@@ -98,18 +98,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 saldoSemFormatacao = x.Saldo
             };
         }
-        public Func<BankTransacVM, object> GetDisplayDataBankTransac()
-        {
-            return x => new
-            {
-                Id = x.Id.ToString(),
-                CreditDate = x.CreditDate.HasValue ? ((DateTime)x.CreditDate).ToString("dd/MM/yyyy") : string.Empty,
-                Discount = x.Discount.HasValue ? ((double)x.Discount).ToString("C", AppDefaults.CultureInfoDefault) : "",
-                Interest = x.Interest.HasValue ? ((double)x.Interest).ToString("C", AppDefaults.CultureInfoDefault) : "",
-                Value = x.Value.ToString("C", AppDefaults.CultureInfoDefault)
-            };
-        }
-
         public Func<TEntity, object> GetDisplayDataBaixaMultipla()
         {
             return x => new
@@ -139,52 +127,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        /// <summary>
-        /// Método responsável por atualizar o registro
-        /// Caso seja uma recorrência, pode optar por atualizar as recorrências seguintes
-        /// Update em série é determinada pela URL do put
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult EditSchedules(TEntity entityVM)
-        {
-            try
-            {
-                string newResourceName = string.Concat(ResourceName.Replace("Accounts", "Account"), "Sequence");
-                string resourceNamePut = String.Format("{0}/{1}", newResourceName, entityVM.Id);
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM));
-
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        /// <summary>
-        /// Método responsável por deletar o registro
-        /// Caso seja uma recorrência, pode optar por deletar as recorrências seguintes
-        /// Delete em série é determinada pela URL do delete
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult DeleteSchedules(string id)
-        {
-            try
-            {
-                string newResourceName = string.Concat(ResourceName.Replace("Accounts", "Account"), "Sequence");
-                RestHelper.ExecuteDeleteRequest(String.Format("{0}/{1}", newResourceName, id));
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
             }
             catch (Exception ex)
             {
@@ -233,30 +175,6 @@ namespace Fly01.Financeiro.Controllers.Base
         public abstract JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId);
 
         #region Baixa de Títulos
-        protected BankTransacVM GetBankTransac(string id)
-        {
-            //o getSum sempre vai trazer 1 registro no formato do ResultBase<T>
-
-            string resource = AppDefaults.GetResourceName(typeof(TEntity));
-            string paramName = "accountPayableId";
-            if (resource.Trim().ToLower().Contains("receivable"))
-            {
-                paramName = "accountReceivableId";
-            }
-
-            Dictionary<string, string> querystring = new Dictionary<string, string> {
-                { paramName, id },
-                { "getsum", "value,discount,interest"} };
-            ResultBase<BankTransacVM> listBankTransac = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(AppDefaults.GetResourceName(typeof(BankTransacVM)), querystring);
-
-            if (listBankTransac != null && listBankTransac.Data != null && listBankTransac.Data.Any())
-            {
-                return listBankTransac.Data.FirstOrDefault();
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Retorna Modal View para efetuar a operação de Baixa de um título
         /// </summary>
@@ -330,35 +248,35 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)
-        {
-            dynamic dataToView;
-            int dataTotal;
-            var queryString = new Dictionary<string, string>();
+        //public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)
+        //{
+        //    dynamic dataToView;
+        //    int dataTotal;
+        //    var queryString = new Dictionary<string, string>();
 
-            if (subtitleCode == "2" || subtitleCode == "3")
-            {
-                var account = AppDefaults.GetResourceName(typeof(TEntity))
-                                .Replace("Accounts", "Account");
-                queryString.AddParam(account + "Id", contaId);
+        //    if (subtitleCode == "2" || subtitleCode == "3")
+        //    {
+        //        var account = AppDefaults.GetResourceName(typeof(TEntity))
+        //                        .Replace("Accounts", "Account");
+        //        queryString.AddParam(account + "Id", contaId);
 
-                var response = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(
-                                AppDefaults.GetResourceName(typeof(BankTransacVM)), queryString);
-                dataToView = response.Data.Select(GetDisplayDataBankTransac());
-                dataTotal = response.Total;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Somente SubtitleCode 2 e 3");
-            }
+        //        var response = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(
+        //                        AppDefaults.GetResourceName(typeof(BankTransacVM)), queryString);
+        //        dataToView = response.Data.Select(GetDisplayDataBankTransac());
+        //        dataTotal = response.Total;
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentOutOfRangeException("Somente SubtitleCode 2 e 3");
+        //    }
 
-            return Json(new
-            {
-                recordsTotal = dataTotal,
-                recordsFiltered = dataTotal,
-                data = dataToView
-            }, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(new
+        //    {
+        //        recordsTotal = dataTotal,
+        //        recordsFiltered = dataTotal,
+        //        data = dataToView
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
 
         #endregion
 
@@ -440,23 +358,6 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #endregion
-
-        [HttpPost]
-        public JsonResult IncluirCompensacao(ContaFinanceiraCompensacaoBaseVM entityVM)
-        {
-            try
-            {
-                string resourceCompensacao = String.Format("{0}/{1}", AppDefaults.GetResourceName(typeof(TEntityCompensacao)), entityVM.IdContaRef);
-
-                RestHelper.ExecutePutRequest(resourceCompensacao, JsonConvert.SerializeObject(entityVM));
-                return JsonResponseStatus.GetSuccess("Compensação realizada com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
 
         #region BaixaMultipla
 

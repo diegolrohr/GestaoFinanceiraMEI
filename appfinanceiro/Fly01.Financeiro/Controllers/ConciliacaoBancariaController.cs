@@ -4,9 +4,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
-using Fly01.Core.Api;
 using Fly01.Core.Helpers;
-using Fly01.Core.JQueryDataTable;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,6 +12,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Rest;
+using Fly01.Core.API;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -203,6 +205,7 @@ namespace Fly01.Financeiro.Controllers
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser igual ao valor do lançamento no extrato");
                     }
                 }
+
                 RestHelper.ExecutePostRequest("ConciliacaoBancariaBuscarExistentes", JsonConvert.SerializeObject(conciliacaoBancariaItem, JsonSerializerSetting.Default));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
@@ -216,7 +219,6 @@ namespace Fly01.Financeiro.Controllers
         [HttpGet]
         public JsonResult GetConciliacaoBancariaItens(string id)
         {
-
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
             var pageNo = param.Start > 0 ? (param.Start / 20) + 1 : 1;

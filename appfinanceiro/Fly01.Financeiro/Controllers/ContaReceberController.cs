@@ -6,7 +6,6 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
-using Fly01.Core.Api;
 using Fly01.Core.Config;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
@@ -16,10 +15,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class ContaReceberController : ContaFinanceiraController<ContaReceberVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM, AccountReceivableClearingVM>
+    public class ContaReceberController : ContaFinanceiraController<ContaReceberVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
         public ContaReceberController()
         {
@@ -82,15 +83,6 @@ namespace Fly01.Financeiro.Controllers
         {
             return String.Format("AccountReceivableRemoveBordero/{0}", id);
         }
-
-        //public override ActionResult ImprimirListGrid(string queryStringGrid)
-        //{
-        //    var contas = GetContasParaImprimir(queryStringGrid);
-
-        //    var reportViewer = new WebReportViewer<List<ContaReceberVM>>(ReportListContaReceber.Instance);
-
-        //    return File(reportViewer.Print(contas, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
-        //}
 
         public override JsonResult GridLoadTitulosARenegociar(string renegociacaoPessoaId)
         {
@@ -236,7 +228,6 @@ namespace Fly01.Financeiro.Controllers
 
             return base.GridLoad(filters);
         }
-
 
         public override ContentResult Form()
         {
@@ -669,6 +660,5 @@ namespace Fly01.Financeiro.Controllers
         }
 
         #endregion
-
     }
 }

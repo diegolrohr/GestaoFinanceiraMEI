@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Fly01.Financeiro.Reports;
 using Fly01.Core.Config;
-using Fly01.Core.Helpers.Reports;
 using Microsoft.Reporting.WebForms;
+using Fly01.Core.Reports;
 
 namespace Fly01.Financeiro.Models.Reports
 {

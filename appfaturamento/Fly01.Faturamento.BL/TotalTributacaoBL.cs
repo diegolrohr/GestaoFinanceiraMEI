@@ -80,8 +80,7 @@ namespace Fly01.Faturamento.BL
 
         public EmpresaVM GetDadosEmpresa(string plataformaUrl)
         {
-            var urlGateway = AppDefaults.UrlGateway.Replace("faturamento/", string.Empty);
-            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{plataformaUrl}");
+            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaUrl}");
         }
 
         public bool ConfiguracaoTSSOK()

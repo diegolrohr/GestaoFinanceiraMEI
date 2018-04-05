@@ -13,24 +13,9 @@ using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class HomeController : GenericAppController
-    {
-        public override ActionResult Index()
-        {
-            return Request.IsAjaxRequest() ? Go() : base.Index();
-        }
-
-        public ContentResult Go()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
-        }
-
-        public ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
-        }
-        
-        protected ContentUI HomeJson(bool withSidebarUrl = false)
+    public class HomeController : Core.Presentation.Controllers.HomeController
+    {      
+        protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
             var cfg = new ContentUI
             {
@@ -235,16 +220,7 @@ namespace Fly01.Financeiro.Controllers
 
             return cfg;
         }
-
-        public List<AppUI> AppsList()
-        {
-            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/financeiro", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
-            appsList.RemoveAll(x => x.Id == AppDefaults.AppIdFinanceiro);
-
-            return appsList;
-        }
-
-        public ContentResult Sidebar()
+        public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
 

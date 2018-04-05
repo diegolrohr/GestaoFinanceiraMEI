@@ -65,13 +65,7 @@ namespace Fly01.Faturamento.BL
 
         private EmpresaVM GetDadosEmpresa()
         {
-            var urlGateway = AppDefaults.UrlGateway
-                                .Replace("financeiro/", string.Empty)
-                                .Replace("faturamento/", string.Empty)
-                                .Replace("estoque/", string.Empty)
-                                .Replace("compras/", string.Empty);
-
-            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{PlataformaUrl}");
+            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
         }
     }
 }

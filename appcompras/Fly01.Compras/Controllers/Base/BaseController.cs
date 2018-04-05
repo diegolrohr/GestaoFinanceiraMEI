@@ -24,13 +24,7 @@ namespace Fly01.Compras.Controllers.Base
 
         public EmpresaVM GetDadosEmpresa()
         {
-            var urlGateway = AppDefaults.UrlGateway
-                .Replace("financeiro/", string.Empty)
-                .Replace("faturamento/", string.Empty)
-                .Replace("estoque/", string.Empty)
-                .Replace("compras/", string.Empty);
-
-            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
         }
 
         public ContentResult EmConstrucao(string history)

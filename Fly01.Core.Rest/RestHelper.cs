@@ -70,12 +70,12 @@ namespace Fly01.Core.Rest
         #region PUT
         public static TReturn ExecutePutRequest<TReturn>(string resource, object requestObj, Dictionary<string, string> queryString = null)
         {
-            return ExecutePutRequest<TReturn>(AppDefaults.UrlGateway, resource, requestObj, queryString);
+            return ExecutePutRequest<TReturn>(AppDefaults.UrlApiGateway, resource, requestObj, queryString);
         }
 
         public static string ExecutePutRequest(string resource, string requestJson, Dictionary<string, string> queryString = null)
         {
-            return ExecutePutRequest(AppDefaults.UrlGateway, resource, requestJson, queryString);
+            return ExecutePutRequest(AppDefaults.UrlApiGateway, resource, requestJson, queryString);
         }
 
         public static string ExecutePutRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null)
@@ -200,7 +200,7 @@ namespace Fly01.Core.Rest
         {
             try
             {
-                return ExecuteGetRequest<TReturn>(AppDefaults.UrlGateway, resource, DefaultHeader, queryString);
+                return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, DefaultHeader, queryString);
             }
             catch (ApiException ex)
             {
@@ -217,7 +217,7 @@ namespace Fly01.Core.Rest
                 LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
                 var logEvent = new LogEventInfo(logLevel, "", "Get");
                 logEvent.Properties["method"] = "GET";
-                logEvent.Properties["resource"] = AppDefaults.UrlGateway + resource;
+                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
                 logEvent.Properties["requestJson"] = "";
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);
@@ -230,7 +230,7 @@ namespace Fly01.Core.Rest
 
         public static TReturn ExecuteGetRequestWithoutSession<TReturn>(string resource, Dictionary<string, string> queryString = null, string acessToken = "")
         {
-            return ExecuteGetRequest<TReturn>(AppDefaults.UrlGateway, resource, DefaultHeaderWithoutSession(acessToken), queryString);
+            return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, DefaultHeaderWithoutSession(acessToken), queryString);
         }
 
         public static TReturn ExecuteGetRequest<TReturn>(string url, string resource)
@@ -240,7 +240,7 @@ namespace Fly01.Core.Rest
 
         public static TReturn ExecuteGetRequestTenantIdCompany<TReturn>(string resource)
         {
-            return ExecuteGetRequest<TReturn>(AppDefaults.UrlGateway, resource, HeaderTenantIdCompany, null);
+            return ExecuteGetRequest<TReturn>(AppDefaults.UrlApiGateway, resource, HeaderTenantIdCompany, null);
         }
 
         public static TReturn ExecuteGetRequest<TReturn>(string url, string resource, Dictionary<string, string> queryString = null)
@@ -292,12 +292,15 @@ namespace Fly01.Core.Rest
             }
         }
 
-        public static TokenDataVM ExecuteGetAuthToken(string url, string userName, string password, string platformUrl, string platformUser)
+        public static TokenDataVM ExecuteGetAuthToken(string url, string userName, string password, string platformUrl,
+            string platformUser)
         {
-            string encodedBody = string.Format("username={0}&grant_type=password&password={1}&platformurl={2}&platformuser={3}",
-                HttpUtility.HtmlEncode(userName), HttpUtility.HtmlEncode(password), HttpUtility.HtmlEncode(platformUrl), HttpUtility.HtmlEncode(platformUser));
+            string encodedBody =
+                string.Format("username={0}&grant_type=password&password={1}&platformurl={2}&platformuser={3}",
+                    HttpUtility.HtmlEncode(userName), HttpUtility.HtmlEncode(password),
+                    HttpUtility.HtmlEncode(platformUrl), HttpUtility.HtmlEncode(platformUser));
 
-            string resource = url.Replace("/api/v1", string.Empty).Replace("/api/v2", string.Empty) + "Token";
+            string resource = string.Format("{0}token", url.Replace("api/", string.Empty));
 
             return RestUtils.ExecuteGeneratedAuthToken<TokenDataVM>(resource, encodedBody);
         }
@@ -360,12 +363,12 @@ namespace Fly01.Core.Rest
 
         public static TReturn ExecutePostRequest<TReturn>(string resource, object requestObj, Dictionary<string, string> queryString = null, int timeout = 150)
         {
-            return ExecutePostRequest<TReturn>(AppDefaults.UrlGateway, resource, requestObj, queryString, timeout: timeout);
+            return ExecutePostRequest<TReturn>(AppDefaults.UrlApiGateway, resource, requestObj, queryString, timeout: timeout);
         }
 
         public static string ExecutePostRequest(string resource, string requestJson, Dictionary<string, string> queryString = null, int timeout = 150)
         {
-            return ExecutePostRequest(AppDefaults.UrlGateway, resource, requestJson, queryString, timeout: timeout);
+            return ExecutePostRequest(AppDefaults.UrlApiGateway, resource, requestJson, queryString, timeout: timeout);
         }
 
         public static string ExecutePostRequest(string url, string resource, string requestJson, Dictionary<string, string> queryString = null, int timeout = 150)
@@ -411,14 +414,14 @@ namespace Fly01.Core.Rest
         {
             try
             {
-                return ExecuteDeleteRequest(AppDefaults.UrlGateway, resource, DefaultHeader);
+                return ExecuteDeleteRequest(AppDefaults.UrlApiGateway, resource, DefaultHeader);
             }
             catch (ApiException ex)
             {
                 LogLevel logLevel = ((int)ex.StatusCode) >= 500 ? LogLevel.Error : LogLevel.Warn;
                 var logEvent = new LogEventInfo(logLevel, "", "Delete");
                 logEvent.Properties["method"] = "DELETE";
-                logEvent.Properties["resource"] = AppDefaults.UrlGateway + resource;
+                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
                 logEvent.Properties["requestJson"] = string.Empty;
                 logEvent.Properties["statusCode"] = ex.StatusCode;
                 logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message);

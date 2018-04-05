@@ -1,48 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Compras.Controllers.Base;
 using Newtonsoft.Json;
 using Fly01.uiJS.Classes;
 using Fly01.Core.Config;
-using Fly01.Core;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Rest;
 
 namespace Fly01.Compras.Controllers
 {
-    public class HomeController : GenericAppController
+    public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        public override ActionResult Index()
-        {
-            return Request.IsAjaxRequest() ? Go() : base.Index();
-        }
-
-        public ContentResult Go()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
-        }
-
-        public ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
-        }
-
-        protected ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
             return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
         }
-
-        public List<AppUI> AppsList()
-        {
-            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/compras", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
-            appsList.RemoveAll(x => x.Id == AppDefaults.AppIdCompras);
-
-            return appsList;
-        }
-
-        public ContentResult Sidebar()
+        public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
 

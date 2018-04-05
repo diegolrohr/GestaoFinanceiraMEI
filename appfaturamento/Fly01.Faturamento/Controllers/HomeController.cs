@@ -13,24 +13,9 @@ using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {
-    public class HomeController : GenericAppController
+    public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        public override ActionResult Index()
-        {
-            return Request.IsAjaxRequest() ? Go() : base.Index();
-        }
-
-        public ContentResult Go()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
-        }
-
-        public ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
-        }
-
-        protected ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
             var config = new ContentUI
             {
@@ -71,15 +56,7 @@ namespace Fly01.Faturamento.Controllers
             return config;
         }
 
-        public List<AppUI> AppsList()
-        {
-            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/faturamento", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
-            appsList.RemoveAll(x => x.Id == AppDefaults.AppIdFaturamento);
-
-            return appsList;
-        }
-
-        public ContentResult Sidebar()
+        public override ContentResult Sidebar()
         {
             var config = new SidebarUI() {Id = "nav-bar", AppName = "Faturamento", Parent = "header"};
 

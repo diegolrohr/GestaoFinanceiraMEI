@@ -5,14 +5,14 @@ using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
-using Fly01.Core.Api;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
-using System.Linq;
 using System.Dynamic;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using System.Text.RegularExpressions;
+using Fly01.Core.Rest;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {

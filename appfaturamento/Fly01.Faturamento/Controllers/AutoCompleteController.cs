@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {

@@ -3,13 +3,13 @@ using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Api;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {

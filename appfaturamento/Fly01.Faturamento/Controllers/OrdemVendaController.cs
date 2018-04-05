@@ -7,16 +7,18 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
-using Fly01.Core.Api;
 using Fly01.Core.Config;
 using Fly01.Core.Helpers;
-using Fly01.Core.Messages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Fly01.Core.API;
+using Fly01.Core.Mensageria;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -211,7 +213,7 @@ namespace Fly01.Faturamento.Controllers
                 var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemVenda.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
                 var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), anexo.ContentType);
 
-                Mail.Send(empresa.NomeFantasia, ordemVenda.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo);
+                Mail.Send(empresa.NomeFantasia, ordemVenda.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }

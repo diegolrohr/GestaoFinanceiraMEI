@@ -10,6 +10,9 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
+using Fly01.Core.API;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {

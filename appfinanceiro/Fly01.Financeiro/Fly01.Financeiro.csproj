@@ -366,6 +366,11 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -415,10 +420,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
-      <Project>{57533a41-3be1-4e60-84d1-62410484621e}</Project>
-      <Name>Fly01.Core.Helpers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>

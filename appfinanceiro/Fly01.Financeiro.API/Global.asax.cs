@@ -30,7 +30,6 @@ namespace Fly01.Financeiro.API
             {
                 ODataConfig.Register(config);
                 WebApiConfig.Register(config);
-                //FilterConfig.RegisterGlobalFilters(config);
             });
             
             Task.Factory.StartNew(() => new ServiceBusBL());

@@ -320,10 +320,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
-      <Project>{57533a41-3be1-4e60-84d1-62410484621e}</Project>
-      <Name>Fly01.Core.Helpers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>

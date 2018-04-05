@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System;
-using Fly01.Core.ValueObjects;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using Fly01.Faturamento.Domain.Entities;
 using Fly01.Core.Notifications;
 using Fly01.Faturamento.DAL;

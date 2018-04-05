@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Core.Api.BL;
-using Fly01.Core.Helpers;
+using Fly01.Core.BL;
 using System.Collections.Generic;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core;
+using Fly01.Core.Domain;
 using Newtonsoft.Json;
 using Fly01.Faturamento.Domain.Enums;
 using System;
 using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
+using Fly01.Core;
+using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.BL
 {

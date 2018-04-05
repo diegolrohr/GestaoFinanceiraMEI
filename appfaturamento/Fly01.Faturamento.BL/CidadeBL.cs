@@ -1,5 +1,5 @@
 ﻿using Fly01.Faturamento.Domain.Entities;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;

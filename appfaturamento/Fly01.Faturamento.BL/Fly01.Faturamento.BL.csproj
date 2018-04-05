@@ -104,6 +104,34 @@
       <Project>{279b3a0c-4549-4b8c-9ef9-90e35a5255d6}</Project>
       <Name>Fly01.EmissaoNFE.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
+      <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
+      <Name>Fly01.Core.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+      <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
+      <Name>Fly01.Core.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
+      <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
+      <Name>Fly01.Core.Rest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
+      <Name>Fly01.Core.ServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+      <Project>{26e9896f-edf5-4e59-9e0f-627c70e2e59e}</Project>
+      <Name>Fly01.Core.VM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>

@@ -1,10 +1,9 @@
 ﻿using Fly01.Faturamento.Domain.Entities;
 using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core;
-using Fly01.Core.Api.BL;
+using Fly01.Core.Domain;
+using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using Fly01.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

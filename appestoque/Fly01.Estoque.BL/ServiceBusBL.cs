@@ -1,8 +1,8 @@
 ﻿using System;
 using Fly01.Core.Base;
 using System.Reflection;
-using System.Threading.Tasks;
 using Fly01.Core.ServiceBus;
+using System.Threading.Tasks;
 
 namespace Fly01.Estoque.BL
 {

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Linq;
 using System.IO;
 using Fly01.Core;
+using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 
 namespace Fly01.Estoque.Controllers.Base

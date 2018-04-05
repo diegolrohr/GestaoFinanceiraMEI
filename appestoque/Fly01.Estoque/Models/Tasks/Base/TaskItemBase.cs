@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Fly01.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Fly01.Core.Helpers;
 
 namespace Fly01.Estoque.Models.Tasks.Base
 {

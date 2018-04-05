@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Base;
+using Fly01.Core.Domain;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;

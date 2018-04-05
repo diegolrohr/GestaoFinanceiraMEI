@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Domain.Enums;
-using Fly01.Core.ValueObjects;
+using Fly01.Core.Notifications;
 using System;
 
 namespace Fly01.Compras.BL

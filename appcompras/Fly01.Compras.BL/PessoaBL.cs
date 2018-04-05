@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Fly01.Compras.DAL;
 using Fly01.Core.ValueObjects;
-using Fly01.Core.Api.BL;
+using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Compras.Domain.Entities;
 

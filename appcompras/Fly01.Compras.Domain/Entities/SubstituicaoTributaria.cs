@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.Domain.Enums;
-using Fly01.Core.Api.Domain;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;

@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Api.Domain;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Compras.Domain.Entities

@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.Domain.Enums;
-using Fly01.Core.Api.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Compras.Domain.Entities

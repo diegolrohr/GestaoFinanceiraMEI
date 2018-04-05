@@ -29,7 +29,7 @@ namespace Fly01.Core.Presentation.Application
                 string platformUrl = cookieUserData.Fly01Url;
 
                 TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
-                    AppDefaults.UrlGateway.Replace("v2/compras/", "v2/"), AppDefaults.GatewayUserName,
+                    AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
                     AppDefaults.GatewayPassword, platformUrl, platformUser);
 
                 var userData = new UserDataVM
@@ -86,7 +86,8 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.MashupClientId = ConfigurationManager.AppSettings["MashupClientId"];
             AppDefaults.MashupPassword = ConfigurationManager.AppSettings["MashupPassword"];
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlS1Gateway"];
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
             AppDefaults.GatewayUserName = ConfigurationManager.AppSettings["GatewayUserName"];
             AppDefaults.GatewayPassword = ConfigurationManager.AppSettings["GatewayPassword"];
             AppDefaults.GatewayVerificationKeyPassword = ConfigurationManager.AppSettings["GatewayVerificationKeyPassword"];
@@ -94,11 +95,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.UrlLogoutSSO = ConfigurationManager.AppSettings["UrlLogoutSSO"];
             AppDefaults.UrlLicenseManager = ConfigurationManager.AppSettings[""];
             AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
-            AppDefaults.AppIdCompras = ConfigurationManager.AppSettings["AppIdCompras"];
-            AppDefaults.AppIdFaturamento = ConfigurationManager.AppSettings["AppIdFaturamento"];
-            AppDefaults.AppIdCompras = ConfigurationManager.AppSettings["AppIdCompras"];
-            AppDefaults.AppIdEstoque = ConfigurationManager.AppSettings["AppIdEstoque"];
-            AppDefaults.AppIdSaude = ConfigurationManager.AppSettings["AppIdSaude"];
+            AppDefaults.AppId = ConfigurationManager.AppSettings["AppId"];
             AppDefaults.RootPathApplication = ConfigurationManager.AppSettings["RootPathApplication"];
 
             GlobalConfiguration.Configure(WebAPIConfig.Register);

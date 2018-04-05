@@ -28,8 +28,8 @@ namespace Fly01.Core.Presentation.Controllers
        
         public List<AppUI> AppsList()
         {
-            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>(AppDefaults.UrlGateway.Replace("v2/compras", "v1"), String.Format("sidebarApps/{0}", SessionManager.Current.UserData.PlatformUrl), null);
-            appsList.RemoveAll(x => x.Id == AppDefaults.AppIdCompras);
+            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>($"{AppDefaults.UrlGateway}v1/", $"sidebarApps/{SessionManager.Current.UserData.PlatformUrl}", null);
+            appsList.RemoveAll(x => x.Id == AppDefaults.AppId);
             return appsList;
         }
 

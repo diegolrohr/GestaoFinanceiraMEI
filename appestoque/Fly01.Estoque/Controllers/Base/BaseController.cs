@@ -4,9 +4,9 @@ using Fly01.Core.VM;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core.Config;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Config;
 using Fly01.Core.Presentation;
 using Fly01.Core.Rest;
 
@@ -26,13 +26,7 @@ namespace Fly01.Estoque.Controllers.Base
 
         public EmpresaVM GetDadosEmpresa()
         {
-            var urlGateway = AppDefaults.UrlGateway
-                .Replace("financeiro/", string.Empty)
-                .Replace("faturamento/", string.Empty)
-                .Replace("estoque/", string.Empty)
-                .Replace("compras/", string.Empty);
-
-            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
         }
 
 

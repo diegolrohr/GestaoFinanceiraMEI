@@ -146,7 +146,7 @@ namespace Fly01.Core.Presentation
         {
             //ver rota v1 e v2 branch
             var resourceById = string.Format("{0}/{1}", AppDefaults.GetResourceName(typeof(K)), "01");
-            return RestHelper.ExecuteGetRequest<K>(AppDefaults.UrlGateway.Replace("/v2/", "/v1/"), resourceById, RestHelper.DefaultHeader, null);
+            return RestHelper.ExecuteGetRequest<K>(AppDefaults.UrlApiGateway.Replace("/v2/", "/v1/"), resourceById, RestHelper.DefaultHeader, null);
         }
 
         public virtual ContentResult Functions(string fns)

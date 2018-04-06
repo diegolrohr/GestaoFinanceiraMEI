@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System;
 using System.Web.OData;
-using Fly01.Core.ValueObjects;
 using Fly01.Core.Notifications;
 using System.Web.Http.ModelBinding;
 using System.Data.Entity.Infrastructure;

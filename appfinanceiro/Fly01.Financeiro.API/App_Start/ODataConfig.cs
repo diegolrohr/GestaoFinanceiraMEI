@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.Domain.Entities;
-using Fly01.Core.Api;
+using Fly01.Core.API;
 using Microsoft.OData.Edm;
 using Microsoft.OData.UriParser;
 using System.Linq;
@@ -13,17 +13,7 @@ using System.Web.OData.Query;
 namespace Fly01.Financeiro.API.App_Start
 {
     public class ODataConfig
-    {  //http://stackoverflow.com/questions/26676879/webapi-and-odatacontroller-return-406-not-acceptable
-        //https://blogs.msdn.microsoft.com/davidhardin/2014/12/17/web-api-odata-v4-lessons-learned/
-
-        //build functions
-        //https://blogs.msdn.microsoft.com/odatateam/2014/12/08/tutorial-sample-functions-actions-in-web-api-v2-2-for-odata-v4-0-type-scenario/
-
-        //functions
-        //https://damienbod.com/2014/06/13/web-api-and-odata-v4-queries-functions-and-attribute-routing-part-2/
-
-        //batch
-        //https://aspnetwebstack.codeplex.com/wikipage?title=Web%20API%20Request%20Batching
+    {
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes(new CustomDirectRouteProvider());

@@ -9,7 +9,6 @@ namespace Fly01.Estoque.API.Controllers.Api
     {
         public CestController() 
         {
-            var test = true;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Fly01.Core.Api.BL;
-using Fly01.Core.Api.Domain;
-using Fly01.Core.Controllers.API;
 using Fly01.Estoque.BL;
+using Fly01.Core.API;
+using Fly01.Core.Domain;
+using Fly01.Core.BL;
 
 namespace Fly01.Estoque.API.Controllers.Api
 {

@@ -1,5 +1,5 @@
-﻿using Fly01.Estoque.BL;
-using Fly01.Core.Controllers.API;
+﻿using Fly01.Core.API;
+using Fly01.Estoque.BL;
 using Newtonsoft.Json;
 using System;
 using System.IO;

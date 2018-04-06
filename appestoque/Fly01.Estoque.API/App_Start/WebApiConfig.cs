@@ -1,8 +1,6 @@
-﻿using Fly01.Core.Api;
+﻿using Fly01.Core.API;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 namespace Fly01.Estoque.API
@@ -34,8 +32,6 @@ namespace Fly01.Estoque.API
                 defaults: new { controller = "ApiError", action = "Handle404" }
             );
 
-            config.Services.Replace(typeof(IHttpControllerSelector), new HttpNotFoundAwareDefaultHttpControllerSelector(config));
-            config.Services.Replace(typeof(IHttpActionSelector), new HttpNotFoundAwareControllerActionSelector());
             config.Filters.Add(new CustomExceptionFilter());
         }
     }

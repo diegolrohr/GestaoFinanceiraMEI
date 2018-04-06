@@ -1,5 +1,4 @@
 ﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Core.Api;
 using Microsoft.OData.Edm;
 using Microsoft.OData.UriParser;
 using System.Web.Http;
@@ -8,6 +7,7 @@ using System.Web.OData.Batch;
 using System.Web.OData.Builder;
 using System.Web.OData.Extensions;
 using System.Web.OData.Query;
+using Fly01.Core.API;
 
 namespace Fly01.Estoque.API
 {

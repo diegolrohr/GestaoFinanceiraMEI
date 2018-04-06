@@ -1,10 +1,10 @@
-﻿using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Newtonsoft.Json;
 using Fly01.Estoque.BL;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Web;
 
 namespace Fly01.Estoque.API
 {

@@ -12,7 +12,7 @@ namespace Fly01.Core.API
     {
         public static APIEnumData SubtitleDataAnotation(string enumName, string itemValue)
         {
-            var filterObjects = RestHelper.ExecuteGetRequest<IEnumerable<APIEnumData>>(enumName).Where(x => x.Key.Equals(itemValue)).SingleOrDefault();
+            var filterObjects = RestHelper.ExecuteGetRequest<IEnumerable<APIEnumData>>(enumName).SingleOrDefault(x => x.Key.Equals(itemValue));
             return filterObjects;
         }
 

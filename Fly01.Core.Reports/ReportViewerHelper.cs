@@ -26,14 +26,8 @@ namespace Fly01.Core.Reports
             if (string.IsNullOrEmpty(platformUrl))
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
-            var urlGateway = AppDefaults.UrlGateway
-                .Replace("financeiro/", string.Empty)
-                .Replace("faturamento/", string.Empty)
-                .Replace("estoque/", string.Empty)
-                .Replace("compras/", string.Empty);
-
             string logoBase64 = string.Empty;
-            var empresaVM = RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{platformUrl}");
+            var empresaVM = RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)

@@ -62,7 +62,7 @@ namespace Fly01.Financeiro.Controllers
                         TokenDataVM tokenData = null;
                         try
                         {
-                            tokenData = RestHelper.ExecuteGetAuthToken(AppDefaults.UrlGateway.Replace("v2/financeiro/", "v1/"), AppDefaults.GatewayUserName, AppDefaults.GatewayPassword, platformUrl, userName);
+                            tokenData = RestHelper.ExecuteGetAuthToken(AppDefaults.UrlGateway, AppDefaults.GatewayUserName, AppDefaults.GatewayPassword, platformUrl, userName);
 
                             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault(string.Empty, string.Empty, AppDefaults.MaxRecordsPerPageAPI);
                             queryString.AddParam("dueDate", dataFiltro.ToString("yyyyMMdd"));

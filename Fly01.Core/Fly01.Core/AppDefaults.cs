@@ -32,6 +32,7 @@ namespace Fly01.Core
         public static string MashupUser { get; set; }
 
         public static string UrlGateway { get; set; }
+        public static string UrlApiGateway { get; set; }
         public static string UrlManager { get; set; }
         public static string UrlFinanceiroApi { get; set; }
         public static string UrlFaturamentoApi { get; set; }
@@ -50,11 +51,7 @@ namespace Fly01.Core
         
         public static string SessionKey { get; set; }
         
-        public static string AppIdFinanceiro { get; set; }
-        public static string AppIdFaturamento { get; set; }
-        public static string AppIdCompras { get; set; }
-        public static string AppIdEstoque { get; set; }
-        public static string AppIdSaude { get; set; }
+        public static string AppId { get; set; }
 
         public static string RootPathApplication { get; set; }
 

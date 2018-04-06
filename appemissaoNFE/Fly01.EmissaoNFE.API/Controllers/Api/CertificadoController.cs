@@ -2,7 +2,7 @@
 using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System;
 using System.Web.Http;
 

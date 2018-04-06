@@ -1,6 +1,6 @@
 ﻿using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System;
 using System.Web.Http;
 

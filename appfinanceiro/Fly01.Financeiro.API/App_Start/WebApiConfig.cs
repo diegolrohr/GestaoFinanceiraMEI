@@ -1,8 +1,6 @@
-﻿using Fly01.Core.Api;
+﻿using Fly01.Core.API;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 
 namespace Fly01.Financeiro.API
@@ -11,10 +9,6 @@ namespace Fly01.Financeiro.API
     {
         public static void Register(HttpConfiguration config)
         {
-            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-
-            //config.Filters.Add(new ApiAuthenticationFilter());
-
             config.Routes.MapHttpRoute("DefaultApiWithAction", "api/{controller}/{action}");
             config.Routes.MapHttpRoute("DefaultApiGet", "api/{controller}", new { action = "Get" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
             config.Routes.MapHttpRoute("DefaultApiPost", "api/{controller}", new { action = "Post" }, new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
@@ -25,7 +19,6 @@ namespace Fly01.Financeiro.API
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // Convention-based routing (Hello Page).
             config.Routes.MapHttpRoute(
                 name: "DefaultHelloPage",
                 routeTemplate: "{controller}/{action}",
@@ -38,20 +31,7 @@ namespace Fly01.Financeiro.API
                 defaults: new { controller = "ApiError", action = "Handle404" }
             );
 
-            //config.Formatters.JsonFormatter.Indent = false;
-            //config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            ////config.Formatters.XmlFormatter.UseXmlSerializer = true;
-
-            //// Retorno Json apenas minusculo
-            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
-            //config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
-
-            config.Services.Replace(typeof(IHttpControllerSelector), new HttpNotFoundAwareDefaultHttpControllerSelector(config));
-            config.Services.Replace(typeof(IHttpActionSelector), new HttpNotFoundAwareControllerActionSelector());
             config.Filters.Add(new CustomExceptionFilter());
-
-            //DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
         }
     }
 }

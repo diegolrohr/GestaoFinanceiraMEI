@@ -137,10 +137,6 @@
       <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
       <Name>Fly01.Core.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
-      <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
-      <Name>Fly01.Core.Helpers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
@@ -209,7 +205,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
@@ -223,9 +218,7 @@
       <HintPath>..\..\packages\System.Linq.Expressions.4.1.0\lib\net463\System.Linq.Expressions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -238,7 +231,6 @@
       <HintPath>..\..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Cors, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.4\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -293,7 +285,14 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Homologacao|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != '' And Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')" />

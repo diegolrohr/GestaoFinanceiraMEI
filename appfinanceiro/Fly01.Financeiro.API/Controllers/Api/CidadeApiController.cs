@@ -1,6 +1,6 @@
 ﻿using Fly01.Financeiro.BL;
 using System.Web.Http;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using Fly01.Financeiro.Domain.Entities;
 
 namespace Fly01.Financeiro.API.Controllers.Api

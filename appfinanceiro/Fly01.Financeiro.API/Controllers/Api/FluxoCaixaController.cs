@@ -2,7 +2,7 @@
 
 using System;
 using System.Web.Http;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System.Linq;
 using Fly01.Core.Helpers;
 using Fly01.Financeiro.Domain.Entities;

@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.BL;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System;
 using System.Web.Http;
 using System.Web.OData.Routing;

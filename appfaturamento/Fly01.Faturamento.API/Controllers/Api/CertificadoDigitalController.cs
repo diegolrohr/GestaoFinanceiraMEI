@@ -4,9 +4,9 @@ using System.Web.OData.Routing;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System;
-using Fly01.Core.ValueObjects;
 using System.Web.OData;
 using System.Linq;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

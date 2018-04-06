@@ -3,10 +3,10 @@ using Fly01.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Configuration;
 
 namespace Fly01.Faturamento.API
 {
@@ -32,7 +32,6 @@ namespace Fly01.Faturamento.API
             {
                 ODataConfig.Register(config);
                 WebApiConfig.Register(config);
-                //FilterConfig.RegisterGlobalFilters(config);
             });
 
             Task.Factory.StartNew(() => new ServiceBusBL());

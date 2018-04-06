@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Fly01.Faturamento.BL;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

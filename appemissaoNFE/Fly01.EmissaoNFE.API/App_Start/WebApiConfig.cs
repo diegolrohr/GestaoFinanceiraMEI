@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Api;
+﻿using Fly01.Core.API;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -50,8 +50,6 @@ namespace Fly01.EmissaoNFE.API
 
             //config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
 
-            config.Services.Replace(typeof(IHttpControllerSelector), new HttpNotFoundAwareDefaultHttpControllerSelector(config));
-            config.Services.Replace(typeof(IHttpActionSelector), new HttpNotFoundAwareControllerActionSelector());
             config.Filters.Add(new CustomExceptionFilter());
 
             //DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;

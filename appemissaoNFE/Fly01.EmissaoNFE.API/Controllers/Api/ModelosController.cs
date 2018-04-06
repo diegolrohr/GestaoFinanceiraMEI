@@ -1,5 +1,5 @@
 ﻿using Fly01.EmissaoNFE.API.Model;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System;
 using System.Web.Http;
 

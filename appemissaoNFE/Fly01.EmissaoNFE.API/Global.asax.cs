@@ -30,7 +30,6 @@ namespace Fly01.EmissaoNFE.API
             {
                 ODataConfig.Register(config);
                 WebApiConfig.Register(config);
-                //FilterConfig.RegisterGlobalFilters(config);
             });
 
             //Task.Factory.StartNew(() => new ServiceBusBL());

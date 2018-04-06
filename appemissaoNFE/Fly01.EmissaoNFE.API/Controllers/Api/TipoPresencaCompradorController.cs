@@ -1,5 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using Fly01.Core.Helpers;
 using System.Web.Http;
 

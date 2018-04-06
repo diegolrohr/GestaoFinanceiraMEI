@@ -1,6 +1,6 @@
 ﻿using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using Fly01.Core.Controllers.API;
+using Fly01.Core.API;
 using System.Web.Http;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api

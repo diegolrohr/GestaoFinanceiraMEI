@@ -79,7 +79,7 @@ namespace Fly01.Financeiro.Controllers
         public List<ContaPagarVM> GetListContaPagar()
         {
             var queryString = new Dictionary<string, string>();
-            return RestHelper.ExecuteGetRequest<ResultBase<ContaPagarVM>>("ContaPagar", queryString).Data;
+            return RestHelper.ExecuteGetRequest<List<ContaPagarVM>>("contapagarmaxrecords", queryString);
         }
         public virtual ActionResult ImprimirListContas()
         {
@@ -196,7 +196,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        //new HtmlUIButton { Id = "new", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "new", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

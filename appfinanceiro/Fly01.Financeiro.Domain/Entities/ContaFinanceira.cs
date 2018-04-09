@@ -60,7 +60,7 @@ namespace Fly01.Financeiro.Domain.Entities
         public TipoPeriodicidade TipoPeriodicidade { get; set; }
 
         public int? NumeroRepeticoes { get; set; }
-        
+
         public string DescricaoParcela { get; set; }
 
         //AppDataContext model.builder ignore
@@ -72,7 +72,7 @@ namespace Fly01.Financeiro.Domain.Entities
             }
             set
             {
-                 
+
             }
         }
 

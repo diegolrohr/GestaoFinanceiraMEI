@@ -18,10 +18,12 @@
         }
         else if (valorAcumulado > valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'red');
+            fly01.toast('A soma dos valores conciliados não pode ser maior que o valor da conta.', "error");
             $('#save').attr('disabled', 'disabled');
         }
         else if (valorAcumulado <= 0) {
             $('#somaValoresSelecionados').css('color', 'red');
+            fly01.toast('A soma dos valores conciliados não pode ser igual a zero.', "error");
             $('#save').attr('disabled', 'disabled');
         }
     }

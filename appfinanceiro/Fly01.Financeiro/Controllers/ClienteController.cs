@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -25,7 +26,7 @@ namespace Fly01.Financeiro.Controllers
         {
             NormarlizarEntidade(ref entityVM);
 
-                return base.Create(entityVM);
+            return base.Create(entityVM);
         }
 
         [HttpPost]
@@ -46,7 +47,7 @@ namespace Fly01.Financeiro.Controllers
             entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
             entityVM.Telefone = Regex.Replace(entityVM.Telefone ?? "", regexSomenteDigitos, "");
             entityVM.CEP = Regex.Replace(entityVM.CEP ?? "", regexSomenteDigitos, "");
-            
+
             if (string.IsNullOrEmpty(entityVM.TipoIndicacaoInscricaoEstadual))
                 entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteICMS";
         }
@@ -207,7 +208,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
             config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
@@ -259,7 +260,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
 
             cfg.Content.Add(config);
 
@@ -284,6 +285,32 @@ namespace Fly01.Financeiro.Controllers
         {
             return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Clientes", pConteudo));
         }
+
+        public JsonResult PostCliente(string term)
+        {
+            var entity = new PessoaVM
+            {
+                Nome = term,
+                Cliente = true,
+                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+            };
+
+            NormarlizarEntidade(ref entity);
+
+            try
+            {
+                var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+                var data = RestHelper.ExecutePostRequest<PessoaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 
     public class ImportacaoArquivo : GenericAppController

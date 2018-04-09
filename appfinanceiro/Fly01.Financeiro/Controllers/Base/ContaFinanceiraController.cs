@@ -529,13 +529,13 @@ namespace Fly01.Financeiro.Controllers.Base
                 Title = tituloModal,
                 Id = "fly01mdlfrm",
                 UrlFunctions = @Url.Action("Functions", contaController, null, Request.Url.Scheme) + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnAtualizaGrid"},
+                ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnAtualizaGrid" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction()
                 {
                     Create = @Url.Action("BaixaTitulo", contaController),
                     Get = @Url.Action("BaixaTitulo", contaController) + "/",
-                }                
+                }
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraId" });
@@ -553,13 +553,13 @@ namespace Fly01.Financeiro.Controllers.Base
                 DataPostField = "nomeConta",
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
         public ContentResult ModalVisualizarConta(string contaController)
         {
-            string tituloPessoa = (contaController == "ContaPagar" ? "Recebedor" : "Pagador");
+            string tituloPessoa = (contaController == "ContaPagar" ? "Fornecedor" : "Cliente");
             var config = new ModalUIForm()
             {
                 Title = "Visualizar",
@@ -627,7 +627,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 LabelId = "categoriaDescricao"
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
             #endregion
 
             #region Relação Baixas

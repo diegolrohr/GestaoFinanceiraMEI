@@ -16,6 +16,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -205,7 +206,6 @@ namespace Fly01.Financeiro.Controllers
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser igual ao valor do lançamento no extrato");
                     }
                 }
-
                 RestHelper.ExecutePostRequest("ConciliacaoBancariaBuscarExistentes", JsonConvert.SerializeObject(conciliacaoBancariaItem, JsonSerializerSetting.Default));
                 return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create);
             }
@@ -219,6 +219,7 @@ namespace Fly01.Financeiro.Controllers
         [HttpGet]
         public JsonResult GetConciliacaoBancariaItens(string id)
         {
+
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
             var pageNo = param.Start > 0 ? (param.Start / 20) + 1 : 1;
@@ -454,15 +455,6 @@ namespace Fly01.Financeiro.Controllers
             dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCR", Label = "Buscar existentes", ShowIf = "(row.valor > 0.0)" });
             dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirCBItem", Label = "Excluir", ShowIf = "(row.conciliadoDescription == 'NAO')" });
 
-            dtcfg.Columns.Add(new DataTableUIColumn()
-            {
-                DisplayName = "Conciliado",
-                Priority = 1,
-                Searchable = false,
-                Orderable = false,
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.conciliadoCssClass + \" left\", \"data-badge-caption\": \" \" }, row.conciliadoValue).outerHTML; }"
-
-            });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Searchable = false, Orderable = false });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date", Searchable = false, Orderable = false });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "valorFormat", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
@@ -522,6 +514,15 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valor", Class = "col s12 m6", Label = "Valor", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "somaValoresSelecionados", Class = "col s12 m6", Label = "Soma valores conciliados", Value = "0", Readonly = true });
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somaValoresSelecionados",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se não houver contas existentes suficientes, cancele e escolha a opção Nova Conta, para conseguir conciliar."
+                }
+            });
 
             cfg.Content.Add(config);
 
@@ -585,10 +586,11 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
-                Label = "Pessoa",
+                Label = tipoConta == "ContaPagar" ? "Fornecedor" : "Cliente",
                 Required = true,
-                DataUrl = @Url.Action("Pessoa", "AutoComplete"),
-                LabelId = "pessoaNome"
+                DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : @Url.Action("Cliente", "AutoComplete"),
+                LabelId = "pessoaNome",
+                DataUrlPost = tipoConta == "ContaPagar" ? @Url.Action("PostFornecedor", "Fornecedor") : @Url.Action("PostCliente", "Cliente")
             });
             config.Elements.Add(new AutocompleteUI
             {
@@ -597,7 +599,9 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Forma Pagamento",
                 Required = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
-                LabelId = "formaPagamentoDescricao"
+                LabelId = "formaPagamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
+                DataPostField = "descricao"
             });
             config.Elements.Add(new AutocompleteUI
             {
@@ -606,7 +610,8 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Condição Parcelamento à vista",
                 Required = true,
                 DataUrl = @Url.Action("CondicaoParcelamentoAVista", "AutoComplete"),
-                LabelId = "condicaoParcelamentoDescricao"
+                LabelId = "condicaoParcelamentoDescricao",
+                DataUrlPost = Url.Action("PostCondicaoParcelamento", "CondicaoParcelamento"),
             });
             config.Elements.Add(new AutocompleteUI
             {
@@ -615,10 +620,39 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Categoria Financeira",
                 Required = true,
                 DataUrl = @Url.Action("Categoria" + actionCreate, "AutoComplete"),
-                LabelId = "categoriaDescricao"
+                LabelId = "categoriaDescricao",
+                DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa"): Url.Action("NovaCategoriaReceita")
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [HttpPost]
+        public JsonResult NovaCategoriaReceita(string term)
+        {
+            return NovaCategoria(new CategoriaVM { Descricao = term, TipoCarteira = "1" });
+        }
+
+        [HttpPost]
+        public JsonResult NovaCategoriaDespesa(string term)
+        {
+            return NovaCategoria(new CategoriaVM { Descricao = term, TipoCarteira = "2" });
+        }
+
+        private JsonResult NovaCategoria(CategoriaVM entity)
+        {
+            try
+            {
+                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
     }

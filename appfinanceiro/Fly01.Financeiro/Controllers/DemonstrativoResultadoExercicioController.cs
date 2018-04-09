@@ -40,9 +40,9 @@ namespace Fly01.Financeiro.Controllers
             var reportViewer = new WebReportViewer<MovimentacaoPorCategoriaVM>(ReportDre.Instance);
             var parameters = new ReportParameter[]
             {
-                new ReportParameter("TotalReceitas", totalReceitas.ToString(CultureInfo.InvariantCulture)),
-                new ReportParameter("TotalDespesas", totalDespesas.ToString(CultureInfo.InvariantCulture)),
-                new ReportParameter("ReportTotal", total.ToString(CultureInfo.InvariantCulture))
+                new ReportParameter("TotalReceitas", totalReceitas.ToString("C", AppDefaults.CultureInfoDefault)),
+                new ReportParameter("TotalDespesas", totalDespesas.ToString("C", AppDefaults.CultureInfoDefault)),
+                new ReportParameter("ReportTotal", total.ToString("C", AppDefaults.CultureInfoDefault))
             };
 
             return File(reportViewer.Print(movimentacao.Data, SessionManager.Current.UserData.PlatformUrl, $"Intervalo: {dataInicial:dd/MM/yyyy} a {dataFinal:dd/MM/yyyy}", parameters), "application/pdf");
@@ -203,7 +203,9 @@ namespace Fly01.Financeiro.Controllers
                 { "$select", "soma" }
             };
 
-            var total = RestHelper.ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>("MovimentacaoPorCategoria", queryString)
+            var total = RestHelper
+                .ExecuteGetRequest<ResultBase<DespesaPorCategoriaVM>>
+                    ("MovimentacaoPorCategoria", queryString)
                 .Data
                 .Where(x => x.CategoriaPaiId == null)
                 .Sum(x => x.Soma)

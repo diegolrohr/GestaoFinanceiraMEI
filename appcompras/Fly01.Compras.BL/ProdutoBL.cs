@@ -4,14 +4,18 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Compras.Domain.Entities;
 using Fly01.Core.Domain;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
     public class ProdutoBL : PlataformaBaseBL<Produto>
     {
-        public ProdutoBL(AppDataContextBase context) : base(context)
+        protected GrupoProdutoBL GrupoProdutoBL;
+
+        public ProdutoBL(AppDataContextBase context, GrupoProdutoBL grupoProdutoBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
+            GrupoProdutoBL = grupoProdutoBL;
         }
 
         public override void ValidaModel(Produto entity)
@@ -20,6 +24,7 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
+            entity.Fail(entity.GrupoProdutoId != null && entity.TipoProduto != GrupoProdutoBL.All.AsNoTracking().Where(x => x.Id == entity.GrupoProdutoId).FirstOrDefault().TipoProduto, TipoProdutoDiferente);
 
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {
@@ -34,5 +39,6 @@ namespace Fly01.Compras.BL
         public static Error GrupoProdutoInvalido = new Error("Grupo de produto não foi informado.", "grupoProdutoId");
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");
         public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");
+        public static Error TipoProdutoDiferente = new Error("Tipo do produto é diferente do tipo do grupo de produto.", "tipoProduto");
     }
 }

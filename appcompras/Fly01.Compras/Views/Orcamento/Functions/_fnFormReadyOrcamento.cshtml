@@ -84,6 +84,9 @@
                             fly01.go("@Url.Action("List", "Home")");
                         }
                     } else {
+                        if (justSaveOrcamentoToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
                         $('body').addClass('loaded');
                         fly01.fns.submitErrorHandler(null, data.message);
                     }

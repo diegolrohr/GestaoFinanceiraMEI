@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Compras.Domain.Entities;
+using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Collections.Generic;
@@ -9,9 +10,12 @@ namespace Fly01.Compras.BL
 {
     public class CategoriaBL : PlataformaBaseBL<Categoria>
     {
-        public CategoriaBL(AppDataContext context) : base(context)
+        private OrdemCompraBL OrdemCompraBL;
+
+        public CategoriaBL(AppDataContext context, OrdemCompraBL OrdemCompraBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
+            this.OrdemCompraBL = OrdemCompraBL;
         }
 
         public override void Insert(Categoria entity)
@@ -23,7 +27,11 @@ namespace Fly01.Compras.BL
         public override void Update(Categoria entity)
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
+            bool categoriaTemOrdemCompra = OrdemCompraBL.All.Where(x => x.Ativo && x.CategoriaId == entity.Id).Any();
 
+            entity.Fail(categoriaTemOrdemCompra && entity.TipoCarteira == TipoCarteira.Receita, AlterarTipoInvalidaFK);
+            entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);
             ValidaModel(entity);
@@ -87,5 +95,6 @@ namespace Fly01.Compras.BL
         public static Error AlteracaoCategoriaSuperiorInvalida = new Error("Não é possível alterar a Categoria Superior desta Categoria, pois a mesma já possui filhos.");
         public static Error AlteracaoTipoInvalida = new Error("Não é possível alterar o Tipo desta Categoria, pois a mesma já possui filhos.");
         public static Error PaiJaEFilho = new Error("Não é possível definir como pai uma categoria que já seja filha.");
+        public static Error AlterarTipoInvalidaFK = new Error("Não é possível alterar a Categoria Superior desta Categoria, pois a mesma possui relação com Ordem de Compra.");
     }
 }

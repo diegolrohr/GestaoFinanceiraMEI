@@ -207,13 +207,14 @@ namespace Fly01.Compras.Controllers
                 Id = "saldoProdutoField",
                 Class = "col s12 m3",
                 Label = "Saldo Atual",
+                Value = "0",
                 Disabled = true,
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "blur", Function = "fnChangeSaldoProduto" } }
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 
@@ -235,11 +236,10 @@ namespace Fly01.Compras.Controllers
                 },
                 Id = "fly01mdlfrmProduto",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnFormReady"
+                ReadyFn = "fnFormReadyModal"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
             config.Elements.Add(new InputHiddenUI { Id = "valorCusto", Value = "0" });
             config.Elements.Add(new InputHiddenUI { Id = "valorVenda", Value = "0" });
 
@@ -258,7 +258,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "grupoProdutoId",
-                Class = "col s12 m9",
+                Class = "col s12 m7",
                 Label = "Grupo",
                 Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
@@ -266,6 +266,15 @@ namespace Fly01.Compras.Controllers
                 LabelId = "grupoProdutoDescricao",
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
+            });
+
+            config.Elements.Add(new InputNumbersUI
+            {
+                Id = "saldoProduto",
+                Class = "col s12 m2",
+                Label = "Saldo atual",
+                Value = "0",
+                Required = true
             });
 
             config.Elements.Add(new AutocompleteUI
@@ -277,6 +286,7 @@ namespace Fly01.Compras.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
+
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

@@ -1,6 +1,6 @@
 ﻿<script>
 	function fnFormReady() {
-		fnChangeTipoProduto();
+		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto", "Produto")?tipo=" + $("#tipoProduto").val());
 		if (isCreate()) {
 			$("#saldoProdutoField").prop('disabled', false);
 		} else {

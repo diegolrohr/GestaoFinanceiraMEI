@@ -1,11 +1,7 @@
-﻿
-<script>
-	function fnChangeTipoProduto(event) {
-	    $("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto", "Produto")?tipo=" + $("#tipoProduto").val());
-
-	    if ($("#tipoProduto").val() == "Insumo")
-	        $("#valorVenda").attr('disabled', 'disabled');
-        else
-	        $("#valorVenda").removeAttr('disabled');
-    }
+﻿<script>
+    function fnChangeTipoProduto(event) {
+        $("#grupoProdutoDescricao").val("");
+        $("#grupoProdutoId").val("");
+		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto", "Produto")?tipo=" + $("#tipoProduto").val());
+	}
 </script>

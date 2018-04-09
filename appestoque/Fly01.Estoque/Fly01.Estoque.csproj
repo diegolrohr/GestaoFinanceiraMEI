@@ -197,6 +197,7 @@
     <Content Include="Views\Shared\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\AjusteManual\Functions\_fnEntradaSaida.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

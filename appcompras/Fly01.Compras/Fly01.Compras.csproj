@@ -232,6 +232,7 @@
     <Content Include="Views\Pedido\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

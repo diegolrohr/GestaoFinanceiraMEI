@@ -171,7 +171,7 @@ namespace Fly01.Compras.Controllers
 
             #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto"});
+            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
             config.Elements.Add(new InputNumbersUI { Id = "orcamentoOrigemNumero", Class = "col s12 m4", Label = "Orçamento Origem", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
@@ -191,50 +191,80 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Financeiro
-            config.Elements.Add(new InputCheckboxUI { Id = "geraFinanceiro", Class = "col s12 m3", Label = "Gera financeiro",
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "geraFinanceiro",
+                Class = "col s12 m3",
+                Label = "Gera financeiro",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
                 }
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
-            config.Elements.Add(new AutocompleteUI { Id = "formaPagamentoId", Class = "col s12 m6", Label = "Forma Pagamento",
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "formaPagamentoId",
+                Class = "col s12 m6",
+                Label = "Forma Pagamento",
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao",
-				DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
-				DataPostField = "descricao"
+                DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
+                DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI { Id = "condicaoParcelamentoId", Class = "col s12 m6", Label = "Condição Parcelamento",
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 m6",
+                Label = "Condição Parcelamento",
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
-				DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
-				DataPostField = "descricao"
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
+                DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI { Id = "categoriaId", Class = "col s12 m6", Label = "Categoria",
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "categoriaId",
+                Class = "col s12 m6",
+                Label = "Categoria",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-				DataUrlPost = Url.Action("NovaCategoriaDespesa")
+                DataUrlPost = Url.Action("NovaCategoriaDespesa")
 
             });
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutocompleteUI { Id = "transportadoraId", Class = "col s12 m8", Label = "Transportadora",
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "transportadoraId",
+                Class = "col s12 m8",
+                Label = "Transportadora",
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora")
 
             });
-            config.Elements.Add(new SelectUI { Id = "tipoFrete", Class = "col s12 m4", Label = "Tipo Frete", Value = "SemFrete", Required = true,
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoFrete",
+                Class = "col s12 m4",
+                Label = "Tipo Frete",
+                Value = "SemFrete",
+                Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false)),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                 }
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m3", Label = "Valor Frete",
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorFrete",
+                Class = "col s12 m3",
+                Label = "Valor Frete",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
@@ -246,7 +276,11 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Produtos
-            config.Elements.Add(new ButtonUI { Id = "btnAddPedidoItem", Class = "col s12 m2", Value = "Adicionar produto",
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnAddPedidoItem",
+                Class = "col s12 m2",
+                Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
@@ -325,7 +359,7 @@ namespace Fly01.Compras.Controllers
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "fornecedorNome"
             });
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "formaPagamentoId",
@@ -384,7 +418,11 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "geraFinanceiro", Class = "col s12 m6", Label = "Gera financeiro", Disabled = true });
 
             config.Elements.Add(new LabelsetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
-            config.Elements.Add(new TableUI { Id = "pedidoItensDataTable", Class = "col s12", Disabled = true ,
+            config.Elements.Add(new TableUI
+            {
+                Id = "pedidoItensDataTable",
+                Class = "col s12",
+                Disabled = true,
                 Options = new List<OptionUI>
                 {
                     new OptionUI { Label = "Produto", Value = "0"},

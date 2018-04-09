@@ -21,7 +21,7 @@ namespace Fly01.Estoque.Controllers
         protected string SelectProperties { get; set; }
         public ProdutoController()
         {
-            ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao,abreviacao),ncm($select=id,descricao),cest($select=id,descricao,codigo)";
+            ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo)";
             ExpandProperties = string.Concat(ExpandProperties, ",enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)");
 
             SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto";
@@ -61,7 +61,6 @@ namespace Fly01.Estoque.Controllers
                 descricao = x.Descricao,
                 unidadeMedidaId = x.UnidadeMedidaId,
                 unidadeMedida_descricao = x.UnidadeMedida != null ? x.UnidadeMedida.Descricao : "",
-                unidadeMedida_sigla = x.UnidadeMedida != null ? x.UnidadeMedida.Abreviacao : "",
                 valorCusto = x.ValorCusto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorVenda = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault),
                 saldoProduto = x.SaldoProduto,
@@ -191,7 +190,7 @@ namespace Fly01.Estoque.Controllers
                 Class = "col l3 m3 s12",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false, "PRODUTO FINAL")),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
@@ -268,12 +267,13 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col l3 m3 s12", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col l3 m3 s12", Label = "Valor Venda" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
+
 
         #region onDemand
 
@@ -318,12 +318,10 @@ namespace Fly01.Estoque.Controllers
                 },
                 Id = "fly01mdlfrmProduto",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnFormReady"
+                ReadyFn = "fnFormReadyModal"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
-
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
 
             config.Elements.Add(new SelectUI
@@ -339,7 +337,7 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "grupoProdutoId",
-                Class = "col s12 m9",
+                Class = "col s12 m7",
                 Label = "Grupo",
                 Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
@@ -348,7 +346,14 @@ namespace Fly01.Estoque.Controllers
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             });
-
+            config.Elements.Add(new InputNumbersUI
+            {
+                Id = "saldoProduto",
+                Class = "col l2 m2 s12",
+                Label = "Saldo atual",
+                Value = "0",
+                Required = true
+            });
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "unidadeMedidaId",
@@ -357,8 +362,7 @@ namespace Fly01.Estoque.Controllers
                 Required = true,
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
-            });
-
+            });            
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

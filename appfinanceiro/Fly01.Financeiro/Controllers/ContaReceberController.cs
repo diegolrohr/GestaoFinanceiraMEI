@@ -276,7 +276,7 @@ namespace Fly01.Financeiro.Controllers
                 Required = true,
                 DataUrl = Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
-                DataUrlPost = Url.Action("PostCliente")
+                DataUrlPost = Url.Action("PostCliente","Cliente")
             });
             config.Elements.Add(new InputCurrencyUI
             {
@@ -338,7 +338,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             config.Elements.Add(new InputCheckboxUI
             {
@@ -435,10 +435,10 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "renegociacaoPessoaId",
                 Class = "col s12 m10 l10",
-                Label = "Pagador",
+                Label = "Cliente",
                 Required = true,
-                DataUrl = @Url.Action("Pessoa", "AutoComplete"),
-                LabelId = "pessoaNome",
+                DataUrl = @Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeRenegociacaoPessoa" }
@@ -613,31 +613,6 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult PostCliente(string term)
-        {
-            var entity = new PessoaVM
-            {
-                Nome = term,
-                Cliente = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
-            };
-
-            NormarlizarEntidade(ref entity);
-
-            try
-            {
-                var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
-                var data = RestHelper.ExecutePostRequest<PessoaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
         private void NormarlizarEntidade(ref PessoaVM entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";
@@ -660,5 +635,6 @@ namespace Fly01.Financeiro.Controllers
         }
 
         #endregion
+
     }
 }

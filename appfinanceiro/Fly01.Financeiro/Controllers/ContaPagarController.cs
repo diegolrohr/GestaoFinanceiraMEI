@@ -36,7 +36,7 @@ namespace Fly01.Financeiro.Controllers
             double discount = 0;
             double interest = 0;
             double total = 0;
-            string valorTituloTotalFormatado = string.Empty;
+            string valorTituloTotalFormatado = itemContaPagar.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault);
 
             //if (itemBankTransac != null)
             //{
@@ -301,7 +301,7 @@ namespace Fly01.Financeiro.Controllers
                 Required = true,
                 DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "pessoaNome",
-                DataUrlPost = Url.Action("PostFornecedor")
+                DataUrlPost = Url.Action("PostFornecedor","Fornecedor")
             });
             config.Elements.Add(new InputCurrencyUI
             {
@@ -363,7 +363,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             config.Elements.Add(new InputCheckboxUI
             {
@@ -460,10 +460,10 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "renegociacaoPessoaId",
                 Class = "col s12 m10 l10",
-                Label = "Recebedor",
+                Label = "Fornecedor",
                 Required = true,
-                DataUrl = @Url.Action("Pessoa", "AutoComplete"),
-                LabelId = "pessoaNome",
+                DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
+                LabelId = "fornecedorNome",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeRenegociacaoPessoa" }
@@ -643,7 +643,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "Valor", Class = "col s4 l2", Label = "Valor" });
             config.Elements.Add(new InputTextUI { Id = "Categoria", Class = "col s6 l6", Label = "Categoria" });
             config.Elements.Add(new InputTextUI { Id = "Banco", Class = "col s6 l6", Label = "Banco" });
-            config.Elements.Add(new TextareaUI { Id = "Observacao", Class = "col s12 l12", Label = "Observação" });
+            config.Elements.Add(new TextareaUI { Id = "Observacao", Class = "col s12 l12", Label = "Observação", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -670,32 +670,6 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
-        public JsonResult PostFornecedor(string term)
-        {
-            var entity = new PessoaVM
-            {
-                Nome = term,
-                Fornecedor = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
-            };
-
-            NormarlizarEntidade(ref entity);
-
-            try
-            {
-                var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
-                var data = RestHelper.ExecutePostRequest<PessoaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
         private void NormarlizarEntidade(ref PessoaVM entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";

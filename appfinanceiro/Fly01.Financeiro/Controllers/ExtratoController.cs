@@ -528,7 +528,7 @@ namespace Fly01.Financeiro.Controllers
                 Name = "contaBancariaDestinoId",
                 DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
                 LabelId = "contaBancariaDestinoNomeContaReceb",
-                LabelName = "contaBancariaDestinoNomeConta",                
+                LabelName = "contaBancariaDestinoNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
             });
@@ -561,7 +561,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorReceb", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao" });
+            config.Elements.Add(new TextareaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -625,7 +625,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorPgto", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao" });
+            config.Elements.Add(new TextareaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

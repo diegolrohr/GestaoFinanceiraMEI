@@ -305,7 +305,7 @@ namespace Fly01.Faturamento.BL
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
                 double valorPrevisto = totalProdutos
                     + totalServicos
-                    + (entity.TipoFrete == TipoFrete.CIF && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0)
+                    + ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0)
                     + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
 
 

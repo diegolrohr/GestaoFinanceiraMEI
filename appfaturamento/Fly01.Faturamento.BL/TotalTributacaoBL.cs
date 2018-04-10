@@ -180,7 +180,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            double freteFracionado = tipoFrete == TipoFrete.CIF && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = (tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
             foreach (var itemProduto in tributacaoItens)
             {

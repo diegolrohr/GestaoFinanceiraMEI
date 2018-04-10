@@ -60,6 +60,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\ReportImprimirOrcamento.rdlc" />
     <EmbeddedResource Include="Reports\ReportImprimirPedido.rdlc" />
   </ItemGroup>
   <ItemGroup>
@@ -88,11 +89,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
     <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
     <Compile Include="Models\Utils\SAMLXmlReader.cs" />
+    <Compile Include="Models\ViewModel\ImprimirOrcamentoVM.cs" />
     <Compile Include="Models\ViewModel\ImprimirPedidoVM.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,6 +242,7 @@
     <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -359,7 +363,7 @@
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.VM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -416,10 +420,4 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>

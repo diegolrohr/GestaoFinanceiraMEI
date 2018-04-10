@@ -15,7 +15,7 @@
 
     function calculaTotalOrcamento() {
         var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF") {
+        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 

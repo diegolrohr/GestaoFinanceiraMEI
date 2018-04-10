@@ -86,11 +86,11 @@
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
       <Name>Fly01.Core.ServiceBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -128,11 +128,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

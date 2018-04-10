@@ -37,6 +37,9 @@ namespace Fly01.Compras.Entities.ViewModel
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
+        [JsonProperty("total")]
+        public double? Total { get; set; }
+
         #region Navigation Properties
 
         [JsonProperty("condicaoParcelamento")]

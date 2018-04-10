@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Fly01.Core.Notifications;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Fly01.Core.Notifications;
 
 namespace Fly01.Core.Domain
 {

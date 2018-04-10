@@ -19,7 +19,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public NotaFiscalController()
         {
-            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria";
+            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serienotafiscal";
         }
 
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
@@ -45,7 +45,8 @@ namespace Fly01.Faturamento.Controllers
                 tipoVendaCssClass = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).CssClass,
                 tipoVendaValue = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Value,
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
-                numNotaFiscal = x.NumNotaFiscal
+                numNotaFiscal = x.NumNotaFiscal,
+                serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
             };
         }
 
@@ -150,12 +151,13 @@ namespace Fly01.Faturamento.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 1, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 2,
+                Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusNotaFiscal", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
@@ -163,13 +165,13 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoNotaFiscal",
                 DisplayName = "Tipo",
-                Priority = 3,
+                Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoNotaFiscal", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoNotaFiscalCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoNotaFiscalDescription + \"</span>\" }"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 6 });//numero int e pesquisa string
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 7 });//numero int e pesquisa string
             //config.Columns.Add(new DataTableUIColumn
             //{
             //    DataField = "tipoVenda",

@@ -143,7 +143,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ModalidadeBC = ModalidadeBC,
                         ModalidadeBCST = ModalidadeBCST,
                         PercentualBCop = PercentualBCop,
-                        UF = UF,
                         PercentualReducaoBCST = PercentualReducaoBCST,
                         MotivoDesoneracaoICMS = MotivoDesoneracaoICMS,
                         ValorBC = ValorBC,

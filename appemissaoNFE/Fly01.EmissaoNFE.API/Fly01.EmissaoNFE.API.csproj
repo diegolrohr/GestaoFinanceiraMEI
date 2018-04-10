@@ -64,6 +64,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\CceController.cs" />
+    <Compile Include="Controllers\Api\ChaveController.cs" />
     <Compile Include="Controllers\Api\DanfeXMLController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\NFeController.cs" />

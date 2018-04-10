@@ -19,14 +19,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    if((int)entity.EntidadeAmbiente == 2)
-                    {
-                        Homologacao(entity);
-                    }
-                    else
-                    {
-                        Producao(entity);
-                    }
+                    Homologacao(entity);
+                    
+                    Producao(entity);
 
                     return Ok(new { success = true });
                 }

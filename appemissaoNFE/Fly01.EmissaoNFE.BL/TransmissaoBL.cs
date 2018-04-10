@@ -231,6 +231,54 @@ namespace Fly01.EmissaoNFE.BL
 
                 #endregion
 
+                #region Validações da classe Transporte
+
+                var modFrete = EnumHelper.GetDataEnumValues(typeof(ModalidadeFrete));
+
+                entity.Fail(!modFrete.Any(x => x.Value == ((int)item.Transporte.ModalidadeFrete).ToString()), ModalidadeFreteInvalida);
+
+                if (item.Transporte.Transportadora != null)
+                {
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.RazaoSocial), RazaoTranspRequerida);
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && string.IsNullOrEmpty(item.Transporte.Transportadora.CPF), CpfouCnpjTranspRequerido);
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && !EmpresaBL.ValidaCNPJ(item.Transporte.Transportadora.CNPJ), CnpjTranspInvalido);
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CPF) && !EmpresaBL.ValidaCNPJ(item.Transporte.Transportadora.CPF), CpfTranspInvalido);
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Endereco), EnderecoTranspInvalido);
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Municipio), MunicipioTranspInvalido);
+                    if (item.Transporte.Transportadora.IE != null)
+                    {
+                        if (!EmpresaBL.ValidaIE(item.Transporte.Transportadora.UF, item.Transporte.Transportadora.IE, out msgError))
+                        {
+                            switch (msgError)
+                            {
+                                case "1":
+                                    entity.Fail(true, IETranspDigitoVerificador);
+                                    break;
+                                case "2":
+                                    entity.Fail(true, IETranspQuantidadeDeDigitos);
+                                    break;
+                                case "3":
+                                    entity.Fail(true, IETranspInvalida);
+                                    break;
+                                case "4":
+                                    entity.Fail(true, UFTranspInvalida);
+                                    break;
+                                case "5":
+                                    entity.Fail(true, UFTranspRequerida);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        entity.Fail(true, IETranspRequerida);
+                    }
+                }
+
+                #endregion
+                
                 var nItem = 1;
 
                 foreach (var detalhe in item.Detalhes)
@@ -476,6 +524,7 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "103": //Isenção do ICMS no Simples Nacional para faixa de receita bruta
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
@@ -528,9 +577,11 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "300": //Imune
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "400": //Não tributada pelo Simples Nacional
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
@@ -981,7 +1032,25 @@ namespace Fly01.EmissaoNFE.BL
         public static Error CepInvalidoDestinatario = new Error("CEP do destinatário inválido.", "item.Destinatario.Endereco.Cep");
 
         #endregion
-        
+
+        #region ERRORs da classe Transporte
+
+        public static Error RazaoTranspRequerida = new Error("Razão Social da transportadora é um dado obrigatório");
+        public static Error IETranspDigitoVerificador = new Error("Digito verificador inválido (para este estado) - IE Transportadora.", "InscricaoEstadual");
+        public static Error IETranspQuantidadeDeDigitos = new Error("Quantidade de dígitos inválido (para este estado) - IE Transportadora.", "InscricaoEstadual");
+        public static Error IETranspInvalida = new Error("Inscrição Estadual inválida (para este estado) - IE Transportadora.", "InscricaoEstadual");
+        public static Error UFTranspInvalida = new Error("Sigla da UF da transportadora inválida.", "UF");
+        public static Error UFTranspRequerida = new Error("UF da transportadora é um campo obrigatório.", "UF");
+        public static Error ModalidadeFreteInvalida = new Error("Modalidade de frete inválida");
+        public static Error CpfouCnpjTranspRequerido = new Error("Informe CPF ou CNPJ da transportadora");
+        public static Error CnpjTranspInvalido = new Error("CNPJ da transportadora é inválido");
+        public static Error CpfTranspInvalido = new Error("CPF da transportadora é inválido");
+        public static Error EnderecoTranspInvalido = new Error("Endereço da transportadora é obrigatório");
+        public static Error MunicipioTranspInvalido = new Error("Município da transportadora é um dado obrigatório");
+        public static Error IETranspRequerida = new Error("Inscrição Estadual da transportadora é um dado obrigatório");
+
+        #endregion
+
         #region ERRORs da classe Total
 
         public static Error TotalNulo = new Error("Os dados de totais são obrigatórios.", "Item.Total");

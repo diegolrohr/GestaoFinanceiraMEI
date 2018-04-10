@@ -13,6 +13,9 @@ using System.Text.RegularExpressions;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Compras.Models.ViewModel;
+using Fly01.Compras.Models.Reports;
+using Fly01.Core.Config;
 
 namespace Fly01.Compras.Controllers
 {
@@ -340,6 +343,63 @@ namespace Fly01.Compras.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        public virtual ActionResult ImprimirOrcamento(Guid id)
+        {
+            OrcamentoVM Orcamento = Get(id);
+
+            var produtos = GetOrcamento(id);
+
+            List<ImprimirOrcamentoVM> reportItems = new List<ImprimirOrcamentoVM>();
+
+            foreach (OrcamentoItemVM produtosorcamento in produtos)
+
+                reportItems.Add(new ImprimirOrcamentoVM
+                {
+                    //ORCAMENTO
+                    Categoria = Orcamento.Categoria != null ? Orcamento.Categoria.Descricao : string.Empty,
+                    CondicaoParcelamento = Orcamento.CondicaoParcelamento != null ? Orcamento.CondicaoParcelamento.Descricao : string.Empty,
+                    DataVencimento = Orcamento.DataVencimento,
+                    FormaPagamento = Orcamento.FormaPagamento != null ? Orcamento.FormaPagamento.Descricao : string.Empty,
+                    Numero = Orcamento.Numero,
+                    Observacao = Orcamento.Observacao,
+                    //PRODUTO
+                    Id = produtosorcamento.Id.ToString(),
+                    NomeProduto = produtosorcamento.Produto != null ? produtosorcamento.Produto.Descricao : string.Empty,
+                    Fornecedor = produtosorcamento.Fornecedor != null ? produtosorcamento.Fornecedor.Nome.ToString() : string.Empty,
+                    QtdProduto = produtosorcamento.Quantidade,
+                    ValorUnitario = produtosorcamento.Valor,
+                    ValorTotal = produtosorcamento.Total,
+                });
+
+            if (!produtos.Any())
+            {
+                reportItems.Add(new ImprimirOrcamentoVM
+                {
+                    //ORCAMENTO
+                    Categoria = Orcamento.Categoria != null ? Orcamento.Categoria.Descricao : string.Empty,
+                    CondicaoParcelamento = Orcamento.CondicaoParcelamento != null ? Orcamento.CondicaoParcelamento.Descricao : string.Empty,
+                    DataVencimento = Orcamento.DataVencimento,
+                    FormaPagamento = Orcamento.FormaPagamento != null ? Orcamento.FormaPagamento.Descricao : string.Empty,
+                    Numero = Orcamento.Numero,
+                    Observacao = Orcamento.Observacao,
+                });
+            }
+
+            var reportViewer = new WebReportViewer<ImprimirOrcamentoVM>(ReportImprimirOrcamento.Instance);
+            return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+
+        }
+
+        public List<OrcamentoItemVM> GetOrcamento(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"orcamentoId eq {id}");
+            queryString.AddParam("$expand", "produto,fornecedor");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrcamentoItemVM>>("OrcamentoItem", queryString).Data;
+        }
+
 
         #region OnDemmand
 

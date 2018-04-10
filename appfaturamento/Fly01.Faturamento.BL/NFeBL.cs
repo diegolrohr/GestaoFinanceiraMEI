@@ -232,7 +232,7 @@ namespace Fly01.Faturamento.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (int)entity.TipoFrete
+                        ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString())
                     };
                     if (transportadora != null) {
                         itemTransmissao.Transporte.Transportadora = new Transportadora()

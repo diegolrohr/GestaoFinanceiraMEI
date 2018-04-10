@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Fly01.EmissaoNFE.Domain.Enums;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -6,7 +7,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
     public class Transporte
     {
         [XmlElement(ElementName = "modFrete")]
-        public int ModalidadeFrete { get; set; }
+        public ModalidadeFrete ModalidadeFrete { get; set; }
 
         [XmlElement(ElementName = "transporta", IsNullable = true)]
         public Transportadora Transportadora { get; set; }

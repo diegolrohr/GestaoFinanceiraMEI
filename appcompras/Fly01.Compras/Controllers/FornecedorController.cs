@@ -44,7 +44,6 @@ namespace Fly01.Compras.Controllers
             entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
             entityVM.Telefone = Regex.Replace(entityVM.Telefone ?? "", regexSomenteDigitos, "");
             entityVM.CEP = Regex.Replace(entityVM.CEP ?? "", regexSomenteDigitos, "");
-            entityVM.InscricaoEstadual = Regex.Replace(entityVM.InscricaoEstadual ?? "", regexSomenteDigitos, "");
 
             if (string.IsNullOrEmpty(entityVM.TipoIndicacaoInscricaoEstadual))
                 entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteICMS";

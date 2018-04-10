@@ -7,29 +7,29 @@ using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
 using EmpresaVM = Fly01.Core.VM.EmpresaVM;
 using Fly01.Core;
 using Fly01.Core.Rest;
+using Fly01.EmissaoNFE.Domain.ViewModel;
 
 namespace Fly01.Faturamento.BL
 {
-    public class EntidadeBL : PlataformaBaseBL<Entidade>
+    public class EntidadeBL : PlataformaBaseBL<CertificadoDigital>
     {
+        private Dictionary<string, string> GetHeaderDefault()
+        {
+            return new Dictionary<string, string>()
+            {
+                { "PlataformaUrl", PlataformaUrl },
+                { "AppUser", AppUser }
+            };
+        }
+
         protected EstadoBL EstadoBL;
-        private readonly Dictionary<string, string> _queryString;
-        private readonly Dictionary<string, string> _header;
 
         public EntidadeBL(AppDataContext context, EstadoBL estadoBL) : base(context)
         {
             EstadoBL = estadoBL;
-            _queryString = AppDefaults.GetQueryStringDefault();
-            _header = new Dictionary<string, string>
-            {
-                {"PlataformaUrl", PlataformaUrl},
-                {"AppUser", AppUser},
-                {"PlataformaId", PlataformaUrl},
-                {"UsuarioInclusao", AppUser}
-            };
         }
-        
-        public EmpresaNfeVM RetornaEntidade()
+
+        public EntidadeVM RetornaEntidade()
         {
             var empresa = GetDadosEmpresa();
 
@@ -57,15 +57,43 @@ namespace Fly01.Faturamento.BL
                                 (AppDefaults.UrlEmissaoNfeApi,
                                     "Empresa",
                                     entidade,
-                                    _queryString,
-                                    _header);
+                                    null,
+                                    GetHeaderDefault());
 
             return empresaNfe;
         }
 
         private EmpresaVM GetDadosEmpresa()
         {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var urlGateway = AppDefaults.UrlGateway
+                                .Replace("financeiro/", string.Empty)
+                                .Replace("faturamento/", string.Empty)
+                                .Replace("estoque/", string.Empty)
+                                .Replace("compras/", string.Empty);
+
+            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{PlataformaUrl}");
+        }
+
+        public EntidadeVM GetEntidade()
+        {
+            var certificado = All.FirstOrDefault();
+            
+            if (certificado != null && certificado.EntidadeHomologacao != null && certificado.EntidadeProducao != null)
+            {
+                var retorno = new EntidadeVM
+                {
+                    Homologacao = certificado.EntidadeHomologacao,
+                    Producao = certificado.EntidadeProducao
+                };
+
+                return retorno;
+            }
+            else
+            {
+                var entidades = RetornaEntidade();
+                
+                return entidades;
+            }
         }
     }
 }

@@ -208,6 +208,14 @@
     <Compile Include="Migrations\201804021840041_Alter_Certificado_DuasEntidadesTSS.Designer.cs">
       <DependentUpon>201804021840041_Alter_Certificado_DuasEntidadesTSS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs" />
+    <Compile Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.Designer.cs">
+      <DependentUpon>201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs" />
+    <Compile Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.Designer.cs">
+      <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -357,6 +365,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804021840041_Alter_Certificado_DuasEntidadesTSS.resx">
       <DependentUpon>201804021840041_Alter_Certificado_DuasEntidadesTSS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.resx">
+      <DependentUpon>201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.resx">
+      <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

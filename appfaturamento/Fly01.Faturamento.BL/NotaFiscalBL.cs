@@ -81,11 +81,14 @@ namespace Fly01.Faturamento.BL
                             { "AppUser", AppUser },
                             { "PlataformaUrl", PlataformaUrl }
                         };
+
+                        var entidade = CertificadoDigitalBL.GetEntidade();
+                        
                         var danfe = new DanfeVM()
                         {
-                            Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
-                            Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
-                            EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
                             DanfeId = notaFiscal.SefazId.ToString()
                         };
 
@@ -141,11 +144,14 @@ namespace Fly01.Faturamento.BL
                             { "AppUser", AppUser },
                             { "PlataformaUrl", PlataformaUrl }
                         };
+
+                        var entidade = CertificadoDigitalBL.GetEntidade();
+                        
                         var danfe = new DanfeVM()
                         {
-                            Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
-                            Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
-                            EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
                             DanfeId = notaFiscal.SefazId.ToString()
                         };
 
@@ -196,21 +202,23 @@ namespace Fly01.Faturamento.BL
                 try
                 {
                     var header = new Dictionary<string, string>()
-                        {
-                            { "AppUser", AppUser },
-                            { "PlataformaUrl", PlataformaUrl }
-                        };
+                    {
+                        { "AppUser", AppUser },
+                        { "PlataformaUrl", PlataformaUrl }
+                    };
 
+                    var entidade = CertificadoDigitalBL.GetEntidade();
+                    
                     var cancelar = new CancelarFaixaVM()
                     {
-                        Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
-                        Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
-                        EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), CertificadoDigitalBL.GetAmbiente().ToString()),
+                        Homologacao = entidade.Homologacao,
+                        Producao = entidade.Producao,
+                        EntidadeAmbiente = entidade.EntidadeAmbiente,
                         NotaInicial = notaFiscal.SefazId.ToString(),
                         NotaFinal = notaFiscal.SefazId.ToString()
                     };
 
-                    RestHelper.ExecutePostRequest<CancelarFaixaRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
+                    RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
                     if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
                     {
                         var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();

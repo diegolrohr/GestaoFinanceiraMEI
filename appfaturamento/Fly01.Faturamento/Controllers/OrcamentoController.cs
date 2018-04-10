@@ -103,7 +103,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 7,
+                        Quantity = 8,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -268,8 +268,9 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Finalizar
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total impostos produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
@@ -309,7 +310,15 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalImpostosProdutos",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações do grupo tributário informado em cada produto."
+                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutosNaoAgrega",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS e PIS."
                 }
             });
             config.Helpers.Add(new TooltipUI

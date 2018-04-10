@@ -1,38 +1,23 @@
-﻿using Fly01.EmissaoNFE.API.App_Start;
-using Fly01.EmissaoNFE.BL;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+﻿using Fly01.Core.API.Application;
+using Microsoft.OData.Edm;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
+using System.Web.OData.Builder;
 
 namespace Fly01.EmissaoNFE.API
 {
-    public class WebApiApplication : HttpApplication
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        protected void Application_Start()
+        protected override IEdmModel GetEdmModel()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                FloatFormatHandling = FloatFormatHandling.DefaultValue,
-                FloatParseHandling = FloatParseHandling.Decimal,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
-            };
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.ContainerName = "DefaultContainer";
+            builder.EnableLowerCamelCase();
+            return builder.GetEdmModel();
+        }
 
-            GlobalConfiguration.Configure(config =>
-            {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
-            });
-
-            //Task.Factory.StartNew(() => new ServiceBusBL());
+        protected override Task RunServiceBus()
+        {
+            return Task.Factory.StartNew(() => { });
         }
     }
 }

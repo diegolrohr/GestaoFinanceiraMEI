@@ -1,20 +1,20 @@
-﻿using Fly01.Faturamento.BL;
-using Fly01.Core;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Configuration;
+using Microsoft.OData.Edm;
 
-namespace Fly01.Faturamento.API
+namespace Fly01.Core.API.Application
 {
-    public class WebApiApplication : HttpApplication
+    public abstract class GlobalWebAPIApplication : HttpApplication
     {
+        protected abstract IEdmModel GetEdmModel();
+        protected abstract Task RunServiceBus();
+
         protected void Application_Start()
         {
-            SetAppDefaults();
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Formatting = Formatting.None,
@@ -30,19 +30,11 @@ namespace Fly01.Faturamento.API
 
             GlobalConfiguration.Configure(config =>
             {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
+                ODataConfig.Register(config, GetEdmModel());
+                WebAPIConfig.Register(config);
             });
 
-            Task.Factory.StartNew(() => new ServiceBusBL());
-        }
-
-        private void SetAppDefaults()
-        {
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlS1Gateway"];
-            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
-            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
-            AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
+            RunServiceBus();            
         }
     }
 }

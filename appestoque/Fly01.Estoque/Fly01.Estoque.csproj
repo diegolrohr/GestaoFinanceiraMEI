@@ -145,9 +145,7 @@
     <Content Include="Views\Shared\Functions\_fnNovo.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvar.cshtml" />
     <Content Include="Views\Shared\Functions\___format.cshtml" />
-    <Content Include="Views\Shared\Head\_Default.cshtml" />
     <Content Include="Views\Shared\Index.cshtml" />
-    <Content Include="Views\Shared\Scripts\_Default.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Web.config">

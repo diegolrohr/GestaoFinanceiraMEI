@@ -283,7 +283,7 @@ namespace Fly01.Faturamento.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
                 }
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6 l3", Label = "Frete fornecedor paga (CIF)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6 l3", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6 l6", Label = "Total pedido(produtos + serviços + impostos + frete)", Readonly = true });
 
             #endregion
@@ -326,7 +326,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF) e da soma dos impostos."
+                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF ou Remetente) e da soma dos impostos."
                 }
             });
             #endregion

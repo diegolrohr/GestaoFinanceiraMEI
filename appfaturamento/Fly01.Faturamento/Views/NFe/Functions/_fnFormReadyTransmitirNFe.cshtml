@@ -7,7 +7,7 @@
 
     function calculaTotalNFeTransmitir() {
         var valorFrete = 0;
-        if ($('input#tipoFreteNFe').val() == "CIF") {
+        if ($('input#tipoFreteNFe').val() == "CIF" || $('input#tipoFreteNFe').val() == "Remetente") {
             valorFrete = parseFloat(noComma($('form#fly01mdlfrmTransmitirNFe input#valorFreteNFe').val()));
         }
 

@@ -1,59 +1,18 @@
-﻿using Fly01.Faturamento.Domain.Entities;
+﻿using Fly01.Faturamento.BL;
+using System.Threading.Tasks;
+using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
-using Microsoft.OData.UriParser;
-using System.Linq;
-using System.Web.Http;
-using System.Web.OData;
-using System.Web.OData.Batch;
 using System.Web.OData.Builder;
-using System.Web.OData.Extensions;
-using System.Web.OData.Query;
-using Fly01.Core.API;
+using Fly01.Faturamento.Domain.Entities;
 
 namespace Fly01.Faturamento.API
 {
-    public class ODataConfig
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        public static void Register(HttpConfiguration config)
-        {
-            config.MapHttpAttributeRoutes(new CustomDirectRouteProvider());
-
-            config.EnableCors();
-
-            config.MapODataServiceRoute(
-                routeName: "ODataRoute",
-                routePrefix: "api",
-                model: GetEdmModel(config),
-                batchHandler: new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
-        }
-
-        private static IEdmModel GetEdmModel(HttpConfiguration config)
+        protected override IEdmModel GetEdmModel()
         {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-
             builder.ContainerName = "DefaultContainer";
-
-            var queryAttribute = new EnableQueryAttribute()
-            {
-                AllowedQueryOptions = AllowedQueryOptions.All,
-                MaxTop = 50,
-                PageSize = 50,
-                MaxExpansionDepth = 10,
-                EnableConstantParameterization = true,
-                AllowedFunctions = AllowedFunctions.All,
-                AllowedArithmeticOperators = AllowedArithmeticOperators.All,
-                AllowedLogicalOperators = AllowedLogicalOperators.All,
-                EnsureStableOrdering = true,
-                HandleNullPropagation = HandleNullPropagationOption.True
-            };
-            config.Count(QueryOptionSetting.Allowed)
-                  .Filter(QueryOptionSetting.Allowed)
-                  .OrderBy(QueryOptionSetting.Allowed)
-                  .Expand(QueryOptionSetting.Allowed)
-                  .Select(QueryOptionSetting.Allowed)
-                  .MaxTop(50)
-                  .AddODataQueryFilter(queryAttribute);
-
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<Estado>("estado");
@@ -87,17 +46,13 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
 
             builder.EnableLowerCamelCase();
-            var edmModel = builder.GetEdmModel();
-            return edmModel;
+            
+            return builder.GetEdmModel();
         }
 
-        public class CaseInsensitiveResolver : ODataUriResolver
+        protected override Task RunServiceBus()
         {
-            public override bool EnableCaseInsensitive
-            {
-                get { return true; }
-                set { /* Ignore value */ }
-            }
+           return Task.Factory.StartNew(() => new ServiceBusBL());
         }
     }
 }

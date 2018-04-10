@@ -4,14 +4,18 @@ using Fly01.Faturamento.Domain.Entities;
 using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using Fly01.Faturamento.DAL;
+using Fly01.Faturamento.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
 {
     public class CategoriaBL : PlataformaBaseBL<Categoria>
     {
-        public CategoriaBL(AppDataContext context) : base(context)
+        private OrdemVendaBL OrdemVendaBL;
+
+        public CategoriaBL(AppDataContext context, OrdemVendaBL OrdemVendaBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
+            this.OrdemVendaBL = OrdemVendaBL;
         }
 
         public override void Insert(Categoria entity)
@@ -24,7 +28,9 @@ namespace Fly01.Faturamento.BL
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
+            bool categoriaTemOrdemDeVenda = OrdemVendaBL.All.Where(x => x.CategoriaId == entity.Id && x.Ativo).Any();
 
+            entity.Fail(categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);
@@ -89,5 +95,6 @@ namespace Fly01.Faturamento.BL
         public static Error AlteracaoCategoriaSuperiorInvalida = new Error("Não é possível alterar a Categoria Superior desta Categoria, pois a mesma já possui filhos.");
         public static Error AlteracaoTipoInvalida = new Error("Não é possível alterar o Tipo desta Categoria, pois a mesma já possui filhos.");
         public static Error PaiJaEFilho = new Error("Não é possível definir como pai uma categoria que já seja filha.");
+        public static Error AlteracaoCategoriaInvalida = new Error("Não é possível alterar o tipo desta Categoria, pois a mesma esta relacionada a uma Ordem de Venda.");
     }
 }

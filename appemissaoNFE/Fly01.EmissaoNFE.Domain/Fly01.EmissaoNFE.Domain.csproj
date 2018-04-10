@@ -125,6 +125,8 @@
     <Compile Include="Enums\TipoFusoHorario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Tributacao.cs" />
+    <Compile Include="ViewModel\ChaveRetornoVM.cs" />
+    <Compile Include="ViewModel\ChaveVM.cs" />
     <Compile Include="ViewModel\DifalRetornoVM.cs" />
     <Compile Include="ViewModel\ItemTransmissaoRetornoVM.cs" />
     <Compile Include="ViewModel\ItemTransmissaoVM.cs" />

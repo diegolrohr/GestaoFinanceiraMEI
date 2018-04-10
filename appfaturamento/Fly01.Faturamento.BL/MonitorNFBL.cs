@@ -28,7 +28,7 @@ namespace Fly01.Faturamento.BL
             NFeBL = nFeBL;
             NFSeBL = nFSeBL;
             NotaFiscalBL = notaFiscalBL;
-            CertificadoDigitalBL = certificadoDigitalBL;            
+            CertificadoDigitalBL = certificadoDigitalBL;
         }
 
         public void AtualizaStatusTSS(string plataformaUrl)
@@ -37,33 +37,34 @@ namespace Fly01.Faturamento.BL
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
-            
+
             var header = new Dictionary<string, string>()
             {
                 { "AppUser", AppUser },
                 { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
             };
-         
+
             foreach (var dadosPlataforma in notasFiscaisByPlataforma)
             {
-                var dadosCertificado = CertificadoDigitalBL.AllWithoutPlataformaId.FirstOrDefault(x => x.PlataformaId == dadosPlataforma.plataformaId);
-
-                if (dadosCertificado == null || dadosCertificado.EntidadeHomologacao == string.Empty || dadosCertificado.EntidadeProducao == string.Empty)
-                    continue;
-
-                if (TotalTributacaoBL.ConfiguracaoTSSOK())
+                try
                 {
-                    var monitorVM = new MonitorVM()
-                    {
-                        Homologacao = dadosCertificado.EntidadeHomologacao,
-                        Producao = dadosCertificado.EntidadeProducao,
-                        EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), TotalTributacaoBL.GetParametrosTributarios().TipoAmbiente.ToString()),
-                        NotaInicial = dadosPlataforma.notaInicial.ToString(),
-                        NotaFinal = dadosPlataforma.notaFinal.ToString(),
-                    };
+                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
 
-                    try
+                    if (dadosCertificado == null)
+                        continue;
+
+
+                    if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = dadosCertificado.Homologacao,
+                            Producao = dadosCertificado.Producao,
+                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
+                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                        };
+
                         var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
                             continue;
@@ -96,10 +97,10 @@ namespace Fly01.Faturamento.BL
                             }
                         }
                     }
-                    catch
-                    {
-                        continue;
-                    }
+                }
+                catch
+                {
+                    continue;
                 }
             }
         }

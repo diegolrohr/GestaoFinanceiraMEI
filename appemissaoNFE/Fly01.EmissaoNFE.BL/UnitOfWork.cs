@@ -79,6 +79,9 @@ namespace Fly01.EmissaoNFE.BL
         private CfopBL cfopBL;
         public CfopBL CfopBL => cfopBL ?? (cfopBL = new CfopBL(Context));
 
+        private ChaveBL chaveBL;
+        public ChaveBL ChaveBL => chaveBL ?? (chaveBL = new ChaveBL(Context, EmpresaBL, EntidadeBL, EstadoBL));
+
         private DanfeBL danfeBL;
         public DanfeBL DanfeBL => danfeBL ?? (danfeBL = new DanfeBL(Context, EntidadeBL));
 
@@ -110,7 +113,7 @@ namespace Fly01.EmissaoNFE.BL
         public RegimeTributarioBL RegimeTributarioBL => regimeTributarioBL ?? (regimeTributarioBL = new RegimeTributarioBL(Context, EntidadeBL));
         
         private TransmissaoBL transmissaoBL;
-        public TransmissaoBL TransmissaoBL => transmissaoBL ?? (transmissaoBL = new TransmissaoBL(Context, CfopBL, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL, NFeBL));
+        public TransmissaoBL TransmissaoBL => transmissaoBL ?? (transmissaoBL = new TransmissaoBL(Context, CfopBL, ChaveBL, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL, NFeBL));
         
         private VersaoBL versaoBL;
         public VersaoBL VersaoBL => versaoBL ?? (versaoBL = new VersaoBL(Context, EntidadeBL));

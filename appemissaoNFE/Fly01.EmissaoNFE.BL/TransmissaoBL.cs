@@ -14,6 +14,7 @@ namespace Fly01.EmissaoNFE.BL
     public class TransmissaoBL : PlataformaBaseBL<TransmissaoVM>
     {
         protected CfopBL CfopBL;
+        protected ChaveBL ChaveBL;
         protected CidadeBL CidadeBL;
         protected EmpresaBL EmpresaBL;
         protected EntidadeBL EntidadeBL;
@@ -21,9 +22,10 @@ namespace Fly01.EmissaoNFE.BL
         protected NFeBL NFeBL;
         private static string msgError;
 
-        public TransmissaoBL(AppDataContextBase context, CfopBL cfopBL, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, NFeBL nfeBL) : base(context)
+        public TransmissaoBL(AppDataContextBase context, CfopBL cfopBL, ChaveBL chaveBL, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, NFeBL nfeBL) : base(context)
         {
             CfopBL = cfopBL;
+            ChaveBL = chaveBL;
             CidadeBL = cidadeBL;
             EmpresaBL = empresaBL;
             EntidadeBL = entidadeBL;
@@ -45,7 +47,7 @@ namespace Fly01.EmissaoNFE.BL
             var nota = new NFe();
             nota.InfoNFe = new InfoNFe();
 
-            item.NotaId = NotaId(
+            item.NotaId = ChaveBL.GeraChave(
                                     item.Identificador.CodigoUF.ToString(),
                                     item.Identificador.Emissao.Year.ToString(),
                                     item.Identificador.Emissao.Month.ToString(),
@@ -61,7 +63,7 @@ namespace Fly01.EmissaoNFE.BL
             nota.InfoNFe.Versao = item.Versao;
             nota.InfoNFe.Identificador = item.Identificador;
             nota.InfoNFe.Identificador.ChaveAcessoDV = Int32.Parse(item.NotaId.Substring(46, 1));
-            nota.InfoNFe.Identificador.CodigoNF = ZeroAEsquerda(item.Identificador.CodigoNF, 8);
+            nota.InfoNFe.Identificador.CodigoNF = item.Identificador.CodigoNF.PadLeft(8, '0');
             nota.InfoNFe.Emitente = item.Emitente;
             nota.InfoNFe.Destinatario = item.Destinatario;
 
@@ -76,63 +78,7 @@ namespace Fly01.EmissaoNFE.BL
 
             return nota;
         }
-
-        public string NotaId(string UF, string ano, string mes, string cnpj, string modelo, string serie, string numeroNota, string tipoNota, string codigoNF)
-        {
-            var retorno = UF + ano[2] + ano[3] + ZeroAEsquerda(mes, 2) + ZeroAEsquerda(cnpj, 14) + ZeroAEsquerda(modelo, 2) +
-                            ZeroAEsquerda(serie, 3) + ZeroAEsquerda(numeroNota, 9) + tipoNota + ZeroAEsquerda(codigoNF, 8);
-            int dv = 0;
-
-            if (retorno.Length != 43)
-                throw new NotImplementedException();
-            else
-            {
-                var peso = 2;
-                var total = 0;
-                for (int x = retorno.Length - 1; x >= 0; x--)
-                {
-                    int valor = 0;
-                    Int32.TryParse(retorno[x].ToString(), out valor);
-
-                    total = total + valor * peso;
-                    peso++;
-
-                    if (peso == 10)
-                        peso = 2;
-                }
-
-                dv = 11 - (total % 11);
-
-                if (dv > 9)
-                    dv = 0;
-
-            }
-
-            var notaId = "NFe" + retorno + dv.ToString();
-
-            return notaId;
-        }
-
-        public string ZeroAEsquerda(string texto, int tamanho)
-        {
-            string zerada = "";
-
-            int y = 0;
-
-            for (int x = 0; x < tamanho; x++)
-            {
-                if (x + texto.Length >= tamanho)
-                {
-                    zerada += texto[y];
-                    y++;
-                }
-                else
-                    zerada += "0";
-            }
-
-            return zerada;
-        }
-
+        
         public double Arredondar(double? valor, int casas)
         {
             double retorno = valor.HasValue ? valor.Value : 0;
@@ -168,7 +114,7 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(true, IdentificadorNulo);
                 else
                 {
-                    entity.Fail(string.IsNullOrEmpty(EstadoBL.All.Where(e => e.CodigoIbge == item.Identificador.CodigoUF.ToString()).FirstOrDefault().CodigoIbge), CodigoUFInvalido);
+                    entity.Fail(EstadoBL.All.Where(e => e.CodigoIbge == item.Identificador.CodigoUF.ToString()).FirstOrDefault() != null ? false : true, CodigoUFInvalido);
                     entity.Fail(string.IsNullOrEmpty(item.Identificador.CodigoNF.ToString()), CodigoNFRequerido);
                     entity.Fail(string.IsNullOrEmpty(item.Identificador.NaturezaOperacao), NaturezaOperacaoRequerido);
                     entity.Fail((item.Identificador.FormaPagamento < 0 || (int)item.Identificador.FormaPagamento > 2), FormaPagamentoInvalida);
@@ -496,12 +442,12 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(true, new Error("Os dados de imposto são obrigatórios. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto"));
                     else
                     {
-                        var totalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
+                        var totalAprox = Math.Round((detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                                          (detalhe.Imposto.ICMS.ValorICMS.HasValue ? detalhe.Imposto.ICMS.ValorICMS.Value : 0) +
                                          (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                                          (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                                          (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
-                                         (detalhe.Imposto.PISST != null ? detalhe.Imposto.PISST.ValorPISST : 0);
+                                         (detalhe.Imposto.PISST != null ? detalhe.Imposto.PISST.ValorPISST : 0), 2);
 
                         entity.Fail(!totalAprox.Equals(detalhe.Imposto.TotalAprox), new Error("Total aproximado de impostos inválido. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto"));
 
@@ -607,11 +553,14 @@ namespace Fly01.EmissaoNFE.BL
                                       (detalhe.Imposto.ICMS.PercentualReducaoBC.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBC > 0) ||
                                       (detalhe.Imposto.ICMS.ValorBC.HasValue && detalhe.Imposto.ICMS.ValorBC > 0) ||
                                       (detalhe.Imposto.ICMS.AliquotaICMS.HasValue && detalhe.Imposto.ICMS.AliquotaICMS > 0) ||
-                                      (detalhe.Imposto.ICMS.ValorICMS.HasValue && detalhe.Imposto.ICMS.ValorICMS > 0))
+                                      (detalhe.Imposto.ICMS.ValorICMS.HasValue && detalhe.Imposto.ICMS.ValorICMS > 0 ||
+                                      !string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString())))
                                     {
                                         ICMSProprio = true;
                                         entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()), 
                                             new Error("Modalidade de determinação da base de cálculo é obrigatória para operações de ICMS próprio. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBC"));
+                                        entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
+                                            new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
                                         entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) && !Modalidade.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBC)), 
                                             new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBC"));
                                         entity.Fail(!detalhe.Imposto.ICMS.ValorBC.HasValue, 
@@ -624,16 +573,13 @@ namespace Fly01.EmissaoNFE.BL
 
                                     //Informação do CSOSN, ICMS próprio e ICMS ST
                                     if (ICMSProprio &
-                                      (!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) ||
                                       (detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue && detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST > 0) ||
                                       (detalhe.Imposto.ICMS.PercentualReducaoBCST.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBCST > 0) ||
                                       (detalhe.Imposto.ICMS.ValorBCST.HasValue && detalhe.Imposto.ICMS.ValorBCST > 0) ||
                                       (detalhe.Imposto.ICMS.AliquotaICMSST.HasValue && detalhe.Imposto.ICMS.AliquotaICMSST > 0) ||
                                       (detalhe.Imposto.ICMS.ValorICMSST.HasValue && detalhe.Imposto.ICMS.ValorICMSST > 0)
-                                      ))
+                                      )
                                     {
-                                        entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()), 
-                                            new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
                                         entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)), 
                                             new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
                                         entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue, 
@@ -815,12 +761,7 @@ namespace Fly01.EmissaoNFE.BL
                         }
 
                         #endregion
-
-                        #region Validações da classe Imposto.II
-
-
-                        #endregion
-
+                        
                     }
 
                     #endregion

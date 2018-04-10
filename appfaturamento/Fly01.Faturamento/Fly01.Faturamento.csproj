@@ -288,6 +288,11 @@
     <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\OrdemVendaProduto\Functions\_fnChangeGrupoTribProduto.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeGrupoTribPadrao.cshtml" />
+    <Content Include="Views\OrderNFSe\Functions\_fnChangeSerie.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnVisualizarRetornoSefaz.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

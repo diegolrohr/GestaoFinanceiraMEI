@@ -161,7 +161,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m6", Label = "Total (produtos + impostos + frete)", Readonly = true });
 
             config.Elements.Add(new LabelsetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
@@ -236,7 +236,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "valorFreteNFe", Name = "valorFrete" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFreteNFe", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF)", Readonly = true, Name = "totalFrete" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFreteNFe", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true, Name = "totalFrete" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFe", Class = "col s12 m6", Label = "Total (produtos + impostos + frete)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutocompleteUI

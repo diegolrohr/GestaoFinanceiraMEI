@@ -127,15 +127,15 @@ namespace Fly01.Faturamento.BL
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = TotalTributacaoBL.GetDadosEmpresa(PlataformaUrl);
-                    var condicaoParcelamento = CondicaoParcelamentoBL.All.Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
-                    var transportadora = PessoaBL.All.Where(x => x.Transportadora && x.Id == entity.TransportadoraId).FirstOrDefault();
+                    var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
+                    var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
                     var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
                     var NFeProdutos = NFeProdutoBL.AllIncluding(
                         x => x.GrupoTributario.Cfop,
                         x => x.Produto.Ncm,
                         x => x.Produto.Cest,
                         x => x.Produto.UnidadeMedida,
-                        x => x.Produto.EnquadramentoLegalIPI).Where(x => x.NotaFiscalId == entity.Id);
+                        x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalId == entity.Id);
 
                     var totalNFe = CalculaTotalNFe(entity.Id, entity.ValorFrete);
 
@@ -214,7 +214,7 @@ namespace Fly01.Faturamento.BL
                         Cpf = cliente.TipoDocumento == "F" ? cliente.CPFCNPJ : null,
                         IndInscricaoEstadual = (IndInscricaoEstadual)Enum.Parse(typeof(IndInscricaoEstadual), cliente.TipoIndicacaoInscricaoEstadual.ToString()),
                         InscricaoEstadual = cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? cliente.InscricaoEstadual : null,
-                        Nome = cliente.NomeComercial,
+                        Nome = cliente.Nome,
                         Endereco = new Endereco()
                         {
                             Bairro = cliente.Bairro,
@@ -242,7 +242,7 @@ namespace Fly01.Faturamento.BL
                             Endereco = transportadora != null ? transportadora.Endereco : null,
                             IE = transportadora != null ? transportadora.InscricaoEstadual : null,
                             Municipio = transportadora != null && transportadora.Cidade != null ? transportadora.Cidade.Nome : null,
-                            RazaoSocial = transportadora != null ? transportadora.NomeComercial : null,
+                            RazaoSocial = transportadora != null ? transportadora.Nome : null,
                             UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null
                         };
                     }
@@ -284,7 +284,7 @@ namespace Fly01.Faturamento.BL
                             ValorDesconto = item.Desconto,
                             AgregaTotalNota = CompoemValorTotal.Compoe,
                             CEST = item.Produto.Cest != null ? item.Produto.Cest.Codigo : null,
-                            ValorFrete = Math.Round(itemTributacao.FreteValorFracionado, 2)
+                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
                         };
 
                         var detalhe = new Detalhe()
@@ -297,7 +297,7 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
                             OrigemMercadoria = OrigemMercadoria.Nacional,
-                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? (CSOSN)Enum.Parse(typeof(CSOSN), item.GrupoTributario.TipoTributacaoICMS.ToString()) : CSOSN.Outros,
+                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? (CSOSN)Enum.Parse(typeof(CSOSN), item.GrupoTributario.TipoTributacaoICMS.ToString()) : CSOSN.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2)
                         };
@@ -393,7 +393,7 @@ namespace Fly01.Faturamento.BL
                             SomatorioCofins = itemTransmissao.Detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                             SomatorioDesconto = NFeProdutos.Sum(x => x.Desconto),
                             SomatorioICMSST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
-                            ValorFrete = entity.TipoFrete == TipoFrete.CIF ? (entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0) : 0,
+                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                             ValorSeguro = 0,
                             SomatorioIPI = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                             SomatorioPis = itemTransmissao.Detalhes.Sum(y => y.Imposto.PIS.ValorPIS),
@@ -510,9 +510,9 @@ namespace Fly01.Faturamento.BL
 
         public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFreteCIF = 0)
         {
-            var nfe = All.Where(x => x.Id == nfeId).FirstOrDefault();
-            
-            var produtos = NFeProdutoBL.All.Where(x => x.NotaFiscalId == nfeId).ToList();
+            var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
+
+            var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;

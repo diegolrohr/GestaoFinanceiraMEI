@@ -81,7 +81,7 @@
 
     function calculaTotalOrdemVenda() {
         var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF") {
+        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
             valorFrete = parseFloat(noComma($('input#valorFrete').val()));
         }
 

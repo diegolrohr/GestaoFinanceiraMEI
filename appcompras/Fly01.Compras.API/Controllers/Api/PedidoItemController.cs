@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Compras.Domain.Entities;
+using Fly01.Compras.Domain.Enums;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 })
                                 .Sum(x => x.Total) + entity.Total;
 
-                pedido.Total = total;
+                pedido.Total = total + (pedido.TipoFrete != TipoFrete.FOB ? pedido.ValorFrete ?? 0 : 0);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
@@ -109,7 +110,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             })
                             .Sum(x => x.Total);
 
-                pedido.Total = total;
+                pedido.Total = total + (pedido.TipoFrete != TipoFrete.FOB ? pedido.ValorFrete ?? 0 : 0);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }

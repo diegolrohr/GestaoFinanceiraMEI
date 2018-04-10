@@ -38,19 +38,25 @@ namespace Fly01.EmissaoNFE.BL
 
             var FalhaSchema = recomendacao.Substring(0, 3) == "002";
             var NaoAssinada = recomendacao.Substring(0, 3) == "003";
+            var EmCancelamento = recomendacao.Substring(0, 3) == "025";
+            var CanceladaForaPrazo = recomendacao.Substring(0, 3) == "036";
 
             StatusNotaFiscal statusNFe;
 
             if ((string.IsNullOrEmpty(status) | string.IsNullOrWhiteSpace(status) | transmitida.Contains(status) | NaoAssinada) && !FalhaSchema)
                 statusNFe = StatusNotaFiscal.Transmitida;
+            else if (EmCancelamento)
+                statusNFe = StatusNotaFiscal.EmCancelamento;
+            else if (CanceladaForaPrazo)
+                statusNFe = StatusNotaFiscal.CanceladaForaPrazo;
+            else if (FalhaSchema)
+                statusNFe = StatusNotaFiscal.FalhaTransmissao;
             else if (autorizada.Contains(status) | autorizadaDPEC.Contains(status))
                 statusNFe = StatusNotaFiscal.Autorizada;
             else if (cancelada.Contains(status))
                 statusNFe = StatusNotaFiscal.Cancelada;
             else if (denegada.Contains(status))
                 statusNFe = StatusNotaFiscal.UsoDenegado;
-            else if (FalhaSchema)
-                statusNFe = StatusNotaFiscal.FalhaTransmissao;
             else
                 statusNFe = StatusNotaFiscal.NaoAutorizada;
 

@@ -33,11 +33,11 @@ namespace Fly01.Faturamento.BL
         protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
         protected NFeProdutoBL NFeProdutoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
-        protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected CondicaoParcelamentoBL CondicaoParcelamentoBL { get; set; }
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
+        protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
         public NFeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFeProdutoBL nfeProdutoBL, TotalTributacaoBL totalTributacaoBL, CertificadoDigitalBL certificadoDigitalBL, PessoaBL pessoaBL, CondicaoParcelamentoBL condicaoParcelamentoBL, SubstituicaoTributariaBL substituicaoTributariaBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
@@ -307,6 +307,13 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido.HasValue ? item.ValorICMSSTRetido.Value : 0, 2);
                             detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                             detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+
+                            if(item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
+                            {
+                                detalhe.Imposto.ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
+                                detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
+                                detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                            }
                         }
                         if (itemTributacao.CalculaST)
                         {
@@ -315,19 +322,7 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
-                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);
-                        }
-
-                        detalhe.Imposto.COFINS = new COFINSPai()
-                        {
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null ? ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) : CSTPISCOFINS.OutrasOperacoes
-                        };
-
-                        if (itemTributacao.CalculaCOFINS)
-                        {
-                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor,2);
-                            detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
-                            detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
+                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);                            
                         }
 
                         if (itemTributacao.CalculaIPI)
@@ -345,7 +340,7 @@ namespace Fly01.Faturamento.BL
                         }
                         detalhe.Imposto.PIS = new PISPai()
                         {                            
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue ? (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) : CSTPISCOFINS.IsentaDaContribuicao,
+                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ? (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) : CSTPISCOFINS.IsentaDaContribuicao,
                         };
 
                         if (itemTributacao.CalculaPIS)
@@ -361,6 +356,18 @@ namespace Fly01.Faturamento.BL
                                     ValorPISST = itemTributacao.PISValor,
                                 };
                             }
+                        }
+
+                        detalhe.Imposto.COFINS = new COFINSPai()
+                        {
+                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ? ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) : CSTPISCOFINS.OutrasOperacoes
+                        };
+
+                        if (itemTributacao.CalculaCOFINS)
+                        {
+                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor,2);
+                            detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
+                            detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
                         }
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
@@ -397,7 +404,7 @@ namespace Fly01.Faturamento.BL
                     };
                     var icmsTotal = itemTransmissao.Total.ICMSTotal;
                     itemTransmissao.Total.ICMSTotal.TotalTributosAprox =
-                        icmsTotal.SomatorioBC + icmsTotal.SomatorioICMS +
+                        icmsTotal.SomatorioICMS +
                         icmsTotal.SomatorioCofins +
                         icmsTotal.SomatorioICMSST +
                         icmsTotal.SomatorioIPI +
@@ -411,12 +418,21 @@ namespace Fly01.Faturamento.BL
                         itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
                     #endregion
 
+                    if (!string.IsNullOrEmpty(parametros.MensagemPadraoNota))
+                    {
+                        itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
+                        {
+                            InformacoesComplementares = parametros.MensagemPadraoNota
+                        };
+                    }
+
+                    var entidade = CertificadoDigitalBL.GetEntidade();
+                    
                     var notaFiscal = new TransmissaoVM()
                     {
-                        Homologacao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeHomologacao,
-                        Producao = CertificadoDigitalBL.All.FirstOrDefault().EntidadeProducao,
-                        EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), parametros.TipoAmbiente.ToString()),
-
+                        Homologacao = entidade.Homologacao,
+                        Producao = entidade.Producao,
+                        EntidadeAmbiente = entidade.EntidadeAmbiente,
                         Item = new List<ItemTransmissaoVM>()
                         {
                             itemTransmissao
@@ -430,6 +446,7 @@ namespace Fly01.Faturamento.BL
                     };
 
                     entity.Mensagem = null;
+                    entity.Recomendacao = null;
 
                     var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal), null, header);
                     var retorno = response.Notas.FirstOrDefault();
@@ -494,16 +511,18 @@ namespace Fly01.Faturamento.BL
         public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFreteCIF = 0)
         {
             var nfe = All.Where(x => x.Id == nfeId).FirstOrDefault();
-
+            
             var produtos = NFeProdutoBL.All.Where(x => x.NotaFiscalId == nfeId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
+            var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
 
             var result = new TotalNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
                 ValorFreteCIF = valorFreteCIF.HasValue ? Math.Round(valorFreteCIF.Value, 2, MidpointRounding.AwayFromZero) : 0,
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 
             return result;

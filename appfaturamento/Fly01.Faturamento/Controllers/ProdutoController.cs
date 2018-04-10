@@ -246,12 +246,10 @@ namespace Fly01.Faturamento.Controllers
                 },
                 Id = "fly01mdlfrmProduto",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnFormReady"
+                ReadyFn = "fnFormReadyModal"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
-
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
 
             config.Elements.Add(new SelectUI
@@ -267,7 +265,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "grupoProdutoId",
-                Class = "col s12 m9",
+                Class = "col s12 m7",
                 Label = "Grupo",
                 Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
@@ -276,7 +274,14 @@ namespace Fly01.Faturamento.Controllers
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             });
-
+            config.Elements.Add(new InputNumbersUI
+            {
+                Id = "saldoProduto",
+                Class = "col l2 m2 s12",
+                Label = "Saldo atual",
+                Value = "0",          
+                Required = true,
+            });
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "unidadeMedidaId",

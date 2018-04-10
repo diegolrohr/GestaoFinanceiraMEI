@@ -167,8 +167,8 @@ namespace Fly01.Compras.Controllers
                 Label = "Situação Tributária",
                 Disabled = true,
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoIPI", true, false)
-				.ToList().FindAll(x => "T00,T01,T02,T03,T04,T05".Contains(x.Value)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoIPI", true, false).
+                ToList().FindAll(x => "T00,T01,T02,T03,T04,T05".Contains(x.Value)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });

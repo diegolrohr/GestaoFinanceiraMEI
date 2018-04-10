@@ -17,12 +17,10 @@ namespace Fly01.Faturamento.BL
         private readonly Dictionary<string, string> _queryString;
         private readonly Dictionary<string, string> _header;
         protected EntidadeBL EntidadeBL { get; set; }
-        protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
-        public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
             EntidadeBL = entidadeBL;
-            CertificadoDigitalBL = certificadoDigitalBL;
             _queryString = AppDefaults.GetQueryStringDefault();
             _header = new Dictionary<string, string>
             {
@@ -33,14 +31,13 @@ namespace Fly01.Faturamento.BL
             };
         }
 
+        public IQueryable<ParametroTributario> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
-            var consultaCertificado = CertificadoDigitalBL.All.FirstOrDefault();
-
-            var entidade = consultaCertificado == null ? EntidadeBL.RetornaEntidade() : new EmpresaVM(){
-                Homologacao = consultaCertificado.EntidadeHomologacao,
-                Producao = consultaCertificado.EntidadeProducao
-            };
+            var consultaEntidade = EntidadeBL.GetEntidade();
+            
+            var entidade = consultaEntidade.Homologacao == null || consultaEntidade.Producao == null ? EntidadeBL.RetornaEntidade() : consultaEntidade;
 
             if (entidade != null)
             {

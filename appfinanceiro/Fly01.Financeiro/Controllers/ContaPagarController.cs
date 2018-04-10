@@ -30,22 +30,11 @@ namespace Fly01.Financeiro.Controllers
         public override ActionResult ImprimirRecibo(Guid id)
         {
             ContaPagarVM itemContaPagar = Get(id);
-            //ver??
-            //BankTransacVM itemBankTransac = GetBankTransac(id);
 
             double discount = 0;
             double interest = 0;
             double total = 0;
             string valorTituloTotalFormatado = itemContaPagar.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault);
-
-            //if (itemBankTransac != null)
-            //{
-            //    discount = itemBankTransac.Discount.HasValue ? itemBankTransac.Discount.Value : 0;
-            //    interest = itemBankTransac.Interest.HasValue ? itemBankTransac.Interest.Value : 0;
-            //    total = itemBankTransac.Value + discount - interest;
-            //    valorTituloTotalFormatado = itemBankTransac.Value.ToString("C", AppDefaults.CultureInfoDefault);
-            //}
-
             var empresaVM = GetDadosEmpresa();
             total = itemContaPagar.ValorPago.Value;
             string valorTituloFormatado = total.ToString("C", AppDefaults.CultureInfoDefault);

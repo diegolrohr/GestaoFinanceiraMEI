@@ -63,7 +63,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 })
                                 .Sum(x => x.Total) + entity.Total;
 
-                pedido.Observacao += "Total: " + total + "\n";
+                pedido.Total = total;
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
@@ -109,7 +109,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             })
                             .Sum(x => x.Total);
 
-                pedido.Observacao += "Total: " + total + "\n";
+                pedido.Total = total;
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }

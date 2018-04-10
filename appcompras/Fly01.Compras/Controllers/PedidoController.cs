@@ -13,6 +13,9 @@ using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
+using Fly01.Compras.Models.ViewModel;
+using Fly01.Core.Config;
+using Fly01.Compras.Models.Reports;
 
 namespace Fly01.Compras.Controllers
 {
@@ -482,6 +485,57 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        public virtual ActionResult ImprimirPedido(Guid id)
+        {
+
+            PedidoVM Pedido = Get(id);
+
+            var produtos = GetProdutos(id);
+            List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
+
+            foreach (PedidoItemVM produtospedido in produtos)
+
+                reportItems.Add(new ImprimirPedidoVM
+                {
+                    //PEDIDO
+                    Id = produtospedido.Id.ToString(),
+                    Fornecedor = Pedido.Transportadora.Nome.ToString(),
+                    Categoria = Pedido.Categoria != null ? Pedido.Categoria.Descricao : string.Empty,
+                    CondicaoParcelamento = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.Descricao : string.Empty,
+                    DataVencimento = Pedido.DataVencimento,
+                    FormaPagamento = Pedido.FormaPagamento != null ? Pedido.FormaPagamento.Descricao : string.Empty,
+                    Transportadora = Pedido.Transportadora != null ? Pedido.Transportadora.Nome : string.Empty,
+                    Numero = Pedido.Numero,
+                    Observacao = Pedido.Observacao,
+                    PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
+                    PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
+                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
+                    TipoFrete = Pedido.TipoFrete,
+                    //PRODUTO
+                    NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
+                    QtdProduto = produtospedido.Quantidade,
+                    ValorUnitario = produtospedido.Valor,
+                    ValorTotal = produtospedido.Total,
+                    
+
+                });
+
+                
+
+
+            var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
+            return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+
+        }
+
+        public List<PedidoItemVM> GetProdutos(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"pedidoId eq {id}");
+            queryString.AddParam("$expand", "produto");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<PedidoItemVM>>("PedidoItem", queryString).Data;
+        }
         #region OnDemmand
 
         [HttpPost]

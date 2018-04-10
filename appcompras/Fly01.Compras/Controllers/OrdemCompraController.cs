@@ -103,7 +103,7 @@ namespace Fly01.Compras.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrcamento", Label = "Excluir", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnGerarPedidos", Label = "Gerar pedidos", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" });
-
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirPedido", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "tipoOrdemCompra",
@@ -143,7 +143,7 @@ namespace Fly01.Compras.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ", Request.QueryString["dataFinal"]);
+            filters.Add("data le ",  Request.QueryString["dataFinal"]);
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);

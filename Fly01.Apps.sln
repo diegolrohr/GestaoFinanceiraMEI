@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -28,11 +27,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro.Domain", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{FDE266FE-0F92-4245-B8D2-16180837DDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core", "Fly01.Core\Fly01.Core\Fly01.Core.csproj", "{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core", "Fly01.Core\Fly01.Core.csproj", "{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.Notifications", "Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj", "{89C80F58-C490-4C34-B04E-7C43F5F09951}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.Notifications", "Fly01.Core.Notifications\Fly01.Core.Notifications.csproj", "{89C80F58-C490-4C34-B04E-7C43F5F09951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.SOAManager", "Fly01.Core\Fly01.Core.SOAManager\Fly01.Core.SOAManager.csproj", "{A9FA1417-88A1-41A6-91AC-22F8E434F7F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Core.SOAManager", "Fly01.Core.SOAManager\Fly01.Core.SOAManager.csproj", "{A9FA1417-88A1-41A6-91AC-22F8E434F7F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Compras.BL", "appcompras\Fly01.Compras.BL\Fly01.Compras.BL.csproj", "{EC5EBB16-787D-4320-A7F4-8370E518AE27}"
 EndProject

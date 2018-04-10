@@ -76,7 +76,11 @@
     <Compile Include="UnitOfWorkBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.VM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>

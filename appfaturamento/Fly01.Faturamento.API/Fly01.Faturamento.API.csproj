@@ -161,11 +161,11 @@
       <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
       <Name>Fly01.Core.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>

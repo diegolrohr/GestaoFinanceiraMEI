@@ -74,7 +74,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.VM</Name>
     </ProjectReference>

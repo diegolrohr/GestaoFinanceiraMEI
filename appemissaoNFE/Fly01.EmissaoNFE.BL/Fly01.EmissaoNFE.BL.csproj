@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CfopBL.cs" />
+    <Compile Include="ChaveBL.cs" />
     <Compile Include="DanfeBL.cs" />
     <Compile Include="CancelarFaixaBL.cs" />
     <Compile Include="EmpresaIdBL.cs" />

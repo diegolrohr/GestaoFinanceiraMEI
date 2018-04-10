@@ -30,12 +30,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         /// <summary>
         /// Informar o Valor da BC do IPI, este campo deve ser informado em caso de alíquota ad valorem.
         /// </summary>
-        [XmlElement(ElementName = "vBC")]
+        [XmlIgnore]
         public double? ValorBaseCalculo { get; set; }
 
-        public bool ShouldSerializeValorBaseCalculo()
+        [XmlElement(ElementName = "vBC")]
+        public string ValorBaseCalculoString
         {
-            return ValorBaseCalculo.HasValue;
+            get { return ValorBaseCalculo.Value.ToString("0.00").Replace(",", "."); }
+            set { ValorBaseCalculo = double.Parse(value); }
+        }
+
+        public bool ShouldSerializeValorBaseCalculoString()
+        {
+            return !string.IsNullOrEmpty(ValorBaseCalculoString);
         }
 
         /// <summary>

@@ -25,8 +25,15 @@ namespace Fly01.EmissaoNFE.Domain.Enums
         [Subtitle("Cancelada", "5", "Cancelada")]
         Cancelada = 5,
 
+        [Subtitle("EmCancelamento", "Em Cancelamento", "Em Cancelamento")]
+        EmCancelamento = 7,
+
         [XmlEnum(Name = "9")]
         [Subtitle("FalhaTransmissao", "9", "Falha na Transmissão")]
-        FalhaTransmissao = 9
+        FalhaTransmissao = 9,
+
+        [XmlEnum(Name = "10")]
+        [Subtitle("CanceladaForaPrazo", "10", "Cancelada fora do prazo")]
+        CanceladaForaPrazo = 10
     }
 }

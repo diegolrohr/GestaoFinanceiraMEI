@@ -90,8 +90,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>12.51375cm</Top>
-        <Left>0.17164cm</Left>
+        <Top>14.15416cm</Top>
+        <Left>0.19329cm</Left>
         <Height>0.73201cm</Height>
         <Width>16.29508cm</Width>
         <ZIndex>2</ZIndex>
@@ -429,7 +429,7 @@
         <Top>10.64319cm</Top>
         <Left>0.19328cm</Left>
         <Height>1.2cm</Height>
-        <Width>16.27344cm</Width>
+        <Width>16.27345cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -716,7 +716,7 @@
         <Top>3.90331cm</Top>
         <Left>0.19328cm</Left>
         <Height>1.8673cm</Height>
-        <Width>16.26862cm</Width>
+        <Width>16.26863cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -958,7 +958,7 @@
         <Top>7.9995cm</Top>
         <Left>0.19328cm</Left>
         <Height>1.8673cm</Height>
-        <Width>16.27344cm</Width>
+        <Width>16.27345cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -1239,7 +1239,7 @@
         <Top>5.947cm</Top>
         <Left>0.19328cm</Left>
         <Height>1.94666cm</Height>
-        <Width>16.29509cm</Width>
+        <Width>16.29507cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -1263,15 +1263,21 @@
                 <Value xml:space="preserve"> </Value>
                 <Style />
               </TextRun>
+              <TextRun>
+                <Value>=Fields!TotalGeral.Value</Value>
+                <Style>
+                  <Format>#,0.00</Format>
+                </Style>
+              </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>11.87847cm</Top>
-        <Left>11.33089cm</Left>
+        <Top>12.22243cm</Top>
+        <Left>0.19329cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.13583cm</Width>
+        <Width>6.32646cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -1284,7 +1290,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>5.22693in</Height>
+    <Height>6.25818in</Height>
     <Style />
   </Body>
   <Width>6.59565in</Width>
@@ -1377,6 +1383,10 @@
         </Field>
         <Field Name="Transportadora">
           <DataField>Transportadora</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TotalGeral">
+          <DataField>TotalGeral</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

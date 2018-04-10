@@ -510,12 +510,13 @@ namespace Fly01.Compras.Controllers
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
+                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
                     QtdProduto = produtospedido.Quantidade,
                     ValorUnitario = produtospedido.Valor,
-                    ValorTotal = produtospedido.Total,
+                    ValorTotal = produtospedido.Total
                 });
 
             if (!produtos.Any())
@@ -534,7 +535,8 @@ namespace Fly01.Compras.Controllers
                     PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
-                    TipoFrete = Pedido.TipoFrete
+                    TipoFrete = Pedido.TipoFrete,
+                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
                 });
             }
 

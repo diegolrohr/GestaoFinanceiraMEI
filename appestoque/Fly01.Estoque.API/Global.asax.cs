@@ -1,38 +1,41 @@
-﻿using System.Web.Http;
-using Newtonsoft.Json;
-using Fly01.Estoque.BL;
+﻿using Fly01.Estoque.BL;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using System.Web;
+using Fly01.Core.API.Application;
+using Microsoft.OData.Edm;
+using System.Web.OData.Builder;
+using Fly01.Estoque.Domain.Entities;
 
 namespace Fly01.Estoque.API
 {
-    public class WebApiApplication : HttpApplication
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        protected void Application_Start()
+        protected override IEdmModel GetEdmModel()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                FloatFormatHandling = FloatFormatHandling.DefaultValue,
-                FloatParseHandling = FloatParseHandling.Decimal,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
-            };
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.ContainerName = "DefaultContainer";
 
-            GlobalConfiguration.Configure(config =>
-            {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
-                //FilterConfig.RegisterGlobalFilters(config);
-            });
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Produto>("produto");
+            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Inventario>("inventario");
+            builder.EntitySet<InventarioItem>("inventarioitem");
+            builder.EntitySet<TipoMovimento>("tipomovimento");
+            builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<UnidadeMedida>("unidademedida");
+            builder.EntitySet<PosicaoAtual>("posicaoatual");
+            builder.EntitySet<AjusteManual>("ajustemanual");
+            builder.EntitySet<Produto>("produtosmaismovimentados");
+            builder.EntitySet<Produto>("produtosmenosmovimentados");
+            builder.EntitySet<Cest>("cest");
+            builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
 
-            Task.Factory.StartNew(() => new ServiceBusBL());
+            builder.EnableLowerCamelCase();
+            return builder.GetEdmModel();
+        }
+
+        protected override Task RunServiceBus()
+        {
+            return Task.Factory.StartNew(() => new ServiceBusBL());
         }
     }
 }

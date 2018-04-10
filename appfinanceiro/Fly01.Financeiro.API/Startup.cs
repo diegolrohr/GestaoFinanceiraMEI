@@ -1,14 +1,10 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using Fly01.Core.API.Application;
+using Microsoft.Owin;
 
 [assembly: OwinStartup(typeof(Fly01.Financeiro.API.Startup))]
 namespace Fly01.Financeiro.API
 {
-    public partial class Startup
+    public partial class Startup : GlobalStartup
     {
-        public void Configuration(IAppBuilder app)
-        {
-            ConfigureAuth(app);
-        }
     }
 }

@@ -1,48 +1,58 @@
 ﻿using Fly01.Faturamento.BL;
-using Fly01.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Configuration;
+using Fly01.Core.API.Application;
+using Microsoft.OData.Edm;
+using System.Web.OData.Builder;
+using Fly01.Faturamento.Domain.Entities;
 
 namespace Fly01.Faturamento.API
 {
-    public class WebApiApplication : HttpApplication
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        protected void Application_Start()
+        protected override IEdmModel GetEdmModel()
         {
-            SetAppDefaults();
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                FloatFormatHandling = FloatFormatHandling.DefaultValue,
-                FloatParseHandling = FloatParseHandling.Decimal,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
-            };
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.ContainerName = "DefaultContainer";
+            builder.EntitySet<Pessoa>("pessoa");
+            builder.EntitySet<Arquivo>("arquivo");
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Cidade>("cidade");
+            builder.EntitySet<Produto>("produto");
+            builder.EntitySet<UnidadeMedida>("unidademedida");
+            builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Cfop>("cfop");
+            builder.EntitySet<GrupoTributario>("grupotributario");
+            builder.EntitySet<ParametroTributario>("parametrotributario");
+            builder.EntitySet<OrdemVenda>("ordemvenda");
+            builder.EntitySet<OrdemVendaProduto>("ordemvendaproduto");
+            builder.EntitySet<OrdemVendaServico>("ordemvendaservico");
+            builder.EntitySet<Servico>("servico");
+            builder.EntitySet<NBS>("nbs");
+            builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
+            builder.EntitySet<FormaPagamento>("formapagamento");
+            builder.EntitySet<Categoria>("categoria");
+            builder.EntitySet<Cest>("cest");
+            builder.EntitySet<SubstituicaoTributaria>("substituicaotributaria");
+            builder.EntitySet<SerieNotaFiscal>("serienotafiscal");
+            builder.EntitySet<NotaFiscal>("notafiscal");
+            builder.EntitySet<NFe>("nfe");
+            builder.EntitySet<NFSe>("nfse");
+            builder.EntitySet<NFSeServico>("nfseservico");
+            builder.EntitySet<NFeProduto>("nfeproduto");
+            builder.EntitySet<CertificadoDigital>("certificadodigital");
+            builder.EntitySet<SerieNotaFiscal>("serienotafiscalinutilizada");
+            builder.EntitySet<NotaFiscalItemTributacao>("notafiscalitemtributacao");
+            builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
 
-            GlobalConfiguration.Configure(config =>
-            {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
-            });
-
-            Task.Factory.StartNew(() => new ServiceBusBL());
+            builder.EnableLowerCamelCase();
+            
+            return builder.GetEdmModel();
         }
 
-        private void SetAppDefaults()
+        protected override Task RunServiceBus()
         {
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlS1Gateway"];
-            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
-            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
-            AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
+           return Task.Factory.StartNew(() => new ServiceBusBL());
         }
     }
 }

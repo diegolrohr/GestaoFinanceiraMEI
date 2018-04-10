@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD2DFC64-88AB-47EF-B42B-B6D8DC177834}"
 	ProjectSection(SolutionItems) = preProject
@@ -105,6 +105,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BL", "BL", "{64C3D174-6165-461C-8250-23910AC88208}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{1005E8B8-FC2A-46F7-B359-63EADF639BE9}"
+	ProjectSection(SolutionItems) = preProject
+		MigrationCommands.md = MigrationCommands.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{852CEFD3-A5E3-479D-90E6-46CEFBAE9B45}"
 EndProject
@@ -410,5 +413,8 @@ Global
 		{64C3D174-6165-461C-8250-23910AC88208} = {09F00313-F83F-45CC-A2BF-651A6D0B7A9F}
 		{1005E8B8-FC2A-46F7-B359-63EADF639BE9} = {09F00313-F83F-45CC-A2BF-651A6D0B7A9F}
 		{852CEFD3-A5E3-479D-90E6-46CEFBAE9B45} = {E9B23F1F-B518-4756-AF37-2C8C78B1BDA8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32572076-935E-4887-B88E-5E0B3DA88A78}
 	EndGlobalSection
 EndGlobal

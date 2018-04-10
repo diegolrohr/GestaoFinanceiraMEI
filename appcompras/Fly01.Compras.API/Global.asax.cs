@@ -1,37 +1,48 @@
 ﻿using Fly01.Compras.BL;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+using Fly01.Compras.Domain.Entities;
+using Fly01.Core.API.Application;
+using Microsoft.OData.Edm;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
+using System.Web.OData.Builder;
 
 namespace Fly01.Compras.API
 {
-    public class WebApiApplication : HttpApplication
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        protected void Application_Start()
+        protected override IEdmModel GetEdmModel()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                FloatFormatHandling = FloatFormatHandling.DefaultValue,
-                FloatParseHandling = FloatParseHandling.Decimal,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
-            };
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.ContainerName = "DefaultContainer";
 
-            GlobalConfiguration.Configure(config =>
-            {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
-            });
+            builder.EntitySet<Pessoa>("pessoa");
+            builder.EntitySet<Arquivo>("arquivo");
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Cidade>("cidade");
+            builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
+            builder.EntitySet<Produto>("produto");
+            builder.EntitySet<FormaPagamento>("formapagamento");
+            builder.EntitySet<UnidadeMedida>("unidademedida");
+            builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Categoria>("categoria");
+            builder.EntitySet<OrdemCompra>("ordemcompra");
+            builder.EntitySet<Pedido>("pedido");
+            builder.EntitySet<PedidoItem>("pedidoitem");
+            builder.EntitySet<Orcamento>("orcamento");
+            builder.EntitySet<OrcamentoItem>("orcamentoitem");
+            builder.EntitySet<SubstituicaoTributaria>("substituicaotributaria");
+            builder.EntitySet<Cfop>("cfop");
+            builder.EntitySet<GrupoTributario>("grupotributario");
+            builder.EntitySet<Cest>("cest");
+            builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
 
-            Task.Factory.StartNew(() => new ServiceBusBL());
+            builder.EnableLowerCamelCase();
+            return builder.GetEdmModel();
+        }
+
+        protected override Task RunServiceBus()
+        {
+            return Task.Factory.StartNew(() => new ServiceBusBL());
         }
     }
 }

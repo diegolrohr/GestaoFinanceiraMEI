@@ -1,11 +1,11 @@
-﻿using Owin;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Owin;
 
-namespace Fly01.Compras.API
+namespace Fly01.Core.API.Application
 {
-    public partial class Startup
+    public partial class GlobalStartup
     {
-        public void ConfigureAuth(IAppBuilder app)
+        public void Configuration(IAppBuilder app)
         {
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
@@ -15,10 +15,6 @@ namespace Fly01.Compras.API
                 config.MapHttpAttributeRoutes();
                 map.UseWebApi(config);
             });
-        }
-
-        public void ConfigureOAuth(IAppBuilder app)
-        {
         }
     }
 }

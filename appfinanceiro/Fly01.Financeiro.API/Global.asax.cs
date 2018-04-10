@@ -1,38 +1,54 @@
-﻿using Fly01.Financeiro.API.App_Start;
+﻿using Fly01.Core.API.Application;
 using Fly01.Financeiro.BL;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+using Fly01.Financeiro.Domain.Entities;
+using Microsoft.OData.Edm;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
+using System.Web.OData.Builder;
 
 namespace Fly01.Financeiro.API
 {
-    public class WebApiApplication : HttpApplication
+    public class WebApiApplication : GlobalWebAPIApplication
     {
-        protected void Application_Start()
+        protected override IEdmModel GetEdmModel()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                FloatFormatHandling = FloatFormatHandling.DefaultValue,
-                FloatParseHandling = FloatParseHandling.Decimal,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
-            };
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.ContainerName = "DefaultContainer";
+            builder.EntitySet<Pessoa>("pessoa");
+            builder.EntitySet<Arquivo>("arquivo");
+            builder.EntitySet<ContaBancaria>("contabancaria");
+            builder.EntitySet<Feriado>("feriado");
+            builder.EntitySet<Categoria>("categoria");
+            builder.EntitySet<Banco>("banco");
+            builder.EntitySet<ContaPagar>("contapagar");
+            builder.EntitySet<ContaReceber>("contareceber");
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Cidade>("cidade");
+            builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
+            builder.EntitySet<ContaFinanceiraBaixa>("contafinanceirabaixa");
+            builder.EntitySet<ConciliacaoBancaria>("conciliacaobancaria");
+            builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariaitem");
+            builder.EntitySet<ConciliacaoBancariaItemContaFinanceira>("conciliacaobancariaitemcontafinanceira");
+            builder.EntitySet<ConciliacaoBancariaTransacao>("conciliacaobancariatransacao");
+            builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariabuscarexistentes");
+            builder.EntitySet<FormaPagamento>("formapagamento");
+            builder.EntitySet<ContaFinanceiraRenegociacao>("contafinanceirarenegociacao");
+            builder.EntitySet<Movimentacao>("movimentacao");
+            builder.EntitySet<Transferencia>("transferencia");
+            builder.EntitySet<MovimentacaoPorCategoria>("receitaporcategoria");
+            builder.EntitySet<MovimentacaoPorCategoria>("despesaporcategoria");
+            builder.EntitySet<MovimentacaoPorCategoria>("movimentacaoporcategoria");
+            builder.EntitySet<ConfiguracaoNotificacao>("configuracaonotificacao");
 
-            GlobalConfiguration.Configure(config =>
-            {
-                ODataConfig.Register(config);
-                WebApiConfig.Register(config);
-            });
-            
-            Task.Factory.StartNew(() => new ServiceBusBL());
+            EntityTypeConfiguration<ConfiguracaoNotificacao> configuracaoNotificacaoCFG = builder.EntityType<ConfiguracaoNotificacao>();
+            configuracaoNotificacaoCFG.Property(c => c.HoraEnvio).AsTimeOfDay();
+
+            builder.EnableLowerCamelCase();
+            return builder.GetEdmModel();
+        }
+
+        protected override Task RunServiceBus()
+        {            
+            return Task.Factory.StartNew(() => new ServiceBusBL());
         }
     }
 }

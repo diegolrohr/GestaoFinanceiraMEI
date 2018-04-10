@@ -58,11 +58,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\ODataConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\CceController.cs" />
     <Compile Include="Controllers\Api\ChaveController.cs" />
     <Compile Include="Controllers\Api\DanfeXMLController.cs" />
@@ -453,7 +448,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Certificado\" />
     <Folder Include="Views\ConfiguracaoOK\" />
     <Folder Include="Views\ConversorXML\" />

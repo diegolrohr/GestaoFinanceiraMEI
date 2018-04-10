@@ -1,14 +1,10 @@
 ﻿using Microsoft.Owin;
-using Owin;
+using Fly01.Core.API.Application;
 
 [assembly: OwinStartup(typeof(Fly01.Compras.API.Startup))]
 namespace Fly01.Compras.API
 {
-    public partial class Startup
+    public partial class Startup : GlobalStartup
     {
-        public void Configuration(IAppBuilder app)
-        {
-            ConfigureAuth(app);
-        }
     }
 }

@@ -10,7 +10,7 @@
         
         $('input#totalFrete').val(0);
         $('input#valorFrete').removeAttr('disabled');
-        if ($('select#tipoFrete').val() == "FOB") {
+        if ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario") {
             $('input#totalFrete').val(valorFrete);
             valorTotal += valorFrete;
         }

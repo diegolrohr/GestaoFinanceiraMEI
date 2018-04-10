@@ -15,7 +15,6 @@
     <RootNamespace>Fly01.Faturamento.API</RootNamespace>
     <AssemblyName>Fly01.Faturamento.API</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <!--<UseIISExpress>false</UseIISExpress>-->
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />

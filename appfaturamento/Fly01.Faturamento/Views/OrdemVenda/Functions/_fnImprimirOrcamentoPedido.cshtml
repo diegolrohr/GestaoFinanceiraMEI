@@ -10,7 +10,6 @@
 			type: "GET",
 			success : function(data) {
 			    fly01.loading.stop();
-			    debugger;
 			    if (data.message) {
 			        fly01.fns.submitErrorHandler(null, data.message);
 			    } else {

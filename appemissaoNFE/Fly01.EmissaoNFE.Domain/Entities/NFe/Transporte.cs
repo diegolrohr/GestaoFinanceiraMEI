@@ -3,10 +3,10 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
-    [XmlRoot(ElementName = "transp")]
+    [XmlRoot("transp")]
     public class Transporte
     {
-        [XmlElement(ElementName = "modFrete")]
+        [XmlElement("modFrete")]
         public ModalidadeFrete ModalidadeFrete { get; set; }
 
         [XmlElement(ElementName = "transporta", IsNullable = true)]
@@ -16,5 +16,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         {
             return Transportadora != null;
         }
+
+        [XmlElement(ElementName = "veicTransp", IsNullable = true)]
+        public Veiculo Veiculo { get; set; }
+
+        public bool ShouldSerializeVeiculo()
+        {
+            return Veiculo != null;
+        }
+
+        [XmlElement(ElementName = "vol", IsNullable = true)]
+        public Volume Volume { get; set; }
+
+        public bool ShouldSerializeVolume()
+        {
+            return Volume != null;
+        }
+
     }
 }

@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201803261651471_Alter_Produto_EnquadramentoLegalIpi.Designer.cs">
       <DependentUpon>201803261651471_Alter_Produto_EnquadramentoLegalIpi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804101759356_AlterOrdemCompraAddTotal.cs" />
+    <Compile Include="Migrations\201804101759356_AlterOrdemCompraAddTotal.Designer.cs">
+      <DependentUpon>201804101759356_AlterOrdemCompraAddTotal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -231,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803261651471_Alter_Produto_EnquadramentoLegalIpi.resx">
       <DependentUpon>201803261651471_Alter_Produto_EnquadramentoLegalIpi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804101759356_AlterOrdemCompraAddTotal.resx">
+      <DependentUpon>201804101759356_AlterOrdemCompraAddTotal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

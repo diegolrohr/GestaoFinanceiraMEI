@@ -18,7 +18,7 @@ namespace Fly01.Compras.Domain.Entities
 
         [Required]
         [Column(TypeName = "date")]
-        public DateTime Data{ get; set; }
+        public DateTime Data { get; set; }
 
         public Guid? FormaPagamentoId { get; set; }
 
@@ -34,6 +34,8 @@ namespace Fly01.Compras.Domain.Entities
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
+
+        public double? Total { get; set; }
 
         #region Navigation Properties
 

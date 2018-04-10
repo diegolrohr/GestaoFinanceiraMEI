@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>Fly01.EmissaoNFE.Domain</id>
-    <version>1.0.3.1</version>
+    <version>1.0.3.2</version>
     <authors>TOTVS SA</authors>
     <owners>TOTVS SA</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Entidades para comunicação com App de Emissao: Fly01 EmissaoNFE Domain</description>
     <releaseNotes>
-    Novos status de NFe
+    Enum ModalidadeFrete
 	</releaseNotes>
     <copyright>TOTVS S/A</copyright>
     <tags></tags>

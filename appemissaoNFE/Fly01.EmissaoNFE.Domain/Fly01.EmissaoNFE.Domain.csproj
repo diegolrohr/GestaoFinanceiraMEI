@@ -103,6 +103,7 @@
     <Compile Include="Enums\CSTIPI.cs" />
     <Compile Include="Enums\CSOSN.cs" />
     <Compile Include="Enums\CRT.cs" />
+    <Compile Include="Enums\ModalidadeFrete.cs" />
     <Compile Include="Enums\IndInscricaoEstadual.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMSST.cs" />
     <Compile Include="Enums\ModalidadeDeterminacaoBCICMS.cs" />

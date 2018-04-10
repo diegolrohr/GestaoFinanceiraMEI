@@ -10,5 +10,7 @@ namespace Fly01.Faturamento.Domain.Entities
         }
         
         public double TotalImpostosProdutos { get; set; }
+
+        public double TotalImpostosProdutosNaoAgrega { get; set; }
     }
 }

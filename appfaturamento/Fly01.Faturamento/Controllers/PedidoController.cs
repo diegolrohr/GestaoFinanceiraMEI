@@ -27,7 +27,7 @@ namespace Fly01.Faturamento.Controllers
             DataTableUI dtProdutosEstoqueNegativoCfg = new DataTableUI
             {
                 Parent = "produtosEstoqueNegativoField",
-                Id = "dtProdutosEstoqueNegativo",
+                Id = "dtProdutosEstoqueNegativo",                
                 UrlGridLoad = Url.Action("VerificaEstoqueNegativo"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
@@ -132,7 +132,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 14,
+                        Quantity = 15,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -143,29 +143,21 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
 
             #region step Cadastro
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoVenda",
-                Class = "col s12 m4",
-                Label = "Tipo Venda",
-                Value = "Normal",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
-            });
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
-            config.Elements.Add(new AutocompleteUI
-            {
-                Id = "clienteId",
-                Class = "col s12 m6",
-                Label = "Cliente",
-                Required = true,
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
-                LabelId = "clienteNome",
-                DataUrlPost = Url.Action("PostCliente")
-            });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m3", Label = "Número", Disabled = true });
+            //config.Elements.Add(new SelectUI
+            //{
+            //    Id = "tipoVenda",
+            //    Class = "col s12 m4",
+            //    Label = "Tipo Venda",
+            //    Value = "Normal",
+            //    Required = true,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
+            //});
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
+
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "grupoTributarioPadraoId",
@@ -177,6 +169,18 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
             });
+
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "clienteId",
+                Class = "col s12",
+                Label = "Cliente",
+                Required = true,
+                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome",
+                DataUrlPost = Url.Action("PostCliente")
+            });
+            
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
@@ -312,8 +316,9 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Finalizar
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF)", Readonly = true });
@@ -375,7 +380,15 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalImpostosProdutos",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto."
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosProdutosNaoAgrega",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS e PIS."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -391,7 +404,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraNotaFiscal",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, serão geradas as notas fiscais separadamente, para produtos e serviços. É necessário informar o estado no cadastro da empresa e no cadastro do cliente informado. Também é necessário ter salvo as configurações no cadastro dos parâmetros tributários."
+                    Text = "Calcula as tributações de acordo com o Grupo Tributário e gera as notas fiscais (NFe para produtos e NFSe para serviços)."
                 }
             });
             config.Helpers.Add(new TooltipUI

@@ -7,6 +7,7 @@ using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
@@ -137,7 +138,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
-                Label = "Situação Tributária",
+                Label = "Situação da Operação no Simples Nacional",
                 Disabled = true,
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoICMS", true, false))
@@ -166,7 +167,8 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Situação Tributária",
                 Disabled = true,
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoIPI", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoIPI", true, false).
+                ToList().FindAll(x => "SaidaTributada,SaidaTributadaComAliquotaZero,SaidaIsenta,SaidaNaoTributada,SaidaImune,SaidaComSuspensao,OutrasSaidas".Contains(x.Value)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });

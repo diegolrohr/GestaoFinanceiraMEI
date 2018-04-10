@@ -182,13 +182,12 @@ namespace Fly01.Faturamento.Controllers
             form3.Elements.Add(new InputCustommaskUI
             {
                 Id = "numeroRetornoNF",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "Número de Retorno da NF",
                 MaxLength = 20,
                 Data = new { inputmask = "'regex': '[0-9]*'" }
             });
-
-
+            
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
@@ -196,12 +195,11 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Modalidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoModalidade", true, false))
             });
-
-
+            
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoVersaoNFe",
-                Class = "col s6 m2",
+                Class = "col s6 m1",
                 Label = "Versão NFe ",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVersaoNFe", true, false))
             });

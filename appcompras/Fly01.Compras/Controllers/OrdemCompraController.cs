@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.Controllers.Base;
 using Fly01.Compras.Entities.ViewModel;
+using Fly01.Core;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
@@ -25,6 +26,7 @@ namespace Fly01.Compras.Controllers
                 tipoOrdemCompraCssClass = EnumHelper.SubtitleDataAnotation("TipoOrdemCompra", x.TipoOrdemCompra).CssClass,
                 tipoOrdemCompraValue = EnumHelper.SubtitleDataAnotation("TipoOrdemCompra", x.TipoOrdemCompra).Value,
                 data = x.Data.ToString("dd/MM/yyyy"),
+                total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
                 status = x.Status,
                 statusDescription = EnumHelper.SubtitleDataAnotation("StatusOrdemCompra", x.Status).Description,
@@ -113,10 +115,6 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOrdemCompra", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoOrdemCompraCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoOrdemCompraDescription + \"</span>\" }"
             });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
-
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
@@ -125,6 +123,12 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusOrdemCompra", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 4, Type = "currency" });
+
+
             config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 3 });
 
             cfg.Content.Add(cfgForm);
@@ -144,7 +148,7 @@ namespace Fly01.Compras.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ",  Request.QueryString["dataFinal"]);
+            filters.Add("data le ", Request.QueryString["dataFinal"]);
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);

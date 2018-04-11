@@ -5,5 +5,33 @@
         var url = '@Url.Action("ImprimirListContas", "ContaPagar")';
         fnImprimir(url);
     }
+
+    var serialize = function (obj, prefix) {
+        var str = [],
+            p;
+        for (p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                var k = prefix ? prefix + "[" + p + "]" : p,
+                    v = obj[p];
+                str.push((v !== null && typeof v === "object") ?
+                    serialize(v, k) :
+                    encodeURIComponent(k) + "=" + encodeURIComponent(v));
+            }
+        }
+        return str.join("&");
+    }
+
+    function fnImprimirListContasPorPagina() {
+        var querystring = serialize(fly01._.fly01dt.ajax.params());
+        
+        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);
+
+        var dataInicial = $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        var dataFinal = $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
+        var url = '@Url.Action("ImprimirListContasPorPagina", "ContaPagar")?' + querystring +'&dataInicial=' + dataInicial.val() + "&dataFinal=" + dataFinal.val();
+        fnImprimir(url);
+    }
 </script>
 

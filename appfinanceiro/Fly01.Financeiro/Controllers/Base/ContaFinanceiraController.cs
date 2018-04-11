@@ -69,6 +69,11 @@ namespace Fly01.Financeiro.Controllers.Base
                 observacao = x.Observacao,
                 repetir = x.Repetir,
                 valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
+                NumeroRepeticoes = x.NumeroRepeticoes,
+                valorPago = x.ValorPago,
+                FormaPagamentoObject = x.FormaPagamento,
+                Pessoa = x.Pessoa,
+                dataVencimentoObject = x.DataVencimento
             };
         }
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()

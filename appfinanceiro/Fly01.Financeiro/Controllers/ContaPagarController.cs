@@ -17,11 +17,26 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
+using Newtonsoft.Json.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
+    public class GridLoad
+    {
+        [JsonProperty("recordsTotal")]
+        public int recordsTotal { get; set; }
+
+        [JsonProperty("recordsFiltered")]
+        public int recordsFiltered { get; set; }
+
+        [JsonProperty("data")]
+        public List<JObject> data { get; set; }
+
+    }
+
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
+
         public ContaPagarController()
         {
             ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
@@ -76,19 +91,57 @@ namespace Fly01.Financeiro.Controllers
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
+
         public List<ContaPagarVM> GetListContaPagar()
         {
             var queryString = new Dictionary<string, string>();
             return RestHelper.ExecuteGetRequest<List<ContaPagarVM>>("contapagarmaxrecords", queryString);
         }
+
         public virtual ActionResult ImprimirListContas()
         {
             var contas = GetListContaPagar();
 
+            return PrintList(contas);
+        }
+
+        public ActionResult ImprimirListContasPorPagina(string dataInicial, string dataFinal)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>();
+            queryString.AddParam("controller", "ContaPagar");
+            queryString.AddParam("action", "GridLoad");
+            queryString.Add("dataVencimento le ", dataFinal);
+            queryString.Add(" and dataVencimento ge ", dataInicial);
+
+            var dataJson = base.GridLoad(queryString);
+            string json = JsonConvert.SerializeObject(dataJson.Data);
+            var contasDataJson = JsonConvert.DeserializeObject<GridLoad>(json).data;
+
+            var contas = new List<ContaPagarVM>();
+            foreach (dynamic item in contasDataJson)
+            {
+                contas.Add(new ContaPagarVM()
+                {
+                    Descricao = item.descricao,
+                    Id = item.id,
+                    StatusContaBancaria = item.statusContaBancaria,
+                    ValorPago = item.valorPago,
+                    FormaPagamento = item.FormaPagamentoObject.ToObject<FormaPagamentoVM>(),
+                    NumeroRepeticoes = item.NumeroRepeticoes,
+                    Pessoa= item.Pessoa.ToObject<PessoaVM>(),
+                    DataVencimento = item.dataVencimentoObject
+
+                });
+            }
+            
+            return PrintList(contas);
+        }
+
+        private ActionResult PrintList(List<ContaPagarVM> contas)
+        {
             List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
 
             foreach (ContaPagarVM ListContas in contas)
-
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = ListContas.Id,
@@ -102,12 +155,15 @@ namespace Fly01.Financeiro.Controllers
                 });
 
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
+
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
+
         public override string GetResourceDeleteTituloBordero(string id)
         {
             throw new NotImplementedException();
         }
+
         public override JsonResult GridLoadTitulosARenegociar(string renegociacaoPessoaId)
         {
             try
@@ -196,7 +252,8 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        new HtmlUIButton { Id = "new", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "newPrintPage", Label = "Imprimir página", OnClickFn = "fnImprimirListContasPorPagina" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

@@ -93,6 +93,8 @@
     <Compile Include="Entities\NFe\ProcessoReferenciado.cs" />
     <Compile Include="Entities\NFe\Produto.cs" />
     <Compile Include="Entities\NFe\Total.cs" />
+    <Compile Include="Entities\NFe\Volume.cs" />
+    <Compile Include="Entities\NFe\Veiculo.cs" />
     <Compile Include="Entities\NFe\Transportadora.cs" />
     <Compile Include="Entities\NFe\Transporte.cs" />
     <Compile Include="Entities\TabelaIcms.cs" />

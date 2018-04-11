@@ -118,7 +118,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
         #endregion Excluir
 
-        private double CalculaFreteACobrar(Pedido pedido)
+        public static double CalculaFreteACobrar(Pedido pedido)
         {
             if (pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario)
                 return pedido.ValorFrete ?? 0.0;

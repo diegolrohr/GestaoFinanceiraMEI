@@ -78,7 +78,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
-                double valorPrevisto = total + (entity.TipoFrete == TipoFrete.FOB? entity.ValorFrete.Value: 0);
+                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value: 0);
 
                 ContaPagar contaPagar = new ContaPagar()
                 {

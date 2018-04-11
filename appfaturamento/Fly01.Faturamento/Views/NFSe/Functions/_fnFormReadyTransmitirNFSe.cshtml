@@ -7,7 +7,7 @@
 
     function calculaTotalNFSeTransmitir() {
         var valorFrete = 0;
-        if ($('input#tipoFreteNFSe').val() == "CIF") {
+        if ($('input#tipoFreteNFSe').val() == "CIF" || $('input#tipoFreteNFSe').val() == "Remetente") {
             valorFrete = parseFloat(noComma($('form#fly01mdlfrmTransmitirNFSe input#valorFreteNFSe').val()));
         }
 

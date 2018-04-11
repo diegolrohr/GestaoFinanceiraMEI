@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Controllers
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
             var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
-                OrdemVenda.TipoFrete == "CIF" ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
+                 (OrdemVenda.TipoFrete == "Remetente" || OrdemVenda.TipoFrete == "CIF") ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
@@ -572,7 +572,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });

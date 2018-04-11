@@ -11,6 +11,8 @@
     <AssemblyName>Fly01.Core.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,7 +78,11 @@
     <Compile Include="UnitOfWorkBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.VM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
@@ -86,11 +92,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

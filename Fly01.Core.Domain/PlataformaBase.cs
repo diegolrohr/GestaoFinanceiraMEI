@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Notifications;
 
 namespace Fly01.Core.Domain
 {

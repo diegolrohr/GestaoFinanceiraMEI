@@ -294,7 +294,7 @@ namespace Fly01.Compras.Controllers
 
             #region step Finalizar
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalPedido", Class = "col s12 m4", Label = "Total pedido(produtos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimenta estoque" });
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e já finalizar" });
@@ -415,7 +415,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "pesoLiquido", Class = "col s12 m6", Label = "Peso líquido", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quant. volumes", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalPedido", Class = "col s12 m4", Label = "Total pedido(produtos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m6", Label = "Movimenta estoque", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "geraFinanceiro", Class = "col s12 m6", Label = "Gera financeiro", Disabled = true });
@@ -510,12 +510,13 @@ namespace Fly01.Compras.Controllers
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
+                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
                     QtdProduto = produtospedido.Quantidade,
                     ValorUnitario = produtospedido.Valor,
-                    ValorTotal = produtospedido.Total,
+                    ValorTotal = produtospedido.Total
                 });
 
             if (!produtos.Any())
@@ -534,7 +535,8 @@ namespace Fly01.Compras.Controllers
                     PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
-                    TipoFrete = Pedido.TipoFrete
+                    TipoFrete = Pedido.TipoFrete,
+                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
                 });
             }
 

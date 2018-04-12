@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.Domain.Enums;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,6 @@ namespace Fly01.Financeiro.Domain.Entities
 {
     public class ContaFinanceiraRenegociacao : PlataformaBase
     {
-        //AppDataContext model.builder ignore
         [Required]
         public virtual List<Guid> ContasFinanceirasOrigemIds { get; set; }
 

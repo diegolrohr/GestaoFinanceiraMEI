@@ -1,6 +1,5 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Estoque.Domain.Entities

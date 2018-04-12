@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using Fly01.Core.VM;
+using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Compras.Entities.ViewModel
 {

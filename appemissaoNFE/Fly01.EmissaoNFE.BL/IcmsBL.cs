@@ -1,9 +1,9 @@
 ﻿using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Domain;
 using System;
 using System.Linq;
+using Fly01.Core.BL;
 
 namespace Fly01.EmissaoNFE.BL
 {

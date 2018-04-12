@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
-using EmpresaVM = Fly01.Core.VM.EmpresaVM;
+using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
 using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
 using Fly01.Core.Rest;
 using Fly01.Core;

@@ -36,15 +36,12 @@
   <ItemGroup>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,9 +69,9 @@
       <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
       <Name>Fly01.Core.Rest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>

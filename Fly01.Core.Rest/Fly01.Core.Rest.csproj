@@ -36,7 +36,6 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.1\lib\net45\NLog.dll</HintPath>
@@ -74,9 +73,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>

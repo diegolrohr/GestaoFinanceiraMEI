@@ -30,7 +30,8 @@ namespace Fly01.Compras.BL
         {
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
-            entity.Fail(entity.Numero == 0, new Error("Numero do orçamento inválido"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do orçamento menor que zero."));
+            entity.Fail(OrdemCompraBL.All.Any(x => x.Numero == entity.Numero), new Error("Numero do orçamento repetido"));
 
 
             base.ValidaModel(entity);

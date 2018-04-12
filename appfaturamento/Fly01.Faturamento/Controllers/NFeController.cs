@@ -1,16 +1,16 @@
-﻿using Fly01.Faturamento.Controllers.Base;
+﻿using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Faturamento.Controllers.Base;
 using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -158,12 +158,6 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m6", Label = "Peso Líquido", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quantidade Volumes", Disabled = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m6", Label = "Total (produtos + impostos + frete)", Readonly = true });
-
             config.Elements.Add(new LabelsetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI
             {
@@ -180,7 +174,35 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
-            config.Elements.Add(new LabelsetUI { Id = "labelSetTransmissao", Class = "col s12", Label = "Transmissão" });
+
+            config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total de impostos incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12", Label = "Total (produtos + impostos incidentes + frete)", Readonly = true });
+            
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public ContentResult FormRetornoSefaz()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem SEFAZ",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NotaFiscal")
+                },
+                Id = "fly01mdlfrmVisualizarRetornoSefaz"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });            
             config.Elements.Add(new TextareaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
             config.Elements.Add(new TextareaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
 
@@ -235,9 +257,10 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoFreteNFe", Name = "tipoFrete" });
             config.Elements.Add(new InputHiddenUI { Id = "valorFreteNFe", Name = "valorFrete" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFreteNFe", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true, Name = "totalFrete" });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFe", Class = "col s12 m6", Label = "Total (produtos + impostos + frete)", Readonly = true, Name = "totalNotaFiscal" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total de impostos incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFe", Class = "col s12", Label = "Total (produtos + impostos incidentes + frete)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutocompleteUI
             {

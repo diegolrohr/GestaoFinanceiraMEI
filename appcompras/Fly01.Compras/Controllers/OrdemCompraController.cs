@@ -126,10 +126,10 @@ namespace Fly01.Compras.Controllers
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 4, Type = "currency" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency" });
 
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 6 });
 
             cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);

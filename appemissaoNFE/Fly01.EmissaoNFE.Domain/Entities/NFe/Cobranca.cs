@@ -1,10 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -15,7 +9,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o grupo de Fatura
         /// </summary>
         [XmlElement(ElementName = "fat")]
-        public Fatura[] Fatura { get; set; }
+        public Fatura Fatura { get; set; }
 
         /// <summary>
         /// informar o grupo dup de duplicatas

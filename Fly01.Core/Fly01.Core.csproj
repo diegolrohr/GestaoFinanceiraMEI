@@ -35,11 +35,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="AppDefaults.cs" />
     <Compile Include="Base\ContextInitialize.cs" />
-    <Compile Include="Attribute\InputMask.cs" />
-    <Compile Include="Attribute\SubtitleAttribute.cs" />
     <Compile Include="Config\NotificationVM.cs" />
     <Compile Include="Config\ProxyConfig.cs" />
     <Compile Include="Config\SessionManager.cs" />

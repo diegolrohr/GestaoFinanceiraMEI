@@ -278,7 +278,8 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false).ToList()
+                    .FindAll(x => "FOB,CIF,Terceiro,SemFrete".Contains(x.Value))),
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }

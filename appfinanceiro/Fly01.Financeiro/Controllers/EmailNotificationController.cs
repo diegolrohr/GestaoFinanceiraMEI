@@ -7,7 +7,7 @@ using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.Financeiro.Models.Utils;
 using Fly01.Core;
 using Fly01.Core.Helpers;
-using Fly01.Core.VM;
+using Fly01.Core.Config;
 using Newtonsoft.Json;
 using Fly01.Core.Rest;
 using Fly01.Core.Mensageria;

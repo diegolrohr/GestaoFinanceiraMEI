@@ -58,18 +58,18 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CategoriaVM.cs" />
-    <Compile Include="ViewModel\EnquadramentoLegalIPIVM.cs" />
+    <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
+    <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\GrupoTributarioVM.cs" />
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
-    <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\FormaPagamentoVM.cs" />
     <Compile Include="ViewModel\GlobalConfigurationVM.cs" />
     <Compile Include="ViewModel\GrupoProdutoVM.cs" />
     <Compile Include="ViewModel\CfopVM.cs" />
     <Compile Include="ViewModel\CestVM.cs" />
-    <Compile Include="ViewModel\NCMVM.cs" />
+    <Compile Include="ViewModel\NcmVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />

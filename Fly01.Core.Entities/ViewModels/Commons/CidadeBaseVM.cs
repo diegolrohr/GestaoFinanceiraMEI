@@ -2,7 +2,7 @@
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class CidadeBaseVM
+    public abstract class CidadeBaseVM : DomainBaseVM
     {
         [JsonProperty("nome")]
         public string Nome { get; set; }

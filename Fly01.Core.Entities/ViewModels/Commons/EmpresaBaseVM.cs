@@ -3,7 +3,7 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class EmpresaBaseVM
+    public abstract class EmpresaBaseVM 
     {
         [JsonProperty("cnpj")]
         public string CNPJ { get; set; }

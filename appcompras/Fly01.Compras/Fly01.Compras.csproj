@@ -60,8 +60,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\ReportImprimirOrcamento.rdlc" />
-    <EmbeddedResource Include="Reports\ReportImprimirPedido.rdlc" />
+    <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
+    <Content Include="Reports\ReportImprimirPedido.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />

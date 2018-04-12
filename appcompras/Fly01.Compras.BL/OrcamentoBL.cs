@@ -16,18 +16,22 @@ namespace Fly01.Compras.BL
         protected PedidoBL PedidoBL { get; set; }
         protected OrcamentoItemBL OrcamentoItemBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
+        protected OrdemCompraBL OrdemCompraBL { get; set; }
 
-        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL) : base(context)
+        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL) : base(context)
         {
             PedidoBL = pedidoBL;
             OrcamentoItemBL = orcamentoItemBL;
             PedidoItemBL = pedidoItemBL;
+            OrdemCompraBL = ordemCompraBL;
         }
 
         public override void ValidaModel(Orcamento entity)
         {
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
+            entity.Fail(entity.Numero == 0, new Error("Numero do orçamento inválido"));
+
 
             base.ValidaModel(entity);
         }
@@ -94,6 +98,8 @@ namespace Fly01.Compras.BL
             {
                 entity.Id = Guid.NewGuid();
             }
+            
+            entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
 
             ValidaModel(entity);
 

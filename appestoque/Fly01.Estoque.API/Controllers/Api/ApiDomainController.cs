@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Fly01.Estoque.BL;
 using Fly01.Core.API;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using Fly01.Core.BL;
 
 namespace Fly01.Estoque.API.Controllers.Api

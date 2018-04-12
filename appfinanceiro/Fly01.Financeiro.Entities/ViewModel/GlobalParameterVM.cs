@@ -1,4 +1,4 @@
-﻿using Fly01.Core.VM;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.Entities.ViewModel

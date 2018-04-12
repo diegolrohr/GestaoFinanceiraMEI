@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fly01.Core.Helpers
+﻿namespace Fly01.Core.Helpers
 {
     public static class ODataStringFormater
     {

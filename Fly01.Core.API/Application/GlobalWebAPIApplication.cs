@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.OData.Edm;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Microsoft.OData.Edm;
 
 namespace Fly01.Core.API.Application
 {
@@ -12,6 +12,7 @@ namespace Fly01.Core.API.Application
     {
         protected abstract IEdmModel GetEdmModel();
         protected abstract Task RunServiceBus();
+        protected virtual void SetAppDefaults() { }
 
         protected void Application_Start()
         {
@@ -34,7 +35,8 @@ namespace Fly01.Core.API.Application
                 WebAPIConfig.Register(config);
             });
 
-            RunServiceBus();            
+            RunServiceBus();
+            SetAppDefaults();
         }
     }
 }

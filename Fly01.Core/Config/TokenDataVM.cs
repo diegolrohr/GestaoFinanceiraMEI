@@ -2,8 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
-namespace Fly01.Core.VM
+namespace Fly01.Core.Config
 {
     [Serializable]
     public class TokenDataVM
@@ -47,7 +48,7 @@ namespace Fly01.Core.VM
             }
             set
             {
-                LicenseExpiration = string.IsNullOrWhiteSpace(value) ? (DateTime?)null : value.ToDateTime(Extensions.DateFormat.YYYY_MM_DD);
+                LicenseExpiration = string.IsNullOrWhiteSpace(value) ? (DateTime?)null : DateTime.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);                
             }
         }
 

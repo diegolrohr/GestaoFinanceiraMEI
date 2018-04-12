@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fly01.Core.VM
+namespace Fly01.Core.Config
 {
     [Serializable]
     public class UserDataVM

@@ -103,9 +103,6 @@
     <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportOrcamentoPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
-    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
-    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
-    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
     <Compile Include="Models\ViewModel\ImprimirOrcamentoPedidoVM.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

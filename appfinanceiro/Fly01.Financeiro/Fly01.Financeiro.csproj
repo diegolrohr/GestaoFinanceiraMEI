@@ -90,11 +90,7 @@
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
-    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
-    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
     <Compile Include="Models\Utils\EmailBodyHelper.cs" />
-    <Compile Include="Models\Utils\ReponseBaixaMultiplaVM.cs" />
-    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
     <Compile Include="Models\ViewModel\ImprimirListContasVM.cs" />
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaReceberVM.cs" />
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaPagarVM.cs" />

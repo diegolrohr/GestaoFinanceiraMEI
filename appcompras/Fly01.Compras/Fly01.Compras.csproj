@@ -92,9 +92,6 @@
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
-    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
-    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
-    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
     <Compile Include="Models\ViewModel\ImprimirOrcamentoVM.cs" />
     <Compile Include="Models\ViewModel\ImprimirPedidoVM.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />

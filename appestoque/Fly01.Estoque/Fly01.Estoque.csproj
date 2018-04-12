@@ -82,14 +82,10 @@
     <Compile Include="Models\Reports\ReportMovimentoDetalhado.cs" />
     <Compile Include="Models\Reports\ReportListaContagem.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
-    <Compile Include="Models\Utils\ButtonGroupHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
-    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
     <Compile Include="Models\Tasks\Base\TaskItemBase.cs" />
-    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
     <Compile Include="Models\Tasks\Base\TaskType.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

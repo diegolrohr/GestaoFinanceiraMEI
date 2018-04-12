@@ -447,14 +447,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Certificado\" />
-    <Folder Include="Views\ConfiguracaoOK\" />
-    <Folder Include="Views\ConversorXML\" />
-    <Folder Include="Views\ConvertXML\" />
-    <Folder Include="Views\Empresa\" />
-    <Folder Include="Views\Icms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

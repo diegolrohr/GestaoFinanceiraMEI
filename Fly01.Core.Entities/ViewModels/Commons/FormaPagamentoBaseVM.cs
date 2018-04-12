@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Attribute;
+﻿using Fly01.Core.Entities.Attribute;
 using Newtonsoft.Json;
 
 namespace Fly01.Core.Entities.ViewModels.Commons

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
-using Fly01.Core.Attribute;
+using Fly01.Core.Entities.Attribute;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 

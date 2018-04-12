@@ -139,9 +139,7 @@
     <Content Include="SqlServerTypes\x86\msvcr120.dll" />
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll" />
     <Content Include="Views\ConciliacaoBancaria\Functions\_fnRowCallbackContasExistentes.cshtml" />
-    <Content Include="Views\Shared\Head\_Default.cshtml" />
     <Content Include="Views\Shared\Index.cshtml" />
-    <Content Include="Views\Shared\Scripts\_Default.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNovo.cshtml" />
     <Content Include="Views\Shared\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\Shared\Functions\_fnEditar.cshtml" />

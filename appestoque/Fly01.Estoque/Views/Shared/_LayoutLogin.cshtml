@@ -1,13 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    @Html.Partial("Head/_Default")
+    @Html.HeadTemplate("Fly01 Estoque")
 </head>
 <body>
     <div id="login-page" class="container">
         @RenderBody()
     </div>
-    @Html.Partial("Scripts/_Default")
+    @Html.ScriptsTemplate()
     @RenderSection("scripts", required: false)
 </body>
 </html>

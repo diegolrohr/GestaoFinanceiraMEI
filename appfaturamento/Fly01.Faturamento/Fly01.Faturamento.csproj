@@ -180,9 +180,7 @@
     <Content Include="Views\Shared\Functions\_fnSalvar.cshtml" />
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\Shared\Functions\___format.cshtml" />
-    <Content Include="Views\Shared\Head\_Default.cshtml" />
     <Content Include="Views\Shared\Index.cshtml" />
-    <Content Include="Views\Shared\Scripts\_Default.cshtml" />
     <Content Include="Views\Home\_List.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowCOFINS.cshtml" />

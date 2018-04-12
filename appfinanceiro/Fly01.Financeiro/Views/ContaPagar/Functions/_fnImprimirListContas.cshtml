@@ -1,11 +1,6 @@
 ﻿<script>
     @Html.Partial("Functions/_fnImprimir");
 
-    function fnImprimirListContas() {
-        var url = '@Url.Action("ImprimirListContas", "ContaPagar")';
-        fnImprimir(url);
-    }
-
     var serialize = function (obj, prefix) {
         var str = [],
             p;
@@ -21,9 +16,83 @@
         return str.join("&");
     }
 
+    function GetListParams() {
+        var ListParams = [];
+        if ($("#descricao").val() != "") {
+            ListParams.push({
+                key: "descricao",
+                value: $("#descricao").val()
+            });
+        };
+
+        if ($("#valorPrevisto").val() != "") {
+            ListParams.push({
+                key: "valorPrevisto",
+                value: $("#valorPrevisto").val()
+            });
+        };
+
+        if ($("#formaPagamento_descricao").val() != "") {
+            ListParams.push({
+                key: "formaPagamento_descricao",
+                value: $("#formaPagamento_descricao").val()
+            });
+        };
+
+        if ($("#descricaoParcela").val() != "") {
+            ListParams.push({
+                key: "descricaoParcela",
+                value: $("#descricaoParcela").val()
+            });
+        };
+
+        if ($("#pessoa_nome").val() != "") {
+            ListParams.push({
+                key: "pessoaNome",
+                value: $("#pessoa_nome").val()
+            });
+        };
+
+        return ListParams;
+    };
+
+    function fnImprimirListContas() {
+        debugger;
+        var ListParams = GetListParams();
+        var queryStringOdata = ""
+
+        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);
+
+        var dataInicial = $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        var dataFinal = $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
+
+        for (var list in ListParams) {
+            queryStringOdata += "contains(" + ListParams[list].key + ", " +"'"+ ListParams[list].value +"'"+ ")" + (ListParams[list] != ListParams[ListParams.length - 1] ? " or contains"  : "");
+        }
+
+        var dateParam = $("#dataVencimento").val().split("/").reverse().join("/");
+        var newDate = dateParam.replace("/", "-").replace("/", "-");
+
+        var url = queryStringOdata != ""
+            ? '@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=' + queryStringOdata +
+                (dateParam != undefined && dateParam != ""
+                    ? " and dataVencimento eq " +  newDate
+                    : ' and dataVencimento le ' + dataFinal.val() + ' and dataVencimento ge ' + dataInicial.val()) +
+            "&tipoStatus=" + $("#statusContaBancaria").val()
+            : '@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=' + queryStringOdata +
+                (dateParam != undefined && dateParam != ""
+                    ? " dataVencimento eq " +  newDate
+                    : ' dataVencimento le ' + dataFinal.val() + ' and dataVencimento ge ' + dataInicial.val()) +
+            "&tipoStatus=" + $("#statusContaBancaria").val();
+
+        fnImprimir(url);
+    }
+
     function fnImprimirListContasPorPagina() {
         var querystring = serialize(fly01._.fly01dt.ajax.params());
-        
+
         let date = fly01._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         let lastDay = new Date(date.year, date.month + 1, 0);

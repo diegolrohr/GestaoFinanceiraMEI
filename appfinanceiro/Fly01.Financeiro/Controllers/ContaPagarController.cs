@@ -92,15 +92,18 @@ namespace Fly01.Financeiro.Controllers
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        public List<ContaPagarVM> GetListContaPagar()
+        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
         {
             var queryString = new Dictionary<string, string>();
-            return RestHelper.ExecuteGetRequest<List<ContaPagarVM>>("contapagarmaxrecords", queryString);
+            var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" +tipoStatus + "'";
+            queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
+
+            return RestHelper.ExecuteGetRequest<ResultBase<ContaPagarVM>>("ContaPagar", queryString).Data;
         }
 
-        public virtual ActionResult ImprimirListContas()
+        public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
         {
-            var contas = GetListContaPagar();
+            var contas = GetListContaPagar(queryStringOdata, tipoStatus);
 
             return PrintList(contas);
         }

@@ -23,7 +23,7 @@ namespace Fly01.Faturamento.Controllers
         }
 
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
-        public override Func<NotaFiscalVM, object> GetDisplayData()
+        public override Func<NotaFiscalVM, object> GetDisplayData() 
         {
             return x => new
             {

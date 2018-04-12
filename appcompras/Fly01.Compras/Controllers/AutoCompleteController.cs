@@ -5,6 +5,7 @@ using Fly01.Core;
 using System.Collections.Generic;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
+using Fly01.Core.API;
 
 namespace Fly01.Compras.Controllers
 {
@@ -132,11 +133,11 @@ namespace Fly01.Compras.Controllers
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", string.Format("contains(descricao, '{0}')", term));
-            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$select", "id,descricao,tipoFormaPagamento");
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao };
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation("TipoFormaPagamento", item.TipoFormaPagamento).Value };
 
             return GetJson(filterObjects);
         }

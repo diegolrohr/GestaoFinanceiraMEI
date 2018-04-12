@@ -2,7 +2,7 @@
 using System.Data.Entity;
 using Fly01.Compras.Domain.Entities;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Fly01.Core.Domain;
+using Fly01.Core.BL;
 
 namespace Fly01.Compras.DAL
 {

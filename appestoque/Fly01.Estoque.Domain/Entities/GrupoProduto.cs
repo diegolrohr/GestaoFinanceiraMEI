@@ -1,5 +1,5 @@
 ﻿using System;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using Fly01.Estoque.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;

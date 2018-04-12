@@ -114,9 +114,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\SubstituicaoTributaria\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
@@ -126,9 +124,9 @@
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
       <Name>Fly01.Core.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
-      <Name>Fly01.Core.Domain</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>

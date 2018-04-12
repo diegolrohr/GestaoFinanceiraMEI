@@ -1,10 +1,6 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fly01.Financeiro.Domain.Entities
 {

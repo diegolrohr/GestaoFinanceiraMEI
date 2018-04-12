@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Financeiro.Domain.Entities
 {

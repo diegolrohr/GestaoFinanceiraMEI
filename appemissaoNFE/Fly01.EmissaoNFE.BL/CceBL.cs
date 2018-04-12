@@ -2,7 +2,6 @@
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System;
-using Fly01.Core.Domain;
 
 namespace Fly01.EmissaoNFE.BL
 {

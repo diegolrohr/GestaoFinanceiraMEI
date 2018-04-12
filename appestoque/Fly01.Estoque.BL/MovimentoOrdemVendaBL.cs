@@ -1,9 +1,7 @@
-﻿using Fly01.Core.Domain;
-using System.Linq;
+﻿using System.Linq;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Estoque.Domain.Entities;
-using Fly01.Core.ValueObjects;
 
 namespace Fly01.Estoque.BL
 {

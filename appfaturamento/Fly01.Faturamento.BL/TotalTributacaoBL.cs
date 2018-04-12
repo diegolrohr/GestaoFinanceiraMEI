@@ -2,7 +2,6 @@
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.Domain.Entities;
 using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.Domain;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using EmpresaVM = Fly01.Core.VM.EmpresaVM;
+using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.EmissaoNFE.Domain.Enums;

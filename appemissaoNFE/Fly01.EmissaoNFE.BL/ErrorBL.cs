@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.BL;
 using System;
 
 namespace Fly01.EmissaoNFE.BL

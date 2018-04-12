@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Financeiro.Domain.Entities
 {

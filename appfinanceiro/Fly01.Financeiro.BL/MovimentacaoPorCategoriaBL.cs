@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.Domain.Entities;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;

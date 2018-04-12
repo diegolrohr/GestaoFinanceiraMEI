@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Domain;
-using System;
+﻿using Fly01.Core.Entities.Domains;
 
 namespace Fly01.EmissaoNFE.Domain
 {

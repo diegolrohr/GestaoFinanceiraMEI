@@ -3,7 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Financeiro.BL;
 using System.Threading.Tasks;
 using Fly01.Core.API;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

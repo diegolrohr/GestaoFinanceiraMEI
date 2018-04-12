@@ -1,4 +1,4 @@
-﻿using Fly01.Core.VM;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -10,6 +10,7 @@ namespace Fly01.EmissaoNFE.Domain
 
         public bool ConsumidorFinal { get; set; }
         public bool InscricaoEstadual { get; set; }
+        public bool SimplesNacional { get; set; }
 
         public Ipi Ipi { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Compras.Domain.Entities;
+using Fly01.Compras.Domain.Enums;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 })
                                 .Sum(x => x.Total) + entity.Total;
 
-                pedido.Total = total;
+                pedido.Total += total + CalculaFreteACobrar(pedido);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
@@ -109,12 +110,20 @@ namespace Fly01.Compras.API.Controllers.Api
                             })
                             .Sum(x => x.Total);
 
-                pedido.Total = total;
+                pedido.Total += total + CalculaFreteACobrar(pedido);
                 unitOfWork.PedidoBL.Update(pedido);
                 await unitOfWork.Save();
             }
         }
 
         #endregion Excluir
+
+        public static double CalculaFreteACobrar(Pedido pedido)
+        {
+            if (pedido.TipoFrete == TipoFrete.FOB || pedido.TipoFrete == TipoFrete.Destinatario)
+                return pedido.ValorFrete ?? 0.0;
+
+            return 0.0;
+        }
     }
 }

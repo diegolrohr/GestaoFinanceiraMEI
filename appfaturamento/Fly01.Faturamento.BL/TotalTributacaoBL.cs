@@ -194,6 +194,7 @@ namespace Fly01.Faturamento.BL
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
+                tributacao.SimplesNacional = true;
 
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
@@ -203,7 +204,7 @@ namespace Fly01.Faturamento.BL
                 {
                     tributacao.Icms = new Icms()
                     {
-                        //Aliquota não preencher
+                        Aliquota = parametros.AliquotaSimplesNacional,
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
@@ -215,6 +216,11 @@ namespace Fly01.Faturamento.BL
                     {
                         tributacao.Icms.IpiNaBase = grupoTributario.AplicaIpiBaseIcms;
                     }
+
+                    tributacao.Fcp = new Fcp()
+                    {
+                        Aliquota = parametros.AliquotaFCP
+                    };
                 }
                 //IPI
                 if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0)

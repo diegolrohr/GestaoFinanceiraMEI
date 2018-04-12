@@ -320,7 +320,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalImpostosProdutosNaoAgrega",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS e PIS."
+                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS e FCP."
                 }
             });
             config.Helpers.Add(new TooltipUI

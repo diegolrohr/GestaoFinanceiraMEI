@@ -1,14 +1,14 @@
 ﻿using Fly01.Compras.BL;
-using System.Web.OData.Routing;
 using Fly01.Compras.Domain.Entities;
+using Fly01.Core.Notifications;
 using System;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.OData;
 using System.Web.Http.ModelBinding;
-using System.Linq;
-using Fly01.Core.Notifications;
-using System.Data.Entity.Infrastructure;
+using System.Web.OData;
+using System.Web.OData.Routing;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -27,6 +27,8 @@ namespace Fly01.Compras.API.Controllers.Api
 
             ModelState.Clear();
 
+            entity.Total = GetTotalPedidoItens(entity);
+
             Insert(entity);
 
             Validate(entity);
@@ -41,7 +43,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<Pedido> model)
         {
-            if (model == null || key == default(Guid) || key == null)
+            if (model == null || key == default(Guid))
                 return BadRequest(ModelState);
 
             var entity = Find(key);
@@ -51,6 +53,9 @@ namespace Fly01.Compras.API.Controllers.Api
 
             ModelState.Clear();
             model.Patch(entity);
+
+            entity.Total = GetTotalPedidoItens(entity);
+
             Update(entity);
 
             Validate(entity);
@@ -61,7 +66,7 @@ namespace Fly01.Compras.API.Controllers.Api
             try
             {
                 await UnitSave();
-                
+
                 if (MustProduceMessageServiceBus)
                     AfterSave(entity);
             }
@@ -69,8 +74,8 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 if (!Exists(key))
                     return NotFound();
-                else
-                    throw;
+
+                throw;
             }
 
             return Ok();
@@ -86,6 +91,25 @@ namespace Fly01.Compras.API.Controllers.Api
                         new Error(itemErro.ErrorMessage, string.Concat(char.ToLowerInvariant(model.Key[0]), model.Key.Substring(1))))));
 
             throw new BusinessException(Notification.Get());
+        }
+
+        private double GetTotalPedidoItens(Pedido pedido)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var total = unitOfWork
+                                .PedidoItemBL
+                                .All
+                                .Where(x => x.PedidoId == pedido.Id)
+                                .ToList()
+                                .Select(x => new
+                                {
+                                    Total = Convert.ToDouble(Math.Round(x.Quantidade * x.Valor - x.Desconto, 2,
+                                        MidpointRounding.AwayFromZero))
+                                })
+                                .Sum(x => x.Total) + PedidoItemController.CalculaFreteACobrar(pedido);
+                return total;
+            }
         }
     }
 }

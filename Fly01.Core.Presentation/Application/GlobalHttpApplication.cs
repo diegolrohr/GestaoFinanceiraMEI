@@ -149,5 +149,7 @@ namespace Fly01.Core.Presentation.Application
             FormsAuthentication.SignOut();
         }
 
+        public virtual void SetCustomDefaults() { }
+
     }
 }

@@ -273,6 +273,12 @@ namespace Fly01.EmissaoNFE.BL
             if (inscricaoEstadual.ToUpper() == "ISENTO" || siglaUf == "EX")
                 return true;
 
+            if (string.IsNullOrEmpty(inscricaoEstadual))
+            {
+                msgError = ERRO_InscricaoInvalida;
+                return false;
+            }
+
             switch (siglaUf)
             {
                 case "AC":

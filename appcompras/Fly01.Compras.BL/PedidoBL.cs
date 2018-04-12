@@ -13,15 +13,17 @@ namespace Fly01.Compras.BL
     public class PedidoBL : PlataformaBaseBL<Pedido>
     {
         protected PedidoItemBL PedidoItemBL { get; set; }
+        protected OrdemCompraBL OrdemCompraBL { get; set; }
         private readonly string descricaoPedido = @"Pedido nº: {0}";
         private readonly string observacaoPedido = @"Observação gerada pelo Pedido nº {0} applicativo Fly01 Compras: {1}";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameMovimento = @"Movimento";
         private StatusOrdemCompra previousStatus;
 
-        public PedidoBL(AppDataContext context, PedidoItemBL pedidoItemBL) : base(context)
+        public PedidoBL(AppDataContext context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
+            OrdemCompraBL = ordemCompraBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -31,6 +33,7 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
+            entity.Fail(entity.Numero == 0, new Error("Numero do orçamento inválido"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -65,7 +68,17 @@ namespace Fly01.Compras.BL
 
             base.Delete(entityToDelete);
         }
-        
+
+        public override void Insert(Pedido entity)
+        {
+
+            entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
+
+            ValidaModel(entity);
+
+            base.Insert(entity);
+        }
+
         public override void AfterSave(Pedido entity)
         {
             if (entity.Status != StatusOrdemCompra.Finalizado)

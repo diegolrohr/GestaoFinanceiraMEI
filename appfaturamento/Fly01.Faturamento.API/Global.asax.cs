@@ -4,6 +4,8 @@ using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
 using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core;
+using System.Configuration;
 
 namespace Fly01.Faturamento.API
 {
@@ -53,6 +55,15 @@ namespace Fly01.Faturamento.API
         protected override Task RunServiceBus()
         {
            return Task.Factory.StartNew(() => new ServiceBusBL());
+        }
+
+        protected override void SetAppDefaults()
+        {
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlS1Gateway"];
+            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
+
+            base.SetAppDefaults();
         }
     }
 }

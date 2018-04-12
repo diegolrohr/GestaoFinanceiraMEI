@@ -17,7 +17,7 @@ namespace Fly01.EmissaoNFE.BL
             entity.SubstituicaoTributaria.Base = entity.SubstituicaoTributaria.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
             entity.SubstituicaoTributaria.Base += entity.SubstituicaoTributaria.DespesaNaBase ? entity.ValorDespesa : 0;
             entity.SubstituicaoTributaria.Base += entity.SubstituicaoTributaria.FreteNaBase ? entity.ValorFrete : 0;
-
+            
             entity.SubstituicaoTributaria.Aliquota = (from e in TabelaIcmsBL.All
                                where e.SiglaDestino.Equals(entity.SubstituicaoTributaria.EstadoDestino, StringComparison.InvariantCultureIgnoreCase)
                                && e.SiglaOrigem.Equals(entity.SubstituicaoTributaria.EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)

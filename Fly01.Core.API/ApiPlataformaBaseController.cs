@@ -3,7 +3,7 @@ using System.Net;
 using System.Linq;
 using System.Web.Http;
 using System.Web.OData;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System.Threading.Tasks;
 using Fly01.Core.Notifications;
 using System.Web.OData.Routing;

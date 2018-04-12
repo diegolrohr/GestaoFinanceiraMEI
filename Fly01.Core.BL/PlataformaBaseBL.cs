@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;

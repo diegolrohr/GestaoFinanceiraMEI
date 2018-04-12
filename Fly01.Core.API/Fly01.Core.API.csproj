@@ -188,10 +188,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
-      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
-      <Name>Fly01.Core.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
@@ -204,9 +200,9 @@
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
       <Name>Fly01.Core.ServiceBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>

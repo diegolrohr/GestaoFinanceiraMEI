@@ -131,9 +131,9 @@
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
       <Name>Fly01.Core.ServiceBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26e9896f-edf5-4e59-9e0f-627c70e2e59e}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>

@@ -26,8 +26,5 @@ namespace Fly01.Core.Entities.Domains
             get { return ((int)TipoCarteira).ToString(); }
             set { TipoCarteira = (TipoCarteira)System.Enum.Parse(typeof(TipoCarteira), value); }
         }
-
-        [JsonIgnore]
-        public virtual CategoriaBase CategoriaPai { get; set; }
     }
 }

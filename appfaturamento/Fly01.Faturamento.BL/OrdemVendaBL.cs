@@ -253,6 +253,8 @@ namespace Fly01.Faturamento.BL
                 entity.Id = Guid.NewGuid();
             }
 
+            entity.Numero = All.Any(x => x.Id != entity.Id) ? All.Max(x => x.Numero) + 1 : 1;
+
             ValidaModel(entity);
 
             if (entity.Status == StatusOrdemVenda.Finalizado & entity.TipoOrdemVenda == TipoOrdemVenda.Pedido & entity.GeraNotaFiscal & entity.IsValid())

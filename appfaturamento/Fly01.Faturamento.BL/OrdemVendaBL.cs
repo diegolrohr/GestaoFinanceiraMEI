@@ -71,6 +71,12 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        public void ValidaNumero(OrdemVenda entity)
+        {
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
+        }
+
         public override void ValidaModel(OrdemVenda entity)
         {
             entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
@@ -85,8 +91,8 @@ namespace Fly01.Faturamento.BL
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id);
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id).Any();
 
-                if(entity.GeraNotaFiscal)
-                {   
+                if (entity.GeraNotaFiscal)
+                {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
                 }
 
@@ -253,6 +259,9 @@ namespace Fly01.Faturamento.BL
                 entity.Id = Guid.NewGuid();
             }
 
+            entity.Numero = All.Any(x => x.Id != entity.Id) ? All.Max(x => x.Numero) + 1 : 1;
+
+            ValidaNumero(entity);
             ValidaModel(entity);
 
             if (entity.Status == StatusOrdemVenda.Finalizado & entity.TipoOrdemVenda == TipoOrdemVenda.Pedido & entity.GeraNotaFiscal & entity.IsValid())
@@ -371,7 +380,7 @@ namespace Fly01.Faturamento.BL
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();
             if (geraNotaFiscal && ordemVenda.Status != StatusOrdemVenda.Finalizado)
             {
-                TotalTributacaoBL.DadosValidosCalculoTributario(ordemVenda, clienteId, onList);                
+                TotalTributacaoBL.DadosValidosCalculoTributario(ordemVenda, clienteId, onList);
             }
 
             var produtos = OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();

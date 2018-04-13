@@ -26,6 +26,12 @@ namespace Fly01.Compras.BL
             OrdemCompraBL = ordemCompraBL;
         }
 
+        public void ValidaNumero(Pedido entity)
+        {
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
+        }
+
         public override void ValidaModel(Pedido entity)
         {
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Pedido, new Error("Permitido somente tipo pedido"));
@@ -33,8 +39,6 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(OrdemCompraBL.All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -44,7 +48,7 @@ namespace Fly01.Compras.BL
                     new Error("Pedido que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
             }
-            
+
             base.ValidaModel(entity);
         }
 
@@ -57,7 +61,7 @@ namespace Fly01.Compras.BL
 
             if ((previous.Status == StatusOrdemCompra.Aberto && entity.Status == StatusOrdemCompra.Finalizado) && entity.IsValid())
 
-            base.Update(entity);
+                base.Update(entity);
         }
 
         public override void Delete(Pedido entityToDelete)
@@ -75,6 +79,7 @@ namespace Fly01.Compras.BL
 
             entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
 
+            ValidaNumero(entity);
             ValidaModel(entity);
 
             base.Insert(entity);
@@ -92,7 +97,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
-                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value: 0);
+                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value : 0);
 
                 ContaPagar contaPagar = new ContaPagar()
                 {

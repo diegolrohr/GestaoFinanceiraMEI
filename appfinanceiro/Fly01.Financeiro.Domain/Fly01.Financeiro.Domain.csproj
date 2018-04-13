@@ -88,7 +88,6 @@
     <Compile Include="Entities\Movimentacao.cs" />
     <Compile Include="Entities\SaldoHistorico.cs" />
     <Compile Include="Enums\StatusContaBancaria.cs" />
-    <Compile Include="Enums\TipoCarteira.cs" />
     <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\ClassificacaoPessoa.cs" />
     <Compile Include="Enums\TipoPeriodicidade.cs" />

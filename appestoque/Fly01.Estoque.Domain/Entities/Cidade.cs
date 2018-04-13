@@ -1,18 +1,8 @@
-﻿using System;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.Domain.Entities
 {
-    public class Cidade : DomainBase
+    public class Cidade : CidadeBase
     {
-        public string NomeCidade { get; set; }
-        public string CodigoIbge { get; set; }
-        public Guid EstadoId { get; set; }
-
-        #region NavigationProperties
-
-        public virtual Estado Estado { get; set; }
-
-        #endregion
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fly01.Core.Entities.Domains;
 using Fly01.Core.Notifications;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {

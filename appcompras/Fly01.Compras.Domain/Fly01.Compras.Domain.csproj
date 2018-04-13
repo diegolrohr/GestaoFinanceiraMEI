@@ -39,6 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\Arquivo.cs" />
     <Compile Include="Entities\Cest.cs" />
@@ -54,11 +55,9 @@
     <Compile Include="Entities\OrdemCompraItem.cs" />
     <Compile Include="Entities\Orcamento.cs" />
     <Compile Include="Entities\OrdemCompra.cs" />
-    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
     <Compile Include="Enums\TipoCFOP.cs" />
     <Compile Include="Enums\StatusContaBancaria.cs" />
-    <Compile Include="Enums\TipoCarteira.cs" />
     <Compile Include="Entities\CondicaoParcelamento.cs" />
     <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
@@ -97,6 +96,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>

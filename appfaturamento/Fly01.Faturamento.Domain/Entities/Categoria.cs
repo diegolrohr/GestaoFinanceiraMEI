@@ -1,33 +1,8 @@
-﻿using System;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains;
-using Fly01.Faturamento.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Faturamento.Domain.Entities
 {
-    public class Categoria : PlataformaBase
+    public class Categoria : CategoriaBase
     {
-        [Required]
-        [StringLength(40)]
-        public string Descricao { get; set; }
-
-        public Guid? CategoriaPaiId { get; set; }
-
-        [Required]
-        [JsonIgnore]
-        public TipoCarteira TipoCarteira { get; set; }
-
-        [NotMapped]
-        [JsonProperty("tipoCarteira")]
-        public string TipoCarteiraRest
-        {
-            get { return ((int)TipoCarteira).ToString(); }
-            set { TipoCarteira = (TipoCarteira)Enum.Parse(typeof(TipoCarteira), value); }
-        }
-
-        [JsonIgnore]
-        public virtual Categoria CategoriaPai { get; set; }
     }
 }

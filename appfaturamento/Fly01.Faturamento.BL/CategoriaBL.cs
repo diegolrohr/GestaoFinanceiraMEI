@@ -5,6 +5,7 @@ using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using Fly01.Faturamento.DAL;
 using Fly01.Faturamento.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {

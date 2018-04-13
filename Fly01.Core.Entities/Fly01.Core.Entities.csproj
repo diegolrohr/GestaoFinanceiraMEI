@@ -52,7 +52,11 @@
     <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
+    <Compile Include="Domains\Commons\CategoriaBase.cs" />
+    <Compile Include="Domains\Commons\CidadeBase.cs" />
+    <Compile Include="Domains\Commons\EstadoBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
     <Compile Include="ViewModels\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\AppsInstaladosVM.cs" />

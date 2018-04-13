@@ -25,7 +25,7 @@ namespace Fly01.Core.API
         public abstract void TestDbConnection();
 
         [HttpGet]
-        public IHttpActionResult Index()
+        public IHttpActionResult Say()
         {
             Request.Headers.Add("PlataformaUrl", "SayHello");
             Request.Headers.Add("AppUser", "AppUserHello");

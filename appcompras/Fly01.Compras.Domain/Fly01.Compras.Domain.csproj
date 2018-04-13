@@ -64,7 +64,7 @@
     <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
-    <Compile Include="Entities\Ncm.cs" />
+    <Compile Include="Entities\NCM.cs" />
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />

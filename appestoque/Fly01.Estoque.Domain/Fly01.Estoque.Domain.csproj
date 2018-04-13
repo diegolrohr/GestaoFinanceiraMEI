@@ -57,7 +57,7 @@
     <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Enums\InventarioStatus.cs" />
     <Compile Include="Entities\Movimento.cs" />
-    <Compile Include="Entities\NCM.cs" />
+    <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\TipoEntradaSaida.cs" />

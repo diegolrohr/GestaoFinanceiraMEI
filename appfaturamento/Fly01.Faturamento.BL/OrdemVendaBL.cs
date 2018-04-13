@@ -331,6 +331,8 @@ namespace Fly01.Faturamento.BL
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
 
+                //Producer<ContaPagarRabbit>.Send(routePrefixNameContaReceber, new ContaPagarRabbit() { }, RabbitConfig.enHTTPVerb.POST);
+
                 Producer.Send(routePrefixNameContaReceber, contaReceber, RabbitConfig.enHTTPVerb.POST);
             }
 

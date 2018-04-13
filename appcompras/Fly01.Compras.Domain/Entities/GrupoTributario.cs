@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Fly01.Compras.Domain.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Compras.Domain.Entities
 {

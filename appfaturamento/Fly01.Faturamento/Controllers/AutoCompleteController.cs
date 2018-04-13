@@ -5,6 +5,7 @@ using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
+using Fly01.Core.API;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -51,14 +52,14 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult Ncm(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(NCMVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(NcmVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,descricao,aliquotaIPI");
             queryString.AddParam("$orderby", "codigo");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<NCMVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<NcmVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,
@@ -148,11 +149,11 @@ namespace Fly01.Faturamento.Controllers
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", string.Format("contains(descricao, '{0}')", term));
-            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$select", "id,descricao,tipoFormaPagamento");
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao };
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation("TipoFormaPagamento", item.TipoFormaPagamento).Value };
 
             return GetJson(filterObjects);
         }
@@ -363,14 +364,14 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult EnquadramentoLegalIPI(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalIPIVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalIpiVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,descricao,grupoCST");
             queryString.AddParam("$orderby", "codigo");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalIPIVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalIpiVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,

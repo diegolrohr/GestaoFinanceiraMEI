@@ -1,5 +1,5 @@
-﻿using Fly01.Financeiro.Domain.Enums;
-using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
+using Fly01.Financeiro.Domain.Enums;
 using System;
 
 namespace Fly01.Financeiro.Domain.Entities

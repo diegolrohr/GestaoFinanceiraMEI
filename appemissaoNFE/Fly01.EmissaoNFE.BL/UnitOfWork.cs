@@ -3,7 +3,7 @@ using Fly01.Core.Base;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.EmissaoNFE.BL
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System;
 
 namespace Fly01.Estoque.Domain.Entities

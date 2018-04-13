@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Fly01.Core.VM;
 using System.Web.Mvc;
 using System.Reflection;
 using Fly01.Core.Helpers;
@@ -12,9 +11,11 @@ using Fly01.Core.Rest;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Attribute;
+using Fly01.Core.Entities.Attribute;
 using Fly01.Core.Presentation.Commons;
 using System.Web.Script.Serialization;
+using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.Entities.ViewModels;
 
 namespace Fly01.Core.Presentation
 {

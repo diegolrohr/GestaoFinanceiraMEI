@@ -1,5 +1,5 @@
-﻿using Fly01.Core.Attribute;
-using Fly01.Core.VM;
+﻿using Fly01.Core.Entities.Attribute;
+using Fly01.Core.Entities.ViewModels.Commons;
 using Newtonsoft.Json;
 using System;
 

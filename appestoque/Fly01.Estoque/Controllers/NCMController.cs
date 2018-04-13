@@ -5,14 +5,14 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
-    public class NCMController : BaseController<NCMVM>
+    public class NCMController : BaseController<NcmVM>
     {
         public override ContentResult Form()
         {
             throw new NotImplementedException();
         }
 
-        public override Func<NCMVM, object> GetDisplayData()
+        public override Func<NcmVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

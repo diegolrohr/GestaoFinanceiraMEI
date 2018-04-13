@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.BL;
-using Fly01.Core.Domain;
 using Fly01.Core.Notifications;
 using Fly01.Faturamento.Domain.Entities;
 

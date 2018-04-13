@@ -10,7 +10,6 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
-using Fly01.Core.VM;
 
 namespace Fly01.Core.Presentation.Application
 {

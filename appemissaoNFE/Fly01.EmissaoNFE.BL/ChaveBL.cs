@@ -1,6 +1,5 @@
 ﻿using Fly01.Core.API;
 using Fly01.Core.BL;
-using Fly01.Core.Domain;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;

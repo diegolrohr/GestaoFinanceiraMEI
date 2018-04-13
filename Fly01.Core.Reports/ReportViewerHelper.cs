@@ -1,5 +1,5 @@
 ﻿using Fly01.Core.Rest;
-using Fly01.Core.VM;
+using Fly01.Core.Entities.ViewModels;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;

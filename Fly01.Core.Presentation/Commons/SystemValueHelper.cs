@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.VM;
+using Fly01.Core.Entities.ViewModels;
 using System.Collections.Generic;
-using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
 

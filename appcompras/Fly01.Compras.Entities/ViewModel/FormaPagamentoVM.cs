@@ -1,19 +1,8 @@
-﻿using Fly01.Core.Attribute;
-using Fly01.Core.VM;
-using Newtonsoft.Json;
-using System;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    [Serializable]
-    public class FormaPagamentoVM : DomainBaseVM
+    public class FormaPagamentoVM : FormaPagamentoBaseVM
     {
-        [JsonProperty("descricao")]
-        public string Descricao { get; set; }
-
-        [JsonProperty("tipoFormaPagamento")]
-        [APIEnum("TipoFormaPagamento")]
-        public string TipoFormaPagamento { get; set; }
-
     }
 }

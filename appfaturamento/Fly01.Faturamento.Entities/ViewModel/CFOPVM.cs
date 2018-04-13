@@ -1,16 +1,8 @@
-﻿using Fly01.Core.VM;
-using Newtonsoft.Json;
-using System;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {
-    [Serializable]
-    public class CfopVM : DomainBaseVM
+    public class CfopVM : CfopBaseVM
     {
-        [JsonProperty("codigo")]
-        public string Codigo { get; set; }
-
-        [JsonProperty("descricao")]
-        public string Descricao { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Fly01.Core.BL;
 using System.Collections.Generic;
 using System.Linq;
 using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
-using EmpresaVM = Fly01.Core.VM.EmpresaVM;
+using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModel;
@@ -65,13 +65,7 @@ namespace Fly01.Faturamento.BL
 
         private EmpresaVM GetDadosEmpresa()
         {
-            var urlGateway = AppDefaults.UrlGateway
-                                .Replace("financeiro/", string.Empty)
-                                .Replace("faturamento/", string.Empty)
-                                .Replace("estoque/", string.Empty)
-                                .Replace("compras/", string.Empty);
-
-            return RestHelper.ExecuteGetRequest<EmpresaVM>(urlGateway, $"Empresa/{PlataformaUrl}");
+            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
         }
 
         public EntidadeVM GetEntidade()

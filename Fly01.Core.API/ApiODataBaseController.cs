@@ -6,7 +6,7 @@ using System.Web.OData;
 using Fly01.Core.Base;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System.Data.Entity.Infrastructure;
 
 namespace Fly01.Core.API

@@ -1,10 +1,5 @@
-﻿using Fly01.Core.Domain;
-using System;
-using System.Collections.Generic;
+﻿using Fly01.Core.Entities.Domains;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fly01.Faturamento.Domain.Entities
 {

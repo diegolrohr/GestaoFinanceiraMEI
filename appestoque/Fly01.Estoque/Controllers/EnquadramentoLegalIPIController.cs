@@ -5,14 +5,14 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
-    public class EnquadramentoLegalIPIController : BaseController<EnquadramentoLegalIPIVM>
+    public class EnquadramentoLegalIPIController : BaseController<EnquadramentoLegalIpiVM>
     {
         public override ContentResult Form()
         {
             throw new NotImplementedException();
         }
 
-        public override Func<EnquadramentoLegalIPIVM, object> GetDisplayData()
+        public override Func<EnquadramentoLegalIpiVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

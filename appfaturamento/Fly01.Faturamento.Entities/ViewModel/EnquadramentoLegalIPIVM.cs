@@ -1,23 +1,8 @@
-﻿using Fly01.Core.VM;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {
-    [Serializable]
-    public class EnquadramentoLegalIPIVM : DomainBaseVM
+    public class EnquadramentoLegalIpiVM : EnquadramentoLegalIpiBaseVM
     {
-        [JsonProperty("codigo")]
-        public string Codigo { get; set; }
-
-        [JsonProperty("grupoCST")]
-        public string GrupoCST { get; set; }
-
-        [JsonProperty("descricao")]
-        public string Descricao { get; set; }
     }
 }

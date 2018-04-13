@@ -12,7 +12,7 @@ namespace Fly01.Estoque.Models.Reports
     {
         public WebReportViewer(IReportInfo iReportInfo)
         {
-            ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.reportInfo = iReportInfo;
+            ReportViewerHelper<T>.reportInfo = iReportInfo;
             GetDataTable();
         }
 
@@ -20,7 +20,7 @@ namespace Fly01.Estoque.Models.Reports
         {
             var dataSetReports = new DataSetReports();
 
-            var tableName = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.reportInfo.DataTableName;
+            var tableName = ReportViewerHelper<T>.reportInfo.DataTableName;
 
             if (!dataSetReports.Tables.Contains(tableName))
                 throw new ArgumentException(string.Format("A tabela {0} não existe no DataSetReports.", tableName));
@@ -28,19 +28,19 @@ namespace Fly01.Estoque.Models.Reports
             var dataTable = dataSetReports.Tables[tableName];
             dataTable.Clear();
 
-            ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.dataTable = dataTable;
+            ReportViewerHelper<T>.dataTable = dataTable;
         }
 
         public byte[] Print(List<T> data, string reportFilter = "", ReportParameter[] customParameters = null)
         {
-            var report = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
-            return ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.PrepareReportToPrint(report);
+            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
+            return ReportViewerHelper<T>.PrepareReportToPrint(report);
         }
 
         public byte[] Print(T data, string reportFilter = "", ReportParameter[] customParameters = null)
         {
-            var report = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
-            return ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.PrepareReportToPrint(report);
+            var report = ReportViewerHelper<T>.GetReport(data, SessionManager.Current.UserData.TokenData.Username, reportFilter, SessionManager.Current.UserData.PlatformUrl, customParameters);
+            return ReportViewerHelper<T>.PrepareReportToPrint(report);
         }
     }
 }

@@ -11,10 +11,7 @@ using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Core.Reports
 {
-    public static class ReportViewerHelper<T, TEmpresa, TEstado, TCidade>
-        where TEstado : EstadoBaseVM
-        where TCidade : CidadeBaseVM<TEstado>
-        where TEmpresa: EmpresaBaseVM<TCidade, TEstado>
+    public static class ReportViewerHelper<T>
     {
         #region Private Methods
 
@@ -30,7 +27,7 @@ namespace Fly01.Core.Reports
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
             string logoBase64 = string.Empty;
-            TEmpresa empresaVM = RestHelper.ExecuteGetRequest<TEmpresa>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
+            dynamic empresaVM = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)
@@ -41,7 +38,7 @@ namespace Fly01.Core.Reports
                 headerDefault.Append("<br/>");
                 headerDefault.AppendFormat("Bairro: {0} | CEP: {1} | Cidade: {2}", empresaVM.Bairro, empresaVM.CEP, empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "");
                 headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Email: {0} ", empresaVM.Email);
+                headerDefault.AppendFormat("Email: {0} ", empresaVM.Email ?? "");
             }
 
             return new ReportConfig

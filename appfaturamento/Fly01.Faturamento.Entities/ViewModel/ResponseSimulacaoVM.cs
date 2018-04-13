@@ -2,7 +2,7 @@
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {
-    public class PessoaVM : PessoaBaseVM<EstadoVM, CidadeVM>
+    public class ResponseSimulacaoVM : ResponseSimulacaoBaseVM<CondicaoParcelamentoParcelaVM>
     {
     }
 }

@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.EmissaoNFE.Domain.Enums;
@@ -56,7 +55,7 @@ namespace Fly01.Faturamento.BL
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
 
-            var dadosEmpresa = GetDadosEmpresa(PlataformaUrl);
+            dynamic dadosEmpresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
             var parametros = GetParametrosTributarios();
 
@@ -78,10 +77,6 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public EmpresaVM GetDadosEmpresa(string plataformaUrl)
-        {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaUrl}");
-        }
 
         public bool ConfiguracaoTSSOK(string plataformaId = null)
         {
@@ -149,7 +144,8 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoServicoRetorno> TotalTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
         {
             var cliente = GetPessoa(clienteId);
-            var estadoOrigem = GetDadosEmpresa(PlataformaUrl).Cidade.Estado.Sigla;
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoServicoRetorno>()
             {
@@ -168,7 +164,8 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             var cliente = GetPessoa(clienteId);
-            var estadoOrigem = GetDadosEmpresa(PlataformaUrl).Cidade.Estado.Sigla;
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoProdutoRetorno>();
 

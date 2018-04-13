@@ -68,7 +68,6 @@
     <Compile Include="ContaFinanceiraBL.cs" />
     <Compile Include="MovimentacaoBL.cs" />
     <Compile Include="SaldoHistoricoBL.cs" />
-    <Compile Include="DemonstrativoResultadoExercicioBL.cs" />
     <Compile Include="ConciliacaoBancariaBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="CondicaoParcelamentoBL.cs" />

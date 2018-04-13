@@ -2,7 +2,7 @@
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    public class GrupoTributarioVM : GrupoTributarioBaseVM
+    public class GrupoTributarioVM : GrupoTributarioBaseVM<CfopVM>
     {
     }
 }

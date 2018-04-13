@@ -48,7 +48,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Helpers\SystemValueEnum.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
     <Compile Include="ViewModel\CategoriaVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />

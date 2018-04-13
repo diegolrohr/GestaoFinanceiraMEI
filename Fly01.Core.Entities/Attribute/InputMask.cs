@@ -1,4 +1,4 @@
-﻿namespace Fly01.Core.Attribute
+﻿namespace Fly01.Core.Entities.Attribute
 {
     public class InputMask : System.Attribute
     {

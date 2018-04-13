@@ -11,7 +11,7 @@ using Fly01.Core.Rest;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Attribute;
+using Fly01.Core.Entities.Attribute;
 using Fly01.Core.Presentation.Commons;
 using System.Web.Script.Serialization;
 using Fly01.Core.Entities.ViewModels.Commons;

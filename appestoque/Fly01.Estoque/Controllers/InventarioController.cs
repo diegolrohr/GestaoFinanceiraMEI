@@ -15,7 +15,7 @@ using System.Web.Mvc;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Attribute;
+using Fly01.Core.Entities.Attribute;
 using Fly01.Core.API;
 
 namespace Fly01.Estoque.Controllers

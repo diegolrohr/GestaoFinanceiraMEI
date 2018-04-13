@@ -33,7 +33,8 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
-            entity.Fail(entity.Numero == 0, new Error("Numero do orçamento inválido"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -43,7 +44,7 @@ namespace Fly01.Compras.BL
                     new Error("Pedido que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
             }
-            
+
             base.ValidaModel(entity);
         }
 
@@ -56,7 +57,7 @@ namespace Fly01.Compras.BL
 
             if ((previous.Status == StatusOrdemCompra.Aberto && entity.Status == StatusOrdemCompra.Finalizado) && entity.IsValid())
 
-            base.Update(entity);
+                base.Update(entity);
         }
 
         public override void Delete(Pedido entityToDelete)
@@ -90,7 +91,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
-                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value: 0);
+                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value : 0);
 
                 ContaPagar contaPagar = new ContaPagar()
                 {

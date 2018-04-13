@@ -10,7 +10,6 @@ namespace Fly01.Faturamento.Domain.Entities
     public class OrdemVenda : PlataformaBase
     {
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Numero { get; set; }
 
         [Required]

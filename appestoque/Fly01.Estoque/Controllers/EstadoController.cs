@@ -29,7 +29,7 @@ namespace Fly01.Estoque.Controllers
                 sigla = x.Sigla,
                 nome = x.Nome,
                 utcid = x.UtcId,
-                codigoibge = x.CodigoIBGE,
+                codigoibge = x.CodigoIbge,
             };
         }
 

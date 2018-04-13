@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Attribute;
+﻿using Fly01.Core.Entities.Attribute;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Enums

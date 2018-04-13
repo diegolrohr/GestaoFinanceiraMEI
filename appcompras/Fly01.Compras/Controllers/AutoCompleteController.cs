@@ -56,14 +56,14 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult Ncm(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(NCMVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(NcmVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,descricao,aliquotaIPI");
             queryString.AddParam("$orderby", "codigo");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<NCMVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<NcmVM>>(resourceName, queryString).Data
                 select new
                 {
                     id = item.Id,
@@ -302,14 +302,14 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult EnquadramentoLegalIPI(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalIPIVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalpiVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,descricao,grupoCST");
             queryString.AddParam("$orderby", "codigo");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalIPIVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalpiVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,

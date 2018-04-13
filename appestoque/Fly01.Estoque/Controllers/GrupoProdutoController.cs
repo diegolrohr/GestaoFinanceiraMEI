@@ -156,13 +156,13 @@ namespace Fly01.Estoque.Controllers
 
         public JsonResult GetAliquotaIPI(string ncmId)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(NCMVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(NcmVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"id eq {ncmId}");
             queryString.AddParam("$select", "aliquotaIPI");
 
-            var NCM = RestHelper.ExecuteGetRequest<ResultBase<NCMVM>>(resourceName, queryString).Data.FirstOrDefault();
+            var NCM = RestHelper.ExecuteGetRequest<ResultBase<NcmVM>>(resourceName, queryString).Data.FirstOrDefault();
             return Json(
                 new
                 {

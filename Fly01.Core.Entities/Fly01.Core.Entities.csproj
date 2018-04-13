@@ -57,6 +57,7 @@
     <Compile Include="Domains\Commons\CestBase.cs" />
     <Compile Include="Domains\Commons\CfopBase.cs" />
     <Compile Include="Domains\Commons\CidadeBase.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoBase.cs" />
     <Compile Include="Domains\Commons\EstadoBase.cs" />
     <Compile Include="Domains\Commons\NcmBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />

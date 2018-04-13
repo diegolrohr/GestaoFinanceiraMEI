@@ -7,18 +7,18 @@ namespace Fly01.Core.API
 {
     public abstract class ApiHelloBaseController : ApiBaseController
     {
-        private string dllFileName = string.Empty;
-        private string pathDll = string.Empty;
+        private string DllFileName = string.Empty;
+        private string PathDll = string.Empty;
 
         public ApiHelloBaseController(string pathDll, string dllFileName)
         {
-            this.pathDll = pathDll;
-            this.dllFileName = dllFileName;
+            PathDll = pathDll;
+            DllFileName = dllFileName;
         }
 
         private string GetDateLastCompile()
         {
-            var fi = new FileInfo(string.Concat(pathDll, dllFileName));
+            var fi = new FileInfo(string.Concat(PathDll, DllFileName));
             return String.Format("{0:00} {1:00}h{2:00}", fi.LastWriteTime.ToString("dd/MM/yyyy"), fi.LastWriteTime.Hour, fi.LastWriteTime.Minute);
         }
 
@@ -44,7 +44,7 @@ namespace Fly01.Core.API
 
             var dataEnvironment = new
             {
-                ApplicationName = dllFileName,
+                ApplicationName = DllFileName,
                 LastUpdate = GetDateLastCompile(),
                 DataBase = new
                 {

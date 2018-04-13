@@ -83,8 +83,8 @@ namespace Fly01.Faturamento.BL
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {
-                var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id);
-                var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id);
+                var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
+                var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id).Any();
 
                 if (entity.GeraNotaFiscal)
@@ -95,14 +95,14 @@ namespace Fly01.Faturamento.BL
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
-                entity.Fail(produtos == null && servicos == null, new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
+                entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
-                if (entity.GeraNotaFiscal && produtos != null)
+                if (entity.GeraNotaFiscal && produtos.Any())
                 {
-                    ValidaCreditosICMS(entity, produtos.ToList());
+                    ValidaCreditosICMS(entity, produtos);
                 }
             }
 

@@ -1,19 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Fly01.Compras.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.Domain.Entities
 {
-    public class Cfop : DomainBase
+    public class Cfop : CfopBase
     {
-        [Required]
-        public int Codigo { get; set; }
-
-        [Required]
-        [MaxLength(400)]
-        public string Descricao { get; set; }
-
-        [Required]
-        public TipoCFOP Tipo { get; set; }
     }
 }

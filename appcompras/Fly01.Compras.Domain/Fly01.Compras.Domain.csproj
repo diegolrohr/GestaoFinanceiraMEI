@@ -56,7 +56,6 @@
     <Compile Include="Entities\Orcamento.cs" />
     <Compile Include="Entities\OrdemCompra.cs" />
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
-    <Compile Include="Enums\TipoCFOP.cs" />
     <Compile Include="Enums\StatusContaBancaria.cs" />
     <Compile Include="Entities\CondicaoParcelamento.cs" />
     <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />

@@ -115,7 +115,6 @@
     <Compile Include="Enums\StatusNotaFiscal.cs" />
     <Compile Include="Enums\TipoAliquota.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />
-    <Compile Include="Enums\TipoCFOP.cs" />
     <Compile Include="Enums\TipoFinalidadeEmissaoNFe.cs" />
     <Compile Include="Enums\TipoPresencaComprador.cs" />
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />

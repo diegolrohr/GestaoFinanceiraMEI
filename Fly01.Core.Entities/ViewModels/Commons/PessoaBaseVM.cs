@@ -4,7 +4,9 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class PessoaBaseVM : DomainBaseVM
+    public abstract class PessoaBaseVM<TEstado, TCidade> : DomainBaseVM
+        where TEstado : EstadoBaseVM
+        where TCidade : CidadeBaseVM<TEstado>
     {
         [JsonProperty("nome")]
         public string Nome { get; set; }
@@ -102,10 +104,10 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         #region NavigationProperties
 
         [JsonProperty("estado")]
-        public virtual EstadoBaseVM Estado { get; set; }
+        public virtual TEstado Estado { get; set; }
 
         [JsonProperty("cidade")]
-        public virtual CidadeBaseVM Cidade { get; set; }
+        public virtual TCidade Cidade { get; set; }
 
         #endregion
     }

@@ -4,8 +4,13 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class ProdutoBaseVM : DomainBaseVM
-    {
+    public abstract class ProdutoBaseVM<TGrupoProduto, TUnidadeMedida, TNcm, TCest, TEnquadramentoLegalIpi> : DomainBaseVM
+        where TUnidadeMedida : UnidadeMedidaBaseVM
+        where TNcm : NcmBaseVM
+        where TGrupoProduto : GrupoProdutoBaseVM<TNcm, TUnidadeMedida>
+        where TCest : CestBaseVM<TNcm>
+        where TEnquadramentoLegalIpi : EnquadramentoLegalIpiBaseVM
+    {        
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 
@@ -55,19 +60,19 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         #region Navigations Properties
 
         [JsonProperty("grupoProduto")]
-        public virtual GrupoProdutoBaseVM GrupoProduto { get; set; }
+        public virtual TGrupoProduto GrupoProduto { get; set; }
 
         [JsonProperty("unidadeMedida")]
-        public virtual UnidadeMedidaBaseVM UnidadeMedida { get; set; }
+        public virtual TUnidadeMedida UnidadeMedida { get; set; }
 
         [JsonProperty("ncm")]
-        public virtual NcmBaseVM Ncm { get; set; }
+        public virtual TNcm Ncm { get; set; }
 
         [JsonProperty("cest")]
-        public virtual CestBaseVM Cest { get; set; }
+        public virtual TCest Cest { get; set; }
 
         [JsonProperty("enquadramentoLegalIPI")]
-        public virtual EnquadramentoLegalIpiBaseVM EnquadramentoLegalIPI { get; set; }
+        public virtual TEnquadramentoLegalIpi EnquadramentoLegalIPI { get; set; }
 
         #endregion
 

@@ -7,8 +7,8 @@ namespace Fly01.Core.API
 {
     public abstract class ApiHelloBaseController : ApiBaseController
     {
-        private string DllFileName = string.Empty;
-        private string PathDll = string.Empty;
+        protected string DllFileName { get; set; }
+        protected string PathDll { get; set; }
 
         public ApiHelloBaseController(string pathDll, string dllFileName)
         {

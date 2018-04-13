@@ -65,7 +65,8 @@
     <Compile Include="ViewModels\BatchItemVM.cs" />
     <Compile Include="ViewModels\BatchReturnVM.cs" />
     <Compile Include="ViewModels\BatchVM.cs" />
-    <Compile Include="ViewModels\EmpresaVM.cs" />
+    <Compile Include="ViewModels\Commons\CondicaoParcelamentoParcelaBaseVM.cs" />
+    <Compile Include="ViewModels\Commons\ResponseSimulacaoBaseVM.cs" />
     <Compile Include="ViewModels\Commons\CategoriaBaseVM.cs" />
     <Compile Include="ViewModels\Commons\CestBaseVM.cs" />
     <Compile Include="ViewModels\Commons\CfopBaseVM.cs" />

@@ -5,7 +5,10 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class SubstituicaoTributariaBaseVM : DomainBaseVM
+    public abstract class SubstituicaoTributariaBaseVM<TEstado, TNcm, TCest> : DomainBaseVM
+        where TEstado : EstadoBaseVM
+        where TNcm : NcmBaseVM
+        where TCest : CestBaseVM<TNcm>
     {
         [JsonProperty("ncmId")]
         public Guid NcmId { get; set; }
@@ -29,16 +32,16 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         #region NavigationProperties
 
         [JsonProperty("ncm")]
-        public virtual NcmBaseVM Ncm { get; set; }
+        public virtual TNcm Ncm { get; set; }
 
         [JsonProperty("estadoOrigem")]
-        public virtual EstadoBaseVM EstadoOrigem { get; set; }
+        public virtual TEstado EstadoOrigem { get; set; }
 
         [JsonProperty("estadoDestino")]
-        public virtual EstadoBaseVM EstadoDestino { get; set; }
+        public virtual TEstado EstadoDestino { get; set; }
 
         [JsonProperty("cest")]
-        public virtual CestBaseVM Cest { get; set; }
+        public virtual TCest Cest { get; set; }
 
         #endregion
     }

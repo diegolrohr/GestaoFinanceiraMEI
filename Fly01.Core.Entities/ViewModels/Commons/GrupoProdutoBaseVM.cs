@@ -4,7 +4,9 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class GrupoProdutoBaseVM : DomainBaseVM
+    public abstract class GrupoProdutoBaseVM<TNcm, TUnidadeMedida> : DomainBaseVM
+        where TNcm : NcmBaseVM
+        where TUnidadeMedida : UnidadeMedidaBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
@@ -25,10 +27,10 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         #region Navigations Properties
 
         [JsonProperty("ncm")]
-        public virtual NcmBaseVM Ncm { get; set; }
+        public virtual TNcm Ncm { get; set; }
 
         [JsonProperty("unidadeMedida")]
-        public virtual UnidadeMedidaBaseVM UnidadeMedida { get; set; }
+        public virtual TUnidadeMedida UnidadeMedida { get; set; }
 
         #endregion
     }

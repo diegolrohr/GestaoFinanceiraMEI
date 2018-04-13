@@ -302,14 +302,14 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult EnquadramentoLegalIPI(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalpiVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalIpiVM));
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
             queryString.AddParam("$select", "id,codigo,descricao,grupoCST");
             queryString.AddParam("$orderby", "codigo");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalpiVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalIpiVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,

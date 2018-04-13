@@ -2,7 +2,8 @@
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class CidadeBaseVM : DomainBaseVM
+    public abstract class CidadeBaseVM<TEstado> : DomainBaseVM
+        where TEstado: EstadoBaseVM
     {
         [JsonProperty("nome")]
         public string Nome { get; set; }
@@ -15,7 +16,7 @@ namespace Fly01.Core.Entities.ViewModels.Commons
 
         #region Navigation Properties
         [JsonProperty("estado")]
-        public virtual EstadoBaseVM Estado { get; set; }
+        public virtual TEstado Estado { get; set; }
         #endregion
     }
 }

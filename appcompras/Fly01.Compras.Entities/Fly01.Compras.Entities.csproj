@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CategoriaVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
     <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
     <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\GrupoTributarioVM.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="ViewModel\PessoaVM.cs" />
     <Compile Include="ViewModel\OrdemCompraVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
+    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\SubstituicaoTributariaVM.cs" />
     <Compile Include="ViewModel\UnidadeMedidaVM.cs" />
   </ItemGroup>

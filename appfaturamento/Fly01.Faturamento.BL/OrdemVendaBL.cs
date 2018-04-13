@@ -79,7 +79,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("O número do orçamento/pedido já foi utilizado"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {

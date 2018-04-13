@@ -98,7 +98,9 @@ namespace Fly01.Compras.BL
                 entity.Id = Guid.NewGuid();
             }
 
-            entity.Numero = OrdemCompraBL.Everything.Any(x => x.Id != entity.Id) ? OrdemCompraBL.Everything.Max(x => x.Numero) + 1 : 1;
+            var max = OrdemCompraBL.Everything.Any(x => x.Id != entity.Id) ? OrdemCompraBL.Everything.Max(x => x.Numero) : 0;
+
+            entity.Numero = (max == 1 && !OrdemCompraBL.Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
 
             ValidaModel(entity);
 

@@ -3,8 +3,6 @@ using Fly01.Faturamento.Domain.Entities;
 using Fly01.Core.BL;
 using System.Collections.Generic;
 using System.Linq;
-using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
-using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModel;
@@ -31,11 +29,12 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = GetDadosEmpresa();
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            string estadoNome = empresa.EstadoNome;
 
-            var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == empresa.EstadoNome);
+            var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 
-            var entidade = new EmpresaNfeVM
+            var entidade = new EmpresaVM
             {
                 Nome = empresa.RazaoSocial,
                 NIRE = empresa.Nire,
@@ -53,7 +52,7 @@ namespace Fly01.Faturamento.BL
                 UF = estado?.Sigla
             };
 
-            var empresaNfe = RestHelper.ExecutePostRequest<EmpresaNfeVM>
+            var empresaNfe = RestHelper.ExecutePostRequest<EmpresaVM>
                                 (AppDefaults.UrlEmissaoNfeApi,
                                     "Empresa",
                                     entidade,
@@ -61,11 +60,6 @@ namespace Fly01.Faturamento.BL
                                     GetHeaderDefault());
 
             return empresaNfe;
-        }
-
-        private EmpresaVM GetDadosEmpresa()
-        {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
         }
 
         public EntidadeVM GetEntidade()

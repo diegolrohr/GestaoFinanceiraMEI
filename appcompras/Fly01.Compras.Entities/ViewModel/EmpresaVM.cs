@@ -2,7 +2,7 @@
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    public class EnquadramentoLegalIpiVM : EnquadramentoLegalIpiBaseVM
-    {        
+    public class EmpresaVM: EmpresaBaseVM<CidadeVM, EstadoVM>
+    {
     }
 }

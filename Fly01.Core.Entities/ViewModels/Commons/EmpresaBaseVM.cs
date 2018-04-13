@@ -3,7 +3,9 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class EmpresaBaseVM 
+    public abstract class EmpresaBaseVM<TCidade, TEstado>
+        where TEstado : EstadoBaseVM
+        where TCidade : CidadeBaseVM<TEstado>
     {
         [JsonProperty("cnpj")]
         public string CNPJ { get; set; }
@@ -70,7 +72,7 @@ namespace Fly01.Core.Entities.ViewModels.Commons
 
         #region Navigations Properties
         [JsonProperty("cidade")]
-        public virtual CidadeBaseVM Cidade { get; set; }
+        public virtual TCidade Cidade { get; set; }
         #endregion
     }
 }

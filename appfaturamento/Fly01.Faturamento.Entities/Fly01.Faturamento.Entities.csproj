@@ -61,6 +61,7 @@
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
     <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
     <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\FormaPagamentoVM.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="ViewModel\OrdemVendaProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaItemVM.cs" />
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
+    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
     <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />

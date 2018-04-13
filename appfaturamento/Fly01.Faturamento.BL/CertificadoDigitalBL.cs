@@ -1,16 +1,13 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Faturamento.Domain.Enums;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using EmpresaNfeVM = Fly01.EmissaoNFE.Domain.ViewModel.EmpresaVM;
-using EmpresaVM = Fly01.Core.Entities.ViewModels.EmpresaVM;
-using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Notifications;
@@ -81,11 +78,11 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = GetDadosEmpresa();
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            string estadoNome = empresa.EstadoNome;
+            var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 
-            var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == empresa.EstadoNome);
-
-            var entidade = new EmpresaNfeVM
+            var entidade = new EmpresaVM
             {
                 Nome = empresa.RazaoSocial,
                 NIRE = empresa.Nire,
@@ -103,7 +100,7 @@ namespace Fly01.Faturamento.BL
                 UF = estado?.Sigla
             };
 
-            var empresaNfe = RestHelper.ExecutePostRequest<EmpresaNfeVM>
+            var empresaNfe = RestHelper.ExecutePostRequest<EmpresaVM>
                                 (AppDefaults.UrlEmissaoNfeApi,
                                     "Empresa",
                                     entidade,
@@ -112,13 +109,8 @@ namespace Fly01.Faturamento.BL
 
             return empresaNfe;
         }
-
-        private EmpresaVM GetDadosEmpresa()
-        {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-        }
-
-        public string GetEntidade(TipoAmbienteNFe tipoAmbiente)
+        
+        public string GetEntidade(TipoAmbiente tipoAmbiente)
         {
             string entidade;
             var certificado = All.FirstOrDefault();
@@ -130,26 +122,16 @@ namespace Fly01.Faturamento.BL
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
             {
-                if ((int)tipoAmbiente == 2)
-                {
-                    entidade = certificado.EntidadeHomologacao;
-                }
-                else
-                {
-                    entidade = certificado.EntidadeProducao;
-                }
+                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+                    certificado.EntidadeHomologacao:
+                    certificado.EntidadeProducao;
             }
             else
             {
                 var retorno = RetornaEntidade();
-                if ((int)tipoAmbiente == 2)
-                {
-                    entidade = retorno.Homologacao;
-                }
-                else
-                {
-                    entidade = retorno.Producao;
-                }
+                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+                    retorno.Homologacao :
+                    retorno.Producao;
             }
 
             return entidade;
@@ -166,27 +148,20 @@ namespace Fly01.Faturamento.BL
 
             var parametros = ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
 
-            var ambiente = parametros != null ? parametros.TipoAmbiente : TipoAmbiente.Homologacao;
+            var ambiente = parametros != null ? (TipoAmbiente)parametros.TipoAmbiente : TipoAmbiente.Homologacao;
+            var retorno = new EntidadeVM();
 
             if (certificado != null && !string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
             {
-                var retorno = new EntidadeVM
-                {
-                    Homologacao = certificado.EntidadeHomologacao,
-                    Producao = certificado.EntidadeProducao,
-                    EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), ambiente.ToString())
-                };
-
-                return retorno;
+                retorno.Homologacao = certificado.EntidadeHomologacao;
+                retorno.Producao = certificado.EntidadeProducao;
             }
             else
             {
-                var entidades = RetornaEntidade();
-
-                entidades.EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), ambiente.ToString());
-
-                return entidades;
+                retorno = RetornaEntidade();
             }
+            retorno.EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
+            return retorno;
         }
 
         public EntidadeVM GetEntidade(string plataformaId)
@@ -198,30 +173,23 @@ namespace Fly01.Faturamento.BL
             if (certificado == null || ambiente == null || plataformaId == null)
                 return null;
 
+            var retorno = new EntidadeVM
+            {
+                EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
+            };
+
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
             {
-                var retorno = new EntidadeVM
-                {
-                    Homologacao = certificado.EntidadeHomologacao,
-                    Producao = certificado.EntidadeProducao,
-                    EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), ambiente.TipoAmbiente.ToString())
-                };
-
-                return retorno;
+                retorno.Homologacao = certificado.EntidadeHomologacao;
+                retorno.Producao = certificado.EntidadeProducao;
             }
             else
             {
                 var entidades =  RetornaEntidade();
-
-                var retorno = new EntidadeVM
-                {
-                    Homologacao = entidades.Homologacao,
-                    Producao = entidades.Producao,
-                    EntidadeAmbiente = (TipoAmbienteNFe)Enum.Parse(typeof(TipoAmbienteNFe), ambiente.TipoAmbiente.ToString())
-                };
-
-                return retorno;
+                retorno.Homologacao = entidades.Homologacao;
+                retorno.Producao = entidades.Producao;
             }
+            return retorno;
         }
     }
 }

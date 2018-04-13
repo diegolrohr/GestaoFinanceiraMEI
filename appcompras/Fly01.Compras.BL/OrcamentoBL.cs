@@ -26,16 +26,12 @@ namespace Fly01.Compras.BL
             OrdemCompraBL = ordemCompraBL;
         }
 
-        public void ValidaNumero(Orcamento entity)
-        {
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
-        }
-
         public override void ValidaModel(Orcamento entity)
         {
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
 
             base.ValidaModel(entity);
         }
@@ -105,7 +101,6 @@ namespace Fly01.Compras.BL
 
             entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
 
-            ValidaNumero(entity);
             ValidaModel(entity);
 
             if (entity.Status == StatusOrdemCompra.Finalizado & entity.IsValid())

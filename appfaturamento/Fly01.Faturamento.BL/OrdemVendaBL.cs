@@ -71,12 +71,6 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public void ValidaNumero(OrdemVenda entity)
-        {
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
-        }
-
         public override void ValidaModel(OrdemVenda entity)
         {
             entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
@@ -84,6 +78,8 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {
@@ -261,7 +257,6 @@ namespace Fly01.Faturamento.BL
 
             entity.Numero = All.Any(x => x.Id != entity.Id) ? All.Max(x => x.Numero) + 1 : 1;
 
-            ValidaNumero(entity);
             ValidaModel(entity);
 
             if (entity.Status == StatusOrdemVenda.Finalizado & entity.TipoOrdemVenda == TipoOrdemVenda.Pedido & entity.GeraNotaFiscal & entity.IsValid())

@@ -257,7 +257,9 @@ namespace Fly01.Faturamento.BL
                 entity.Id = Guid.NewGuid();
             }
 
-            entity.Numero = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) + 1 : 1;
+            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
+
+            entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
 
             ValidaModel(entity);
 

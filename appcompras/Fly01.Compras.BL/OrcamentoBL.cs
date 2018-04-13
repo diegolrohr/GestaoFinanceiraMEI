@@ -3,7 +3,6 @@ using Fly01.Compras.Domain.Entities;
 using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
-using Fly01.Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -99,7 +98,9 @@ namespace Fly01.Compras.BL
                 entity.Id = Guid.NewGuid();
             }
 
-            entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
+            var max = OrdemCompraBL.Everything.Any(x => x.Id != entity.Id) ? OrdemCompraBL.Everything.Max(x => x.Numero) : 0;
+
+            entity.Numero = (max == 1 && !OrdemCompraBL.Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
 
             ValidaModel(entity);
 

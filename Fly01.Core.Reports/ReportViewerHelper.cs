@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Rest;
-using Fly01.Core.Entities.ViewModels;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.UI.WebControls;
+using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Core.Reports
 {
-    public static class ReportViewerHelper<T>
+    public static class ReportViewerHelper<T, TEmpresa, TEstado, TCidade>
+        where TEstado : EstadoBaseVM
+        where TCidade : CidadeBaseVM<TEstado>
+        where TEmpresa: EmpresaBaseVM<TCidade, TEstado>
     {
         #region Private Methods
 
@@ -27,7 +30,7 @@ namespace Fly01.Core.Reports
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
             string logoBase64 = string.Empty;
-            var empresaVM = RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
+            TEmpresa empresaVM = RestHelper.ExecuteGetRequest<TEmpresa>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)

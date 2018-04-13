@@ -4,7 +4,8 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class GrupoTributarioBaseVM : DomainBaseVM
+    public abstract class GrupoTributarioBaseVM<TCfop> : DomainBaseVM
+        where TCfop : CfopBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
@@ -110,7 +111,7 @@ namespace Fly01.Core.Entities.ViewModels.Commons
 
         #region Navigations Properties
         [JsonProperty("cfop")]
-        public virtual CfopBaseVM Cfop { get; set; }
+        public virtual TCfop Cfop { get; set; }
         #endregion
     }
 }

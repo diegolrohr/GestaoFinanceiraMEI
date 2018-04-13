@@ -2,7 +2,7 @@
 
 namespace Fly01.Estoque.Entities.ViewModel
 {
-    public class CestVM : CestBaseVM<NcmVM>
+    public class EmpresaVM: EmpresaBaseVM<CidadeVM, EstadoVM>
     {
     }
 }

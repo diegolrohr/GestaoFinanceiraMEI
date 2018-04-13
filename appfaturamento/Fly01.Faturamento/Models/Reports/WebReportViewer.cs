@@ -4,6 +4,7 @@ using Fly01.Faturamento.Reports;
 using Fly01.Core.Config;
 using Microsoft.Reporting.WebForms;
 using Fly01.Core.Reports;
+using Fly01.Faturamento.Entities.ViewModel;
 
 namespace Fly01.Faturamento.Models.Reports
 {
@@ -11,7 +12,7 @@ namespace Fly01.Faturamento.Models.Reports
     {
         public WebReportViewer(IReportInfo iReportInfo)
         {
-            ReportViewerHelper<T>.reportInfo = iReportInfo;
+            ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.reportInfo = iReportInfo;
             GetDataTable();
         }
 
@@ -19,7 +20,7 @@ namespace Fly01.Faturamento.Models.Reports
         {
             var dataSetReports = new DataSetReports();
 
-            var tableName = ReportViewerHelper<T>.reportInfo.DataTableName;
+            var tableName = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.reportInfo.DataTableName;
 
             if (!dataSetReports.Tables.Contains(tableName))
                 throw new ArgumentException(string.Format("A tabela {0} não existe no DataSetReports.", tableName));
@@ -27,7 +28,7 @@ namespace Fly01.Faturamento.Models.Reports
             var dataTable = dataSetReports.Tables[tableName];
             dataTable.Clear();
 
-            ReportViewerHelper<T>.dataTable = dataTable;
+            ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.dataTable = dataTable;
         }
 
         public byte[] Print(List<T> data,
@@ -36,14 +37,14 @@ namespace Fly01.Faturamento.Models.Reports
                             ReportParameter[] customParameters = null)
         {
 
-            var report = ReportViewerHelper<T>
+            var report = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>
                             .GetReport(data,
                                        SessionManager.Current.UserData.TokenData.Username,
                                        reportFilter,
                                        platformUrl,
                                        customParameters);
 
-            return ReportViewerHelper<T>.PrepareReportToPrint(report);
+            return ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.PrepareReportToPrint(report);
         }
 
         public byte[] Print(T data,
@@ -51,14 +52,14 @@ namespace Fly01.Faturamento.Models.Reports
                             string reportFilter = "",
                             ReportParameter[] customParameters = null)
         {
-            var report = ReportViewerHelper<T>
+            var report = ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>
                             .GetReport(data,
                                        SessionManager.Current.UserData.TokenData.Username,
                                        reportFilter,
                                        platformUrl,
                                        customParameters);
 
-            return ReportViewerHelper<T>.PrepareReportToPrint(report);
+            return ReportViewerHelper<T, EmpresaVM, EstadoVM, CidadeVM>.PrepareReportToPrint(report);
         }
     }
 }

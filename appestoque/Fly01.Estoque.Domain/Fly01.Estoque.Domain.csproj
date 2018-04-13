@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Entities\AjusteManual.cs" />
     <Compile Include="Entities\Cest.cs" />
-    <Compile Include="Entities\Cidade.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\Inventario.cs" />

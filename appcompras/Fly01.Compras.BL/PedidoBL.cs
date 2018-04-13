@@ -26,12 +26,6 @@ namespace Fly01.Compras.BL
             OrdemCompraBL = ordemCompraBL;
         }
 
-        public void ValidaNumero(Pedido entity)
-        {
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero), new Error("Numero do pedido repetido"));
-        }
-
         public override void ValidaModel(Pedido entity)
         {
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Pedido, new Error("Permitido somente tipo pedido"));
@@ -39,6 +33,8 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -79,7 +75,6 @@ namespace Fly01.Compras.BL
 
             entity.Numero = OrdemCompraBL.All.Any(x => x.Id != entity.Id) ? OrdemCompraBL.All.Max(x => x.Numero) + 1 : 1;
 
-            ValidaNumero(entity);
             ValidaModel(entity);
 
             base.Insert(entity);

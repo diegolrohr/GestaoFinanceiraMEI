@@ -52,6 +52,7 @@
     <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
+    <Compile Include="Domains\Commons\ArquivoBase.cs" />
     <Compile Include="Domains\Commons\CategoriaBase.cs" />
     <Compile Include="Domains\Commons\CidadeBase.cs" />
     <Compile Include="Domains\Commons\EstadoBase.cs" />

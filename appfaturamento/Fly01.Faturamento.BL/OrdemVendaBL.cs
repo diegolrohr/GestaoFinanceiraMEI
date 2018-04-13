@@ -25,7 +25,7 @@ namespace Fly01.Faturamento.BL
         private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Compras: {1}";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
-
+        
         public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
@@ -37,7 +37,7 @@ namespace Fly01.Faturamento.BL
             TotalTributacaoBL = totalTributacaoBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
         }
-
+        
         public void ValidaCreditosICMS(OrdemVenda entity, List<OrdemVendaProduto> produtos)
         {
             var parametros = TotalTributacaoBL.GetParametrosTributarios();
@@ -78,6 +78,8 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
+            entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("O número do orçamento/pedido já foi utilizado"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {
@@ -106,6 +108,8 @@ namespace Fly01.Faturamento.BL
 
             base.ValidaModel(entity);
         }
+
+        public IQueryable<OrdemVenda> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
         protected dynamic GetNotaFiscal(OrdemVenda entity, TipoNotaFiscal tipo)
         {
@@ -252,6 +256,8 @@ namespace Fly01.Faturamento.BL
             {
                 entity.Id = Guid.NewGuid();
             }
+
+            entity.Numero = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) + 1 : 1;
 
             ValidaModel(entity);
 

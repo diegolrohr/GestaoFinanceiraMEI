@@ -4,5 +4,6 @@ namespace Fly01.Financeiro.Domain.Entities
 {
     public class Cidade : CidadeBase
     {
+        public virtual Estado Estado { get; set; }
     }
 }

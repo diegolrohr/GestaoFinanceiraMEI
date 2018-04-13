@@ -18,11 +18,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [Display(Name = "Estado")]
         public Guid EstadoId { get; set; }
-
-        #region NavigationProperties
-
-        public virtual EstadoBase Estado { get; set; }
-
-        #endregion
     }
 }

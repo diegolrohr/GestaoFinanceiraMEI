@@ -21,7 +21,7 @@ namespace Fly01.Core.API.Application
             config.Routes.MapHttpRoute(
                 name: "DefaultHelloPage",
                 routeTemplate: "{controller}/{action}",
-                defaults: new { controller = "Hello", action = "Index" }
+                defaults: new { controller = "Hello", action = "Say" }
             );
 
             config.Routes.MapHttpRoute(

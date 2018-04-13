@@ -4,5 +4,6 @@ namespace Fly01.Faturamento.Domain.Entities
 {
     public class Cest : CestBase
     {
+        public virtual NCM Ncm { get; set; }
     }
 }

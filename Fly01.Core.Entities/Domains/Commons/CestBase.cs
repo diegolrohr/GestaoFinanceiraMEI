@@ -21,11 +21,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string Anexo { get; set; }
 
         public Guid? NcmId { get; set; }
-
-        #region NavigationProperties
-
-        public virtual NcmBase Ncm { get; set; }
-
-        #endregion
     }
 }

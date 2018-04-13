@@ -97,6 +97,7 @@ namespace Fly01.Financeiro.Controllers
             var queryString = new Dictionary<string, string>();
             var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" +tipoStatus + "'";
             queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
+            queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
 
             return RestHelper.ExecuteGetRequest<ResultBase<ContaPagarVM>>("ContaPagar", queryString).Data;
         }
@@ -104,8 +105,7 @@ namespace Fly01.Financeiro.Controllers
         public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
         {
             var contas = GetListContaPagar(queryStringOdata, tipoStatus);
-
-            return PrintList(contas);
+            return PrintList(contas);            
         }
 
         public ActionResult ImprimirListContasPorPagina(string dataInicial, string dataFinal)
@@ -255,7 +255,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir período", OnClickFn = "fnImprimirListContas" },
                         new HtmlUIButton { Id = "newPrintPage", Label = "Imprimir página", OnClickFn = "fnImprimirListContasPorPagina" },
                     }
                 },

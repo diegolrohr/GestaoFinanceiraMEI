@@ -2,7 +2,7 @@
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {
-    public class SubstituicaoTributariaVM : SubstituicaoTributariaBaseVM
+    public class SubstituicaoTributariaVM : SubstituicaoTributariaBaseVM<EstadoVM, NcmVM, CestVM>
     {
     }
 }

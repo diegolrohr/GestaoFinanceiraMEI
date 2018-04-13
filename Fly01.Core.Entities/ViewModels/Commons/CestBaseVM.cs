@@ -3,7 +3,8 @@ using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
-    public abstract class CestBaseVM : DomainBaseVM
+    public abstract class CestBaseVM<TNcm> : DomainBaseVM 
+        where TNcm: NcmBaseVM
     {
         [JsonProperty("codigo")]
         public string Codigo { get; set; }
@@ -25,7 +26,7 @@ namespace Fly01.Core.Entities.ViewModels.Commons
 
         #region NavigationProperties
         [JsonProperty("ncm")]
-        public virtual NcmBaseVM Ncm { get; set; }
+        public virtual TNcm Ncm { get; set; }
         #endregion
     }
 }

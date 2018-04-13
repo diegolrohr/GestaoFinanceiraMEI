@@ -2,7 +2,7 @@
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    public class PessoaVM : PessoaBaseVM
+    public class PessoaVM : PessoaBaseVM<EstadoVM, CidadeVM>
     {
     }
 }

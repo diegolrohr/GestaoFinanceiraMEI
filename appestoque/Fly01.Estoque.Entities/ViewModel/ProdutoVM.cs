@@ -2,7 +2,7 @@
 
 namespace Fly01.Estoque.Entities.ViewModel
 {
-    public class ProdutoVM : ProdutoBaseVM
+    public class ProdutoVM : ProdutoBaseVM<GrupoProdutoVM, UnidadeMedidaVM, NcmVM, CestVM, EnquadramentoLegalIpiVM>
     {
     }
 }

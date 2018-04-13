@@ -58,6 +58,7 @@
     <Compile Include="Entities\NFe\Emitente.cs" />
     <Compile Include="Entities\NFe\Endereco.cs" />
     <Compile Include="Entities\NFe\Fatura.cs" />
+    <Compile Include="Entities\NFe\Fcp.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSPai.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMS.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN103.cs" />

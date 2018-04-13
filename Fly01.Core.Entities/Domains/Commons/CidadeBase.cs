@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class CidadeBase : DomainBase
+    [Table("Cidade")]
+    public abstract class CidadeBase : DomainBase
     {
         [Required]
         [StringLength(35)]

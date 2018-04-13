@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ArquivoBase : PlataformaBase
+    [Table("Arquivo")]
+    public abstract class ArquivoBase : PlataformaBase
     {
         [Required]
         [MaxLength(50)]

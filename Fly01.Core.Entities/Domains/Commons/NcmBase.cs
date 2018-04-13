@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class NcmBase : DomainBase
+    [Table("Ncm")]
+    public abstract class NcmBase : DomainBase
     {
         [Required]
         public string Codigo { get; set; }

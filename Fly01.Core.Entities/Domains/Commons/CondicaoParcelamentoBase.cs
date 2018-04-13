@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class CondicaoParcelamentoBase : PlataformaBase
+    [Table("CondicaoParcelamento")]
+    public abstract class CondicaoParcelamentoBase : PlataformaBase
     {
         [Required]
         [JsonProperty("descricao")]

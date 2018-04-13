@@ -6,7 +6,8 @@ using System;
 
 namespace Fly01.Core.Entities.Domains
 {
-    public class CategoriaBase : PlataformaBase
+    [Table("Categoria")]
+    public abstract class CategoriaBase : PlataformaBase
     {
         [Required]
         [StringLength(40)]

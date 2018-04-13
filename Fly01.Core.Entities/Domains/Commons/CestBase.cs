@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class CestBase : DomainBase
+    [Table("Cest")]
+    public abstract class CestBase : DomainBase
     {
         [Required]
         public string Codigo { get; set; }

@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class EstadoBase : DomainBase
+    [Table("Estado")]
+    public abstract class EstadoBase : DomainBase
     {
         [Required]
         [StringLength(2)]

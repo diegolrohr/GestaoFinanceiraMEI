@@ -4,7 +4,6 @@ using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using Fly01.Core.ValueObjects;
 using System.Data.Entity;
 using System.Linq;
 

@@ -606,7 +606,8 @@ namespace Fly01.Financeiro.Controllers.Base
             #region Dados da conta
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "statusContaBancaria" });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m6 l6", Label = "Descrição", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s12 m4 l3", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m8 l9", Label = "Descrição", Disabled = true });
 
             config.Elements.Add(new AutocompleteUI
             {
@@ -617,12 +618,21 @@ namespace Fly01.Financeiro.Controllers.Base
                 DataUrl = @Url.Action("Pessoa", "AutoComplete"),
                 LabelId = "pessoaNome"
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 m3 l2", Label = "Valor", Disabled = true });
-            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m2 l3", Label = "Emissão", Disabled = true });
+            config.Elements.Add(new AutocompleteUI
+            {
+                Id = "categoriaId",
+                Class = "col s12 m6 l6",
+                Label = "Categoria Financeira",
+                Disabled = true,
+                DataUrl = @Url.Action("categoriaVisualizar", "AutoComplete"),
+                LabelId = "categoriaDescricao"
+            });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 m4 l4", Label = "Valor", Disabled = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m4 l4", Label = "Emissão", Disabled = true });
             config.Elements.Add(new InputDateUI
             {
                 Id = "dataVencimento",
-                Class = "col s12 m2 l3",
+                Class = "col s12 m4 l4",
                 Label = "Vencimento",
                 Disabled = true,
                 DomEvents = new List<DomEventUI>()
@@ -633,7 +643,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m5 l4",
+                Class = "col s12 m6 l6",
                 Label = "Forma Pagamento",
                 Disabled = true,
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
@@ -647,15 +657,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 Disabled = true,
                 DataUrl = @Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
-            });
-            config.Elements.Add(new AutocompleteUI
-            {
-                Id = "categoriaId",
-                Class = "col s12 m6 l6",
-                Label = "Categoria Financeira",
-                Disabled = true,
-                DataUrl = @Url.Action("categoriaVisualizar", "AutoComplete"),
-                LabelId = "categoriaDescricao"
             });
 
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });

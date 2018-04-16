@@ -1,4 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
+﻿ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
@@ -19,7 +19,7 @@ using NFe = Fly01.Faturamento.Domain.Entities.NFe;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
-using Fly01.Compras.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {

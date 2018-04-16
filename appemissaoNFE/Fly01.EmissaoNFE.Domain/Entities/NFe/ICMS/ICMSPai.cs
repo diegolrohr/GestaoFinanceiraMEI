@@ -63,6 +63,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("AliquotaAplicavelCalculoCreditoSN", AliquotaAplicavelCalculoCreditoSN));
                     ToValidate.Add(NewKeyValuePair("ValorCreditoICMS", ValorCreditoICMS));
 
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
                     DoTheValidation();
 
                     ICMS = new ICMSSN201(OrigemMercadoria, CodigoSituacaoOperacao)
@@ -172,7 +177,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlIgnore]
         public CSOSN CodigoSituacaoOperacao { get; set; }
-        
+
         [XmlIgnore]
         public ModalidadeDeterminacaoBCICMS? ModalidadeBC { get; set; }
 
@@ -225,14 +230,59 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double? PercentualBCop { get; set; }
 
         [XmlIgnore]
-        public string UF{ get; set; }
+        public string UF { get; set; }
 
         [XmlIgnore]
         public double? AliquotaAplicavelCalculoCreditoSN { get; set; }
 
         [XmlIgnore]
         public double? ValorCreditoICMS { get; set; }
-        
+
+        #region FCP
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlIgnore]
+        public double? ValorBaseFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlIgnore]
+        public double? PercentualFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlIgnore]
+        public double? ValorFCPST { get; set; }
+
+        /// <summary>
+        /// Alíquota suportada pelo Consumidor Final
+        /// </summary>
+        [XmlIgnore]
+        public double? AliquotaFCPConsumidorFinal { get; set; }
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido anteriormente por ST
+        /// </summary>
+        [XmlIgnore]
+        public double? ValorBaseFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido anteriormente por Substituição Tributária
+        /// </summary>
+        [XmlIgnore]
+        public double? PercentualFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlIgnore]
+        public double? ValorFCPRetidoST { get; set; }
+
+        #endregion FCP
 
         private void DoTheValidation()
         {

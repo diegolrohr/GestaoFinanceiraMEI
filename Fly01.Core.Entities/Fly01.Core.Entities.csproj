@@ -64,6 +64,7 @@
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
+    <Compile Include="Domains\Enum\UnidadeMedida.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
     <Compile Include="ViewModels\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\AppsInstaladosVM.cs" />

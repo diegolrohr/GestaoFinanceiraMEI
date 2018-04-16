@@ -64,7 +64,6 @@
     <Compile Include="Entities\TipoMovimento.cs" />
     <Compile Include="Enums\TipoProduto.cs" />
     <Compile Include="Entities\Estado.cs" />
-    <Compile Include="Enums\UnidadeMedida.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

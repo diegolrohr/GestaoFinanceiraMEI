@@ -1,4 +1,4 @@
-﻿namespace Fly01.Estoque.Domain.Enums
+﻿namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum UnidadeMedida
     {

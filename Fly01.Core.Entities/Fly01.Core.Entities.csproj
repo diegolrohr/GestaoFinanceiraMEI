@@ -94,6 +94,8 @@
     <Compile Include="Domains\Enum\TipoServico.cs" />
     <Compile Include="Domains\Enum\TipoSimulacao.cs" />
     <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoICMS.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoIPI.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoISS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoPISCOFINS.cs" />
     <Compile Include="Domains\Enum\TipoVenda.cs" />

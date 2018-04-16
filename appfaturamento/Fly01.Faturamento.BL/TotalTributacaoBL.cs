@@ -206,7 +206,7 @@ namespace Fly01.Faturamento.BL
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
                         EstadoDestino = cliente.Estado.Sigla,
                         EstadoOrigem = estadoOrigem,
-                        CSOSN = grupoTributario.TipoTributacaoICMS != null ? (CSOSN)Enum.Parse(typeof(CSOSN), grupoTributario.TipoTributacaoICMS.ToString()) : CSOSN.Outros,
+                        CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                     };
                     if (produto.AliquotaIpi > 0)
                     {

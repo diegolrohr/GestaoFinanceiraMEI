@@ -292,7 +292,7 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
                             OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
-                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? (EmissaoNFE.Domain.Enums.CSOSN)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSOSN), item.GrupoTributario.TipoTributacaoICMS.ToString()) : EmissaoNFE.Domain.Enums.CSOSN.TributadaSemPermissaoDeCredito,
+                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2)
                         };

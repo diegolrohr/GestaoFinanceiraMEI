@@ -1,11 +1,11 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.EmissaoNFE.Domain.ViewModel;
+﻿using Fly01.Core.API;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
+using Fly01.EmissaoNFE.Domain.Entities.NFe;
+using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
-using Fly01.Core.API;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -76,7 +76,7 @@ namespace Fly01.EmissaoNFE.BL
 
             return nota;
         }
-        
+
         public double Arredondar(double? valor, int casas)
         {
             double retorno = valor.HasValue ? valor.Value : 0;
@@ -112,37 +112,37 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(true, new Error("Os dados de identificação são obrigatórios.", "Item.Identificador"));
                 else
                 {
-                    entity.Fail(!EstadoBL.All.Any(e => e.CodigoIbge == item.Identificador.CodigoUF.ToString()), 
+                    entity.Fail(!EstadoBL.All.Any(e => e.CodigoIbge == item.Identificador.CodigoUF.ToString()),
                         new Error("O código da UF é inválido.", "Item.Identificador.CodigoUF"));
-                    entity.Fail(string.IsNullOrEmpty(item.Identificador.CodigoNF.ToString()), 
+                    entity.Fail(string.IsNullOrEmpty(item.Identificador.CodigoNF.ToString()),
                         new Error("O código da Nota Fiscal é obrigatório.", "Item.Identificador.CodigoNF"));
-                    entity.Fail(string.IsNullOrEmpty(item.Identificador.NaturezaOperacao), 
+                    entity.Fail(string.IsNullOrEmpty(item.Identificador.NaturezaOperacao),
                         new Error("A descrição de Natureza da Operação é obrigatória.", "Item.Identificador.NaturezaOperacao"));
-                    entity.Fail((item.Identificador.FormaPagamento < 0 || (int)item.Identificador.FormaPagamento > 2), 
+                    entity.Fail((item.Identificador.FormaPagamento < 0 || (int)item.Identificador.FormaPagamento > 2),
                         new Error("Forma de pagamento inválida.", "Item.Identificador.FormaPagamento"));
-                    entity.Fail(string.IsNullOrEmpty(item.Identificador.Serie.ToString()), 
+                    entity.Fail(string.IsNullOrEmpty(item.Identificador.Serie.ToString()),
                         new Error("Série é um dado obrigatório.", "Item.Identificador.Serie"));
-                    entity.Fail(item.Identificador.Serie > 889 && item.Identificador.FormaEmissao == TipoModalidade.Normal, 
+                    entity.Fail(item.Identificador.Serie > 889 && item.Identificador.FormaEmissao == TipoModalidade.Normal,
                         new Error("Série inválida para a modalidade 1 (Emissão Normal).", "Item.Identificador.Serie"));
-                    entity.Fail(item.Identificador.Serie < 900 && item.Identificador.FormaEmissao == TipoModalidade.SCAN, 
+                    entity.Fail(item.Identificador.Serie < 900 && item.Identificador.FormaEmissao == TipoModalidade.SCAN,
                         new Error("Série inválida para a modalidade 3 (Contingência SCAN).", "Item.Identificador.Serie"));
-                    entity.Fail(string.IsNullOrEmpty(item.Identificador.NumeroDocumentoFiscal.ToString()), 
+                    entity.Fail(string.IsNullOrEmpty(item.Identificador.NumeroDocumentoFiscal.ToString()),
                         new Error("O número do documento é obrigatório.", "Item.Identificador.NumeroDocumentoFiscal"));
-                    entity.Fail((item.Identificador.TipoDocumentoFiscal < 0 || (int)item.Identificador.TipoDocumentoFiscal > 1), 
+                    entity.Fail((item.Identificador.TipoDocumentoFiscal < 0 || (int)item.Identificador.TipoDocumentoFiscal > 1),
                         new Error("O tipo da nota é inválido.", "Item.Identificador.TipoDocumentoFiscal"));
-                    entity.Fail(((int)item.Identificador.DestinoOperacao < 1 || (int)item.Identificador.DestinoOperacao > 3), 
+                    entity.Fail(((int)item.Identificador.DestinoOperacao < 1 || (int)item.Identificador.DestinoOperacao > 3),
                         new Error("O tipo da nota é inválido.", "Item.Identificador.TipoDocumentoFiscal"));
-                    entity.Fail(!CidadeBL.All.Any(e => e.CodigoIbge == item.Identificador.CodigoMunicipio), 
+                    entity.Fail(!CidadeBL.All.Any(e => e.CodigoIbge == item.Identificador.CodigoMunicipio),
                         new Error("O código do município é inválido.", "Item.Identificador.CodigoMunicipio"));
-                    entity.Fail((item.Identificador.ImpressaoDANFE < 0 || (int)item.Identificador.ImpressaoDANFE > 5), 
+                    entity.Fail((item.Identificador.ImpressaoDANFE < 0 || (int)item.Identificador.ImpressaoDANFE > 5),
                         new Error("Tipo de impressão da DANFE inválido.", "Item.Identificador.ImpressaoDANFE"));
-                    entity.Fail(((int)item.Identificador.FormaEmissao < 1 || (int)item.Identificador.FormaEmissao > 7) && (int)item.Identificador.FormaEmissao != 9, 
+                    entity.Fail(((int)item.Identificador.FormaEmissao < 1 || (int)item.Identificador.FormaEmissao > 7) && (int)item.Identificador.FormaEmissao != 9,
                         new Error("Tipo de modalidade de emissão inválido.", "Item.Identificador.FormaEmissao"));
-                    entity.Fail(((int)item.Identificador.Ambiente < 1 || (int)item.Identificador.Ambiente > 2), 
+                    entity.Fail(((int)item.Identificador.Ambiente < 1 || (int)item.Identificador.Ambiente > 2),
                         new Error("Ambiente inválido para transmissão de notas.", "Item.Identificador.Ambiente"));
-                    entity.Fail(((int)item.Identificador.FinalidadeEmissaoNFe < 1 || (int)item.Identificador.FinalidadeEmissaoNFe > 4), 
+                    entity.Fail(((int)item.Identificador.FinalidadeEmissaoNFe < 1 || (int)item.Identificador.FinalidadeEmissaoNFe > 4),
                         new Error("Ambiente inválido para transmissão de notas.", "Item.Identificador.FinalidadeEmissaoNFe"));
-                    entity.Fail(item.Identificador.ConsumidorFinal != 0 && item.Identificador.ConsumidorFinal != 1, 
+                    entity.Fail(item.Identificador.ConsumidorFinal != 0 && item.Identificador.ConsumidorFinal != 1,
                         new Error("Informação de consumidor final inválida.", "Item.Identificador.ConsumidorFinal"));
                 }
 
@@ -154,25 +154,25 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(true, new Error("Os dados do emitente são obrigatórios.", "Item.Emitente"));
                 else
                 {
-                    entity.Fail(item.Emitente.Cnpj == null && item.Emitente.Cpf == null, 
+                    entity.Fail(item.Emitente.Cnpj == null && item.Emitente.Cpf == null,
                         new Error("Informe o CPF ou CNPJ do emitente.", "Item.Emitente.Cnpj"));
-                    entity.Fail(item.Emitente.Cpf != null && (!EmpresaBL.ValidaCPF(item.Emitente.Cpf) || item.Emitente.Cnpj.Length != 11), 
+                    entity.Fail(item.Emitente.Cpf != null && (!EmpresaBL.ValidaCPF(item.Emitente.Cpf) || item.Emitente.Cnpj.Length != 11),
                         new Error("CPF do emitente inválido.", "Item.Emitente.Cpf"));
-                    entity.Fail(item.Emitente.Cnpj != null && (!EmpresaBL.ValidaCNPJ(item.Emitente.Cnpj) || item.Emitente.Cnpj.Length != 14), 
+                    entity.Fail(item.Emitente.Cnpj != null && (!EmpresaBL.ValidaCNPJ(item.Emitente.Cnpj) || item.Emitente.Cnpj.Length != 14),
                         new Error("CNPJ do emitente inválido.", "Item.Emitente.Cnpj"));
-                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Nome), 
+                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Nome),
                         new Error("Nome do emitente é um dado obrigatório.", "Item.Emitente.Nome"));
-                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Logradouro), 
+                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Logradouro),
                         new Error("Logradouro do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Logradouro"));
-                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Numero), 
+                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Numero),
                         new Error("Número do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Numero"));
-                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Bairro), 
+                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Bairro),
                         new Error("Bairro do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Bairro"));
-                    entity.Fail(!CidadeBL.All.Any(e => e.CodigoIbge == item.Emitente.Endereco.CodigoMunicipio), 
+                    entity.Fail(!CidadeBL.All.Any(e => e.CodigoIbge == item.Emitente.Endereco.CodigoMunicipio),
                         new Error("Código de município do emitente inválido.", "Item.Emitente.Endereco.CodigoMunicipio"));
-                    entity.Fail(item.Emitente.Endereco.CodigoMunicipio != item.Identificador.CodigoMunicipio, 
+                    entity.Fail(item.Emitente.Endereco.CodigoMunicipio != item.Identificador.CodigoMunicipio,
                         new Error("Código de município do emitente difere do informado na identificação.", "Item.Emitente.Endereco.CodigoMunicipio"));
-                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Municipio), 
+                    entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Municipio),
                         new Error("Município do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Municipio"));
                     if (item.Emitente.InscricaoEstadual != null)
                     {
@@ -203,9 +203,9 @@ namespace Fly01.EmissaoNFE.BL
                     else
                         entity.Fail(true, new Error("Inscrição Estadual do emitente é um dado obrigatório.", "Item.Emitente.InscricaoEstadual"));
 
-                    entity.Fail(item.Emitente.Endereco.Cep == null, 
+                    entity.Fail(item.Emitente.Endereco.Cep == null,
                         new Error("CEP do emitente é um dado obrigatório.", "item.Emitente.Endereco.Cep"));
-                    entity.Fail(item.Emitente.Endereco.Cep != null && !EmpresaBL.ValidaCEP(item.Emitente.Endereco.Cep), 
+                    entity.Fail(item.Emitente.Endereco.Cep != null && !EmpresaBL.ValidaCEP(item.Emitente.Endereco.Cep),
                         new Error("CEP do emitente inválido.", "item.Emitente.Endereco.Cep"));
                 }
 
@@ -217,23 +217,23 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(true, new Error("Os dados do destinatário são obrigatórios.", "Item.Destinatario"));
                 else
                 {
-                    entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null, 
+                    entity.Fail(item.Destinatario.Cnpj == null && item.Destinatario.Cpf == null,
                         new Error("Informe o CPF ou CNPJ do destinatário.", "Item.Destinatario.Cnpj"));
-                    entity.Fail(item.Destinatario.Cpf != null && (!EmpresaBL.ValidaCPF(item.Destinatario.Cpf) || item.Destinatario.Cpf.Length != 11), 
+                    entity.Fail(item.Destinatario.Cpf != null && (!EmpresaBL.ValidaCPF(item.Destinatario.Cpf) || item.Destinatario.Cpf.Length != 11),
                         new Error("CPF do destinatário inválido.", "Item.Destinatario.Cpf"));
-                    entity.Fail(item.Destinatario.Cnpj != null && (!EmpresaBL.ValidaCNPJ(item.Destinatario.Cnpj) || item.Destinatario.Cnpj.Length != 14), 
+                    entity.Fail(item.Destinatario.Cnpj != null && (!EmpresaBL.ValidaCNPJ(item.Destinatario.Cnpj) || item.Destinatario.Cnpj.Length != 14),
                         new Error("CNPJ do destinatário inválido.", "Item.Destinatario.Cnpj"));
-                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Nome), 
+                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Nome),
                         new Error("Nome do destinatário é um dado obrigatório.", "Item.Destinatario.Nome"));
-                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Logradouro), 
+                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Logradouro),
                         new Error("Logradouro do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Logradouro"));
-                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Numero), 
+                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Numero),
                         new Error("Número do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Numero"));
-                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Bairro), 
+                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Bairro),
                         new Error("Bairro do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Bairro"));
-                    entity.Fail(item.Destinatario.Endereco.CodigoMunicipio != null && !CidadeBL.All.Any(e => e.CodigoIbge == item.Destinatario.Endereco.CodigoMunicipio), 
+                    entity.Fail(item.Destinatario.Endereco.CodigoMunicipio != null && !CidadeBL.All.Any(e => e.CodigoIbge == item.Destinatario.Endereco.CodigoMunicipio),
                         new Error("Código de município do destinatário inválido.", "Item.Destinatario.Endereco.CodigoMunicipio"));
-                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio), 
+                    entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio),
                         new Error("Município do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Municipio"));
                     if (item.Destinatario.InscricaoEstadual != null && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
                     {
@@ -261,7 +261,7 @@ namespace Fly01.EmissaoNFE.BL
                             }
                         }
                     }
-                    entity.Fail(item.Destinatario.Endereco.Cep != null && !EmpresaBL.ValidaCEP(item.Destinatario.Endereco.Cep), 
+                    entity.Fail(item.Destinatario.Endereco.Cep != null && !EmpresaBL.ValidaCEP(item.Destinatario.Endereco.Cep),
                         new Error("CEP do destinatário inválido.", "item.Destinatario.Endereco.Cep"));
                 }
 
@@ -270,22 +270,22 @@ namespace Fly01.EmissaoNFE.BL
                 #region Validações da classe Transporte
 
                 var modFrete = EnumHelper.GetDataEnumValues(typeof(ModalidadeFrete));
-                entity.Fail(!modFrete.Any(x => x.Value == ((int)item.Transporte.ModalidadeFrete).ToString()), 
+                entity.Fail(!modFrete.Any(x => x.Value == ((int)item.Transporte.ModalidadeFrete).ToString()),
                     new Error("Modalidade de frete inválida", "Item.Transporte.ModalidadeFrete"));
 
                 if (item.Transporte.Transportadora != null)
                 {
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.RazaoSocial), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.RazaoSocial),
                         new Error("Razão Social da transportadora é um dado obrigatório", "Item.Transporte.Transportadora.RazaoSocial"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && string.IsNullOrEmpty(item.Transporte.Transportadora.CPF), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && string.IsNullOrEmpty(item.Transporte.Transportadora.CPF),
                         new Error("Informe CPF ou CNPJ da transportadora", "Item.Transporte.Transportadora.CNPJ"));
-                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && !EmpresaBL.ValidaCNPJ(item.Transporte.Transportadora.CNPJ), 
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CNPJ) && !EmpresaBL.ValidaCNPJ(item.Transporte.Transportadora.CNPJ),
                         new Error("CNPJ da transportadora é inválido", "Item.Transporte.Transportadora.CNPJ"));
-                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CPF) && !EmpresaBL.ValidaCPF(item.Transporte.Transportadora.CPF), 
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Transportadora.CPF) && !EmpresaBL.ValidaCPF(item.Transporte.Transportadora.CPF),
                         new Error("CPF da transportadora é inválido", "Item.Transporte.Transportadora.CPF"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Endereco), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Endereco),
                         new Error("Endereço da transportadora é obrigatório", "Item.Transporte.Transportadora.Endereco"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Municipio), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Municipio),
                         new Error("Município da transportadora é um dado obrigatório", "Item.Transporte.Transportadora.Municipio"));
 
                     if (item.Transporte.Transportadora.IE != null)
@@ -320,19 +320,19 @@ namespace Fly01.EmissaoNFE.BL
                     }
                 }
 
-                if(item.Transporte.Veiculo != null)
+                if (item.Transporte.Veiculo != null)
                 {
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.Placa) || item.Transporte.Veiculo.Placa.Length != 7, 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.Placa) || item.Transporte.Veiculo.Placa.Length != 7,
                         new Error("Placa do veículo de transporte inválida", "Item.Transporte.Veiculo.Placa"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.UF) || !EstadoBL.All.Any(x => x.Sigla == item.Transporte.Veiculo.UF), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.UF) || !EstadoBL.All.Any(x => x.Sigla == item.Transporte.Veiculo.UF),
                         new Error("Estado do veículo de transporte inválido", "Item.Transporte.Veiculo.UF"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.RNTC), 
+                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.RNTC),
                         new Error("Código RNTC é um dado obrigatório", "Item.Transporte.Veiculo.RNTC"));
                 }
 
-                if(item.Transporte.Volume != null)
+                if (item.Transporte.Volume != null)
                 {
-                    entity.Fail(item.Transporte.Volume.Quantidade <= 0, 
+                    entity.Fail(item.Transporte.Volume.Quantidade <= 0,
                         new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
                     entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Especie),
                         new Error("Espécie de volume é um dado obrigatório", "Item.Transporte.Volume.Especie"));
@@ -347,7 +347,7 @@ namespace Fly01.EmissaoNFE.BL
                 }
 
                 #endregion
-                
+
                 var nItem = 1;
 
                 foreach (var detalhe in item.Detalhes)
@@ -574,7 +574,7 @@ namespace Fly01.EmissaoNFE.BL
                             entity.Fail(true, new Error("Os dados de ICMS são obrigatórios. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS"));
                         else
                         {
-                            entity.Fail(detalhe.Imposto.ICMS.OrigemMercadoria < 0 || (int)detalhe.Imposto.ICMS.OrigemMercadoria > 8, 
+                            entity.Fail(detalhe.Imposto.ICMS.OrigemMercadoria < 0 || (int)detalhe.Imposto.ICMS.OrigemMercadoria > 8,
                                 new Error("Origem da mercadoria inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.OrigemMercadoria"));
 
                             var Modalidade = EnumHelper.GetDataEnumValues(typeof(ModalidadeDeterminacaoBCICMS));
@@ -583,9 +583,9 @@ namespace Fly01.EmissaoNFE.BL
                             switch (((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString())
                             {
                                 case "101": //Tributada pelo Simples Nacional com permissão de crédito
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue,
                                         new Error("Alíquota aplicável de cálculo do crédito é obrigatória para CSOSN 101 e 201. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
                                         new Error("Valor crédito do ICMS é obrigatório para CSOSN 101 e 201. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorCreditoICMS"));
                                     break;
 
@@ -597,52 +597,73 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
                                         new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)), 
+                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)),
                                         new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue,
                                         new Error("Alíquota aplicável de cálculo do crédito é obrigatória para CSOSN 101 e 201. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
                                         new Error("Valor crédito do ICMS é obrigatório para CSOSN 101 e 201. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorCreditoICMS"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue,
                                         new Error("Percentual da MVA do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.PercentualMargemValorAdicionadoST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue,
                                         new Error("Valor da base de cálculo do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue,
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
+                                    // FCP
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
+                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
                                     break;
 
                                 case "202": //Tributada pelo Simples Nacional sem permissão de crédito e com cobrança do ICMS por substituição tributária
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
                                         new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)), 
+                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)),
                                         new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue,
                                         new Error("Percentual da MVA do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.PercentualMargemValorAdicionadoST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue,
                                         new Error("Valor da base de cálculo do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue,
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
+                                    // FCP
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
+                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
                                     break;
 
                                 case "203": //Isenção do ICMS no Simples Nacional para faixa de receita bruta e com cobrança do ICMS por substituição tributária
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
                                         new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)), 
+                                    entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)),
                                         new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue,
                                         new Error("Percentual da MVA do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.PercentualMargemValorAdicionadoST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue,
                                         new Error("Valor da base de cálculo do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue,
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
+                                    // FCP
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
+                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
                                     break;
 
                                 case "300": //Imune
@@ -654,18 +675,34 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCSTRetido.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBCSTRetido.HasValue,
                                         new Error("Valor da base de cálculo do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCSTRetido"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue,
                                         new Error("Valor do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSSTRetido"));
+                                    // FCP
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal.HasValue,
+                                        new Error("Alíquota suportada pelo Consumidor Final é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST.HasValue,
+                                        new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPSTRet"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST.HasValue,
+                                        new Error("Percentual do FCP retido anteriormente por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPSTRet"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
+                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPSTRet"));
                                     break;
 
                                 case "900": //Outros
                                             //Informação do CSOSN e valor do ICMS passível de crédito pelo destinatário
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue, 
+                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
                                         new Error("Percentual de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
-                                    entity.Fail(detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && !detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue, 
+                                    entity.Fail(detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && !detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
                                         new Error("Valor de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorCreditoICMS"));
+                                    // FCP
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
+                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
 
                                     //Informação do CSOSN e ICMS próprio
                                     var ICMSProprio = false;
@@ -677,17 +714,17 @@ namespace Fly01.EmissaoNFE.BL
                                       !string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString())))
                                     {
                                         ICMSProprio = true;
-                                        entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()), 
+                                        entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()),
                                             new Error("Modalidade de determinação da base de cálculo é obrigatória para operações de ICMS próprio. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBC"));
                                         entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
                                             new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                        entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) && !Modalidade.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBC)), 
+                                        entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) && !Modalidade.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBC)),
                                             new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBC"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.ValorBC.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorBC.HasValue,
                                             new Error("Base de cálculo requerida para operações de ICMS próprio. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMS.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMS.HasValue,
                                             new Error("Alíquota requerida para operações de ICMS próprio. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.ValorICMS.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorICMS.HasValue,
                                             new Error("Valor do imposto requerido para operações de ICMS próprio. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
                                     }
 
@@ -700,13 +737,13 @@ namespace Fly01.EmissaoNFE.BL
                                       (detalhe.Imposto.ICMS.ValorICMSST.HasValue && detalhe.Imposto.ICMS.ValorICMSST > 0)
                                       )
                                     {
-                                        entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)), 
+                                        entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)),
                                             new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ModalidadeBCST"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorBCST.HasValue,
                                             new Error("Valor da base de cálculo do ICMS ST é obrigatório para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCST"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMSST.HasValue,
                                             new Error("Alíquota da Substituição Tributária é requerida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue, 
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                             new Error("Valor da Substituição Tributária é requerido. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
                                     }
                                     break;
@@ -723,23 +760,23 @@ namespace Fly01.EmissaoNFE.BL
 
                         if (detalhe.Imposto.IPI != null)
                         {
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoEnquadramento), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoEnquadramento),
                                 new Error("Código de enquadramento legal do IPI é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.CodigoEnquadramento"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()),
                                 new Error("CST do IPI é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.CodigoST"));
-                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()) && (int)detalhe.Imposto.IPI.CodigoST < 50 && (int)item.Identificador.TipoDocumentoFiscal == 1, 
+                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()) && (int)detalhe.Imposto.IPI.CodigoST < 50 && (int)item.Identificador.TipoDocumentoFiscal == 1,
                                 new Error("CST do IPI inválido para uma nota de saída. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.CodigoST"));
-                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()) && (int)detalhe.Imposto.IPI.CodigoST >= 50 && (int)item.Identificador.TipoDocumentoFiscal == 0, 
+                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.IPI.CodigoST.ToString()) && (int)detalhe.Imposto.IPI.CodigoST >= 50 && (int)item.Identificador.TipoDocumentoFiscal == 0,
                                 new Error("CST do IPI inválido para uma nota de entrada. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.CodigoST"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorBaseCalculo.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorBaseCalculo.ToString()),
                                 new Error("Base de cálculo do IPI é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.ValorBaseCalculo"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.PercentualIPI.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.PercentualIPI.ToString()),
                                 new Error("Alíquota do IPI é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.PercentualIPI"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorIPI.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorIPI.ToString()),
                                 new Error("Valor do IPI é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.ValorIPI"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.QtdTotalUnidadeTributavel.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.QtdTotalUnidadeTributavel.ToString()),
                                 new Error("Quantidade tributada do IPI é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.QtdTotalUnidadeTributavel"));
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorUnidadeTributavel.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.IPI.ValorUnidadeTributavel.ToString()),
                                 new Error("Valor por unidade tributável do IPI é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.IPI.ValorUnidadeTributavel"));
                         }
 
@@ -751,21 +788,21 @@ namespace Fly01.EmissaoNFE.BL
                             entity.Fail(true, new Error("Os dados de PIS são obrigatórios. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS"));
                         else
                         {
-                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.CodigoSituacaoTributaria.ToString()), 
+                            entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.CodigoSituacaoTributaria.ToString()),
                                 new Error("O CST do PIS é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.CodigoSituacaoTributaria"));
                             var CSTPIS = EnumHelper.GetDataEnumValues(typeof(CSTPISCOFINS));
-                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.PIS.CodigoSituacaoTributaria.ToString()) && !CSTPIS.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria)), 
+                            entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.PIS.CodigoSituacaoTributaria.ToString()) && !CSTPIS.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria)),
                                 new Error("Código CST inválido. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.CodigoSituacaoTributaria"));
 
                             var OnlyCST = "04||05||06||07||08||09";
 
                             if (!OnlyCST.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
                             {
-                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()), 
+                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()),
                                     new Error("A base de cálculo do PIS é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorBCDoPIS"));
-                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.PercentualPIS.ToString()), 
+                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.PercentualPIS.ToString()),
                                     new Error("A alíquota do PIS é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.PercentualPIS"));
-                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorPIS.ToString()), 
+                                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorPIS.ToString()),
                                     new Error("O valor do PIS é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorPIS"));
 
                                 if (!string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()))
@@ -776,10 +813,10 @@ namespace Fly01.EmissaoNFE.BL
                                     for (int x = 0; x < numero.Length; x++)
                                     {
                                         if (x == 0)
-                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 15, 
+                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 15,
                                                 new Error("O valor da base de cálculo do PIS é inválido. (Tam. 15.2) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorBCDoPIS"));
                                         else
-                                            entity.Fail(numero[x] != null && numero[x].Length > 2, 
+                                            entity.Fail(numero[x] != null && numero[x].Length > 2,
                                                 new Error("O número de casas decimais da base de cálculo do PIS é inválido. (Tam. 15.2) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorBCDoPIS"));
                                     }
                                 }
@@ -791,10 +828,10 @@ namespace Fly01.EmissaoNFE.BL
                                     for (int x = 0; x < numero.Length; x++)
                                     {
                                         if (x == 0)
-                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 5, 
+                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 5,
                                                 new Error("A alíquota do PIS é inválida. (Tam. 5.2-4) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.PercentualPIS"));
                                         else
-                                            entity.Fail(numero[x] != null && (numero[x].Length < 2 || numero[x].Length > 4), 
+                                            entity.Fail(numero[x] != null && (numero[x].Length < 2 || numero[x].Length > 4),
                                                 new Error("O número de casas decimais da alíquota do PIS é inválido. (Tam. 5.2-4) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.PercentualPIS"));
                                     }
                                 }
@@ -806,10 +843,10 @@ namespace Fly01.EmissaoNFE.BL
                                     for (int x = 0; x < numero.Length; x++)
                                     {
                                         if (x == 0)
-                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 15, 
+                                            entity.Fail(numero[x].Length < 1 || numero[x].Length > 15,
                                                 new Error("O valor do PIS é inválido. (Tam. 15.2) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorPIS"));
                                         else
-                                            entity.Fail(numero[x] != null && numero[x].Length > 2, 
+                                            entity.Fail(numero[x] != null && numero[x].Length > 2,
                                                 new Error("O número de casas decimais do PIS é inválido. (Tam. 15.2) Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PIS.ValorPIS"));
                                     }
                                 }
@@ -822,11 +859,11 @@ namespace Fly01.EmissaoNFE.BL
                                 entity.Fail(detalhe.Imposto.PISST == null, new Error("Os dados de PIS ST são obrigatórios para o CST 05. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST"));
                                 if (detalhe.Imposto.PISST != null)
                                 {
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.ValorBC.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.ValorBC.ToString()),
                                         new Error("Base do PIS ST é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorBC"));
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.AliquotaPercentual.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.AliquotaPercentual.ToString()),
                                         new Error("Alíquota do PIS ST é obrigatória. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.AliquotaPercentual"));
-                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.ValorPISST.ToString()), 
+                                    entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PISST.ValorPISST.ToString()),
                                         new Error("Valor do PIS ST é obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorPISST"));
 
                                     if (!string.IsNullOrEmpty(detalhe.Imposto.PISST.ValorBC.ToString()))
@@ -837,10 +874,10 @@ namespace Fly01.EmissaoNFE.BL
                                         for (int x = 0; x < numero.Length; x++)
                                         {
                                             if (x == 0)
-                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15, 
+                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15,
                                                     new Error("Base do PIS ST inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorBC"));
                                             else
-                                                entity.Fail(numero[x] != null && numero[x].Length > 2, 
+                                                entity.Fail(numero[x] != null && numero[x].Length > 2,
                                                     new Error("Casas decimais inválidas na base do PIS ST. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorBC"));
                                         }
                                     }
@@ -852,10 +889,10 @@ namespace Fly01.EmissaoNFE.BL
                                         for (int x = 0; x < numero.Length; x++)
                                         {
                                             if (x == 0)
-                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15, 
+                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15,
                                                     new Error("Alíquota do PIS ST inválida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.AliquotaPercentual"));
                                             else
-                                                entity.Fail(numero[x] != null && (numero[x].Length < 2 || numero[x].Length > 4), 
+                                                entity.Fail(numero[x] != null && (numero[x].Length < 2 || numero[x].Length > 4),
                                                     new Error("Casas decimais inválidas na alíquota do PIS ST. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.AliquotaPercentual"));
                                         }
                                     }
@@ -867,10 +904,10 @@ namespace Fly01.EmissaoNFE.BL
                                         for (int x = 0; x < numero.Length; x++)
                                         {
                                             if (x == 0)
-                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15, 
+                                                entity.Fail(numero[x].Length < 1 || numero[x].Length > 15,
                                                     new Error("Valor do PIS ST inválido. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorPISST"));
                                             else
-                                                entity.Fail(numero[x] != null && numero[x].Length > 2, 
+                                                entity.Fail(numero[x] != null && numero[x].Length > 2,
                                                     new Error("Casas decimais inválidas no valor do PIS ST. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.PISST.ValorPISST"));
                                         }
                                     }
@@ -881,7 +918,7 @@ namespace Fly01.EmissaoNFE.BL
                         }
 
                         #endregion
-                        
+
                     }
 
                     #endregion
@@ -904,9 +941,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioBC = Arredondar(item.Total.ICMSTotal.SomatorioBC, 2);
                         somatorioBCTrue = Arredondar(somatorioBCTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioBC.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioBC.ToString()),
                             new Error("Informe o somatório da BC do ICMS.", "Item.Total.ICMSTotal.SomatorioBC"));
-                        entity.Fail(!somatorioBCTrue.Equals(item.Total.ICMSTotal.SomatorioBC), 
+                        entity.Fail(!somatorioBCTrue.Equals(item.Total.ICMSTotal.SomatorioBC),
                             new Error("O somatório da BC do ICMS não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioBC"));
                         #endregion
 
@@ -915,9 +952,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioICMS = Arredondar(item.Total.ICMSTotal.SomatorioICMS, 2);
                         somatorioICMSTrue = Arredondar(somatorioICMSTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioICMS.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioICMS.ToString()),
                             new Error("Informe o somatório da ICMS.", "Item.Total.ICMSTotal.SomatorioICMS"));
-                        entity.Fail(!somatorioICMSTrue.Equals(item.Total.ICMSTotal.SomatorioICMS), 
+                        entity.Fail(!somatorioICMSTrue.Equals(item.Total.ICMSTotal.SomatorioICMS),
                             new Error("O somatório da ICMS não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioICMS"));
                         #endregion
 
@@ -926,9 +963,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioBCST = Arredondar(item.Total.ICMSTotal.SomatorioBCST, 2);
                         somatorioBCSTTrue = Arredondar(somatorioBCSTTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioBCST.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioBCST.ToString()),
                             new Error("Informe o somatório da BCST.", "Item.Total.ICMSTotal.SomatorioBCST"));
-                        entity.Fail(!somatorioBCSTTrue.Equals(item.Total.ICMSTotal.SomatorioBCST), 
+                        entity.Fail(!somatorioBCSTTrue.Equals(item.Total.ICMSTotal.SomatorioBCST),
                             new Error("O somatório da BCST não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioBCST"));
 
                         #endregion
@@ -938,9 +975,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioICMSST = Arredondar(item.Total.ICMSTotal.SomatorioICMSST, 2);
                         somatorioICMSSTTrue = Arredondar(somatorioICMSSTTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioICMSST.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioICMSST.ToString()),
                             new Error("Informe o somatório da ICMSST.", "Item.Total.ICMSTotal.SomatorioICMSST"));
-                        entity.Fail(!somatorioICMSSTTrue.Equals(item.Total.ICMSTotal.SomatorioICMSST), 
+                        entity.Fail(!somatorioICMSSTTrue.Equals(item.Total.ICMSTotal.SomatorioICMSST),
                             new Error("O somatório da ICMSST não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioICMSST"));
                         #endregion
 
@@ -949,7 +986,7 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioProdutos = Arredondar(item.Total.ICMSTotal.SomatorioProdutos, 2);
                         somatorioProdutosTrue = Arredondar(somatorioProdutosTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioProdutos.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioProdutos.ToString()),
                             new Error("Informe o somatório do valor bruto dos produtos.", "Item.Total.ICMSTotal.SomatorioProdutos"));
                         entity.Fail(!(somatorioProdutosTrue.Value == item.Total.ICMSTotal.SomatorioProdutos),
                             new Error("O somatório do valor bruto dos produtos não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioProdutos"));
@@ -960,9 +997,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.ValorFrete = Arredondar(item.Total.ICMSTotal.ValorFrete, 2);
                         valorFreteTrue = Arredondar(valorFreteTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorFrete.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorFrete.ToString()),
                             new Error("Informe o somatório do valor de frete.", "Item.Total.ICMSTotal.ValorFrete"));
-                        entity.Fail(!valorFreteTrue.Equals(item.Total.ICMSTotal.ValorFrete), 
+                        entity.Fail(!valorFreteTrue.Equals(item.Total.ICMSTotal.ValorFrete),
                             new Error("O somatório do valor de frete não confere com os valores informados.", "Item.Total.ICMSTotal.ValorFrete"));
                         #endregion
 
@@ -971,9 +1008,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.ValorSeguro = Arredondar(item.Total.ICMSTotal.ValorSeguro, 2);
                         valorSeguroTrue = Arredondar(valorSeguroTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorSeguro.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorSeguro.ToString()),
                             new Error("Informe o somatório do valor do seguro.", "Item.Total.ICMSTotal.ValorSeguro"));
-                        entity.Fail(!valorSeguroTrue.Equals(item.Total.ICMSTotal.ValorSeguro), 
+                        entity.Fail(!valorSeguroTrue.Equals(item.Total.ICMSTotal.ValorSeguro),
                             new Error("O somatório do valor do seguro não confere com os valores informados.", "Item.Total.ICMSTotal.ValorSeguro"));
                         #endregion
 
@@ -982,9 +1019,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioDesconto = Arredondar(item.Total.ICMSTotal.SomatorioDesconto, 2);
                         somatorioDesconto = Arredondar(somatorioDesconto, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioDesconto.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioDesconto.ToString()),
                             new Error("Informe o somatório do valor de desconto.", "Item.Total.ICMSTotal.SomatorioDesconto"));
-                        entity.Fail(!somatorioDesconto.Equals(item.Total.ICMSTotal.SomatorioDesconto), 
+                        entity.Fail(!somatorioDesconto.Equals(item.Total.ICMSTotal.SomatorioDesconto),
                             new Error("O somatório do valor de desconto não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioDesconto"));
                         #endregion
 
@@ -993,9 +1030,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioII = Arredondar(item.Total.ICMSTotal.SomatorioII, 2);
                         somatorioIITrue = Arredondar(somatorioIITrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioII.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioII.ToString()),
                             new Error("Informe o somatório do valor de II.", "Item.Total.ICMSTotal.SomatorioII"));
-                        entity.Fail(!somatorioIITrue.Equals(item.Total.ICMSTotal.SomatorioII), 
+                        entity.Fail(!somatorioIITrue.Equals(item.Total.ICMSTotal.SomatorioII),
                             new Error("O somatório do valor de II não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioII"));
                         #endregion SomatorioII
 
@@ -1004,9 +1041,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioIPI = Arredondar(item.Total.ICMSTotal.SomatorioIPI, 2);
                         somatorioIPITrue = Arredondar(somatorioIPITrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioIPI.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioIPI.ToString()),
                             new Error("Informe o somatório do valor de IPI.", "Item.Total.ICMSTotal.SomatorioIPI"));
-                        entity.Fail(!somatorioIPITrue.Equals(item.Total.ICMSTotal.SomatorioIPI), 
+                        entity.Fail(!somatorioIPITrue.Equals(item.Total.ICMSTotal.SomatorioIPI),
                             new Error("O somatório do valor de IPI não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioIPI"));
                         #endregion SomatorioIPI
 
@@ -1015,9 +1052,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioPis = Arredondar(item.Total.ICMSTotal.SomatorioPis, 2);
                         somatorioPISTrue = Arredondar(somatorioPISTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioPis.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioPis.ToString()),
                             new Error("Informe o somatório do valor de PIS.", "Item.Total.ICMSTotal.SomatorioPis"));
-                        entity.Fail(!somatorioPISTrue.Equals(item.Total.ICMSTotal.SomatorioPis), 
+                        entity.Fail(!somatorioPISTrue.Equals(item.Total.ICMSTotal.SomatorioPis),
                             new Error("O somatório do valor de PIS não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioPis"));
                         #endregion SomatorioPIS
 
@@ -1026,9 +1063,9 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioCofins = Arredondar(item.Total.ICMSTotal.SomatorioCofins, 2);
                         somatorioCofinsTrue = Arredondar(somatorioCofinsTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioCofins.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioCofins.ToString()),
                             new Error("Informe o somatório do valor de COFINS.", "Item.Total.ICMSTotal.SomatorioCofins"));
-                        entity.Fail(!somatorioCofinsTrue.Equals(item.Total.ICMSTotal.SomatorioCofins), 
+                        entity.Fail(!somatorioCofinsTrue.Equals(item.Total.ICMSTotal.SomatorioCofins),
                             new Error("O somatório do valor de COFINS não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioCofins"));
                         #endregion SomatorioCofins
 
@@ -1037,14 +1074,14 @@ namespace Fly01.EmissaoNFE.BL
                         item.Total.ICMSTotal.SomatorioOutro = Arredondar(item.Total.ICMSTotal.SomatorioOutro, 2);
                         somatorioOutroTrue = Arredondar(somatorioOutroTrue, 2);
 
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioOutro.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioOutro.ToString()),
                             new Error("Informe o somatório de valor de Outros.", "Item.Total.ICMSTotal.SomatorioOutro"));
-                        entity.Fail(!somatorioOutroTrue.Equals(item.Total.ICMSTotal.SomatorioOutro), 
+                        entity.Fail(!somatorioOutroTrue.Equals(item.Total.ICMSTotal.SomatorioOutro),
                             new Error("O somatório do valor de Outros não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioOutro"));
                         #endregion SomatorioOutro
 
                         #region ValorTotalNF
-                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorTotalNF.ToString()), 
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorTotalNF.ToString()),
                             new Error("Informe o valor total da NFE.", "Item.Total.ICMSTotal.ValorTotalNF"));
                         #endregion ValorTotalNF
 
@@ -1055,6 +1092,6 @@ namespace Fly01.EmissaoNFE.BL
             }
 
             base.ValidaModel(entity);
-        }        
+        }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />
+    <Compile Include="Domains\Enum\TipoOrdemCompra.cs" />
     <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />

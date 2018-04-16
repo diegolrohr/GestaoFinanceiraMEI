@@ -67,7 +67,6 @@
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Enums\StatusOrdemCompra.cs" />
-    <Compile Include="Enums\TipoOrdemCompra.cs" />
     <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />

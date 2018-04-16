@@ -1,19 +1,18 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    @Html.Partial("Head/_Default")
+    @Html.HeadTemplate("Fly01 Compras")
     @RenderSection("styles", false)
 </head>
 <body>
     <header></header>
     <main></main>
     <footer>
-        @Html.Partial("Scripts/_Default")
+        @Html.ScriptsTemplate()
         <script>
             $(function() { fly01.call(fly01.navigation, "@Url.Action("Sidebar", "Home")"); });
         </script>
         @RenderSection("scripts", false)
-        <div id="dynScripts"></div>
     </footer>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 using System.Collections.Generic;
 using System.Linq;
 

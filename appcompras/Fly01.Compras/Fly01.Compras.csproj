@@ -59,7 +59,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
+    <Content Include="Reports\ReportImprimirPedido.rdlc" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
@@ -86,9 +89,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\SSO\SAMLRequestAuthVM.cs" />
-    <Compile Include="Models\SSO\SAMLResponseAuthVM.cs" />
-    <Compile Include="Models\Utils\SAMLXmlReader.cs" />
+    <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
+    <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
+    <Compile Include="Models\Reports\WebReportViewer.cs" />
+    <Compile Include="Models\ViewModel\ImprimirOrcamentoVM.cs" />
+    <Compile Include="Models\ViewModel\ImprimirPedidoVM.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -132,9 +137,7 @@
     <Content Include="Views\Shared\Functions\_fnExcluir.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNovo.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvar.cshtml" />
-    <Content Include="Views\Shared\Head\_Default.cshtml" />
     <Content Include="Views\Shared\Index.cshtml" />
-    <Content Include="Views\Shared\Scripts\_Default.cshtml" />
     <Content Include="Views\Shared\Create.cshtml" />
     <Content Include="Views\Shared\Edit.cshtml" />
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
@@ -233,6 +236,8 @@
     <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -240,11 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Reports\ReportPurchaseOrder.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -256,6 +256,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -334,15 +346,19 @@
       <Project>{C285FE7E-0A0C-47CE-BAE9-7FCBDCEEE378}</Project>
       <Name>Fly01.Core.Presentation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Reports\Fly01.Core.Reports.csproj">
+      <Project>{1A7C9367-04E5-41F0-B142-D66935CE3305}</Project>
+      <Name>Fly01.Core.Reports</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
       <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
       <Name>Fly01.Core.Rest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -399,10 +415,4 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>

@@ -1,9 +1,7 @@
 ﻿using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Domain;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
-using System.Dynamic;
 using System.Linq;
 
 namespace Fly01.EmissaoNFE.BL
@@ -48,7 +46,7 @@ namespace Fly01.EmissaoNFE.BL
 
                 if (entity.Fcp != null)
                     retorno.Fcp = FcpBL.Fcp(entity);
-            }      
+            }
 
             return retorno;
         }
@@ -62,6 +60,10 @@ namespace Fly01.EmissaoNFE.BL
             #endregion
 
             #region Validações Entity.Icms
+            if (entity.SimplesNacional)
+            {
+                entity.Fail(!entity.Icms.Aliquota.HasValue, AliquotaRequerida);
+            }
             entity.Fail(((entity.Icms != null && entity.Icms.IpiNaBase) || (entity.SubstituicaoTributaria != null && entity.SubstituicaoTributaria.IpiNaBase)) && entity.Ipi == null, IpiRequerido);
             entity.Fail(entity.Icms != null && (string.IsNullOrEmpty(entity.Icms.EstadoOrigem) || !TabelaIcmsBL.All.Where(x => x.SiglaOrigem == entity.Icms.EstadoOrigem).Any()), EstadoOrigemInvalido);
             entity.Fail(entity.Icms != null && (string.IsNullOrEmpty(entity.Icms.EstadoDestino) || !TabelaIcmsBL.All.Where(x => x.SiglaDestino == entity.Icms.EstadoDestino).Any()), EstadoDestinoInvalido);
@@ -98,6 +100,7 @@ namespace Fly01.EmissaoNFE.BL
         #endregion
 
         #region ErrorMessages Entity.Icms
+        public static Error AliquotaRequerida = new Error("Alíquota do ICMS é obrigatória para clientes Simples Nacional", "Icms.Aliquota");
         public static Error IpiRequerido = new Error("Informe os dados de IPI, pois ICMS e/ou Substituição Tributária solicitam este dado em sua base.", "Ipi");
         public static Error EstadoOrigemInvalido = new Error("Estado de origem inválido.", "Icms.EstadoOrigem");
         public static Error EstadoDestinoInvalido = new Error("Estado de destino inválido.", "Icms.EstadoDestino");

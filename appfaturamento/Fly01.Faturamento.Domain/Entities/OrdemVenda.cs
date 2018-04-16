@@ -1,5 +1,5 @@
 ﻿using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +10,6 @@ namespace Fly01.Faturamento.Domain.Entities
     public class OrdemVenda : PlataformaBase
     {
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Numero { get; set; }
 
         [Required]
@@ -82,6 +81,8 @@ namespace Fly01.Faturamento.Domain.Entities
         public double? TotalImpostosServicos { get; set; }
 
         public double? TotalImpostosProdutos { get; set; }
+
+        public double TotalImpostosProdutosNaoAgrega { get; set; }
 
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }

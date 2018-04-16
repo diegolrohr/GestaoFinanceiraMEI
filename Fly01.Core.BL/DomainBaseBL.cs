@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 using Fly01.Core.Notifications;
 using System;
 using System.Data.Entity;

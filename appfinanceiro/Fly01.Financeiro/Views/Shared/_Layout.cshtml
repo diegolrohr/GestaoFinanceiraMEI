@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-@Html.Partial("Head/_Default")
-@RenderSection("styles", false)
+    @Html.HeadTemplate("Fly01 Financeiro")
+    @RenderSection("styles", false)
 </head>
 <body>
     <header></header>
     <main></main>
     <footer>
-        @Html.Partial("Scripts/_Default")
+        @Html.ScriptsTemplate()
         <script>
             $(function() { fly01.call(fly01.navigation, "@Url.Action("Sidebar", "Home")"); });
         </script>

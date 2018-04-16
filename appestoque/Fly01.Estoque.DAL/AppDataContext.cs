@@ -2,7 +2,7 @@
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Base;
-using Fly01.Core.Domain;
+using Fly01.Core.BL;
 
 namespace Fly01.Estoque.DAL
 {

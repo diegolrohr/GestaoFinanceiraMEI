@@ -4,7 +4,6 @@ using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using Fly01.Core.ValueObjects;
 using System.Data.Entity;
 using System.Linq;
 
@@ -13,15 +12,17 @@ namespace Fly01.Compras.BL
     public class PedidoBL : PlataformaBaseBL<Pedido>
     {
         protected PedidoItemBL PedidoItemBL { get; set; }
+        protected OrdemCompraBL OrdemCompraBL { get; set; }
         private readonly string descricaoPedido = @"Pedido nº: {0}";
         private readonly string observacaoPedido = @"Observação gerada pelo Pedido nº {0} applicativo Fly01 Compras: {1}";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameMovimento = @"Movimento";
         private StatusOrdemCompra previousStatus;
 
-        public PedidoBL(AppDataContext context, PedidoItemBL pedidoItemBL) : base(context)
+        public PedidoBL(AppDataContext context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
+            OrdemCompraBL = ordemCompraBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -31,6 +32,8 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -40,7 +43,7 @@ namespace Fly01.Compras.BL
                     new Error("Pedido que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
             }
-            
+
             base.ValidaModel(entity);
         }
 
@@ -53,7 +56,7 @@ namespace Fly01.Compras.BL
 
             if ((previous.Status == StatusOrdemCompra.Aberto && entity.Status == StatusOrdemCompra.Finalizado) && entity.IsValid())
 
-            base.Update(entity);
+                base.Update(entity);
         }
 
         public override void Delete(Pedido entityToDelete)
@@ -65,7 +68,18 @@ namespace Fly01.Compras.BL
 
             base.Delete(entityToDelete);
         }
-        
+
+        public override void Insert(Pedido entity)
+        {
+            var max = OrdemCompraBL.Everything.Any(x => x.Id != entity.Id) ? OrdemCompraBL.Everything.Max(x => x.Numero) : 0;
+
+            entity.Numero = (max == 1 && !OrdemCompraBL.Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+
+            ValidaModel(entity);
+
+            base.Insert(entity);
+        }
+
         public override void AfterSave(Pedido entity)
         {
             if (entity.Status != StatusOrdemCompra.Finalizado)
@@ -78,7 +92,7 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
-                double valorPrevisto = total + (entity.TipoFrete == TipoFrete.FOB? entity.ValorFrete.Value: 0);
+                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value : 0);
 
                 ContaPagar contaPagar = new ContaPagar()
                 {

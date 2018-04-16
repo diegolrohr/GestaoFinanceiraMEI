@@ -208,6 +208,18 @@
     <Compile Include="Migrations\201804021840041_Alter_Certificado_DuasEntidadesTSS.Designer.cs">
       <DependentUpon>201804021840041_Alter_Certificado_DuasEntidadesTSS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs" />
+    <Compile Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.Designer.cs">
+      <DependentUpon>201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs" />
+    <Compile Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.Designer.cs">
+      <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.cs" />
+    <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.Designer.cs">
+      <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -358,6 +370,15 @@
     <EmbeddedResource Include="Migrations\201804021840041_Alter_Certificado_DuasEntidadesTSS.resx">
       <DependentUpon>201804021840041_Alter_Certificado_DuasEntidadesTSS.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804062153226_Alter_NFe_ImpostosNaoIncidentes.resx">
+      <DependentUpon>201804062153226_Alter_NFe_ImpostosNaoIncidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.resx">
+      <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131130505_AlterNumeroOrdemVenda.resx">
+      <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -373,11 +394,15 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.Domain\Fly01.Core.Domain.csproj">
-      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
-      <Name>Fly01.Core.Domain</Name>
+    <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
+      <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
+      <Name>Fly01.Core.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+      <Project>{E6AA22E4-887E-4AE3-8834-E92ED4142A4C}</Project>
+      <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -394,11 +419,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Domain.Entities;
+using Fly01.Compras.Entities.ViewModel;
 using Fly01.Core.API;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;

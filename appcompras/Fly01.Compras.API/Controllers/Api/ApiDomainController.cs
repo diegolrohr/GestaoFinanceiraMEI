@@ -2,7 +2,7 @@
 using Fly01.Compras.BL;
 using System.Threading.Tasks;
 using Fly01.Core.BL;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using Fly01.Core.API;
 
 namespace Fly01.Compras.API.Controllers.Api

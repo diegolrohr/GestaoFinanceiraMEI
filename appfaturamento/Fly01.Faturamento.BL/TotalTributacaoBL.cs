@@ -2,7 +2,6 @@
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.Domain.Entities;
 using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.Domain;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Newtonsoft.Json;
@@ -11,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using EmpresaVM = Fly01.Core.VM.EmpresaVM;
 using Fly01.Core.Rest;
 using Fly01.Core;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
 {
@@ -51,12 +50,12 @@ namespace Fly01.Faturamento.BL
             return ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
         }
 
-        public void DadosValidosCalculoTributario(OrdemVenda entity, bool onList = true)
+        public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)
         {
-            var pessoa = GetPessoa(entity.ClienteId);
+            var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
 
-            var dadosEmpresa = GetDadosEmpresa(PlataformaUrl);
+            dynamic dadosEmpresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
             var parametros = GetParametrosTributarios();
 
@@ -78,38 +77,29 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public EmpresaVM GetDadosEmpresa(string plataformaUrl)
-        {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaUrl}");
-        }
 
-        public bool ConfiguracaoTSSOK()
+        public bool ConfiguracaoTSSOK(string plataformaId = null)
         {
-            return VerificaConfiguracaoTSSOK();
-        }
-
-        private bool VerificaConfiguracaoTSSOK()
-        {
-            var ambiente = CertificadoDigitalBL.GetAmbiente();
-
-            var entidade = CertificadoDigitalBL.GetEntidade(ambiente);
-            
             try
             {
-                if (!string.IsNullOrEmpty(entidade))
+                var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
+                                
+                if (retorno != null)
                 {
+                    string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
+
                     var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={ambiente}";
+                    var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
                 }
                 else
                 {
-                    throw new BusinessException("Revise as configurações do seu certificado digital(Entidade TSS)");
+                    throw new BusinessException("Para transmitir, cadastre o seu Certificado Digital em Configurações");
                 }
             }
             catch (Exception ex)
@@ -118,32 +108,44 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public double TotalSomaTributacaoItem(List<TributacaoItemRetorno> tributacaoItensRetorno)
+        public double TributacaoItemAgregaNota(List<TributacaoItemRetorno> tributacaoItensRetorno)
         {
             var total = 0.0;
-            total += tributacaoItensRetorno.Where(x => x.ICMSAgregaTotal).Sum(x => x.ICMSValor);
+            total += tributacaoItensRetorno.Sum(x => x.IPIValor);
+            total += tributacaoItensRetorno.Sum(x => x.STValor);
+            return total;
+        }
+
+        public double TributacaoItemNaoAgregaNota(List<TributacaoItemRetorno> tributacaoItensRetorno)
+        {
+            var total = 0.0;
+            total += tributacaoItensRetorno.Sum(x => x.ICMSValor);
             total += tributacaoItensRetorno.Sum(x => x.COFINSValor);
-            total += tributacaoItensRetorno.Where(x => x.FCPAgregaTotal).Sum(x => x.FCPValor);
-            total += tributacaoItensRetorno.Where(x => x.IPIAgregaTotal).Sum(x => x.IPIValor);
+            total += tributacaoItensRetorno.Sum(x => x.FCPValor);
             total += tributacaoItensRetorno.Sum(x => x.PISValor);
-            total += tributacaoItensRetorno.Where(x => x.STAgregaTotal).Sum(x => x.STValor);
             return total;
         }
 
         public double TotalSomaTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
         {
-            return TotalSomaTributacaoItem(TotalTributacaoProduto(tributacaoItens, clienteId, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
+            return TributacaoItemAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
+        }
+
+        public double TotalSomaTributacaoProdutoNaoAgrega(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
+        {
+            return TributacaoItemNaoAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
         }
 
         public double TotalSomaTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
         {
-            return TotalSomaTributacaoItem(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoItemRetorno>());
+            return TributacaoItemAgregaNota(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoItemRetorno>());
         }
 
         public List<TributacaoServicoRetorno> TotalTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
         {
             var cliente = GetPessoa(clienteId);
-            var estadoOrigem = GetDadosEmpresa(PlataformaUrl).Cidade.Estado.Sigla;
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoServicoRetorno>()
             {
@@ -162,7 +164,8 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             var cliente = GetPessoa(clienteId);
-            var estadoOrigem = GetDadosEmpresa(PlataformaUrl).Cidade.Estado.Sigla;
+            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoProdutoRetorno>();
 
@@ -172,7 +175,7 @@ namespace Fly01.Faturamento.BL
                     { "PlataformaUrl", PlataformaUrl }
                 };
 
-            double freteFracionado = tipoFrete == TipoFrete.CIF && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
+            double freteFracionado = (tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
             foreach (var itemProduto in tributacaoItens)
             {
@@ -186,6 +189,7 @@ namespace Fly01.Faturamento.BL
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
+                tributacao.SimplesNacional = true;
 
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
@@ -195,17 +199,23 @@ namespace Fly01.Faturamento.BL
                 {
                     tributacao.Icms = new Icms()
                     {
-                        //Aliquota não preencher
+                        Aliquota = parametros.AliquotaSimplesNacional,
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
                         EstadoDestino = cliente.Estado.Sigla,
-                        EstadoOrigem = estadoOrigem
+                        EstadoOrigem = estadoOrigem,
+                        CSOSN = grupoTributario.TipoTributacaoICMS != null ? (CSOSN)Enum.Parse(typeof(CSOSN), grupoTributario.TipoTributacaoICMS.ToString()) : CSOSN.Outros,
                     };
                     if (produto.AliquotaIpi > 0)
                     {
                         tributacao.Icms.IpiNaBase = grupoTributario.AplicaIpiBaseIcms;
                     }
+
+                    tributacao.Fcp = new Fcp()
+                    {
+                        Aliquota = parametros.AliquotaFCP
+                    };
                 }
                 //IPI
                 if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0)
@@ -311,6 +321,20 @@ namespace Fly01.Faturamento.BL
         {
             //Transforma para a classe auxiliar
             return TotalSomaTributacaoProduto(ordemVendaProdutos.Select(x => new TributacaoProduto()
+            {
+                Valor = x.Valor,
+                Quantidade = x.Quantidade,
+                Desconto = x.Desconto,
+                Total = x.Total,
+                ProdutoId = x.ProdutoId,
+                GrupoTributarioId = x.GrupoTributarioId
+            }).ToList(), clienteId, tipoFrete, valorFrete);
+        }
+
+        public double TotalSomaOrdemVendaProdutosNaoAgrega(List<OrdemVendaProduto> ordemVendaProdutos, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
+        {
+            //Transforma para a classe auxiliar
+            return TotalSomaTributacaoProdutoNaoAgrega(ordemVendaProdutos.Select(x => new TributacaoProduto()
             {
                 Valor = x.Valor,
                 Quantidade = x.Quantidade,

@@ -81,11 +81,12 @@
 
     function calculaTotalOrdemVenda() {
         var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF") {
+        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
             valorFrete = parseFloat(noComma($('input#valorFrete').val()));
         }
 
         var idPedido = $("form#fly01mdlfrmVisualizarOrdemVenda input#id").val();
+        var idCliente = $("form#fly01mdlfrmVisualizarOrdemVenda input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
 
         fly01.loading.start();
@@ -93,12 +94,13 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));

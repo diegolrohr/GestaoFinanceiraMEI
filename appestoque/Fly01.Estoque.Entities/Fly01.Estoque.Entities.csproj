@@ -58,7 +58,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CidadeVM.cs" />
-    <Compile Include="ViewModel\EnquadramentoLegalIPIVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
+    <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
+    <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\InventarioItemVM.cs" />
     <Compile Include="ViewModel\AjusteManualVM.cs" />
     <Compile Include="ViewModel\InventarioVM.cs" />
@@ -67,19 +69,16 @@
     <Compile Include="ViewModel\ProdutosMenosMovimentadosVM.cs" />
     <Compile Include="ViewModel\ProdutosMaisMovimentadosVM.cs" />
     <Compile Include="ViewModel\UnidadeMedidaVM.cs" />
-    <Compile Include="ViewModel\NCMVM.cs" />
+    <Compile Include="ViewModel\NcmVM.cs" />
     <Compile Include="ViewModel\GrupoProdutoVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\TipoMovimentoVM.cs" />
-    <Compile Include="ViewModel\EstadoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\Base\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -88,11 +87,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -105,11 +104,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

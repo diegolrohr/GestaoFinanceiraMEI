@@ -19,11 +19,11 @@ namespace Fly01.Faturamento.Controllers
     {
         public NotaFiscalController()
         {
-            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria";
+            ExpandProperties = "cliente($select=nome),ordemVendaOrigem($select=id,numero),categoria,serieNotaFiscal";
         }
 
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
-        public override Func<NotaFiscalVM, object> GetDisplayData()
+        public override Func<NotaFiscalVM, object> GetDisplayData() 
         {
             return x => new
             {
@@ -45,7 +45,8 @@ namespace Fly01.Faturamento.Controllers
                 tipoVendaCssClass = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).CssClass,
                 tipoVendaValue = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Value,
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
-                numNotaFiscal = x.NumNotaFiscal
+                numNotaFiscal = x.NumNotaFiscal,
+                serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
             };
         }
 
@@ -56,6 +57,21 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List()
         {
+            return ListNotaFiscal();
+        }
+
+        public ContentResult ListNotaFiscal(string gridLoad = "GridLoad")
+        {
+            var buttonLabel = "Mostrar todas as notas";
+            var buttonOnClick = "fnRemoveFilter";
+
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
+            {
+                gridLoad = Request.QueryString["action"];
+                buttonLabel = "Mostrar notas do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -64,59 +80,67 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Notas Fiscais",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" },
                         new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" },
+                        new HtmlUIButton { Id = "new", Label = "Novo Pedido", OnClickFn = "fnNovoPedido" },
+                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            var cfgForm = new FormUI
+            if(gridLoad == "GridLoad")
             {
-                ReadyFn = "fnUpdateDataFinal",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Elements = new List<BaseUI>()
+                var cfgForm = new FormUI
                 {
-                    new PeriodpickerUI
+                    ReadyFn = "fnUpdateDataFinal",
+                    UrlFunctions = Url.Action("Functions") + "?fns=",
+                    Elements = new List<BaseUI>()
                     {
-                        Label = "Selecione o período",
-                        Id = "mesPicker",
-                        Name = "mesPicker",
-                        Class = "col s12 m6 offset-m3 l4 offset-l4",
-                        DomEvents = new List<DomEventUI>()
+                        new PeriodpickerUI
                         {
-                            new DomEventUI()
+                            Label = "Selecione o período",
+                            Id = "mesPicker",
+                            Name = "mesPicker",
+                            Class = "col s12 m6 offset-m3 l4 offset-l4",
+                            DomEvents = new List<DomEventUI>()
                             {
-                                DomEvent = "change",
-                                Function = "fnUpdateDataFinal"
+                                new DomEventUI()
+                                {
+                                    DomEvent = "change",
+                                    Function = "fnUpdateDataFinal"
+                                }
                             }
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataFinal",
+                            Name = "dataFinal"
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataInicial",
+                            Name = "dataInicial"
                         }
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataFinal",
-                        Name = "dataFinal"
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataInicial",
-                        Name = "dataInicial"
                     }
-                }
-            };
+
+                };
+
+                cfg.Content.Add(cfgForm);
+            }
 
             var config = new DataTableUI
             {
-                UrlGridLoad = Url.Action("GridLoad"),
+                UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter() {Id = "dataInicial", Required = true },
-                    new DataTableUIParameter() {Id = "dataFinal", Required = true }
+                    new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
+                    new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            
+
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarNFe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFe')" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'NaoTransmitida' && row.tipoNotaFiscal == 'NFe')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarNFSe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFSe')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnTransmitirNFe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" });
@@ -127,12 +151,13 @@ namespace Fly01.Faturamento.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 1, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 2,
+                Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusNotaFiscal", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
@@ -140,24 +165,23 @@ namespace Fly01.Faturamento.Controllers
             {
                 DataField = "tipoNotaFiscal",
                 DisplayName = "Tipo",
-                Priority = 3,
+                Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoNotaFiscal", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoNotaFiscalCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoNotaFiscalDescription + \"</span>\" }"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 6 });//numero int e pesquisa string
-            config.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "tipoVenda",
-                DisplayName = "Tipo Venda",
-                Priority = 7,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false)),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
-            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 7 });//numero int e pesquisa string
+            //config.Columns.Add(new DataTableUIColumn
+            //{
+            //    DataField = "tipoVenda",
+            //    DisplayName = "Tipo Venda",
+            //    Priority = 7,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false)),
+            //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
+            //});
             config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 8 });
-
-            cfg.Content.Add(cfgForm);
+                        
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -172,6 +196,11 @@ namespace Fly01.Faturamento.Controllers
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return base.GridLoad();
         }
 
         [HttpGet]

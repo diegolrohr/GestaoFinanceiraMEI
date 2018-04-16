@@ -58,18 +58,19 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CategoriaVM.cs" />
-    <Compile Include="ViewModel\EnquadramentoLegalIPIVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
+    <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
+    <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\GrupoTributarioVM.cs" />
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
-    <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\FormaPagamentoVM.cs" />
     <Compile Include="ViewModel\GlobalConfigurationVM.cs" />
     <Compile Include="ViewModel\GrupoProdutoVM.cs" />
     <Compile Include="ViewModel\CfopVM.cs" />
     <Compile Include="ViewModel\CestVM.cs" />
-    <Compile Include="ViewModel\NCMVM.cs" />
+    <Compile Include="ViewModel\NcmVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="ViewModel\PessoaVM.cs" />
     <Compile Include="ViewModel\OrdemCompraVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
+    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\SubstituicaoTributariaVM.cs" />
     <Compile Include="ViewModel\UnidadeMedidaVM.cs" />
   </ItemGroup>
@@ -93,11 +95,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fly01.Core.VM\Fly01.Core.VM.csproj">
+    <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
-      <Name>Fly01.Core.VM</Name>
+      <Name>Fly01.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core\Fly01.Core.csproj">
+    <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
@@ -110,11 +112,4 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

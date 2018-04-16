@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Attribute;
+﻿using Fly01.Core.Entities.Attribute;
 
 namespace Fly01.Faturamento.Domain.Enums
 {
@@ -28,7 +28,10 @@ namespace Fly01.Faturamento.Domain.Enums
         [Subtitle("FalhaNoCancelamento", "Falha no Cancelamento", "Falha no Cancelamento", "pink")]
         FalhaNoCancelamento = 8,
         
-        [Subtitle("FalhaTransmissao", "9", "Falha na Transmissão", "red")]
-        FalhaTransmissao = 9
+        [Subtitle("FalhaTransmissao", "Falha na Transmissão", "Falha na Transmissão", "red")]
+        FalhaTransmissao = 9,
+        
+        [Subtitle("CanceladaForaPrazo", "Cancelada fora do prazo", "Cancelada fora do prazo", "black")]
+        CanceladaForaPrazo = 10
     }
 }

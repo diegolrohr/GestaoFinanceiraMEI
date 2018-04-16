@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.Controllers.Base;
 using Fly01.Compras.Entities.ViewModel;
+using Fly01.Core;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
@@ -25,6 +26,7 @@ namespace Fly01.Compras.Controllers
                 tipoOrdemCompraCssClass = EnumHelper.SubtitleDataAnotation("TipoOrdemCompra", x.TipoOrdemCompra).CssClass,
                 tipoOrdemCompraValue = EnumHelper.SubtitleDataAnotation("TipoOrdemCompra", x.TipoOrdemCompra).Value,
                 data = x.Data.ToString("dd/MM/yyyy"),
+                total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
                 status = x.Status,
                 statusDescription = EnumHelper.SubtitleDataAnotation("StatusOrdemCompra", x.Status).Description,
@@ -103,7 +105,8 @@ namespace Fly01.Compras.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrcamento", Label = "Excluir", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnGerarPedidos", Label = "Gerar pedidos", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" });
-
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirPedido", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirOrcamento", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "tipoOrdemCompra",
@@ -112,10 +115,6 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOrdemCompra", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoOrdemCompraCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoOrdemCompraDescription + \"</span>\" }"
             });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
-
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
@@ -124,7 +123,13 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusOrdemCompra", true, false)),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 3 });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency" });
+
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 6 });
 
             cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);

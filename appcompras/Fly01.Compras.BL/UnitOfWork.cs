@@ -1,6 +1,6 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Base;
-using Fly01.Core.Domain;
+using Fly01.Core.Entities.Domains;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
@@ -69,13 +69,13 @@ namespace Fly01.Compras.BL
         public OrdemCompraBL OrdemCompraBL => ordemCompraBL ?? (ordemCompraBL = new OrdemCompraBL(Context));
 
         private PedidoBL pedidoBL;
-        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL));
+        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL));
 
         private PedidoItemBL pedidoItemBL;
         public PedidoItemBL PedidoItemBL => pedidoItemBL ?? (pedidoItemBL = new PedidoItemBL(Context));
 
         private OrcamentoBL orcamentoBL;
-        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL));
+        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL, OrdemCompraBL));
 
         private OrcamentoItemBL orcamentoItemBL;
         public OrcamentoItemBL OrcamentoItemBL => orcamentoItemBL ?? (orcamentoItemBL = new OrcamentoItemBL(Context));

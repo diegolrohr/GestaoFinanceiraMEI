@@ -4,6 +4,7 @@ using Fly01.Faturamento.Reports;
 using Fly01.Core.Config;
 using Microsoft.Reporting.WebForms;
 using Fly01.Core.Reports;
+using Fly01.Faturamento.Entities.ViewModel;
 
 namespace Fly01.Faturamento.Models.Reports
 {

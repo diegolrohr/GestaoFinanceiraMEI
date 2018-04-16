@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Domain;
+﻿using Fly01.Core.Entities.Domains;
 
 namespace Fly01.EmissaoNFE.Domain
 {
@@ -10,6 +10,7 @@ namespace Fly01.EmissaoNFE.Domain
 
         public bool ConsumidorFinal { get; set; }
         public bool InscricaoEstadual { get; set; }
+        public bool SimplesNacional { get; set; }
 
         public Ipi Ipi { get; set; }
 

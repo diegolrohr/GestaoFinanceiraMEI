@@ -95,12 +95,12 @@ namespace Fly01.Core.ServiceBus
                     }
                     finally
                     {
-                        var callBackProperties = channel.CreateBasicProperties();
-                        callBackProperties.CorrelationId = properties.CorrelationId;
-                        callBackProperties.Persistent = true;
-                        callBackProperties.AppId = RabbitConfig.AppId;
+                        //var callBackProperties = channel.CreateBasicProperties();
+                        //callBackProperties.CorrelationId = properties.CorrelationId;
+                        //callBackProperties.Persistent = true;
+                        //callBackProperties.AppId = RabbitConfig.AppId;
 
-                        channel.BasicPublish(RabbitConfig.AMQPExchange, properties.ReplyTo, callBackProperties, Encoding.UTF8.GetBytes(response));
+                        //channel.BasicPublish(RabbitConfig.AMQPExchange, properties.ReplyTo, callBackProperties, Encoding.UTF8.GetBytes(response));
 
                         channel.BasicAck(ea.DeliveryTag, false);
                     }

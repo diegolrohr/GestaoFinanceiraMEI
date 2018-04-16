@@ -1,5 +1,4 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Domain;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System;
@@ -272,6 +271,12 @@ namespace Fly01.EmissaoNFE.BL
             msgError = string.Empty;
             if (inscricaoEstadual.ToUpper() == "ISENTO" || siglaUf == "EX")
                 return true;
+
+            if (string.IsNullOrEmpty(inscricaoEstadual))
+            {
+                msgError = ERRO_InscricaoInvalida;
+                return false;
+            }
 
             switch (siglaUf)
             {

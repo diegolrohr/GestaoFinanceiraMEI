@@ -10,7 +10,7 @@
         var valorTotal = parseFloat(noComma($('input#totalProdutos').val()));
 
         $('input#totalFrete').val(0);
-        if ($('select#tipoFrete').val() == "FOB") {
+        if ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario") {
             $('input#totalFrete').val(valorFrete);
             valorTotal += valorFrete;
         }

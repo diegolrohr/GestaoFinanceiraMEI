@@ -12,6 +12,9 @@ namespace Fly01.Faturamento.Entities.ViewModel
         [JsonProperty("totalImpostosProdutos")]
         public double? TotalImpostosProdutos { get; set; }
 
+        [JsonProperty("totalImpostosProdutosNaoAgrega")]
+        public double? TotalImpostosProdutosNaoAgrega { get; set; }
+
         [JsonProperty("totalServicos")]
         public double? TotalServicos { get; set; }
 

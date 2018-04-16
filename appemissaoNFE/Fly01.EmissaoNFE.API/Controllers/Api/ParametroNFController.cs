@@ -19,14 +19,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    if ((int)entity.EntidadeAmbiente == 2)
-                    {
-                        Homologacao(entity);
-                    }
-                    else
-                    {
-                        Producao(entity);
-                    }
+                    Homologacao(entity);
+
+                    Producao(entity);
 
                     return Ok(new { success = true });
                 }
@@ -67,7 +62,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.VersaoNFe,
                 entity.VersaoNFSe,
                 entity.VersaoDPEC,
-                "",
+                "9.99",
                 "",
                 new byte[1],
                 "",
@@ -94,7 +89,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.VersaoNFe,
                 entity.VersaoNFSe,
                 entity.VersaoDPEC,
-                "",
+                "9.99",
                 "",
                 new byte[1],
                 "",

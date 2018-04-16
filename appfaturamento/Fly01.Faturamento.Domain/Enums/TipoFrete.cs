@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Attribute;
+﻿using Fly01.Core.Entities.Attribute;
 
 namespace Fly01.Faturamento.Domain.Enums
 {
@@ -11,6 +11,10 @@ namespace Fly01.Faturamento.Domain.Enums
         FOB = 1,
         [Subtitle("Terceiro", "Terceiro")]
         Terceiro = 2,
+        [Subtitle("Remetente", "Transporte próprio Remetente")]
+        Remetente = 3,
+        [Subtitle("Destinatario", "Transporte próprio Destinatário")]
+        Destinatario = 4,
         [Subtitle("SemFrete", "Sem frete")]
         SemFrete = 9
     }

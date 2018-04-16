@@ -1,35 +1,8 @@
-﻿using Fly01.Core.VM;
-using Newtonsoft.Json;
-using System;
+﻿using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    [Serializable]
-    public class CestVM : DomainBaseVM
-    {
-        [JsonProperty("codigo")]
-        public string Codigo { get; set; }
-
-        [JsonProperty("descricao")]
-        public string Descricao { get; set; }
-
-        [JsonProperty("segmento")]
-        public string Segmento { get; set; }
-
-        [JsonProperty("item")]
-        public string Item { get; set; }
-        
-        [JsonProperty("anexo")]
-        public string Anexo { get; set; }
-
-        [JsonProperty("ncmId")]
-        public Guid? NcmId { get; set; }
-
-        #region NavigationProperties
-
-        [JsonProperty("ncm")]
-        public virtual NCMVM Ncm { get; set; }
-
-        #endregion
+    public class CestVM : CestBaseVM<NcmVM>
+    {        
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Domain;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System;
@@ -54,13 +53,11 @@ namespace Fly01.EmissaoNFE.BL
             var tipo = EnumHelper.GetDataEnumValues(typeof(TipoAmbiente));
             entity.Fail(entity.Homologacao == null || entity.Homologacao.Length != 6 || entity.Homologacao == "000000", EntidadeInvalida);
             entity.Fail(entity.Producao == null || entity.Producao.Length != 6 || entity.Producao == "000000", EntidadeProdInvalida);
-            entity.Fail(string.IsNullOrEmpty(entity.EntidadeAmbiente.ToString()) || !tipo.Any(x => x.Value == ((int)entity.EntidadeAmbiente).ToString()), TipoInvalido);
+            entity.Fail(!string.IsNullOrEmpty(entity.EntidadeAmbiente.ToString()) && !tipo.Any(x => x.Value == ((int)entity.EntidadeAmbiente).ToString()), TipoInvalido);
 
             base.ValidaModel(entity);
         }
-
         
-
         public static Error EntidadeInvalida = new Error("Entidade de homologação inválida.", "Homologacao");
         public static Error EntidadeProdInvalida = new Error("Entidade de produção inválida.", "Producao");
         public static Error TipoInvalido = new Error("Tipo de ambiente inválido.", "EntidadeAmbiente");

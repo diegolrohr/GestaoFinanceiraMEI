@@ -13,6 +13,7 @@ using System.Linq;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Compras.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
 {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Fly01.Core.Entities.Domains.Commons
 {
     [Table("UnidadeMedida")]
-    public class UnidadeMedidaBase : DomainBase
+    public abstract class UnidadeMedidaBase : DomainBase
     {
         [Required]
         [MaxLength(2)]

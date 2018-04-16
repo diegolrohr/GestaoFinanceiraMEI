@@ -19,6 +19,7 @@ using NFe = Fly01.Faturamento.Domain.Entities.NFe;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.Compras.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
 {

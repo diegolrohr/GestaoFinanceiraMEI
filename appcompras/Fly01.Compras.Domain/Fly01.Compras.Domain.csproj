@@ -83,7 +83,6 @@
     <Compile Include="Enums\TipoTributacaoICMS.cs" />
     <Compile Include="Enums\TipoSimulacao.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
-    <Compile Include="Enums\TipoSubstituicaoTributaria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

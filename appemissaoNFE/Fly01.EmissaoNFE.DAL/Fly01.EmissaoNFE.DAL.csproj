@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201803141911441_Create_CFOP.Designer.cs">
       <DependentUpon>201803141911441_Create_CFOP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804162111308_AlterNCM.cs" />
+    <Compile Include="Migrations\201804162111308_AlterNCM.Designer.cs">
+      <DependentUpon>201804162111308_AlterNCM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -87,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803141911441_Create_CFOP.resx">
       <DependentUpon>201803141911441_Create_CFOP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804162111308_AlterNCM.resx">
+      <DependentUpon>201804162111308_AlterNCM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

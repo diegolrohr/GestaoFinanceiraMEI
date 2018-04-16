@@ -89,6 +89,9 @@ namespace Fly01.Financeiro.Entities.ViewModel.Base
 
         }
 
+        [JsonProperty("numero")]
+        public int Numero { get; set; }
+
         #region Navigation Properties
         [JsonProperty("contaFinanceiraRepeticaoPai")]
         public virtual ContaFinanceiraVM ContaFinanceiraRepeticaoPai { get; set; }

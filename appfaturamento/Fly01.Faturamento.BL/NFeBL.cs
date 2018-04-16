@@ -143,10 +143,10 @@ namespace Fly01.Faturamento.BL
                     {
                         destinoOperacao = EmissaoNFE.Domain.Enums.TipoDestinoOperacao.Interestadual;
                     }
-                    var formPag = EmissaoNFE.Domain.Enums.TipoFormaPagamento.Outros;
+                    var formPag = EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.Outros;
                     if (condicaoParcelamento != null)
                     {
-                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? EmissaoNFE.Domain.Enums.TipoFormaPagamento.AVista : EmissaoNFE.Domain.Enums.TipoFormaPagamento.APrazo;
+                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.AVista : EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.APrazo;
                     }
 
                     var itemTransmissao = new ItemTransmissaoVM();

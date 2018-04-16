@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Enums
 {
-    public enum TipoFormaPagamento
+    public enum FormaPagamentoEmissaoNFE
     {
         [XmlEnum(Name = "0")]
         [Subtitle("AVista", "0", "Pagamento à vista")]

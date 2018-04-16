@@ -158,7 +158,8 @@ namespace Fly01.Financeiro.Controllers.Base
                     Parcelas = ListContas.NumeroRepeticoes,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Vencimento = ListContas.DataVencimento,
-                    Titulo = titulo
+                    Titulo = titulo, 
+                    Numero = ListContas.Numero
                 });
 
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);

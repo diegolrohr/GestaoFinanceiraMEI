@@ -10,6 +10,7 @@ namespace Fly01.Financeiro.Models.ViewModel
         public string Valor { get; set; }
         public string FormaPagamento { get; set; }
         public int? Parcelas { get; set; }
+        public int? Numero { get; set; }
         public string Fornecedor { get; set; }
         public DateTime? Vencimento { get; set; }
         public string Titulo { get; set; }

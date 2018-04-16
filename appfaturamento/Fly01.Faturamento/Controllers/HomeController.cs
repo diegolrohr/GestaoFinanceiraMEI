@@ -46,7 +46,7 @@ namespace Fly01.Faturamento.Controllers
                 Action = new LinkUI
                 {
                     Label = "Ver mais",
-                    OnClick = Url.Action("List", "NotaFiscal")
+                    OnClick = Url.Action("List", "NotaFiscal") + "?action=GridLoadNoFilter"
                 }
             });
 

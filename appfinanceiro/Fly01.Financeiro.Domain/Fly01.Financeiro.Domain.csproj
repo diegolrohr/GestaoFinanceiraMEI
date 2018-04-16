@@ -67,7 +67,6 @@
     <Compile Include="Enums\TipoIndicacaoInscricaoEstadual.cs" />
     <Compile Include="Enums\TipoRenegociacaoCalculo.cs" />
     <Compile Include="Enums\TipoRenegociacaoValorDiferenca.cs" />
-    <Compile Include="Enums\TipoSimulacao.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\ConciliacaoBancaria.cs" />
     <Compile Include="Entities\CondicaoParcelamento.cs" />

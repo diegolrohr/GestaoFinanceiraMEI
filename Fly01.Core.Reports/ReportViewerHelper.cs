@@ -27,7 +27,7 @@ namespace Fly01.Core.Reports
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
             string logoBase64 = string.Empty;
-            dynamic empresaVM = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
+            ManagerEmpresaVM empresaVM = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)

@@ -89,7 +89,6 @@
     <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\ClassificacaoPessoa.cs" />
     <Compile Include="Enums\TipoPeriodicidade.cs" />
-    <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Entities\Transferencia.cs" />
     <Compile Include="Entities\Cidade.cs" />
     <Compile Include="Entities\Estado.cs" />

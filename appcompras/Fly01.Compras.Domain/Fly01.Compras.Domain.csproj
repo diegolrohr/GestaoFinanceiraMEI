@@ -77,7 +77,6 @@
     <Compile Include="Enums\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />
-    <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

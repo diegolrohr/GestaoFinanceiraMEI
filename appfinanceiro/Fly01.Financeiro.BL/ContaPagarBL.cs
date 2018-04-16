@@ -22,6 +22,14 @@ namespace Fly01.Financeiro.BL
 
         public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
+        public override void ValidaModel(ContaPagar entity)
+        {
+            entity.Fail(entity.Numero < 1, new Error("Número da conta inválido", "numero"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id == entity.Id), new Error("Número da conta duplicado", "numero"));
+
+            base.ValidaModel(entity);
+        }
+
         public override void Insert(ContaPagar entity)
         {
             const int limiteSemanal = 208;

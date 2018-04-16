@@ -60,7 +60,7 @@ namespace Fly01.Faturamento.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
-            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlS1Gateway"];
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
 
             base.SetAppDefaults();

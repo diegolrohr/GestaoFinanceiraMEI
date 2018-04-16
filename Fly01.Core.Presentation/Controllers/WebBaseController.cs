@@ -23,7 +23,6 @@ namespace Fly01.Core.Presentation
     {
         protected string ResourceName { get; set; }
         protected string ExpandProperties { get; set; }
-        protected string APIEnumResourceName { get; set; }
         protected string AppEntitiesResourceName { get; set; }
         protected string AppViewModelResourceName { get; set; }
 
@@ -427,7 +426,7 @@ namespace Fly01.Core.Presentation
                                     mustCompareAsEqual = specialType.Any();
 
                                     if (mustCompareAsEqual)
-                                        valueFilter = string.Format("{0}'{1}'", ((APIEnumAttribute[])(specialType))[0].Get(APIEnumResourceName), item.Search.Value);
+                                        valueFilter = string.Format("{0}'{1}'", ((APIEnumAttribute[])(specialType))[0].Get(AppDefaults.APIEnumResourceName), item.Search.Value);
                                     else
                                         valueFilter = item.Search.Value;
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Core.BL;
+using Newtonsoft.Json;
+using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Estoque.Domain.Entities;
-using Fly01.Estoque.Domain.Enums;
-using Fly01.Core.ServiceBus;
-using Newtonsoft.Json;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.BL
 {

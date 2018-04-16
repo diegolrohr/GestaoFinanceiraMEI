@@ -18,7 +18,6 @@ namespace Fly01.Financeiro.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            APIEnumResourceName = "Fly01.Financeiro.Domain.Enums.";
             AppViewModelResourceName = "Fly01.Financeiro.Entities.ViewModel.";
             AppEntitiesResourceName = "Fly01.Financeiro.Entities";
         }

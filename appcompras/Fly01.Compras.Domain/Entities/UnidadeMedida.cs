@@ -1,16 +1,8 @@
-﻿using Fly01.Core.Entities.Domains;
-using System.ComponentModel.DataAnnotations;
+﻿using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.Domain.Entities
 {
-    public class UnidadeMedida : DomainBase
+    public class UnidadeMedida : UnidadeMedidaBase
     {
-        [Required]
-        [MaxLength(2)]
-        public string Abreviacao { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public string Descricao { get; set; }
     }
 }

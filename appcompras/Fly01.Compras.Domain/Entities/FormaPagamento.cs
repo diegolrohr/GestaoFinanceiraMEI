@@ -1,5 +1,5 @@
-﻿using Fly01.Compras.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Compras.Domain.Entities

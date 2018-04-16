@@ -38,7 +38,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 2 - outros.
         /// </summary>
         [XmlElement(ElementName = "indPag")]
-        public TipoFormaPagamento FormaPagamento { get; set; }
+        public FormaPagamentoEmissaoNFE FormaPagamento { get; set; }
 
         /// <summary>
         /// informar o código do Modelo do Documento Fiscal, código 55 para a NF-e ou código 65 para NFC-e.

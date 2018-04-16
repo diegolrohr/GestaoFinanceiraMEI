@@ -6,6 +6,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {

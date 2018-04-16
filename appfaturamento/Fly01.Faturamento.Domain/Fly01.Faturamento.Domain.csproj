@@ -82,7 +82,6 @@
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
-    <Compile Include="Enums\StatusContaBancaria.cs" />
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
     <Compile Include="Enums\StatusNotaFiscal.cs" />
     <Compile Include="Enums\StatusOrdemVenda.cs" />

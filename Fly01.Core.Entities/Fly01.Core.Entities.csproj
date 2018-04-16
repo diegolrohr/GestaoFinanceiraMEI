@@ -63,6 +63,7 @@
     <Compile Include="Domains\Commons\SubstituicaoTributariaBase.cs" />
     <Compile Include="Domains\Commons\UnidadeMedidaBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
     <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />

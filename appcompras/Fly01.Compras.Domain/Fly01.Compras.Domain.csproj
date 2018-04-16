@@ -66,7 +66,6 @@
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />
-    <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

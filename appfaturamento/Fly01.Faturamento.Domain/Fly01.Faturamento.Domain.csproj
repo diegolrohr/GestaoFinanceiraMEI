@@ -93,7 +93,6 @@
     <Compile Include="Enums\TipoVenda.cs" />
     <Compile Include="Enums\TipoOrdemVenda.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />
-    <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />
     <Compile Include="Enums\TipoLayoutNFSE.cs" />
     <Compile Include="Enums\TipoMensagemNFSE.cs" />

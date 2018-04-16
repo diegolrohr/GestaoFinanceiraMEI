@@ -67,6 +67,7 @@
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
+    <Compile Include="Domains\Enum\TipoCFPS.cs" />
     <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />

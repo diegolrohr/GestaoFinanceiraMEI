@@ -60,6 +60,7 @@
     <Compile Include="Domains\Commons\CondicaoParcelamentoBase.cs" />
     <Compile Include="Domains\Commons\EstadoBase.cs" />
     <Compile Include="Domains\Commons\NcmBase.cs" />
+    <Compile Include="Domains\Commons\UnidadeMedidaBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />

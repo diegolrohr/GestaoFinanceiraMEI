@@ -121,7 +121,6 @@
     <Compile Include="Enums\TipoNota.cs" />
     <Compile Include="Enums\FormaPagamentoEmissaoNFE.cs" />
     <Compile Include="Enums\TipoRegimeTributario.cs" />
-    <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Enums\TipoFusoHorario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

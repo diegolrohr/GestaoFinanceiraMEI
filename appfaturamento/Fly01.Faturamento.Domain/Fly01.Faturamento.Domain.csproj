@@ -83,7 +83,6 @@
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
-    <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />

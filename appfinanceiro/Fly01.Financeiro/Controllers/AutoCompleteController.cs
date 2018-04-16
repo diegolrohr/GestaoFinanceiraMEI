@@ -104,7 +104,7 @@ namespace Fly01.Financeiro.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
             var filterTipoCarteira = (prefilter != "")
-                ? $" and tipoCarteira eq Fly01.Financeiro.Domain.Enums.TipoCarteira'{prefilter}'"
+                ? $" and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
                 : "";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCarteira} and categoriaPaiId eq null");
@@ -128,7 +128,7 @@ namespace Fly01.Financeiro.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
-            var filterTipoCarteira = "tipoCarteira eq Fly01.Financeiro.Domain.Enums.TipoCarteira'Despesa'";
+            var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira}");
             queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
@@ -145,7 +145,7 @@ namespace Fly01.Financeiro.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
             var filterTipoCarteira = prefilter != ""
-                ? $" and tipoCarteira eq Fly01.Financeiro.Domain.Enums.TipoCarteira'{prefilter}'"
+                ? $" and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
                 : "";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}')" + filterTipoCarteira);

@@ -9,6 +9,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using System.Linq;
+using Fly01.Core;
 
 namespace Fly01.Compras.Controllers
 {
@@ -271,7 +272,7 @@ namespace Fly01.Compras.Controllers
                 filters = new Dictionary<string, string>();
             }
 
-            filters.Add("cfop/tipo eq ", "Fly01.Compras.Domain.Enums.TipoCFOP'Entrada'");
+            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
 
             return base.GridLoad(filters);
         }

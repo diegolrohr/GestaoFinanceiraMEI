@@ -105,7 +105,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     {
                         "pessoaId",
-                        $" eq {renegociacaoPessoaId} and ativo and (statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria'EmAberto' or statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria'BaixadoParcialmente')"
+                        $" eq {renegociacaoPessoaId} and ativo and (statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria'EmAberto' or statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria'BaixadoParcialmente')"
                     }
                 };
                 return base.GridLoad(filters);

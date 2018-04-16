@@ -97,7 +97,6 @@
     <Compile Include="Enums\TipoLayoutNFSE.cs" />
     <Compile Include="Enums\TipoMensagemNFSE.cs" />
     <Compile Include="Enums\TipoRegimeEspecialTrib.cs" />
-    <Compile Include="Enums\TipoServico.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

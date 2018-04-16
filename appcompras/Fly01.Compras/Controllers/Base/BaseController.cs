@@ -18,7 +18,6 @@ namespace Fly01.Compras.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            APIEnumResourceName = "Fly01.Compras.Domain.Enums.";
             AppViewModelResourceName = "Fly01.Compras.Entities.ViewModel.";
             AppEntitiesResourceName = "Fly01.Compras.Entities";
         }

@@ -96,6 +96,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
             AppDefaults.AppId = ConfigurationManager.AppSettings["AppId"];
             AppDefaults.RootPathApplication = ConfigurationManager.AppSettings["RootPathApplication"];
+            AppDefaults.APIEnumResourceName = "Fly01.Core.Entities.Domains.Enum";
 
             GlobalConfiguration.Configure(WebAPIConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -64,7 +64,6 @@
     <Compile Include="Entities\FluxoCaixaProjecao.cs" />
     <Compile Include="Entities\FluxoCaixaSaldo.cs" />
     <Compile Include="Enums\StatusConciliado.cs" />
-    <Compile Include="Enums\TipoIndicacaoInscricaoEstadual.cs" />
     <Compile Include="Enums\TipoRenegociacaoCalculo.cs" />
     <Compile Include="Enums\TipoRenegociacaoValorDiferenca.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />

@@ -85,7 +85,6 @@
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
     <Compile Include="Enums\StatusNotaFiscal.cs" />
     <Compile Include="Enums\StatusOrdemVenda.cs" />
-    <Compile Include="Enums\TipoIndicacaoInscricaoEstadual.cs" />
     <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Enums\TipoContaFinanceira.cs" />

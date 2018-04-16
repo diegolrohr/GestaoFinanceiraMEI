@@ -458,14 +458,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="InstallmentDescription">
+                    <Textbox Name="Numero">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=Fields!Numero.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -474,7 +474,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>InstallmentDescription</rd:DefaultName>
+                      <rd:DefaultName>Numero</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1146,10 +1146,14 @@
           <DataField>Vencimento</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="Numero">
+          <DataField>Numero</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\SaaS\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ListContas</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

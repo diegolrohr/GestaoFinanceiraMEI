@@ -410,6 +410,8 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnObservacao;
             
+            private global::System.Data.DataColumn columnNumero;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ReciboContaFinanceiraDataTable() {
@@ -549,6 +551,14 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NumeroColumn {
+                get {
+                    return this.columnNumero;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -584,7 +594,7 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ReciboContaFinanceiraRow AddReciboContaFinanceiraRow(string Id, string Conteudo, string DescricaoTitulo, string ValorTitulo, string DataAtual, string Assinatura, string ValorJuros, string ValorDesconto, string DescricaoJuros, string DescricaoDesconto, string ValorTituloTotal, string DescricaoTituloTotal, string Observacao) {
+            public ReciboContaFinanceiraRow AddReciboContaFinanceiraRow(string Id, string Conteudo, string DescricaoTitulo, string ValorTitulo, string DataAtual, string Assinatura, string ValorJuros, string ValorDesconto, string DescricaoJuros, string DescricaoDesconto, string ValorTituloTotal, string DescricaoTituloTotal, string Observacao, string Numero) {
                 ReciboContaFinanceiraRow rowReciboContaFinanceiraRow = ((ReciboContaFinanceiraRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -599,7 +609,8 @@ namespace Fly01.Financeiro.Reports {
                         DescricaoDesconto,
                         ValorTituloTotal,
                         DescricaoTituloTotal,
-                        Observacao};
+                        Observacao,
+                        Numero};
                 rowReciboContaFinanceiraRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowReciboContaFinanceiraRow);
                 return rowReciboContaFinanceiraRow;
@@ -635,6 +646,7 @@ namespace Fly01.Financeiro.Reports {
                 this.columnValorTituloTotal = base.Columns["ValorTituloTotal"];
                 this.columnDescricaoTituloTotal = base.Columns["DescricaoTituloTotal"];
                 this.columnObservacao = base.Columns["Observacao"];
+                this.columnNumero = base.Columns["Numero"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -666,6 +678,8 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnDescricaoTituloTotal);
                 this.columnObservacao = new global::System.Data.DataColumn("Observacao", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnObservacao);
+                this.columnNumero = new global::System.Data.DataColumn("Numero", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNumero);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1491,6 +1505,8 @@ namespace Fly01.Financeiro.Reports {
             
             private global::System.Data.DataColumn columnVencimento;
             
+            private global::System.Data.DataColumn columnNumero;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ListContasDataTable() {
@@ -1590,6 +1606,14 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NumeroColumn {
+                get {
+                    return this.columnNumero;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1625,7 +1649,7 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ListContasRow AddListContasRow(string Id, string Status, string Descricao, string Valor, string FormaPagamento, string Parcelas, string Fornecedor, System.DateTime Vencimento) {
+            public ListContasRow AddListContasRow(string Id, string Status, string Descricao, string Valor, string FormaPagamento, string Parcelas, string Fornecedor, System.DateTime Vencimento, string Numero) {
                 ListContasRow rowListContasRow = ((ListContasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -1635,7 +1659,8 @@ namespace Fly01.Financeiro.Reports {
                         FormaPagamento,
                         Parcelas,
                         Fornecedor,
-                        Vencimento};
+                        Vencimento,
+                        Numero};
                 rowListContasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowListContasRow);
                 return rowListContasRow;
@@ -1666,6 +1691,7 @@ namespace Fly01.Financeiro.Reports {
                 this.columnParcelas = base.Columns["Parcelas"];
                 this.columnFornecedor = base.Columns["Fornecedor"];
                 this.columnVencimento = base.Columns["Vencimento"];
+                this.columnNumero = base.Columns["Numero"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1687,6 +1713,8 @@ namespace Fly01.Financeiro.Reports {
                 base.Columns.Add(this.columnFornecedor);
                 this.columnVencimento = new global::System.Data.DataColumn("Vencimento", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVencimento);
+                this.columnNumero = new global::System.Data.DataColumn("Numero", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNumero);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2042,6 +2070,22 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Numero {
+                get {
+                    try {
+                        return ((string)(this[this.tableReciboContaFinanceira.NumeroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Numero\' in table \'ReciboContaFinanceira\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableReciboContaFinanceira.NumeroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableReciboContaFinanceira.IdColumn);
             }
@@ -2194,6 +2238,18 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetObservacaoNull() {
                 this[this.tableReciboContaFinanceira.ObservacaoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNumeroNull() {
+                return this.IsNull(this.tableReciboContaFinanceira.NumeroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNumeroNull() {
+                this[this.tableReciboContaFinanceira.NumeroColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -2795,6 +2851,22 @@ namespace Fly01.Financeiro.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Numero {
+                get {
+                    try {
+                        return ((string)(this[this.tableListContas.NumeroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Numero\' in table \'ListContas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableListContas.NumeroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableListContas.IdColumn);
             }
@@ -2887,6 +2959,18 @@ namespace Fly01.Financeiro.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetVencimentoNull() {
                 this[this.tableListContas.VencimentoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNumeroNull() {
+                return this.IsNull(this.tableListContas.NumeroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNumeroNull() {
+                this[this.tableListContas.NumeroColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -9,7 +9,6 @@ namespace Fly01.Core.Mensageria
     {
         private static MessengerLibrary clientMessenger = new MessengerLibrary();
 
-        #region Private Methods
         private static AuthenticationData GetAuthenticationData()
         {
             return clientMessenger.InitializeSt(
@@ -44,14 +43,11 @@ namespace Fly01.Core.Mensageria
 
             return true;
         }
-        #endregion
 
-        #region Public Methods
         public static bool Send(string targetUserName, string targetName, string textMessage, string productCode, DateTime scheduleDateTime, string serviceCode, string serialNumber = "")
         {
             Message bodyMessage = GetMessage(string.Empty, targetName, targetUserName, scheduleDateTime, textMessage, serviceCode);
             return SendMessage(bodyMessage, productCode, serialNumber);
         }
-        #endregion
     }
 }

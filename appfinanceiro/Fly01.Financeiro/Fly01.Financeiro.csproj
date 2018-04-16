@@ -85,7 +85,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Reports\ReportFluxo.cs" />
-    <Compile Include="Models\Reports\ReportListContaReceber.cs" />
     <Compile Include="Models\Reports\ReportListContas.cs" />
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
@@ -280,6 +279,7 @@
     <Content Include="Views\Home\Functions\_fnGetSaldos.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnAtualizaGrid.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnAtualizaGrid.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnImprimirListContas.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

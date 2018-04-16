@@ -103,6 +103,22 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        public List<ContaReceberVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
+        {
+            var queryString = new Dictionary<string, string>();
+            var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" + tipoStatus + "'";
+            queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
+            queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<ContaReceberVM>>("ContaReceber", queryString).Data;
+        }
+
+        public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
+        {
+            var contas = GetListContaPagar(queryStringOdata, tipoStatus);
+            return base.PrintList(contas, "Lista de Contas a Receber");
+        }
+       
         public override JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId)
         {
             try
@@ -171,7 +187,8 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR" }
+                        new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR" },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="

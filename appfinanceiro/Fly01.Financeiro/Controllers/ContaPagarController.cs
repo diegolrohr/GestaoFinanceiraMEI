@@ -94,61 +94,7 @@ namespace Fly01.Financeiro.Controllers
         public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
         {
             var contas = GetListContaPagar(queryStringOdata, tipoStatus);
-            return PrintList(contas);            
-        }
-
-        public ActionResult ImprimirListContasPorPagina(string dataInicial, string dataFinal)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>();
-            queryString.AddParam("controller", "ContaPagar");
-            queryString.AddParam("action", "GridLoad");
-            queryString.Add("dataVencimento le ", dataFinal);
-            queryString.Add(" and dataVencimento ge ", dataInicial);
-
-            var dataJson = base.GridLoad(queryString);
-            string json = JsonConvert.SerializeObject(dataJson.Data);
-            var contasDataJson = JsonConvert.DeserializeObject<GridLoad>(json).data;
-
-            var contas = new List<ContaPagarVM>();
-            foreach (dynamic item in contasDataJson)
-            {
-                contas.Add(new ContaPagarVM()
-                {
-                    Descricao = item.descricao,
-                    Id = item.id,
-                    StatusContaBancaria = item.statusContaBancaria,
-                    ValorPago = item.valorPago,
-                    FormaPagamento = item.FormaPagamentoObject.ToObject<FormaPagamentoVM>(),
-                    NumeroRepeticoes = item.NumeroRepeticoes,
-                    Pessoa= item.Pessoa.ToObject<PessoaVM>(),
-                    DataVencimento = item.dataVencimentoObject
-
-                });
-            }
-            
-            return PrintList(contas);
-        }
-
-        private ActionResult PrintList(List<ContaPagarVM> contas)
-        {
-            List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
-
-            foreach (ContaPagarVM ListContas in contas)
-                reportItens.Add(new ImprimirListContasVM
-                {
-                    Id = ListContas.Id,
-                    Status = ListContas.StatusContaBancaria,
-                    Descricao = ListContas.Descricao,
-                    Valor = ListContas.ValorPago,
-                    FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
-                    Parcelas = ListContas.NumeroRepeticoes,
-                    Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
-                    Vencimento = ListContas.DataVencimento
-                });
-
-            var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
-
-            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+            return base.PrintList(contas, "Lista de Contas a Pagar");            
         }
 
         public override string GetResourceDeleteTituloBordero(string id)
@@ -244,8 +190,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir período", OnClickFn = "fnImprimirListContas" },
-                        new HtmlUIButton { Id = "newPrintPage", Label = "Imprimir página", OnClickFn = "fnImprimirListContasPorPagina" },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

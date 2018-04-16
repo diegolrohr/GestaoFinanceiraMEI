@@ -20,7 +20,6 @@ namespace Fly01.Faturamento.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            APIEnumResourceName = "Fly01.Faturamento.Domain.Enums.";
             AppViewModelResourceName = "Fly01.Faturamento.Entities.ViewModel.";
             AppEntitiesResourceName = "Fly01.Faturamento.Entities";
         }

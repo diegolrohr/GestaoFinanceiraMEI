@@ -1,4 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.Domain
 {
@@ -13,6 +13,6 @@ namespace Fly01.EmissaoNFE.Domain
         public bool FreteNaBase { get; set; }
         public bool DespesaNaBase { get; set; }
         public bool Difal { get; set; }
-        public CSOSN CSOSN { get; set; }
+        public TipoTributacaoICMS CSOSN { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains;
 using Fly01.Faturamento.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Domain.Entities
 {

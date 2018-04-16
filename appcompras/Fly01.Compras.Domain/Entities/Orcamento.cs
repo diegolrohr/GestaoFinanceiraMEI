@@ -1,4 +1,4 @@
-﻿using Fly01.Compras.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Compras.Domain.Entities
 {
@@ -8,9 +8,5 @@ namespace Fly01.Compras.Domain.Entities
         {
             TipoOrdemCompra = TipoOrdemCompra.Orcamento;
         }
-
-        //#region Navigations Properties
-        //public virtual List<OrcamentoItem> OrcamentoItens { get; set; }
-        //#endregion
     }
 }

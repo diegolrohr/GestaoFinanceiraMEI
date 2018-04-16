@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
@@ -10,7 +11,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         }
         
-        public ICMS(OrigemMercadoria origemMercadoria, CSOSN codigoSituacaoOperacao)
+        public ICMS(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao)
         {
             OrigemMercadoria = origemMercadoria;
             CodigoSituacaoOperacao = codigoSituacaoOperacao;
@@ -20,7 +21,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public OrigemMercadoria OrigemMercadoria { get; set; }
 
         [XmlElement(ElementName = "CSOSN")]
-        public CSOSN CodigoSituacaoOperacao { get; set; }
-       
+        public TipoTributacaoICMS CodigoSituacaoOperacao { get; set; }
     }
 }

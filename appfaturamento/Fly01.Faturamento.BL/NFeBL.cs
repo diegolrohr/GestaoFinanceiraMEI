@@ -1,4 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
+﻿ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
@@ -19,6 +19,7 @@ using NFe = Fly01.Faturamento.Domain.Entities.NFe;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {
@@ -142,10 +143,10 @@ namespace Fly01.Faturamento.BL
                     {
                         destinoOperacao = EmissaoNFE.Domain.Enums.TipoDestinoOperacao.Interestadual;
                     }
-                    var formPag = EmissaoNFE.Domain.Enums.TipoFormaPagamento.Outros;
+                    var formPag = EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.Outros;
                     if (condicaoParcelamento != null)
                     {
-                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? EmissaoNFE.Domain.Enums.TipoFormaPagamento.AVista : EmissaoNFE.Domain.Enums.TipoFormaPagamento.APrazo;
+                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.AVista : EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.APrazo;
                     }
 
                     var itemTransmissao = new ItemTransmissaoVM();
@@ -291,7 +292,7 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
                             OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
-                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? (EmissaoNFE.Domain.Enums.CSOSN)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSOSN), item.GrupoTributario.TipoTributacaoICMS.ToString()) : EmissaoNFE.Domain.Enums.CSOSN.TributadaSemPermissaoDeCredito,
+                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2)
                         };

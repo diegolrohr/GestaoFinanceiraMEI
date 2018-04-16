@@ -546,7 +546,7 @@ namespace Fly01.Financeiro.Controllers.Base
             var filters = new Dictionary<string, string>()
             {
                 { "statusContaBancaria",
-                    "eq " + APIEnumResourceName + "StatusContaBancaria'EmAberto' or statusContaBancaria eq " + APIEnumResourceName + "StatusContaBancaria'BaixadoParcialmente'" },
+                    "eq " + AppDefaults.APIEnumResourceName + "StatusContaBancaria'EmAberto' or statusContaBancaria eq " + AppDefaults.APIEnumResourceName + "StatusContaBancaria'BaixadoParcialmente'" },
             };
 
             return base.GridLoad(filters);

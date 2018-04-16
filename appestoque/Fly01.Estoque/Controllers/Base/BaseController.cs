@@ -15,12 +15,9 @@ namespace Fly01.Estoque.Controllers.Base
 {
     public abstract class BaseController<T> : WebBaseController<T> where T : DomainBaseVM
     {
-        public const string EstoqueAPIEnumResourceName = "Fly01.Estoque.Domain.Enums.";
-
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            APIEnumResourceName = EstoqueAPIEnumResourceName;
             AppViewModelResourceName = "Fly01.Estoque.Entities.ViewModel.";
             AppEntitiesResourceName = "Fly01.Estoque.Entities";
         }

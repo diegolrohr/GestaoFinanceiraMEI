@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\Arquivo.cs" />
+    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\MonitorNF.cs" />
     <Compile Include="Entities\MovimentoOrdemVenda.cs" />
@@ -49,7 +50,6 @@
     <Compile Include="Entities\TotalTributacao.cs" />
     <Compile Include="Entities\TotalOrdemVenda.cs" />
     <Compile Include="Entities\PedidoProdutoEstoqueNegativo.cs" />
-    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\CertificadoDigital.cs" />
     <Compile Include="Entities\Cest.cs" />
     <Compile Include="Entities\Cfop.cs" />
@@ -82,40 +82,10 @@
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
-    <Compile Include="Enums\StatusContaBancaria.cs" />
     <Compile Include="Entities\SubstituicaoTributaria.cs" />
-    <Compile Include="Enums\StatusNotaFiscal.cs" />
-    <Compile Include="Enums\StatusOrdemVenda.cs" />
-    <Compile Include="Enums\TipoIndicacaoInscricaoEstadual.cs" />
-    <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
-    <Compile Include="Enums\TipoContaFinanceira.cs" />
-    <Compile Include="Enums\StatusSerieNotaFiscal.cs" />
-    <Compile Include="Enums\TipoOperacaoSerieNotaFiscal.cs" />
-    <Compile Include="Enums\TipoFormaPagamento.cs" />
-    <Compile Include="Enums\TipoCFOP.cs" />
-    <Compile Include="Enums\TipoFrete.cs" />
-    <Compile Include="Enums\TipoPeriodicidade.cs" />
-    <Compile Include="Enums\TipoNotaFiscal.cs" />
-    <Compile Include="Enums\TipoSimulacao.cs" />
-    <Compile Include="Enums\TipoSubstituicaoTributaria.cs" />
-    <Compile Include="Enums\TipoVenda.cs" />
-    <Compile Include="Enums\TipoOrdemVenda.cs" />
     <Compile Include="Entities\UnidadeMedida.cs" />
-    <Compile Include="Enums\TipoCarteira.cs" />
-    <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />
-    <Compile Include="Enums\TipoLayoutNFSE.cs" />
-    <Compile Include="Enums\TipoMensagemNFSE.cs" />
-    <Compile Include="Enums\TipoRegimeEspecialTrib.cs" />
-    <Compile Include="Enums\TipoPagamentoImpostoISS.cs" />
-    <Compile Include="Enums\TipoPessoa.cs" />
-    <Compile Include="Enums\TipoServico.cs" />
-    <Compile Include="Enums\TipoProduto.cs" />
-    <Compile Include="Enums\TipoTributacaoICMS.cs" />
-    <Compile Include="Enums\TipoTributacaoIPI.cs" />
-    <Compile Include="Enums\TipoTributacaoISS.cs" />
-    <Compile Include="Enums\TipoTributacaoPISCOFINS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

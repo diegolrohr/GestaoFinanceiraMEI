@@ -10,7 +10,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
     {
         public IHttpActionResult Get()
         {
-            return Ok(EnumHelper.GetDataEnumValues(typeof(TipoFormaPagamento)));
+            return Ok(EnumHelper.GetDataEnumValues(typeof(FormaPagamentoEmissaoNFE)));
         }
 
     }

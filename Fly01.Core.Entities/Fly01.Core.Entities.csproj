@@ -66,6 +66,7 @@
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
+    <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />

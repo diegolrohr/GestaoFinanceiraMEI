@@ -92,6 +92,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
                     ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
 
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
                     DoTheValidation();
 
                     ICMS = new ICMSSN202(OrigemMercadoria, CodigoSituacaoOperacao)
@@ -113,6 +118,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("AliquotaICMSST", AliquotaICMSST));
                     ToValidate.Add(NewKeyValuePair("ValorICMSST", ValorICMSST));
 
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
                     DoTheValidation();
 
                     ICMS = new ICMSSN203(OrigemMercadoria, CodigoSituacaoOperacao)
@@ -131,6 +141,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("ValorBCSTRetido", ValorBCSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorICMSSTRetido", ValorICMSSTRetido));
 
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("AliquotaFCPConsumidorFinal", AliquotaFCPConsumidorFinal));
+                    ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoAnteriorST", ValorBaseFCPRetidoAnteriorST));
+                    ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoAnteriorST", PercentualFCPRetidoAnteriorST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPRetidoST", ValorFCPRetidoST));
+
                     DoTheValidation();
 
                     ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao)
@@ -140,6 +156,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     };
                     break;
                 case "900"://Outros
+                    //FCP
+                    ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+
+                    DoTheValidation();
+
                     ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao)
                     {
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN,

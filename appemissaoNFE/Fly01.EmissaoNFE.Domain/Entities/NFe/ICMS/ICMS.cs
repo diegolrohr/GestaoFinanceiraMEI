@@ -57,7 +57,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         /// <summary>
         /// Percentual do FCP retido anteriormente por Substituição Tributária
         /// </summary>
-        [XmlElement(ElementName = "vFCPSTRet")]
+        [XmlElement(ElementName = "pFCPSTRet")]
         public double PercentualFCPRetidoAnteriorST { get; set; }
 
         /// <summary>

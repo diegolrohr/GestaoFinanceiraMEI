@@ -90,7 +90,6 @@
     <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\StatusSerieNotaFiscal.cs" />
     <Compile Include="Enums\TipoOperacaoSerieNotaFiscal.cs" />
-    <Compile Include="Enums\TipoFormaPagamento.cs" />
     <Compile Include="Enums\TipoNotaFiscal.cs" />
     <Compile Include="Enums\TipoVenda.cs" />
     <Compile Include="Enums\TipoOrdemVenda.cs" />

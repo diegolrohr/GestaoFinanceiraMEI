@@ -80,7 +80,6 @@
     <Compile Include="Entities\DadosEndereco.cs" />
     <Compile Include="Entities\MovimentacaoPorCategoria.cs" />
     <Compile Include="Entities\Feriado.cs" />
-    <Compile Include="Enums\TipoFormaPagamento.cs" />
     <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Movimentacao.cs" />

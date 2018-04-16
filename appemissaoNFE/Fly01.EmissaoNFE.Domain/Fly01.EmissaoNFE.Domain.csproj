@@ -120,7 +120,7 @@
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />
     <Compile Include="Enums\TipoDestinoOperacao.cs" />
     <Compile Include="Enums\TipoNota.cs" />
-    <Compile Include="Enums\TipoFormaPagamento.cs" />
+    <Compile Include="Enums\FormaPagamentoEmissaoNFE.cs" />
     <Compile Include="Enums\TipoRegimeTributario.cs" />
     <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />

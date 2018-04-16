@@ -87,7 +87,6 @@
     <Compile Include="Enums\StatusOrdemVenda.cs" />
     <Compile Include="Enums\TipoVersaoNFe.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
-    <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\StatusSerieNotaFiscal.cs" />
     <Compile Include="Enums\TipoOperacaoSerieNotaFiscal.cs" />
     <Compile Include="Enums\TipoNotaFiscal.cs" />

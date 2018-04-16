@@ -84,7 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Movimentacao.cs" />
     <Compile Include="Entities\SaldoHistorico.cs" />
-    <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\ClassificacaoPessoa.cs" />
     <Compile Include="Entities\Transferencia.cs" />
     <Compile Include="Entities\Cidade.cs" />

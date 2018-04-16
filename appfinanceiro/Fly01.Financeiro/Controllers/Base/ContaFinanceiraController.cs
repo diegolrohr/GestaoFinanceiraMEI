@@ -52,7 +52,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 //DocumentoCheque = x.DocumentoCheque,
                 contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
                 tipoPeriodicidade = x.TipoPeriodicidade,
-                //Numero = x.Numero,
+                numero = x.Numero,
                 pessoaId = x.PessoaId,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),

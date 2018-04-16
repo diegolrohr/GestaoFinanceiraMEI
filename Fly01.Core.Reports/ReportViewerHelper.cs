@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Rest;
-using Fly01.Core.Entities.ViewModels;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.UI.WebControls;
+using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Core.Reports
 {
@@ -27,7 +27,7 @@ namespace Fly01.Core.Reports
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
             string logoBase64 = string.Empty;
-            var empresaVM = RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
+            dynamic empresaVM = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)
@@ -38,7 +38,7 @@ namespace Fly01.Core.Reports
                 headerDefault.Append("<br/>");
                 headerDefault.AppendFormat("Bairro: {0} | CEP: {1} | Cidade: {2}", empresaVM.Bairro, empresaVM.CEP, empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "");
                 headerDefault.Append("<br/>");
-                headerDefault.AppendFormat("Email: {0} ", empresaVM.Email);
+                headerDefault.AppendFormat("Email: {0} ", empresaVM.Email ?? "");
             }
 
             return new ReportConfig

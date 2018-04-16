@@ -2,7 +2,7 @@
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {
-    public class CondicaoParcelamentoParcelaVM : CondicaoParcelamentoParcelaBaseVM
+    public class ResponseSimulacaoVM : ResponseSimulacaoBaseVM<CondicaoParcelamentoParcelaVM>
     {
     }
 }

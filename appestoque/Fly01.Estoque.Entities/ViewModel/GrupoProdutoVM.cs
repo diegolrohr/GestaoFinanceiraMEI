@@ -2,7 +2,7 @@
 
 namespace Fly01.Estoque.Entities.ViewModel
 {
-    public class GrupoProdutoVM : GrupoProdutoBaseVM
+    public class GrupoProdutoVM : GrupoProdutoBaseVM<NcmVM, UnidadeMedidaVM>
     {
     }
 }

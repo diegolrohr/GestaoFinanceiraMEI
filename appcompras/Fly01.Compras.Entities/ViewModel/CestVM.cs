@@ -2,7 +2,7 @@
 
 namespace Fly01.Compras.Entities.ViewModel
 {
-    public class CestVM : CestBaseVM
+    public class CestVM : CestBaseVM<NcmVM>
     {        
     }
 }

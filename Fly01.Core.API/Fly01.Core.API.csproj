@@ -171,6 +171,7 @@
   <ItemGroup>
     <Compile Include="ApiBaseController.cs" />
     <Compile Include="ApiDomainBaseController.cs" />
+    <Compile Include="ApiHelloBaseController.cs" />
     <Compile Include="ApiODataBaseController.cs" />
     <Compile Include="ApiPlataformaBaseController.cs" />
     <Compile Include="Application\GlobalWebAPIApplication.cs" />

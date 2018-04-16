@@ -4,6 +4,7 @@ using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.Reports;
+using Fly01.Estoque.Entities.ViewModel;
 
 namespace Fly01.Estoque.Models.Reports
 {

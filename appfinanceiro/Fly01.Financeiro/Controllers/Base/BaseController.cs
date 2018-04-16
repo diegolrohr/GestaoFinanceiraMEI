@@ -1,7 +1,7 @@
 ﻿using Fly01.Core;
 using System.Web.Mvc;
 using Fly01.Core.Entities.ViewModels.Commons;
-using Fly01.Core.Entities.ViewModels;
+using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.Core.Config;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes;

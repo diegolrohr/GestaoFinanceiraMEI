@@ -57,8 +57,10 @@
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\EmpresaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoVM.cs" />

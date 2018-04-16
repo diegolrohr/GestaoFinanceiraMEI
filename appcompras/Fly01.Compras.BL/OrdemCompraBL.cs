@@ -2,6 +2,7 @@
 using Fly01.Compras.Domain.Entities;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
+using System.Linq;
 
 namespace Fly01.Compras.BL
 {
@@ -10,6 +11,8 @@ namespace Fly01.Compras.BL
         public OrdemCompraBL(AppDataContext context) : base(context)
         {
         }
+
+        public IQueryable<OrdemCompra> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
         public override void Insert(OrdemCompra entity)
         {

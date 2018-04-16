@@ -4,6 +4,7 @@ using System;
 using Microsoft.Reporting.WebForms;
 using System.Collections.Generic;
 using Fly01.Core.Config;
+using Fly01.Compras.Entities.ViewModel;
 
 namespace Fly01.Compras.Models.Reports
 {

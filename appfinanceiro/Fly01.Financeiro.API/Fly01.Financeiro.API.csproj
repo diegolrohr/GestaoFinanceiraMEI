@@ -87,7 +87,6 @@
     <Compile Include="Controllers\Api\TipoCateiraController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaController.cs" />
-    <Compile Include="Controllers\Api\DemonstrativoResultadoExercicioController.cs" />
     <Compile Include="Controllers\Api\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />
     <Compile Include="Controllers\Api\CondicaoParcelamentoController.cs" />

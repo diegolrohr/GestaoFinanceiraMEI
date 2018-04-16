@@ -216,6 +216,10 @@
     <Compile Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.Designer.cs">
       <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.cs" />
+    <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.Designer.cs">
+      <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -371,6 +375,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.resx">
       <DependentUpon>201804091426380_Alter_OrdemVenda_ImpostosNaoIncidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131130505_AlterNumeroOrdemVenda.resx">
+      <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

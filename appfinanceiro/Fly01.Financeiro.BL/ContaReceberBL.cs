@@ -19,6 +19,8 @@ namespace Fly01.Financeiro.BL
             MustConsumeMessageServiceBus = true;
         }
 
+        public virtual IQueryable<ContaReceber> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+
         public override void Insert(ContaReceber entity)
         {
             const int limiteSemanal = 208;
@@ -41,6 +43,10 @@ namespace Fly01.Financeiro.BL
             if (entity.Id == default(Guid))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
+            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
+
+            max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : max;
+
             var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
             Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
@@ -58,6 +64,9 @@ namespace Fly01.Financeiro.BL
                 itemContaReceber.ValorPrevisto = parcela.Valor;
 
                 itemContaReceber.Id = iParcela == default(int) ? contaFinanceiraPrincipal : default(Guid);
+
+                itemContaReceber.Numero = ++max;
+
                 base.Insert(itemContaReceber);
 
                 if (entity.Repetir && entity.TipoPeriodicidade != TipoPeriodicidade.Nenhuma)
@@ -85,6 +94,9 @@ namespace Fly01.Financeiro.BL
                                 itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
                                 break;
                         }
+
+                        itemContaReceberRepeticao.Numero = ++max;
+
                         base.Insert(itemContaReceberRepeticao);
                     }
                 }

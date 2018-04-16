@@ -1,5 +1,4 @@
 ﻿using Fly01.Financeiro.Domain.Entities;
-using Fly01.Financeiro.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

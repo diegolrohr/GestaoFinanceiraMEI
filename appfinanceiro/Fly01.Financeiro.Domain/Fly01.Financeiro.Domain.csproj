@@ -63,9 +63,6 @@
     <Compile Include="Entities\FluxoCaixa.cs" />
     <Compile Include="Entities\FluxoCaixaProjecao.cs" />
     <Compile Include="Entities\FluxoCaixaSaldo.cs" />
-    <Compile Include="Enums\StatusConciliado.cs" />
-    <Compile Include="Enums\TipoRenegociacaoCalculo.cs" />
-    <Compile Include="Enums\TipoRenegociacaoValorDiferenca.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\ConciliacaoBancaria.cs" />
     <Compile Include="Entities\CondicaoParcelamento.cs" />
@@ -84,7 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Movimentacao.cs" />
     <Compile Include="Entities\SaldoHistorico.cs" />
-    <Compile Include="Enums\ClassificacaoPessoa.cs" />
     <Compile Include="Entities\Transferencia.cs" />
     <Compile Include="Entities\Cidade.cs" />
     <Compile Include="Entities\Estado.cs" />
@@ -114,6 +110,7 @@
       <Name>Fly01.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

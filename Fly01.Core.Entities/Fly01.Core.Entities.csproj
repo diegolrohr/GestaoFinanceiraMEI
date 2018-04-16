@@ -64,6 +64,7 @@
     <Compile Include="Domains\Commons\UnidadeMedidaBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
+    <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
@@ -79,6 +80,8 @@
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />
+    <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />
+    <Compile Include="Domains\Enum\TipoRenegociacaoValorDiferenca.cs" />
     <Compile Include="Domains\Enum\TipoServico.cs" />
     <Compile Include="Domains\Enum\TipoSimulacao.cs" />
     <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />

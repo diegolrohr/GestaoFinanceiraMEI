@@ -11,6 +11,7 @@ using Fly01.Core.Config;
 using Newtonsoft.Json;
 using Fly01.Core.Rest;
 using Fly01.Core.Mensageria;
+using System.Configuration;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -22,9 +23,10 @@ namespace Fly01.Financeiro.Controllers
             DateTime tomorry = DateTime.Now.AddDays(1);
             DateTime dateToSend = new DateTime(tomorry.Year, tomorry.Month, tomorry.Day, 7, 0, 0);
 
+            string serviceCode = ConfigurationManager.AppSettings["MensageriaServiceCodeEmail"];
             foreach (var item in users)
             {
-                MessengerHelper.SendEmail(item.PlatformUser, item.PlatformUserName, EmailBodyHelper.GetEmailReportContasPagar(item.PlatformUserName, recordsToExport), AppDefaults.LicenciamentoProdutoId.ToString(), dateToSend);
+                MessengerHelper.Send(item.PlatformUser, item.PlatformUserName, EmailBodyHelper.GetEmailReportContasPagar(item.PlatformUserName, recordsToExport), AppDefaults.LicenciamentoProdutoId.ToString(), dateToSend, serviceCode);
             }
         }
 

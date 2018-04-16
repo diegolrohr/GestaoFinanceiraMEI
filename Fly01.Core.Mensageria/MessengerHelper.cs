@@ -20,7 +20,7 @@ namespace Fly01.Core.Mensageria
             );
         }
 
-        private static Message GetEmailMessage(string appData, string targetName, string targetUserName, DateTime scheduleDateTime, string textMessage, bool waitReply = false)
+        private static Message GetMessage(string appData, string targetName, string targetUserName, DateTime scheduleDateTime, string textMessage, string serviceCode, bool waitReply = false)
         {
             return new Message()
             {
@@ -29,12 +29,12 @@ namespace Fly01.Core.Mensageria
                 WaitReply = waitReply,
                 TargetName = targetName,
                 TargetUserName = targetUserName,
-                ServiceCode = ConfigurationManager.AppSettings["MensageriaServiceCodeEmail"],
+                ServiceCode = serviceCode,
                 Text = textMessage
             };
         }
 
-        private static bool SendEmailMessage(Message bodyMessage, string productCode, string serialNumber)
+        private static bool SendMessage(Message bodyMessage, string productCode, string serialNumber)
         {
             AuthenticationData auth = GetAuthenticationData();
 
@@ -47,10 +47,10 @@ namespace Fly01.Core.Mensageria
         #endregion
 
         #region Public Methods
-        public static bool SendEmail(string targetEmail, string targetName, string message, string productCode, DateTime scheduleDateTime, string serialNumber = "")
+        public static bool Send(string targetUserName, string targetName, string textMessage, string productCode, DateTime scheduleDateTime, string serviceCode, string serialNumber = "")
         {
-            Message bodyMessage = GetEmailMessage(string.Empty, targetName, targetEmail, scheduleDateTime, message);
-            return SendEmailMessage(bodyMessage, productCode, serialNumber);
+            Message bodyMessage = GetMessage(string.Empty, targetName, targetUserName, scheduleDateTime, textMessage, serviceCode);
+            return SendMessage(bodyMessage, productCode, serialNumber);
         }
         #endregion
     }

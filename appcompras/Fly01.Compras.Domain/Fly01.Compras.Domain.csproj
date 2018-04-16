@@ -69,7 +69,6 @@
     <Compile Include="Enums\TipoContaFinanceira.cs" />
     <Compile Include="Enums\TipoFormaPagamento.cs" />
     <Compile Include="Enums\StatusOrdemCompra.cs" />
-    <Compile Include="Enums\TipoFrete.cs" />
     <Compile Include="Enums\TipoOrdemCompra.cs" />
     <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />

@@ -74,7 +74,6 @@
     <Compile Include="Enums\TipoOrdemCompra.cs" />
     <Compile Include="Enums\TipoCFPS.cs" />
     <Compile Include="Enums\TipoPeriodicidade.cs" />
-    <Compile Include="Enums\TipoProduto.cs" />
     <Compile Include="Enums\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />

@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\TipoEntradaSaida.cs" />
     <Compile Include="Entities\TipoMovimento.cs" />
-    <Compile Include="Enums\TipoProduto.cs" />
     <Compile Include="Entities\Estado.cs" />
   </ItemGroup>
   <ItemGroup>

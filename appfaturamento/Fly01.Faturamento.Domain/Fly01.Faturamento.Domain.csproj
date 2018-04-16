@@ -106,7 +106,6 @@
     <Compile Include="Enums\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Enums\TipoServico.cs" />
-    <Compile Include="Enums\TipoProduto.cs" />
     <Compile Include="Enums\TipoTributacaoICMS.cs" />
     <Compile Include="Enums\TipoTributacaoIPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

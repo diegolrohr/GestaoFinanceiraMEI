@@ -63,12 +63,14 @@
     <Compile Include="Domains\Commons\SubstituicaoTributariaBase.cs" />
     <Compile Include="Domains\Commons\UnidadeMedidaBase.cs" />
     <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
     <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
+    <Compile Include="Domains\Enum\TipoEntradaSaida.cs" />
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />

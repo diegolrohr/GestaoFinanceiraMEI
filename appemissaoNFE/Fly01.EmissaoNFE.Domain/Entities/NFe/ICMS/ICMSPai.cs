@@ -79,7 +79,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         AliquotaICMSST = AliquotaICMSST.Value,
                         ValorICMSST = ValorICMSST.Value,
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN.Value,
-                        ValorCreditoICMS = ValorCreditoICMS.Value
+                        ValorCreditoICMS = ValorCreditoICMS.Value,
+                        ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
+                        PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
+                        ValorFCPST = ValorFCPST.Value
                     };
 
                     break;
@@ -106,7 +109,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         PercentualReducaoBCST = PercentualReducaoBCST,
                         ValorBCST = ValorBCST.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
-                        ValorICMSST = ValorICMSST.Value
+                        ValorICMSST = ValorICMSST.Value,
+                        ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
+                        PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
+                        ValorFCPST = ValorFCPST.Value
                     };
 
                     break;
@@ -132,7 +138,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         PercentualReducaoBCST = PercentualReducaoBCST,
                         ValorBCST = ValorBCST.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
-                        ValorICMSST = ValorICMSST.Value
+                        ValorICMSST = ValorICMSST.Value,
+                        ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
+                        PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
+                        ValorFCPST = ValorFCPST.Value
                     };
 
                     break;
@@ -152,7 +161,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ICMS = new ICMSSN500(OrigemMercadoria, CodigoSituacaoOperacao)
                     {
                         ValorBCSTRetido = ValorBCSTRetido.Value,
-                        ValorICMSSTRetido = ValorICMSSTRetido.Value
+                        ValorICMSSTRetido = ValorICMSSTRetido.Value,
+                        AliquotaFCPConsumidorFinal = AliquotaFCPConsumidorFinal.Value,
+                        ValorBaseFCPRetidoAnteriorST = ValorBaseFCPRetidoAnteriorST.Value,
+                        PercentualFCPRetidoAnteriorST = PercentualFCPRetidoAnteriorST.Value,
+                        ValorFCPRetidoST = ValorFCPRetidoST.Value
                     };
                     break;
                 case "900"://Outros
@@ -183,7 +196,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST,
                         ValorCreditoICMS = ValorCreditoICMS,
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
-                        PercentualReducaoBC = PercentualReducaoBC
+                        PercentualReducaoBC = PercentualReducaoBC,
+                        ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
+                        PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
+                        ValorFCPST = ValorFCPST.Value
                     };
 
                     break;

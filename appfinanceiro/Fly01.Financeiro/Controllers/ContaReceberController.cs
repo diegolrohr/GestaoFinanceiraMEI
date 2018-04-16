@@ -70,7 +70,8 @@ namespace Fly01.Financeiro.Controllers
                 ValorDesconto = string.Format("(-) {0}", discount.ToString("C", AppDefaults.CultureInfoDefault)),
                 DescricaoTituloTotal = "TOTAL",
                 ValorTituloTotal = valorTituloTotalFormatado,
-                Observacao = itemContaReceber.Observacao
+                Observacao = itemContaReceber.Observacao,
+                Numero = itemContaReceber.Numero.ToString()
             };
 
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);

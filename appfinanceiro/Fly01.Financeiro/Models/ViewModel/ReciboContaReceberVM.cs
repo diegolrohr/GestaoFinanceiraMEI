@@ -15,5 +15,6 @@
         public string DescricaoTituloTotal { get; set; }
         public string ValorTituloTotal { get; set; }
         public string Observacao { get; set; }
+        public string Numero { get; set; }
     }
 }

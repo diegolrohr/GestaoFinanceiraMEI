@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Presentation.Commons;
+﻿using Fly01.Core;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Faturamento.Controllers.Base;
 using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.uiJS.Classes;
@@ -309,7 +310,7 @@ namespace Fly01.Faturamento.Controllers
                 filters = new Dictionary<string, string>();
             }
 
-            filters.Add("cfop/tipo eq ", "Fly01.Faturamento.Domain.Enums.TipoCFOP'Saida'");
+            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
 
             return base.GridLoad(filters);
         }

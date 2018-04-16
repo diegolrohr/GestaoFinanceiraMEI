@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.Entities.Domains;
 using Newtonsoft.Json;
-using Fly01.Estoque.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Domain.Entities
 {

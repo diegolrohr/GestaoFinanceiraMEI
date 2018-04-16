@@ -117,7 +117,7 @@ namespace Fly01.Compras.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq Fly01.Compras.Domain.Enums.TipoProduto'{prefilter}'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq {AppDefaults.APIEnumResourceName}TipoProduto'{prefilter}'");
 			queryString.AddParam("$select", "id,descricao,aliquotaIpi,ncmId,unidadeMedidaId");
             queryString.AddParam("$orderby", "descricao");
 
@@ -214,7 +214,7 @@ namespace Fly01.Compras.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
             var filterTipoCarteira = (prefilter != "")
-                ? $"tipoCarteira eq Fly01.Compras.Domain.Enums.TipoCarteira'{prefilter}'"
+                ? $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
                 : "";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira} and categoriaPaiId eq null");
@@ -236,7 +236,7 @@ namespace Fly01.Compras.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
-            var filterTipoCarteira = "tipoCarteira eq Fly01.Compras.Domain.Enums.TipoCarteira'Despesa'";
+            var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira}");
             queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
@@ -273,7 +273,7 @@ namespace Fly01.Compras.Controllers
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq Fly01.Compras.Domain.Enums.TipoCFOP'Entrada'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
             queryString.AddParam("$select", "id,descricao");
             queryString.AddParam("$orderby", "descricao");
 
@@ -290,7 +290,7 @@ namespace Fly01.Compras.Controllers
             int.TryParse(term, out codigo);
 
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq Fly01.Compras.Domain.Enums.TipoCFOP'Entrada'");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
             queryString.AddParam("$select", "id,descricao,codigo");
             queryString.AddParam("$orderby", "descricao");
 

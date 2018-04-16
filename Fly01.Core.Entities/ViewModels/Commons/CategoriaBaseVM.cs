@@ -18,12 +18,5 @@ namespace Fly01.Core.Entities.ViewModels.Commons
 
         [JsonIgnore]
         public int Level => CategoriaPaiId == null ? 0 : 1;
-
-        #region Navigations Properties
-
-        [JsonProperty("categoriaPai")]
-        public virtual CategoriaBaseVM CategoriaPai { get; set; }
-
-        #endregion
     }
 }

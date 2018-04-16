@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
+    <Compile Include="Controllers\Api\SendTaskController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />
@@ -137,6 +138,10 @@
       <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
+      <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
+      <Name>Fly01.Core.Mensageria</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
@@ -205,8 +210,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http">
       <Private>True</Private>
     </Reference>

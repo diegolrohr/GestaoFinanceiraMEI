@@ -1,8 +1,8 @@
 ﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Estoque.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.BL
 {

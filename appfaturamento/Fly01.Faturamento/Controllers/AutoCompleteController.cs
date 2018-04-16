@@ -133,7 +133,7 @@ namespace Fly01.Faturamento.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq Fly01.Faturamento.Domain.Enums.TipoProduto'{prefilter}'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq {AppDefaults.APIEnumResourceName}TipoProduto'{prefilter}'");
             queryString.AddParam("$select", "id,descricao,aliquotaIpi,ncmId,unidadeMedidaId");
             queryString.AddParam("$orderby", "descricao");
 
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq Fly01.Faturamento.Domain.Enums.TipoCFOP'Saida'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
             queryString.AddParam("$select", "id,descricao,tipoTributacaoICMS");
             queryString.AddParam("$orderby", "descricao");
 
@@ -252,7 +252,7 @@ namespace Fly01.Faturamento.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
-            var filterTipoCarteira = "tipoCarteira eq Fly01.Faturamento.Domain.Enums.TipoCarteira'Receita'";
+            var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira}");
             queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
@@ -269,7 +269,7 @@ namespace Fly01.Faturamento.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
 
             var filterTipoCarteira = (prefilter != "")
-                ? $" and tipoCarteira eq Fly01.Faturamento.Domain.Enums.TipoCarteira'{prefilter}'"
+                ? $" and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
                 : "";
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCarteira} and categoriaPaiId eq null");
@@ -324,7 +324,7 @@ namespace Fly01.Faturamento.Controllers
             int.TryParse(term, out codigo);
 
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq Fly01.Faturamento.Domain.Enums.TipoCFOP'Saida'");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
             queryString.AddParam("$select", "id,descricao,codigo");
             queryString.AddParam("$orderby", "descricao");
 
@@ -340,14 +340,14 @@ namespace Fly01.Faturamento.Controllers
 
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam(
-                "$filter", $"contains(serie, '{term}') and (tipoOperacaoSerieNotaFiscal eq Fly01.Faturamento.Domain.Enums.TipoOperacaoSerieNotaFiscal'{tipo}'"+
-                " or tipoOperacaoSerieNotaFiscal eq Fly01.Faturamento.Domain.Enums.TipoOperacaoSerieNotaFiscal'Ambas')"+
-                " and statusSerieNotaFiscal eq Fly01.Faturamento.Domain.Enums.StatusSerieNotaFiscal'Habilitada'"
+                "$filter", $"contains(serie, '{term}') and (tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'{tipo}'" +
+                $" or tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'Ambas')" +
+                $" and statusSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}StatusSerieNotaFiscal'Habilitada'"
                 );
             queryString.AddParam("$orderby", "serie");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<SerieNotaFiscalVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Serie.ToUpper(), detail = "Próximo número: "+ item.NumNotaFiscal.ToString(), numNotaFiscal = item.NumNotaFiscal };
+                                select new { id = item.Id, label = item.Serie.ToUpper(), detail = "Próximo número: " + item.NumNotaFiscal.ToString(), numNotaFiscal = item.NumNotaFiscal };
 
             return GetJson(filterObjects);
         }

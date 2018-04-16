@@ -66,7 +66,10 @@
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
+    <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
+    <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
+    <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
@@ -75,11 +78,17 @@
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />
+    <Compile Include="Domains\Enum\TipoLayoutNFSE.cs" />
+    <Compile Include="Domains\Enum\TipoMensagemNFSE.cs" />
+    <Compile Include="Domains\Enum\TipoNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\TipoOperacaoSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoOrdemCompra.cs" />
+    <Compile Include="Domains\Enum\TipoOrdemVenda.cs" />
     <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />
+    <Compile Include="Domains\Enum\TipoRegimeEspecialTrib.cs" />
     <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />
     <Compile Include="Domains\Enum\TipoRenegociacaoValorDiferenca.cs" />
     <Compile Include="Domains\Enum\TipoServico.cs" />
@@ -87,6 +96,7 @@
     <Compile Include="Domains\Enum\TipoSubstituicaoTributaria.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoISS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoPISCOFINS.cs" />
+    <Compile Include="Domains\Enum\TipoVenda.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
     <Compile Include="ViewModels\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\AppsInstaladosVM.cs" />

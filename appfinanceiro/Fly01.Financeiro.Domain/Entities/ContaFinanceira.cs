@@ -77,6 +77,8 @@ namespace Fly01.Financeiro.Domain.Entities
             }
         }
 
+        public int Numero { get; set; }
+
         #region Navigation Properties
 
         public virtual ContaFinanceira ContaFinanceiraRepeticaoPai { get; set; }

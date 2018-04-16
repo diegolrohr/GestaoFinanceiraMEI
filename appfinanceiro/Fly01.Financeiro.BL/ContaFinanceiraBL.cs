@@ -23,7 +23,7 @@ namespace Fly01.Financeiro.BL
         {
             return repository.AllIncluding(includeProperties).Where(x => x.PlataformaId == PlataformaUrl);
         }
-
+        
         public IQueryable<ContaFinanceira> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
 
         public FluxoCaixaProjecao GetAllContasNextDays(DateTime dataInicial, DateTime dataFinal, string plataformaId)

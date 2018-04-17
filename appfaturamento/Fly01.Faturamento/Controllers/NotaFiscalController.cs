@@ -187,6 +187,14 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            customFilters.AddParam("$orderby", "data");
+
+            return customFilters;
+        }
+
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)

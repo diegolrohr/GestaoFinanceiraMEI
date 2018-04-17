@@ -60,7 +60,7 @@ namespace Fly01.EmissaoNFE.BL
             #endregion
 
             #region Validações Entity.Icms
-            if (entity.SimplesNacional)
+            if (entity.SimplesNacional && entity.Icms != null)
             {
                 entity.Fail(!entity.Icms.Aliquota.HasValue, AliquotaRequerida);
             }

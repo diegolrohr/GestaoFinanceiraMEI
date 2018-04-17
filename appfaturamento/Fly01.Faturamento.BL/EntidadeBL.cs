@@ -6,6 +6,7 @@ using System.Linq;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.BL
 {
@@ -29,8 +30,8 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            dynamic empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-            string estadoNome = empresa.EstadoNome;
+            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            string estadoNome = empresa.Cidade.Estado.Nome;
 
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 

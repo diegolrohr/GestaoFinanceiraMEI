@@ -124,9 +124,18 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "mva",
-                Class = "col l4 m4 s12",
+                Class = "col m2 s12",
                 Label = "MVA",
                 Required = true,
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "fcp",
+                Class = "col m2 s12",
+                Label = "FCP",
+                Value = "0",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 

@@ -13,7 +13,7 @@ namespace Fly01.Faturamento.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201804172217316_AlterVendaNotaTributacaoFCPST"; }
+            get { return "201804172305019_AlterVendaNotaTributacaoFCPST"; }
         }
         
         string IMigrationMetadata.Source

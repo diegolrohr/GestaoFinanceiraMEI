@@ -135,7 +135,23 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Base Cálculo ST Retido",
                 Value = "0"
             });
-            
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "aliquotaFCPConsumidorFinal",
+                Class = "col s12 l6 numeric",
+                Label = "Aliquota FCP Consumidor Final",
+                Value = "0"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorFCPSTRetidoAnteriormente",
+                Class = "col s12 l6 numeric",
+                Label = "FCP ST Retido",
+                Value = "0"
+            });
+
             #region Helpers 
             config.Helpers.Add(new TooltipUI
             {
@@ -159,6 +175,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Informe a Base Cálculo Substituição Tributária Retido, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado. Informe nos parâmetros tributários, a aliquota do Simples Nacional."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorFCPSTRetidoAnteriormente",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o Fundo de Combate a Pobreza Retido anteriormente, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
                 }
             });
             #endregion

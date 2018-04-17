@@ -14,7 +14,7 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double ValorBCSTRetido { get; set; }
 
-        public double ValorFCPSTCredito { get; set; }
+        public double ValorFCPSTRetidoAnterior { get; set; }
 
         public double AliquotaFCPConsumidorFinal { get; set; }
 

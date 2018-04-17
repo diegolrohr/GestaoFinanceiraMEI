@@ -142,7 +142,7 @@ namespace Fly01.Faturamento.BL
                             ValorBCSTRetido = x.ValorBCSTRetido,
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
-                            ValorFCPSTCredito = x.ValorFCPSTCredito,
+                            ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
                             AliquotaFCPConsumidorFinal = x.AliquotaFCPConsumidorFinal
                         }).ToList();
 

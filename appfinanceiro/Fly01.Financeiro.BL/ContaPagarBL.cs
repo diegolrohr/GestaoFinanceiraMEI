@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
@@ -25,7 +26,7 @@ namespace Fly01.Financeiro.BL
         public override void ValidaModel(ContaPagar entity)
         {
             entity.Fail(entity.Numero < 1, new Error("Número da conta inválido", "numero"));
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id == entity.Id), new Error("Número da conta duplicado", "numero"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Número da conta duplicado", "numero"));
 
             base.ValidaModel(entity);
         }
@@ -115,11 +116,13 @@ namespace Fly01.Financeiro.BL
 
         public override void Update(ContaPagar entity)
         {
-            var contaPagarDb = All.FirstOrDefault(x => x.Id == entity.Id);
+            var contaPagarDb = All.AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
 
             entity.Fail(contaPagarDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
             entity.Fail((contaPagarDb.Repetir != entity.Repetir) || (contaPagarDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
                 (contaPagarDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
+
+            entity.Numero = contaPagarDb.Numero;
 
             base.Update(entity);
         }

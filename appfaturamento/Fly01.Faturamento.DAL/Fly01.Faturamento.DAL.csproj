@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.Designer.cs">
       <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171734392_NfeFcp.cs" />
+    <Compile Include="Migrations\201804171734392_NfeFcp.Designer.cs">
+      <DependentUpon>201804171734392_NfeFcp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -378,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804131130505_AlterNumeroOrdemVenda.resx">
       <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171734392_NfeFcp.resx">
+      <DependentUpon>201804171734392_NfeFcp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

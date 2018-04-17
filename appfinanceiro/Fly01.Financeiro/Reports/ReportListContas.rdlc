@@ -398,7 +398,8 @@
                             <TextRun>
                               <Value>=Fields!Valor.Value</Value>
                               <Style>
-                                <Format>'R$' #,0.00;'R$' -#,0.00</Format>
+                                <Format>'R$'#,0.00</Format>
+                                <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -938,7 +939,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>=Parameters!ReportTitle.Value</Value>
+                  <Value>=Fields!Titulo.Value</Value>
                   <Style>
                     <FontSize>12pt</FontSize>
                     <FontWeight>Bold</FontWeight>
@@ -1150,10 +1151,14 @@
           <DataField>Numero</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Titulo">
+          <DataField>Titulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\SaaS\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\git\Fly01.Apps\appfinanceiro\Fly01.Financeiro\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>ListContas</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
-using TOTVS.S1.SaaS.Commons.Exceptions;
-using TOTVS.S1.SaaS.Commons.Rest;
 
 namespace Fly01.Core.Rest
 {

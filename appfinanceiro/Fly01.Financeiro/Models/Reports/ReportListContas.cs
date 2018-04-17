@@ -26,7 +26,7 @@ namespace Fly01.Financeiro.Models.Reports
         {
             get
             {
-                return "Lista de Contas a Pagar";
+                return "";
             }
         }
 

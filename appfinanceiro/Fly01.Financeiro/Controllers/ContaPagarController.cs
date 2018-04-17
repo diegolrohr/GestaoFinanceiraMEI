@@ -17,11 +17,26 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
+using Newtonsoft.Json.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
+    public class GridLoad
+    {
+        [JsonProperty("recordsTotal")]
+        public int recordsTotal { get; set; }
+
+        [JsonProperty("recordsFiltered")]
+        public int recordsFiltered { get; set; }
+
+        [JsonProperty("data")]
+        public List<JObject> data { get; set; }
+
+    }
+
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
+
         public ContaPagarController()
         {
             ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
@@ -67,41 +82,28 @@ namespace Fly01.Financeiro.Controllers
                 ValorDesconto = string.Format("(-) {0}", discount.ToString("C", AppDefaults.CultureInfoDefault)),
                 DescricaoTituloTotal = "TOTAL",
                 ValorTituloTotal = valorTituloTotalFormatado,
-                Observacao = itemContaPagar.Observacao
+                Observacao = itemContaPagar.Observacao,
+                Numero = itemContaPagar.Numero.ToString()
             };
 
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        public List<ContaPagarVM> GetListContaPagar()
+        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
         {
             var queryString = new Dictionary<string, string>();
+            var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" +tipoStatus + "'";
+            queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
+            queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
+
             return RestHelper.ExecuteGetRequest<ResultBase<ContaPagarVM>>("ContaPagar", queryString).Data;
         }
 
-        public virtual ActionResult ImprimirListContas()
+        public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
         {
-            var contas = GetListContaPagar();
-
-            List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
-
-            foreach (ContaPagarVM ListContas in contas)
-
-                reportItens.Add(new ImprimirListContasVM
-                {
-                    Id = ListContas.Id,
-                    Status = ListContas.StatusContaBancaria,
-                    Descricao = ListContas.Descricao,
-                    Valor = ListContas.ValorPago,
-                    FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
-                    Parcelas = ListContas.NumeroRepeticoes,
-                    Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
-                    Vencimento = ListContas.DataVencimento
-                });
-
-            var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
-            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
+            var contas = GetListContaPagar(queryStringOdata, tipoStatus);
+            return base.PrintList(contas, "Lista de Contas a Pagar");            
         }
 
         public override string GetResourceDeleteTituloBordero(string id)
@@ -179,7 +181,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        //new HtmlUIButton { Id = "new", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
                         new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick }
                     }
                 },

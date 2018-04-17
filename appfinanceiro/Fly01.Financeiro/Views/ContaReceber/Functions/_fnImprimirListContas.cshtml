@@ -74,13 +74,13 @@
         }
         else
         {
-            var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
+            var url = "@Url.Action("ImprimirListContas", "ContaReceber")?queryStringOdata=" + queryStringOdata +
                 (dateParam != undefined && dateParam != "" ?
                     ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :
                     ((queryStringOdata != "") ? " and" : "") + " dataVencimento le " + dataFinal.val() + " and dataVencimento ge " + dataInicial.val()) +
-                ($("#valorPrevisto").val() != "" ? " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "") +
-                ($("#numero").val() != "" ? " and numero eq " + $("#numero").val() : "") +
-                "&tipoStatus=" + $("#statusContaBancaria").val();
+                 ($("#valorPrevisto").val() != "" ? " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "") +
+                 ($("#numero").val() != "" ? " and numero eq " + $("#numero").val() : "") +
+                  "&tipoStatus=" + $("#statusContaBancaria").val();
 
 
             if (fly01._.fly01dt.ajax.json().data.length > 0)

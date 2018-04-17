@@ -16,6 +16,9 @@ using Fly01.Core.API;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Financeiro.Models.ViewModel;
+using Fly01.Financeiro.Models.Reports;
+using Fly01.Core.Config;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -49,7 +52,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 //DocumentoCheque = x.DocumentoCheque,
                 contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
                 tipoPeriodicidade = x.TipoPeriodicidade,
-                //Numero = x.Numero,
+                numero = x.Numero,
                 pessoaId = x.PessoaId,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
@@ -69,7 +72,11 @@ namespace Fly01.Financeiro.Controllers.Base
                 observacao = x.Observacao,
                 repetir = x.Repetir,
                 valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
-                numero = x.Numero,
+                NumeroRepeticoes = x.NumeroRepeticoes,
+                valorPago = x.ValorPago,
+                FormaPagamentoObject = x.FormaPagamento,
+                Pessoa = x.Pessoa,
+                dataVencimentoObject = x.DataVencimento
             };
         }
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()
@@ -134,6 +141,29 @@ namespace Fly01.Financeiro.Controllers.Base
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        public virtual ActionResult PrintList(List<TEntity> contas, string titulo)
+        {
+            List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
+
+            foreach (TEntity  ListContas in contas)
+                reportItens.Add(new ImprimirListContasVM
+                {
+                    Id = ListContas.Id,
+                    Status = ListContas.StatusContaBancaria,
+                    Descricao = ListContas.Descricao,
+                    Valor = ListContas.ValorPrevisto.ToString(),
+                    FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
+                    Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
+                    Vencimento = ListContas.DataVencimento,
+                    Titulo = titulo, 
+                    Numero = ListContas.Numero
+                });
+
+            var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
+
+            return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
         /// <summary>

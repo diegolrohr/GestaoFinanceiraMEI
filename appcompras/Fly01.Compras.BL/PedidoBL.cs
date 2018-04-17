@@ -1,7 +1,7 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Compras.Domain.Entities;
-using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using System.Data.Entity;
@@ -32,8 +32,8 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido inválido"));
+            entity.Fail(OrdemCompraBL.Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido duplicado"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {

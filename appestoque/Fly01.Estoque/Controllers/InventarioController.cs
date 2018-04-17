@@ -282,7 +282,7 @@ namespace Fly01.Estoque.Controllers
                                     mustCompareAsEqual = specialType.Any();
 
                                     if (mustCompareAsEqual)
-                                        valueFilter = string.Format("{0}'{1}'", ((APIEnumAttribute[])(specialType))[0].Get(APIEnumResourceName), item.Search.Value);
+                                        valueFilter = string.Format("{0}'{1}'", ((APIEnumAttribute[])(specialType))[0].Get(AppDefaults.APIEnumResourceName), item.Search.Value);
                                     else
                                         valueFilter = item.Search.Value;
 

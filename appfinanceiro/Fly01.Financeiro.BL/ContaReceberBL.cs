@@ -1,11 +1,11 @@
 ﻿using Fly01.Financeiro.API.Models.DAL;
 using Fly01.Financeiro.Domain.Entities;
-using Fly01.Financeiro.Domain.Enums;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -17,6 +17,16 @@ namespace Fly01.Financeiro.BL
         {
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
             MustConsumeMessageServiceBus = true;
+        }
+
+        public virtual IQueryable<ContaReceber> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+
+        public override void ValidaModel(ContaReceber entity)
+        {
+            entity.Fail(entity.Numero < 1, new Error("Número da conta inválido", "numero"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Número da conta duplicado", "numero"));
+
+            base.ValidaModel(entity);
         }
 
         public override void Insert(ContaReceber entity)
@@ -41,6 +51,10 @@ namespace Fly01.Financeiro.BL
             if (entity.Id == default(Guid))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
+            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
+
+            max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
+
             var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
             Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
             for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
@@ -58,6 +72,9 @@ namespace Fly01.Financeiro.BL
                 itemContaReceber.ValorPrevisto = parcela.Valor;
 
                 itemContaReceber.Id = iParcela == default(int) ? contaFinanceiraPrincipal : default(Guid);
+
+                itemContaReceber.Numero = ++max;
+
                 base.Insert(itemContaReceber);
 
                 if (entity.Repetir && entity.TipoPeriodicidade != TipoPeriodicidade.Nenhuma)
@@ -85,6 +102,9 @@ namespace Fly01.Financeiro.BL
                                 itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
                                 break;
                         }
+
+                        itemContaReceberRepeticao.Numero = ++max;
+
                         base.Insert(itemContaReceberRepeticao);
                     }
                 }

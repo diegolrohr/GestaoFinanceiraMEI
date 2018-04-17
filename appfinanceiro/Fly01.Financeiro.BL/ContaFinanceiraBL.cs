@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System;
 using Fly01.Financeiro.Domain.Entities;
-using Fly01.Financeiro.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -22,7 +22,7 @@ namespace Fly01.Financeiro.BL
         {
             return repository.AllIncluding(includeProperties).Where(x => x.PlataformaId == PlataformaUrl);
         }
-
+        
         public IQueryable<ContaFinanceira> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
 
         public FluxoCaixaProjecao GetAllContasNextDays(DateTime dataInicial, DateTime dataFinal, string plataformaId)

@@ -10,6 +10,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -19,7 +20,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
 
-            customFilters.AddParam("$filter", "statusSerieNotaFiscal eq Fly01.Faturamento.Domain.Enums.StatusSerieNotaFiscal'Inutilizada'");
+            customFilters.AddParam("$filter", $"statusSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}StatusSerieNotaFiscal'Inutilizada'");
             customFilters.AddParam("$select", "id,serie,tipoOperacaoSerieNotaFiscal,numNotaFiscal,dataInclusao");
 
             return customFilters;

@@ -1,9 +1,9 @@
 ﻿using Fly01.EmissaoNFE.Domain;
-using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -23,7 +23,7 @@ namespace Fly01.EmissaoNFE.BL
                                     select e.IcmsAliquota).FirstOrDefault();
             }
 
-            if(entity.Icms.CSOSN == CSOSN.Outros)
+            if(entity.Icms.CSOSN == TipoTributacaoICMS.Outros)
             {
                 entity.Icms.Base = entity.Icms.IpiNaBase ? entity.ValorBase + entity.Ipi.Valor : entity.ValorBase;
                 entity.Icms.Base += entity.Icms.DespesaNaBase ? entity.ValorDespesa : 0;

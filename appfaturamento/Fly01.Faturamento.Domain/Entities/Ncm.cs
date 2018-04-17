@@ -1,16 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.Domain.Entities
 {
-    public class NCM : DomainBase
+    public class NCM : NcmBase
     {
-        [Required]
-        public string Codigo { get; set; }
-
-        [Required]
-        public string Descricao { get; set; }
-
-        public double AliquotaIPI { get; set; }
     }
 }

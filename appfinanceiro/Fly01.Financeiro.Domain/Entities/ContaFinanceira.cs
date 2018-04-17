@@ -1,8 +1,8 @@
-﻿using Fly01.Financeiro.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Domain.Entities
 {
@@ -75,6 +75,8 @@ namespace Fly01.Financeiro.Domain.Entities
 
             }
         }
+
+        public int Numero { get; set; }
 
         #region Navigation Properties
 

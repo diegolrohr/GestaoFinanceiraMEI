@@ -1,7 +1,6 @@
 ﻿using Fly01.Estoque.Controllers.Base;
 using Fly01.Estoque.Entities.ViewModel;
 using Fly01.Core;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
@@ -115,7 +114,7 @@ namespace Fly01.Estoque.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq Fly01.Estoque.Domain.Enums.TipoProduto'{prefilter}'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq {AppDefaults.APIEnumResourceName}TipoProduto'{prefilter}'");
             queryString.AddParam("$select", "id,descricao,aliquotaIpi,ncmId,unidadeMedidaId");
             queryString.AddParam("$orderby", "descricao");
 
@@ -179,8 +178,8 @@ namespace Fly01.Estoque.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') and " +
-                                            $"tipoEntradaSaida eq {BaseController<TipoMovimentoVM>.EstoqueAPIEnumResourceName} TipoEntradaSaida'{prefilter}'");
-
+                                            $"tipoEntradaSaida eq {AppDefaults.APIEnumResourceName}TipoEntradaSaida'{prefilter}'");
+            
             queryString.AddParam("$select", "id,descricao");
             queryString.AddParam("$orderby", "descricao");
 

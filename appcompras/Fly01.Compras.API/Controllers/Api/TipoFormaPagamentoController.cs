@@ -1,5 +1,5 @@
-﻿using Fly01.Compras.Domain.Enums;
-using Fly01.Core.API;
+﻿using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 using System.Web.Http;
 
 namespace Fly01.Compras.API.Controllers.Api

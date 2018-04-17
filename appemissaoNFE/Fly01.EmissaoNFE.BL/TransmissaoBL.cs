@@ -6,6 +6,8 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
+using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -593,7 +595,7 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "103": //Isenção do ICMS no Simples Nacional para faixa de receita bruta
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
@@ -667,11 +669,11 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "300": //Imune
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "400": //Não tributada pelo Simples Nacional
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = CSOSN.TributadaSemPermissaoDeCredito;
+                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação

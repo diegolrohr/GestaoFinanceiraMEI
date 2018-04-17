@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -215,8 +216,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public OrigemMercadoria OrigemMercadoria { get; set; }
 
         [XmlIgnore]
-        public CSOSN CodigoSituacaoOperacao { get; set; }
-
+        public TipoTributacaoICMS CodigoSituacaoOperacao { get; set; }
+        
         [XmlIgnore]
         public ModalidadeDeterminacaoBCICMS? ModalidadeBC { get; set; }
 

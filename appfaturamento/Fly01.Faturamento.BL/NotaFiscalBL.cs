@@ -9,9 +9,9 @@ using System.Data.Entity;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using TipoAmbienteNFe = Fly01.EmissaoNFE.Domain.Enums.TipoAmbiente;
 using Fly01.Core;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {

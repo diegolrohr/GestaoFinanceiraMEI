@@ -1,7 +1,8 @@
-﻿using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using System;
 using Newtonsoft.Json;
-using System;
+using Fly01.Core.Entities.Domains;
+using Fly01.Faturamento.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Faturamento.Domain.Entities

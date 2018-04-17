@@ -27,6 +27,14 @@ namespace Fly01.Financeiro.Controllers
             ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            customFilters.AddParam("$orderby", "numero");
+
+            return customFilters;
+        }
+
         public override ActionResult ImprimirRecibo(Guid id)
         {
             ContaPagarVM itemContaPagar = Get(id);
@@ -65,11 +73,13 @@ namespace Fly01.Financeiro.Controllers
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
+
         public List<ContaPagarVM> GetListContaPagar()
         {
             var queryString = new Dictionary<string, string>();
             return RestHelper.ExecuteGetRequest<ResultBase<ContaPagarVM>>("ContaPagar", queryString).Data;
         }
+
         public virtual ActionResult ImprimirListContas()
         {
             var contas = GetListContaPagar();
@@ -93,10 +103,12 @@ namespace Fly01.Financeiro.Controllers
             var reportViewer = new WebReportViewer<ImprimirListContasVM>(ReportListContas.Instance);
             return File(reportViewer.Print(reportItens, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
+
         public override string GetResourceDeleteTituloBordero(string id)
         {
             throw new NotImplementedException();
         }
+
         public override JsonResult GridLoadTitulosARenegociar(string renegociacaoPessoaId)
         {
             try
@@ -105,7 +117,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     {
                         "pessoaId",
-                        $" eq {renegociacaoPessoaId} and ativo and (statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria'EmAberto' or statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria'BaixadoParcialmente')"
+                        $" eq {renegociacaoPessoaId} and ativo and (statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria'EmAberto' or statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria'BaixadoParcialmente')"
                     }
                 };
                 return base.GridLoad(filters);
@@ -142,39 +154,21 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
-            var cfgForm = new FormUI
+            return ListContaPagar();
+        }
+
+        public ContentResult ListContaPagar(string gridLoad = "GridLoad")
+        {
+            var buttonLabel = "Mostrar todas as contas";
+            var buttonOnClick = "fnRemoveFilter";
+
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
-                ReadyFn = "fnUpdateDataFinal",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Elements = new List<BaseUI>()
-                {
-                    new PeriodpickerUI()
-                    {
-                        Label = "Selecione o período",
-                        Id = "mesPicker",
-                        Name = "mesPicker",
-                        Class = "col s12 m6 offset-m3 l4 offset-l4",
-                        DomEvents = new List<DomEventUI>()
-                        {
-                            new DomEventUI()
-                            {
-                                DomEvent = "change",
-                                Function = "fnUpdateDataFinal"
-                            }
-                        }
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataFinal",
-                        Name = "dataFinal"
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataInicial",
-                        Name = "dataInicial"
-                    }
-                }
-            };
+                gridLoad = Request.QueryString["action"];
+                buttonLabel = "Mostrar contas do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -186,18 +180,58 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
                         //new HtmlUIButton { Id = "new", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+            if (gridLoad == "GridLoad")
+            {
+                var cfgForm = new FormUI
+                {
+                    ReadyFn = "fnUpdateDataFinal",
+                    UrlFunctions = Url.Action("Functions") + "?fns=",
+                    Elements = new List<BaseUI>()
+                    {
+                        new PeriodpickerUI()
+                        {
+                            Label = "Selecione o período",
+                            Id = "mesPicker",
+                            Name = "mesPicker",
+                            Class = "col s12 m6 offset-m3 l4 offset-l4",
+                            DomEvents = new List<DomEventUI>()
+                            {
+                                new DomEventUI()
+                                {
+                                    DomEvent = "change",
+                                    Function = "fnUpdateDataFinal"
+                                }
+                            }
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataFinal",
+                            Name = "dataFinal"
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataInicial",
+                            Name = "dataInicial"
+                        }
+                    }
+                };
+
+                cfg.Content.Add(cfgForm);
+            }            
+
             var config = new DataTableUI
             {
-                UrlGridLoad = Url.Action("GridLoad"),
+                UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter() {Id = "dataInicial", Required = true },
-                    new DataTableUIParameter() {Id = "dataFinal", Required = true }
+                    new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
+                    new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -218,15 +252,15 @@ namespace Fly01.Financeiro.Controllers
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
             });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 7, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 3, Type = "currency" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 5, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 9, Orderable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 9 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 1 });
-
-            cfg.Content.Add(cfgForm);
+            //config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 6, Orderable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 8});
+                        
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -241,6 +275,11 @@ namespace Fly01.Financeiro.Controllers
             filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return base.GridLoad();
         }
 
         public override ContentResult Form()
@@ -659,6 +698,7 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
         private void NormarlizarEntidade(ref PessoaVM entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";

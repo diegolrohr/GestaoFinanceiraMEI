@@ -1,7 +1,7 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Compras.Domain.Entities;
-using Fly01.Compras.Domain.Enums;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using System;
 using System.Collections.Generic;
@@ -29,8 +29,8 @@ namespace Fly01.Compras.BL
         {
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
-            entity.Fail(entity.Numero < 1, new Error("Numero do pedido menor que zero."));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido repetido"));
+            entity.Fail(entity.Numero < 1, new Error("Numero do pedido inválido"));
+            entity.Fail(OrdemCompraBL.Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do pedido duplicado"));
 
             base.ValidaModel(entity);
         }

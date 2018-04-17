@@ -273,7 +273,7 @@ namespace Fly01.Compras.Controllers
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'");
             queryString.AddParam("$select", "id,descricao");
             queryString.AddParam("$orderby", "descricao");
 
@@ -290,7 +290,7 @@ namespace Fly01.Compras.Controllers
             int.TryParse(term, out codigo);
 
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'");
             queryString.AddParam("$select", "id,descricao,codigo");
             queryString.AddParam("$orderby", "descricao");
 

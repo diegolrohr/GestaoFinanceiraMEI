@@ -273,20 +273,20 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total impostos produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraNotaFiscal",
-                Class = "col s12 m6 l3",
+                Class = "col s12 m4",
                 Label = "Calcular tributação",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
                 }
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6 l3", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6 l6", Label = "Total pedido(produtos + serviços + impostos + frete)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido(produtos + serviços + impostos + frete)", Readonly = true });
 
             #endregion
 

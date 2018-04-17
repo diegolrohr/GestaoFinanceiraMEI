@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
 using Fly01.Core.Rest;
+using Fly01.Core.Reports;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -22,9 +23,9 @@ namespace Fly01.Financeiro.Controllers.Base
             AppEntitiesResourceName = "Fly01.Financeiro.Entities";
         }
 
-        public EmpresaVM GetDadosEmpresa()
+        public ManagerEmpresaVM GetDadosEmpresa()
         {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
         }
 
         public ContentResult EmConstrucao(string history)

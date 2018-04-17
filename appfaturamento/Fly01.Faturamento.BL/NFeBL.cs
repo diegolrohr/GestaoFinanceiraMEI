@@ -19,6 +19,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NFe = Fly01.Faturamento.Domain.Entities.NFe;
+using Fly01.Core;
+using Fly01.Core.Rest;
+using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.BL
 {
@@ -129,7 +134,7 @@ namespace Fly01.Faturamento.BL
                     }
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
-                    var empresa = RestHelper.ExecuteGetRequest<dynamic>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+                    var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
                     var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();

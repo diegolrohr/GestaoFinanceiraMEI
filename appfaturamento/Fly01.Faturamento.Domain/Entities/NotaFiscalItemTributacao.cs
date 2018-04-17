@@ -35,12 +35,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double STValor { get; set; }
 
-        public double FCPBase { get; set; }
-
-        public double FCPAliquota { get; set; }
-
-        public double FCPValor { get; set; }
-
         public bool CalculaCOFINS { get; set; }
 
         public double COFINSBase { get; set; }
@@ -56,6 +50,51 @@ namespace Fly01.Faturamento.Domain.Entities
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
+
+        #region FCP
+
+        public double FCPBase { get; set; }
+
+        public double FCPAliquota { get; set; }
+
+        public double FCPValor { get; set; }
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido por Substituição Tributária
+        /// </summary>
+        public double? ValorBaseFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido por Substituição Tributária
+        /// </summary>
+        public double? PercentualFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        public double? ValorFCPST { get; set; }
+
+        /// <summary>
+        /// Alíquota suportada pelo Consumidor Final
+        /// </summary>
+        public double? AliquotaFCPConsumidorFinal { get; set; }
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido anteriormente por ST
+        /// </summary>
+        public double? ValorBaseFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido anteriormente por Substituição Tributária
+        /// </summary>
+        public double? PercentualFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        public double? ValorFCPRetidoST { get; set; }
+
+        #endregion FCP
 
         #region Navigations Properties
 

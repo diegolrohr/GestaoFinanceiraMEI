@@ -14,6 +14,7 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double? ValorBCSTRetido { get; set; }
 
+
         #region Navigations Properties
 
         public virtual Produto Produto { get; set; }

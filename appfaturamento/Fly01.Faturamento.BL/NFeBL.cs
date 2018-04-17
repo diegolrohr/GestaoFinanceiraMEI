@@ -65,7 +65,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
 
-            var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
+            var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().FirstOrDefault(x => x.Id == entity.SerieNotaFiscalId);
             if (entity.SerieNotaFiscalId.HasValue)
             {
                 entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NF-e ou tipo ambas"));
@@ -303,7 +303,7 @@ namespace Fly01.Faturamento.BL
                             OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
-                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2)
+                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2),
                         };
 
                         if (itemTributacao.CalculaICMS)
@@ -327,6 +327,15 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);
+
+                            // FCP
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.ValorBaseFCPRetidoST.HasValue ? itemTributacao.ValorBaseFCPRetidoST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.PercentualFCPRetidoST.HasValue ? itemTributacao.PercentualFCPRetidoST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.ValorFCPST.HasValue ? itemTributacao.ValorFCPST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(itemTributacao.AliquotaFCPConsumidorFinal.HasValue ? itemTributacao.AliquotaFCPConsumidorFinal.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(itemTributacao.ValorBaseFCPRetidoAnteriorST.HasValue ? itemTributacao.ValorBaseFCPRetidoAnteriorST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(itemTributacao.PercentualFCPRetidoAnteriorST.HasValue ? itemTributacao.PercentualFCPRetidoAnteriorST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.ValorFCPRetidoST.HasValue ? itemTributacao.ValorFCPRetidoST.Value : 0, 2);
                         }
 
                         if (itemTributacao.CalculaIPI)

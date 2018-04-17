@@ -38,7 +38,7 @@ namespace Fly01.Estoque.BL
             base.Insert(entity);
             if(entity.IsValid() && MustProduceMessageServiceBus)
             {
-               Producer.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.POST);
+               Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.POST);
             }
         }
 
@@ -47,7 +47,7 @@ namespace Fly01.Estoque.BL
             base.Update(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
             {
-                Producer.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.PUT);
+                Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.PUT);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Fly01.Estoque.BL
             base.Delete(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
             {
-                Producer.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.DELETE);
+                Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.DELETE);
             }
         }
 

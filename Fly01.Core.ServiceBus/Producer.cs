@@ -3,12 +3,13 @@ using RabbitMQ.Client;
 using Newtonsoft.Json;
 using System;
 using Fly01.Core.Mensageria;
+using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Core.ServiceBus
 {
-    public class Producer
+    public class Producer<TEntity> where TEntity : DomainBase
     {
-        public static void Send(string routingKey, object message, RabbitConfig.enHTTPVerb httpVerb)
+        public static void Send(string routingKey, TEntity message, RabbitConfig.enHTTPVerb httpVerb)
         {
             try
             {

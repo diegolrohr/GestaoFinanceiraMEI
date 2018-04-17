@@ -6,6 +6,7 @@ using Fly01.Core.Notifications;
 using System;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
@@ -113,11 +114,13 @@ namespace Fly01.Financeiro.BL
 
         public override void Update(ContaReceber entity)
         {
-            var ContaReceberDb = All.FirstOrDefault(x => x.Id == entity.Id);
+            var contaReceberDb = All.AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
 
-            entity.Fail(ContaReceberDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
-            entity.Fail((ContaReceberDb.Repetir != entity.Repetir) || (ContaReceberDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
-                (ContaReceberDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
+            entity.Fail(contaReceberDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
+            entity.Fail((contaReceberDb.Repetir != entity.Repetir) || (contaReceberDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
+                (contaReceberDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
+
+            entity.Numero = contaReceberDb.Numero;
 
             base.Update(entity);
         }

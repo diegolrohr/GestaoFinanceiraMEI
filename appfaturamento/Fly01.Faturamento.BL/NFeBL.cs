@@ -3,6 +3,7 @@ using Fly01.Core.API;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.Core.Reports;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
@@ -19,11 +20,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NFe = Fly01.Faturamento.Domain.Entities.NFe;
-using Fly01.Core;
-using Fly01.Core.Rest;
-using Fly01.Core.API;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.BL
 {
@@ -332,10 +328,11 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);
 
-                            // FCP
+                            // FCP (201, 202, 203 e 900)
                             detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.ValorBaseFCPRetidoST.HasValue ? itemTributacao.ValorBaseFCPRetidoST.Value : 0, 2);
                             detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.PercentualFCPRetidoST.HasValue ? itemTributacao.PercentualFCPRetidoST.Value : 0, 2);
                             detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.ValorFCPST.HasValue ? itemTributacao.ValorFCPST.Value : 0, 2);
+                            // FCP (500)
                             detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(itemTributacao.AliquotaFCPConsumidorFinal.HasValue ? itemTributacao.AliquotaFCPConsumidorFinal.Value : 0, 2);
                             detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(itemTributacao.ValorBaseFCPRetidoAnteriorST.HasValue ? itemTributacao.ValorBaseFCPRetidoAnteriorST.Value : 0, 2);
                             detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(itemTributacao.PercentualFCPRetidoAnteriorST.HasValue ? itemTributacao.PercentualFCPRetidoAnteriorST.Value : 0, 2);

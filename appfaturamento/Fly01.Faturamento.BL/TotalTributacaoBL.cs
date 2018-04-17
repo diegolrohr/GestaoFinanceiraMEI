@@ -1,20 +1,18 @@
-﻿using Fly01.EmissaoNFE.Domain;
+﻿using Fly01.Core;
+using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Notifications;
+using Fly01.Core.Reports;
+using Fly01.Core.Rest;
+using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.BL;
-using Fly01.Core.Notifications;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Fly01.Core.Rest;
-using Fly01.Core;
-using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.BL
 {
@@ -69,7 +67,7 @@ namespace Fly01.Faturamento.BL
                 if (string.IsNullOrEmpty(clienteUF))
                     entity.Notification.Errors.Add(new Error("Informe o estado no cadastro do cliente"));
 
-                if(parametros == null)
+                if (parametros == null)
                     entity.Notification.Errors.Add(new Error("Vá em Configurações e defina os seus parâmetros tributários"));
 
                 if (!onList)
@@ -85,7 +83,7 @@ namespace Fly01.Faturamento.BL
             try
             {
                 var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
-                                
+
                 if (retorno != null)
                 {
                     string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
@@ -159,7 +157,7 @@ namespace Fly01.Faturamento.BL
             //var somaPercentuais = parametros != null ? ((parametros.AliquotaSimplesNacional + parametros.AliquotaISS + parametros.AliquotaPISPASEP + parametros.AliquotaCOFINS) / 100) : 0;
 
             //return somaPercentuais > 0 ? (tributacaoServicos.Sum(x => x.Total) * somaPercentuais) : 0;
-                        
+
             return result;
         }
 
@@ -186,7 +184,7 @@ namespace Fly01.Faturamento.BL
                     FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
                     ProdutoId = itemProduto.ProdutoId,
                     GrupoTributarioId = itemProduto.GrupoTributarioId
-                    
+
                 };
                 var tributacao = new Tributacao();
                 tributacao.ValorBase = itemProduto.Total;
@@ -195,7 +193,7 @@ namespace Fly01.Faturamento.BL
 
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
-                
+
                 //ICMS
                 if (grupoTributario.CalculaIcms)
                 {
@@ -254,10 +252,14 @@ namespace Fly01.Faturamento.BL
                         {
                             tributacao.SubstituicaoTributaria.IpiNaBase = grupoTributario.AplicaIpiBaseST;
                         }
+
+                        // FCP
+
+                        // pFCPST
                     }
                 }
                 //COFINS
-                if(grupoTributario.CalculaCofins)
+                if (grupoTributario.CalculaCofins)
                 {
                     itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
                     itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
@@ -273,7 +275,7 @@ namespace Fly01.Faturamento.BL
 
                 var json = JsonConvert.SerializeObject(tributacao);
                 var responseTributacao = RestHelper.ExecutePostRequest<TributacaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "tributacao", json, null, header);
-                if(responseTributacao.Fcp != null)
+                if (responseTributacao.Fcp != null)
                 {
                     itemRetorno.FCPBase = responseTributacao.Fcp.Base;
                     itemRetorno.FCPAliquota = responseTributacao.Fcp.Aliquota;
@@ -424,7 +426,7 @@ namespace Fly01.Faturamento.BL
 
         public double PISAliquota { get; set; }
 
-        public double PISValor { get; set; }        
+        public double PISValor { get; set; }
 
         public Guid GrupoTributarioId { get; set; }
     }

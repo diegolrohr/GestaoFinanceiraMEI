@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
             queryString.AddParam("$select", "id,descricao,tipoTributacaoICMS");
             queryString.AddParam("$orderby", "descricao");
 
@@ -324,7 +324,7 @@ namespace Fly01.Faturamento.Controllers
             int.TryParse(term, out codigo);
 
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
             queryString.AddParam("$select", "id,descricao,codigo");
             queryString.AddParam("$orderby", "descricao");
 

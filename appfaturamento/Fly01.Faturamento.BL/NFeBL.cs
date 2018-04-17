@@ -150,7 +150,6 @@ namespace Fly01.Faturamento.BL
                     }
 
                     var itemTransmissao = new ItemTransmissaoVM();
-                    itemTransmissao.NotaId = entity.Numero.ToString();
                     itemTransmissao.Versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
 
                     #region Identificação

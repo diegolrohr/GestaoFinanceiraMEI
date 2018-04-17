@@ -272,7 +272,7 @@ namespace Fly01.Compras.Controllers
                 filters = new Dictionary<string, string>();
             }
 
-            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCFOP'Entrada'");
+            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCfop'Entrada'");
 
             return base.GridLoad(filters);
         }

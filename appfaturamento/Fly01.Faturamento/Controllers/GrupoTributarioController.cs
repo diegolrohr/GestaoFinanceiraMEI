@@ -310,7 +310,7 @@ namespace Fly01.Faturamento.Controllers
                 filters = new Dictionary<string, string>();
             }
 
-            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCFOP'Saida'");
+            filters.Add("cfop/tipo eq ", $"{AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
 
             return base.GridLoad(filters);
         }

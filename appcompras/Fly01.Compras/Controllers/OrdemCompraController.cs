@@ -2,6 +2,7 @@
 using Fly01.Compras.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.API;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -40,8 +41,22 @@ namespace Fly01.Compras.Controllers
             return Content(JsonConvert.SerializeObject(OrdemCompraJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
         }
 
-        protected internal static ContentUI OrdemCompraJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
+        public ContentResult ListOrdemCompra()
         {
+            return Content(JsonConvert.SerializeObject(OrdemCompraJson(Url, Request.Url.Scheme, gridLoad: "GridLoadNoFilter"), JsonSerializerSetting.Front), "application/json");
+        }
+
+        protected internal static ContentUI OrdemCompraJson(UrlHelper url, string scheme, bool withSidebarUrl = false, string gridLoad = "GridLoad")
+        {
+            var buttonLabel = "Mostrar todas as compras";
+            var buttonOnClick = "fnRemoveFilter";
+
+            if (gridLoad == "GridLoadNoFilter")
+            {
+                buttonLabel = "Mostrar compras do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
+            
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "Home") },
@@ -52,47 +67,53 @@ namespace Fly01.Compras.Controllers
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" },
                         new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" },
+                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
                     }
                 },
                 UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns="
             };
+
             if (withSidebarUrl)
                 cfg.SidebarUrl = url.Action("Sidebar", "Home", null, scheme);
 
-
-            var cfgForm = new FormUI
+            if(gridLoad == "GridLoad")
             {
-                ReadyFn = "fnUpdateDataFinal",
-                UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
-                Elements = new List<BaseUI>()
+                var cfgForm = new FormUI
                 {
-                    new PeriodpickerUI()
+                    ReadyFn = "fnUpdateDataFinal",
+                    UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
+                    Elements = new List<BaseUI>()
                     {
-                       Label= "Selecione o período",
-                       Id= "mesPicker",
-                       Name= "mesPicker",
-                       Class= "col s12 m4 offset-m4",
-                       DomEvents = new List<DomEventUI>()
-                       {
-                           new DomEventUI()
+                        new PeriodpickerUI()
+                        {
+                           Label= "Selecione o período",
+                           Id= "mesPicker",
+                           Name= "mesPicker",
+                           Class= "col s12 m4 offset-m4",
+                           DomEvents = new List<DomEventUI>()
                            {
-                              DomEvent = "change",
-                              Function = "fnUpdateDataFinal"
+                               new DomEventUI()
+                               {
+                                  DomEvent = "change",
+                                  Function = "fnUpdateDataFinal"
+                               }
                            }
-                       }
-                    },
-                    new InputHiddenUI(){ Id= "dataFinal" },
-                    new InputHiddenUI(){ Id= "dataInicial" }
-                }
-            };
+                        },
+                        new InputHiddenUI(){ Id= "dataFinal" },
+                        new InputHiddenUI(){ Id= "dataInicial" }
+                    }
+                };
+
+                cfg.Content.Add(cfgForm);
+            }
 
             var config = new DataTableUI
             {
-                UrlGridLoad = url.Action("GridLoad", "OrdemCompra"),
+                UrlGridLoad = url.Action(gridLoad, "OrdemCompra"),
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter() {Id = "dataInicial", Required = true },
-                    new DataTableUIParameter() {Id = "dataFinal", Required = true }
+                    new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
+                    new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns="
             };
@@ -127,14 +148,11 @@ namespace Fly01.Compras.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency" });
-
-
+            
             config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 6 });
-
-            cfg.Content.Add(cfgForm);
+                    
             cfg.Content.Add(config);
-
-
+            
             return cfg;
         }
 
@@ -152,6 +170,19 @@ namespace Fly01.Compras.Controllers
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return base.GridLoad();
+        }
+        
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            customFilters.AddParam("$orderby", "data,numero");
+
+            return customFilters;
         }
     }
 }

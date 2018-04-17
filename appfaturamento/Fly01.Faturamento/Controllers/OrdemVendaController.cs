@@ -309,13 +309,13 @@ namespace Fly01.Faturamento.Controllers
 
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todos os Orçamentos/Pedidos";
+            var buttonLabel = "Mostrar todas as vendas";
             var buttonOnClick = "fnRemoveFilter";
             
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
-                buttonLabel = "Mostrar Orçamentos/Pedidos do mês atual";
+                buttonLabel = "Mostrar vendas do mês atual";
                 buttonOnClick = "fnAddFilter";
             }
 
@@ -439,7 +439,7 @@ namespace Fly01.Faturamento.Controllers
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "numero");
+            customFilters.AddParam("$orderby", "data,numero");
 
             return customFilters;
         }

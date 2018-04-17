@@ -140,7 +140,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "aliquotaFCPConsumidorFinal",
                 Class = "col s12 l6 numeric",
-                Label = "Aliquota FCP Consumidor Final",
+                Label = "Alíquota FCP Consumidor Final",
                 Value = "0"
             });
 
@@ -183,6 +183,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Informe o Fundo de Combate a Pobreza Retido anteriormente, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "aliquotaFCPConsumidorFinal",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a Alíquota do Fundo de Combate a Pobreza para consumidor final, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
                 }
             });
             #endregion

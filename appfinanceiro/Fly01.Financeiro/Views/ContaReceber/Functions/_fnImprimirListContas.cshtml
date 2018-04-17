@@ -34,13 +34,6 @@
             });
         };
 
-        if ($("#formaPagamento_descricao").val() != "") {
-            ListParams.push({
-                key: "formaPagamento/descricao",
-                value: $("#formaPagamento_descricao").val()
-            });
-        };
-
         if ($("#descricaoParcela").val() != "") {
             ListParams.push({
                 key: "descricaoParcela",
@@ -86,6 +79,7 @@
                     ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :
                     ((queryStringOdata != "") ? " and" : "") + " dataVencimento le " + dataFinal.val() + " and dataVencimento ge " + dataInicial.val()) +
                  ($("#valorPrevisto").val() != "" ? " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "") +
+                 ($("#numero").val() != "" ? " and numero eq " + $("#numero").val() : "") +
                   "&tipoStatus=" + $("#statusContaBancaria").val();
 
 

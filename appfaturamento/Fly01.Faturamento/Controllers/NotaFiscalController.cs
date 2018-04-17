@@ -23,7 +23,7 @@ namespace Fly01.Faturamento.Controllers
         }
 
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
-        public override Func<NotaFiscalVM, object> GetDisplayData() 
+        public override Func<NotaFiscalVM, object> GetDisplayData()
         {
             return x => new
             {
@@ -88,7 +88,7 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            if(gridLoad == "GridLoad")
+            if (gridLoad == "GridLoad")
             {
                 var cfgForm = new FormUI
                 {
@@ -181,7 +181,7 @@ namespace Fly01.Faturamento.Controllers
             //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
             //});
             config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 8 });
-                        
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

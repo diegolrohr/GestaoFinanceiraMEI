@@ -28,7 +28,6 @@ namespace Fly01.Faturamento.Controllers
             return x => new
             {
                 id = x.Id.ToString(),
-                numero = x.Numero.ToString(),
                 tipoNotaFiscal = x.TipoNotaFiscal,
                 tipoNotaFiscalDescription = EnumHelper.SubtitleDataAnotation("TipoNotaFiscal", x.TipoNotaFiscal).Description,
                 tipoNotaFiscalCssClass = EnumHelper.SubtitleDataAnotation("TipoNotaFiscal", x.TipoNotaFiscal).CssClass,

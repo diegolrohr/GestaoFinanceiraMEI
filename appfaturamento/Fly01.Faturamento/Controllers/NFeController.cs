@@ -46,8 +46,7 @@ namespace Fly01.Faturamento.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputNumbersUI { Id = "ordemVendaOrigemNumero", Class = "col s12 m6", Label = "Pedido Origem", Disabled = true });
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m6", Label = "Número sistema", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "ordemVendaOrigemNumero", Class = "col s12 m2", Label = "Pedido Origem", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
@@ -59,7 +58,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "status",
-                Class = "col s12 m8",
+                Class = "col s12 m6",
                 Label = "Status",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusNotaFiscal", true, false))

@@ -11,10 +11,6 @@ namespace Fly01.Faturamento.Domain.Entities
     public class NotaFiscal : PlataformaBase
     {
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Numero { get; set; }
-
-        [Required]
         public Guid OrdemVendaOrigemId { get; set; }
 
         [Required]
@@ -53,6 +49,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public int? QuantidadeVolumes { get; set; }
 
         #endregion
+
         #region Pagamento
 
         public Guid? FormaPagamentoId { get; set; }

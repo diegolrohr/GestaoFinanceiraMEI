@@ -19,5 +19,7 @@ namespace Fly01.EmissaoNFE.Domain
         public Icms Icms { get; set; }
 
         public Fcp Fcp { get; set; }
+
+        public FcpSt FcpSt { get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
 
         public TributacaoRetornoBaseVM Fcp { get; set; }
 
+        public TributacaoRetornoBaseVM FcpSt { get; set; }
+
         public DifalRetornoVM Difal { get; set; }
     }
 }

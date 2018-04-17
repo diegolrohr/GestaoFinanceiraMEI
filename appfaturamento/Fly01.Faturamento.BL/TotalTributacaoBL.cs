@@ -122,6 +122,7 @@ namespace Fly01.Faturamento.BL
             total += tributacaoItensRetorno.Sum(x => x.ICMSValor);
             total += tributacaoItensRetorno.Sum(x => x.COFINSValor);
             total += tributacaoItensRetorno.Sum(x => x.FCPValor);
+            total += tributacaoItensRetorno.Sum(x => x.FCPSTValor);
             total += tributacaoItensRetorno.Sum(x => x.PISValor);
             return total;
         }
@@ -253,9 +254,11 @@ namespace Fly01.Faturamento.BL
                             tributacao.SubstituicaoTributaria.IpiNaBase = grupoTributario.AplicaIpiBaseST;
                         }
 
-                        // FCP
-
-                        // pFCPST
+                        // FCP ST
+                        tributacao.FcpSt = new FcpSt()
+                        {
+                            Aliquota = st.Fcp
+                        };
                     }
                 }
                 //COFINS
@@ -302,6 +305,13 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.STAliquota = responseTributacao.SubstituicaoTributaria.Aliquota;
                     itemRetorno.STValor = responseTributacao.SubstituicaoTributaria.Valor;
                     itemRetorno.STAgregaTotal = responseTributacao.SubstituicaoTributaria.AgregaTotalNota;
+                }
+                if (responseTributacao.FcpSt != null)
+                {
+                    itemRetorno.FCPSTBase = responseTributacao.FcpSt.Base;
+                    itemRetorno.FCPSTAliquota = responseTributacao.FcpSt.Aliquota;
+                    itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
+                    itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
                 }
                 result.Add(itemRetorno);
             }
@@ -427,6 +437,14 @@ namespace Fly01.Faturamento.BL
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
+
+        public double FCPSTBase { get; set; }
+               
+        public double FCPSTAliquota { get; set; }
+
+        public double FCPSTValor { get; set; }
+
+        public bool FCPSTAgregaTotal { get; set; }
 
         public Guid GrupoTributarioId { get; set; }
     }

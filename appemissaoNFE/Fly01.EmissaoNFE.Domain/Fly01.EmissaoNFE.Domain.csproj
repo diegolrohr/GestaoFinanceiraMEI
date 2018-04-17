@@ -42,6 +42,7 @@
     <Compile Include="Entities\Cfop.cs" />
     <Compile Include="Entities\Cidade.cs" />
     <Compile Include="Entities\Estado.cs" />
+    <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
     <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\Ipi.cs" />

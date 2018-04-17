@@ -304,6 +304,21 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List()
         {
+            return ListOrdemVenda();
+        }
+
+        public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
+        {
+            var buttonLabel = "Mostrar todos os Orçamentos/Pedidos";
+            var buttonOnClick = "fnRemoveFilter";
+            
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
+            {
+                gridLoad = Request.QueryString["action"];
+                buttonLabel = "Mostrar Orçamentos/Pedidos do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -312,54 +327,60 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Vendas",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" },
                         new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" },
+                        new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" },
+                        new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            var cfgForm = new FormUI
+            if(gridLoad == "GridLoad")
             {
-                ReadyFn = "fnUpdateDataFinal",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Elements = new List<BaseUI>()
+                var cfgForm = new FormUI
                 {
-                    new PeriodpickerUI()
+                    ReadyFn = "fnUpdateDataFinal",
+                    UrlFunctions = Url.Action("Functions") + "?fns=",
+                    Elements = new List<BaseUI>()
                     {
-                        Label = "Selecione o período",
-                        Id = "mesPicker",
-                        Name = "mesPicker",
-                        Class = "col s12 m6 offset-m3 l4 offset-l4",
-                        DomEvents = new List<DomEventUI>()
+                        new PeriodpickerUI()
                         {
-                            new DomEventUI()
+                            Label = "Selecione o período",
+                            Id = "mesPicker",
+                            Name = "mesPicker",
+                            Class = "col s12 m6 offset-m3 l4 offset-l4",
+                            DomEvents = new List<DomEventUI>()
                             {
-                                DomEvent = "change",
-                                Function = "fnUpdateDataFinal"
+                                new DomEventUI()
+                                {
+                                    DomEvent = "change",
+                                    Function = "fnUpdateDataFinal"
+                                }
                             }
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataFinal",
+                            Name = "dataFinal"
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataInicial",
+                            Name = "dataInicial"
                         }
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataFinal",
-                        Name = "dataFinal"
-                    },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataInicial",
-                        Name = "dataInicial"
                     }
-                }
-            };
+                };
+
+                cfg.Content.Add(cfgForm);
+            }
 
             var config = new DataTableUI
             {
-                UrlGridLoad = Url.Action("GridLoad"),
+                UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter() {Id = "dataInicial", Required = true },
-                    new DataTableUIParameter() {Id = "dataFinal", Required = true }
+                    new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
+                    new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -404,7 +425,7 @@ namespace Fly01.Faturamento.Controllers
             //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
             //});
 
-            cfg.Content.Add(cfgForm);
+            
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -413,6 +434,14 @@ namespace Fly01.Faturamento.Controllers
         public override ContentResult Form()
         {
             throw new NotImplementedException();
+        }
+
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            customFilters.AddParam("$orderby", "numero");
+
+            return customFilters;
         }
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
@@ -424,6 +453,11 @@ namespace Fly01.Faturamento.Controllers
             filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return base.GridLoad();
         }
 
         [HttpPost]

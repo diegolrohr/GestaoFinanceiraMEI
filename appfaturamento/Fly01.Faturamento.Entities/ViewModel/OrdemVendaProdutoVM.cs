@@ -21,8 +21,8 @@ namespace Fly01.Faturamento.Entities.ViewModel
         [JsonProperty("valorFCPSTRetidoAnterior")]
         public double ValorFCPSTRetidoAnterior { get; set; }
 
-        [JsonProperty("aliquotaFCPConsumidorFinal")]
-        public double AliquotaFCPConsumidorFinal { get; set; }
+        [JsonProperty("valorBCFCPSTRetidoAnterior")]
+        public double ValorBCFCPSTRetidoAnterior { get; set; }
 
 
         #region NavigationProperties

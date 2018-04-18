@@ -67,6 +67,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
       <Project>{2a0fd4c0-cded-410f-8f09-ee85154679e3}</Project>
       <Name>Fly01.Core.Mensageria</Name>

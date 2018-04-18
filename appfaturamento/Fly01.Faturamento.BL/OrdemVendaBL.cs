@@ -303,9 +303,7 @@ namespace Fly01.Faturamento.BL
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
 
-                //Producer<ContaPagarRabbit>.Send(routePrefixNameContaReceber, new ContaPagarRabbit() { }, RabbitConfig.enHTTPVerb.POST);
-
-                Producer.Send(routePrefixNameContaReceber, contaReceber, RabbitConfig.enHTTPVerb.POST);
+                Producer<ContaReceber>.Send(routePrefixNameContaReceber, contaReceber, RabbitConfig.enHTTPVerb.POST);
             }
 
             if (entity.MovimentaEstoque)
@@ -328,7 +326,7 @@ namespace Fly01.Faturamento.BL
 
                 foreach (var movimentoBaixa in movimentos)
                 {
-                    Producer.Send(routePrefixNameMovimentoOrdemVenda, movimentoBaixa, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, movimentoBaixa, RabbitConfig.enHTTPVerb.POST);
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double ValorFCPSTRetidoAnterior { get; set; }
 
-        public double AliquotaFCPConsumidorFinal { get; set; }
+        public double ValorBCFCPSTRetidoAnterior { get; set; }
 
         #region Navigations Properties
 

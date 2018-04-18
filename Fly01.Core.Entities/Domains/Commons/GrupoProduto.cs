@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class GrupoProduto : PlataformaBase
     {
@@ -20,12 +18,8 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public Guid? NcmId { get; set; }
 
-        #region Navigations Properties
-
         public virtual Ncm Ncm { get; set; }
 
         public virtual UnidadeMedida UnidadeMedida { get; set; }
-
-        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,11 +24,8 @@ namespace Fly01.Financeiro.Domain.Entities
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        #region Navigations Properties
-
         public virtual ContaFinanceira ContaFinanceira { get; set; }
-        public virtual ContaBancaria ContaBancaria { get; set; }
 
-        #endregion
+        public virtual ContaBancaria ContaBancaria { get; set; }
     }
 }

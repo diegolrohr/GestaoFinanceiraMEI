@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -39,10 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\ContaFinanceira.cs" />
-    <Compile Include="Entities\ContaPagar.cs" />
     <Compile Include="Entities\Movimento.cs" />
-    <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

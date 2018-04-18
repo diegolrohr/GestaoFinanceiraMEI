@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System;
 using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.Domain.Entities
 {
@@ -18,11 +19,8 @@ namespace Fly01.Financeiro.Domain.Entities
         [Required]
         public double ValorConciliado { get; set; }
 
-        #region Navigations Properties
-
         public virtual ContaFinanceira ContaFinanceira { get; set; }
-        public virtual ContaFinanceiraBaixa ContaFinanceiraBaixa { get; set; }
 
-        #endregion
+        public virtual ContaFinanceiraBaixa ContaFinanceiraBaixa { get; set; }
     }
 }

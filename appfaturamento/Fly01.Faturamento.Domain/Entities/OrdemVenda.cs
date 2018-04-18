@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains;
-using Fly01.Faturamento.Domain.Enums;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,8 +31,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public Guid? GrupoTributarioPadraoId { get; set; }
 
-        #region Transporte
-
         public Guid? TransportadoraId { get; set; }
 
         public TipoFrete TipoFrete { get; set; }
@@ -51,9 +48,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public int? QuantidadeVolumes { get; set; }
 
-        #endregion
-        #region Pagamento
-
         public Guid? FormaPagamentoId { get; set; }
 
         public Guid? CondicaoParcelamentoId { get; set; }
@@ -63,13 +57,11 @@ namespace Fly01.Faturamento.Domain.Entities
         [Column(TypeName = "date")]
         public DateTime? DataVencimento { get; set; }
 
-        #endregion
-
         [Required]
         public bool MovimentaEstoque { get; set; }
 
         [Required]
-        public bool AjusteEstoqueAutomatico{ get; set; }
+        public bool AjusteEstoqueAutomatico { get; set; }
 
         [Required]
         public bool GeraFinanceiro { get; set; }
@@ -89,17 +81,18 @@ namespace Fly01.Faturamento.Domain.Entities
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
-        #region Navigation Properties
-
         public virtual Pessoa Cliente { get; set; }
+
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
+
         public virtual Pessoa Transportadora { get; set; }
+
         public virtual Estado EstadoPlacaVeiculo { get; set; }
+
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
+
         public virtual FormaPagamento FormaPagamento { get; set; }
+
         public virtual Categoria Categoria { get; set; }
-
-        #endregion
-
     }
 }

@@ -63,10 +63,7 @@
     <Compile Include="Entities\FluxoCaixaSaldo.cs" />
     <Compile Include="Entities\ConciliacaoBancaria.cs" />
     <Compile Include="Entities\ContaBancaria.cs" />
-    <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaFinanceiraBaixa.cs" />
-    <Compile Include="Entities\ContaPagar.cs" />
-    <Compile Include="Entities\ContaReceber.cs" />
     <Compile Include="Entities\DadosContato.cs" />
     <Compile Include="Entities\DadosEndereco.cs" />
     <Compile Include="Entities\MovimentacaoPorCategoria.cs" />

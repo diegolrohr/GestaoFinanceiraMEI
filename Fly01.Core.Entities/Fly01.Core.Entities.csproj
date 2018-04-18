@@ -60,9 +60,13 @@
     <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamentoSimulacao.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\ContaPagar.cs" />
+    <Compile Include="Domains\Commons\ContaReceber.cs" />
     <Compile Include="Domains\Commons\EnquadramentoLegalIPI.cs" />
     <Compile Include="Domains\Commons\Estado.cs" />
     <Compile Include="Domains\Commons\FormaPagamento.cs" />
+    <Compile Include="Domains\Commons\GrupoProduto.cs" />
     <Compile Include="Domains\Commons\GrupoTributario.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\Orcamento.cs" />

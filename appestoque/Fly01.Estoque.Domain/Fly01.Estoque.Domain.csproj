@@ -46,7 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\AjusteManual.cs" />
-    <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\Inventario.cs" />
     <Compile Include="Entities\InventarioItem.cs" />
     <Compile Include="Entities\MovimentoOrdemVenda.cs" />

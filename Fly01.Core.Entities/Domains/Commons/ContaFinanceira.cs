@@ -1,11 +1,9 @@
-﻿using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public abstract class ContaFinanceira : PlataformaBase
     {
@@ -31,11 +29,11 @@ namespace Fly01.Financeiro.Domain.Entities
         public Guid PessoaId { get; set; }
 
         [Required]
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
         [Required]
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime DataVencimento { get; set; }
 
         [Required]
@@ -64,29 +62,14 @@ namespace Fly01.Financeiro.Domain.Entities
 
         public string DescricaoParcela { get; set; }
 
-        //AppDataContext model.builder ignore
-        public double Saldo
-        {
-            get
-            {
-                return ValorPrevisto - (ValorPago.HasValue ? ValorPago.Value : 0.00);
-            }
-            set
-            {
-
-            }
-        }
+        public double Saldo => ValorPrevisto - (ValorPago ?? 0.00);
 
         public int Numero { get; set; }
-
-        #region Navigation Properties
 
         public virtual ContaFinanceira ContaFinanceiraRepeticaoPai { get; set; }
         public virtual Categoria Categoria { get; set; }
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
-
-        #endregion
     }
 }

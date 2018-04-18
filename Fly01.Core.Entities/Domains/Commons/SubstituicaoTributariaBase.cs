@@ -34,5 +34,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         }
 
         public Guid? CestId { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+        public double Fcp{ get; set; }
     }
 }

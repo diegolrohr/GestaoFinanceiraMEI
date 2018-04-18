@@ -1,4 +1,11 @@
-﻿ using Fly01.EmissaoNFE.Domain.Entities.NFe;
+﻿using Fly01.Core;
+using Fly01.Core.API;
+using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Notifications;
+using Fly01.Core.Reports;
+using Fly01.Core.Rest;
+using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
@@ -7,20 +14,12 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe.Totais;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.BL;
-using Fly01.Core.Notifications;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NFe = Fly01.Faturamento.Domain.Entities.NFe;
-using Fly01.Core;
-using Fly01.Core.Rest;
-using Fly01.Core.API;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.BL
 {
@@ -35,7 +34,16 @@ namespace Fly01.Faturamento.BL
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
-        public NFeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFeProdutoBL nfeProdutoBL, TotalTributacaoBL totalTributacaoBL, CertificadoDigitalBL certificadoDigitalBL, PessoaBL pessoaBL, CondicaoParcelamentoBL condicaoParcelamentoBL, SubstituicaoTributariaBL substituicaoTributariaBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
+        public NFeBL(AppDataContext context,
+                     SerieNotaFiscalBL serieNotaFiscalBL,
+                     NFeProdutoBL nfeProdutoBL,
+                     TotalTributacaoBL totalTributacaoBL,
+                     CertificadoDigitalBL certificadoDigitalBL,
+                     PessoaBL pessoaBL,
+                     CondicaoParcelamentoBL condicaoParcelamentoBL,
+                     SubstituicaoTributariaBL substituicaoTributariaBL,
+                     NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL)
+            : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
             NFeProdutoBL = nfeProdutoBL;
@@ -58,7 +66,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
 
-            var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
+            var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().FirstOrDefault(x => x.Id == entity.SerieNotaFiscalId);
             if (entity.SerieNotaFiscalId.HasValue)
             {
                 entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NF-e ou tipo ambas"));
@@ -229,7 +237,8 @@ namespace Fly01.Faturamento.BL
                     {
                         ModalidadeFrete = (EmissaoNFE.Domain.Enums.ModalidadeFrete)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.ModalidadeFrete), entity.TipoFrete.ToString())
                     };
-                    if (transportadora != null) {
+                    if (transportadora != null)
+                    {
                         itemTransmissao.Transporte.Transportadora = new Transportadora()
                         {
                             CNPJ = transportadora != null && transportadora.TipoDocumento == "J" ? transportadora.CPFCNPJ : null,
@@ -293,17 +302,17 @@ namespace Fly01.Faturamento.BL
                         {
                             OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
-                            AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
-                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2)
+                            AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
+                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                         };
 
                         if (itemTributacao.CalculaICMS)
                         {
-                            detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido.HasValue ? item.ValorICMSSTRetido.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
                             detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                             detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
-                            if(item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
+                            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                             {
                                 detalhe.Imposto.ICMS.ModalidadeBC = EmissaoNFE.Domain.Enums.ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
@@ -317,19 +326,29 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
-                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);                            
+                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
+
+                            // FCP (201, 202, 203 e 900)
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.FCPSTBase, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.FCPSTAliquota, 2);
+                            detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.FCPSTValor, 2);
+                            // FCP (500)
+                            detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(item.AliquotaFCPConsumidorFinal, 2);
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(item.Total, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(((item.ValorFCPSTRetidoAnterior / item.Total) * 100), 2);
+                            detalhe.Imposto.ICMS.ValorFCPRetidoAnteriorST = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                         }
 
                         if (itemTributacao.CalculaIPI)
                         {
                             detalhe.Imposto.IPI = new IPIPai()
                             {
-                                CodigoST = item.GrupoTributario.TipoTributacaoIPI.HasValue ? 
-                                    (EmissaoNFE.Domain.Enums.CSTIPI)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) : 
+                                CodigoST = item.GrupoTributario.TipoTributacaoIPI.HasValue ?
+                                    (EmissaoNFE.Domain.Enums.CSTIPI)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
                                     EmissaoNFE.Domain.Enums.CSTIPI.OutrasSaidas,
                                 ValorIPI = itemTributacao.IPIValor,
-                                CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI != null ? 
-                                    item.Produto.EnquadramentoLegalIPI.Codigo : 
+                                CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI != null ?
+                                    item.Produto.EnquadramentoLegalIPI.Codigo :
                                     null,
                                 ValorBaseCalculo = Math.Round(itemTributacao.IPIBase, 2),
                                 PercentualIPI = Math.Round(itemTributacao.IPIAliquota, 2),
@@ -338,17 +357,17 @@ namespace Fly01.Faturamento.BL
                             };
                         }
                         detalhe.Imposto.PIS = new PISPai()
-                        {                            
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ? 
-                                (EmissaoNFE.Domain.Enums.CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) : 
+                        {
+                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ?
+                                (EmissaoNFE.Domain.Enums.CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
                                 EmissaoNFE.Domain.Enums.CSTPISCOFINS.IsentaDaContribuicao,
                         };
 
                         if (itemTributacao.CalculaPIS)
                         {
-                            detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor,2);
+                            detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
                             detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
-                            detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase,2);
+                            detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase, 2);
 
                             if (CST == "05")
                             {
@@ -361,14 +380,14 @@ namespace Fly01.Faturamento.BL
 
                         detalhe.Imposto.COFINS = new COFINSPai()
                         {
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ? 
+                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ?
                                 ((EmissaoNFE.Domain.Enums.CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
                                 EmissaoNFE.Domain.Enums.CSTPISCOFINS.OutrasOperacoes
                         };
 
                         if (itemTributacao.CalculaCOFINS)
                         {
-                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor,2);
+                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
                             detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
                             detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
                         }
@@ -430,7 +449,7 @@ namespace Fly01.Faturamento.BL
                     }
 
                     var entidade = CertificadoDigitalBL.GetEntidade();
-                    
+
                     var notaFiscal = new TransmissaoVM()
                     {
                         Homologacao = entidade.Homologacao,
@@ -471,7 +490,7 @@ namespace Fly01.Faturamento.BL
                     else
                     {
                         entity.SefazId = retorno.NotaId;
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)

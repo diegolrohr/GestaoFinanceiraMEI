@@ -1,14 +1,14 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
+﻿using Fly01.Core.BL;
+using Fly01.Core.Helpers;
+using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.PIS;
 using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Helpers;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Fly01.Core.BL;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -29,25 +29,25 @@ namespace Fly01.EmissaoNFE.BL
             {
                 e.Imposto.ICMS.DoTheIcms();
 
-                if(e.Imposto.IPI != null)
+                if (e.Imposto.IPI != null)
                     e.Imposto.IPI.DoTheIpi(TipoAliquota.AliquotaAdValorem);
 
                 if (e.Imposto.PIS != null)
                     e.Imposto.PIS.DoThePIS(CodigoRegimeTributario);
 
-                if(e.Imposto.COFINS != null)
+                if (e.Imposto.COFINS != null)
                     e.Imposto.COFINS.DoTheCofins(CodigoRegimeTributario);
             });
 
             MemoryStream memoryStream = new MemoryStream();
-            
+
             XmlWriterSettings settings = new XmlWriterSettings()
             {
                 OmitXmlDeclaration = true
             };
 
             XmlWriter writer = XmlWriter.Create(memoryStream, settings);
-            
+
             XmlSerializer xser = new XmlSerializer(typeof(NFe), OverrideAttributes());
 
             xser.Serialize(writer, entity, nameSpaces);
@@ -56,9 +56,9 @@ namespace Fly01.EmissaoNFE.BL
             memoryStream.Seek(0, SeekOrigin.Begin);
 
             StreamReader streamReader = new StreamReader(memoryStream);
-            
+
             string xmlString = streamReader.ReadToEnd();
-            
+
             result = Base64Helper.CodificaBase64(xmlString);
 
             return result;
@@ -67,7 +67,7 @@ namespace Fly01.EmissaoNFE.BL
         private XmlAttributeOverrides OverrideAttributes()
         {
             XmlAttributeOverrides specific_attributes = new XmlAttributeOverrides();
-            
+
             #region ICMS
 
             XmlAttributes attrsICMS = new XmlAttributes();
@@ -83,9 +83,9 @@ namespace Fly01.EmissaoNFE.BL
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN900)));
 
             specific_attributes.Add(typeof(ICMSPai), "ICMS", attrsICMS);
-            
+
             #endregion ICMS
-                        
+
             #region IPI
 
             XmlAttributes attrsIPI = new XmlAttributes();

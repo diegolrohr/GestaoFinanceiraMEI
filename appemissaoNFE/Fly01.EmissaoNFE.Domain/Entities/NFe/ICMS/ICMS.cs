@@ -10,7 +10,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
 
         }
-        
+
         public ICMS(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao)
         {
             OrigemMercadoria = origemMercadoria;
@@ -22,5 +22,52 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlElement(ElementName = "CSOSN")]
         public TipoTributacaoICMS CodigoSituacaoOperacao { get; set; }
+
+        #region FCP
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlElement(ElementName = "vBCFCPST")]
+        public double ValorBaseFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlElement(ElementName = "pFCPST")]
+        public double PercentualFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        [XmlElement(ElementName = "vFCPST")]
+        public double ValorFCPRetidoST { get; set; }
+
+        /// <summary>
+        /// Alíquota suportada pelo Consumidor Final
+        /// </summary>
+        [XmlElement(ElementName = "pST")]
+        public double AliquotaFCPConsumidorFinal { get; set; }
+
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido anteriormente por ST
+        /// </summary>
+        [XmlElement(ElementName = "vBCFCPSTRet")]
+        public double ValorBaseFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido anteriormente por Substituição Tributária
+        /// </summary>
+        [XmlElement(ElementName = "pFCPSTRet")]
+        public double PercentualFCPRetidoAnteriorST { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido anteriormente por Substituição Tributária
+        /// </summary>
+        [XmlElement(ElementName = "vFCPSTRet")]
+        public double ValorFCPRetidoAnteriorST { get; set; }
+
+        #endregion FCP
+
     }
 }

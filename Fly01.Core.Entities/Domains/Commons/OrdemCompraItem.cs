@@ -1,8 +1,7 @@
-﻿using Fly01.Core.Entities.Domains;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Compras.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public abstract class OrdemCompraItem : PlataformaBase
     {
@@ -17,26 +16,11 @@ namespace Fly01.Compras.Domain.Entities
 
         public double Desconto { get; set; }
 
-        //AppDataContext model.builder ignore
-        public double Total
-        {
-            get
-            {
-                return Math.Round(((Quantidade * Valor) - Desconto),2, MidpointRounding.AwayFromZero);
-            }
-            set
-            {
-
-            }
-        }
+        public double Total => Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        #region Navigations Properties
-
         public virtual Produto Produto { get; set; }
-
-        #endregion
     }
 }

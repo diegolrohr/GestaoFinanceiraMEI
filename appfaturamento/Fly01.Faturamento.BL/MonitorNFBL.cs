@@ -77,7 +77,7 @@ namespace Fly01.Faturamento.BL
                                 nfe.Mensagem = null;
                                 nfe.Recomendacao = null;
 
-                                nfe.Status = (StatusNotaFiscal)Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                nfe.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                 nfe.Mensagem = itemNF.Mensagem;
                                 nfe.Recomendacao = itemNF.Recomendacao;
                             }
@@ -89,7 +89,7 @@ namespace Fly01.Faturamento.BL
                                     nfse.Mensagem = null;
                                     nfse.Recomendacao = null;
 
-                                    nfse.Status = (StatusNotaFiscal)Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                    nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                     nfse.Mensagem = itemNF.Mensagem;
                                     nfse.Recomendacao = itemNF.Recomendacao;
                                 }

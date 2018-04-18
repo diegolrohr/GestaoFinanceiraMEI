@@ -33,7 +33,7 @@ namespace Fly01.Compras.Domain.Entities
         public string TipoProdutoRest
         {
             get { return ((int)TipoProduto).ToString(); }
-            set { TipoProduto = (TipoProduto)Enum.Parse(typeof(TipoProduto), value); }
+            set { TipoProduto = (TipoProduto)System.Enum.Parse(typeof(TipoProduto), value); }
         }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]

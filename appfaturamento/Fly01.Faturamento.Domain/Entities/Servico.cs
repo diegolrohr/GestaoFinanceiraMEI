@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.Domain.Entities
         //public string TipoServicoRest
         //{
         //    get { return ((int)TipoServico).ToString(); }
-        //    set { TipoServico = (TipoServico)Enum.Parse(typeof(TipoServico), value); }
+        //    set { TipoServico = (TipoServico)System.Enum.Parse(typeof(TipoServico), value); }
         //}
 
         [JsonIgnore]
@@ -41,7 +41,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoISSRest
         {
             get { return ((int)TipoTributacaoISS).ToString(); }
-            set { TipoTributacaoISS = (TipoTributacaoISS)Enum.Parse(typeof(TipoTributacaoISS), value); }
+            set { TipoTributacaoISS = (TipoTributacaoISS)System.Enum.Parse(typeof(TipoTributacaoISS), value); }
         }
 
         [JsonIgnore]
@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoPagamentoImpostoISSRest
         {
             get { return ((int)TipoPagamentoImpostoISS).ToString(); }
-            set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
+            set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)System.Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
         }
 
         #region Navigations Properties

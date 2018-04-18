@@ -35,7 +35,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoAmbienteRest
         {
             get { return ((int)TipoAmbiente).ToString(); }
-            set { TipoAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), value); }
+            set { TipoAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), value); }
         }
 
         [JsonIgnore]
@@ -46,7 +46,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoVersaoNFeRest
         {
             get { return ((int)TipoVersaoNFe).ToString(); }
-            set { TipoVersaoNFe = (TipoVersaoNFe)Enum.Parse(typeof(TipoVersaoNFe), value); }
+            set { TipoVersaoNFe = (TipoVersaoNFe)System.Enum.Parse(typeof(TipoVersaoNFe), value); }
         }
 
         [JsonIgnore]
@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoModalidadeRest
         {
             get { return ((int)TipoModalidade).ToString(); }
-            set { TipoModalidade = (TipoModalidade)Enum.Parse(typeof(TipoModalidade), value); }
+            set { TipoModalidade = (TipoModalidade)System.Enum.Parse(typeof(TipoModalidade), value); }
         }
 
         #region NFS
@@ -71,7 +71,7 @@ namespace Fly01.Faturamento.Domain.Entities
         //public string TipoRegimeEspecialTribRest
         //{
         //    get { return ((int)TipoRegimeEspecialTrib).ToString(); }
-        //    set { TipoRegimeEspecialTrib = (TipoRegimeEspecialTrib)Enum.Parse(typeof(TipoRegimeEspecialTrib), value); }
+        //    set { TipoRegimeEspecialTrib = (TipoRegimeEspecialTrib)System.Enum.Parse(typeof(TipoRegimeEspecialTrib), value); }
         //}
 
         //[JsonIgnore]
@@ -82,7 +82,7 @@ namespace Fly01.Faturamento.Domain.Entities
         //public string TipoMensagemNFSERest
         //{
         //    get { return ((int)TipoMensagemNFSE).ToString(); }
-        //    set { TipoMensagemNFSE = (TipoMensagemNFSE)Enum.Parse(typeof(TipoMensagemNFSE), value); }
+        //    set { TipoMensagemNFSE = (TipoMensagemNFSE)System.Enum.Parse(typeof(TipoMensagemNFSE), value); }
         //}
 
         //[JsonIgnore]
@@ -93,7 +93,7 @@ namespace Fly01.Faturamento.Domain.Entities
         //public string TipoLayoutNFSERest
         //{
         //    get { return ((int)TipoLayoutNFSE).ToString(); }
-        //    set { TipoLayoutNFSE = (TipoLayoutNFSE)Enum.Parse(typeof(TipoLayoutNFSE), value); }
+        //    set { TipoLayoutNFSE = (TipoLayoutNFSE)System.Enum.Parse(typeof(TipoLayoutNFSE), value); }
         //}
 
         //public bool NovoModeloUnicoXMLTSS { get; set; }

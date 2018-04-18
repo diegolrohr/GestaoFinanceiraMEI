@@ -47,7 +47,7 @@ namespace Fly01.Faturamento.BL
                     {
                         Homologacao = entidade.Homologacao,
                         Producao = entidade.Producao,
-                        EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), parametroTributario.TipoAmbiente.ToString()),
+                        EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), parametroTributario.TipoAmbiente.ToString()),
                         TipoAmbiente = parametroTributario.TipoAmbienteRest,
                         VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.0",
                         VersaoNFSe = "0.00",

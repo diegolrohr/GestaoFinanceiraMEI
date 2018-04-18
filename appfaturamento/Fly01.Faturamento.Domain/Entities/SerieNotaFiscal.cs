@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoOperacaoSerieNotaFiscalRest
         {
             get { return ((int)TipoOperacaoSerieNotaFiscal).ToString(); }
-            set { TipoOperacaoSerieNotaFiscal = (TipoOperacaoSerieNotaFiscal)Enum.Parse(typeof(TipoOperacaoSerieNotaFiscal), value); }
+            set { TipoOperacaoSerieNotaFiscal = (TipoOperacaoSerieNotaFiscal)System.Enum.Parse(typeof(TipoOperacaoSerieNotaFiscal), value); }
         }
 
         [Required]
@@ -36,7 +36,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string StatusSerieNotaFiscalRest
         {
             get { return ((int)StatusSerieNotaFiscal).ToString(); }
-            set { StatusSerieNotaFiscal = (StatusSerieNotaFiscal)Enum.Parse(typeof(StatusSerieNotaFiscal), value); }
+            set { StatusSerieNotaFiscal = (StatusSerieNotaFiscal)System.Enum.Parse(typeof(StatusSerieNotaFiscal), value); }
         }
 
     }

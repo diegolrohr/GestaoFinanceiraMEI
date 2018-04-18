@@ -162,7 +162,7 @@ namespace Fly01.Faturamento.BL
             {
                 retorno = RetornaEntidade();
             }
-            retorno.EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
+            retorno.EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
             return retorno;
         }
 
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.BL
 
             var retorno = new EntidadeVM
             {
-                EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
+                EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
             };
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))

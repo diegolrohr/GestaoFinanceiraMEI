@@ -1,12 +1,9 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Compras.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class OrdemCompra : PlataformaBase
     {
@@ -37,13 +34,8 @@ namespace Fly01.Compras.Domain.Entities
 
         public double? Total { get; set; }
 
-        #region Navigation Properties
-
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
-
-        #endregion
-
     }
 }

@@ -1,13 +1,10 @@
-﻿using Fly01.Faturamento.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class GrupoTributario : PlataformaBase
     {
@@ -29,7 +26,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoICMSRest
         {
             get { return TipoTributacaoICMS.HasValue ? ((int)TipoTributacaoICMS).ToString() : ""; }
-            set { TipoTributacaoICMS = (TipoTributacaoICMS)Enum.Parse(typeof(TipoTributacaoICMS), value); }
+            set { TipoTributacaoICMS = (TipoTributacaoICMS)System.Enum.Parse(typeof(TipoTributacaoICMS), value); }
         }
 
         public bool CalculaIcmsDifal { get; set; }
@@ -40,8 +37,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public bool AplicaDespesaBaseIcms { get; set; }
 
-
-        //IPI
         [Required]
         public bool CalculaIpi { get; set; }
 
@@ -53,15 +48,13 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoIPIRest
         {
             get { return TipoTributacaoIPI.HasValue ? ((int)TipoTributacaoIPI).ToString() : ""; }
-            set { TipoTributacaoIPI = (TipoTributacaoIPI)Enum.Parse(typeof(TipoTributacaoIPI), value); }
+            set { TipoTributacaoIPI = (TipoTributacaoIPI)System.Enum.Parse(typeof(TipoTributacaoIPI), value); }
         }
 
         public bool AplicaFreteBaseIpi { get; set; }
 
         public bool AplicaDespesaBaseIpi { get; set; }
 
-
-        //PIS
         [Required]
         public bool CalculaPis { get; set; }
 
@@ -73,15 +66,13 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoPISRest
         {
             get { return TipoTributacaoPIS.HasValue ? ((int)TipoTributacaoPIS).ToString() : ""; }
-            set { TipoTributacaoPIS = (TipoTributacaoPISCOFINS)Enum.Parse(typeof(TipoTributacaoPISCOFINS), value); }
+            set { TipoTributacaoPIS = (TipoTributacaoPISCOFINS)System.Enum.Parse(typeof(TipoTributacaoPISCOFINS), value); }
         }
 
         public bool AplicaFreteBasePis { get; set; }
 
         public bool AplicaDespesaBasePis { get; set; }
 
-
-        //COFINS
         [Required]
         public bool CalculaCofins { get; set; }
 
@@ -93,15 +84,13 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoCOFINSRest
         {
             get { return TipoTributacaoCOFINS.HasValue ? ((int)TipoTributacaoCOFINS).ToString() : ""; }
-            set { TipoTributacaoCOFINS = (TipoTributacaoPISCOFINS)Enum.Parse(typeof(TipoTributacaoPISCOFINS), value); }
+            set { TipoTributacaoCOFINS = (TipoTributacaoPISCOFINS)System.Enum.Parse(typeof(TipoTributacaoPISCOFINS), value); }
         }
 
         public bool AplicaFreteBaseCofins { get; set; }
 
         public bool AplicaDespesaBaseCofins { get; set; }
 
-
-        //ISS
         [Required]
         public bool CalculaIss { get; set; }
 
@@ -113,7 +102,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoTributacaoISSRest
         {
             get { return TipoTributacaoISS.HasValue ? ((int)TipoTributacaoISS).ToString() : ""; }
-            set { TipoTributacaoISS = (TipoTributacaoISS)Enum.Parse(typeof(TipoTributacaoISS), value); }
+            set { TipoTributacaoISS = (TipoTributacaoISS)System.Enum.Parse(typeof(TipoTributacaoISS), value); }
         }
 
         [JsonIgnore]
@@ -124,7 +113,7 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoPagamentoImpostoISSRest
         {
             get { return TipoPagamentoImpostoISS.HasValue ? ((int)TipoPagamentoImpostoISS).ToString() : ""; }
-            set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
+            set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)System.Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
         }
 
         [JsonIgnore]
@@ -135,10 +124,9 @@ namespace Fly01.Faturamento.Domain.Entities
         public string TipoCFPSRest
         {
             get { return TipoCFPS.HasValue ? ((int)TipoCFPS).ToString() : ""; }
-            set { TipoCFPS = (TipoCFPS)Enum.Parse(typeof(TipoCFPS), value); }
+            set { TipoCFPS = (TipoCFPS)System.Enum.Parse(typeof(TipoCFPS), value); }
         }
 
-        //ST
         public bool CalculaSubstituicaoTributaria { get; set; }
 
         public bool AplicaFreteBaseST { get; set; }
@@ -147,10 +135,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public bool AplicaIpiBaseST { get; set; }
 
-        #region Navigations Properties
-
         public virtual Cfop Cfop { get; set; }
-
-        #endregion
     }
 }

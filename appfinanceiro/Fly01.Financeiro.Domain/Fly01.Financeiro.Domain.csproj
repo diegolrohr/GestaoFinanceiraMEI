@@ -61,9 +61,7 @@
     <Compile Include="Entities\FluxoCaixa.cs" />
     <Compile Include="Entities\FluxoCaixaProjecao.cs" />
     <Compile Include="Entities\FluxoCaixaSaldo.cs" />
-    <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\ConciliacaoBancaria.cs" />
-    <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\ContaBancaria.cs" />
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaFinanceiraBaixa.cs" />

@@ -1,16 +1,13 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Enum;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class FormaPagamento : PlataformaBase
     {
         [JsonProperty("descricao")]
-        [Display(Name = "Descrição")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public string Descricao { get; set; }
 
@@ -23,7 +20,7 @@ namespace Fly01.Financeiro.Domain.Entities
         public string TipoFormaPagamentoRest
         {
             get { return ((int)TipoFormaPagamento).ToString(); }
-            set { TipoFormaPagamento = (TipoFormaPagamento)Enum.Parse(typeof(TipoFormaPagamento), value); }
+            set { TipoFormaPagamento = (TipoFormaPagamento)System.Enum.Parse(typeof(TipoFormaPagamento), value); }
         }
-   }
+    }
 }

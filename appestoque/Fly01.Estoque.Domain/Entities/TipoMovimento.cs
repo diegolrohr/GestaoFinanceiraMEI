@@ -24,7 +24,7 @@ namespace Fly01.Estoque.Domain.Entities
         public string TipoEntradaSaidaRest
         {
             get { return ((int)TipoEntradaSaida).ToString(); }
-            set { TipoEntradaSaida = (TipoEntradaSaida)Enum.Parse(typeof(TipoEntradaSaida), value); }
+            set { TipoEntradaSaida = (TipoEntradaSaida)System.Enum.Parse(typeof(TipoEntradaSaida), value); }
         }
 
     }

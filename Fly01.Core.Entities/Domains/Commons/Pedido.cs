@@ -1,9 +1,8 @@
-﻿using System;
-using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Compras.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class Pedido : OrdemCompra
     {
@@ -35,12 +34,8 @@ namespace Fly01.Compras.Domain.Entities
 
         public Guid? OrcamentoOrigemId { get; set; }
 
-        #region Navigations Properties
-
         public virtual Pessoa Fornecedor { get; set; }
         public virtual Pessoa Transportadora { get; set; }
         public virtual Orcamento OrcamentoOrigem { get; set; }
-
-        #endregion
     }
 }

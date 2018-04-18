@@ -39,7 +39,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\MonitorNF.cs" />
     <Compile Include="Entities\MovimentoOrdemVenda.cs" />
     <Compile Include="Entities\Entidade.cs" />
@@ -50,13 +49,10 @@
     <Compile Include="Entities\PedidoProdutoEstoqueNegativo.cs" />
     <Compile Include="Entities\CertificadoDigital.cs" />
     <Compile Include="Entities\SerieNotaFiscal.cs" />
-    <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaReceber.cs" />
-    <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\ParametroTributario.cs" />
-    <Compile Include="Entities\GrupoTributario.cs" />
     <Compile Include="Entities\Movimento.cs" />
     <Compile Include="Entities\Nbs.cs" />
     <Compile Include="Entities\Iss.cs" />

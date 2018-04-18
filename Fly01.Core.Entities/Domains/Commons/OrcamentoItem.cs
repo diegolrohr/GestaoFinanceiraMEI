@@ -1,8 +1,7 @@
-﻿using Fly01.Core.Entities.Domains.Commons;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Compras.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class OrcamentoItem : OrdemCompraItem
     {
@@ -12,11 +11,7 @@ namespace Fly01.Compras.Domain.Entities
         [Required]
         public Guid FornecedorId { get; set; }
 
-        #region Navigations Properties
-
         public virtual Pessoa Fornecedor { get; set; }
         public virtual Orcamento Orcamento { get; set; }
-
-        #endregion
     }
 }

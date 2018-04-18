@@ -179,12 +179,12 @@ namespace Fly01.Faturamento.BL
                         ImpressaoDANFE = EmissaoNFE.Domain.Enums.TipoImpressaoDanfe.Retrato,
                         ChaveAcessoDV = 0,
                         CodigoNF = entity.NumNotaFiscal.Value.ToString(),
-                        Ambiente = (EmissaoNFE.Domain.Enums.TipoAmbiente)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoAmbiente), parametros.TipoAmbiente.ToString()),
+                        Ambiente = (EmissaoNFE.Domain.Enums.TipoAmbiente)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoAmbiente), parametros.TipoAmbiente.ToString()),
                         FinalidadeEmissaoNFe = EmissaoNFE.Domain.Enums.TipoFinalidadeEmissaoNFe.Normal,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
                         PresencaComprador = EmissaoNFE.Domain.Enums.TipoPresencaComprador.Presencial,
                         Versao = "2.77",
-                        FormaEmissao = (EmissaoNFE.Domain.Enums.TipoModalidade)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoModalidade), parametros.TipoModalidade.ToString()),
+                        FormaEmissao = (EmissaoNFE.Domain.Enums.TipoModalidade)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoModalidade), parametros.TipoModalidade.ToString()),
                         CodigoProcessoEmissaoNFe = 0
                     };
                     #endregion
@@ -216,7 +216,7 @@ namespace Fly01.Faturamento.BL
                     {
                         Cnpj = cliente.TipoDocumento == "J" ? cliente.CPFCNPJ : null,
                         Cpf = cliente.TipoDocumento == "F" ? cliente.CPFCNPJ : null,
-                        IndInscricaoEstadual = (EmissaoNFE.Domain.Enums.IndInscricaoEstadual)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.IndInscricaoEstadual), cliente.TipoIndicacaoInscricaoEstadual.ToString()),
+                        IndInscricaoEstadual = (EmissaoNFE.Domain.Enums.IndInscricaoEstadual)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.IndInscricaoEstadual), cliente.TipoIndicacaoInscricaoEstadual.ToString()),
                         InscricaoEstadual = cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? cliente.InscricaoEstadual : null,
                         Nome = cliente.Nome,
                         Endereco = new Endereco()
@@ -236,7 +236,7 @@ namespace Fly01.Faturamento.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (EmissaoNFE.Domain.Enums.ModalidadeFrete)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.ModalidadeFrete), entity.TipoFrete.ToString())
+                        ModalidadeFrete = (EmissaoNFE.Domain.Enums.ModalidadeFrete)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.ModalidadeFrete), entity.TipoFrete.ToString())
                     };
                     if (transportadora != null)
                     {
@@ -345,7 +345,7 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.IPI = new IPIPai()
                             {
                                 CodigoST = item.GrupoTributario.TipoTributacaoIPI.HasValue ?
-                                    (EmissaoNFE.Domain.Enums.CSTIPI)Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
+                                    (EmissaoNFE.Domain.Enums.CSTIPI)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
                                     EmissaoNFE.Domain.Enums.CSTIPI.OutrasSaidas,
                                 ValorIPI = itemTributacao.IPIValor,
                                 CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI != null ?

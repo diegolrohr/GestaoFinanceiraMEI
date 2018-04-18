@@ -67,7 +67,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     //FCP
                     ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
                     ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
-                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPRetidoST", ValorFCPRetidoST));
 
                     DoTheValidation();
 
@@ -83,7 +83,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorCreditoICMS = ValorCreditoICMS.Value,
                         ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
                         PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        ValorFCPRetidoST = ValorFCPRetidoST.Value
                     };
 
                     break;
@@ -99,7 +99,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     //FCP
                     ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
                     ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
-                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPRetidoST", ValorFCPRetidoST));
 
                     DoTheValidation();
 
@@ -113,7 +113,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST.Value,
                         ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
                         PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        ValorFCPRetidoST = ValorFCPRetidoST.Value
                     };
 
                     break;
@@ -128,7 +128,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     //FCP
                     ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
                     ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
-                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPRetidoST", ValorFCPRetidoST));
 
                     DoTheValidation();
 
@@ -142,7 +142,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST.Value,
                         ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
                         PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        ValorFCPRetidoST = ValorFCPRetidoST.Value
                     };
 
                     break;
@@ -166,14 +166,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         AliquotaFCPConsumidorFinal = AliquotaFCPConsumidorFinal.Value,
                         ValorBaseFCPRetidoAnteriorST = ValorBaseFCPRetidoAnteriorST.Value,
                         PercentualFCPRetidoAnteriorST = PercentualFCPRetidoAnteriorST.Value,
-                        ValorFCPRetidoST = ValorFCPRetidoST.Value
+                        ValorFCPRetidoAnteriorST = ValorFCPRetidoAnteriorST.Value
                     };
                     break;
                 case "900"://Outros
                     //FCP
                     ToValidate.Add(NewKeyValuePair("ValorBaseFCPRetidoST", ValorBaseFCPRetidoST));
                     ToValidate.Add(NewKeyValuePair("PercentualFCPRetidoST", PercentualFCPRetidoST));
-                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
+                    ToValidate.Add(NewKeyValuePair("ValorFCPRetidoST", ValorFCPRetidoST));
 
                     DoTheValidation();
 
@@ -200,7 +200,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         PercentualReducaoBC = PercentualReducaoBC,
                         ValorBaseFCPRetidoST = ValorBaseFCPRetidoST.Value,
                         PercentualFCPRetidoST = PercentualFCPRetidoST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        ValorFCPRetidoST = ValorFCPRetidoST.Value
                     };
 
                     break;
@@ -296,7 +296,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         /// Valor do FCP retido por Substituição Tributária
         /// </summary>
         [XmlIgnore]
-        public double? ValorFCPST { get; set; }
+        public double? ValorFCPRetidoST { get; set; }
 
         /// <summary>
         /// Alíquota suportada pelo Consumidor Final
@@ -317,10 +317,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double? PercentualFCPRetidoAnteriorST { get; set; }
 
         /// <summary>
-        /// Valor do FCP retido por Substituição Tributária
+        /// Valor do FCP retido anteriormente por Substituição Tributária
         /// </summary>
         [XmlIgnore]
-        public double? ValorFCPRetidoST { get; set; }
+        public double? ValorFCPRetidoAnteriorST { get; set; }
 
         #endregion FCP
 

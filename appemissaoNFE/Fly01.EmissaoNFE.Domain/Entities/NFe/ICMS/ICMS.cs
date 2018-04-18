@@ -41,7 +41,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         /// Valor do FCP retido por Substituição Tributária
         /// </summary>
         [XmlElement(ElementName = "vFCPST")]
-        public double ValorFCPST { get; set; }
+        public double ValorFCPRetidoST { get; set; }
 
         /// <summary>
         /// Alíquota suportada pelo Consumidor Final
@@ -62,10 +62,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public double PercentualFCPRetidoAnteriorST { get; set; }
 
         /// <summary>
-        /// Valor do FCP retido por Substituição Tributária
+        /// Valor do FCP retido anteriormente por Substituição Tributária
         /// </summary>
         [XmlElement(ElementName = "vFCPSTRet")]
-        public double ValorFCPRetidoST { get; set; }
+        public double ValorFCPRetidoAnteriorST { get; set; }
 
         #endregion FCP
 

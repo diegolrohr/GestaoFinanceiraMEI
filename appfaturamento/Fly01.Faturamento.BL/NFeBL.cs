@@ -302,13 +302,13 @@ namespace Fly01.Faturamento.BL
                         {
                             OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
-                            AliquotaAplicavelCalculoCreditoSN = item.ValorCreditoICMS.HasValue ? Math.Round(((item.ValorCreditoICMS.Value / item.Total) * 100), 2) : 0,
-                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS.HasValue ? item.ValorCreditoICMS.Value : 0, 2),
+                            AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
+                            ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                         };
 
                         if (itemTributacao.CalculaICMS)
                         {
-                            detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido.HasValue ? item.ValorICMSSTRetido.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
                             detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
                             detalhe.Imposto.ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
@@ -326,17 +326,17 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
-                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido.HasValue ? item.ValorBCSTRetido.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
 
                             // FCP (201, 202, 203 e 900)
-                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.ValorBaseFCPRetidoST.HasValue ? itemTributacao.ValorBaseFCPRetidoST.Value : 0, 2);
-                            detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.PercentualFCPRetidoST.HasValue ? itemTributacao.PercentualFCPRetidoST.Value : 0, 2);
-                            detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.ValorFCPST.HasValue ? itemTributacao.ValorFCPST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.FCPSTBase, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.FCPSTAliquota, 2);
+                            detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.FCPSTValor, 2);
                             // FCP (500)
-                            detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(itemTributacao.AliquotaFCPConsumidorFinal.HasValue ? itemTributacao.AliquotaFCPConsumidorFinal.Value : 0, 2);
-                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(itemTributacao.ValorBaseFCPRetidoAnteriorST.HasValue ? itemTributacao.ValorBaseFCPRetidoAnteriorST.Value : 0, 2);
-                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(itemTributacao.PercentualFCPRetidoAnteriorST.HasValue ? itemTributacao.PercentualFCPRetidoAnteriorST.Value : 0, 2);
-                            detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.ValorFCPRetidoST.HasValue ? itemTributacao.ValorFCPRetidoST.Value : 0, 2);
+                            detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(item.AliquotaFCPConsumidorFinal, 2);
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(item.Total, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(((item.ValorFCPSTRetidoAnterior / item.Total) * 100), 2);
+                            detalhe.Imposto.ICMS.ValorFCPRetidoAnteriorST = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                         }
 
                         if (itemTributacao.CalculaIPI)

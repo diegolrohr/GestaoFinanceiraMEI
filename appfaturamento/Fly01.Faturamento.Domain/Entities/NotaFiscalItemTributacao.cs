@@ -58,43 +58,26 @@ namespace Fly01.Faturamento.Domain.Entities
         public double FCPAliquota { get; set; }
 
         public double FCPValor { get; set; }
+        #endregion FCP
 
+        #region FCP ST
         /// <summary>
         /// Valor da Base de Cálculo do FCP retido por Substituição Tributária
         /// </summary>
-        public double? ValorBaseFCPRetidoST { get; set; }
+        public double FCPSTBase { get; set; }
 
         /// <summary>
         /// Percentual do FCP retido por Substituição Tributária
         /// </summary>
-        public double? PercentualFCPRetidoST { get; set; }
+        public double FCPSTAliquota { get; set; }
 
         /// <summary>
         /// Valor do FCP retido por Substituição Tributária
         /// </summary>
-        public double? ValorFCPST { get; set; }
+        public double FCPSTValor { get; set; }
+                        
+        #endregion
 
-        /// <summary>
-        /// Alíquota suportada pelo Consumidor Final
-        /// </summary>
-        public double? AliquotaFCPConsumidorFinal { get; set; }
-
-        /// <summary>
-        /// Valor da Base de Cálculo do FCP retido anteriormente por ST
-        /// </summary>
-        public double? ValorBaseFCPRetidoAnteriorST { get; set; }
-
-        /// <summary>
-        /// Percentual do FCP retido anteriormente por Substituição Tributária
-        /// </summary>
-        public double? PercentualFCPRetidoAnteriorST { get; set; }
-
-        /// <summary>
-        /// Valor do FCP retido por Substituição Tributária
-        /// </summary>
-        public double? ValorFCPRetidoST { get; set; }
-
-        #endregion FCP
 
         #region Navigations Properties
 

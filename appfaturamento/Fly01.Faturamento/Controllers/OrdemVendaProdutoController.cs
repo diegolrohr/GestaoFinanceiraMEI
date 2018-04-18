@@ -149,7 +149,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "valorFCPSTRetidoAnterior",
                 Class = "col s12 l6 numeric",
-                Label = "FCP ST Retido",
+                Label = "FCP ST Retido Anterior",
                 Value = "0"
             });
 

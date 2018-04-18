@@ -151,7 +151,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = ListContas.Id,
-                    Status = ListContas.StatusContaBancaria,
+                    Status = ListContas.StatusContaBancaria == "EmAberto" ? "Em Aberto" : ListContas.StatusContaBancaria,
                     Descricao = ListContas.Descricao,
                     Valor = ListContas.ValorPrevisto.ToString(),
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,

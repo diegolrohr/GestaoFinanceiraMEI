@@ -11,7 +11,7 @@ namespace Fly01.Compras.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
+            return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl, "GridLoad");
         }
         public override ContentResult Sidebar()
         {

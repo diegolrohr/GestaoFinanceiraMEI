@@ -8,8 +8,6 @@ namespace Fly01.Faturamento.Entities.ViewModel
     [Serializable]
     public class NotaFiscalVM : DomainBaseVM
     {
-        [JsonProperty("numero")]
-        public int Numero { get; set; }
 
         [JsonProperty("ordemVendaOrigemId")]
         public Guid OrdemVendaOrigemId { get; set; }

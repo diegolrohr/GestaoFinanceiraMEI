@@ -6,15 +6,20 @@
         $('form#fly01mdlfrmOrdemVendaProduto #valorCreditoICMSField').hide();
         $('form#fly01mdlfrmOrdemVendaProduto #valorICMSSTRetidoField').hide();
         $('form#fly01mdlfrmOrdemVendaProduto #valorBCSTRetidoField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #aliquotaFCPConsumidorFinalField').hide();
+        $('form#fly01mdlfrmOrdemVendaProduto #valorFCPSTRetidoAnteriorField').hide();
         
         //101 e 201 e 900
         if (tipoTribICMS == "TributadaComPermissaoDeCredito" || tipoTribICMS == "TributadaComPermissaoDeCreditoST" || tipoTribICMS == "Outros") {
             $('form#fly01mdlfrmOrdemVendaProduto #valorCreditoICMSField').show();
         }
-        else if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {//500
+        //500
+        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {
             $('form#fly01mdlfrmOrdemVendaProduto #valorICMSSTRetidoField').show();
             $('form#fly01mdlfrmOrdemVendaProduto #valorBCSTRetidoField').show();
-        }        
+            $('form#fly01mdlfrmOrdemVendaProduto #aliquotaFCPConsumidorFinalField').show();
+            $('form#fly01mdlfrmOrdemVendaProduto #valorFCPSTRetidoAnteriorField').show();
+        }
     }
 
     function fnFormReadyOrdemVendaProduto() {

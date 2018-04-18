@@ -220,6 +220,14 @@
     <Compile Include="Migrations\201804131130505_AlterNumeroOrdemVenda.Designer.cs">
       <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171613243_ALterNotaFiscalRemoveNumero.cs" />
+    <Compile Include="Migrations\201804171613243_ALterNotaFiscalRemoveNumero.Designer.cs">
+      <DependentUpon>201804171613243_ALterNotaFiscalRemoveNumero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804172305019_AlterVendaNotaTributacaoFCPST.cs" />
+    <Compile Include="Migrations\201804172305019_AlterVendaNotaTributacaoFCPST.Designer.cs">
+      <DependentUpon>201804172305019_AlterVendaNotaTributacaoFCPST.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -378,6 +386,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804131130505_AlterNumeroOrdemVenda.resx">
       <DependentUpon>201804131130505_AlterNumeroOrdemVenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171613243_ALterNotaFiscalRemoveNumero.resx">
+      <DependentUpon>201804171613243_ALterNotaFiscalRemoveNumero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804172305019_AlterVendaNotaTributacaoFCPST.resx">
+      <DependentUpon>201804172305019_AlterVendaNotaTributacaoFCPST.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

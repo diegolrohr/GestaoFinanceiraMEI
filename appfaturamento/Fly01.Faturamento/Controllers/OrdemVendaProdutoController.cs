@@ -135,7 +135,24 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Base Cálculo ST Retido",
                 Value = "0"
             });
-            
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaFCPConsumidorFinal",
+                Class = "col s12 l6",
+                Label = "Alíquota FCP Consumidor Final",
+                Value = "0",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorFCPSTRetidoAnterior",
+                Class = "col s12 l6 numeric",
+                Label = "FCP ST Retido",
+                Value = "0"
+            });
+
             #region Helpers 
             config.Helpers.Add(new TooltipUI
             {
@@ -159,6 +176,22 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Informe a Base Cálculo Substituição Tributária Retido, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado. Informe nos parâmetros tributários, a aliquota do Simples Nacional."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorFCPSTRetidoAnterior",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o Fundo de Combate a Pobreza Retido anteriormente, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "aliquotaFCPConsumidorFinal",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a Alíquota do Fundo de Combate a Pobreza para consumidor final, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
                 }
             });
             #endregion

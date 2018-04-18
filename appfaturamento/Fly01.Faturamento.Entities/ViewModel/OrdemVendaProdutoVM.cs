@@ -10,13 +10,20 @@ namespace Fly01.Faturamento.Entities.ViewModel
         public Guid ProdutoId { get; set; }
 
         [JsonProperty("valorCreditoICMS")]
-        public double? ValorCreditoICMS { get; set; }
+        public double ValorCreditoICMS { get; set; }
 
         [JsonProperty("valorICMSSTRetido")]
-        public double? ValorICMSSTRetido { get; set; }
+        public double ValorICMSSTRetido { get; set; }
 
         [JsonProperty("valorBCSTRetido")]
-        public double? ValorBCSTRetido { get; set; }
+        public double ValorBCSTRetido { get; set; }
+
+        [JsonProperty("valorFCPSTRetidoAnterior")]
+        public double ValorFCPSTRetidoAnterior { get; set; }
+
+        [JsonProperty("aliquotaFCPConsumidorFinal")]
+        public double AliquotaFCPConsumidorFinal { get; set; }
+
 
         #region NavigationProperties
 

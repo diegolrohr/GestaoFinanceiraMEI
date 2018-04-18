@@ -8,11 +8,15 @@ namespace Fly01.Faturamento.Domain.Entities
         [Required]
         public Guid ProdutoId { get; set; }
 
-        public double? ValorCreditoICMS { get; set; }
+        public double ValorCreditoICMS { get; set; }
 
-        public double? ValorICMSSTRetido { get; set; }
+        public double ValorICMSSTRetido { get; set; }
 
-        public double? ValorBCSTRetido { get; set; }
+        public double ValorBCSTRetido { get; set; }
+
+        public double ValorFCPSTRetidoAnterior { get; set; }
+
+        public double AliquotaFCPConsumidorFinal { get; set; }
 
         #region Navigations Properties
 

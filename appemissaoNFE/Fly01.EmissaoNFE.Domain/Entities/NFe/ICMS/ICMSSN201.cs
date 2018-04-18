@@ -21,5 +21,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlElement(ElementName = "vCredICMSSN")]
         public double ValorCreditoICMS { get; set; }
+
+        [XmlElement(ElementName = "vBCFCPST")]
+        public double vBCFCPST { get; set; }
     }
 }

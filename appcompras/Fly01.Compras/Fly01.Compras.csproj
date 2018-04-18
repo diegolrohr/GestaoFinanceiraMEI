@@ -238,6 +238,8 @@
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -111,7 +111,7 @@ namespace Fly01.Financeiro.BL
         {
             foreach (var item in insertedPessoas)
             {
-                Producer.Send(routingKeyPessoa, item, RabbitConfig.enHTTPVerb.POST);
+                Producer<Pessoa>.Send(routingKeyPessoa, item, RabbitConfig.enHTTPVerb.POST);
             }
         }
 

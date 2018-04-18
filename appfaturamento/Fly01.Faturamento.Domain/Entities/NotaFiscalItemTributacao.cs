@@ -35,12 +35,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double STValor { get; set; }
 
-        public double FCPBase { get; set; }
-
-        public double FCPAliquota { get; set; }
-
-        public double FCPValor { get; set; }
-
         public bool CalculaCOFINS { get; set; }
 
         public double COFINSBase { get; set; }
@@ -56,6 +50,34 @@ namespace Fly01.Faturamento.Domain.Entities
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
+
+        #region FCP
+
+        public double FCPBase { get; set; }
+
+        public double FCPAliquota { get; set; }
+
+        public double FCPValor { get; set; }
+        #endregion FCP
+
+        #region FCP ST
+        /// <summary>
+        /// Valor da Base de Cálculo do FCP retido por Substituição Tributária
+        /// </summary>
+        public double FCPSTBase { get; set; }
+
+        /// <summary>
+        /// Percentual do FCP retido por Substituição Tributária
+        /// </summary>
+        public double FCPSTAliquota { get; set; }
+
+        /// <summary>
+        /// Valor do FCP retido por Substituição Tributária
+        /// </summary>
+        public double FCPSTValor { get; set; }
+                        
+        #endregion
+
 
         #region Navigations Properties
 

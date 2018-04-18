@@ -38,39 +38,6 @@ namespace Fly01.Faturamento.BL
             TotalTributacaoBL = totalTributacaoBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
         }
-        
-        public void ValidaCreditosICMS(OrdemVenda entity, List<OrdemVendaProduto> produtos)
-        {
-            var parametros = TotalTributacaoBL.GetParametrosTributarios();
-            if (parametros != null)
-            {
-                var itemCount = 1;
-                foreach (var item in produtos)
-                {
-                    var grupoTributario = TotalTributacaoBL.GetGrupoTributario(item.GrupoTributarioId);
-                    switch ((grupoTributario.TipoTributacaoICMS != null ? ((int)grupoTributario.TipoTributacaoICMS).ToString() : ((int)TipoTributacaoICMS.Outros).ToString()))
-                    {
-                        case "101": //Tributada pelo Simples Nacional com permissão de crédito
-                            entity.Fail(!item.ValorCreditoICMS.HasValue, new Error(ValorCreditoSNRequerido.Replace("{itemcount}", itemCount.ToString())));
-                            break;
-
-                        case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
-                            entity.Fail(!item.ValorCreditoICMS.HasValue, new Error(ValorCreditoSNRequerido.Replace("{itemcount}", itemCount.ToString())));
-                            break;
-
-                        case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
-                            entity.Fail(!item.ValorBCSTRetido.HasValue, new Error(ValorBCSTRetidoRequerido.Replace("{itemcount}", itemCount.ToString())));
-                            entity.Fail(!item.ValorICMSSTRetido.HasValue, new Error(ValorICMSSTRetidoRequerido.Replace("{itemcount}", itemCount.ToString())));
-                            break;
-                    }
-                    itemCount++;
-                }
-            }
-            else
-            {
-                entity.Fail(parametros == null, new Error("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações"));
-            }
-        }
 
         public override void ValidaModel(OrdemVenda entity)
         {
@@ -101,10 +68,6 @@ namespace Fly01.Faturamento.BL
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
-                if (entity.GeraNotaFiscal && produtos.Any())
-                {
-                    ValidaCreditosICMS(entity, produtos);
-                }
             }
 
             base.ValidaModel(entity);
@@ -178,7 +141,9 @@ namespace Fly01.Faturamento.BL
                             Observacao = x.Observacao,
                             ValorBCSTRetido = x.ValorBCSTRetido,
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
-                            ValorCreditoICMS = x.ValorCreditoICMS
+                            ValorCreditoICMS = x.ValorCreditoICMS,
+                            ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
+                            AliquotaFCPConsumidorFinal = x.AliquotaFCPConsumidorFinal
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
@@ -210,7 +175,13 @@ namespace Fly01.Faturamento.BL
                             PISBase = x.PISBase,
                             PISAliquota = x.PISAliquota,
                             PISValor = x.PISValor,
-                            FreteValorFracionado = x.FreteValorFracionado
+                            FreteValorFracionado = x.FreteValorFracionado,
+                            FCPSTBase = x.FCPBase,
+                            FCPSTAliquota = x.FCPAliquota,
+                            FCPSTValor = x.FCPValor,
+                            FCPBase = x.FCPBase,
+                            FCPAliquota = x.FCPAliquota,
+                            FCPValor = x.FCPValor,
                         });
                 }
 
@@ -332,9 +303,7 @@ namespace Fly01.Faturamento.BL
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
 
-                //Producer<ContaPagarRabbit>.Send(routePrefixNameContaReceber, new ContaPagarRabbit() { }, RabbitConfig.enHTTPVerb.POST);
-
-                Producer.Send(routePrefixNameContaReceber, contaReceber, RabbitConfig.enHTTPVerb.POST);
+                Producer<ContaReceber>.Send(routePrefixNameContaReceber, contaReceber, RabbitConfig.enHTTPVerb.POST);
             }
 
             if (entity.MovimentaEstoque)
@@ -357,7 +326,7 @@ namespace Fly01.Faturamento.BL
 
                 foreach (var movimentoBaixa in movimentos)
                 {
-                    Producer.Send(routePrefixNameMovimentoOrdemVenda, movimentoBaixa, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, movimentoBaixa, RabbitConfig.enHTTPVerb.POST);
                 }
             }
         }

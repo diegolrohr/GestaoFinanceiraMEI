@@ -52,16 +52,27 @@
     <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
+    <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
     <Compile Include="Domains\Commons\Cest.cs" />
     <Compile Include="Domains\Commons\Cfop.cs" />
     <Compile Include="Domains\Commons\Cidade.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
+    <Compile Include="Domains\Commons\EnquadramentoLegalIPI.cs" />
     <Compile Include="Domains\Commons\Estado.cs" />
+    <Compile Include="Domains\Commons\GrupoProduto.cs" />
+    <Compile Include="Domains\Commons\Inventario.cs" />
+    <Compile Include="Domains\Commons\InventarioItem.cs" />
+    <Compile Include="Domains\Commons\MovimentoEstoque.cs" />
+    <Compile Include="Domains\Commons\MovimentoOrdemVenda.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\Pessoa.cs" />
+    <Compile Include="Domains\Commons\PosicaoAtual.cs" />
+    <Compile Include="Domains\Commons\Produto.cs" />
+    <Compile Include="Domains\Commons\ProdutoMovimentado.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
+    <Compile Include="Domains\Commons\TipoMovimento.cs" />
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
@@ -135,13 +146,13 @@
     <Compile Include="ViewModels\SystemValueVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

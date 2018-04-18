@@ -4,8 +4,6 @@ using System.Web.Http;
 using Fly01.Financeiro.BL;
 using Fly01.Core.API;
 
-using Fly01.Core.Entities.Domains.Commons;
-
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [RoutePrefix("renegociacaocontasrelacionamento")]

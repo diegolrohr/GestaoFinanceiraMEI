@@ -1,7 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
-using System;
-
-namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class MonitorVM : EntidadeVM
     {

@@ -2,13 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Compras.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Serializable]
     public class Produto : PlataformaBase
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
@@ -33,7 +30,7 @@ namespace Fly01.Compras.Domain.Entities
         public string TipoProdutoRest
         {
             get { return ((int)TipoProduto).ToString(); }
-            set { TipoProduto = (TipoProduto)Enum.Parse(typeof(TipoProduto), value); }
+            set { TipoProduto = (TipoProduto)System.Enum.Parse(typeof(TipoProduto), value); }
         }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
@@ -55,14 +52,11 @@ namespace Fly01.Compras.Domain.Entities
         public string Observacao { get; set; }
 
         public double AliquotaIpi { get; set; }
-
-
-        #region Navigations Properties
+        
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
         public virtual Ncm Ncm { get; set; }
         public virtual Cest Cest { get; set; }
         public virtual EnquadramentoLegalIPI EnquadramentoLegalIPI { get; set; }
-        #endregion
     }
 }

@@ -1,5 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModel
 {

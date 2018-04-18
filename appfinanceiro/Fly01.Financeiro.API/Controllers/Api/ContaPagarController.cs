@@ -4,8 +4,6 @@ using Fly01.Financeiro.Domain.Entities;
 using System.Web.Http;
 using System.Web.OData;
 using System.Linq;
-using Fly01.Core.Notifications;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

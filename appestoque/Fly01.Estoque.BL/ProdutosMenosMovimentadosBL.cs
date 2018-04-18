@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

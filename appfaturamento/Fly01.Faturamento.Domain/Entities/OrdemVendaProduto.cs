@@ -1,4 +1,5 @@
 ﻿using System;
+using Fly01.Core.Entities.Domains.Commons;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Faturamento.Domain.Entities

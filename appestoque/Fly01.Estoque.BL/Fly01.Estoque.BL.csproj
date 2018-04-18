@@ -98,10 +98,6 @@
       <Project>{5ca487a2-50ea-4685-8592-c4457ef21f60}</Project>
       <Name>Fly01.Estoque.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Estoque.Domain\Fly01.Estoque.Domain.csproj">
-      <Project>{4c0174a5-ae52-45b7-a89d-6f6b73a0223a}</Project>
-      <Name>Fly01.Estoque.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

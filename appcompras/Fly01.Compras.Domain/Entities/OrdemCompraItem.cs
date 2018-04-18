@@ -1,5 +1,6 @@
-﻿using Fly01.Core.Entities.Domains;
-using System;
+﻿using System;
+using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Compras.Domain.Entities

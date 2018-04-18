@@ -39,9 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\MonitorNF.cs" />
-    <Compile Include="Entities\MovimentoOrdemVenda.cs" />
     <Compile Include="Entities\Entidade.cs" />
     <Compile Include="Entities\NotaFiscalItemTributacao.cs" />
     <Compile Include="Entities\TotalNotaFiscal.cs" />
@@ -55,10 +53,8 @@
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaReceber.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
-    <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\ParametroTributario.cs" />
     <Compile Include="Entities\GrupoTributario.cs" />
-    <Compile Include="Entities\Movimento.cs" />
     <Compile Include="Entities\Nbs.cs" />
     <Compile Include="Entities\Iss.cs" />
     <Compile Include="Entities\NFSeServico.cs" />
@@ -71,7 +67,6 @@
     <Compile Include="Entities\NFeProduto.cs" />
     <Compile Include="Entities\OrdemVendaProduto.cs" />
     <Compile Include="Entities\OrdemVendaServico.cs" />
-    <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />

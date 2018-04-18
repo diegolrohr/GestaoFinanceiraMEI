@@ -1,6 +1,5 @@
 ﻿using System;
 using Fly01.Core.Entities.Domains;
-using Fly01.Faturamento.Domain.Enums;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
 

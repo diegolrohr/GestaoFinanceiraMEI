@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class SchemaXMLMensagemVM
     {

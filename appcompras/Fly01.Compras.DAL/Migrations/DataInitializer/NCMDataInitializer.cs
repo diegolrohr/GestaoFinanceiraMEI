@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Data.Entity.Migrations;
-using Fly01.Compras.Domain.Entities;
 using Fly01.Compras.DAL.Migrations.DataInitializer.Contract;
 using Fly01.Core.Entities.Domains.Commons;
 

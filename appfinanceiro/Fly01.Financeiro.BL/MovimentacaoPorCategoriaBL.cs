@@ -3,7 +3,6 @@ using Fly01.Core.Entities.Domains;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {

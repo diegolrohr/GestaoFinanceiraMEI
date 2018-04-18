@@ -1,8 +1,7 @@
 namespace Fly01.Estoque.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Create_EnquadramentoLegalIpi : DbMigration
     {
         public override void Up()

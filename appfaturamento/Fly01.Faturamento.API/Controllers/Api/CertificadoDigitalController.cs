@@ -7,8 +7,6 @@ using System;
 using System.Web.OData;
 using System.Linq;
 using Fly01.Core.Notifications;
-using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

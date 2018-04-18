@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains;
-using Fly01.Faturamento.Domain.Enums;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

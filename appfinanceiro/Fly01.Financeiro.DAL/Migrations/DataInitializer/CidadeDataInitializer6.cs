@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Financeiro.Domain.Entities;
 using System.Collections.Generic;
 using Fly01.Core.Entities.Domains.Commons;
 

@@ -117,7 +117,7 @@ namespace Fly01.Compras.BL
             {
                 foreach (var item in pedidoItens)
                 {
-                    Movimento movimento = new Movimento()
+                    MovimentoEstoque movimento = new MovimentoEstoque()
                     {
                         QuantidadeMovimento = item.Quantidade,
                         ProdutoId = item.ProdutoId,
@@ -125,7 +125,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl
                     };
 
-                    Producer<Movimento>.Send(routePrefixNameMovimento, movimento, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, movimento, RabbitConfig.enHTTPVerb.POST);
                 }
             }
         }

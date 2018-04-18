@@ -4,13 +4,12 @@ using Fly01.Core.BL;
 using Newtonsoft.Json;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
-using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.BL
 {
-    public class MovimentoBL : PlataformaBaseBL<Movimento>
+    public class MovimentoBL : PlataformaBaseBL<MovimentoEstoque>
     {
         protected ProdutoBL ProdutoBL;
         protected TipoMovimentoBL TipoMovimentoBL;
@@ -25,7 +24,7 @@ namespace Fly01.Estoque.BL
             MustConsumeMessageServiceBus = true;
         }
 
-        public override void ValidaModel(Movimento entity)
+        public override void ValidaModel(MovimentoEstoque entity)
         {
             entity.Fail(entity.ProdutoId == Guid.Empty, ProdutoNaoInformado);
             entity.Fail(entity.TipoMovimentoId == Guid.Empty, TipoMovimentoNaoInformado);
@@ -33,7 +32,7 @@ namespace Fly01.Estoque.BL
             base.ValidaModel(entity);
         }
 
-        public override void Insert(Movimento entity)
+        public override void Insert(MovimentoEstoque entity)
         {
             var produto = ProdutoBL.All.FirstOrDefault(x => x.Id == entity.ProdutoId);
             var tipoMovimento = TipoMovimentoBL.All.FirstOrDefault(x => x.Id == entity.TipoMovimentoId);
@@ -62,7 +61,7 @@ namespace Fly01.Estoque.BL
 
             double saldoProduto = produto.SaldoProduto.HasValue ? produto.SaldoProduto.Value : default(double);
 
-            Movimento m = new Movimento()
+            MovimentoEstoque m = new MovimentoEstoque()
             {
                 QuantidadeMovimento = entity.SaldoInventariado - saldoProduto,
                 ProdutoId = entity.ProdutoId,
@@ -82,7 +81,7 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public void Movimenta(Movimento entity)
+        public void Movimenta(MovimentoEstoque entity)
         {
             var produto = ProdutoBL.All.FirstOrDefault(x => x.Id == entity.ProdutoId);
 
@@ -103,7 +102,7 @@ namespace Fly01.Estoque.BL
 
         public override void PersistMessage(string entity, RabbitConfig.enHTTPVerb httpMethod)
         {
-            Movimento model = JsonConvert.DeserializeObject<Movimento>(entity);
+            MovimentoEstoque model = JsonConvert.DeserializeObject<MovimentoEstoque>(entity);
 
             if (model == null) return;
 

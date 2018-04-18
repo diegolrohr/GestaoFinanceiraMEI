@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web.UI.WebControls;
-using Fly01.Core.Entities.ViewModels.Commons;
 
 namespace Fly01.Core.Reports
 {

@@ -9,7 +9,6 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.BL
 {

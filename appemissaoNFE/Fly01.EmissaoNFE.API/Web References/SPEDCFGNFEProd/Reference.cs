@@ -13,15 +13,10 @@
 // 
 #pragma warning disable 1591
 
-namespace Fly01.EmissaoNFE.API.SPEDCFGNFEProd {
-    using System;
-    using System.Web.Services;
-    using System.Diagnostics;
-    using System.Web.Services.Protocols;
-    using System.Xml.Serialization;
-    using System.ComponentModel;
-    
-    
+namespace Fly01.EmissaoNFE.API.SPEDCFGNFEProd
+{
+
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2558.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]

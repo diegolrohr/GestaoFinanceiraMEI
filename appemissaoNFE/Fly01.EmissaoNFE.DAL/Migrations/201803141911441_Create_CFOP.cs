@@ -1,8 +1,7 @@
 namespace Fly01.EmissaoNFE.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Create_CFOP : DbMigration
     {
         public override void Up()

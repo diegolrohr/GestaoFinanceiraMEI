@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Base;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
@@ -46,7 +45,7 @@ namespace Fly01.Estoque.DAL
         public DbSet<GrupoProduto> GruposProduto { get; set; }
         public DbSet<Inventario> Inventarios { get; set; }
         public DbSet<InventarioItem> InventarioItens { get; set; }
-        public DbSet<Movimento> Movimentos { get; set; }
+        public DbSet<MovimentoEstoque> Movimentos { get; set; }
         public DbSet<TipoMovimento> TiposMovimento { get; set; }
         public DbSet<Cest> Cests { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }

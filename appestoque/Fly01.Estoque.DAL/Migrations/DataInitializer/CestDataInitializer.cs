@@ -1,5 +1,4 @@
 ﻿using Fly01.Estoque.DAL.Migrations.DataInitializer.Contract;
-using Fly01.Estoque.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

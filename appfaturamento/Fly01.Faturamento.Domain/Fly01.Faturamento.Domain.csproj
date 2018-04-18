@@ -50,7 +50,6 @@
     <Compile Include="Entities\PedidoProdutoEstoqueNegativo.cs" />
     <Compile Include="Entities\CertificadoDigital.cs" />
     <Compile Include="Entities\SerieNotaFiscal.cs" />
-    <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaReceber.cs" />

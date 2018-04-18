@@ -50,7 +50,6 @@
     <Compile Include="Entities\OrdemCompraItem.cs" />
     <Compile Include="Entities\Orcamento.cs" />
     <Compile Include="Entities\OrdemCompra.cs" />
-    <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />

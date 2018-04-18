@@ -58,6 +58,7 @@
     <Compile Include="Domains\Commons\Cfop.cs" />
     <Compile Include="Domains\Commons\Cidade.cs" />
     <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Domains\Commons\Estado.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\Pessoa.cs" />

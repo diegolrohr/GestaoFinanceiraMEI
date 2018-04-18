@@ -159,7 +159,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorCreditoICMS",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe o Crédito ICMS, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(101, 201 ou 900), configurada no grupo tributário selecionado."
+                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -167,7 +167,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorICMSSTRetido",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe o ICMS Substituição Tributária Retido, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado. Informe nos parâmetros tributários, a aliquota do Simples Nacional."
+                    Text = "Valor de Substituição Tributária retida. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -175,7 +175,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorBCSTRetido",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a Base Cálculo Substituição Tributária Retido, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado. Informe nos parâmetros tributários, a aliquota do Simples Nacional."
+                    Text = "Base de cálculo de Substituição Tributária retida. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -183,7 +183,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorFCPSTRetidoAnterior",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe o Fundo de Combate a Pobreza Retido anteriormente, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
+                    Text = "Valor do Fundo de Combate à Pobreza retido anteriormente. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -191,7 +191,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "aliquotaFCPConsumidorFinal",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a Alíquota do Fundo de Combate a Pobreza para consumidor final, se o pedido vai gerar nota fiscal, conforme o tipo de tributação ICMS(500), configurada no grupo tributário selecionado."
+                    Text = "Alíquota do Fundo de Combate à Pobreza para consumidor final. Se o pedido gerar nota fiscal com DIFAL, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             #endregion

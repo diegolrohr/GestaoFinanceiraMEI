@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Linq;
 using Fly01.Core.Notifications;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {

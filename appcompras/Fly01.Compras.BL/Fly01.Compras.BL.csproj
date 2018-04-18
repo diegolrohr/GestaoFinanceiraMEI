@@ -102,10 +102,6 @@
       <Project>{85c0fa0b-c48f-4799-9093-c61b3bc7d774}</Project>
       <Name>Fly01.Compras.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Compras.Domain\Fly01.Compras.Domain.csproj">
-      <Project>{2de9f034-1ba2-4969-af4d-36a9981dc4c4}</Project>
-      <Name>Fly01.Compras.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

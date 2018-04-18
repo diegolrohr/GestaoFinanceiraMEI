@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.BL;
-using Fly01.Compras.Domain.Entities;
 using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
 using Microsoft.OData.Edm;

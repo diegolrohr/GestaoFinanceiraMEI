@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NFe = Fly01.Faturamento.Domain.Entities.NFe;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.BL
 {

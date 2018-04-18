@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.Domain.Entities;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;

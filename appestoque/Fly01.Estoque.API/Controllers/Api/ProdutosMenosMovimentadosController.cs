@@ -2,7 +2,6 @@
 using Fly01.Estoque.BL;
 using System;
 using System.Web.Http;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.API.Controllers.Api
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class NFESVM
     {

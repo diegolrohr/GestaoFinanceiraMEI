@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains;
 using Fly01.Faturamento.Domain.Enums;
 using Fly01.Core.Entities.Domains.Enum;

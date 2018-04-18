@@ -1,10 +1,8 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Estoque.DAL.Migrations.DataInitializer.Contract;
-using Fly01.Estoque.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.DAL.Migrations.DataInitializer
 {

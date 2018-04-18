@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
-using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.API

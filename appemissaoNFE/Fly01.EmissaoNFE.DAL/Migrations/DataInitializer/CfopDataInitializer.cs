@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

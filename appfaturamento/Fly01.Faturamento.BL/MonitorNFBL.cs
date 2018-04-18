@@ -4,11 +4,9 @@ using Fly01.Core.BL;
 using System.Collections.Generic;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Newtonsoft.Json;
-using System;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.BL
 {

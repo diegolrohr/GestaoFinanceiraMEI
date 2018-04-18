@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Faturamento.Controllers.Base;
 using Newtonsoft.Json;
 using Fly01.uiJS.Classes;
 using Fly01.Core.Config;

@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.DAL;
-using Fly01.Compras.Domain.Entities;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
@@ -117,7 +116,7 @@ namespace Fly01.Compras.BL
             {
                 foreach (var item in pedidoItens)
                 {
-                    Movimento movimento = new Movimento()
+                    MovimentoEstoque movimento = new MovimentoEstoque()
                     {
                         QuantidadeMovimento = item.Quantidade,
                         ProdutoId = item.ProdutoId,
@@ -125,7 +124,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl
                     };
 
-                    Producer<Movimento>.Send(routePrefixNameMovimento, movimento, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, movimento, RabbitConfig.enHTTPVerb.POST);
                 }
             }
         }

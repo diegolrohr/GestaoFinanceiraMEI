@@ -1,6 +1,5 @@
 ﻿using Fly01.Core.Base;
 using System.Data.Entity;
-using Fly01.Compras.Domain.Entities;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;

@@ -1,8 +1,7 @@
-﻿using Fly01.Core.Entities.Domains;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Fly01.Estoque.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class PosicaoAtual : PlataformaBase
     {

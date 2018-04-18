@@ -18,10 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{EC0B9D55-BF3A-466B-9574-9CA7DB0D9E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Compras.Domain", "appcompras\Fly01.Compras.Domain\Fly01.Compras.Domain.csproj", "{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Estoque.Domain", "appestoque\Fly01.Estoque.Domain\Fly01.Estoque.Domain.csproj", "{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Faturamento.Domain", "appfaturamento\Fly01.Faturamento.Domain\Fly01.Faturamento.Domain.csproj", "{01A1B42A-991B-408C-853E-66A90D99A8E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.Financeiro.Domain", "appfinanceiro\Fly01.Financeiro.Domain\Fly01.Financeiro.Domain.csproj", "{F2EDC04E-6919-4A68-8E2B-B1E0BED0AA4D}"
@@ -116,18 +112,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Homologacao|Any CPU.ActiveCfg = Homologacao|Any CPU
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Homologacao|Any CPU.Build.0 = Homologacao|Any CPU
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Homologacao|Any CPU.ActiveCfg = Homologacao|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Homologacao|Any CPU.Build.0 = Homologacao|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01A1B42A-991B-408C-853E-66A90D99A8E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01A1B42A-991B-408C-853E-66A90D99A8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01A1B42A-991B-408C-853E-66A90D99A8E6}.Homologacao|Any CPU.ActiveCfg = Homologacao|Any CPU
@@ -361,8 +345,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2DE9F034-1BA2-4969-AF4D-36A9981DC4C4} = {76611C43-389A-43D0-8AB2-5364650DBAF8}
-		{4C0174A5-AE52-45B7-A89D-6F6B73A0223A} = {76611C43-389A-43D0-8AB2-5364650DBAF8}
 		{01A1B42A-991B-408C-853E-66A90D99A8E6} = {76611C43-389A-43D0-8AB2-5364650DBAF8}
 		{F2EDC04E-6919-4A68-8E2B-B1E0BED0AA4D} = {76611C43-389A-43D0-8AB2-5364650DBAF8}
 		{D848BBBD-61A9-4843-A16D-14A2B6EBEC85} = {FDE266FE-0F92-4245-B8D2-16180837DDDF}

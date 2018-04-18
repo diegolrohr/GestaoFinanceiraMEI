@@ -3,7 +3,6 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Faturamento.Domain.Entities;
-using Fly01.Faturamento.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

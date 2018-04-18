@@ -1,13 +1,12 @@
 ﻿using Fly01.Compras.DAL;
-using Fly01.Compras.Domain.Entities;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.BL
 {

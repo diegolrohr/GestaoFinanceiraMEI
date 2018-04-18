@@ -1,8 +1,7 @@
 namespace Fly01.Faturamento.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AlterVendaNotaTributacaoFCPST : DbMigration
     {
         public override void Up()

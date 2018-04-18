@@ -1,8 +1,7 @@
 namespace Fly01.Faturamento.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Alter_ParametroTributario_AliquotaFCP : DbMigration
     {
         public override void Up()

@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.DAL.Migrations.DataInitializer.Contract;
-using Fly01.Compras.Domain.Entities;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;

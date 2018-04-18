@@ -40,7 +40,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\MonitorNF.cs" />
-    <Compile Include="Entities\MovimentoOrdemVenda.cs" />
     <Compile Include="Entities\Entidade.cs" />
     <Compile Include="Entities\NotaFiscalItemTributacao.cs" />
     <Compile Include="Entities\TotalNotaFiscal.cs" />
@@ -50,7 +49,6 @@
     <Compile Include="Entities\CertificadoDigital.cs" />
     <Compile Include="Entities\SerieNotaFiscal.cs" />
     <Compile Include="Entities\ParametroTributario.cs" />
-    <Compile Include="Entities\Movimento.cs" />
     <Compile Include="Entities\Nbs.cs" />
     <Compile Include="Entities\Iss.cs" />
     <Compile Include="Entities\NFSeServico.cs" />
@@ -63,7 +61,6 @@
     <Compile Include="Entities\NFeProduto.cs" />
     <Compile Include="Entities\OrdemVendaProduto.cs" />
     <Compile Include="Entities\OrdemVendaServico.cs" />
-    <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />

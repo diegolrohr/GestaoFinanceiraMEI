@@ -4,7 +4,6 @@ using Fly01.Core.Notifications;
 using Fly01.Faturamento.DAL;
 using System;
 using System.Linq;
-using Fly01.Faturamento.Domain.Enums;
 using System.Data.Entity;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.BL
 {

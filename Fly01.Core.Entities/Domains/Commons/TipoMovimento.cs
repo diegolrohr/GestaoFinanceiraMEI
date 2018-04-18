@@ -1,18 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
-using System;
+﻿using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains.Enum;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Estoque.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class TipoMovimento : PlataformaBase
     {
         public const int DescricaoMaxLength = 40;
 
-        [StringLength(DescricaoMaxLength, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
+        [StringLength(DescricaoMaxLength, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Descricao { get; set; }
 
         [JsonIgnore]
@@ -26,6 +24,5 @@ namespace Fly01.Estoque.Domain.Entities
             get { return ((int)TipoEntradaSaida).ToString(); }
             set { TipoEntradaSaida = (TipoEntradaSaida)System.Enum.Parse(typeof(TipoEntradaSaida), value); }
         }
-
     }
 }

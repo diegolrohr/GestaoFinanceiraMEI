@@ -5,7 +5,6 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.BL
 {

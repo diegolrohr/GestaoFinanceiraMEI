@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Domain.Entities;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
@@ -47,7 +46,7 @@ namespace Fly01.Estoque.BL
         {
             ValidaModel(entity);
 
-            var movimento = new Movimento()
+            var movimento = new MovimentoEstoque()
             {
                 QuantidadeMovimento = entity.Quantidade,
                 Observacao = entity.Observacao,

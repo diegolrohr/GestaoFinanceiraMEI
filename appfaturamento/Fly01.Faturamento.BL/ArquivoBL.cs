@@ -1,5 +1,4 @@
 ﻿using Fly01.Faturamento.DAL;
-using Fly01.Faturamento.Domain.Entities;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;

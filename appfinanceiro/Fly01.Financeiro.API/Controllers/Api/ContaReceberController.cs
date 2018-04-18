@@ -1,6 +1,5 @@
 ﻿using Fly01.Financeiro.BL;
 using System.Web.OData.Routing;
-using Fly01.Financeiro.Domain.Entities;
 using System.Web.OData;
 using System.Web.Http;
 using System.Linq;

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

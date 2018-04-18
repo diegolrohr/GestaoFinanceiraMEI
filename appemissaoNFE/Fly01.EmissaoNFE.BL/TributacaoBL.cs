@@ -97,6 +97,8 @@ namespace Fly01.EmissaoNFE.BL
             entity.Fail(entity.Fcp != null && entity.Fcp.Aliquota <= 0, AliquotaFcpInvalida);
             #endregion
 
+            // TODO: ver validacoes fcp st
+
             base.ValidaModel(entity);
         }
 

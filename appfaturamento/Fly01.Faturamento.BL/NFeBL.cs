@@ -329,6 +329,7 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
 
                             // FCP (201, 202, 203 e 900)
+                            // TODO: necessario testar o tipo? informar sempre?
                             detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.FCPSTBase, 2);
                             detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.FCPSTAliquota, 2);
                             detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.FCPSTValor, 2);

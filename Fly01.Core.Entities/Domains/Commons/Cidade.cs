@@ -1,11 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Table("Cidade")]
-    public abstract class CidadeBase : DomainBase
+    public class Cidade : DomainBase
     {
         [Required]
         [StringLength(35)]
@@ -18,5 +16,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [Display(Name = "Estado")]
         public Guid EstadoId { get; set; }
+
+        public virtual Estado Estado { get; set; }
     }
 }

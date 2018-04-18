@@ -4,6 +4,8 @@ using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.DAL.Migrations.DataInitializer.Contract;
 using System.Collections.Generic;
 using Fly01.EmissaoNFE.DAL;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
 {

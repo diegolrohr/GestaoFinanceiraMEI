@@ -39,8 +39,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Arquivo.cs" />
-    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\MonitorNF.cs" />
     <Compile Include="Entities\MovimentoOrdemVenda.cs" />
@@ -51,16 +49,11 @@
     <Compile Include="Entities\TotalOrdemVenda.cs" />
     <Compile Include="Entities\PedidoProdutoEstoqueNegativo.cs" />
     <Compile Include="Entities\CertificadoDigital.cs" />
-    <Compile Include="Entities\Cest.cs" />
-    <Compile Include="Entities\Cfop.cs" />
     <Compile Include="Entities\SerieNotaFiscal.cs" />
-    <Compile Include="Entities\Cidade.cs" />
-    <Compile Include="Entities\CondicaoParcelamento.cs" />
     <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaReceber.cs" />
-    <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\ParametroTributario.cs" />
@@ -68,7 +61,6 @@
     <Compile Include="Entities\Movimento.cs" />
     <Compile Include="Entities\Nbs.cs" />
     <Compile Include="Entities\Iss.cs" />
-    <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\NFSeServico.cs" />
     <Compile Include="Entities\NFSe.cs" />
     <Compile Include="Entities\NFe.cs" />
@@ -79,12 +71,9 @@
     <Compile Include="Entities\NFeProduto.cs" />
     <Compile Include="Entities\OrdemVendaProduto.cs" />
     <Compile Include="Entities\OrdemVendaServico.cs" />
-    <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Entities\Servico.cs" />
-    <Compile Include="Entities\SubstituicaoTributaria.cs" />
     <Compile Include="Enums\TipoModalidade.cs" />
-    <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Enums\TipoAmbiente.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

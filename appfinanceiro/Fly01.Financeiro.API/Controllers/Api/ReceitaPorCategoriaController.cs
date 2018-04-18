@@ -3,6 +3,7 @@ using Fly01.Core.API;
 using System;
 using System.Web.Http;
 using System.Web.OData.Routing;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

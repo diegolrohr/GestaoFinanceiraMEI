@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Fly01.Core.Entities.Domains;
 using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.Domain.Entities
 {
@@ -58,7 +59,7 @@ namespace Fly01.Faturamento.Domain.Entities
         #region Navigations Properties
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
-        public virtual NCM Ncm { get; set; }
+        public virtual Ncm Ncm { get; set; }
         public virtual Cest Cest { get; set; }
         public virtual EnquadramentoLegalIPI EnquadramentoLegalIPI { get; set; }
         #endregion

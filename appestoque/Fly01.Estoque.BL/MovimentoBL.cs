@@ -6,6 +6,7 @@ using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.BL
 {

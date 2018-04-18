@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 using Fly01.Core.Entities.Domains;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.Domain.Entities
 {

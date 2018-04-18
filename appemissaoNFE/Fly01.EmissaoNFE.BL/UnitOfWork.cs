@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.BL
 {

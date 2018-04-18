@@ -3,6 +3,7 @@ using Fly01.EmissaoNFE.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.DAL.Migrations.DataInitializer
 {

@@ -3,6 +3,7 @@ using System.Reflection;
 using Fly01.Core.Base;
 using Fly01.Core.ServiceBus;
 using System.Threading.Tasks;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {

@@ -6,6 +6,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using System.Data.Entity;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.BL
 {

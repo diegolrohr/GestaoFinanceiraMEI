@@ -3,6 +3,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Estoque.Domain.Entities;
 using Fly01.Core.Base;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.DAL
 {
@@ -39,7 +40,7 @@ namespace Fly01.Estoque.DAL
         }
 
         public DbSet<Estado> Estados { get; set; }
-        public DbSet<NCM> Ncms { get; set; }
+        public DbSet<Ncm> Ncms { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
         public DbSet<GrupoProduto> GruposProduto { get; set; }

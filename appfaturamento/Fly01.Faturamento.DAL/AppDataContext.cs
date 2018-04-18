@@ -3,6 +3,7 @@ using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.DAL
 {
@@ -61,7 +62,7 @@ namespace Fly01.Faturamento.DAL
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<GrupoProduto> GruposProduto { get; set; }
         public DbSet<GrupoTributario> GrupoTributarios { get; set; }
-        public DbSet<NCM> Ncms { get; set; }
+        public DbSet<Ncm> Ncms { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
@@ -87,6 +88,5 @@ namespace Fly01.Faturamento.DAL
         public DbSet<CertificadoDigital> CertificadosDigitais { get; set; }
         public DbSet<NotaFiscalItemTributacao> NotaFiscalItemTributacoes { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
-
     }
 }

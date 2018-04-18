@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.BL
 {

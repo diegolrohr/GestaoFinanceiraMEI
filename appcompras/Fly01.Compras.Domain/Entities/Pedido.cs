@@ -1,6 +1,7 @@
 ﻿using System;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.Domain.Entities
 {

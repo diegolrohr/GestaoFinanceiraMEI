@@ -4,6 +4,8 @@ using Fly01.Compras.Domain.Entities;
 using System.Web.Http;
 using System.Linq;
 using System.Web.OData;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.API.Controllers.Api
 {

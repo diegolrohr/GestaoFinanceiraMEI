@@ -45,9 +45,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Arquivo.cs" />
     <Compile Include="Entities\Banco.cs" />
-    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\ConciliacaoBancariaTransacao.cs" />
     <Compile Include="Entities\ConciliacaoBancariaItemContaFinanceira.cs" />
     <Compile Include="Entities\ConciliacaoBancariaItem.cs" />
@@ -65,7 +63,6 @@
     <Compile Include="Entities\FluxoCaixaSaldo.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\ConciliacaoBancaria.cs" />
-    <Compile Include="Entities\CondicaoParcelamento.cs" />
     <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
     <Compile Include="Entities\ContaBancaria.cs" />
@@ -77,13 +74,10 @@
     <Compile Include="Entities\DadosEndereco.cs" />
     <Compile Include="Entities\MovimentacaoPorCategoria.cs" />
     <Compile Include="Entities\Feriado.cs" />
-    <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Movimentacao.cs" />
     <Compile Include="Entities\SaldoHistorico.cs" />
     <Compile Include="Entities\Transferencia.cs" />
-    <Compile Include="Entities\Cidade.cs" />
-    <Compile Include="Entities\Estado.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

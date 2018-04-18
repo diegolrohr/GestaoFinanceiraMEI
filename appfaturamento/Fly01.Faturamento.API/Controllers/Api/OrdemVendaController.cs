@@ -10,6 +10,8 @@ using System.Web.Http.ModelBinding;
 using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

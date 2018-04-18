@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.API.Application;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
 using Fly01.Financeiro.Domain.Entities;
 using Microsoft.OData.Edm;

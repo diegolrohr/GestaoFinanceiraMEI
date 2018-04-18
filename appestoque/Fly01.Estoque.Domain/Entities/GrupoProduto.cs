@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.Domain.Entities
 {
@@ -22,7 +23,7 @@ namespace Fly01.Estoque.Domain.Entities
 
         #region Navigations Properties
 
-        public virtual NCM Ncm { get; set; }
+        public virtual Ncm Ncm { get; set; }
 
         public virtual UnidadeMedida UnidadeMedida { get; set; }
 

@@ -39,12 +39,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Cfop.cs" />
-    <Compile Include="Entities\Cidade.cs" />
-    <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
-    <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Cobranca.cs" />
     <Compile Include="Entities\NFe\COFINS\COFINS.cs" />

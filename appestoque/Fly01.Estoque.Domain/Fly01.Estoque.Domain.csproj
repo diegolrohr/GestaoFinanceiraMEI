@@ -46,7 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\AjusteManual.cs" />
-    <Compile Include="Entities\Cest.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
     <Compile Include="Entities\Inventario.cs" />
@@ -54,13 +53,10 @@
     <Compile Include="Entities\MovimentoOrdemVenda.cs" />
     <Compile Include="Entities\PosicaoAtual.cs" />
     <Compile Include="Entities\ProdutoMovimentado.cs" />
-    <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Entities\Movimento.cs" />
-    <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\TipoMovimento.cs" />
-    <Compile Include="Entities\Estado.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

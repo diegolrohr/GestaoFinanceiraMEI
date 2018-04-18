@@ -1,11 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Table("Cest")]
-    public abstract class CestBase : DomainBase
+    public class Cest : DomainBase
     {
         [Required]
         public string Codigo { get; set; }
@@ -21,5 +19,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string Anexo { get; set; }
 
         public Guid? NcmId { get; set; }
+
+        public virtual Ncm Ncm { get; set; }
     }
 }

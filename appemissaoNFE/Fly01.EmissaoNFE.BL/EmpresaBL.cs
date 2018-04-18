@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System;
 using System.Text.RegularExpressions;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.BL
 {

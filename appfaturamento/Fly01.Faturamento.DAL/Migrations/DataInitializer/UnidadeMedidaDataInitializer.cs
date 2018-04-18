@@ -3,6 +3,7 @@ using Fly01.Faturamento.Domain.Entities;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
 {

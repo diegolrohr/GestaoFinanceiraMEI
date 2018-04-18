@@ -4,10 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
-namespace Fly01.Core.Entities.Domains
+namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Table("Categoria")]
-    public abstract class CategoriaBase : PlataformaBase
+    public class Categoria : PlataformaBase
     {
         [Required]
         [StringLength(40)]
@@ -26,5 +25,8 @@ namespace Fly01.Core.Entities.Domains
             get { return ((int)TipoCarteira).ToString(); }
             set { TipoCarteira = (TipoCarteira)System.Enum.Parse(typeof(TipoCarteira), value); }
         }
+
+        [JsonIgnore]
+        public virtual Categoria CategoriaPai { get; set; }
     }
 }

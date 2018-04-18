@@ -3,6 +3,7 @@ using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.DAL
 {
@@ -41,7 +42,7 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
         public DbSet<TabelaIcms> TabelaIcms { get; set; }
-        public DbSet<NCM> Ncms { get; set; }
+        public DbSet<Ncm> Ncms { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
     }
 }

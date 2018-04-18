@@ -6,6 +6,7 @@ using System.Web.OData.Builder;
 using Fly01.Faturamento.Domain.Entities;
 using Fly01.Core;
 using System.Configuration;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.API
 {
@@ -22,7 +23,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<Produto>("produto");
             builder.EntitySet<UnidadeMedida>("unidademedida");
             builder.EntitySet<GrupoProduto>("grupoproduto");
-            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Ncm>("ncm");
             builder.EntitySet<Cfop>("cfop");
             builder.EntitySet<GrupoTributario>("grupotributario");
             builder.EntitySet<ParametroTributario>("parametrotributario");

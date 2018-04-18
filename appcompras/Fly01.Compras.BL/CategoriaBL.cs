@@ -5,6 +5,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.BL
 {

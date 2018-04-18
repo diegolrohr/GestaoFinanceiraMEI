@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.BL;
 using System;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.EmissaoNFE.BL
 {

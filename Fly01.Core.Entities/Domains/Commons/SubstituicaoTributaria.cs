@@ -6,8 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Table("SubstituicaoTributaria")]
-    public abstract class SubstituicaoTributariaBase : PlataformaBase
+    public class SubstituicaoTributaria : PlataformaBase
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public Guid NcmId { get; set; }
@@ -36,6 +35,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         public Guid? CestId { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-        public double Fcp{ get; set; }
+        public double Fcp { get; set; }
+
+        public virtual Ncm Ncm { get; set; }
+        public virtual Estado EstadoOrigem { get; set; }
+        public virtual Estado EstadoDestino { get; set; }
+        public virtual Cest Cest { get; set; }
     }
 }

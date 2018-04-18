@@ -39,12 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\EnquadramentoLegalIPI.cs" />
-    <Compile Include="Entities\Arquivo.cs" />
-    <Compile Include="Entities\Cest.cs" />
-    <Compile Include="Entities\Cidade.cs" />
-    <Compile Include="Entities\Cfop.cs" />
     <Compile Include="Entities\ContaFinanceira.cs" />
     <Compile Include="Entities\ContaPagar.cs" />
     <Compile Include="Entities\GrupoTributario.cs" />
@@ -55,17 +50,11 @@
     <Compile Include="Entities\OrdemCompraItem.cs" />
     <Compile Include="Entities\Orcamento.cs" />
     <Compile Include="Entities\OrdemCompra.cs" />
-    <Compile Include="Entities\SubstituicaoTributaria.cs" />
-    <Compile Include="Entities\CondicaoParcelamento.cs" />
     <Compile Include="Entities\CondicaoParcelamentoParcela.cs" />
     <Compile Include="Entities\CondicaoParcelamentoSimulacao.cs" />
-    <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\FormaPagamento.cs" />
     <Compile Include="Entities\GrupoProduto.cs" />
-    <Compile Include="Entities\NCM.cs" />
-    <Compile Include="Entities\Pessoa.cs" />
     <Compile Include="Entities\Produto.cs" />
-    <Compile Include="Entities\UnidadeMedida.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

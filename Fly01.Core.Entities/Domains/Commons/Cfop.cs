@@ -1,11 +1,9 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    [Table("Cfop")]
-    public abstract class CfopBase : DomainBase
+    public class Cfop : DomainBase
     {
         [Required]
         public int Codigo { get; set; }

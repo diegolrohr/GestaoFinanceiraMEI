@@ -1,6 +1,7 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Compras.Domain.Entities;
 using Fly01.Core.API.Application;
+using Fly01.Core.Entities.Domains.Commons;
 using Microsoft.OData.Edm;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
@@ -23,7 +24,7 @@ namespace Fly01.Compras.API
             builder.EntitySet<FormaPagamento>("formapagamento");
             builder.EntitySet<UnidadeMedida>("unidademedida");
             builder.EntitySet<GrupoProduto>("grupoproduto");
-            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Ncm>("ncm");
             builder.EntitySet<Categoria>("categoria");
             builder.EntitySet<OrdemCompra>("ordemcompra");
             builder.EntitySet<Pedido>("pedido");

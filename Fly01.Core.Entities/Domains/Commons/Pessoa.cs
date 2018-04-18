@@ -1,10 +1,11 @@
 ﻿using System;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class PessoaBase : PlataformaBase
+    public class Pessoa : PlataformaBase
     {
         [Required]
         [StringLength(100, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
@@ -75,5 +76,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [Required]
         public bool Vendedor { get; set; }
+
+        [JsonIgnore]
+        public virtual Cidade Cidade { get; set; }
+
+        [JsonIgnore]
+        public virtual Estado Estado { get; set; }
     }
 }

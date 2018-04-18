@@ -4,6 +4,7 @@ using Fly01.Financeiro.BL;
 using System.Threading.Tasks;
 using Fly01.Core.API;
 using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

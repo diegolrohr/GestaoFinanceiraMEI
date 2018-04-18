@@ -6,6 +6,7 @@ using Fly01.Financeiro.BL;
 using System.Collections.Generic;
 using Fly01.Core.API;
 using Fly01.Financeiro.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

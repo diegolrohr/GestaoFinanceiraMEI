@@ -3,6 +3,7 @@ using Fly01.Compras.Domain.Entities;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.DAL.Migrations.DataInitializer
 {

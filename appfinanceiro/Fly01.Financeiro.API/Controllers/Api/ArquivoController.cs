@@ -1,12 +1,11 @@
 ﻿using Fly01.Financeiro.BL;
 using System.Web.OData.Routing;
-using Fly01.Financeiro.Domain.Entities;
 using System.Web.Http;
 using System.Threading.Tasks;
 using Fly01.Core.Notifications;
 using System.Web.Http.ModelBinding;
 using System.Linq;
-using Fly01.Core.ValueObjects;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {

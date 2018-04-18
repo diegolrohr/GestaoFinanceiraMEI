@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.Domain.Entities
 {

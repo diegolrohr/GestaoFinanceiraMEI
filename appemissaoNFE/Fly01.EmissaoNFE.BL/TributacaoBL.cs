@@ -67,22 +67,27 @@ namespace Fly01.EmissaoNFE.BL
             #endregion
 
             #region Validações Entity.Icms
-            if (entity.SimplesNacional && entity.Icms != null)
+            if(entity.Icms != null)
             {
-                entity.Fail(!entity.Icms.Aliquota.HasValue, AliquotaRequerida);
+                if (entity.SimplesNacional)
+                    entity.Fail(!entity.Icms.Aliquota.HasValue, AliquotaRequerida);
+
+                entity.Fail((entity.Icms.IpiNaBase || (entity.SubstituicaoTributaria != null && entity.SubstituicaoTributaria.IpiNaBase)) && entity.Ipi == null, IpiRequerido);
+                entity.Fail(string.IsNullOrEmpty(entity.Icms.EstadoOrigem) || !TabelaIcmsBL.All.Where(x => x.SiglaOrigem == entity.Icms.EstadoOrigem).Any(), EstadoOrigemInvalido);
+                entity.Fail(string.IsNullOrEmpty(entity.Icms.EstadoDestino) || !TabelaIcmsBL.All.Where(x => x.SiglaDestino == entity.Icms.EstadoDestino).Any(), EstadoDestinoInvalido);
+                entity.Fail(entity.SubstituicaoTributaria != null && entity.Icms.Difal, DifalComIcmsST);
             }
-            entity.Fail(((entity.Icms != null && entity.Icms.IpiNaBase) || (entity.SubstituicaoTributaria != null && entity.SubstituicaoTributaria.IpiNaBase)) && entity.Ipi == null, IpiRequerido);
-            entity.Fail(entity.Icms != null && (string.IsNullOrEmpty(entity.Icms.EstadoOrigem) || !TabelaIcmsBL.All.Where(x => x.SiglaOrigem == entity.Icms.EstadoOrigem).Any()), EstadoOrigemInvalido);
-            entity.Fail(entity.Icms != null && (string.IsNullOrEmpty(entity.Icms.EstadoDestino) || !TabelaIcmsBL.All.Where(x => x.SiglaDestino == entity.Icms.EstadoDestino).Any()), EstadoDestinoInvalido);
-            entity.Fail(entity.Icms != null && entity.SubstituicaoTributaria != null && entity.Icms.Difal, DifalComIcmsST);
             #endregion
 
             #region Validações Entity.SubstituicaoTributaria
-            entity.Fail(entity.SubstituicaoTributaria != null && (string.IsNullOrEmpty(entity.SubstituicaoTributaria.EstadoOrigem) || !TabelaIcmsBL.All.Where(x => x.SiglaOrigem == entity.SubstituicaoTributaria.EstadoOrigem).Any()), EstadoOrigemSTInvalido);
-            entity.Fail(entity.SubstituicaoTributaria != null && (string.IsNullOrEmpty(entity.SubstituicaoTributaria.EstadoDestino) || !TabelaIcmsBL.All.Where(x => x.SiglaDestino == entity.SubstituicaoTributaria.EstadoDestino).Any()), EstadoDestinoSTInvalido);
-            entity.Fail(entity.SubstituicaoTributaria != null && entity.Icms != null && !string.IsNullOrEmpty(entity.SubstituicaoTributaria.EstadoOrigem) && !string.IsNullOrEmpty(entity.Icms.EstadoOrigem) && entity.SubstituicaoTributaria.EstadoOrigem != entity.Icms.EstadoOrigem, EstadoOrigemSTDifereDeIcms);
-            entity.Fail(entity.SubstituicaoTributaria != null && entity.Icms != null && !string.IsNullOrEmpty(entity.SubstituicaoTributaria.EstadoDestino) && !string.IsNullOrEmpty(entity.Icms.EstadoDestino) && entity.SubstituicaoTributaria.EstadoDestino != entity.Icms.EstadoDestino, EstadoDestinoSTDifereDeIcms);
-            entity.Fail(entity.SubstituicaoTributaria != null && entity.SubstituicaoTributaria.Mva <= 0, MvaInvalido);
+            if(entity.SubstituicaoTributaria != null)
+            {
+                entity.Fail(!TabelaIcmsBL.All.Any(x => x.SiglaOrigem == entity.SubstituicaoTributaria.EstadoOrigem), EstadoOrigemSTInvalido);
+                entity.Fail(!TabelaIcmsBL.All.Any(x => x.SiglaDestino == entity.SubstituicaoTributaria.EstadoDestino), EstadoDestinoSTInvalido);
+                entity.Fail(entity.Icms != null && entity.SubstituicaoTributaria.EstadoOrigem != entity.Icms.EstadoOrigem, EstadoOrigemSTDifereDeIcms);
+                entity.Fail(entity.Icms != null && entity.SubstituicaoTributaria.EstadoDestino != entity.Icms.EstadoDestino, EstadoDestinoSTDifereDeIcms);
+                entity.Fail(entity.SubstituicaoTributaria.Mva <= 0, MvaInvalido);
+            }
             #endregion
 
             #region Validações Entity.Ipi
@@ -94,7 +99,12 @@ namespace Fly01.EmissaoNFE.BL
 
             #region Validações Entity.Fcp
             entity.Fail(entity.Fcp != null && entity.Icms == null, FcpSemIcms);
-            entity.Fail(entity.Fcp != null && entity.Fcp.Aliquota <= 0, AliquotaFcpInvalida);
+            entity.Fail(entity.Fcp != null && entity.Fcp.Aliquota < 0, AliquotaFcpInvalida);
+            #endregion
+            
+            #region Validações Entity.Fcp ST 
+            entity.Fail(entity.FcpSt != null && entity.SubstituicaoTributaria == null, FcpStSemIcms);
+            entity.Fail(entity.FcpSt != null && entity.FcpSt.Aliquota < 0, AliquotaFcpStInvalida);
             #endregion
 
             base.ValidaModel(entity);
@@ -131,7 +141,9 @@ namespace Fly01.EmissaoNFE.BL
 
         #region ErrorMessages Entity.Fcp
         public static Error FcpSemIcms = new Error("Não é possível calcular FCP sem ICMS.", "Fcp.Aliquota");
-        public static Error AliquotaFcpInvalida = new Error("Alíquota de FCP deve ser maior que zero.", "Ipi.Aliquota");
+        public static Error AliquotaFcpInvalida = new Error("Alíquota de FCP inválida.", "Fcp.Aliquota");
+        public static Error FcpStSemIcms = new Error("Não é possível calcular FCP sem Substituição Tributária.", "FcpSt.Aliquota");
+        public static Error AliquotaFcpStInvalida = new Error("Alíquota de FCP ST inválida.", "FcpSt.Aliquota");
         #endregion
     }
 }

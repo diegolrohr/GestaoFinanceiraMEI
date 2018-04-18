@@ -333,9 +333,8 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.FCPSTAliquota, 2);
                             detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.FCPSTValor, 2);
                             // FCP (500)
-                            detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal = Math.Round(item.AliquotaFCPConsumidorFinal, 2);
-                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(item.Total, 2);
-                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(((item.ValorFCPSTRetidoAnterior / item.Total) * 100), 2);
+                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
+                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2);
                             detalhe.Imposto.ICMS.ValorFCPRetidoAnteriorST = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                         }
 

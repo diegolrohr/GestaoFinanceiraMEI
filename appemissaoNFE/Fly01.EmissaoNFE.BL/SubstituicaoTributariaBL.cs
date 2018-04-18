@@ -25,11 +25,7 @@ namespace Fly01.EmissaoNFE.BL
 
             entity.SubstituicaoTributaria.Base = (100 + entity.SubstituicaoTributaria.Mva) / 100 * entity.SubstituicaoTributaria.Base;
             entity.SubstituicaoTributaria.Valor = Math.Round(entity.SubstituicaoTributaria.Base / 100 * entity.SubstituicaoTributaria.Aliquota, 2);
-
-            if(entity.FcpSt != null)
-            {
-
-            }
+            
             return new TributacaoRetornoBaseVM { Base = entity.SubstituicaoTributaria.Base, Aliquota = entity.SubstituicaoTributaria.Aliquota, Valor = entity.SubstituicaoTributaria.Valor, AgregaTotalNota = true };
         }
     }

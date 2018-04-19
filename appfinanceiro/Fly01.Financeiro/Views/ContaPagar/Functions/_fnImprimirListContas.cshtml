@@ -55,29 +55,32 @@
         var ListParams = GetListParams();
         var queryStringOdata = "";
 
-        let date = fly01._.mesPicker.pickamonth("picker").get("select");
-        var firstDay = new Date(date.year, date.month, 1);
-        let lastDay = new Date(date.year, date.month + 1, 0);
+        if ($("#dataInicial").val() != undefined) {
+            let date = fly01._.mesPicker.pickamonth("picker").get("select");
+            var firstDay = new Date(date.year, date.month, 1);
+            let lastDay = new Date(date.year, date.month + 1, 0);
 
-        var dataInicial = $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
-        var dataFinal = $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
-
-        for (var list in ListParams) {
-            queryStringOdata += "contains(" + ListParams[list].key + ", " +"'"+ ListParams[list].value +"'"+ ")" + (ListParams[list] != ListParams[ListParams.length - 1] ? " and "  : "");
+            var dataInicial = $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+            var dataFinal = $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
         }
 
         var dateParam = $("#dataVencimento").val().split("/").reverse().join("/");
         var newDate = dateParam.replace("/", "-").replace("/", "-");
 
+        for (var list in ListParams) {
+            queryStringOdata += "contains(" + ListParams[list].key + ", " + "'" + ListParams[list].value + "'" + ")" + (ListParams[list] != ListParams[ListParams.length - 1] ? " and " : "");
+        }
+
         if (validateDate($("#dataVencimento").val()) && $("#dataVencimento").val() != "") {
             fly01.toast('Data inválida', 'error');
         }
-        else
-        {
+        else {
             var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
-                (dateParam != undefined && dateParam != "" ?
-                    ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :
-                    ((queryStringOdata != "") ? " and" : "") + " dataVencimento le " + dataFinal.val() + " and dataVencimento ge " + dataInicial.val()) +
+                (($("#dataInicial").val() != undefined || dateParam != "") ?
+                    (dateParam != undefined && dateParam != "" ?
+                        ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :
+                        ((queryStringOdata != "") ? " and" : "") + " dataVencimento le " + dataFinal.val() + " and dataVencimento ge " + dataInicial.val())
+                                                      : "") +
                 ($("#valorPrevisto").val() != "" ? " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "") +
                 ($("#numero").val() != "" ? " and numero eq " + $("#numero").val() : "") +
                 "&tipoStatus=" + $("#statusContaBancaria").val();

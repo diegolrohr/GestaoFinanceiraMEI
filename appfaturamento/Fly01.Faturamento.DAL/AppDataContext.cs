@@ -3,7 +3,6 @@ using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.DAL
 {

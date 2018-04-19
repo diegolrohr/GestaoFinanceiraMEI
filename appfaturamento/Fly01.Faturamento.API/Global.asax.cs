@@ -6,7 +6,6 @@ using System.Web.OData.Builder;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core;
 using System.Configuration;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Faturamento.API
 {

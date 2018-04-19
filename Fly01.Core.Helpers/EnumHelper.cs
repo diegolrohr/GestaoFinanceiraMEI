@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel;
+﻿using Fly01.Core.Helpers.Attribute;
+using System;
 using System.Collections.Generic;
-using Fly01.Core.Helpers.Attribute;
-using Fly01.Core.Helpers;
-using Fly01.Core.Rest;
+using System.ComponentModel;
+using System.Linq;
 
-namespace Fly01.Core.API
+namespace Fly01.Core.Helpers
 {
     public static class EnumHelper
     {
-        public static APIEnumData SubtitleDataAnotation(string enumName, string itemValue)
+        public static APIEnumData SubtitleDataAnotation(Type enumType, string itemValue)
         {
-            var filterObjects = RestHelper.ExecuteGetRequest<IEnumerable<APIEnumData>>(enumName).SingleOrDefault(x => x.Key.Equals(itemValue));
-            return filterObjects;
+            var items = GetDataEnumValues(enumType).Select(x => new APIEnumData() {Key = x.Key, Value = x.Value, CssClass = x.CssClass, Description = x.Description });
+
+            return items.SingleOrDefault(x => x.Key.Equals(itemValue, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static SubtitleAttribute SubtitleDataAnotation(this Enum value)
@@ -80,14 +79,7 @@ namespace Fly01.Core.API
 
         public static T ToEnum<T>(this string value)
         {
-            //string
             return (T)Enum.Parse(typeof(T), value, true);
-
-            //char || int
-            //int intValue;
-            //Type enumType = typeof(T);
-            //T enumValue = (T)Enum.ToObject(enumType, (int.TryParse(value, out intValue) ? intValue : value[0]));
-            //return enumValue;
         }
 
         public static Dictionary<object, object> GetDescriptionEnumValues(Type enumeratorType)
@@ -112,11 +104,8 @@ namespace Fly01.Core.API
         public static List<SubtitleAttribute> GetDataEnumValues(Type enumType)
         {
             var list = new List<SubtitleAttribute>();
-
             foreach (Enum item in Enum.GetValues(enumType))
-            {
                 list.Add(SubtitleDataAnotation(item));
-            }
 
             return list;
         }

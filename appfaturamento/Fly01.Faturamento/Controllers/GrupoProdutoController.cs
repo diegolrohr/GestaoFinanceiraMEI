@@ -13,6 +13,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -87,7 +88,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s6 l3",
                 Label = "Tipo Produto",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
             });
 
             config.Elements.Add(new AutocompleteUI
@@ -112,9 +113,9 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 descricao = x.Descricao,
                 tipoProduto = x.TipoProduto,
-                tipoProdutoDescription = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).Description,
-                tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).CssClass,
-                tipoProdutoValue = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).Value,
+                tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
+                tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
+                tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
             };
         }
 
@@ -144,7 +145,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoProduto",
                 DisplayName = "Tipo de Produto",
                 Priority = 2,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoProdutoCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoProdutoValue).outerHTML; }"
             });
 

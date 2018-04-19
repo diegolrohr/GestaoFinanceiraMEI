@@ -7,6 +7,7 @@ using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -219,7 +220,7 @@ namespace Fly01.Financeiro.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation("TipoFormaPagamento", item.TipoFormaPagamento).Value };
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), item.TipoFormaPagamento).Value };
 
             return GetJson(filterObjects);
         }

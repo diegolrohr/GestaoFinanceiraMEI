@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -142,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col l3 m3 s12",
                 Label = "Tipo Pagto ISS",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoPagamentoImpostoISS", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
             });
             config.Elements.Add(new SelectUI
             {
@@ -150,7 +151,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col l6 m6 s12",
                 Label = "Tipo Tributação ISS",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoISS", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS)))
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });

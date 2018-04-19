@@ -64,7 +64,8 @@ namespace Fly01.Compras.BL
                         TipoFrete = TipoFrete.SemFrete,
                         Observacao = entity.Observacao,
                         FornecedorId = fornecedorId,
-                        OrcamentoOrigemId = entity.Id
+                        OrcamentoOrigemId = entity.Id,
+                        Total = orcamentoItens.Sum(x => x.Total)
                     };
                     PedidoBL.Insert(pedido);
 

@@ -329,13 +329,13 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
 
                             // FCP (201, 202, 203 e 900)
-                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoST = Math.Round(itemTributacao.FCPSTBase, 2);
-                            detalhe.Imposto.ICMS.PercentualFCPRetidoST = Math.Round(itemTributacao.FCPSTAliquota, 2);
-                            detalhe.Imposto.ICMS.ValorFCPRetidoST = Math.Round(itemTributacao.FCPSTValor, 2);
+                            detalhe.Imposto.ICMS.BaseFCPST = Math.Round(itemTributacao.FCPSTBase, 2);
+                            detalhe.Imposto.ICMS.AliquotaFCPST = Math.Round(itemTributacao.FCPSTAliquota, 2);
+                            detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.FCPSTValor, 2);
                             // FCP (500)
-                            detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
-                            detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST = Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2);
-                            detalhe.Imposto.ICMS.ValorFCPRetidoAnteriorST = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
+                            detalhe.Imposto.ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
+                            detalhe.Imposto.ICMS.AliquotaFCPSTRetido = Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2);
+                            detalhe.Imposto.ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
                         }
 
                         if (itemTributacao.CalculaIPI)

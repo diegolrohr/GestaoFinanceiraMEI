@@ -116,8 +116,17 @@ namespace Fly01.Financeiro.Controllers
         {
             var queryString = new Dictionary<string, string>();
             var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" + tipoStatus + "'";
-            queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
-            queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
+            if (string.IsNullOrEmpty(queryStringOdata))
+            {
+                queryString.AddParam("$orderby", "numero");
+                queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
+            }
+            else
+            {
+                queryString.AddParam("$filter", $"{queryStringOdata}" + (!string.IsNullOrEmpty(tipoStatus) ? strStatusConta : ""));
+                queryString.AddParam("$orderby", "numero");
+                queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
+            }
 
             return RestHelper.ExecuteGetRequest<ResultBase<ContaReceberVM>>("ContaReceber", queryString).Data;
         }

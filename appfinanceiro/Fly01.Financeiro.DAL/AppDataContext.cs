@@ -47,10 +47,6 @@ namespace Fly01.Financeiro.API.Models.DAL
                 .Map<RenegociacaoContaFinanceiraOrigem>(m => m.ToTable("RenegociacaoContaFinanceiraOrigem"))
                 .Map<RenegociacaoContaFinanceiraRenegociada>(m => m.ToTable("RenegociacaoContaFinanceiraRenegociada"));
 
-            builder.Entity<ContaFinanceiraRenegociacao>().Ignore(m => m.ContasFinanceirasOrigemIds);
-            builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
-            builder.Entity<ConciliacaoBancaria>().Ignore(m => m.Arquivo);
-
             builder.Entity<SaldoHistorico>().MapToStoredProcedures();
         }
 

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 {
-    [XmlRoot(ElementName = "ICMSSN202")]
+    [XmlRoot("ICMSSN202")]
     public class ICMSSN202 : ICMS
     {
         public ICMSSN202()
@@ -17,10 +17,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
 
 
-        [XmlElement(ElementName = "modBCST")]
+        [XmlElement("modBCST")]
         public ModalidadeDeterminacaoBCICMSST ModalidadeBCST { get; set; }
 
-        [XmlElement(ElementName = "pMVAST")]
+        [XmlElement(ElementName = "pMVAST", IsNullable = true)]
         public double? PercentualMargemValorAdicionadoST { get; set; }
 
         public bool ShouldSerializePercentualMargemValorAdicionadoST()
@@ -36,13 +36,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return PercentualReducaoBCST.HasValue & PercentualReducaoBCST > 0;
         }
 
-        [XmlElement(ElementName = "vBCST")]
+        [XmlElement("vBCST")]
         public double ValorBCST { get; set; }
 
-        [XmlElement(ElementName = "pICMSST")]
+        [XmlElement("pICMSST")]
         public double AliquotaICMSST { get; set; }
 
-        [XmlElement(ElementName = "vICMSST")]
+        [XmlElement("vICMSST")]
         public double ValorICMSST { get; set; }
+        
+        [XmlElement("vBCFCPST")]
+        public double? BaseFCPST { get; set; }
+
+        [XmlElement("pFCPST")]
+        public double? AliquotaFCPST { get; set; }
+
+        [XmlElement("vFCPST")]
+        public double? ValorFCPST { get; set; }
     }
 }

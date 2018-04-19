@@ -58,7 +58,7 @@ namespace Fly01.Financeiro.Controllers
             double interest = 0;
             double total = 0;
             string valorTituloTotalFormatado = itemContaPagar.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault);
-            var empresaVM = GetDadosEmpresa();
+            var managerEmpresaVM = GetDadosEmpresa();
             total = itemContaPagar.ValorPago.Value;
             string valorTituloFormatado = total.ToString("C", AppDefaults.CultureInfoDefault);
 
@@ -71,10 +71,10 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = itemContaPagar.Id.ToString(),
                 //Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", branchVM.Name, valorTituloTotalFormatado, itemBankTransac.Value.toExtenso()),
-                Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", empresaVM.RazaoSocial, valorTituloTotalFormatado, itemContaPagar.ValorPago.Value.toExtenso()),
+                Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", managerEmpresaVM.RazaoSocial, valorTituloTotalFormatado, itemContaPagar.ValorPago.Value.toExtenso()),
                 DescricaoTitulo = !String.IsNullOrWhiteSpace(itemContaPagar.Descricao) ? itemContaPagar.Descricao : itemContaPagar.Categoria.Descricao,
                 ValorTitulo = valorTituloFormatado,
-                DataAtual = String.Format("{0}, {1} de {2} de {3}", empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "", DateTime.Now.Day, AppDefaults.CultureInfoDefault.DateTimeFormat.GetMonthName(DateTime.Now.Month), DateTime.Now.Year),
+                DataAtual = String.Format("{0}, {1} de {2} de {3}", managerEmpresaVM.Cidade != null ? managerEmpresaVM.Cidade.Nome : "", DateTime.Now.Day, AppDefaults.CultureInfoDefault.DateTimeFormat.GetMonthName(DateTime.Now.Month), DateTime.Now.Year),
                 Assinatura = assinatura.ToString(),
                 DescricaoJuros = "Juros",
                 ValorJuros = string.Format("(+) {0}", interest.ToString("C", AppDefaults.CultureInfoDefault)),

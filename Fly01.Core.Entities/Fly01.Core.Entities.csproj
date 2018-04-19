@@ -117,7 +117,6 @@
     <Compile Include="ViewModels\Commons\CidadeBaseVM.cs" />
     <Compile Include="ViewModels\Commons\CondicaoParcelamentoBaseVM.cs" />
     <Compile Include="ViewModels\Commons\DomainBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\EmpresaBaseVM.cs" />
     <Compile Include="ViewModels\Commons\EnquadramentoLegalIpiBaseVM.cs" />
     <Compile Include="ViewModels\Commons\EstadoBaseVM.cs" />
     <Compile Include="ViewModels\Commons\FormaPagamentoBaseVM.cs" />

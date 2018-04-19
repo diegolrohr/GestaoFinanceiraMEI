@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 {
-    [XmlRoot(ElementName = "ICMSSN201")]
+    [XmlRoot("ICMSSN201")]
     public class ICMSSN201 : ICMSSN202
     {
         public ICMSSN201()
@@ -16,13 +16,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
         }
 
-        [XmlElement(ElementName = "pCredSN")]
+        [XmlElement("pCredSN")]
         public double AliquotaAplicavelCalculoCreditoSN { get; set; }
 
-        [XmlElement(ElementName = "vCredICMSSN")]
+        [XmlElement("vCredICMSSN")]
         public double ValorCreditoICMS { get; set; }
-
-        [XmlElement(ElementName = "vBCFCPST")]
-        public double vBCFCPST { get; set; }
     }
 }

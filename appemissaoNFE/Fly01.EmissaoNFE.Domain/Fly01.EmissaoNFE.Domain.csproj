@@ -61,14 +61,10 @@
     <Compile Include="Entities\NFe\Fatura.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSPai.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMS.cs" />
-    <Compile Include="Entities\NFe\ICMS\ICMSSN103.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN102.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN101.cs" />
-    <Compile Include="Entities\NFe\ICMS\ICMSSN203.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN202.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN201.cs" />
-    <Compile Include="Entities\NFe\ICMS\ICMSSN300.cs" />
-    <Compile Include="Entities\NFe\ICMS\ICMSSN400.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN500.cs" />
     <Compile Include="Entities\NFe\ICMS\ICMSSN900.cs" />
     <Compile Include="Entities\NFe\II.cs" />

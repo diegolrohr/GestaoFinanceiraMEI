@@ -60,7 +60,7 @@ namespace Fly01.EmissaoNFE.BL
 
         private TabelaIcmsBL tabelaIcmsBL;
         public TabelaIcmsBL TabelaIcmsBL => tabelaIcmsBL ?? (tabelaIcmsBL = new TabelaIcmsBL(Context));
-
+        
         private TributacaoBL tributacaoBL;
         public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL));
 

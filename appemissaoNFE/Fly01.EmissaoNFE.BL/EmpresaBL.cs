@@ -1231,44 +1231,87 @@ namespace Fly01.EmissaoNFE.BL
 
         private static bool ValidaIEPernambuco(string ie, out string msgError)
         {
+            //FONTE: http://www.sintegra.gov.br/Cad_Estados/cad_PE.html
 
-            if (ie.Length != 9)
+            int tam = ie.Length;
+            if (tam == 9)
+            {
+                #region Cálculo do DV 1
+                int soma = 0;
+                int peso = 2;
+
+                for (int i = tam - 3; i >= 0; i--)
+                {
+                    soma += int.Parse(ie[i].ToString()) * peso;
+
+                    peso = peso == 9 ? 2 : ++peso;
+                }
+
+                var d1 = soma % 11;
+
+                d1 = d1 <= 1 ? 0 : (11 - d1);
+
+                #endregion
+
+                #region Cálculo do DV 2
+                soma = 0;
+                peso = 2;
+
+                for (int i = tam - 2; i >= 0; i--)
+                {
+                    soma += int.Parse(ie[i].ToString()) * peso;
+
+                    peso = peso == 9 ? 2 : ++peso;
+                }
+
+                var d2 = soma % 11;
+
+                d2 = d2 <= 1 ? 0 : (11 - d2);
+
+                #endregion
+
+                #region Validação dos DVs
+                string dv1 = d1.ToString();
+                string dv2 = d2.ToString();
+                if (!ie.Substring(tam - 2).Equals(dv1) && !ie.Substring(tam - 1).Equals(dv2))
+                {
+                    msgError = ERRO_MsgDigitoVerificadorInvalido;
+                    return false;
+                }
+                #endregion
+            }
+            else if(tam == 14)
+            {
+                #region Cálculo do DV
+                int soma = 0;
+                int peso = 2;
+
+                for (int i = tam - 2; i >= 0; i--)
+                {
+                    soma += int.Parse(ie[i].ToString()) * peso;
+
+                    peso = peso == 9 ? 1 : ++peso;
+                }
+
+                var d1 = soma % 11;
+
+                d1 = d1 <= 1 ? 0 : (11 - d1);
+
+                #endregion
+
+                #region Validação dos DVs
+                string dv1 = d1.ToString();
+
+                if (!ie.Substring(tam - 1).Equals(dv1))
+                {
+                    msgError = ERRO_MsgDigitoVerificadorInvalido;
+                    return false;
+                }
+                #endregion
+            }
+            else
             {
                 msgError = ERRO_QtdDigitosInvalida;
-                return false;
-            }
-
-            //calculo do dígito verificador
-            int soma = 0;
-            int pesoInicio = 5;
-            int pesoFim = 9;
-            int d = -1; //dígito verificador
-
-            for (int i = 0; i < ie.Length - 1; i++)
-            {
-                if (i < 5)
-                {
-                    soma += int.Parse(ie[i].ToString()) * pesoInicio;
-                    pesoInicio--;
-                }
-                else
-                {
-                    soma += int.Parse(ie[i].ToString()) * pesoFim;
-                    pesoFim--;
-                }
-            }
-
-            d = 11 - (soma % 11);
-            if (d > 9)
-            {
-                d -= 10;
-            }
-
-            //valida o digito verificador
-            string dv = d + "";
-            if (!ie.Substring(ie.Length - 1).Equals(dv))
-            {
-                msgError = ERRO_MsgDigitoVerificadorInvalido;
                 return false;
             }
 

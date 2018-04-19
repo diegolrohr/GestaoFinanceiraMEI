@@ -6,6 +6,7 @@ using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {

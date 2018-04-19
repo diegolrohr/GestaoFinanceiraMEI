@@ -4,7 +4,7 @@ using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public abstract class CategoriaBaseVM : DomainBaseVM
+    public class CategoriaVM : DomainBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
@@ -18,5 +18,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonIgnore]
         public int Level => CategoriaPaiId == null ? 0 : 1;
+
+        [JsonProperty("categoriaPai")]
+        public CategoriaVM CategoriaPai { get; set; }
     }
 }

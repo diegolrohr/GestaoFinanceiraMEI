@@ -17,6 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {

@@ -56,7 +56,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ViewModel\CategoriaVM.cs" />
     <Compile Include="ViewModel\CfopVM.cs" />
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />

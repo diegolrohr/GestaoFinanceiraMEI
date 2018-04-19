@@ -16,6 +16,7 @@ using Fly01.Core.Rest;
 using Fly01.Compras.Models.ViewModel;
 using Fly01.Compras.Models.Reports;
 using Fly01.Core.Config;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {

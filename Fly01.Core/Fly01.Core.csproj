@@ -55,7 +55,7 @@
     <Compile Include="ViewModels\Presentation\BatchItemVM.cs" />
     <Compile Include="ViewModels\Presentation\BatchReturnVM.cs" />
     <Compile Include="ViewModels\Presentation\BatchVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\CategoriaBaseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\CategoriaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CestBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CfopBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CidadeBaseVM.cs" />

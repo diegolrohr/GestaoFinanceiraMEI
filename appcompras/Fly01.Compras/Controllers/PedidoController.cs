@@ -510,6 +510,7 @@ namespace Fly01.Compras.Controllers
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
+                    QuantVolumes = Pedido.QuantidadeVolumes,
                     TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),

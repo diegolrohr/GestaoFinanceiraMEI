@@ -1,8 +1,7 @@
 namespace Fly01.Compras.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Create_EnquadramentoLegalIPI : DbMigration
     {
         public override void Up()

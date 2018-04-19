@@ -1,4 +1,4 @@
-﻿using Fly01.Financeiro.Domain.Entities;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using System.Data.Entity;
 

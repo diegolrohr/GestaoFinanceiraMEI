@@ -39,12 +39,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Cfop.cs" />
-    <Compile Include="Entities\Cidade.cs" />
-    <Compile Include="Entities\Estado.cs" />
     <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
-    <Compile Include="Entities\Ncm.cs" />
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Cobranca.cs" />
     <Compile Include="Entities\NFe\COFINS\COFINS.cs" />
@@ -80,7 +76,7 @@
     <Compile Include="Entities\NFe\IPI\IPI.cs" />
     <Compile Include="Entities\NFe\IPI\IPINT.cs" />
     <Compile Include="Entities\NFe\IPI\IPITrib.cs" />
-    <Compile Include="Entities\NFe\NFe.cs" />
+    <Compile Include="Entities\NFe\NFeVM.cs" />
     <Compile Include="Entities\NFe\ObservacaoContribuinte.cs" />
     <Compile Include="Entities\NFe\ObservacaoDoFisco.cs" />
     <Compile Include="Entities\NFe\PISST.cs" />
@@ -109,7 +105,6 @@
     <Compile Include="Enums\OrigemMercadoria.cs" />
     <Compile Include="Enums\OrigemProcesso.cs" />
     <Compile Include="Enums\TipoAliquota.cs" />
-    <Compile Include="Enums\TipoAmbiente.cs" />
     <Compile Include="Enums\TipoFinalidadeEmissaoNFe.cs" />
     <Compile Include="Enums\TipoPresencaComprador.cs" />
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />
@@ -117,7 +112,6 @@
     <Compile Include="Enums\TipoNota.cs" />
     <Compile Include="Enums\FormaPagamentoEmissaoNFE.cs" />
     <Compile Include="Enums\TipoRegimeTributario.cs" />
-    <Compile Include="Enums\TipoModalidade.cs" />
     <Compile Include="Enums\TipoFusoHorario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Tributacao.cs" />

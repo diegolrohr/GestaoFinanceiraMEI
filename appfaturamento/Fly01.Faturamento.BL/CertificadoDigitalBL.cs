@@ -1,10 +1,8 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
-using Fly01.Faturamento.Domain.Entities;
-using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,6 +10,7 @@ using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Notifications;
 using Fly01.Core.Reports;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {
@@ -161,7 +160,7 @@ namespace Fly01.Faturamento.BL
             {
                 retorno = RetornaEntidade();
             }
-            retorno.EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
+            retorno.EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
             return retorno;
         }
 
@@ -176,7 +175,7 @@ namespace Fly01.Faturamento.BL
 
             var retorno = new EntidadeVM
             {
-                EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
+                EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
             };
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))

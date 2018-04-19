@@ -1,8 +1,8 @@
-﻿using Fly01.Financeiro.Domain.Entities;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
@@ -18,14 +18,14 @@ namespace Fly01.Financeiro.BL
             DespesaPorCategoriaBL = despesaPorCategoriaBL;
         }
 
-        public List<MovimentacaoPorCategoria> Get(DateTime dataInicial,
+        public List<MovimentacaoFinanceiraPorCategoria> Get(DateTime dataInicial,
                                                   DateTime dataFinal,
                                                   bool somaRealizados = true,
                                                   bool somaPrevistos = false)
         {
             var receitas = ReceitaPorCategoriaBL.Get(dataInicial, dataFinal, somaRealizados, somaPrevistos);
             var despesas = DespesaPorCategoriaBL.Get(dataInicial, dataFinal, somaRealizados, somaPrevistos);
-            var movimentacoes = new List<MovimentacaoPorCategoria>();
+            var movimentacoes = new List<MovimentacaoFinanceiraPorCategoria>();
 
             movimentacoes.AddRange(receitas);
             movimentacoes.AddRange(despesas);

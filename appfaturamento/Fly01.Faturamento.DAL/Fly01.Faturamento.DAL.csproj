@@ -232,6 +232,10 @@
     <Compile Include="Migrations\201804182025134_AlterFCPSTBaseRetidoAnterior.Designer.cs">
       <DependentUpon>201804182025134_AlterFCPSTBaseRetidoAnterior.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804191419594_AlterMaxLengthDescricaoFormaPagamento.cs" />
+    <Compile Include="Migrations\201804191419594_AlterMaxLengthDescricaoFormaPagamento.Designer.cs">
+      <DependentUpon>201804191419594_AlterMaxLengthDescricaoFormaPagamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -400,6 +404,9 @@
     <EmbeddedResource Include="Migrations\201804182025134_AlterFCPSTBaseRetidoAnterior.resx">
       <DependentUpon>201804182025134_AlterFCPSTBaseRetidoAnterior.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191419594_AlterMaxLengthDescricaoFormaPagamento.resx">
+      <DependentUpon>201804191419594_AlterMaxLengthDescricaoFormaPagamento.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -426,10 +433,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Faturamento.Domain\Fly01.Faturamento.Domain.csproj">
-      <Project>{01a1b42a-991b-408c-853e-66a90d99a8e6}</Project>
-      <Name>Fly01.Faturamento.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

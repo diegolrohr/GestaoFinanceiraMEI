@@ -1,6 +1,5 @@
 ﻿using Fly01.Compras.BL;
 using System.Web.OData.Routing;
-using Fly01.Compras.Domain.Entities;
 using System.Web.Http;
 using System.Threading.Tasks;
 using Fly01.Core.Notifications;
@@ -9,6 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Http.ModelBinding;
 using System.Web.OData;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.API.Controllers.Api
 {

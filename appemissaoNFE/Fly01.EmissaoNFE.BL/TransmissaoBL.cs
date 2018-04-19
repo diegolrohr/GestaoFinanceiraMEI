@@ -6,7 +6,6 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL
@@ -42,9 +41,9 @@ namespace Fly01.EmissaoNFE.BL
             return base64;
         }
 
-        public NFe ConvertToNFe(ItemTransmissaoVM item)
+        public NFeVM ConvertToNFe(ItemTransmissaoVM item)
         {
-            var nota = new NFe();
+            var nota = new NFeVM();
             nota.InfoNFe = new InfoNFe();
 
             item.NotaId = ChaveBL.GeraChave(

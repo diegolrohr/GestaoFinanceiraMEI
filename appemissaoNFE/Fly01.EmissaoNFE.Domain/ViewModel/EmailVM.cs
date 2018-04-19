@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class EmailVM : EntidadeVM
     {

@@ -1,5 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.Entities.Domains;
+﻿using Fly01.Core.Entities.Domains;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModel
 {

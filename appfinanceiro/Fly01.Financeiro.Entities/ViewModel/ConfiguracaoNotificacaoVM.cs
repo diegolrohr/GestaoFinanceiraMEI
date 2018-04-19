@@ -26,7 +26,7 @@ namespace Fly01.Financeiro.Entities.ViewModel
         public string DiaSemanaRest
         {
             get { return ((int)DiaSemana).ToString(); }
-            set { DiaSemana = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), value, true); }
+            set { DiaSemana = (DayOfWeek)System.Enum.Parse(typeof(DayOfWeek), value, true); }
             //set { DiaSemana = (DayOfWeek)Enum.ToObject(typeof(DayOfWeek), (int)DiaSemana + 1); }
         }
 

@@ -1,8 +1,7 @@
 namespace Fly01.Financeiro.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AlterPessoaTipoIndicacaoInscricaoEstadual : DbMigration
     {
         public override void Up()

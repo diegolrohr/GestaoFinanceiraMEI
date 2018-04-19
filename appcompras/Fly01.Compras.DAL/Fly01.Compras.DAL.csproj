@@ -140,6 +140,10 @@
     <Compile Include="Migrations\201804181323381_AlterSubstituicaoTributariaFCP.Designer.cs">
       <DependentUpon>201804181323381_AlterSubstituicaoTributariaFCP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804191416497_AlterMaxLengthFormaPagamento.cs" />
+    <Compile Include="Migrations\201804191416497_AlterMaxLengthFormaPagamento.Designer.cs">
+      <DependentUpon>201804191416497_AlterMaxLengthFormaPagamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -253,6 +257,9 @@
     <EmbeddedResource Include="Migrations\201804181323381_AlterSubstituicaoTributariaFCP.resx">
       <DependentUpon>201804181323381_AlterSubstituicaoTributariaFCP.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804191416497_AlterMaxLengthFormaPagamento.resx">
+      <DependentUpon>201804191416497_AlterMaxLengthFormaPagamento.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
@@ -266,10 +273,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Compras.Domain\Fly01.Compras.Domain.csproj">
-      <Project>{2de9f034-1ba2-4969-af4d-36a9981dc4c4}</Project>
-      <Name>Fly01.Compras.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

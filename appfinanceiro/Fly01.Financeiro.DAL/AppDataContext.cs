@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.Base;
-using Fly01.Financeiro.Domain.Entities;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Models.DAL
 {
@@ -71,11 +71,11 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ConciliacaoBancariaItem> ConciliacaoBancariaItens { get; set; }
         public DbSet<ConciliacaoBancariaItemContaFinanceira> ConciliacaoBancariaItemContasFinanceiras { get; set; }
         public DbSet<FormaPagamento> FormasPagamento { get; set; }
-        public DbSet<Movimentacao> Movimentacao { get; set; }
+        public DbSet<MovimentacaoFinanceira> Movimentacao { get; set; }
         public DbSet<Arquivo> Arquivo { get; set; }
         public DbSet<ContaFinanceiraRenegociacao> ContasFinanceirasRenegociacoes { get; set; }
         public DbSet<RenegociacaoContaFinanceiraOrigem> RenegociacaoContasFinanceirasOrigem { get; set; }
         public DbSet<RenegociacaoContaFinanceiraRenegociada> RenegociacaoContasFinanceirasRenegociadas { get; set; }
-        public DbSet<ConfiguracaoNotificacao> ConfiguracaoNotificacao { get; set; }
+        public DbSet<ConfiguracaoNotificacaoFinanceiro> ConfiguracaoNotificacao { get; set; }
     }
 }

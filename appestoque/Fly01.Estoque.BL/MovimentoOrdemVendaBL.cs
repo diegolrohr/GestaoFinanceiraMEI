@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
-using Fly01.Estoque.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.BL
 {
@@ -32,7 +32,7 @@ namespace Fly01.Estoque.BL
                 //se vai ficar negativo, dar entrada automática da diferenca antes
                 if (diferenca < 0)
                 {
-                    Movimento movimentoEntrada = new Movimento()
+                    MovimentoEstoque movimentoEntrada = new MovimentoEstoque()
                     {
                         QuantidadeMovimento = -diferenca,
                         ProdutoId = entity.ProdutoId,
@@ -43,7 +43,7 @@ namespace Fly01.Estoque.BL
                     MovimentoBL.Movimenta(movimentoEntrada);
                 }
 
-                Movimento movimentoBaixa = new Movimento()
+                MovimentoEstoque movimentoBaixa = new MovimentoEstoque()
                 {
                     QuantidadeMovimento = -entity.QuantidadeBaixa,
                     ProdutoId = entity.ProdutoId,

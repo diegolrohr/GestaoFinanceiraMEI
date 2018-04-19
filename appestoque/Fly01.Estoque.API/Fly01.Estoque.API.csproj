@@ -250,10 +250,6 @@
       <Project>{fe31de8f-d91c-4233-804b-6d91ac23cfe2}</Project>
       <Name>Fly01.Estoque.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Estoque.Domain\Fly01.Estoque.Domain.csproj">
-      <Project>{4c0174a5-ae52-45b7-a89d-6f6b73a0223a}</Project>
-      <Name>Fly01.Estoque.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

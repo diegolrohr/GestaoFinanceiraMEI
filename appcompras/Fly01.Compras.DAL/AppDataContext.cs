@@ -1,8 +1,8 @@
 ﻿using Fly01.Core.Base;
 using System.Data.Entity;
-using Fly01.Compras.Domain.Entities;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Compras.DAL
 {
@@ -56,7 +56,7 @@ namespace Fly01.Compras.DAL
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Produto> Produtos { get; set; }
-        public DbSet<NCM> Ncms { get; set; }
+        public DbSet<Ncm> Ncms { get; set; }
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
         public DbSet<GrupoProduto> GruposProduto { get; set; }
         public DbSet<Categoria> Categorias { get; set; }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
-using Fly01.Estoque.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.API
 {
@@ -11,12 +11,14 @@ namespace Fly01.Estoque.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
 
             builder.EntitySet<Estado>("estado");
             builder.EntitySet<Produto>("produto");
-            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Ncm>("ncm");
             builder.EntitySet<Inventario>("inventario");
             builder.EntitySet<InventarioItem>("inventarioitem");
             builder.EntitySet<TipoMovimento>("tipomovimento");

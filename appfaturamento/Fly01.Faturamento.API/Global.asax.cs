@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core;
 using System.Configuration;
 
@@ -13,8 +13,11 @@ namespace Fly01.Faturamento.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
+
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<Estado>("estado");
@@ -22,7 +25,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<Produto>("produto");
             builder.EntitySet<UnidadeMedida>("unidademedida");
             builder.EntitySet<GrupoProduto>("grupoproduto");
-            builder.EntitySet<NCM>("ncm");
+            builder.EntitySet<Ncm>("ncm");
             builder.EntitySet<Cfop>("cfop");
             builder.EntitySet<GrupoTributario>("grupotributario");
             builder.EntitySet<ParametroTributario>("parametrotributario");
@@ -30,7 +33,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<OrdemVendaProduto>("ordemvendaproduto");
             builder.EntitySet<OrdemVendaServico>("ordemvendaservico");
             builder.EntitySet<Servico>("servico");
-            builder.EntitySet<NBS>("nbs");
+            builder.EntitySet<Nbs>("nbs");
             builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
             builder.EntitySet<FormaPagamento>("formapagamento");
             builder.EntitySet<Categoria>("categoria");

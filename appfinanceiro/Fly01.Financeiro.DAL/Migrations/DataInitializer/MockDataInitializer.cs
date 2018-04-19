@@ -3,7 +3,7 @@ using System.Linq;
 using Fly01.Financeiro.DAL.Migrations.DataInitializer.Contract;
 using System.Collections.Generic;
 using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Financeiro.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
@@ -89,9 +89,9 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
             var contaBancariaOrigem = context.ConciliacoesBancarias.FirstOrDefault()?.Id;
             var contaBancariaDestino = context.ConciliacoesBancarias.FirstOrDefault()?.Id;
 
-            var movimentacoes = new List<Movimentacao>
+            var movimentacoes = new List<MovimentacaoFinanceira>
             {
-                new Movimentacao()
+                new MovimentacaoFinanceira()
                 {
                     Id = Guid.NewGuid(),
                     Data = DateTime.Now,
@@ -106,7 +106,7 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
                     DataInclusao = DateTime.Now,
                     Ativo = true
                 },
-                new Movimentacao()
+                new MovimentacaoFinanceira()
                 {
                     Id = Guid.NewGuid(),
                     Data = DateTime.Now,
@@ -126,207 +126,6 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
             context.Movimentacao.AddRange(movimentacoes);
             context.SaveChanges();
         }
-
-        //public void AddCategoriasFinanceiras(AppDataContext context)
-        //{
-        //    if (!context.Categorias.Any())
-        //    {
-        //        var categoriaFinanceiraId = Enumerable.Range(0, 10).Select(item => Guid.NewGuid()).ToArray();
-
-        //        var categoriasFinanceirasReceitas = new List<Categoria>()
-        //        {
-        //            new Categoria
-        //            {
-        //                Id = categoriaFinanceiraId[0],
-        //                Descricao = "RECEITAS",
-        //                //Classe = CategoriaFinanceiraClasse.Sintetico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                //Codigo = "01",
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = categoriaFinanceiraId[1],
-        //                Descricao = "RECEITAS MEDICAS",
-        //                Classe = CategoriaFinanceiraClasse.Sintetico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "0101",
-        //                CategoriaPaiId = categoriaFinanceiraId[0],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "CONSULTAS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "010101",
-        //                CategoriaPaiId = categoriaFinanceiraId[1],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "EXAMES",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "010102",
-        //                CategoriaPaiId = categoriaFinanceiraId[1],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "OUTRAS RECEITAS MEDICAS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "010103",
-        //                CategoriaPaiId = categoriaFinanceiraId[1],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "JUROS APLICACOES",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "010104",
-        //                CategoriaPaiId = categoriaFinanceiraId[1],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "RENDIMENTOS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Receita,
-        //                Codigo = "010105",
-        //                CategoriaPaiId = categoriaFinanceiraId[1],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //        };
-
-        //        var categoriasFinanceirasDespesas = new List<CategoriaFinanceira>()
-        //        {
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = categoriaFinanceiraId[3],
-        //                Descricao = "DESPESAS",
-        //                Classe = CategoriaFinanceiraClasse.Sintetico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "02",
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = categoriaFinanceiraId[4],
-        //                Descricao = "ORDENADOS E SALARIOS",
-        //                Classe = CategoriaFinanceiraClasse.Sintetico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "0201",
-        //                CategoriaPaiId = categoriaFinanceiraId[3],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "ESTAGIARIOS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "020101",
-        //                CategoriaPaiId = categoriaFinanceiraId[4],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "SALARIOS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "020102",
-        //                CategoriaPaiId = categoriaFinanceiraId[4],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "ADIANTAMENTO DE SALARIOS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "020103",
-        //                CategoriaPaiId = categoriaFinanceiraId[4],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "DECIMO TERCEIRO SALARIO",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "020104",
-        //                CategoriaPaiId = categoriaFinanceiraId[4],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //            new CategoriaFinanceira
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                Descricao = "REPASSES MEDICOS",
-        //                Classe = CategoriaFinanceiraClasse.Analitico,
-        //                TipoCarteira = TipoCarteira.Despesa,
-        //                Codigo = "020105",
-        //                CategoriaPaiId = categoriaFinanceiraId[4],
-        //                PlataformaId = plataformaId,
-        //                UsuarioInclusao = usuarioSeed,
-        //                DataInclusao = DateTime.Now,
-        //                Ativo = true
-        //            },
-        //        };
-
-        //        var categoriasFinanceiras = categoriasFinanceirasDespesas.Union(categoriasFinanceirasReceitas);
-
-        //        context.Categorias.AddRange(categoriasFinanceiras);
-        //        context.SaveChanges();
-        //    }
-        //}
 
         public void AddCondicoesParcelamento(AppDataContext context)
         {

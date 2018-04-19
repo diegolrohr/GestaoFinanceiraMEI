@@ -137,10 +137,6 @@
       <Project>{599fc6f5-a443-4d81-81cb-6dfd2abff728}</Project>
       <Name>Fly01.Financeiro.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Financeiro.Domain\Fly01.Financeiro.Domain.csproj">
-      <Project>{f2edc04e-6919-4a68-8e2b-b1e0bed0aa4d}</Project>
-      <Name>Fly01.Financeiro.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

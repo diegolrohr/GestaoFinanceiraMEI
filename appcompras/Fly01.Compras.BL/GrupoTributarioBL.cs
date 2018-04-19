@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Fly01.Compras.Domain.Entities;
 using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 
 namespace Fly01.Compras.BL

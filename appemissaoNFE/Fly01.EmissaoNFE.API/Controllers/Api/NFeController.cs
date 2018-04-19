@@ -8,7 +8,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
     public class NFeController : ApiBaseController
     {
         [HttpPost]
-        public IHttpActionResult Post(NFe entity)
+        public IHttpActionResult Post(NFeVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {

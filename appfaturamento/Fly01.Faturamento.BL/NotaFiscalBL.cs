@@ -1,10 +1,9 @@
 ﻿using Fly01.Core.BL;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using Fly01.Faturamento.DAL;
 using System;
 using System.Linq;
-using Fly01.Faturamento.Domain.Enums;
 using System.Data.Entity;
 using Newtonsoft.Json;
 using System.Collections.Generic;

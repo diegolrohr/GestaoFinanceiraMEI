@@ -4,7 +4,7 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Routing;
 using Fly01.Faturamento.BL;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using System.Linq;
 using Fly01.Core.Notifications;
 

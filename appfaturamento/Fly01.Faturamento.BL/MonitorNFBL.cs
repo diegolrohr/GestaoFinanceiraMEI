@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using System.Collections.Generic;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Newtonsoft.Json;
-using System;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
@@ -76,7 +75,7 @@ namespace Fly01.Faturamento.BL
                                 nfe.Mensagem = null;
                                 nfe.Recomendacao = null;
 
-                                nfe.Status = (StatusNotaFiscal)Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                nfe.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                 nfe.Mensagem = itemNF.Mensagem;
                                 nfe.Recomendacao = itemNF.Recomendacao;
                             }
@@ -88,7 +87,7 @@ namespace Fly01.Faturamento.BL
                                     nfse.Mensagem = null;
                                     nfse.Recomendacao = null;
 
-                                    nfse.Status = (StatusNotaFiscal)Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                    nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                     nfse.Mensagem = itemNF.Mensagem;
                                     nfse.Recomendacao = itemNF.Recomendacao;
                                 }

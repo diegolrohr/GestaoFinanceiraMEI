@@ -1,7 +1,6 @@
-﻿using Fly01.Faturamento.BL;
+﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Faturamento.BL;
 using System.Web.OData.Routing;
-using Fly01.Faturamento.Domain.Entities;
-
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

@@ -52,17 +52,90 @@
     <Compile Include="Attribute\APIEnumAttribute.cs" />
     <Compile Include="Attribute\InputMask.cs" />
     <Compile Include="Attribute\SubtitleAttribute.cs" />
-    <Compile Include="Domains\Commons\ArquivoBase.cs" />
-    <Compile Include="Domains\Commons\CategoriaBase.cs" />
-    <Compile Include="Domains\Commons\CestBase.cs" />
-    <Compile Include="Domains\Commons\CfopBase.cs" />
-    <Compile Include="Domains\Commons\CidadeBase.cs" />
-    <Compile Include="Domains\Commons\CondicaoParcelamentoBase.cs" />
-    <Compile Include="Domains\Commons\EstadoBase.cs" />
-    <Compile Include="Domains\Commons\NcmBase.cs" />
-    <Compile Include="Domains\Commons\PessoaBase.cs" />
-    <Compile Include="Domains\Commons\SubstituicaoTributariaBase.cs" />
-    <Compile Include="Domains\Commons\UnidadeMedidaBase.cs" />
+    <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\Arquivo.cs" />
+    <Compile Include="Domains\Commons\Banco.cs" />
+    <Compile Include="Domains\Commons\Categoria.cs" />
+    <Compile Include="Domains\Commons\CertificadoDigital.cs" />
+    <Compile Include="Domains\Commons\Cest.cs" />
+    <Compile Include="Domains\Commons\Cfop.cs" />
+    <Compile Include="Domains\Commons\Cidade.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancaria.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaItem.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaItemContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\ConciliacaoBancariaTransacao.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamento.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoParcela.cs" />
+    <Compile Include="Domains\Commons\CondicaoParcelamentoSimulacao.cs" />
+    <Compile Include="Domains\Commons\ConfiguracaoNotificacaoFinanceiro.cs" />
+    <Compile Include="Domains\Commons\ContaBancaria.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraBaixa.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraRenegociacao.cs" />
+    <Compile Include="Domains\Commons\ContaPagar.cs" />
+    <Compile Include="Domains\Commons\ContaReceber.cs" />
+    <Compile Include="Domains\Commons\DadosContato.cs" />
+    <Compile Include="Domains\Commons\DadosEndereco.cs" />
+    <Compile Include="Domains\Commons\EnquadramentoLegalIPI.cs" />
+    <Compile Include="Domains\Commons\Entidade.cs" />
+    <Compile Include="Domains\Commons\Estado.cs" />
+    <Compile Include="Domains\Commons\Extrato.cs" />
+    <Compile Include="Domains\Commons\ExtratoContaSaldo.cs" />
+    <Compile Include="Domains\Commons\ExtratoDetalhe.cs" />
+    <Compile Include="Domains\Commons\ExtratoHistoricoSaldo.cs" />
+    <Compile Include="Domains\Commons\Feriado.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixa.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixaProjecao.cs" />
+    <Compile Include="Domains\Commons\FluxoCaixaSaldo.cs" />
+    <Compile Include="Domains\Commons\FormaPagamento.cs" />
+    <Compile Include="Domains\Commons\GrupoProduto.cs" />
+    <Compile Include="Domains\Commons\GrupoTributario.cs" />
+    <Compile Include="Domains\Commons\Inventario.cs" />
+    <Compile Include="Domains\Commons\InventarioItem.cs" />
+    <Compile Include="Domains\Commons\Iss.cs" />
+    <Compile Include="Domains\Commons\MonitorNF.cs" />
+    <Compile Include="Domains\Commons\MovimentacaoFinanceira.cs" />
+    <Compile Include="Domains\Commons\MovimentacaoFinanceiraPorCategoria.cs" />
+    <Compile Include="Domains\Commons\MovimentoEstoque.cs" />
+    <Compile Include="Domains\Commons\MovimentoOrdemVenda.cs" />
+    <Compile Include="Domains\Commons\Nbs.cs" />
+    <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\NFe.cs" />
+    <Compile Include="Domains\Commons\NFeProduto.cs" />
+    <Compile Include="Domains\Commons\NFSe.cs" />
+    <Compile Include="Domains\Commons\NFSeServico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscal.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItem.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemTributacao.cs" />
+    <Compile Include="Domains\Commons\Orcamento.cs" />
+    <Compile Include="Domains\Commons\OrcamentoItem.cs" />
+    <Compile Include="Domains\Commons\OrdemCompra.cs" />
+    <Compile Include="Domains\Commons\OrdemCompraItem.cs" />
+    <Compile Include="Domains\Commons\OrdemVenda.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaItem.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaProduto.cs" />
+    <Compile Include="Domains\Commons\OrdemVendaServico.cs" />
+    <Compile Include="Domains\Commons\ParametroTributario.cs" />
+    <Compile Include="Domains\Commons\Pedido.cs" />
+    <Compile Include="Domains\Commons\PedidoItem.cs" />
+    <Compile Include="Domains\Commons\PedidoProdutoEstoqueNegativo.cs" />
+    <Compile Include="Domains\Commons\Pessoa.cs" />
+    <Compile Include="Domains\Commons\PosicaoAtual.cs" />
+    <Compile Include="Domains\Commons\Produto.cs" />
+    <Compile Include="Domains\Commons\ProdutoMovimentado.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceira.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
+    <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
+    <Compile Include="Domains\Commons\SaldoHistorico.cs" />
+    <Compile Include="Domains\Commons\SerieNotaFiscal.cs" />
+    <Compile Include="Domains\Commons\Servico.cs" />
+    <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
+    <Compile Include="Domains\Commons\TipoMovimento.cs" />
+    <Compile Include="Domains\Commons\TotalNotaFiscal.cs" />
+    <Compile Include="Domains\Commons\TotalOrdemVenda.cs" />
+    <Compile Include="Domains\Commons\TotalTributacao.cs" />
+    <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
+    <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
@@ -71,6 +144,7 @@
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
     <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
@@ -81,6 +155,7 @@
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />
     <Compile Include="Domains\Enum\TipoLayoutNFSE.cs" />
     <Compile Include="Domains\Enum\TipoMensagemNFSE.cs" />
+    <Compile Include="Domains\Enum\TipoModalidade.cs" />
     <Compile Include="Domains\Enum\TipoNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoOperacaoSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoOrdemCompra.cs" />
@@ -134,13 +209,13 @@
     <Compile Include="ViewModels\SystemValueVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

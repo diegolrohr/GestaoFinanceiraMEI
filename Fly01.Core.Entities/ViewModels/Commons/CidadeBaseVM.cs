@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Fly01.Core.Entities.ViewModels.Commons
 {
@@ -12,7 +13,7 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         public string CodigoIbge { get; set; }
 
         [JsonProperty("estadoId")]
-        public int EstadoId { get; set; }
+        public Guid EstadoId { get; set; }
 
         #region Navigation Properties
         [JsonProperty("estado")]

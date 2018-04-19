@@ -136,20 +136,19 @@ namespace Fly01.Faturamento.Controllers
                 Value = "0"
             });
 
-            config.Elements.Add(new InputCustommaskUI
+            config.Elements.Add(new InputCurrencyUI
             {
-                Id = "aliquotaFCPConsumidorFinal",
+                Id = "valorBCFCPSTRetidoAnterior",
                 Class = "col s12 l6",
-                Label = "Alíquota FCP Consumidor Final",
+                Label = "Base FCP ST Retido Anterior",
                 Value = "0",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 
             config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorFCPSTRetidoAnterior",
                 Class = "col s12 l6 numeric",
-                Label = "FCP ST Retido Anterior",
+                Label = "Valor FCP ST Retido Anterior",
                 Value = "0"
             });
 
@@ -183,7 +182,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorBCFCPSTRetidoAnterior",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor Base do Fundo de Combate à Pobreza para consumidor final. Se o pedido gerar nota fiscal com DIFAL, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                    Text = "Valor Base do Fundo de Combate à Pobreza retido anteriormente. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI

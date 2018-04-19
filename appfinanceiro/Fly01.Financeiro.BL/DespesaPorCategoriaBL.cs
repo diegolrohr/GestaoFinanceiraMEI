@@ -1,10 +1,10 @@
-﻿using Fly01.Financeiro.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fly01.Core.Entities.Domains;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
@@ -20,7 +20,7 @@ namespace Fly01.Financeiro.BL
             CategoriaBL = categoriaBL;
         }
 
-        public List<MovimentacaoPorCategoria> Get(DateTime dataInicial,
+        public List<MovimentacaoFinanceiraPorCategoria> Get(DateTime dataInicial,
                                                   DateTime dataFinal,
                                                   bool somaRealizados = true,
                                                   bool somaPrevistos = false)
@@ -40,7 +40,7 @@ namespace Fly01.Financeiro.BL
                                             x.ValorPago
                                         })
                                         .GroupBy(x => x.Categoria)
-                                        .Select(g => new MovimentacaoPorCategoria()
+                                        .Select(g => new MovimentacaoFinanceiraPorCategoria()
                                         {
                                             Categoria = g.Key.Descricao,
                                             CategoriaId = g.Key.Id,
@@ -57,7 +57,7 @@ namespace Fly01.Financeiro.BL
             var categoriasComDespesa = contasPagar.Select(x => x.CategoriaId).Distinct();
             var categoriasSemDespesa = CategoriaBL.All.Where(x => !categoriasComDespesa.Contains(x.Id) && x.TipoCarteira == TipoCarteira.Despesa);
             var despesasPorCategoriaZeradas = categoriasSemDespesa
-                                                .Select(x => new MovimentacaoPorCategoria()
+                                                .Select(x => new MovimentacaoFinanceiraPorCategoria()
                                                 {
                                                     Categoria = x.Descricao,
                                                     CategoriaId = x.Id,
@@ -76,7 +76,7 @@ namespace Fly01.Financeiro.BL
                         .All
                         .Where(e => e.CategoriaPaiId == null &&
                                     e.TipoCarteira == TipoCarteira.Despesa)
-                        .Select(x => new MovimentacaoPorCategoria()
+                        .Select(x => new MovimentacaoFinanceiraPorCategoria()
                         {
                             Categoria = x.Descricao,
                             CategoriaId = x.Id,
@@ -96,7 +96,7 @@ namespace Fly01.Financeiro.BL
                         .OrderBy(x => x.Categoria)
                         .ToList();
 
-            var listaOrdenada = new List<MovimentacaoPorCategoria>();
+            var listaOrdenada = new List<MovimentacaoFinanceiraPorCategoria>();
 
             foreach (var categoria in pais)
             {

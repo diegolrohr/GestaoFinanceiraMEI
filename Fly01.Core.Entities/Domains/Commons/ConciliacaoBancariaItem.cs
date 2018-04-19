@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.Collections.Generic;
-using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Enum;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ConciliacaoBancariaItem : PlataformaBase
     {
@@ -30,10 +28,6 @@ namespace Fly01.Financeiro.Domain.Entities
         [Required]
         public StatusConciliado StatusConciliado { get; set; }
 
-        #region Navigations Properties
-
         public virtual List<ConciliacaoBancariaItemContaFinanceira> ConciliacaoBancariaItemContasFinanceiras { get; set; }
-
-        #endregion
     }
 }

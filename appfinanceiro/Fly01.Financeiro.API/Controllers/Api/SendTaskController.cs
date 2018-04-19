@@ -3,7 +3,7 @@ using Fly01.Core.API;
 using Fly01.Core.Mensageria;
 using Fly01.Financeiro.API.Models;
 using Fly01.Financeiro.BL;
-using Fly01.Financeiro.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

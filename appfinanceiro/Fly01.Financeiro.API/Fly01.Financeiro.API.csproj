@@ -155,10 +155,6 @@
       <Project>{e292ea68-56ce-4d3f-ba97-06da892174f9}</Project>
       <Name>Fly01.Financeiro.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Financeiro.Domain\Fly01.Financeiro.Domain.csproj">
-      <Project>{f2edc04e-6919-4a68-8e2b-b1e0bed0aa4d}</Project>
-      <Name>Fly01.Financeiro.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

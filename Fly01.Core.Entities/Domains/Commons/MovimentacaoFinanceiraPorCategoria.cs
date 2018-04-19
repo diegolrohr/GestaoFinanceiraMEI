@@ -1,10 +1,11 @@
-﻿using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class MovimentacaoPorCategoria : PlataformaBase
+    [Table("MovimentacaoPorCategoria")]
+    public class MovimentacaoFinanceiraPorCategoria : PlataformaBase
     {
         public Guid CategoriaId { get; set; }
         public string Categoria { get; set; }

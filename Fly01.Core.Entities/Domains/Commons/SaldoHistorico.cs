@@ -1,9 +1,8 @@
-﻿using Fly01.Core.Entities.Domains;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     /*
      * ATENÇÃO: Entidade utiliza StoreProcedures
@@ -13,7 +12,7 @@ namespace Fly01.Financeiro.Domain.Entities
     public class SaldoHistorico : PlataformaBase
     {
         [Required]
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime Data { get; set; }
 
         [Required]

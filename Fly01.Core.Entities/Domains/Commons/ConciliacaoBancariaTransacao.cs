@@ -1,13 +1,11 @@
-﻿using Fly01.Core.Entities.Domains;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ConciliacaoBancariaTransacao : PlataformaBase
     {
-        //ConciliacaoBancariaItemContaFinanceiraVM
         [JsonProperty("conciliacaoBancariaItemId")]
         public Guid ConciliacaoBancariaItemId { get; set; }
 
@@ -17,7 +15,6 @@ namespace Fly01.Financeiro.Domain.Entities
         [JsonProperty("valorConciliado")]
         public double ValorConciliado { get; set; }
 
-        //ContaFinanceiraVM
         [JsonProperty("valorPrevisto")]
         public double ValorPrevisto { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class FluxoCaixaSaldo
     {

@@ -2,13 +2,14 @@
 using System;
 using System.Linq;
 using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Financeiro.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
-    public class MovimentacaoBL : PlataformaBaseBL<Movimentacao>
+    public class MovimentacaoBL : PlataformaBaseBL<MovimentacaoFinanceira>
     {
         private CategoriaBL categoriaBL;
         private SaldoHistoricoBL saldoHistoricoBL;
@@ -19,7 +20,7 @@ namespace Fly01.Financeiro.BL
             this.saldoHistoricoBL = saldoHistoricoBL;
         }
 
-        public override void Insert(Movimentacao movimentacao)
+        public override void Insert(MovimentacaoFinanceira movimentacao)
         {
             movimentacao.Fail(movimentacao.ContaBancariaOrigemId == default(Guid) && movimentacao.ContaBancariaDestinoId == default(Guid), new Error("Conta Bancária Inválida."));
             movimentacao.Fail(movimentacao.CategoriaId == null, new Error("Informe a categoria financeira."));
@@ -55,12 +56,12 @@ namespace Fly01.Financeiro.BL
             }
         }
 
-        public override void Update(Movimentacao entity)
+        public override void Update(MovimentacaoFinanceira entity)
         {
             throw new BusinessException("Não é possivel realizar a atualização de movimentação.");
         }
 
-        public override void Delete(Movimentacao entityToDelete)
+        public override void Delete(MovimentacaoFinanceira entityToDelete)
         {
             throw new BusinessException("Não é possivel realizar a deleção de movimentação.");
         }
@@ -80,7 +81,7 @@ namespace Fly01.Financeiro.BL
             }
         }
 
-        public void NovaTransferencia(Transferencia transferencia)
+        public void NovaTransferencia(TransferenciaFinanceira transferencia)
         {
             transferencia.PlataformaId = PlataformaUrl;
             transferencia.UsuarioInclusao = AppUser;
@@ -139,9 +140,9 @@ namespace Fly01.Financeiro.BL
             Insert(transferencia.MovimentacaoDestino);
         }
 
-        private Movimentacao Debito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null, Guid? categoriaId = null)
+        private MovimentacaoFinanceira Debito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null, Guid? categoriaId = null)
         {
-            var mov = new Movimentacao()
+            var mov = new MovimentacaoFinanceira()
             {
                 ContaBancariaDestinoId = new Guid?(),
                 ContaBancariaOrigemId = contaBancariaId,
@@ -156,9 +157,9 @@ namespace Fly01.Financeiro.BL
             return mov;
         }
 
-        private Movimentacao Credito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null, Guid? categoriaId = null)
+        private MovimentacaoFinanceira Credito(DateTime data, double valor, Guid contaBancariaId, Guid? contaFinanceiraId = null, string descricao = null, Guid? categoriaId = null)
         {
-            var mov = new Movimentacao()
+            var mov = new MovimentacaoFinanceira()
             {
                 ContaBancariaDestinoId = contaBancariaId,
                 ContaBancariaOrigemId = new Guid?(),

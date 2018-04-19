@@ -14,8 +14,11 @@ namespace Fly01.Faturamento.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
+
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<Estado>("estado");

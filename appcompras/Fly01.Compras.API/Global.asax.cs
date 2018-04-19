@@ -11,8 +11,10 @@ namespace Fly01.Compras.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
 
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");

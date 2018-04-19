@@ -1,7 +1,6 @@
 ﻿using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
-using Fly01.Financeiro.Domain.Entities;
 using Microsoft.OData.Edm;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
@@ -12,8 +11,11 @@ namespace Fly01.Financeiro.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
+
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Arquivo>("arquivo");
             builder.EntitySet<ContaBancaria>("contabancaria");
@@ -33,15 +35,13 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariabuscarexistentes");
             builder.EntitySet<FormaPagamento>("formapagamento");
             builder.EntitySet<ContaFinanceiraRenegociacao>("contafinanceirarenegociacao");
-            builder.EntitySet<Movimentacao>("movimentacao");
-            builder.EntitySet<Transferencia>("transferencia");
-            builder.EntitySet<MovimentacaoPorCategoria>("receitaporcategoria");
-            builder.EntitySet<MovimentacaoPorCategoria>("despesaporcategoria");
-            builder.EntitySet<MovimentacaoPorCategoria>("movimentacaoporcategoria");
-            builder.EntitySet<ConfiguracaoNotificacao>("configuracaonotificacao");
-
-            EntityTypeConfiguration<ConfiguracaoNotificacao> configuracaoNotificacaoCFG = builder.EntityType<ConfiguracaoNotificacao>();
-            configuracaoNotificacaoCFG.Property(c => c.HoraEnvio).AsTimeOfDay();
+            builder.EntitySet<MovimentacaoFinanceira>("movimentacao");
+            builder.EntitySet<TransferenciaFinanceira>("transferencia");
+            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("receitaporcategoria");
+            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("despesaporcategoria");
+            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
+            builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
+            builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

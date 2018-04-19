@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class AggregatorSaldos
     {
         public double SumSaldoConsolidado { get; set; }
-        
+
         public List<double> SaldoConsolidado { get; set; }
 
         public AggregatorSaldos()
@@ -51,6 +51,6 @@ namespace Fly01.Financeiro.Domain.Entities
 
         [JsonProperty("saldoConsolidado")]
         public double SaldoConsolidado { get; set; }
-        
+
     }
 }

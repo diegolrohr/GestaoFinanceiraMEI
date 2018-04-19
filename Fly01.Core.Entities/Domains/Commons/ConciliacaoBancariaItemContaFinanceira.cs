@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System;
-using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ConciliacaoBancariaItemContaFinanceira : PlataformaBase
     {

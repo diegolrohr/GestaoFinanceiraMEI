@@ -9,8 +9,11 @@ namespace Fly01.EmissaoNFE.API
     {
         protected override IEdmModel GetEdmModel()
         {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "DefaultContainer";
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder
+            {
+                ContainerName = "DefaultContainer"
+            };
+
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
         }

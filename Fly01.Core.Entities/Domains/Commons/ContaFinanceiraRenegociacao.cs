@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using System;
 using System.Collections.Generic;
-using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ContaFinanceiraRenegociacao : PlataformaBase
     {
@@ -44,11 +42,11 @@ namespace Fly01.Financeiro.Domain.Entities
         public Guid CondicaoParcelamentoId { get; set; }
 
         [Required]
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
         [Required]
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime DataVencimento { get; set; }
 
         [Required]
@@ -56,13 +54,12 @@ namespace Fly01.Financeiro.Domain.Entities
 
         public string Motivo { get; set; }
 
-        #region Navigation Properties
-
         public virtual Categoria Categoria { get; set; }
-        public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
-        public virtual Pessoa Pessoa { get; set; }
-        public virtual FormaPagamento FormaPagamento { get; set; }
 
-        #endregion
+        public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
+
+        public virtual Pessoa Pessoa { get; set; }
+
+        public virtual FormaPagamento FormaPagamento { get; set; }
     }
 }

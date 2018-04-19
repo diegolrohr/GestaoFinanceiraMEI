@@ -1,9 +1,7 @@
-﻿using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Commons;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Financeiro.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public abstract class RenegociacaoContaFinanceira : PlataformaBase
     {

@@ -54,7 +54,7 @@ namespace Fly01.Financeiro.Controllers
             //    valorTituloTotalFormatado = itemBankTransac.Value.ToString("C", AppDefaults.CultureInfoDefault);
             //}
 
-            var empresaVM = GetDadosEmpresa();
+            var managerEmpresaVM = GetDadosEmpresa();
             total = itemContaReceber.ValorPago.Value;
             string valorTituloFormatado = total.ToString("C", AppDefaults.CultureInfoDefault);
 
@@ -70,7 +70,7 @@ namespace Fly01.Financeiro.Controllers
                 Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", itemContaReceber.Pessoa.Nome, valorTituloTotalFormatado, itemContaReceber.ValorPago.Value.toExtenso()),
                 DescricaoTitulo = !String.IsNullOrWhiteSpace(itemContaReceber.Descricao) ? itemContaReceber.Descricao : itemContaReceber.Categoria.Descricao,
                 ValorTitulo = valorTituloFormatado,
-                DataAtual = String.Format("{0}, {1} de {2} de {3}", empresaVM.Cidade != null ? empresaVM.Cidade.Nome : "", DateTime.Now.Day, AppDefaults.CultureInfoDefault.DateTimeFormat.GetMonthName(DateTime.Now.Month), DateTime.Now.Year),
+                DataAtual = String.Format("{0}, {1} de {2} de {3}", managerEmpresaVM.Cidade != null ? managerEmpresaVM.Cidade.Nome : "", DateTime.Now.Day, AppDefaults.CultureInfoDefault.DateTimeFormat.GetMonthName(DateTime.Now.Month), DateTime.Now.Year),
                 Assinatura = assinatura.ToString(),
                 DescricaoJuros = "Juros",
                 ValorJuros = string.Format("(+) {0}", interest.ToString("C", AppDefaults.CultureInfoDefault)),

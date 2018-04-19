@@ -12,6 +12,7 @@ using System;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation;
 using Fly01.Core.Rest;
+using Fly01.Core.Reports;
 
 namespace Fly01.Faturamento.Controllers.Base
 {
@@ -24,9 +25,9 @@ namespace Fly01.Faturamento.Controllers.Base
             AppEntitiesResourceName = "Fly01.Faturamento.Entities";
         }
 
-        public EmpresaVM GetDadosEmpresa()
+        public ManagerEmpresaVM GetDadosEmpresa()
         {
-            return RestHelper.ExecuteGetRequest<EmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
         }
 
         public ContentResult EmConstrucao(string history)

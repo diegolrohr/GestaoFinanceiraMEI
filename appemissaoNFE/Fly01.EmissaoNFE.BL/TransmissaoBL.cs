@@ -595,7 +595,6 @@ namespace Fly01.EmissaoNFE.BL
                                     break;
 
                                 case "103": //Isenção do ICMS no Simples Nacional para faixa de receita bruta
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
@@ -615,13 +614,16 @@ namespace Fly01.EmissaoNFE.BL
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
-                                    // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
-                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
-                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
-                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+
+                                    if (item.Versao == "4.0")
+                                    {
+                                        entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
+                                            new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                            new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                            new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                    }
                                     break;
 
                                 case "202": //Tributada pelo Simples Nacional sem permissão de crédito e com cobrança do ICMS por substituição tributária
@@ -637,13 +639,16 @@ namespace Fly01.EmissaoNFE.BL
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
-                                    // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+
+                                    if (item.Versao == "4.0")
+                                    {
+                                        entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                         new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
-                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
-                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                            new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                            new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                    }
                                     break;
 
                                 case "203": //Isenção do ICMS no Simples Nacional para faixa de receita bruta e com cobrança do ICMS por substituição tributária
@@ -659,21 +664,22 @@ namespace Fly01.EmissaoNFE.BL
                                         new Error("Alíquota do ICMS ST é obrigatória para CSOSN 201, 202 e 203. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaICMSST"));
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSST"));
-                                    // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
+
+                                    if (item.Versao == "4.0")
+                                    {
+                                        entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                         new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
-                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
-                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                            new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                            new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                    }
                                     break;
 
                                 case "300": //Imune
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "400": //Não tributada pelo Simples Nacional
-                                    detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
                                     break;
 
                                 case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
@@ -681,15 +687,16 @@ namespace Fly01.EmissaoNFE.BL
                                         new Error("Valor da base de cálculo do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBCSTRetido"));
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue,
                                         new Error("Valor do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSSTRetido"));
-                                    // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal.HasValue,
-                                        new Error("Alíquota suportada pelo Consumidor Final é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST.HasValue,
-                                        new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPSTRet"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST.HasValue,
-                                        new Error("Percentual do FCP retido anteriormente por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPSTRet"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
-                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPSTRet"));
+
+                                    if (item.Versao == "4.0")
+                                    {
+                                        entity.Fail(!detalhe.Imposto.ICMS.BaseFCPSTRetido.HasValue,
+                                            new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPSTRet"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPSTRetido.HasValue,
+                                            new Error("Percentual do FCP retido anteriormente por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPSTRet"));
+                                        entity.Fail(!detalhe.Imposto.ICMS.ValorFCPSTRetido.HasValue,
+                                            new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPSTRet"));
+                                    }
                                     break;
 
                                 case "900": //Outros
@@ -698,13 +705,6 @@ namespace Fly01.EmissaoNFE.BL
                                         new Error("Percentual de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
                                     entity.Fail(detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && !detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
                                         new Error("Valor de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorCreditoICMS"));
-                                    // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoST.HasValue,
-                                        new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoST.HasValue,
-                                        new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
-                                    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPRetidoST.HasValue,
-                                        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
 
                                     //Informação do CSOSN e ICMS próprio
                                     var ICMSProprio = false;
@@ -747,6 +747,16 @@ namespace Fly01.EmissaoNFE.BL
                                             new Error("Alíquota da Substituição Tributária é requerida. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
                                         entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                             new Error("Valor da Substituição Tributária é requerido. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorBC"));
+
+                                        if (item.Versao == "4.0")
+                                        {
+                                            entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
+                                            new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPST"));
+                                            entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                                new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pFCPST"));
+                                            entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vFCPST"));
+                                        }
                                     }
                                     break;
 

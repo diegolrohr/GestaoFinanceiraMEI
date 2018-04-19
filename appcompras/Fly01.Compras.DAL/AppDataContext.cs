@@ -46,8 +46,6 @@ namespace Fly01.Compras.DAL
                 .Map(m => m.ToTable("OrdemCompraItem"))
                 .Map<OrcamentoItem>(m => m.ToTable("OrcamentoItem"))
                 .Map<PedidoItem>(m => m.ToTable("PedidoItem"));
-
-            builder.Entity<OrdemCompraItem>().Ignore(m => m.Total);
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

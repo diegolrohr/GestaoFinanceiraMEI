@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -9,6 +10,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid ContaBancariaId { get; set; }
 
+        [NotMapped]
         public string Arquivo { get; set; }
 
         public virtual ContaBancaria ContaBancaria { get; set; }

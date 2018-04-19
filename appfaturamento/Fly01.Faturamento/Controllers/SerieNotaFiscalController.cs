@@ -11,6 +11,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.API;
 using Fly01.Core;
+using System.Linq;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -145,7 +146,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult FormModal()
+        public ContentResult FormModalNFe()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -158,7 +159,7 @@ namespace Fly01.Faturamento.Controllers
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
                 },
-                Id = "fly01mdlfrmModalSerieNotaFiscal"
+                Id = "fly01mdlfrmModalSerieNotaFiscalNFe"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -180,7 +181,8 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false).
+                    ToList().FindAll(x => "Ambas,NFe".Contains(x.Value))),
                 Value = "1"
             });
 
@@ -197,6 +199,61 @@ namespace Fly01.Faturamento.Controllers
             
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }
-        
+
+        public ContentResult FormModalNFSe()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Série da Nota Fiscal",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                },
+                Id = "fly01mdlfrmModalSerieNotaFiscalNFSe"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+
+            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "serie",
+                Class = "col s12 m4",
+                Label = "Série",
+                Required = true,
+                MaxLength = 3,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
+            });
+
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoOperacaoSerieNotaFiscal",
+                Class = "col s12 m4",
+                Label = "Tipo de Operação",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false).
+                    ToList().FindAll(x => "Ambas,NFSe".Contains(x.Value))),
+                Value = "2"
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "numNotaFiscal",
+                Class = "col s12 m4",
+                Label = "Próxima Nota a ser Emitida",
+                Required = true,
+                MaxLength = 8,
+                Data = new { inputmask = "'regex': '[0-9]*'" },
+                Value = "1"
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
+        }
+
+
     }
 }

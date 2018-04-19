@@ -212,7 +212,9 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeSerieNFSe" }
-                }
+                },
+                DataUrlPostModal = Url.Action("FormModalNFSe", "SerieNotaFiscal"),
+                DataPostField = "serie"
             });
             config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFSe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal" });
 

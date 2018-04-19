@@ -73,12 +73,8 @@ namespace Fly01.EmissaoNFE.BL
             XmlAttributes attrsICMS = new XmlAttributes();
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN101)));
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN102)));
-            attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN103)));
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN201)));
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN202)));
-            attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN203)));
-            attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN300)));
-            attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN400)));
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN500)));
             attrsICMS.XmlElements.Add(new XmlElementAttribute(typeof(ICMSSN900)));
 

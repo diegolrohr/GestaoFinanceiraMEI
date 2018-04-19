@@ -136,6 +136,10 @@
     <Compile Include="Migrations\201804121430231_AlterNumeroOrdemCompra.Designer.cs">
       <DependentUpon>201804121430231_AlterNumeroOrdemCompra.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804181323381_AlterSubstituicaoTributariaFCP.cs" />
+    <Compile Include="Migrations\201804181323381_AlterSubstituicaoTributariaFCP.Designer.cs">
+      <DependentUpon>201804181323381_AlterSubstituicaoTributariaFCP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -245,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804121430231_AlterNumeroOrdemCompra.resx">
       <DependentUpon>201804121430231_AlterNumeroOrdemCompra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804181323381_AlterSubstituicaoTributariaFCP.resx">
+      <DependentUpon>201804181323381_AlterSubstituicaoTributariaFCP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

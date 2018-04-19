@@ -16,7 +16,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double ValorFCPSTRetidoAnterior { get; set; }
 
-        public double AliquotaFCPConsumidorFinal { get; set; }
+        public double ValorBCFCPSTRetidoAnterior { get; set; }
 
         public virtual Produto Produto { get; set; }
     }

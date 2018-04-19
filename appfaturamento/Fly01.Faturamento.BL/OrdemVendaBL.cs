@@ -142,7 +142,7 @@ namespace Fly01.Faturamento.BL
                             ValorICMSSTRetido = x.ValorICMSSTRetido,
                             ValorCreditoICMS = x.ValorCreditoICMS,
                             ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                            AliquotaFCPConsumidorFinal = x.AliquotaFCPConsumidorFinal
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
                         }).ToList();
 
                 var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();

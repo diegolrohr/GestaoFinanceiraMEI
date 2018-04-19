@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
-namespace Fly01.Faturamento.Entities.ViewModel
+namespace Fly01.Faturamento.ViewModel
 {
     [Serializable]
     public class OrdemVendaProdutoVM : OrdemVendaItemVM

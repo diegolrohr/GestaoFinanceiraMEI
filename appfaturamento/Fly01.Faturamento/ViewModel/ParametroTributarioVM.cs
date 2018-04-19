@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Helpers.Attribute;
 
-namespace Fly01.Faturamento.Entities.ViewModel
+namespace Fly01.Faturamento.ViewModel
 {
     [Serializable]
     public class ParametroTributarioVM : DomainBaseVM

@@ -1,5 +1,5 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using System;
 using System.Collections.Generic;

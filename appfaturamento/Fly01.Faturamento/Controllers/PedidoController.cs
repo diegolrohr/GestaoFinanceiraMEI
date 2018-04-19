@@ -1,4 +1,4 @@
-﻿using Fly01.Faturamento.Entities.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;

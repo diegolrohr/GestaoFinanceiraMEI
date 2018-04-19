@@ -3,7 +3,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Faturamento.Entities.ViewModel
+namespace Fly01.Faturamento.ViewModel
 {
     public class ServicoVM : DomainBaseVM
     {
@@ -15,10 +15,6 @@ namespace Fly01.Faturamento.Entities.ViewModel
 
         [JsonProperty("nbsId")]
         public Guid? NbsId { get; set; }
-
-        //[APIEnum("TipoServico")]
-        //[JsonProperty("tipoServico")]
-        //public string TipoServico { get; set; }
 
         [APIEnum("TipoTributacaoISS")]
         [JsonProperty("tipoTributacaoISS")]
@@ -34,11 +30,7 @@ namespace Fly01.Faturamento.Entities.ViewModel
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
-        #region Navigations Properties
-        
         [JsonProperty("nbs")]
         public virtual NBSVM Nbs { get; set; }
-
-        #endregion
     }
 }

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
-namespace Fly01.Faturamento.Entities.ViewModel
+namespace Fly01.Faturamento.ViewModel
 {
     [Serializable]
     public class NFeProdutoVM : NotaFiscalItemVM
@@ -25,11 +25,7 @@ namespace Fly01.Faturamento.Entities.ViewModel
         [JsonProperty("valorBCFCPSTRetidoAnterior")]
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
-        #region NavigationProperties
-
         [JsonProperty("produto")]
         public virtual ProdutoVM Produto { get; set; }
-
-        #endregion
     }
 }

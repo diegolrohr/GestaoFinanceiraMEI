@@ -2,13 +2,13 @@
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 
-namespace Fly01.Faturamento.Entities.ViewModel
+namespace Fly01.Faturamento.ViewModel
 {
     [Serializable]
-    public class NotaFiscalItemVM : DomainBaseVM
+    public class OrdemVendaItemVM : DomainBaseVM
     {
-        [JsonProperty("notaFiscalId")]
-        public Guid NotaFiscalId { get; set; }
+        [JsonProperty("ordemVendaId")]
+        public Guid OrdemVendaId { get; set; }
 
         [JsonProperty("grupoTributarioId")]
         public Guid GrupoTributarioId { get; set; }
@@ -28,13 +28,10 @@ namespace Fly01.Faturamento.Entities.ViewModel
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
-        #region NavigationProperties
+        [JsonProperty("ordemVenda")]
+        public virtual OrdemVendaVM OrdemVenda { get; set; }
 
-        [JsonProperty("notaFiscal")]
-        public virtual NotaFiscalVM NotaFiscal { get; set; }
         [JsonProperty("grupoTributario")]
         public virtual GrupoTributarioVM GrupoTributario { get; set; }
-
-        #endregion
     }
 }

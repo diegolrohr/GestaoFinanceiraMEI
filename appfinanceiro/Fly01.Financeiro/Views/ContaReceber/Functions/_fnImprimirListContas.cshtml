@@ -75,7 +75,7 @@
             fly01.toast('Data inválida', 'error');
         }
         else {
-            var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
+            var url = "@Url.Action("ImprimirListContas", "ContaReceber")?queryStringOdata=" + queryStringOdata +
                 (($("#dataInicial").val() != undefined || dateParam != "") ?
                     (dateParam != undefined && dateParam != "" ?
                         ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :

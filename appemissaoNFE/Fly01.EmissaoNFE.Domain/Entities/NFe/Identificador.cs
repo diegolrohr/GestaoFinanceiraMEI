@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;

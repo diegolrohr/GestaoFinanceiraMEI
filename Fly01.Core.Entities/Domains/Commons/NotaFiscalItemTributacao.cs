@@ -1,8 +1,7 @@
-﻿using Fly01.Core.Entities.Domains;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NotaFiscalItemTributacao : PlataformaBase
     {
@@ -78,11 +77,6 @@ namespace Fly01.Faturamento.Domain.Entities
                         
         #endregion
 
-
-        #region Navigations Properties
-
         public virtual NotaFiscalItem NotaFiscalItem { get; set; }
-
-        #endregion
     }
 }

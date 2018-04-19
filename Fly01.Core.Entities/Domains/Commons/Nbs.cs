@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class NBS : DomainBase
+    public class Nbs : DomainBase
     {
         [Required]
         public string Codigo { get; set; }

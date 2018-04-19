@@ -1,7 +1,7 @@
 ﻿using Fly01.Core.Entities.Attribute;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Enums
+namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoAmbiente
     {

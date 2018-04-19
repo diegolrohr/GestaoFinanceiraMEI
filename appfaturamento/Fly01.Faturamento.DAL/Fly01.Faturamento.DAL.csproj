@@ -420,10 +420,6 @@
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Faturamento.Domain\Fly01.Faturamento.Domain.csproj">
-      <Project>{01a1b42a-991b-408c-853e-66a90d99a8e6}</Project>
-      <Name>Fly01.Faturamento.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

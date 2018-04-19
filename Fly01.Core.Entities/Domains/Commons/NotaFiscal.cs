@@ -1,12 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Commons;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NotaFiscal : PlataformaBase
     {
@@ -91,9 +89,7 @@ namespace Fly01.Faturamento.Domain.Entities
 
         [StringLength(50)]
         public string SefazId { get; set; }
-
-        #region Navigation Properties
-
+        
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Transportadora { get; set; }
@@ -102,8 +98,5 @@ namespace Fly01.Faturamento.Domain.Entities
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
         public virtual SerieNotaFiscal SerieNotaFiscal { get; set; }
-
-        #endregion
-
     }
 }

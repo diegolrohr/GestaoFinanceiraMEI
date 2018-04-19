@@ -1,7 +1,6 @@
 ﻿using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
-using Fly01.Faturamento.Domain.Entities;
-using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Notifications;
 using Fly01.Core.Reports;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {

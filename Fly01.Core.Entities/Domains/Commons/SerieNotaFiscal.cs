@@ -1,10 +1,9 @@
-﻿using Fly01.Core.Entities.Domains;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Entities.Domains.Enum;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class SerieNotaFiscal : PlataformaBase
     {
@@ -36,6 +35,5 @@ namespace Fly01.Faturamento.Domain.Entities
             get { return ((int)StatusSerieNotaFiscal).ToString(); }
             set { StatusSerieNotaFiscal = (StatusSerieNotaFiscal)System.Enum.Parse(typeof(StatusSerieNotaFiscal), value); }
         }
-
     }
 }

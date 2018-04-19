@@ -1,11 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.Entities.Domains.Enum;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     [Serializable]
     public class Servico : PlataformaBase
@@ -20,17 +19,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         [StringLength(200, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Observacao { get; set; }
-
-        //[JsonIgnore]
-        //public TipoServico TipoServico { get; set; }
-
-        //[NotMapped]
-        //[JsonProperty("tipoServico")]
-        //public string TipoServicoRest
-        //{
-        //    get { return ((int)TipoServico).ToString(); }
-        //    set { TipoServico = (TipoServico)System.Enum.Parse(typeof(TipoServico), value); }
-        //}
 
         [JsonIgnore]
         public TipoTributacaoISS? TipoTributacaoISS { get; set; }
@@ -54,8 +42,6 @@ namespace Fly01.Faturamento.Domain.Entities
             set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)System.Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
         }
 
-        #region Navigations Properties
-        public virtual NBS Nbs { get; set; }
-        #endregion
+        public virtual Nbs Nbs { get; set; }
     }
 }

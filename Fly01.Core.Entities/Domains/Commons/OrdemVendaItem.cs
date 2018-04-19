@@ -1,14 +1,13 @@
-﻿using Fly01.Core.Entities.Domains;
-using Fly01.Core.Entities.Domains.Commons;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
-    public abstract class NotaFiscalItem : PlataformaBase
+    public abstract class OrdemVendaItem : PlataformaBase
     {
         [Required]
-        public Guid NotaFiscalId { get; set; }
+        public Guid OrdemVendaId { get; set; }
 
         [Required]
         public Guid GrupoTributarioId { get; set; }
@@ -21,27 +20,19 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double Desconto { get; set; }
 
-        //AppDataContext model.builder ignore
+        [NotMapped]
         public double Total
         {
             get
             {
                 return Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
             }
-            set
-            {
-
-            }
         }
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        #region Navigations Properties
-
-        public virtual NotaFiscal NotaFiscal { get; set; }
+        public virtual OrdemVenda OrdemVenda { get; set; }
         public virtual GrupoTributario GrupoTributario { get; set; }
-
-        #endregion
     }
 }

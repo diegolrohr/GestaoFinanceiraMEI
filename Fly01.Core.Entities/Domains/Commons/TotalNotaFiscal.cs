@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     [NotMapped]
     public class TotalNotaFiscal
@@ -38,7 +38,6 @@ namespace Fly01.Faturamento.Domain.Entities
                     (ValorFreteCIF.HasValue ? ValorFreteCIF.Value : 0)), 2, MidpointRounding.AwayFromZero)
                 );
             }
-            set { }
         }
     }
 }

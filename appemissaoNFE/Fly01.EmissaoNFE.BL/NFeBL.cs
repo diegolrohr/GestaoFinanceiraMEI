@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.BL
         {
         }
 
-        public string ConvertToBase64(NFe entity, CRT CodigoRegimeTributario)
+        public string ConvertToBase64(NFeVM entity, CRT CodigoRegimeTributario)
         {
             string result = string.Empty;
 
@@ -48,7 +48,7 @@ namespace Fly01.EmissaoNFE.BL
 
             XmlWriter writer = XmlWriter.Create(memoryStream, settings);
 
-            XmlSerializer xser = new XmlSerializer(typeof(NFe), OverrideAttributes());
+            XmlSerializer xser = new XmlSerializer(typeof(NFeVM), OverrideAttributes());
 
             xser.Serialize(writer, entity, nameSpaces);
 

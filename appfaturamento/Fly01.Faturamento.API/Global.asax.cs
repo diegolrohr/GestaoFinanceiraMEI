@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core;
 using System.Configuration;
 using Fly01.Core.Entities.Domains.Commons;
@@ -34,7 +34,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<OrdemVendaProduto>("ordemvendaproduto");
             builder.EntitySet<OrdemVendaServico>("ordemvendaservico");
             builder.EntitySet<Servico>("servico");
-            builder.EntitySet<NBS>("nbs");
+            builder.EntitySet<Nbs>("nbs");
             builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
             builder.EntitySet<FormaPagamento>("formapagamento");
             builder.EntitySet<Categoria>("categoria");

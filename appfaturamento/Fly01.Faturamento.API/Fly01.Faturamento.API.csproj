@@ -173,10 +173,6 @@
       <Project>{8f8627d2-ef0f-4765-bc89-84541d207a22}</Project>
       <Name>Fly01.Faturamento.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Faturamento.Domain\Fly01.Faturamento.Domain.csproj">
-      <Project>{01a1b42a-991b-408c-853e-66a90d99a8e6}</Project>
-      <Name>Fly01.Faturamento.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

@@ -41,9 +41,9 @@ namespace Fly01.EmissaoNFE.BL
             return base64;
         }
 
-        public NFe ConvertToNFe(ItemTransmissaoVM item)
+        public NFeVM ConvertToNFe(ItemTransmissaoVM item)
         {
-            var nota = new NFe();
+            var nota = new NFeVM();
             nota.InfoNFe = new InfoNFe();
 
             item.NotaId = ChaveBL.GeraChave(

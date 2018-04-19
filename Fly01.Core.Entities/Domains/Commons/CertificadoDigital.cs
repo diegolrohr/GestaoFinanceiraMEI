@@ -1,9 +1,8 @@
-﻿using Fly01.Core.Entities.Domains;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class CertificadoDigital : PlataformaBase
     {

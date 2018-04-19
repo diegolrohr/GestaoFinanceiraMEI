@@ -1,4 +1,4 @@
-﻿using Fly01.Faturamento.Domain.Entities;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Base;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -38,9 +38,6 @@ namespace Fly01.Faturamento.DAL
             builder.Properties<string>()
                 .Configure(x => x.HasColumnType("varchar"));
 
-            builder.Entity<OrdemVendaItem>().Ignore(m => m.Total);
-            builder.Entity<NotaFiscalItem>().Ignore(m => m.Total);
-
             builder.Entity<OrdemVendaItem>()
                 .Map(m => m.ToTable("OrdemVendaItem"))
                 .Map<OrdemVendaProduto>(m => m.ToTable("OrdemVendaProduto"))
@@ -68,7 +65,7 @@ namespace Fly01.Faturamento.DAL
         public DbSet<Cfop> Cfops { get; set; }
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<Iss> Isss { get; set; }
-        public DbSet<NBS> Nbss { get; set; }
+        public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Arquivo> Arquivo { get; set; }
         public DbSet<FormaPagamento> FormasPagamento { get; set; }
         public DbSet<CondicaoParcelamento> CondicoesParcelamento { get; set; }

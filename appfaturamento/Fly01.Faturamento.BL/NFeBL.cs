@@ -13,13 +13,12 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe.PIS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.Totais;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.DAL;
-using Fly01.Faturamento.Domain.Entities;
+using Fly01.Core.Entities.Domains.Commons;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using NFe = Fly01.Faturamento.Domain.Entities.NFe;
 
 namespace Fly01.Faturamento.BL
 {
@@ -178,12 +177,12 @@ namespace Fly01.Faturamento.BL
                         ImpressaoDANFE = EmissaoNFE.Domain.Enums.TipoImpressaoDanfe.Retrato,
                         ChaveAcessoDV = 0,
                         CodigoNF = entity.NumNotaFiscal.Value.ToString(),
-                        Ambiente = (EmissaoNFE.Domain.Enums.TipoAmbiente)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoAmbiente), parametros.TipoAmbiente.ToString()),
+                        Ambiente = parametros.TipoAmbiente,
                         FinalidadeEmissaoNFe = EmissaoNFE.Domain.Enums.TipoFinalidadeEmissaoNFe.Normal,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
                         PresencaComprador = EmissaoNFE.Domain.Enums.TipoPresencaComprador.Presencial,
                         Versao = "2.77",
-                        FormaEmissao = (EmissaoNFE.Domain.Enums.TipoModalidade)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.TipoModalidade), parametros.TipoModalidade.ToString()),
+                        FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
                     #endregion

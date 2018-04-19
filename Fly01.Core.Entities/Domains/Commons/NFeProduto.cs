@@ -1,8 +1,7 @@
 ﻿using System;
-using Fly01.Core.Entities.Domains.Commons;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Faturamento.Domain.Entities
+namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NFeProduto : NotaFiscalItem
     {
@@ -19,10 +18,6 @@ namespace Fly01.Faturamento.Domain.Entities
 
         public double AliquotaFCPConsumidorFinal { get; set; }
 
-        #region Navigations Properties
-
         public virtual Produto Produto { get; set; }
-
-        #endregion
     }
 }

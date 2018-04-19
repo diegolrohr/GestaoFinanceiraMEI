@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Entities.ViewModels;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation;
 
 namespace Fly01.Core.Presentation.Commons
 {

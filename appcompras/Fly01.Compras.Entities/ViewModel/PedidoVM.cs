@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Entities.Attribute;
+﻿using Fly01.Core.Helpers.Attribute;
 using Newtonsoft.Json;
 using System;
 

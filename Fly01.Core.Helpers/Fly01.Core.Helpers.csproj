@@ -51,6 +51,9 @@
     <Compile Include="APIEnumData.cs" />
     <Compile Include="APIErrorInfo.cs" />
     <Compile Include="ArquivoOFX.cs" />
+    <Compile Include="Attribute\APIEnumAttribute.cs" />
+    <Compile Include="Attribute\InputMask.cs" />
+    <Compile Include="Attribute\SubtitleAttribute.cs" />
     <Compile Include="Base64Helper.cs" />
     <Compile Include="ConversorHelper.cs" />
     <Compile Include="ErrorInfo.cs" />

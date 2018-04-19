@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
-using Fly01.Core.Entities.Attribute;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Financeiro.Entities.ViewModel.Base
 {

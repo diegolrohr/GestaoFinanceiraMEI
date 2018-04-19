@@ -1,5 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Faturamento.Controllers.Base;
 using Fly01.Faturamento.Entities.ViewModel;
 using Fly01.uiJS.Classes;

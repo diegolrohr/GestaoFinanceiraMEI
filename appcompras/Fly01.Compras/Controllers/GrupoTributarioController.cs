@@ -10,6 +10,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using System.Linq;
 using Fly01.Core;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {

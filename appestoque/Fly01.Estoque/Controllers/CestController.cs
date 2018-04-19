@@ -1,4 +1,5 @@
-﻿using Fly01.Estoque.Controllers.Base;
+﻿using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Estoque.Controllers.Base;
 using Fly01.Estoque.Entities.ViewModel;
 using System;
 using System.Web.Mvc;

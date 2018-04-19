@@ -56,16 +56,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ViewModel\CfopVM.cs" />
-    <Compile Include="ViewModel\CidadeVM.cs" />
-    <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
-    <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
-    <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
-    <Compile Include="ViewModel\EstadoVM.cs" />
-    <Compile Include="ViewModel\FormaPagamentoVM.cs" />
     <Compile Include="ViewModel\GlobalConfigurationVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\GrupoProdutoVM.cs" />
     <Compile Include="ViewModel\NFSeServicoVM.cs" />
     <Compile Include="ViewModel\NFSeVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />
@@ -74,26 +66,18 @@
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\ParametroTributarioVM.cs" />
-    <Compile Include="ViewModel\GrupoTributarioVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
-    <Compile Include="ViewModel\NcmVM.cs" />
     <Compile Include="ViewModel\OrdemVendaServicoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaItemVM.cs" />
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
-    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
     <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
-    <Compile Include="ViewModel\PessoaVM.cs" />
-    <Compile Include="ViewModel\CestVM.cs" />
     <Compile Include="ViewModel\SerieNotaFiscalInutilizadaVM.cs" />
     <Compile Include="ViewModel\SerieNotaFiscalVM.cs" />
-    <Compile Include="ViewModel\SubstituicaoTributariaVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
-    <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\TipoCarteiraVM.cs" />
-    <Compile Include="ViewModel\UnidadeMedidaVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

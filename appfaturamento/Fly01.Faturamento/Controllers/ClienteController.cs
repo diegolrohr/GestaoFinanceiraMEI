@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {

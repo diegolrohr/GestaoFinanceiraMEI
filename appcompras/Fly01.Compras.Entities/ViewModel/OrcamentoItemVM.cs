@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core.ViewModels.Presentation.Commons;
+using Newtonsoft.Json;
 using System;
 
 namespace Fly01.Compras.Entities.ViewModel

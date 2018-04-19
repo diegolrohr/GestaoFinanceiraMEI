@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -29,20 +30,20 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id.ToString(),
                 tipoNotaFiscal = x.TipoNotaFiscal,
-                tipoNotaFiscalDescription = EnumHelper.SubtitleDataAnotation("TipoNotaFiscal", x.TipoNotaFiscal).Description,
-                tipoNotaFiscalCssClass = EnumHelper.SubtitleDataAnotation("TipoNotaFiscal", x.TipoNotaFiscal).CssClass,
-                tipoNotaFiscalValue = EnumHelper.SubtitleDataAnotation("TipoNotaFiscal", x.TipoNotaFiscal).Value,
+                tipoNotaFiscalDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).Description,
+                tipoNotaFiscalCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).CssClass,
+                tipoNotaFiscalValue = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).Value,
                 status = x.Status,
-                statusDescription = EnumHelper.SubtitleDataAnotation("StatusNotaFiscal", x.Status).Description,
-                statusCssClass = EnumHelper.SubtitleDataAnotation("StatusNotaFiscal", x.Status).CssClass,
-                statusValue = EnumHelper.SubtitleDataAnotation("StatusNotaFiscal", x.Status).Value,
+                statusDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).Description,
+                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).CssClass,
+                statusValue = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).Value,
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Description,
-                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).CssClass,
-                tipoVendaValue = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Value,
+                tipoVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Description,
+                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).CssClass,
+                tipoVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Value,
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
@@ -157,7 +158,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "status",
                 DisplayName = "Status",
                 Priority = 3,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusNotaFiscal", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
             config.Columns.Add(new DataTableUIColumn
@@ -165,7 +166,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoNotaFiscal",
                 DisplayName = "Tipo",
                 Priority = 4,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoNotaFiscal", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNotaFiscal))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoNotaFiscalCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoNotaFiscalDescription + \"</span>\" }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });

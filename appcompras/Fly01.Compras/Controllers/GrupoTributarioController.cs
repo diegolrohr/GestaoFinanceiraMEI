@@ -10,6 +10,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using System.Linq;
 using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
@@ -143,7 +144,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Situação Tributária",
                 Disabled = true,
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoICMS", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "calculaIcmsDifal", Class = "col s12 m6 l6", Label = "Calcula ICMS DIFAL", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaIpiBaseIcms", Class = "col s12 m6 l6", Label = "Aplica valor do IPI na base de cálculo", Disabled = true });
@@ -169,7 +170,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Situação Tributária",
                 Disabled = true,
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoIPI", true, false).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)).
                 ToList().FindAll(x => "T00,T01,T02,T03,T04,T05".Contains(x.Value)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
@@ -193,7 +194,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoPISCOFINS", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBasePis", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
@@ -217,7 +218,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoPISCOFINS", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseCofins", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
@@ -241,7 +242,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoTributacaoISS", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS))),
                 ConstrainWidth = true
             });
             config.Elements.Add(new SelectUI
@@ -250,7 +251,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l6",
                 Label = "Pagamento de Imposto",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoPagamentoImpostoISS", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
             });
             config.Elements.Add(new SelectUI
             {
@@ -258,7 +259,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l6",
                 Label = "Tipo CFPS",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoCFPS", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCFPS)))
             });
 
             cfg.Content.Add(config);

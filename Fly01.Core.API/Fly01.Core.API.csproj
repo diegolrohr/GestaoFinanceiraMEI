@@ -180,7 +180,6 @@
     <Compile Include="Application\WebAPIConfig.cs" />
     <Compile Include="CustomDirectRouteProvider.cs" />
     <Compile Include="CustomExceptionFilter.cs" />
-    <Compile Include="EnumHelper.cs" />
     <Compile Include="HttpErrorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -19,6 +19,7 @@ using Fly01.Core.API;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -285,18 +286,18 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 numero = x.Numero.ToString(),
                 tipoOrdemVenda = x.TipoOrdemVenda,
-                tipoOrdemVendaDescription = EnumHelper.SubtitleDataAnotation("TipoOrdemVenda", x.TipoOrdemVenda).Description,
-                tipoOrdemVendaCssClass = EnumHelper.SubtitleDataAnotation("TipoOrdemVenda", x.TipoOrdemVenda).CssClass,
-                tipoOrdemVendaValue = EnumHelper.SubtitleDataAnotation("TipoOrdemVenda", x.TipoOrdemVenda).Value,
+                tipoOrdemVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).Description,
+                tipoOrdemVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).CssClass,
+                tipoOrdemVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).Value,
                 data = x.Data.ToString("dd/MM/yyyy"),
                 status = x.Status,
-                statusDescription = EnumHelper.SubtitleDataAnotation("StatusOrdemVenda", x.Status).Description,
-                statusCssClass = EnumHelper.SubtitleDataAnotation("StatusOrdemVenda", x.Status).CssClass,
-                statusValue = EnumHelper.SubtitleDataAnotation("StatusOrdemVenda", x.Status).Value,
+                statusDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).Description,
+                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).CssClass,
+                statusValue = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).Value,
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Description,
-                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).CssClass,
-                tipoVendaValue = EnumHelper.SubtitleDataAnotation("TipoVenda", x.TipoVenda).Value,
+                tipoVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Description,
+                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).CssClass,
+                tipoVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Value,
                 cliente_nome = x.Cliente.Nome,
                 geraNotaFiscal = x.GeraNotaFiscal
             };
@@ -401,7 +402,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "status",
                 DisplayName = "Status",
                 Priority = 2,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusOrdemVenda", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemVenda))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
             });
             config.Columns.Add(new DataTableUIColumn
@@ -409,7 +410,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoOrdemVenda",
                 DisplayName = "Tipo",
                 Priority = 3,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOrdemVenda", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoOrdemVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoOrdemVendaDescription + \"</span>\" }"
             });
 
@@ -505,7 +506,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
             config.Elements.Add(new AutocompleteUI
@@ -579,7 +580,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
             });
             config.Elements.Add(new InputCustommaskUI
             {

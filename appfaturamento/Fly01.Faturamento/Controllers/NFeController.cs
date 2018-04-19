@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Faturamento.Controllers.Base;
@@ -53,7 +54,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Label = "Tipo Venda",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
             });
             config.Elements.Add(new SelectUI
             {
@@ -61,7 +62,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m6",
                 Label = "Status",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusNotaFiscal", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal)))
             });
             config.Elements.Add(new AutocompleteUI
             {
@@ -133,7 +134,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m5",
                 Label = "Tipo Frete",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
             });
             config.Elements.Add(new InputCustommaskUI
             {
@@ -239,7 +240,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Disabled = true,
                 Name = "tipoVenda",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });
             config.Elements.Add(new AutocompleteUI

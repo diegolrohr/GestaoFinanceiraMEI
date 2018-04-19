@@ -12,6 +12,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.API;
 using Fly01.Core;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -33,7 +34,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id,
                 serie = x.Serie.PadLeft(3, '0'),
-                tipoOperacaoSerieNotaFiscal = EnumHelper.SubtitleDataAnotation("TipoOperacaoSerieNotaFiscal", x.TipoOperacaoSerieNotaFiscal).Value,
+                tipoOperacaoSerieNotaFiscal = EnumHelper.SubtitleDataAnotation(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal).Value,
                 numNotaFiscal = x.NumNotaFiscal.ToString().PadLeft(8, '0'),
             };
         }
@@ -65,7 +66,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoOperacaoSerieNotaFiscal",
                 DisplayName = "Operação da Série NF",
                 Priority = 3,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)))
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Próxima NF Emitida", Priority = 2 });
@@ -128,7 +129,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)))
             });
 
             config.Elements.Add(new InputCustommaskUI
@@ -181,7 +182,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)).
                     ToList().FindAll(x => "Ambas,NFe".Contains(x.Value))),
                 Value = "1"
             });
@@ -235,7 +236,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoOperacaoSerieNotaFiscal", true, false).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)).
                     ToList().FindAll(x => "Ambas,NFSe".Contains(x.Value))),
                 Value = "2"
             });

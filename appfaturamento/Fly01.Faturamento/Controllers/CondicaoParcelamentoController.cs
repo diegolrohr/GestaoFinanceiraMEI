@@ -11,6 +11,7 @@ using Fly01.Faturamento.Controllers.Base;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
@@ -142,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo de Simulação",
                 Required = true,
                 MaxLength = 1,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoSimulacao", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSimulacao))),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeTipoSimulacao" }
@@ -231,7 +232,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo de Simulação",
                 Required = true,
                 MaxLength = 1,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoSimulacao", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSimulacao))),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeTipoSimulacao" }

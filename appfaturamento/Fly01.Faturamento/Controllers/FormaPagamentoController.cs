@@ -10,6 +10,7 @@ using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
@@ -30,7 +31,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id,
                 descricao = x.Descricao,
-                tipoFormaPagamento = EnumHelper.SubtitleDataAnotation("TipoFormaPagamento", x.TipoFormaPagamento).Value
+                tipoFormaPagamento = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), x.TipoFormaPagamento).Value
             };
         }
 
@@ -59,7 +60,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoFormaPagamento",
                 DisplayName = "Tipo",
                 Priority = 2,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFormaPagamento", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
@@ -108,7 +109,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s4 l4",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFormaPagamento", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
             });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 
@@ -140,7 +141,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s4 l4",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFormaPagamento", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
             });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 

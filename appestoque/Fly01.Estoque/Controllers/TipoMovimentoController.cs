@@ -10,6 +10,7 @@ using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using Fly01.Core.API;
 using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -30,9 +31,9 @@ namespace Fly01.Estoque.Controllers
                 id = x.Id,
                 descricao = x.Descricao,
                 tipoEntradaSaida = x.TipoEntradaSaida,
-                tipoEntradaSaidaDescription = EnumHelper.SubtitleDataAnotation("TipoEntradaSaida", x.TipoEntradaSaida).Description,
-                tipoEntradaSaidaCssClass = EnumHelper.SubtitleDataAnotation("TipoEntradaSaida", x.TipoEntradaSaida).CssClass,
-                tipoEntradaSaidaValue = EnumHelper.SubtitleDataAnotation("TipoEntradaSaida", x.TipoEntradaSaida).Value,
+                tipoEntradaSaidaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Description,
+                tipoEntradaSaidaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).CssClass,
+                tipoEntradaSaidaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Value,
             };
         }
 
@@ -62,7 +63,7 @@ namespace Fly01.Estoque.Controllers
                 DataField = "tipoEntradaSaida",
                 DisplayName = "Entrada/Saida",
                 Priority = 2,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoEntradaSaida", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
                 RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoEntradaSaidaCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoEntradaSaidaValue).outerHTML; }"
             });
 
@@ -111,7 +112,7 @@ namespace Fly01.Estoque.Controllers
                 Id = "tipoEntradaSaida",
                 Class = "col l3 s12",
                 Label = "Entrada / Saída",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoEntradaSaida", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida)))
             });
 
             cfg.Content.Add(config);

@@ -11,7 +11,6 @@ using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
-using Fly01.Core.API;
 using Fly01.Core.ViewModels.Presentation;
 
 namespace Fly01.Financeiro.Controllers

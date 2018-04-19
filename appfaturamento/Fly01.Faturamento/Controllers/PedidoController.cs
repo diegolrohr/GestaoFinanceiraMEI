@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
@@ -279,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false).ToList()
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)).ToList()
                     .FindAll(x => "FOB,CIF,Terceiro,SemFrete".Contains(x.Value))),
                 DomEvents = new List<DomEventUI>
                     {

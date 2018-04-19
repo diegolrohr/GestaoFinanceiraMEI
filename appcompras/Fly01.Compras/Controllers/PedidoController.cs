@@ -16,6 +16,7 @@ using Fly01.Core.Helpers;
 using Fly01.Compras.Models.ViewModel;
 using Fly01.Core.Config;
 using Fly01.Compras.Models.Reports;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
@@ -258,7 +259,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
@@ -409,7 +410,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)))
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso bruto", Disabled = true });

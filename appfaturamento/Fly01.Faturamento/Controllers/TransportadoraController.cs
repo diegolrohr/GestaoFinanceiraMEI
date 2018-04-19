@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -195,7 +196,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoIndicacaoInscricaoEstadual",
                 Class = "col s3 12",
                 Label = "Indicação Inscrição Estadual",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoIndicacaoInscricaoEstadual", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
                 ConstrainWidth = true
             });
 

@@ -11,6 +11,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Compras.Controllers
 {
@@ -64,7 +65,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m3",
                 Label = "Entrada/Saida",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoCarteira", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCarteira))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoCarteira" } }
             });
 

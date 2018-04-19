@@ -1,7 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.uiJS.Classes;
-using Fly01.Core.Entities.ViewModels.Commons;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web.Mvc;

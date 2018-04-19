@@ -19,6 +19,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -46,10 +47,9 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 id = x.Id.ToString(),
                 statusEnum = x.StatusContaBancaria,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation("StatusContaBancaria", x.StatusContaBancaria).Description,
-                statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation("StatusContaBancaria", x.StatusContaBancaria).CssClass,
-                statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation("StatusContaBancaria", x.StatusContaBancaria).Value,
-                //DocumentoCheque = x.DocumentoCheque,
+                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Description,
+                statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
+                statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Value,
                 contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
                 tipoPeriodicidade = x.TipoPeriodicidade,
                 numero = x.Numero,
@@ -65,9 +65,6 @@ namespace Fly01.Financeiro.Controllers.Base
                 saldo = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
                 saldoSemFormatacao = x.Saldo,
                 diasVencidos = x.DiasVencidos,
-                //DataUltimaBaixa = !x.DataUltimaBaixa.HasValue || x.DataUltimaBaixa == DateTime.MinValue 
-                //                    ? string.Empty 
-                //                    : ((DateTime) x.DataUltimaBaixa).ToString("dd/MM/yyyy"),
                 condicaoParcelamento_descricao = x.CondicaoParcelamento.Descricao,
                 observacao = x.Observacao,
                 repetir = x.Repetir,
@@ -111,8 +108,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return x => new
             {
                 id = x.Id != null ? x.Id : Guid.Empty,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation("StatusContaBancaria", x.StatusContaBancaria).CssClass,
-                //numero = x.Numero != null ? x.Numero : string.Empty,
+                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
                 numero = x.Id.ToString(),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),

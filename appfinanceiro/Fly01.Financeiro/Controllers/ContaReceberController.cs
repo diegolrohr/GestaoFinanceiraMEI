@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -257,7 +258,7 @@ namespace Fly01.Financeiro.Controllers
                 DataField = "statusContaBancaria",
                 DisplayName = "Status",
                 Priority = 0,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusContaBancaria", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
             });
 
@@ -418,7 +419,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "tipoPeriodicidade",
                 Class = "col s6 m3 l3",
                 Label = "Periodicidade",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoPeriodicidade", true, false, "Mensal")),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPeriodicidade), false, "Mensal")),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeTipoPeriodicidade" }

@@ -5,6 +5,7 @@ using Fly01.Core.Entities.ViewModels;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Attribute;
 
 namespace Fly01.Core.Presentation.Commons
 {
@@ -80,6 +81,24 @@ namespace Fly01.Core.Presentation.Commons
             
             return result.ToList();
         }
+
+        public static IEnumerable<SelectOptionUI> GetSelectOptions(Type enumType, bool defaultValue = true, string selectedValue = "")
+        {
+            List<SelectOptionUI> result = new List<SelectOptionUI>();
+
+            //var list = new List<SubtitleAttribute>();
+            //foreach (Enum item in Enum.GetValues(enumType))
+            //{
+            //    list.Add(EnumHelper);
+            //}
+
+
+            if (defaultValue)
+                result.Insert(0, new SelectOptionUI() { Label = "Selecione...", Value = "" });
+
+            return result.ToList();
+        }
+
         #endregion
     }
 }

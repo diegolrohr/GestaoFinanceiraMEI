@@ -59,20 +59,22 @@ namespace Fly01.Core.Entities.ViewModels.Commons
         public string CNAE { get; set; }
 
         [JsonProperty("cidadeId")]
-        public int CidadeId { get; set; }
+        public Guid CidadeId { get; set; }
 
         [JsonProperty("estadoId")]
-        public int EstadoId { get; set; }
+        public Guid EstadoId { get; set; }
 
         [JsonProperty("estadoNome")]
         public string EstadoNome { get; set; }
 
         [JsonProperty("platformUrlId")]
-        public int PlatformUrlId { get; set; }
+        public string PlatformUrlId { get; set; }
 
         #region Navigations Properties
         [JsonProperty("cidade")]
         public virtual TCidade Cidade { get; set; }
+        [JsonProperty("estado")]
+        public virtual TEstado Estado { get; set; }
         #endregion
     }
 }

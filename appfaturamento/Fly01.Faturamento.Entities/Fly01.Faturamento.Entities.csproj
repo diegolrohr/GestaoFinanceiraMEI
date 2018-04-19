@@ -61,7 +61,6 @@
     <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
-    <Compile Include="ViewModel\EmpresaVM.cs" />
     <Compile Include="ViewModel\EnquadramentoLegalIpiVM.cs" />
     <Compile Include="ViewModel\EstadoVM.cs" />
     <Compile Include="ViewModel\FormaPagamentoVM.cs" />

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Estoque.Entities.ViewModel
+namespace Fly01.Estoque.ViewModel
 {
     [Serializable]
     public class AjusteManualVM : DomainBaseVM

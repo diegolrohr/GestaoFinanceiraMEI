@@ -1,4 +1,4 @@
-﻿using Fly01.Estoque.Entities.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.Core;
 using System.Linq;
 using System.Web.Mvc;

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using Fly01.Core.Helpers.Attribute;
 
-namespace Fly01.Estoque.Entities.ViewModel
+namespace Fly01.Estoque.ViewModel
 {
     [Serializable]
     public class TipoMovimentoVM : DomainBaseVM

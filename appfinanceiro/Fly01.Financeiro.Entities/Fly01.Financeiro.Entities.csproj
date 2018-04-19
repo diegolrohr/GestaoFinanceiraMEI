@@ -83,7 +83,6 @@
     <Compile Include="ViewModel\TipoCarteiraVM.cs" />
     <Compile Include="ViewModel\TipoPeriodicidadeVM.cs" />
     <Compile Include="ViewModel\TipoContaFinanceiraVM.cs" />
-    <Compile Include="ViewModel\GlobalConfigurationVM.cs" />
     <Compile Include="ViewModel\FeriadoVM.cs" />
     <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
     <Compile Include="ViewModel\GlobalParameterVM.cs" />

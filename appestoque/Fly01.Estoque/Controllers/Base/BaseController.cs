@@ -1,7 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.uiJS.Classes;
-using Fly01.Core.Entities.ViewModels.Commons;
-using Fly01.Estoque.Entities.ViewModel;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -19,8 +18,8 @@ namespace Fly01.Estoque.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            AppViewModelResourceName = "Fly01.Estoque.Entities.ViewModel.";
-            AppEntitiesResourceName = "Fly01.Estoque.Entities";
+            AppViewModelResourceName = "Fly01.Estoque.ViewModel.";
+            AppEntitiesResourceName = "Fly01.Estoque";
         }
 
         public ManagerEmpresaVM GetDadosEmpresa()

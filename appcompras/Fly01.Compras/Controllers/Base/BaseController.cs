@@ -1,7 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.uiJS.Classes;
-using Fly01.Compras.Entities.ViewModel;
-using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -19,8 +18,8 @@ namespace Fly01.Compras.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            AppViewModelResourceName = "Fly01.Compras.Entities.ViewModel.";
-            AppEntitiesResourceName = "Fly01.Compras.Entities";
+            AppViewModelResourceName = "Fly01.Compras.ViewModel.";
+            AppEntitiesResourceName = "Fly01.Compras";
         }
 
         public ManagerEmpresaVM GetDadosEmpresa()

@@ -1,6 +1,6 @@
 ﻿using Fly01.Core;
 using System.Web.Mvc;
-using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Config;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes;

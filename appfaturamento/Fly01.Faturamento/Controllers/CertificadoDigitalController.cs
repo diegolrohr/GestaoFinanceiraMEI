@@ -1,5 +1,5 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;

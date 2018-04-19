@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Web.Mvc;
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Entities.ViewModels;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Core.Presentation.Commons
 {
@@ -67,17 +68,21 @@ namespace Fly01.Core.Presentation.Commons
             return result.ToList();
         }
 
-        public static IEnumerable<SelectOptionUI> GetUIElementBase(string type, bool fieldStruct = false, bool defaultValue = true, string selectedValue = "")
+        public static IEnumerable<SelectOptionUI> GetUIElementBase(Type enumType, bool defaultValue = false, string selectedValue = "")
         {
             List<SelectOptionUI> result = new List<SelectOptionUI>();
-            List<KeyValueVM> items = GetSystemKeyValue(type, fieldStruct);
+            var items = EnumHelper.GetDataEnumValues(enumType);
 
             if (items != null && items.Count > 0)
-                result.AddRange(items.Select(x => new SelectOptionUI() { Label = x.Value, Value = x.Key, Selected = (x.Value == selectedValue)}));
+                result.AddRange(items.Select(x => new SelectOptionUI() {
+                    Label = x.Value,
+                    Value = x.Key,
+                    Selected = (x.Value == selectedValue)
+                }));
 
             if (defaultValue)
-                result.Insert(0, new SelectOptionUI() { Label = "Selecione...", Value = ""});
-            
+                result.Insert(0, new SelectOptionUI() { Label = "Selecione...", Value = "" });
+
             return result.ToList();
         }
         #endregion

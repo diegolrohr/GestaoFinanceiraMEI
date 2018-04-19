@@ -1,5 +1,5 @@
 ﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.Entities.ViewModel;
+using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -71,7 +72,7 @@ namespace Fly01.Estoque.Controllers
                 Class = "col l6 m6 s12",
                 Label = "Entrada / Saída",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoEntradaSaida", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnChangeEntradaSaida" } }
 
             });

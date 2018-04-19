@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -12,6 +12,8 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.API;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Compras.Controllers
 {
@@ -32,9 +34,9 @@ namespace Fly01.Compras.Controllers
                 descricao = x.Descricao,
                 grupoProdutoId = x.GrupoProdutoId,
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
-                tipoProduto = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).Value,
-                tipoProdutoCSS = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).CssClass,
-                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation("TipoProduto", x.TipoProduto).Description
+                tipoProduto = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                tipoProdutoCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
+                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description
             };
         }
 
@@ -80,7 +82,7 @@ namespace Fly01.Compras.Controllers
                 DataField = "tipoProduto",
                 DisplayName = "Tipo",
                 Priority = 4,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoProdutoCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoProdutoDescricao + \"</span>\" }"
             });
 
@@ -137,7 +139,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
@@ -251,7 +253,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m3",
                 Label = "Tipo",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoProduto", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 

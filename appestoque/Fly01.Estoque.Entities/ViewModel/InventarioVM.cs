@@ -1,7 +1,7 @@
-﻿using Fly01.Core.Entities.Attribute;
-using Fly01.Core.Entities.ViewModels.Commons;
+﻿using System;
 using Newtonsoft.Json;
-using System;
+using Fly01.Core.Helpers.Attribute;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Estoque.Entities.ViewModel
 {
@@ -17,10 +17,5 @@ namespace Fly01.Estoque.Entities.ViewModel
         [JsonProperty("inventarioStatus")]
         [APIEnum("InventarioStatus")]
         public string InventarioStatus { get; set; }
-
-        #region Navigation
-        
-        #endregion Navigation
-
     }
 }

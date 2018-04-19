@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\APIEnumAttribute.cs" />
-    <Compile Include="Attribute\InputMask.cs" />
-    <Compile Include="Attribute\SubtitleAttribute.cs" />
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
@@ -177,38 +174,13 @@
     <Compile Include="Domains\Enum\TipoVenda.cs" />
     <Compile Include="Domains\Enum\TipoVersaoNFe.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
-    <Compile Include="ViewModels\AppsInstaladoslataformaVM.cs" />
-    <Compile Include="ViewModels\AppsInstaladosVM.cs" />
-    <Compile Include="ViewModels\BatchDataVM.cs" />
-    <Compile Include="ViewModels\BatchEntryVM.cs" />
-    <Compile Include="ViewModels\BatchItemVM.cs" />
-    <Compile Include="ViewModels\BatchReturnVM.cs" />
-    <Compile Include="ViewModels\BatchVM.cs" />
-    <Compile Include="ViewModels\Commons\CondicaoParcelamentoParcelaBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\ResponseSimulacaoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\CategoriaBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\CestBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\CfopBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\CidadeBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\CondicaoParcelamentoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\DomainBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\EnquadramentoLegalIpiBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\EstadoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\FormaPagamentoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\GrupoProdutoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\GrupoTributarioBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\NcmBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\PessoaBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\ProdutoBaseVM.cs" />
-    <Compile Include="ViewModels\Commons\SubstituicaoTributariaBaseVM.cs" />
-    <Compile Include="ViewModels\Enum\TipoCarteiraVM.cs" />
-    <Compile Include="ViewModels\Commons\UnidadeMedidaBaseVM.cs" />
-    <Compile Include="ViewModels\FileVM.cs" />
-    <Compile Include="ViewModels\KeyValueVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\SystemValueVM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
       <Name>Fly01.Core.Notifications</Name>

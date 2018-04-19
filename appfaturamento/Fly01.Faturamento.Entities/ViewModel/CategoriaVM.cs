@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Entities.ViewModel
 {

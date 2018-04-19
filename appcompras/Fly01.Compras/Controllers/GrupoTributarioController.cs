@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +11,7 @@ using Fly01.Core.Presentation.Commons;
 using System.Linq;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {

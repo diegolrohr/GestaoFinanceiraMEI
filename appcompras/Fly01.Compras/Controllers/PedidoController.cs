@@ -1,5 +1,5 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -17,6 +17,7 @@ using Fly01.Compras.Models.ViewModel;
 using Fly01.Core.Config;
 using Fly01.Compras.Models.Reports;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {

@@ -1,5 +1,4 @@
 ﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
 using Newtonsoft.Json;
@@ -14,6 +13,7 @@ using Fly01.Core.API;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Estoque.Controllers
 {

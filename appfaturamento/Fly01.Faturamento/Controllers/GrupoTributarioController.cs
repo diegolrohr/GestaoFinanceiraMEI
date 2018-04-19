@@ -1,8 +1,9 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;

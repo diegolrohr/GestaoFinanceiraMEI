@@ -49,17 +49,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ViewModel\BancoVM.cs" />
-    <Compile Include="ViewModel\CategoriaVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaVM.cs" />
-    <Compile Include="ViewModel\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
-    <Compile Include="ViewModel\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
@@ -78,7 +75,6 @@
     <Compile Include="ViewModel\CNABEmissionVM.cs" />
     <Compile Include="ViewModel\CNABHistoryVM.cs" />
     <Compile Include="ViewModel\CNABReturnVM.cs" />
-    <Compile Include="ViewModel\CidadeVM.cs" />
     <Compile Include="ViewModel\ExtratoContaSaldoVM.cs" />
     <Compile Include="ViewModel\ExtratoDetalheVM.cs" />
     <Compile Include="ViewModel\ExtratoHistoricoSaldoVM.cs" />
@@ -87,17 +83,12 @@
     <Compile Include="ViewModel\TipoCarteiraVM.cs" />
     <Compile Include="ViewModel\TipoPeriodicidadeVM.cs" />
     <Compile Include="ViewModel\TipoContaFinanceiraVM.cs" />
-    <Compile Include="ViewModel\FormaPagamentoVM.cs" />
-    <Compile Include="ViewModel\GlobalConfigurationVM.cs" />
     <Compile Include="ViewModel\FeriadoVM.cs" />
     <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
     <Compile Include="ViewModel\GlobalParameterVM.cs" />
     <Compile Include="ViewModel\ParametrosBancariosVM.cs" />
-    <Compile Include="ViewModel\PessoaVM.cs" />
-    <Compile Include="ViewModel\CondicaoParcelamentoVM.cs" />
     <Compile Include="ViewModel\CondicaoPagamentoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
-    <Compile Include="ViewModel\EstadoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -103,6 +103,13 @@
       <DependentUpon>DataSetReports.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModel\AjusteManualVM.cs" />
+    <Compile Include="ViewModel\InventarioItemVM.cs" />
+    <Compile Include="ViewModel\InventarioVM.cs" />
+    <Compile Include="ViewModel\PosicaoAtualVM.cs" />
+    <Compile Include="ViewModel\ProdutosMaisMovimentadosVM.cs" />
+    <Compile Include="ViewModel\ProdutosMenosMovimentadosVM.cs" />
+    <Compile Include="ViewModel\TipoMovimentoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -236,6 +243,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -320,10 +328,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Estoque.Entities\Fly01.Estoque.Entities.csproj">
-      <Project>{2bcd70dd-27fe-42c7-90bc-2164011b0d15}</Project>
-      <Name>Fly01.Estoque.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

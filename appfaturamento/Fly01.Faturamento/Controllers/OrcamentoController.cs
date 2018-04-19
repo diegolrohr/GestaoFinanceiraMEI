@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
@@ -15,6 +15,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {

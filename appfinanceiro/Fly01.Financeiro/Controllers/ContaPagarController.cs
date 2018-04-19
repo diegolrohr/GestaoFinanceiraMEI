@@ -93,8 +93,11 @@ namespace Fly01.Financeiro.Controllers
         public List<ContaPagarVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
         {
             var queryString = new Dictionary<string, string>();
-            var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" + tipoStatus + "'";
-            if (string.IsNullOrEmpty(queryStringOdata))
+            var strStatusConta = !string.IsNullOrEmpty(queryStringOdata)
+                ? $" and statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'"
+                : $" statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'";
+
+            if (string.IsNullOrEmpty(queryStringOdata) && string.IsNullOrEmpty(tipoStatus))
             {
                 queryString.AddParam("$orderby", "numero");
                 queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");

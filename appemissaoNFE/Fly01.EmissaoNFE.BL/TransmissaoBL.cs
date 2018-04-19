@@ -682,8 +682,8 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue,
                                         new Error("Valor do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.ValorICMSSTRetido"));
                                     // FCP
-                                    entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal.HasValue,
-                                        new Error("Alíquota suportada pelo Consumidor Final é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pST"));
+                                    //entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPConsumidorFinal.HasValue,
+                                    //    new Error("Alíquota suportada pelo Consumidor Final é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.pST"));
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorBaseFCPRetidoAnteriorST.HasValue,
                                         new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItem - 1) + "].Imposto.ICMS.vBCFCPSTRet"));
                                     entity.Fail(!detalhe.Imposto.ICMS.PercentualFCPRetidoAnteriorST.HasValue,

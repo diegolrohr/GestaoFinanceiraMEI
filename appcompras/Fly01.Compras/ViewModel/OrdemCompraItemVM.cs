@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Compras.Entities.ViewModel
+namespace Fly01.Compras.ViewModel
 {
     [Serializable]
     public abstract class OrdemCompraItemVM : DomainBaseVM
@@ -22,11 +22,7 @@ namespace Fly01.Compras.Entities.ViewModel
         [JsonProperty("total")]
         public double Total { get; set; }
 
-        #region Navigations Properties
-
         [JsonProperty("produto")]
         public virtual ProdutoVM Produto { get; set; }
-
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.Core;
 using System.Collections.Generic;
 using Fly01.Core.Rest;

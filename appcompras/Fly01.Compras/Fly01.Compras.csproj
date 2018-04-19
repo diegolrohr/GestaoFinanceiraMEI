@@ -107,6 +107,12 @@
       <DependentUpon>DataSetReports.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModel\OrcamentoItemVM.cs" />
+    <Compile Include="ViewModel\OrcamentoVM.cs" />
+    <Compile Include="ViewModel\OrdemCompraItemVM.cs" />
+    <Compile Include="ViewModel\OrdemCompraVM.cs" />
+    <Compile Include="ViewModel\PedidoItemVM.cs" />
+    <Compile Include="ViewModel\PedidoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -363,10 +369,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Compras.Entities\Fly01.Compras.Entities.csproj">
-      <Project>{b2c14507-5d6f-4539-8c37-b491cb68ebe9}</Project>
-      <Name>Fly01.Compras.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

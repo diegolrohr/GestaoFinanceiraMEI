@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;

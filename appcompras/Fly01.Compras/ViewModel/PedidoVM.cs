@@ -3,7 +3,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Compras.Entities.ViewModel
+namespace Fly01.Compras.ViewModel
 {
     [Serializable]
     public class PedidoVM : OrdemCompraVM
@@ -39,14 +39,13 @@ namespace Fly01.Compras.Entities.ViewModel
         [JsonProperty("orcamentoOrigemId")]
         public Guid? OrcamentoOrigemId { get; set; }
 
-        #region Navigations Properties
         [JsonProperty("fornecedor")]
         public virtual PessoaVM Fornecedor { get; set; }
+
         [JsonProperty("transportadora")]
         public virtual PessoaVM Transportadora { get; set; }
+
         [JsonProperty("orcamentoOrigem")]
         public virtual OrcamentoVM OrcamentoOrigem { get; set; }
-
-        #endregion
     }
 }

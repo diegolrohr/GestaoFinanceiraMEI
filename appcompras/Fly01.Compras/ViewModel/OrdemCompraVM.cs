@@ -3,7 +3,7 @@ using Fly01.Core.Helpers.Attribute;
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
-namespace Fly01.Compras.Entities.ViewModel
+namespace Fly01.Compras.ViewModel
 {
     [Serializable]
     public class OrdemCompraVM : DomainBaseVM
@@ -40,16 +40,13 @@ namespace Fly01.Compras.Entities.ViewModel
         [JsonProperty("total")]
         public double? Total { get; set; }
 
-        #region Navigation Properties
-
         [JsonProperty("condicaoParcelamento")]
         public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
+
         [JsonProperty("formaPagamento")]
         public virtual FormaPagamentoVM FormaPagamento { get; set; }
+
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
-
-        #endregion
-
     }
 }

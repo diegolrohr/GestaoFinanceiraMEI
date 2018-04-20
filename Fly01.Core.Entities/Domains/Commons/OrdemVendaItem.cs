@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -20,13 +19,14 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double Desconto { get; set; }
 
-        [NotMapped]
         public double Total
         {
             get
             {
                 return Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
             }
+            set
+            { }
         }
 
         [DataType(DataType.MultilineText)]

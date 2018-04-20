@@ -9,7 +9,6 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class ContaFinanceiraRenegociacao : PlataformaBase
     {
         [Required]
-        [NotMapped]
         public virtual List<Guid> ContasFinanceirasOrigemIds { get; set; }
 
         [Required]

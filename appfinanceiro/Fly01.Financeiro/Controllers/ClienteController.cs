@@ -1,5 +1,4 @@
 ﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -12,6 +11,8 @@ using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -199,7 +200,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "tipoIndicacaoInscricaoEstadual",
                 Class = "col s3 12",
                 Label = "Indicação Inscrição Estadual",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoIndicacaoInscricaoEstadual", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
                 ConstrainWidth = true
             });
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s12 l3", Label = "Inscrição Estadual", MaxLength = 18 });

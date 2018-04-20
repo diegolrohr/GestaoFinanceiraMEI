@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -153,7 +155,7 @@ namespace Fly01.Faturamento.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation("TipoFormaPagamento", item.TipoFormaPagamento).Value };
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), item.TipoFormaPagamento).Value };
 
             return GetJson(filterObjects);
         }

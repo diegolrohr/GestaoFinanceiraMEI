@@ -1,11 +1,11 @@
 ﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.Entities.ViewModel;
+using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Entities.ViewModels.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,9 @@ using System.Web.Mvc;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Entities.Attribute;
+using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -161,9 +162,9 @@ namespace Fly01.Estoque.Controllers
                 descricao = x.Descricao,
                 dataUltimaInteracao = x.DataUltimaInteracao.ToString("dd/MM/yyyy"),
                 inventarioStatus = x.InventarioStatus,
-                inventarioStatusDescription = EnumHelper.SubtitleDataAnotation("InventarioStatus", x.InventarioStatus).Description,
-                inventarioStatusCssClass = EnumHelper.SubtitleDataAnotation("InventarioStatus", x.InventarioStatus).CssClass,
-                inventarioStatusValue = EnumHelper.SubtitleDataAnotation("InventarioStatus", x.InventarioStatus).Value,
+                inventarioStatusDescription = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).Description,
+                inventarioStatusCssClass = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).CssClass,
+                inventarioStatusValue = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).Value,
             };
         }
 
@@ -194,7 +195,7 @@ namespace Fly01.Estoque.Controllers
                 DataField = "inventarioStatus",
                 DisplayName = "Status do Inventário",
                 Priority = 0,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("InventarioStatus", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(InventarioStatus))),
                 RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.inventarioStatusCssClass + \" left\", \"data-badge-caption\": \" \" }, row.inventarioStatusValue).outerHTML; }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataUltimaInteracao", DisplayName = "Ultima Interação", Priority = 1, Type = "date" });

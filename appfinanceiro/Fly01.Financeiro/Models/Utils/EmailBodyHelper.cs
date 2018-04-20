@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Core;
 
 namespace Fly01.Financeiro.Models.Utils

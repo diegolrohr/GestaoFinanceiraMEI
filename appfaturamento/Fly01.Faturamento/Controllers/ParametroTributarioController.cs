@@ -1,5 +1,5 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -12,6 +12,7 @@ using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -193,7 +194,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoModalidade",
                 Class = "col s12 m6",
                 Label = "Modalidade",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoModalidade", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });
             
             form3.Elements.Add(new SelectUI
@@ -201,7 +202,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoVersaoNFe",
                 Class = "col s6 m1",
                 Label = "Versão NFe ",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVersaoNFe", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
 
             form3.Elements.Add(new SelectUI
@@ -209,7 +210,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoAmbiente",
                 Class = "col s6 m2",
                 Label = "Ambiente",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoAmbiente", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
             form3.Elements.Add(new TextareaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });

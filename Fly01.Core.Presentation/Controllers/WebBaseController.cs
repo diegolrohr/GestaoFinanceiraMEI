@@ -3,19 +3,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using System.Reflection;
-using Fly01.Core.Helpers;
-using System.Collections.Generic;
-using Fly01.Core.SOAManager;
 using Fly01.Core.Rest;
 using Newtonsoft.Json;
+using System.Reflection;
+using Fly01.Core.Helpers;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Entities.Attribute;
+using Fly01.Core.SOAManager;
+using System.Collections.Generic;
+using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Presentation.Commons;
 using System.Web.Script.Serialization;
-using Fly01.Core.Entities.ViewModels.Commons;
-using Fly01.Core.Entities.ViewModels;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Core.Presentation
 {

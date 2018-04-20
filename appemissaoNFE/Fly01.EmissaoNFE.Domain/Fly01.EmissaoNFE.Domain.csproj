@@ -105,6 +105,7 @@
     <Compile Include="Enums\OrigemMercadoria.cs" />
     <Compile Include="Enums\OrigemProcesso.cs" />
     <Compile Include="Enums\TipoAliquota.cs" />
+    <Compile Include="Enums\TipoContaFinanceiraVM.cs" />
     <Compile Include="Enums\TipoFinalidadeEmissaoNFe.cs" />
     <Compile Include="Enums\TipoPresencaComprador.cs" />
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />
@@ -169,6 +170,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>

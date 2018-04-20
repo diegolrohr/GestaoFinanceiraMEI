@@ -8,11 +8,10 @@ using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.Entities.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
-using Fly01.Core.Entities.ViewModels;
 using Newtonsoft.Json;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
-using Fly01.Core.API;
+using Fly01.Core.ViewModels.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {

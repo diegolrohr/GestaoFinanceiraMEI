@@ -1,9 +1,10 @@
-﻿using Fly01.Estoque.Entities.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.Core;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Estoque.Controllers
 {

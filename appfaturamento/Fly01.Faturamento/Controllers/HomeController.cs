@@ -6,7 +6,7 @@ using Fly01.uiJS.Classes;
 using Fly01.Core.Config;
 using Fly01.Core;
 using Fly01.uiJS.Defaults;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Rest;
 
 namespace Fly01.Faturamento.Controllers

@@ -1,5 +1,4 @@
 ﻿using Fly01.Core;
-using Fly01.Core.API;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
@@ -19,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Faturamento.BL
 {

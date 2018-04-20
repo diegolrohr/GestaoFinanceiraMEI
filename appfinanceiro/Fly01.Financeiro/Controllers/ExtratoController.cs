@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
@@ -13,6 +13,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {

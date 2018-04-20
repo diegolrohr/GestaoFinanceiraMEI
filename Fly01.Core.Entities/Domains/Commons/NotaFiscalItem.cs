@@ -25,6 +25,8 @@ namespace Fly01.Core.Entities.Domains.Commons
             {
                 return Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
             }
+            set
+            { }
         }
 
         [DataType(DataType.MultilineText)]

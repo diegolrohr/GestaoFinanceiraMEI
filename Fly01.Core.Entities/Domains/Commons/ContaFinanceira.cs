@@ -62,7 +62,15 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string DescricaoParcela { get; set; }
 
-        public double Saldo => ValorPrevisto - (ValorPago ?? 0.00);
+        public double Saldo
+        {
+            get
+            {
+                return ValorPrevisto - (ValorPago.HasValue ? ValorPago.Value : 0.00);
+            }
+            set
+            { }   
+        }
 
         public int Numero { get; set; }
 

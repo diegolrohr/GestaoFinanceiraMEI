@@ -7,14 +7,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar as informações de interesse do Fisco
         /// </summary>
-        [XmlElement(ElementName = "infAdFisco")]
+        [XmlElement(ElementName = "infAdFisco", IsNullable = true)]
         public string InfoInteresseDoFisico { get; set; }
+        public bool ShouldSerializeInfoInteresseDoFisico()
+        {
+            return InfoInteresseDoFisico != null && InfoInteresseDoFisico.Length > 0;
+        }
 
         /// <summary>
         /// informar as informações complementares de interesse do contribuite
         /// </summary>
-        [XmlElement(ElementName = "infCpl")]
+        [XmlElement(ElementName = "infCpl", IsNullable = true)]
         public string InformacoesComplementares { get; set; }
+        public bool ShouldSerializeInformacoesComplementares()
+        {
+            return InformacoesComplementares != null && InformacoesComplementares.Length > 0;
+        }
 
         /// <summary>
         /// informar o grupo com o obsCont

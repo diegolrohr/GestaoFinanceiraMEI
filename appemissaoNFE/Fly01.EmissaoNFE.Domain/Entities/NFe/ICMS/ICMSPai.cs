@@ -81,9 +81,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSST = ValorICMSST.Value,
                         AliquotaAplicavelCalculoCreditoSN = AliquotaAplicavelCalculoCreditoSN.Value,
                         ValorCreditoICMS = ValorCreditoICMS.Value,
-                        BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
                     };
 
                     break;
@@ -111,9 +111,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCST = ValorBCST.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
                         ValorICMSST = ValorICMSST.Value,
-                        BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
                     };
 
                     break;
@@ -140,9 +140,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorBCST = ValorBCST.Value,
                         AliquotaICMSST = AliquotaICMSST.Value,
                         ValorICMSST = ValorICMSST.Value,
-                        BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
                     };
 
                     break;
@@ -161,17 +161,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     {
                         ValorBCSTRetido = ValorBCSTRetido.Value,
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
-                        BaseFCPSTRetido = BaseFCPSTRetido.Value,
-                        AliquotaFCPSTRetido = AliquotaFCPSTRetido.Value,
-                        ValorFCPSTRetido = ValorFCPSTRetido.Value
+                        BaseFCPSTRetido = BaseFCPSTRetido,
+                        AliquotaFCPSTRetido = AliquotaFCPSTRetido,
+                        ValorFCPSTRetido = ValorFCPSTRetido
                     };
                     break;
                 case "900"://Outros
-                    //FCP
-                    ToValidate.Add(NewKeyValuePair("BaseFCPST", BaseFCPST));
-                    ToValidate.Add(NewKeyValuePair("AliquotaFCPST", AliquotaFCPST));
-                    ToValidate.Add(NewKeyValuePair("ValorFCPST", ValorFCPST));
-
                     DoTheValidation();
 
                     ICMS = new ICMSSN900(OrigemMercadoria, CodigoSituacaoOperacao)
@@ -195,9 +190,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorCreditoICMS = ValorCreditoICMS,
                         ValorICMSSTUFDestino = ValorICMSSTUFDestino,
                         PercentualReducaoBC = PercentualReducaoBC,
-                        BaseFCPST = BaseFCPST.Value,
-                        AliquotaFCPST = AliquotaFCPST.Value,
-                        ValorFCPST = ValorFCPST.Value
+                        BaseFCPST = BaseFCPST,
+                        AliquotaFCPST = AliquotaFCPST,
+                        ValorFCPST = ValorFCPST
                     };
 
                     break;

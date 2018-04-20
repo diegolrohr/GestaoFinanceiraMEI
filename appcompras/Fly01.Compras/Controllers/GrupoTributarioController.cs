@@ -96,12 +96,12 @@ namespace Fly01.Compras.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 40 });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 40 });
 
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "cfopId",
-                Class = "col s12 l6",
+                Class = "col s12",
                 Label = "Código Fiscal de Operação (CFOP)",
                 Required = true,
                 DataUrl = @Url.Action("Cfop", "AutoComplete"),

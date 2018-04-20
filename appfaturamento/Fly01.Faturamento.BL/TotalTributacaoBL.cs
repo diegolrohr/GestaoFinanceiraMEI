@@ -77,7 +77,6 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-
         public bool ConfiguracaoTSSOK(string plataformaId = null)
         {
             try
@@ -113,6 +112,7 @@ namespace Fly01.Faturamento.BL
             var total = 0.0;
             total += tributacaoItensRetorno.Sum(x => x.IPIValor);
             total += tributacaoItensRetorno.Sum(x => x.STValor);
+            total += tributacaoItensRetorno.Sum(x => x.FCPSTValor);
             return total;
         }
 
@@ -122,7 +122,6 @@ namespace Fly01.Faturamento.BL
             total += tributacaoItensRetorno.Sum(x => x.ICMSValor);
             total += tributacaoItensRetorno.Sum(x => x.COFINSValor);
             total += tributacaoItensRetorno.Sum(x => x.FCPValor);
-            total += tributacaoItensRetorno.Sum(x => x.FCPSTValor);
             total += tributacaoItensRetorno.Sum(x => x.PISValor);
             return total;
         }

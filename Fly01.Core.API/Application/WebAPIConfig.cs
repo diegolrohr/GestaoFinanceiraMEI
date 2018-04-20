@@ -29,9 +29,9 @@ namespace Fly01.Core.API.Application
                 routeTemplate: "{*url}",
                 defaults: new { controller = "ApiError", action = "Handle404" }
             );
-
+            
             config.Filters.Add(new CustomExceptionFilter());
-            config.Filters.Add(new AiHandleErrorAttribute());
+            //config.Filters.Add(new AiHandleErrorAttribute());
         }
     }
 }

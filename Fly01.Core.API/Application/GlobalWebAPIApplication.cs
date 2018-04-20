@@ -6,6 +6,7 @@ using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Fly01.Core.API.Application
 {
@@ -30,6 +31,8 @@ namespace Fly01.Core.API.Application
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
             };
+
+            GlobalFilters.Filters.Add(new AiHandleErrorAttribute());
 
             GlobalConfiguration.Configure(config =>
             {

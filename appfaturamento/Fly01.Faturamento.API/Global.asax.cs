@@ -55,10 +55,9 @@ namespace Fly01.Faturamento.API
             return builder.GetEdmModel();
         }
 
-        protected override Task RunServiceBus()
-        {
-           return Task.Factory.StartNew(() => new ServiceBusBL());
-        }
+        protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
+
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
 
         protected override void SetAppDefaults()
         {

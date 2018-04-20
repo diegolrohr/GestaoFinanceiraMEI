@@ -31,6 +31,7 @@ namespace Fly01.Core.API.Application
             );
 
             config.Filters.Add(new CustomExceptionFilter());
+            config.Filters.Add(new AiHandleErrorAttribute());
         }
     }
 }

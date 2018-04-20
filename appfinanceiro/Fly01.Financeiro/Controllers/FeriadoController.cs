@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;

@@ -5,7 +5,7 @@ using System.Linq;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     public class ContaFinanceiraRenegociacaoVM : DomainBaseVM
     {
@@ -105,15 +105,16 @@ namespace Fly01.Financeiro.Entities.ViewModel
         [JsonProperty("motivo")]
         public string Motivo { get; set; }
 
-        #region Navigation Properties
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
+
         [JsonProperty("condicaoParcelamento")]
         public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
+
         [JsonProperty("pessoa")]
         public virtual PessoaVM Pessoa { get; set; }
+
         [JsonProperty("formaPagamento")]
         public virtual FormaPagamentoVM FormaPagamento { get; set; }
-        #endregion
     }
 }

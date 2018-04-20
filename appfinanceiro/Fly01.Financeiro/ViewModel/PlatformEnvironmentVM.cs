@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class PlatformEnvironmentVM
     {
         [JsonProperty("platformUrl")]
         public string PlatformUrl { get; set; }
+
         [JsonProperty("platformUsers")]
         public List<UserEnvironmentVM> PlatformUsers { get; set; }
     }
@@ -18,6 +19,7 @@ namespace Fly01.Financeiro.Entities.ViewModel
     {
         [JsonProperty("platformUser")]
         public string PlatformUser { get; set; }
+
         [JsonProperty("platformUserName")]
         public string PlatformUserName { get; set; }
     }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.Models.ViewModel

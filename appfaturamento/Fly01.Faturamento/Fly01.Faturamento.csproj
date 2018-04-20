@@ -133,7 +133,6 @@
     <Compile Include="ViewModel\SerieNotaFiscalInutilizadaVM.cs" />
     <Compile Include="ViewModel\SerieNotaFiscalVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
-    <Compile Include="ViewModel\TipoCarteiraVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
     <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />
   </ItemGroup>

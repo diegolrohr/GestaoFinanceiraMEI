@@ -8,8 +8,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         {
             SomatorioICMSDesonerado = 0;
         }
-
-        
+                
         [XmlIgnore]
         public double SomatorioBC { get; set; }
 
@@ -18,6 +17,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
 
         [XmlIgnore]
         public double SomatorioICMSDesonerado { get; set; }
+
+        [XmlIgnore]
+        public double SomatorioFCP { get; set; }
+
+        [XmlIgnore]
+        public double SomatorioFCPST { get; set; }
+
+        [XmlIgnore]
+        public double SomatorioFCPSTRetido { get; set; }
 
         [XmlIgnore]
         public double SomatorioBCST { get; set; }
@@ -63,112 +71,136 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             return TotalTributosAproxString != "0.00";
         }
 
-        [XmlElement(ElementName = "vBC")]
+        [XmlElement("vBC")]
         public string SomatorioBCString
         {
             get { return SomatorioBC.ToString("0.00").Replace(",", "."); }
             set { SomatorioBC = double.Parse(value.Replace(".", ","));  }
         }
 
-        [XmlElement(ElementName = "vICMS")]
+        [XmlElement("vICMS")]
         public string SomatorioICMSString
         {
             get { return SomatorioICMS.ToString("0.00").Replace(",", "."); }
             set { SomatorioICMS = double.Parse(value.Replace(".",",")); }
         }
 
-        [XmlElement(ElementName = "vICMSDeson")]
+        [XmlElement("vICMSDeson")]
         public string SomatorioICMSDesoneradoString
         {
             get { return SomatorioICMSDesonerado.ToString("0.00").Replace(",", "."); }
             set { SomatorioICMSDesonerado = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vBCST")]
+        //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        //[XmlElement("vFCP")]
+        //public string SomatorioFCPString
+        //{
+        //    get { return SomatorioFCP.ToString("0.00").Replace(",", "."); }
+        //    set { SomatorioFCP = double.Parse(value.Replace(".", ",")); }
+        //}
+
+        [XmlElement("vBCST")]
         public string SomatorioBCSTString
         {
             get { return SomatorioBCST.ToString("0.00").Replace(",", "."); }
             set { SomatorioBCST = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vST")]
+        [XmlElement("vST")]
         public string SomatorioICMSSTString
         {
             get { return SomatorioICMSST.ToString("0.00").Replace(",", "."); }
             set { SomatorioICMSST = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vProd")]
+        //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        //[XmlElement("vFCPST")]
+        //public string SomatorioFCPSTString
+        //{
+        //    get { return SomatorioFCPST.ToString("0.00").Replace(",", "."); }
+        //    set { SomatorioFCPST = double.Parse(value.Replace(".", ",")); }
+        //}
+
+        //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        //[XmlElement("vFCPSTRet")]
+        //public string SomatorioFCPSTRetidoString
+        //{
+        //    get { return SomatorioFCPSTRetido.ToString("0.00").Replace(",", "."); }
+        //    set { SomatorioFCPSTRetido = double.Parse(value.Replace(".", ",")); }
+        //}
+
+        [XmlElement("vProd")]
         public string SomatorioProdutosString
         {
             get { return SomatorioProdutos.ToString("0.00").Replace(",", "."); }
             set { SomatorioProdutos = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vFrete")]
+        [XmlElement("vFrete")]
         public string ValorFreteString
         {
             get { return ValorFrete.ToString("0.00").Replace(",", "."); }
             set { ValorFrete = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vSeg")]
+        [XmlElement("vSeg")]
         public string ValorSeguroString
         {
             get { return ValorSeguro.ToString("0.00").Replace(",", "."); }
             set { ValorSeguro = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vDesc")]
+        [XmlElement("vDesc")]
         public string SomatorioDescontoString
         {
             get { return SomatorioDesconto.ToString("0.00").Replace(",", "."); }
             set { SomatorioDesconto = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vII")]
+        [XmlElement("vII")]
         public string SomatorioIIString
         {
             get { return SomatorioII.ToString("0.00").Replace(",", "."); }
             set { SomatorioII = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vIPI")]
+        [XmlElement("vIPI")]
         public string SomatorioIPIString
         {
             get { return SomatorioIPI.ToString("0.00").Replace(",", "."); }
             set { SomatorioIPI = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vPIS")]
+        [XmlElement("vPIS")]
         public string SomatorioPisString
         {
             get { return SomatorioPis.ToString("0.00").Replace(",", "."); }
             set { SomatorioPis = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vCOFINS")]
+        [XmlElement("vCOFINS")]
         public string SomatorioCofinsString
         {
             get { return SomatorioCofins.ToString("0.00").Replace(",", "."); }
             set { SomatorioCofins = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vOutro")]
+        [XmlElement("vOutro")]
         public string SomatorioOutroString
         {
             get { return SomatorioOutro.ToString("0.00").Replace(",", "."); }
             set { SomatorioOutro = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vNF")]
+        [XmlElement("vNF")]
         public string ValorTotalNFString
         {
             get { return ValorTotalNF.ToString("0.00").Replace(",", "."); }
             set { ValorTotalNF = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement(ElementName = "vTotTrib", IsNullable = true)]
+        [XmlElement("vTotTrib")]
         public string TotalTributosAproxString
         {
             get { return TotalTributosAprox.HasValue ? TotalTributosAprox.Value.ToString("0.00").Replace(",", ".") : "0.00"; }

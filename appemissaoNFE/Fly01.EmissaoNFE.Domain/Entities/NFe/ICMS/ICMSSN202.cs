@@ -45,23 +45,50 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlElement("vICMSST")]
         public double ValorICMSST { get; set; }
 
-        [XmlElement(ElementName = "vBCFCPST", IsNullable = true)]
+        [XmlIgnore]
         public double? BaseFCPST { get; set; }
-        public bool ShouldSerializeBaseFCPST()
+        [XmlElement(ElementName = "vBCFCPST", IsNullable = true)]
+        public string BaseFCPSTString
+        {
+            get
+            {
+                return BaseFCPST.HasValue ? BaseFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { BaseFCPST = double.Parse(value); }
+        }
+        public bool ShouldSerializeBaseFCPSTString()
         {
             return BaseFCPST.HasValue && BaseFCPST.Value > 0;
         }
 
-        [XmlElement(ElementName = "pFCPST", IsNullable = true)]
+        [XmlIgnore]
         public double? AliquotaFCPST { get; set; }
-        public bool ShouldSerializeAliquotaFCPST()
+        [XmlElement(ElementName = "pFCPST", IsNullable = true)]
+        public string AliquotaFCPSTString
+        {
+            get
+            {
+                return AliquotaFCPST.HasValue ? AliquotaFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { AliquotaFCPST = double.Parse(value); }
+        }
+        public bool ShouldSerializeAliquotaFCPSTString()
         {
             return AliquotaFCPST.HasValue && BaseFCPST.Value > 0;
         }
 
-        [XmlElement(ElementName = "vFCPST", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorFCPST { get; set; }
-        public bool ShouldSerializeValorFCPST()
+        [XmlElement(ElementName = "vFCPST", IsNullable = true)]
+        public string ValorFCPSTString
+        {
+            get
+            {
+                return ValorFCPST.HasValue ? ValorFCPST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorFCPST = double.Parse(value); }
+        }
+        public bool ShouldSerializeValorFCPSTString()
         {
             return ValorFCPST.HasValue && BaseFCPST.Value > 0;
         }

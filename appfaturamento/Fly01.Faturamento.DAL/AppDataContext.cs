@@ -51,6 +51,9 @@ namespace Fly01.Faturamento.DAL
                 .Map(m => m.ToTable("NotaFiscalItem"))
                 .Map<NFeProduto>(m => m.ToTable("NFeProduto"))
                 .Map<NFSeServico>(m => m.ToTable("NFSeServico"));
+
+            builder.Entity<OrdemVendaItem>().Ignore(m => m.Total);
+            builder.Entity<NotaFiscalItem>().Ignore(m => m.Total);
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

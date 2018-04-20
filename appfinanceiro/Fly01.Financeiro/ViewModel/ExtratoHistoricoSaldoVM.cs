@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     public class ResponseExtratoHistoricoSaldoVM
     {

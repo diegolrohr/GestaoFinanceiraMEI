@@ -4,7 +4,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using Fly01.Core.Helpers.Attribute;
 
-namespace Fly01.Financeiro.Entities.ViewModel.Base
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class ContaFinanceiraVM : DomainBaseVM
@@ -92,17 +92,19 @@ namespace Fly01.Financeiro.Entities.ViewModel.Base
         [JsonProperty("numero")]
         public int Numero { get; set; }
 
-        #region Navigation Properties
         [JsonProperty("contaFinanceiraRepeticaoPai")]
         public virtual ContaFinanceiraVM ContaFinanceiraRepeticaoPai { get; set; }
+
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
+
         [JsonProperty("condicaoParcelamento")]
         public virtual CondicaoParcelamentoVM CondicaoParcelamento { get; set; }
+
         [JsonProperty("pessoa")]
         public virtual PessoaVM Pessoa { get; set; }
+
         [JsonProperty("formaPagamento")]
         public virtual FormaPagamentoVM FormaPagamento { get; set; }
-        #endregion
     }
 }

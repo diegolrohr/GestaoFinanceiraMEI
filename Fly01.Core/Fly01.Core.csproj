@@ -73,7 +73,6 @@
     <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\SubstituicaoTributariaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UnidadeMedidaVM.cs" />
-    <Compile Include="ViewModels\Presentation\Enum\TipoCarteiraVM.cs" />
     <Compile Include="ViewModels\Presentation\FileVM.cs" />
     <Compile Include="ViewModels\Presentation\KeyValueVM.cs" />
     <Compile Include="ViewModels\Presentation\SystemValueVM.cs" />

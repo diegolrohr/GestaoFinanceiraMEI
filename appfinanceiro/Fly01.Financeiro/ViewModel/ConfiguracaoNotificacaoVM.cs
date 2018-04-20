@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class ConfiguracaoNotificacaoVM : DomainBaseVM

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class FeriadoVM : DomainBaseVM

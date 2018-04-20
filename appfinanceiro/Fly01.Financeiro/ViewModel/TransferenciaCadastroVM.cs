@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class TransferenciaCadastroVM : MovimentacaoVM
@@ -10,12 +10,10 @@ namespace Fly01.Financeiro.Entities.ViewModel
         [JsonProperty("categoriaDestinoId")]
         public Guid? CategoriaDestinoId { get; set; }
 
-        #region Navigations Properties
         [JsonProperty("categoriaDestino")]
         public virtual CategoriaVM CategoriaDestino { get; set; }
 
         [JsonProperty("descricaoDestino")]
         public string DescricaoDestino { get; set; }
-        #endregion
     }
 }

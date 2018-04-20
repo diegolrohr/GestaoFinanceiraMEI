@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Financeiro.Entities.ViewModel.Base;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.Entities.ViewModel
+namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
     public class MovimentacaoVM : DomainBaseVM
@@ -32,7 +31,6 @@ namespace Fly01.Financeiro.Entities.ViewModel
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 
-        #region Navigations Properties
         [JsonProperty("contaBancariaOrigem")]
         public virtual ContaBancariaVM ContaBancariaOrigem { get; set; }
 
@@ -44,6 +42,5 @@ namespace Fly01.Financeiro.Entities.ViewModel
 
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
-        #endregion   
     }
 }

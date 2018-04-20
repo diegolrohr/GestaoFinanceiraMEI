@@ -1,5 +1,5 @@
 ﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.uiJS.Classes;
@@ -17,6 +17,8 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -115,8 +117,11 @@ namespace Fly01.Financeiro.Controllers
         public List<ContaReceberVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
         {
             var queryString = new Dictionary<string, string>();
-            var strStatusConta = " and statusContaBancaria eq Fly01.Financeiro.Domain.Enums.StatusContaBancaria" + "'" + tipoStatus + "'";
-            if (string.IsNullOrEmpty(queryStringOdata))
+            var strStatusConta = !string.IsNullOrEmpty(queryStringOdata) 
+                ? $" and statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'"
+                : $" statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'";
+
+            if (string.IsNullOrEmpty(queryStringOdata) && string.IsNullOrEmpty(tipoStatus))
             {
                 queryString.AddParam("$orderby", "numero");
                 queryString.AddParam("$expand", "pessoa($select=nome),formaPagamento($select=descricao)");
@@ -257,7 +262,7 @@ namespace Fly01.Financeiro.Controllers
                 DataField = "statusContaBancaria",
                 DisplayName = "Status",
                 Priority = 0,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("StatusContaBancaria", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
             });
 
@@ -418,7 +423,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "tipoPeriodicidade",
                 Class = "col s6 m3 l3",
                 Label = "Periodicidade",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoPeriodicidade", true, false, "Mensal")),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPeriodicidade), false, "Mensal")),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeTipoPeriodicidade" }

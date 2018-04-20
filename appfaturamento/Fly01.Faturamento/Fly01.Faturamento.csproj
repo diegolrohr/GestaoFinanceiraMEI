@@ -116,6 +116,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
+    <Compile Include="ViewModel\NBSVM.cs" />
+    <Compile Include="ViewModel\NFeProdutoVM.cs" />
+    <Compile Include="ViewModel\NFeVM.cs" />
+    <Compile Include="ViewModel\NFSeServicoVM.cs" />
+    <Compile Include="ViewModel\NFSeVM.cs" />
+    <Compile Include="ViewModel\NotaFiscalItemVM.cs" />
+    <Compile Include="ViewModel\NotaFiscalVM.cs" />
+    <Compile Include="ViewModel\OrdemVendaItemVM.cs" />
+    <Compile Include="ViewModel\OrdemVendaProdutoVM.cs" />
+    <Compile Include="ViewModel\OrdemVendaServicoVM.cs" />
+    <Compile Include="ViewModel\OrdemVendaVM.cs" />
+    <Compile Include="ViewModel\ParametroTributarioVM.cs" />
+    <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
+    <Compile Include="ViewModel\SerieNotaFiscalInutilizadaVM.cs" />
+    <Compile Include="ViewModel\SerieNotaFiscalVM.cs" />
+    <Compile Include="ViewModel\ServicoVM.cs" />
+    <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
+    <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -423,10 +442,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Faturamento.Entities\Fly01.Faturamento.Entities.csproj">
-      <Project>{dbf24ce0-f75e-485c-82ed-323af2ec1015}</Project>
-      <Name>Fly01.Faturamento.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

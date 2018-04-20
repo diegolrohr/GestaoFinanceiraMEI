@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -63,7 +65,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m3 l3",
                 Label = "Entrada/Saida",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoCarteira", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCarteira))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoCarteira" } }
             });
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Financeiro.Models.Utils;
 using Fly01.Core;
 using Fly01.Core.Helpers;

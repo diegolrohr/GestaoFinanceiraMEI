@@ -18,8 +18,8 @@ namespace Fly01.Financeiro.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            AppViewModelResourceName = "Fly01.Financeiro.Entities.ViewModel.";
-            AppEntitiesResourceName = "Fly01.Financeiro.Entities";
+            AppViewModelResourceName = "Fly01.Financeiro.ViewModel.";
+            AppEntitiesResourceName = "Fly01.Financeiro";
         }
 
         public ManagerEmpresaVM GetDadosEmpresa()

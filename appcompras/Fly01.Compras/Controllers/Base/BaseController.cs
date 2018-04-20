@@ -18,8 +18,8 @@ namespace Fly01.Compras.Controllers.Base
         protected BaseController()
         {
             ResourceName = AppDefaults.GetResourceName(typeof(T));
-            AppViewModelResourceName = "Fly01.Compras.Entities.ViewModel.";
-            AppEntitiesResourceName = "Fly01.Compras.Entities";
+            AppViewModelResourceName = "Fly01.Compras.ViewModel.";
+            AppEntitiesResourceName = "Fly01.Compras";
         }
 
         public ManagerEmpresaVM GetDadosEmpresa()

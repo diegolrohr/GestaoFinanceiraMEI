@@ -61,14 +61,12 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
-    <Compile Include="Controllers\BorderoController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
-    <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
     <Compile Include="Controllers\ContaBancariaController.cs" />
     <Compile Include="Controllers\ContaPagarController.cs" />
@@ -79,7 +77,6 @@
     <Compile Include="Controllers\FluxoCaixaController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
-    <Compile Include="Controllers\HistoricoCNABController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -112,6 +109,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\BancoVM.cs" />
+    <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
+    <Compile Include="ViewModel\ContaBancariaVM.cs" />
+    <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
+    <Compile Include="ViewModel\ContaFinanceiraRenegociacaoVM.cs" />
+    <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
+    <Compile Include="ViewModel\ContaPagarVM.cs" />
+    <Compile Include="ViewModel\ContaReceberVM.cs" />
+    <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
+    <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\ExtratoContaSaldoVM.cs" />
+    <Compile Include="ViewModel\ExtratoDetalheVM.cs" />
+    <Compile Include="ViewModel\ExtratoHistoricoSaldoVM.cs" />
+    <Compile Include="ViewModel\FeriadoVM.cs" />
+    <Compile Include="ViewModel\FluxoCaixaProjecaoVM.cs" />
+    <Compile Include="ViewModel\FluxoCaixaSaldoVM.cs" />
+    <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\MovimentacaoVM.cs" />
+    <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
+    <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
+    <Compile Include="ViewModel\TransferenciaVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -356,6 +375,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -413,6 +433,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>
@@ -444,10 +468,6 @@
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Financeiro.Entities\Fly01.Financeiro.Entities.csproj">
-      <Project>{ce77bb6d-c90c-403e-b2cc-e0359b5e8eba}</Project>
-      <Name>Fly01.Financeiro.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

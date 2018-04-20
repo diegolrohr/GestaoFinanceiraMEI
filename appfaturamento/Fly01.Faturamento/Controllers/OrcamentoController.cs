@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Faturamento.Entities.ViewModel;
+using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
@@ -14,6 +14,8 @@ using System.Text.RegularExpressions;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using System.Linq;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -124,7 +126,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
 
@@ -231,7 +233,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoFrete", true, false).ToList()
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)).ToList()
                     .FindAll(x => "FOB,CIF,Terceiro,SemFrete".Contains(x.Value))),
                 DomEvents = new List<DomEventUI>
                     {

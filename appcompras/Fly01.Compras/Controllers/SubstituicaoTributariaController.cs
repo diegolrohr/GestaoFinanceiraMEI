@@ -1,8 +1,9 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Entities.ViewModel;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -35,9 +36,9 @@ namespace Fly01.Compras.Controllers
                 cest_codigo = x.Cest != null ? x.Cest.Codigo : "",
                 estadoOrigem_nome = x.EstadoOrigem != null ? x.EstadoOrigem.Nome : "",
                 estadoDestino_nome = x.EstadoDestino != null ? x.EstadoDestino.Nome : "",
-                tipoSubstituicaoTributaria = EnumHelper.SubtitleDataAnotation("TipoSubstituicaoTributaria", x.TipoSubstituicaoTributaria).Value,
-                tipoSubstituicaoTributariaCSS = EnumHelper.SubtitleDataAnotation("TipoSubstituicaoTributaria", x.TipoSubstituicaoTributaria).CssClass,
-                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation("TipoSubstituicaoTributaria", x.TipoSubstituicaoTributaria).Description
+                tipoSubstituicaoTributaria = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Value,
+                tipoSubstituicaoTributariaCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).CssClass,
+                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Description
             };
         }
 
@@ -97,7 +98,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Tipo",
                 Value = "1",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoSubstituicaoTributaria", true, false))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSubstituicaoTributaria)))
             });
 
             config.Elements.Add(new AutocompleteUI
@@ -196,7 +197,7 @@ namespace Fly01.Compras.Controllers
                 DataField = "tipoSubstituicaoTributaria",
                 DisplayName = "Tipo",
                 Priority = 6,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoSubstituicaoTributaria", true, false)),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSubstituicaoTributaria))),
                 RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoSubstituicaoTributariaCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoSubstituicaoTributariaDescricao + \"</span>\" }"
             });
 

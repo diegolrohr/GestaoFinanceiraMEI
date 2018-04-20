@@ -1,6 +1,4 @@
-﻿using Microsoft.ApplicationInsights;
-using System;
-using System.Web.Http.ExceptionHandling;
+﻿using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 
 namespace Fly01.Core.API

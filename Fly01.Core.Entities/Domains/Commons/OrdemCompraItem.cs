@@ -17,7 +17,15 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double Desconto { get; set; }
 
-        public double Total => Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
+        public double Total
+        {
+            get
+            {
+                return Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero);
+            }
+            set
+            { }
+        }
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }

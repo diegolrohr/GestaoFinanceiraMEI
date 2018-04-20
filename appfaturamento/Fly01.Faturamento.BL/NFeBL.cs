@@ -128,6 +128,8 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
                     }
 
+                    var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
+
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
@@ -158,7 +160,7 @@ namespace Fly01.Faturamento.BL
                     }
 
                     var itemTransmissao = new ItemTransmissaoVM();
-                    itemTransmissao.Versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
+                    itemTransmissao.Versao = versao;
 
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
@@ -326,15 +328,18 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
-
-                            // FCP (201, 202, 203 e 900)
-                            detalhe.Imposto.ICMS.BaseFCPST = Math.Round(itemTributacao.FCPSTBase, 2);
-                            detalhe.Imposto.ICMS.AliquotaFCPST = Math.Round(itemTributacao.FCPSTAliquota, 2);
-                            detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.FCPSTValor, 2);
-                            // FCP (500)
-                            detalhe.Imposto.ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
-                            detalhe.Imposto.ICMS.AliquotaFCPSTRetido = Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2);
-                            detalhe.Imposto.ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
+                            
+                            if (versao == "4.0")
+                            {
+                                // FCP (201, 202, 203 e 900)
+                                detalhe.Imposto.ICMS.BaseFCPST = Math.Round(itemTributacao.FCPSTBase, 2);
+                                detalhe.Imposto.ICMS.AliquotaFCPST = Math.Round(itemTributacao.FCPSTAliquota, 2);
+                                detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.FCPSTValor, 2);
+                                // FCP (500)
+                                detalhe.Imposto.ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
+                                detalhe.Imposto.ICMS.AliquotaFCPSTRetido = Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2);
+                                detalhe.Imposto.ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
+                            }
                         }
 
                         if (itemTributacao.CalculaIPI)
@@ -392,6 +397,8 @@ namespace Fly01.Faturamento.BL
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                                          (detalhe.Imposto.ICMS.ValorICMS.HasValue ? detalhe.Imposto.ICMS.ValorICMS.Value : 0) +
+                                         (detalhe.Imposto.ICMS.ValorFCPST.HasValue ? detalhe.Imposto.ICMS.ValorFCPST.Value : 0) +
+                                         (detalhe.Imposto.ICMS.ValorICMSST.HasValue ? detalhe.Imposto.ICMS.ValorICMSST.Value : 0) +
                                          (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                                          (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                                          (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
@@ -419,7 +426,10 @@ namespace Fly01.Faturamento.BL
                             SomatorioPis = itemTransmissao.Detalhes.Sum(y => y.Imposto.PIS.ValorPIS),
                             //+(itemTransmissao.Detalhes.Select(x => x.Imposto.PISST).Any(x => x != null) ? itemTransmissao.Detalhes.Where(x => x.Imposto.PISST != null).Sum(y => y.Imposto.PISST.ValorPISST) : 0),
                             SomatorioProdutos = itemTransmissao.Detalhes.Sum(x => x.Produto.ValorBruto),
-                            SomatorioOutro = 0
+                            SomatorioOutro = 0,
+                            SomatorioFCP = 0,
+                            SomatorioFCPST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPST.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPST.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPST.Value), 2) : 0,
+                            SomatorioFCPSTRetido = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPSTRetido.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPSTRetido.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPSTRetido.Value), 2) : 0,
                         }
                     };
                     var icmsTotal = itemTransmissao.Total.ICMSTotal;
@@ -428,13 +438,15 @@ namespace Fly01.Faturamento.BL
                         icmsTotal.SomatorioCofins +
                         icmsTotal.SomatorioICMSST +
                         icmsTotal.SomatorioIPI +
-                        icmsTotal.SomatorioPis;
+                        icmsTotal.SomatorioPis +
+                        icmsTotal.SomatorioFCPST;
 
                     itemTransmissao.Total.ICMSTotal.ValorTotalNF =
                         ((itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
                         itemTransmissao.Total.ICMSTotal.SomatorioICMSST +
                         itemTransmissao.Total.ICMSTotal.ValorFrete +
-                        itemTransmissao.Total.ICMSTotal.SomatorioIPI) -
+                        itemTransmissao.Total.ICMSTotal.SomatorioIPI +
+                        itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
                         itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
                     #endregion
 

@@ -75,12 +75,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string Quantidade { get; set; }
 
         [Required]
+        [XmlIgnore]
         /// <summary>
         /// Informar o valor unitário de comercialização do produto já formatado com ponto decimal, campo meramente informativo, o contribuinte pode utilizar a precisão 
         /// desejada (0-10 decimais). Para efeitos de cálculo, o valor unitário será obtido pela divisão do valor do produto pela quantidade comercial.
         /// </summary>
-        [XmlElement(ElementName = "vUnCom")]
         public double ValorUnitario { get; set; }
+
+        [XmlElement(ElementName = "vUnCom")]
+        public string ValorUnitarioString
+        {
+            get { return ValorUnitario.ToString("0.00").Replace(",", "."); }
+            set { ValorUnitario = double.Parse(value.Replace(".", ",")); }
+        }
 
         [Required]
         /// <summary>
@@ -122,17 +129,31 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string QuantidadeTributada { get; set; }
 
         [Required]
+        [XmlIgnore]
         /// <summary>
         /// Informar o valor unitário de tributação do produto já formatado com ponto decimal, campo meramente informativo, o contribuinte pode utilizar a precisão desejada
         /// (0-10 decimais). Para efeitos de cálculo, o valor unitário será obtido pela divisão do valor do produto pela quantidade tributável.
         /// </summary>
-        [XmlElement(ElementName = "vUnTrib")]
         public double ValorUnitarioTributado { get; set; }
 
-        [XmlElement(ElementName = "vFrete", IsNullable = true)]
+        [XmlElement(ElementName = "vUnTrib")]
+        public string ValorUnitarioTributadoString
+        {
+            get { return ValorUnitarioTributado.ToString("0.00").Replace(",", "."); }
+            set { ValorUnitarioTributado = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double? ValorFrete { get; set; }
 
-        public bool ShouldSerializeValorFrete()
+        [XmlElement(ElementName = "vFrete", IsNullable = true)]
+        public string ValorFreteString
+        {
+            get { return ValorFrete.HasValue ? ValorFrete.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { ValorFrete = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorFreteString()
         {
             return ValorFrete.HasValue & ValorFrete > 0;
         }

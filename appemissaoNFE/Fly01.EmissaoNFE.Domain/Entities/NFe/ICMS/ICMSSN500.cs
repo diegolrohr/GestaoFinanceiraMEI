@@ -21,14 +21,53 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlElement("vICMSSTRet")]
         public double ValorICMSSTRetido { get; set; }
-
-        [XmlElement("vBCFCPSTRet")]
+        
+        [XmlIgnore]
         public double? BaseFCPSTRetido { get; set; }
+        [XmlElement(ElementName = "vBCFCPSTRet", IsNullable = true)]
+        public string BaseFCPSTRetidoString
+        {
+            get
+            {
+                return BaseFCPSTRetido.HasValue ? BaseFCPSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { BaseFCPSTRetido = double.Parse(value); }
+        }
+        public bool ShouldSerializeBaseFCPSTRetidoString()
+        {
+            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }
 
-        [XmlElement("pFCPSTRet")]
+        [XmlIgnore]
         public double? AliquotaFCPSTRetido { get; set; }
+        [XmlElement(ElementName = "pFCPSTRet", IsNullable = true)]
+        public string AliquotaFCPSTRetidoString
+        {
+            get
+            {
+                return AliquotaFCPSTRetido.HasValue ? AliquotaFCPSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { AliquotaFCPSTRetido = double.Parse(value); }
+        }
+        public bool ShouldSerializeAliquotaFCPSTRetidoString()
+        {
+            return AliquotaFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }
 
-        [XmlElement("vFCPSTRet")]
+        [XmlIgnore]
         public double? ValorFCPSTRetido { get; set; }
+        [XmlElement(ElementName = "vFCPSTRet", IsNullable = true)]
+        public string ValorFCPSTRetidoString
+        {
+            get
+            {
+                return ValorFCPSTRetido.HasValue ? ValorFCPSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorFCPSTRetido = double.Parse(value); }
+        }
+        public bool ShouldSerializeValorFCPSTRetidoString()
+        {
+            return ValorFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }
     }
 }

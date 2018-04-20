@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
 
@@ -18,9 +19,8 @@ namespace Fly01.EmissaoNFE.API
             return builder.GetEdmModel();
         }
 
-        protected override Task RunServiceBus()
-        {
-            return Task.Factory.StartNew(() => { });
-        }
+        protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
+
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => { });
     }
 }

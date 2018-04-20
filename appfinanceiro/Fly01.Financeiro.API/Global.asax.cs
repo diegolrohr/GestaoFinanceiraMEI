@@ -2,6 +2,7 @@
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
 using Microsoft.OData.Edm;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
 
@@ -47,9 +48,8 @@ namespace Fly01.Financeiro.API
             return builder.GetEdmModel();
         }
 
-        protected override Task RunServiceBus()
-        {            
-            return Task.Factory.StartNew(() => new ServiceBusBL());
-        }
+        protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
+
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
     }
 }

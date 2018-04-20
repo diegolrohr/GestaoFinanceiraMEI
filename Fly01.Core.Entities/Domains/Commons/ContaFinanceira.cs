@@ -62,7 +62,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string DescricaoParcela { get; set; }
 
-        [NotMapped]
         public double Saldo => ValorPrevisto - (ValorPago ?? 0.00);
 
         public int Numero { get; set; }

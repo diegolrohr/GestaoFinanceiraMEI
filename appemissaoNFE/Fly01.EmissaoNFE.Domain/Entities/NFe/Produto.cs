@@ -153,7 +153,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             set { ValorFrete = double.Parse(value.Replace(".", ",")); }
         }
 
-        public bool ShouldSerializeValorFrete()
+        public bool ShouldSerializeValorFreteString()
         {
             return ValorFrete.HasValue & ValorFrete > 0;
         }

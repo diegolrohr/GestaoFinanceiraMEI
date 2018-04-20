@@ -563,6 +563,8 @@ namespace Fly01.EmissaoNFE.BL
                     {
                         var totalAprox = Math.Round((detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                                          (detalhe.Imposto.ICMS.ValorICMS.HasValue ? detalhe.Imposto.ICMS.ValorICMS.Value : 0) +
+                                         (detalhe.Imposto.ICMS.ValorICMSST.HasValue ? detalhe.Imposto.ICMS.ValorICMSST.Value : 0) +
+                                         (detalhe.Imposto.ICMS.ValorFCPST.HasValue ? detalhe.Imposto.ICMS.ValorFCPST.Value : 0) +
                                          (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                                          (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                                          (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
@@ -1091,6 +1093,28 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(!somatorioOutroTrue.Equals(item.Total.ICMSTotal.SomatorioOutro),
                             new Error("O somatório do valor de Outros não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioOutro"));
                         #endregion SomatorioOutro
+
+                        #region SomatorioFCPST 
+                        double somatorioFCPSTTrue = item.Detalhes.Sum(e => e.Imposto.ICMS.ValorFCPST.HasValue ? e.Imposto.ICMS.ValorFCPST.Value : 0);
+                        item.Total.ICMSTotal.SomatorioFCPST = Math.Round(item.Total.ICMSTotal.SomatorioFCPST, 2);
+                        somatorioFCPSTTrue = Math.Round(somatorioFCPSTTrue, 2);
+
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioFCPST.ToString()),
+                            new Error("Informe o somatório do valor de FCP ST.", "Item.Total.ICMSTotal.SomatorioFCPST"));
+                        entity.Fail(!somatorioFCPSTTrue.Equals(item.Total.ICMSTotal.SomatorioFCPST),
+                            new Error("O somatório do valor de FCP ST não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioFCPST"));
+                        #endregion SomatorioFCPST
+
+                        #region SomatorioFCPRetido
+                        double somatorioFCPSTRetidoTrue = item.Detalhes.Sum(e => e.Imposto.ICMS.ValorFCPSTRetido.HasValue ? e.Imposto.ICMS.ValorFCPSTRetido.Value : 0);
+                        item.Total.ICMSTotal.SomatorioFCPSTRetido = Math.Round(item.Total.ICMSTotal.SomatorioFCPSTRetido, 2);
+                        somatorioFCPSTRetidoTrue = Math.Round(somatorioFCPSTRetidoTrue, 2);
+
+                        entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.SomatorioFCPSTRetido.ToString()),
+                            new Error("Informe o somatório do valor de FCP ST Retido.", "Item.Total.ICMSTotal.SomatorioFCPSTRetido"));
+                        entity.Fail(!somatorioFCPSTRetidoTrue.Equals(item.Total.ICMSTotal.SomatorioFCPSTRetido),
+                            new Error("O somatório do valor de FCP ST Retido não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioFCPSTRetido"));
+                        #endregion SomatorioFCPSTRetido
 
                         #region ValorTotalNF
                         entity.Fail(string.IsNullOrEmpty(item.Total.ICMSTotal.ValorTotalNF.ToString()),

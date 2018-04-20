@@ -143,7 +143,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             get { return ValorFrete.ToString("0.00").Replace(",", "."); }
             set { ValorFrete = double.Parse(value.Replace(".", ",")); }
         }
-
+        
         [XmlElement("vSeg")]
         public string ValorSeguroString
         {

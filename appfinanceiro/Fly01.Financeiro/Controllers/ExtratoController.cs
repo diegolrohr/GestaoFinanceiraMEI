@@ -440,7 +440,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta",
                 DomEvents = new List<DomEventUI>
                 {
-                    new DomEventUI {DomEvent = "autocompleteselect", Function = "fnChangeContaOrigemTransferencia"}
+                    new DomEventUI {DomEvent = "autocompletechange", Function = "fnChangeContaOrigemTransferencia"}
                 }
             });
 
@@ -458,7 +458,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta",
                 DomEvents = new List<DomEventUI>
                 {
-                    new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeContaDestinoTransferencia" }
+                    new DomEventUI { DomEvent = "autocompletechange", Function = "fnChangeContaDestinoTransferencia" }
                 }
             });
 

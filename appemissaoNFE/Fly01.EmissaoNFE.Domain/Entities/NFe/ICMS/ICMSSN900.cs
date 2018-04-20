@@ -207,27 +207,26 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             return PercentualBCop.HasValue;
         }
-
-
+        
         [XmlElement(ElementName = "vBCFCPST", IsNullable = true)]
         public double? BaseFCPST { get; set; }
         public bool ShouldSerializeBaseFCPST()
         {
-            return BaseFCPST.HasValue;
+            return BaseFCPST.HasValue && BaseFCPST.Value > 0;
         }
 
         [XmlElement(ElementName = "pFCPST", IsNullable = true)]
         public double? AliquotaFCPST { get; set; }
         public bool ShouldSerializeAliquotaFCPST()
         {
-            return AliquotaFCPST.HasValue;
+            return AliquotaFCPST.HasValue && BaseFCPST.Value > 0;
         }
 
         [XmlElement(ElementName = "vFCPST", IsNullable = true)]
         public double? ValorFCPST { get; set; }
         public bool ShouldSerializeValorFCPST()
         {
-            return ValorFCPST.HasValue;
+            return ValorFCPST.HasValue && BaseFCPST.Value > 0;
         }
     }
 }

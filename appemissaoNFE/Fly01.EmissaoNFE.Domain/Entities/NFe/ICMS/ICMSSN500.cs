@@ -24,11 +24,23 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlElement("vBCFCPSTRet")]
         public double? BaseFCPSTRetido { get; set; }
+        public bool ShouldSerializeBaseFCPSTRetido()
+        {
+            return BaseFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }
 
         [XmlElement("pFCPSTRet")]
         public double? AliquotaFCPSTRetido { get; set; }
+        public bool ShouldSerializeAliquotaFCPSTRetido()
+        {
+            return AliquotaFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }
 
         [XmlElement("vFCPSTRet")]
         public double? ValorFCPSTRetido { get; set; }
+        public bool ShouldSerializeValorFCPSTRetido()
+        {
+            return ValorFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+        }        
     }
 }

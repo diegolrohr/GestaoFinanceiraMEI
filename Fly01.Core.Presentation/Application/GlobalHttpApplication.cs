@@ -10,11 +10,14 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Fly01.Core.Presentation.Application
 {
     public class GlobalHttpApplication : HttpApplication
     {
+        protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;
+
         private static string ReadCookieAndSetSession(string token)
         {
             string platformUser = "";
@@ -82,6 +85,10 @@ namespace Fly01.Core.Presentation.Application
 
         protected void Application_Start()
         {
+            string instrumentationKeyAppInsights = GetInstrumentationKeyAppInsights();
+            if (!string.IsNullOrWhiteSpace(instrumentationKeyAppInsights))
+                TelemetryConfiguration.Active.InstrumentationKey = instrumentationKeyAppInsights;
+
             AppDefaults.MashupClientId = ConfigurationManager.AppSettings["MashupClientId"];
             AppDefaults.MashupPassword = ConfigurationManager.AppSettings["MashupPassword"];
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
@@ -144,9 +151,6 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        protected void Session_End(object sender, EventArgs e)
-        {
-            FormsAuthentication.SignOut();
-        }
+        protected void Session_End(object sender, EventArgs e) => FormsAuthentication.SignOut();
     }
 }

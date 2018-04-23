@@ -177,13 +177,5 @@ namespace Fly01.Compras.Controllers
         {
             return base.GridLoad();
         }
-        
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "data,numero");
-
-            return customFilters;
-        }
     }
 }

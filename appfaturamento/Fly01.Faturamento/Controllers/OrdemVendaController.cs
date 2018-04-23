@@ -437,14 +437,6 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "data,numero");
-
-            return customFilters;
-        }
-
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)

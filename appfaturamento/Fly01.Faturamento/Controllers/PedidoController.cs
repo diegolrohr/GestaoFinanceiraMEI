@@ -382,7 +382,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "totalImpostosProdutos",
                 Tooltip = new HelperUITooltip()
-                {
+                {,
                     Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
                 }
             });
@@ -391,7 +391,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalImpostosProdutosNaoAgrega",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS e FCP."
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS, COFINS, PIS e FCP."
                 }
             });
             config.Helpers.Add(new TooltipUI

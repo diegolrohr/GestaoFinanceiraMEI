@@ -44,14 +44,6 @@ namespace Fly01.Financeiro.Controllers
             ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
         }
 
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
-        {
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$orderby", "numero");
-
-            return customFilters;
-        }
-
         public override ActionResult ImprimirRecibo(Guid id)
         {
             ContaPagarVM itemContaPagar = Get(id);

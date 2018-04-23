@@ -30,8 +30,8 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-            string estadoNome = empresa.Cidade.Estado.Nome;
+            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");            
+            string estadoNome =  empresa.Cidade != null && empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Nome : string.Empty;
 
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 

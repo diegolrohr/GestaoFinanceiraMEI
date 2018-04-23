@@ -122,17 +122,17 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCurrencyUI
             {
-                Id = "valorICMSSTRetido",
+                Id = "valorBCSTRetido",
                 Class = "col s12 l6 numeric",
-                Label = "ICMS ST Retido",
+                Label = "Base Cálculo ST Retido",
                 Value = "0"
             });
 
             config.Elements.Add(new InputCurrencyUI
             {
-                Id = "valorBCSTRetido",
+                Id = "valorICMSSTRetido",
                 Class = "col s12 l6 numeric",
-                Label = "Base Cálculo ST Retido",
+                Label = "ICMS ST Retido",
                 Value = "0"
             });
 

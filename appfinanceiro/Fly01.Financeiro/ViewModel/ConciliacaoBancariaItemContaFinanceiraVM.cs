@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Financeiro.Entities.ViewModel.Base;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
+using Fly01.Financeiro.ViewModel;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {
@@ -23,12 +23,9 @@ namespace Fly01.Financeiro.Entities.ViewModel
         [JsonProperty("valorConciliado")]
         public double ValorConciliado { get; set; }
 
-        #region Navigations Properties
         [JsonProperty("contaFinanceira")]
         public virtual ContaFinanceiraVM ContaFinanceira { get; set; }
         [JsonProperty("contaFinanceiraBaixa")]
         public virtual ContaFinanceiraBaixaVM ContaFinanceiraBaixa { get; set; }
-
-        #endregion
     }
 }

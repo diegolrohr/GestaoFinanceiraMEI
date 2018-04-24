@@ -8,6 +8,7 @@ using Fly01.Core;
 using Fly01.uiJS.Defaults;
 using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Rest;
+using System.Configuration;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -152,6 +153,10 @@ namespace Fly01.Faturamento.Controllers
                 Name = SessionManager.Current.UserData.TokenData.Username,
                 Email = SessionManager.Current.UserData.PlatformUser
             };
+
+            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
+                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
+                : string.Empty;
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

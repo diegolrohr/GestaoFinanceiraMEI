@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
+using Fly01.Financeiro.ViewModel;
 
 namespace Fly01.Financeiro.Entities.ViewModel
 {

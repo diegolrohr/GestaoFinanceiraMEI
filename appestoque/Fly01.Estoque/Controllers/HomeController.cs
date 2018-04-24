@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using System.Configuration;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -245,6 +246,10 @@ namespace Fly01.Estoque.Controllers
                 Name = SessionManager.Current.UserData.TokenData.Username,
                 Email = SessionManager.Current.UserData.PlatformUser
             };
+
+            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
+                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
+                : string.Empty;
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }

@@ -25,7 +25,7 @@ namespace Fly01.Compras.Controllers
                 id = x.Id.ToString(),
                 fornecedor_nome = x.Fornecedor.Nome,
                 produto_descricao = x.Produto.Descricao,
-                quantidade = x.Quantidade.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$", "").Replace("R$ ", ""),
+                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),

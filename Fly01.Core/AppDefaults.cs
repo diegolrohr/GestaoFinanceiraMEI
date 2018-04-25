@@ -64,9 +64,8 @@ namespace Fly01.Core
             get
             {
                 var defaultCulture = new CultureInfo("pt-BR");
-                defaultCulture.NumberFormat.CurrencyPositivePattern = 2; //R$ 1.537,20
-                defaultCulture.NumberFormat.CurrencyNegativePattern = 12; //R$ -1.537,20
-                //culture.NumberFormat.CurrencyNegativePattern = 14; //(R$ 1.537,20)
+                defaultCulture.NumberFormat.CurrencyPositivePattern = 2;
+                defaultCulture.NumberFormat.CurrencyNegativePattern = 12;
 
                 return defaultCulture;
             }

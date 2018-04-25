@@ -14,8 +14,8 @@ namespace Fly01.Financeiro.ViewModel
         public DateTime Data { get; set; }
 
         [Display(Name = "Contas Financeiras")]
-        [JsonProperty("contasFinanceiras")]
-        public List<Guid> ContasFinanceiras { get; set; }
+        [JsonProperty("contasFinanceirasIds")]
+        public List<Guid> ContasFinanceirasIds { get; set; }
 
         [Display(Name = "Conta BancáriaId")]
         [JsonProperty("contaBancariaId")]

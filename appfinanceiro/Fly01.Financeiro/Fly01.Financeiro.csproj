@@ -61,6 +61,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
+    <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
@@ -111,6 +112,7 @@
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
+    <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />

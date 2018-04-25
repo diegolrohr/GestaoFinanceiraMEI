@@ -135,6 +135,7 @@
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
+    <Compile Include="Domains\Enum\StatusCnab.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />

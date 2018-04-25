@@ -118,6 +118,7 @@
     <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\ContaBancariaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
+    <Compile Include="ViewModel\ContaFinanceiraBaixaEmLoteVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraRenegociacaoVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ContaPagarVM.cs" />

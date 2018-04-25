@@ -76,6 +76,9 @@ namespace Fly01.Financeiro.BL
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
         public ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL => contaFinanceiraBaixaBL ?? (contaFinanceiraBaixaBL = new ContaFinanceiraBaixaBL(Context, ContaFinanceiraBL, ContaBancariaBL, SaldoHistoricoBL, MovimentacaoBL));
 
+        private ContaFinanceiraBaixaEmLoteBL contaFinanceiraBaixaEmLoteBL;
+        public ContaFinanceiraBaixaEmLoteBL ContaFinanceiraBaixaEmLoteBL => contaFinanceiraBaixaEmLoteBL ?? (contaFinanceiraBaixaEmLoteBL = new ContaFinanceiraBaixaEmLoteBL(Context, ContaFinanceiraBaixaBL));
+
         //private DemonstrativoResultadoExercicioBL demonstrativoResultadoExercicioBL;
         //public DemonstrativoResultadoExercicioBL DemonstrativoResultadoExercicioBL => demonstrativoResultadoExercicioBL ?? (demonstrativoResultadoExercicioBL = new DemonstrativoResultadoExercicioBL(Context, ContaPagarBL, ContaReceberBL, CategoriaBL));
 

@@ -46,13 +46,16 @@ namespace Fly01.Core.Helpers
             provider.NumberGroupSeparator = ",";
             provider.NumberGroupSizes = new int[] { 3 };
 
+            var list = _XElement.Descendants("STMTTRN").ToList();
+
             _lancamentos = (
                 from c in _XElement.Descendants("STMTTRN")
                 select new OFXLancamento()
                 {
                     Valor = Convert.ToDouble(c.Element("TRNAMT").Value, provider),
-                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value,
-                                               "yyyyMMdd", null),
+                    Data = c.Element("DTPOSTED").Value.Length > 8 ?
+                    DateTime.ParseExact(c.Element("DTPOSTED").Value, "yyyyMMddhhmmss", null) :
+                    DateTime.ParseExact(c.Element("DTPOSTED").Value, "yyyyMMdd", null),
                     Descricao = c.Element("MEMO").Value,
                     MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
                 }).ToList();

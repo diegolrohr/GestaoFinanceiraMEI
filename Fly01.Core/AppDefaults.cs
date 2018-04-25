@@ -56,29 +56,23 @@ namespace Fly01.Core
         public static string RootPathApplication { get; set; }
 
         public static string APIEnumResourceName { get; set; }
-    
-        public static string GetRootPathApplication(string app)
-        {
-            return string.Format(RootPathApplication, app);
-        }
+
+        public static string GetRootPathApplication(string app) => string.Format(RootPathApplication, app);
 
         public static CultureInfo CultureInfoDefault
         {
             get
             {
-                return new CultureInfo("pt-BR");
+                var defaultCulture = new CultureInfo("pt-BR");
+                defaultCulture.NumberFormat.CurrencyPositivePattern = 2; //R$ 1.537,20
+                defaultCulture.NumberFormat.CurrencyNegativePattern = 12; //R$ -1.537,20
+                //culture.NumberFormat.CurrencyNegativePattern = 14; //(R$ 1.537,20)
+
+                return defaultCulture;
             }
         }
 
-        public static string GetResourceName(Type type)
-        {
-            /*
-             * Por convensão foi definido que todos os resources serão iguais ao nome das classes, retirando
-             * apenas o sufixo VM.
-             * Ex.: AccountsPayableVM -> AccountsPayable
-             * **/
-            return type.Name.Substring(0, type.Name.Length - 2);
-        }
+        public static string GetResourceName(Type type) => type.Name.Substring(0, type.Name.Length - 2);
 
         public static Dictionary<string, string> GetQueryStringDefault(string filterField = "", string filterValue = "", int maxRecords = MaxRecordsPerPage)
         {
@@ -88,7 +82,6 @@ namespace Fly01.Core
                 };
 
             return new Dictionary<string, string> {
-                //{ filterField, filterValue },
                 { "$count", "true" },
                 { "$orderby", filterField },
             };

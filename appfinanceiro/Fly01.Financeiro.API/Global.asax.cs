@@ -43,6 +43,7 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
             builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
             builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
+            builder.EntitySet<Cnab>("cnab");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

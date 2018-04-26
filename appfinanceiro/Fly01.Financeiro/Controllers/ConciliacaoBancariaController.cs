@@ -248,7 +248,7 @@ namespace Fly01.Financeiro.Controllers
                         descricao = x.Descricao,
                         valor = x.Valor,
                         valorFormat = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
-                        valorFormat2 = x.Valor.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$ ", "").Replace("R$", "").Replace(".", ""),
+                        valorFormat2 = x.Valor.ToString("N", AppDefaults.CultureInfoDefault).Replace(".", ""),
                         data = x.Data.ToString("dd/MM/yyyy"),
                         statusConciliado = x.StatusConciliado,
                         conciliadoDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).Description,
@@ -258,7 +258,7 @@ namespace Fly01.Financeiro.Controllers
                             x.ConciliacaoBancariaItemContasFinanceiras.Select(y => new
                             {
                                 contaFinanceiraId = y.ContaFinanceiraId,
-                                valorConciliado = y.ValorConciliado.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$ ", "").Replace("R$", ""),
+                                valorConciliado = y.ValorConciliado.ToString("N", AppDefaults.CultureInfoDefault),
                                 contaFinanceira = new
                                 {
                                     id = y.ContaFinanceira.Id.ToString(),

@@ -2,7 +2,6 @@
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
-using Fly01.Core.Reports;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.ViewModel;
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.BL
 {

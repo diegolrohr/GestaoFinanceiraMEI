@@ -11,7 +11,7 @@ using System;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation;
 using Fly01.Core.Rest;
-using Fly01.Core.Reports;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers.Base
 {

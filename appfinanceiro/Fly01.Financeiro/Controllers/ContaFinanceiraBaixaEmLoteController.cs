@@ -37,6 +37,7 @@ namespace Fly01.Financeiro.Controllers
         //        entityVM.AccountReceivableIds = new List<string>();
         //        entityVM.AccountsIds.Split(',').ToList<string>().ForEach(item => entityVM.AccountReceivableIds.Add(item));
         //    }
+        //TODO: ver questao das rotas
 
         public ContentResult FormBaixaEmLote(string tipoConta)
         {
@@ -89,7 +90,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true });
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             config.Elements.Add(new InputNumbersUI { Id = "somaValoresSelecionados", Class = "col s12 m6", Label = "Total das Baixas", Value = "0", Readonly = true });
-            config.Elements.Add(new InputNumbersUI { Id = "contasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Readonly = true });
+            config.Elements.Add(new InputNumbersUI { Id = "countContasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Readonly = true });
 
             config.Elements.Add(new LabelsetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Selecione as contas que deseja baixar" });
             

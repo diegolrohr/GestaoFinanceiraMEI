@@ -11,7 +11,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public double ValorBoleto { get; set; }
 
-        public Guid? PessoaId { get; set; }
+        public Guid? SacadoId { get; set; }
 
         [Required]
         public string Status { get; set; }
@@ -28,13 +28,13 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public string NossoNumero { get; set; }
 
-        public Guid? ContaFinanceiraId { get; set; }
+        public Guid? ContaReceberId { get; set; }
 
-        public Guid? ContaBancariaSacadoId { get; set; }
+        public Guid? ContaBancariaCedenteId { get; set; }
 
-        public virtual Pessoa Pessoa { get; set; }
         public virtual Banco BancoCedente { get; set; }
-        public virtual ContaFinanceira ContaFinanceira { get; set; }
-        public virtual ContaBancaria ContaBancariaSacado { get; set; }
+        public virtual ContaBancaria ContaBancariaCedente { get; set; }
+        public virtual Pessoa Sacado { get; set; }
+        public virtual ContaReceber ContaReceber { get; set; }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Domains\Commons\Cest.cs" />
     <Compile Include="Domains\Commons\Cfop.cs" />
     <Compile Include="Domains\Commons\Cidade.cs" />
+    <Compile Include="Domains\Commons\Cnab.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancaria.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItem.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItemContaFinanceira.cs" />

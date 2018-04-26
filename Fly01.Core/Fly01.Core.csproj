@@ -67,6 +67,7 @@
     <Compile Include="ViewModels\Presentation\Commons\FormaPagamentoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\GrupoProdutoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\GrupoTributarioVM.cs" />
+    <Compile Include="ViewModels\ManagerEmpresaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\NcmVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\PessoaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoVM.cs" />

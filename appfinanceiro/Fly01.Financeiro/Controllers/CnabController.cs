@@ -23,7 +23,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 id = x.Id,
                 numeroBoleto = x.NumeroBoleto,
-                banco = x.Banco.Nome,
+                banco = x.BancoCedente.Nome,
                 valorBoleto = x.ValorBoleto,
                 sacado = x.Pessoa.Nome,
                 status = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).Value,

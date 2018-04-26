@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using System;
 
 namespace Fly01.Financeiro.BL
 {
@@ -17,10 +18,22 @@ namespace Fly01.Financeiro.BL
             banco.Cedente = GetCedenteBoletoNet(entity.ContaBancariaCedente);
             banco.FormataCedente();
 
+            var sacado = GetSacado(entity.Sacado);
+            var boleto = new Boleto2Net.BoletoBancario();
+            var dadosBoleto = boleto.Boleto.CodigoBarra;
+
+            dadosBoleto.CodigoBanco = "";
+            dadosBoleto.Moeda = 9;
+            dadosBoleto.FatorVencimento = 0;
+            dadosBoleto.ValorDocumento = (entity.ValorBoleto - ((entity.DataDesconto <= DateTime.Now) ? entity.ValorDesconto : 0)).ToString("C", AppDefaults.CultureInfoDefault);
+            dadosBoleto.CampoLivre = "";
+
+            //var boletos = GetBoletos(banco, sacado, entity);
+
             base.ValidaModel(entity);
         }
 
-        private Boleto2Net.Sacado GetContaBancariaSacado(Pessoa sacado)
+        private Boleto2Net.Sacado GetSacado(Pessoa sacado)
         {
             return new Boleto2Net.Sacado
             {
@@ -74,23 +87,25 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        //private Boleto2Net.Boleto GetBoleto(Boleto2Net.IBanco banco)
+        //private Boleto2Net.Boleto GetBoletosGeradosParaRemessa(Boleto2Net.IBanco banco, Boleto2Net.Sacado sacado, Cnab dadosBoleto)
         //{
+        //    //For para ler todos os boletos pendentes
+
         //    return new Boleto2Net.Boleto(banco)
         //    {
-        //        Sacado = GerarSacado(),
-        //        DataEmissao = DateTime.Now.AddDays(-3),
+        //        Sacado = sacado,
+        //        DataEmissao = dadosBoleto.DataEmissao,
         //        DataProcessamento = DateTime.Now,
-        //        DataVencimento = DateTime.Now.AddMonths(i),
-        //        ValorTitulo = (decimal)100 * i,
-        //        NossoNumero = NossoNumeroInicial == 0 ? "" : (NossoNumeroInicial + _proximoNossoNumero).ToString(),
+        //        DataVencimento = dadosBoleto.DataVencimento,
+        //        ValorTitulo = (decimal)dadosBoleto.ValorBoleto,
+        //        NossoNumero = dadosBoleto.NossoNumero,
         //        NumeroDocumento = "BB" + _proximoNossoNumero.ToString("D6") + (char)(64 + i),
-        //        EspecieDocumento = TipoEspecieDocumento.DM,
-        //        Aceite = aceite,
+        //        EspecieDocumento = Boleto2Net.TipoEspecieDocumento.DM,
+        //        Aceite = "?",
         //        CodigoInstrucao1 = "11",
         //        CodigoInstrucao2 = "22",
-        //        DataDesconto = DateTime.Now.AddMonths(i),
-        //        ValorDesconto = (decimal)(100 * i * 0.10),
+        //        DataDesconto = dadosBoleto.DataDesconto,
+        //        ValorDesconto = (decimal)dadosBoleto.ValorDesconto,
         //        DataMulta = DateTime.Now.AddMonths(i),
         //        PercentualMulta = (decimal)2.00,
         //        ValorMulta = (decimal)(100 * i * (2.00 / 100)),

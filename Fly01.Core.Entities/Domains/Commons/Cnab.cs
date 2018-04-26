@@ -25,6 +25,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public DateTime DataVencimento { get; set; }
 
+        public DateTime DataDesconto { get; set; }
+
+        public double ValorDesconto { get; set; }
+
         [Required]
         public string NossoNumero { get; set; }
 

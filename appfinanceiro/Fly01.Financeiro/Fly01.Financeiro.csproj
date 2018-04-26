@@ -61,6 +61,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
+    <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
@@ -110,6 +111,10 @@
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
+    <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
+    <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
+    <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
+    <Compile Include="ViewModel\ConciliacaoBancariaVM.cs" />
     <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\ContaBancariaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
@@ -353,8 +358,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.1\lib\net452\Fly01.uiJS.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.4\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>

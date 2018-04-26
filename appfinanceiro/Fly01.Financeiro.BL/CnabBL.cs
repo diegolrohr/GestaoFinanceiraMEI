@@ -9,6 +9,9 @@ namespace Fly01.Financeiro.BL
 {
     public class CnabBL : PlataformaBaseBL<Cnab>
     {
+        private static int contador = 1;
+        private static Boleto2Net.Sacado sacado;
+
         public CnabBL(AppDataContextBase context) : base(context) { }
 
         public override void ValidaModel(Cnab entity)
@@ -18,17 +21,9 @@ namespace Fly01.Financeiro.BL
             banco.Cedente = GetCedenteBoletoNet(entity.ContaBancariaCedente);
             banco.FormataCedente();
 
-            var sacado = GetSacado(entity.Sacado);
-            var boleto = new Boleto2Net.BoletoBancario();
-            var dadosBoleto = boleto.Boleto.CodigoBarra;
+            sacado = GetSacado(entity.Sacado);
 
-            dadosBoleto.CodigoBanco = "";
-            dadosBoleto.Moeda = 9;
-            dadosBoleto.FatorVencimento = 0;
-            dadosBoleto.ValorDocumento = (entity.ValorBoleto - ((entity.DataDesconto <= DateTime.Now) ? entity.ValorDesconto : 0)).ToString("C", AppDefaults.CultureInfoDefault);
-            dadosBoleto.CampoLivre = "";
 
-            //var boletos = GetBoletos(banco, sacado, entity);
 
             base.ValidaModel(entity);
         }
@@ -87,34 +82,69 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        //private Boleto2Net.Boleto GetBoletosGeradosParaRemessa(Boleto2Net.IBanco banco, Boleto2Net.Sacado sacado, Cnab dadosBoleto)
-        //{
-        //    //For para ler todos os boletos pendentes
+        internal static Boleto2Net.Boleto GerarBoleto(Boleto2Net.IBanco banco, int i, string aceite, int NossoNumeroInicial)
+        {
+            if (aceite == "?")
+                aceite = contador % 2 == 0 ? "N" : "A";
 
-        //    return new Boleto2Net.Boleto(banco)
-        //    {
-        //        Sacado = sacado,
-        //        DataEmissao = dadosBoleto.DataEmissao,
-        //        DataProcessamento = DateTime.Now,
-        //        DataVencimento = dadosBoleto.DataVencimento,
-        //        ValorTitulo = (decimal)dadosBoleto.ValorBoleto,
-        //        NossoNumero = dadosBoleto.NossoNumero,
-        //        NumeroDocumento = "BB" + _proximoNossoNumero.ToString("D6") + (char)(64 + i),
-        //        EspecieDocumento = Boleto2Net.TipoEspecieDocumento.DM,
-        //        Aceite = "?",
-        //        CodigoInstrucao1 = "11",
-        //        CodigoInstrucao2 = "22",
-        //        DataDesconto = dadosBoleto.DataDesconto,
-        //        ValorDesconto = (decimal)dadosBoleto.ValorDesconto,
-        //        DataMulta = DateTime.Now.AddMonths(i),
-        //        PercentualMulta = (decimal)2.00,
-        //        ValorMulta = (decimal)(100 * i * (2.00 / 100)),
-        //        DataJuros = DateTime.Now.AddMonths(i),
-        //        PercentualJurosDia = (decimal)0.2,
-        //        ValorJurosDia = (decimal)(100 * i * (0.2 / 100)),
-        //        MensagemArquivoRemessa = "Mensagem para o arquivo remessa",
-        //        NumeroControleParticipante = "CHAVEPRIMARIA=" + _proximoNossoNumero
-        //    };
-        //}
+            var boleto = new Boleto2Net.Boleto(banco)
+            {
+                Sacado = sacado,
+                DataEmissao = DateTime.Now.AddDays(-3),
+                DataProcessamento = DateTime.Now,
+                DataVencimento = DateTime.Now.AddMonths(i),
+                ValorTitulo = (decimal)100 * i,
+                NossoNumero = NossoNumeroInicial == 0 ? "" : (NossoNumeroInicial + _proximoNossoNumero).ToString(),
+                NumeroDocumento = "BB" + _proximoNossoNumero.ToString("D6") + (char)(64 + i),
+                EspecieDocumento = TipoEspecieDocumento.DM,
+                Aceite = aceite,
+                CodigoInstrucao1 = "11",
+                CodigoInstrucao2 = "22",
+                DataDesconto = DateTime.Now.AddMonths(i),
+                ValorDesconto = (decimal)(100 * i * 0.10),
+                DataMulta = DateTime.Now.AddMonths(i),
+                PercentualMulta = (decimal)2.00,
+                ValorMulta = (decimal)(100 * i * (2.00 / 100)),
+                DataJuros = DateTime.Now.AddMonths(i),
+                PercentualJurosDia = (decimal)0.2,
+                ValorJurosDia = (decimal)(100 * i * (0.2 / 100)),
+                MensagemArquivoRemessa = "Mensagem para o arquivo remessa",
+                NumeroControleParticipante = "CHAVEPRIMARIA=" + _proximoNossoNumero
+            };
+            // Mensagem - Instruções do Caixa
+            StringBuilder msgCaixa = new StringBuilder();
+            if (boleto.ValorDesconto > 0)
+                msgCaixa.AppendLine($"Conceder desconto de {boleto.ValorDesconto.ToString("R$ ##,##0.00")} até {boleto.DataDesconto.ToString("dd/MM/yyyy")}. ");
+            if (boleto.ValorMulta > 0)
+                msgCaixa.AppendLine($"Cobrar multa de {boleto.ValorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
+            if (boleto.ValorJurosDia > 0)
+                msgCaixa.AppendLine($"Cobrar juros de {boleto.ValorJurosDia.ToString("R$ ##,##0.00")} por dia de atraso. ");
+            boleto.MensagemInstrucoesCaixa = msgCaixa.ToString();
+            // Avalista
+            if (contador % 3 == 0)
+            {
+                boleto.Avalista = GerarSacado();
+                boleto.Avalista.Nome = boleto.Avalista.Nome.Replace("Sacado", "Avalista");
+            }
+            // Grupo Demonstrativo do Boleto
+            var grupoDemonstrativo = new GrupoDemonstrativo { Descricao = "GRUPO 1" };
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 1, Item 1", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.15 });
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 1, Item 2", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.05 });
+            boleto.Demonstrativos.Add(grupoDemonstrativo);
+            grupoDemonstrativo = new GrupoDemonstrativo { Descricao = "GRUPO 2" };
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 2, Item 1", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.20 });
+            boleto.Demonstrativos.Add(grupoDemonstrativo);
+            grupoDemonstrativo = new GrupoDemonstrativo { Descricao = "GRUPO 3" };
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 3, Item 1", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.37 });
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 3, Item 2", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.03 });
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 3, Item 3", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.12 });
+            grupoDemonstrativo.Itens.Add(new ItemDemonstrativo { Descricao = "Grupo 3, Item 4", Referencia = boleto.DataEmissao.AddMonths(+1).Month + "/" + boleto.DataEmissao.AddMonths(+1).Year, Valor = boleto.ValorTitulo * (decimal)0.08 });
+            boleto.Demonstrativos.Add(grupoDemonstrativo);
+
+            boleto.ValidarDados();
+            contador++;
+            _proximoNossoNumero++;
+            return boleto;
+        }
     }
 }

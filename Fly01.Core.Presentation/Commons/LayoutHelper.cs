@@ -12,8 +12,9 @@ namespace Fly01.Core.Presentation.Commons
                     $"<title>{appName}</title>" +
                     "<base href=\"~/\" />" +
                     "<link rel=\"icon\" type=\"image/ico\" href=\"https://cdnfly01.azureedge.net/img/fly01icon.ico\" />" +
-                    "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnfly01.azureedge.net/fly/1.0.4/fly01ui.css\" />");
-                    //"<link type=\"text/css\" rel=\"stylesheet\" href=\"http://poad257.poa01.local:8000/1.0.4/fly01ui.css\" />");
+                    //"<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnfly01.azureedge.net/fly/1.0.4/fly01ui.css\" />");
+            //"<link type=\"text/css\" rel=\"stylesheet\" href=\"http://poad257.poa01.local:8000/1.0.4/fly01ui.css\" />");
+            "<link type=\"text/css\" rel=\"stylesheet\" href=\"http://POAN040100911:8000/1.0.4/fly01ui.css\" />");
         }
 
         public static IHtmlString ScriptsTemplate(this HtmlHelper html)

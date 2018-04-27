@@ -311,6 +311,8 @@
     <Content Include="Views\ContaPagar\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\Home\Functions\_fnGetDadosEmpresa.cshtml" />
+    <Content Include="Views\Home\Functions\_fnImprimirFluxoCaixa.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,15 @@
+﻿<script>
+    function fnGetDadosEmpresa() {
+        $.ajax({
+            url: "@Url.Action("GetCabecalhoDadosEmpresa", "FluxoCaixa")",
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardCabecalho.info(data.TotalPagamentos);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+    }
+
+</script>

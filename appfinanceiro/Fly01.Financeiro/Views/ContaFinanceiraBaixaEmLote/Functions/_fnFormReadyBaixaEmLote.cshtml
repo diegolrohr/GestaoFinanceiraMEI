@@ -1,4 +1,5 @@
 ﻿<script>
+    @Html.Partial("Functions/_fnMain");
 
     function setupGridSelectEvents() {
         //ver validacao contador limite de 50
@@ -6,40 +7,23 @@
             if (type !== undefined) {
                 var valorAcumulado = getValorSomaSelecionados();
                 var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
-                var valorConciliado = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
-
-                var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == rowData[0].id);
-                if (index == -1) {
-                    arrayConciliacoes.push({
-                        conciliacaoBancariaItemId: getId(),
-                        contaFinanceiraId: rowData[0].id,
-                        valorConciliado: valorConciliado
-                    });
-                    valorAcumulado += valorConciliado;
-
-                    fnAtualizaValorSelecionados(valorAcumulado);
-                }
+                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                valorAcumulado += valorSaldo;
+                $('input#somaValoresSelecionados').val(valorAcumulado);
+                //data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                fnAtualizaCountSelecionados(1);
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
-
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
-
                 var valorAcumulado = getValorSomaSelecionados();
                 var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
+                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
 
-                var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == rowData[0].id);
-                if (index !== -1) {//se achou remove
-                    var valorConciliado = arrayConciliacoes[index].valorConciliado;
-
-                    var row = fly01._.dtContasExistentes.row(indexes);
-                    //volta o valor original
-                    $("input.valorParcial[data-id=\"" + row.data().id + "\"]").val(row.data().valorConciliado.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
-
-                    arrayConciliacoes.splice(index, 1);
-                    valorAcumulado -= valorConciliado;
-
-                    fnAtualizaValorSelecionados(valorAcumulado);
-                }
+                valorAcumulado -= valorSaldo;
+                $('input#somaValoresSelecionados').val(valorAcumulado);
+                fnAtualizaCountSelecionados(-1);
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
         });
     }
@@ -50,32 +34,32 @@
         return result;
     }
 
-    function fnAtualizaValorSelecionados(valorAcumulado) {
-        var valorLancamentoExtrato = parseFloat($('input#valor').val().replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".").replace("-", ""));
+    function fnAtualizaCountSelecionados(count) {
+        var countAtual = parseInt($('input#countContasSelecionadas').val());
+        countAtual = countAtual + (parseInt(count));
+        $('input#countContasSelecionadas').val(countAtual);
 
-        $('input#somaValoresSelecionados').val(valorAcumulado);
         fly01.core.updateTextFields();
-        $('input#somaValoresSelecionados').css('color', '');
+        $('input#countContasSelecionadas').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
-        if (valorAcumulado == valorLancamentoExtrato) {
-            $('#somaValoresSelecionados').css('color', 'green');
-            fly01.toast("A soma dos valores conciliados está de acordo ao valor do lançamento", "info");
+        if (countAtual > 0 && countAtual <= 5) {
+            $('input#countContasSelecionadas').css('color', 'green');
             $('#save').removeAttr('disabled');
         }
-        else if (valorAcumulado > valorLancamentoExtrato) {
-            $('#somaValoresSelecionados').css('color', 'red');
-            fly01.toast('A soma dos valores conciliados não pode ser maior que o valor da conta.', "error");
+        else if (countAtual <= 0) {
+            $('#countContasSelecionadas').css('color', 'red');
             $('#save').attr('disabled', 'disabled');
         }
-        else if (valorAcumulado <= 0) {
-            $('#somaValoresSelecionados').css('color', 'red');
-            fly01.toast('A soma dos valores conciliados não pode ser igual a zero.', "error");
+        else {
+            $('#countContasSelecionadas').css('color', 'red');
+            fly01.toast('A quantidade de contas selecionadas é de até 50.', "error");
             $('#save').attr('disabled', 'disabled');
         }
     }
 
     function fnFormReadyBaixaEmLote() {
         $('#Field').hide();
+        setupGridSelectEvents();
     }
 </script>

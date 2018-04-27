@@ -73,7 +73,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "ContasFinanceirasIds" });
+            config.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasGuids" });
 
             config.Elements.Add(new AutocompleteUI
             {
@@ -87,10 +87,10 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta"
             });
             
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true });
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true, Value = DateTime.Now.ToString("dd/MM/yyyy") });
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
-            config.Elements.Add(new InputNumbersUI { Id = "somaValoresSelecionados", Class = "col s12 m6", Label = "Total das Baixas", Value = "0", Readonly = true });
-            config.Elements.Add(new InputNumbersUI { Id = "countContasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somaValoresSelecionados", Class = "col s12 m6", Label = "Total das Baixas", Value = "0", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "countContasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Disabled = true });
 
             config.Elements.Add(new LabelsetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Selecione as contas que deseja baixar" });
             
@@ -123,18 +123,10 @@ namespace Fly01.Financeiro.Controllers
             #region Helpers
             config.Helpers.Add(new TooltipUI
             {
-                Id = "contasSelecionadas",
+                Id = "countContasSelecionadas",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Número de contas selecionadas. O número máximo é de 50."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "contasSelecionadas",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Número de contas selecionadas. O número máximo é de 50."
+                    Text = "Número de contas selecionadas. O número máximo permitido é de 50."
                 }
             });
             #endregion

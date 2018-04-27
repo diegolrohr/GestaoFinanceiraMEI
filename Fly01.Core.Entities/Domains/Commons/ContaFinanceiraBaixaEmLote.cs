@@ -10,7 +10,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }
         
-        public List<Guid> ContasFinanceiras { get; set; }
+        public virtual List<Guid> ContasFinanceiras { get; set; }
         
         public Guid ContaBancariaId { get; set; }
         

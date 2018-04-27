@@ -14,6 +14,8 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Reports;
+using Fly01.Core.Config;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -192,6 +194,8 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
+            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -200,7 +204,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Extrato",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
+                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirExtrato" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Extrato", null, Request.Url.Scheme) + "?fns="
@@ -208,6 +213,27 @@ namespace Fly01.Financeiro.Controllers
 
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var dataFinalFiltroDefault = DateTime.Now;
+
+            cfg.Content.Add(new DivUI
+            {
+                Class = "col s12 m12 printinfo",
+                Id = "fly01cardCabecalho",
+                Elements = new List<BaseUI>
+                {
+                    new StatictextUI
+                    {
+                        Class= "col s12",
+                        Lines = new List<LineUI>{
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = response.RazaoSocial + " | " + "CNPJ: " + response.CNPJ  },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Endereço: " + response.Endereco + ", " + response.Numero },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text ="Bairro: " + response.Bairro + " | " + "CEP: " + response.CEP },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Cidade: " + response.Cidade.Nome + " | " + "Email: " + response.Email },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = " " }
+                        }
+                    }
+                }
+
+            });
 
             cfg.Content.Add(new FormUI
             {
@@ -241,7 +267,7 @@ namespace Fly01.Financeiro.Controllers
                     new ButtongroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m6 l4",
+                        Class = "col s12 m6 l4 hide-on-print",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
                         Options = new List<OptionUI>

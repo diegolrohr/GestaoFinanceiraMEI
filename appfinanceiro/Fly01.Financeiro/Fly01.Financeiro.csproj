@@ -312,6 +312,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Home\Functions\_fnImprimirFluxoCaixa.cshtml" />
+    <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

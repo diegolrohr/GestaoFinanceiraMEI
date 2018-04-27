@@ -458,6 +458,14 @@ namespace Fly01.Faturamento.BL
                         };
                     }
 
+                    var uf = empresa.Cidade != null ? empresa.Cidade.Estado.Sigla : null;
+
+                    if (uf != null && uf == "BA")
+                    {
+                        itemTransmissao.Autorizados = new List<Autorizados>();
+                        itemTransmissao.Autorizados.Add(new Autorizados() { CNPJ = empresa.CNPJ });
+                    }
+
                     var entidade = CertificadoDigitalBL.GetEntidade();
 
                     var notaFiscal = new TransmissaoVM()

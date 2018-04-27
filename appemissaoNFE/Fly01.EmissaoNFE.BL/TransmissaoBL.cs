@@ -1125,6 +1125,27 @@ namespace Fly01.EmissaoNFE.BL
                 }
 
                 #endregion Validação da classe Totais
+
+                #region Validação da classe Autorizados
+                if(item.Emitente.Endereco.UF == "BA")
+                {
+                    if (item.Autorizados == null || item.Autorizados.Count <= 0)
+                        entity.Fail(true, new Error("Lista de autorizados é obrigatória para emissão de NFe no estado da Bahia", "item.Autorizados"));
+                    else
+                    {
+                        entity.Fail(item.Autorizados.Count > 10, new Error("O número máximo de autorizados é 10", "item.Autorizados"));
+                        var contAutorizados = 1;
+                        foreach (var autorizado in item.Autorizados)
+                        {
+                            entity.Fail(string.IsNullOrEmpty(autorizado.CNPJ) && string.IsNullOrEmpty(autorizado.CPF), new Error("Informe CNPJ ou CPF do autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+                            entity.Fail(!string.IsNullOrEmpty(autorizado.CNPJ) && !EmpresaBL.ValidaCNPJ(autorizado.CNPJ), new Error("CNPJ inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+                            entity.Fail(!string.IsNullOrEmpty(autorizado.CPF) && !EmpresaBL.ValidaCPF(autorizado.CPF), new Error("CPF inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+
+                            contAutorizados++;
+                        }
+                    }
+                }
+                #endregion
             }
 
             base.ValidaModel(entity);

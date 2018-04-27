@@ -1,5 +1,4 @@
-﻿using Fly01.Core.API;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
@@ -8,6 +7,7 @@ using System;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
+using System.Collections.Generic;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -75,6 +75,12 @@ namespace Fly01.EmissaoNFE.BL
             nota.InfoNFe.Transporte = item.Transporte;
             nota.InfoNFe.Cobranca = item.Cobranca;
             nota.InfoNFe.InformacoesAdicionais = item.InformacoesAdicionais;
+
+            if(item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || nota.InfoNFe.Autorizados.Count <= 0))
+            {
+                nota.InfoNFe.Autorizados = new List<Autorizados>();
+                nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
+            }
 
             return nota;
         }
@@ -1127,22 +1133,17 @@ namespace Fly01.EmissaoNFE.BL
                 #endregion Validação da classe Totais
 
                 #region Validação da classe Autorizados
-                if(item.Emitente.Endereco.UF == "BA")
+                if(item.Emitente.Endereco.UF == "BA" && item.Autorizados != null && item.Autorizados.Count > 0)
                 {
-                    if (item.Autorizados == null || item.Autorizados.Count <= 0)
-                        entity.Fail(true, new Error("Lista de autorizados é obrigatória para emissão de NFe no estado da Bahia", "item.Autorizados"));
-                    else
+                    entity.Fail(item.Autorizados.Count > 10, new Error("O número máximo de autorizados é 10", "item.Autorizados"));
+                    var contAutorizados = 1;
+                    foreach (var autorizado in item.Autorizados)
                     {
-                        entity.Fail(item.Autorizados.Count > 10, new Error("O número máximo de autorizados é 10", "item.Autorizados"));
-                        var contAutorizados = 1;
-                        foreach (var autorizado in item.Autorizados)
-                        {
-                            entity.Fail(string.IsNullOrEmpty(autorizado.CNPJ) && string.IsNullOrEmpty(autorizado.CPF), new Error("Informe CNPJ ou CPF do autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
-                            entity.Fail(!string.IsNullOrEmpty(autorizado.CNPJ) && !EmpresaBL.ValidaCNPJ(autorizado.CNPJ), new Error("CNPJ inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
-                            entity.Fail(!string.IsNullOrEmpty(autorizado.CPF) && !EmpresaBL.ValidaCPF(autorizado.CPF), new Error("CPF inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+                        entity.Fail(string.IsNullOrEmpty(autorizado.CNPJ) && string.IsNullOrEmpty(autorizado.CPF), new Error("Informe CNPJ ou CPF do autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+                        entity.Fail(!string.IsNullOrEmpty(autorizado.CNPJ) && !EmpresaBL.ValidaCNPJ(autorizado.CNPJ), new Error("CNPJ inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
+                        entity.Fail(!string.IsNullOrEmpty(autorizado.CPF) && !EmpresaBL.ValidaCPF(autorizado.CPF), new Error("CPF inválido. Autorizado " + contAutorizados, "item.Autorizados[" + contAutorizados + "]"));
 
-                            contAutorizados++;
-                        }
+                        contAutorizados++;
                     }
                 }
                 #endregion

@@ -1,17 +1,16 @@
-﻿using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.ViewModel;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Text;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Fly01.Core.Helpers;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Defaults;
+using Fly01.Financeiro.ViewModel;
+using System.Collections.Generic;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Financeiro.Controllers.Base;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -47,7 +46,7 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "save", Label = "Gerar boleto", OnClickFn = "fnCnabImprimeBoleto", Type = "submit" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -55,6 +54,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frmBoleto",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -62,32 +62,32 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
+                ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "bancoId",
-                Class = "col s12 m12 12",
+                Class = "col s12 m6 l6",
                 Label = "Banco",
                 Required = true,
                 DataUrl = @Url.Action("Banco", "AutoComplete"),
                 LabelId = "bancoNome"
             });
-            config.Elements.Add(new InputTextUI { Id = "cpfcnpj", Class = "col s8 l8", Label = "CPF/CNPJ", Required = true });
-            config.Elements.Add(new InputTextUI { Id = "valor", Class = "col s8 l8", Label = "Valor boleto", Required = true });
-
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "Gerar boleto a partir de conta existente" });
 
             config.Elements.Add(new AutocompleteUI
+
             {
-                Id = "contaReceberId",
-                Class = "col s12 m12 12",
-                Label = "Banco",
+                Id = "pessoaId",
+                Class = "col s6 l6",
+                Label = "Cliente",
                 Required = true,
-                DataUrl = @Url.Action("ContaReceber", "AutoComplete"),
-                LabelId = "conta"
+                DataUrl = @Url.Action("Cliente", "AutoComplete"),
+                LabelId = "pessoaNome",
+                DataUrlPost = Url.Action("PostCliente", "Cliente")
             });
 
             cfg.Content.Add(config);
@@ -105,7 +105,9 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Boletos",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "Gerar boleto", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "new", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "new", Label = "CARREGAR ARQ. RETORNO", OnClickFn = "fnNovo" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

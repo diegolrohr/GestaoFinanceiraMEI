@@ -4,10 +4,10 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum StatusCnab
     {
-        [Subtitle("Em aberto", "ABER")]
+        [Subtitle("Em aberto", "Em aberto")]
         EmAberto = 1,
 
-        [Subtitle("Pago", "PAGO")]
+        [Subtitle("Pago", "Pago")]
         Pago = 2
     }
 }

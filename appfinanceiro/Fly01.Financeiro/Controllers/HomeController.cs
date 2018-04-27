@@ -232,7 +232,7 @@ namespace Fly01.Financeiro.Controllers
                 new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                 new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
                 new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                //new LinkUI() { Label = "Borderôs/CNAB", OnClick = @Url.Action("CNAB", "Json")},
+                new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
                 new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
             }
             });

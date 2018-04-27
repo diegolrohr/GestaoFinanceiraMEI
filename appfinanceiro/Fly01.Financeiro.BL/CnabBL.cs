@@ -10,25 +10,32 @@ namespace Fly01.Financeiro.BL
 {
     public class CnabBL : PlataformaBaseBL<Cnab>
     {
-        private static Boleto2Net.Sacado sacado;
+        private Boleto2Net.Sacado sacado;
+        private Boleto2Net.Boletos boletos;
+        const double jurosDia = 0.33;
+        const double percentMulta = 2.00;
 
-        public CnabBL(AppDataContextBase context) : base(context) { }
-
-        public override void ValidaModel(Cnab cnab)
+        public CnabBL(AppDataContextBase context) : base(context)
         {
+            boletos = new Boleto2Net.Boletos();
+        }
+
+        public Boleto2Net.Boletos GeraBoletos(string id)
+        {
+            var cnab = Find(id);
             var banco = Boleto2Net.Banco.Instancia(Boleto2Net.Bancos.BancoDoBrasil);
 
             banco.Cedente = GetCedenteBoletoNet(cnab.ContaBancariaCedente);
             banco.FormataCedente();
 
-            sacado = GetSacado(cnab.Sacado);
+            sacado = GetSacado(cnab.ContaReceber.Pessoa);
 
             for (int i = 0; i < 1; i++)
             {
-                GerarBoleto(banco, cnab, i);
+                boletos.Add(MontaBoleto(banco, cnab));
             }
 
-            base.ValidaModel(cnab);
+            return boletos;
         }
 
         private Boleto2Net.Sacado GetSacado(Pessoa sacado)
@@ -85,20 +92,17 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        internal static Boleto2Net.Boleto GerarBoleto(Boleto2Net.IBanco banco, Cnab dadosBoleto, int i)
+        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, Cnab dadosBoleto)
         {
             var randomNossoNumero = new Random().Next(0, 9999999);
             var nossoNumero = $"{randomNossoNumero.ToString("D7")}{dadosBoleto.NumeroBoleto.ToString("D10")}";
-            const double jurosDia = 0.33;
-            const double percentMulta = 2.00;
-
             var boleto = new Boleto2Net.Boleto(banco)
             {
                 Sacado = sacado,
                 DataEmissao = dadosBoleto.DataEmissao,
                 DataProcessamento = DateTime.Now,
                 DataVencimento = dadosBoleto.DataVencimento,
-                ValorTitulo = (decimal)dadosBoleto.ValorBoleto,
+                ValorTitulo = (decimal)dadosBoleto.ContaReceber.ValorPrevisto,
                 NossoNumero = nossoNumero,
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
                 EspecieDocumento = Boleto2Net.TipoEspecieDocumento.DM,
@@ -109,10 +113,10 @@ namespace Fly01.Financeiro.BL
                 ValorDesconto = (decimal)(dadosBoleto.DataDesconto <= DateTime.Now ? dadosBoleto.ValorDesconto : 0),
                 DataMulta = dadosBoleto.DataVencimento.AddDays(1),
                 PercentualMulta = (decimal)percentMulta,
-                ValorMulta = (decimal)(dadosBoleto.ValorBoleto * (percentMulta / 100)),
-                DataJuros = dadosBoleto.DataVencimento.AddDays(i),
+                ValorMulta = (decimal)(dadosBoleto.ContaReceber.ValorPrevisto * (percentMulta / 100)),
+                DataJuros = dadosBoleto.DataVencimento.AddDays(1),
                 PercentualJurosDia = (decimal)jurosDia,
-                ValorJurosDia = (decimal)(dadosBoleto.ValorBoleto * (jurosDia / 100)),
+                ValorJurosDia = (decimal)(dadosBoleto.ContaReceber.ValorPrevisto * (jurosDia / 100)),
                 MensagemArquivoRemessa = "Mensagem para o arquivo remessa",
                 NumeroControleParticipante = $"CHAVEPRIMARIA={nossoNumero}"
             };
@@ -129,7 +133,7 @@ namespace Fly01.Financeiro.BL
             return boleto;
         }
 
-        internal static string GetInstrucoesAoCaixa(Boleto2Net.Boleto boleto)
+        private string GetInstrucoesAoCaixa(Boleto2Net.Boleto boleto)
         {
             var msgCaixa = new StringBuilder();
             if (boleto.ValorDesconto > 0) msgCaixa.AppendLine($"Conceder desconto de {boleto.ValorDesconto.ToString("R$ ##,##0.00")} até {boleto.DataDesconto.ToString("dd/MM/yyyy")}. ");
@@ -139,7 +143,7 @@ namespace Fly01.Financeiro.BL
             return msgCaixa.ToString();
         }
 
-        internal static Boleto2Net.GrupoDemonstrativo GetDemonstrativos(Boleto2Net.Boleto boleto)
+        private Boleto2Net.GrupoDemonstrativo GetDemonstrativos(Boleto2Net.Boleto boleto)
         {
             var grupoDemonstrativo = new Boleto2Net.GrupoDemonstrativo { Descricao = "GRUPO 1" };
 

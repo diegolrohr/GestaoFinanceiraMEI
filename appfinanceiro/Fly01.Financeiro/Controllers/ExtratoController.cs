@@ -335,7 +335,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new FormUI
             {
                 UrlFunctions = Url.Action("Functions", "Extrato", null, Request.Url.Scheme) + "?fns=",
-                Class = "col s12",
+                Class = "col s12 hide-on-print",
                 Elements = new List<BaseUI>
                 {
                     new ButtonUI

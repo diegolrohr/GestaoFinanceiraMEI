@@ -32,7 +32,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Functions = new List<string> { "__format", "fnGetSaldos", "fnGetDadosEmpresa" }
+                Functions = new List<string> { "__format", "fnGetSaldos" }
             };
 
             if (withSidebarUrl)

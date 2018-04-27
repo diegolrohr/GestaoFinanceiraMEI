@@ -7,13 +7,19 @@ using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
+using Fly01.uiJS.Classes.Widgets;
+using Fly01.Core.Reports;
+using Fly01.Core;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
-    {      
+    {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -22,11 +28,12 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Fluxo de Caixa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
+                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Functions = new List<string> { "__format", "fnGetSaldos"}
+                Functions = new List<string> { "__format", "fnGetSaldos" }
             };
 
             if (withSidebarUrl)
@@ -36,6 +43,27 @@ namespace Fly01.Financeiro.Controllers
 
             var dataFinal = DateTime.Now.AddMonths(1);
             var dataFinalFiltroDefault = new DateTime(dataFinal.Year, dataFinal.Month, DateTime.DaysInMonth(dataFinal.Year, dataFinal.Month));
+
+            cfg.Content.Add(new DivUI
+            {
+                Class = "col s12 m12 printinfo",
+                Id = "fly01cardCabecalho",
+                Elements = new List<BaseUI>
+                {
+                    new StatictextUI
+                    {
+                        Class= "col s12",
+                        Lines = new List<LineUI>{
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = response.RazaoSocial + " | " + "CNPJ: " + response.CNPJ  },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Endereço: " + response.Endereco + ", " + response.Numero },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text ="Bairro: " + response.Bairro + " | " + "CEP: " + response.CEP },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Cidade: " + response.Cidade.Nome + " | " + "Email: " + response.Email },
+                            new LineUI {Class = "cabecalho05", Tag = "p", Text = " " }
+                        }
+                    }
+                }
+
+            });
 
             cfg.Content.Add(new FormUI
             {
@@ -278,18 +306,19 @@ namespace Fly01.Financeiro.Controllers
             config.MenuApps.AddRange(AppsList());
             #endregion
 
-            config.Zendesk = new ZendeskWidget()
+            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Email = SessionManager.Current.UserData.PlatformUser;
+
+            config.Widgets = new WidgetsUI();
+            config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Financeiro",
                 AppTag = "fly01_manufatura",
-                Name = SessionManager.Current.UserData.TokenData.Username,
-                Email = SessionManager.Current.UserData.PlatformUser
             };
-
-            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
-                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
-                : string.Empty;
-
+            if (Request.Url.ToString().Contains("fly01.com.br"))
+                config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
+            
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }

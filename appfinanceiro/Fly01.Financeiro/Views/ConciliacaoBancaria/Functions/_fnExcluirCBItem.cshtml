@@ -1,6 +1,6 @@
 ﻿<script>
 function fnExcluirCBItem(idRecord) {
-    fly01.modal.confirm("Confirmar Exclusão", "Deseja realmente excluir esta movimentação importada do extrato?", "fnExcluirConfirmed(\""+idRecord+"\")");
+    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir esta movimentação importada do extrato?", "fnExcluirConfirmed(\""+idRecord+"\")");
 }
 function fnExcluirConfirmed(idRecord) {
     $('body').removeClass('loaded');

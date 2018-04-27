@@ -1,6 +1,6 @@
 ﻿<script>
 function fnExcluir(idRecord) {
-    fly01.modal.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\""+idRecord+"\")");
+    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\""+idRecord+"\")");
 }
 function fnExcluirConfirmed(idRecord) {
     $('body').removeClass('loaded');
@@ -19,7 +19,7 @@ function fnExcluirConfirmed(idRecord) {
 
                 }
                 else {
-                    fly01.fns.submitErrorHandler(null, data.message);
+                    fly01.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {

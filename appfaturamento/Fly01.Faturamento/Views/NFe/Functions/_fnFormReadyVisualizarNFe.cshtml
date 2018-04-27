@@ -25,10 +25,10 @@
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmVisualizarNFe input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmVisualizarNFe input#totalNotaFiscal').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
             }
             else {
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
         })

@@ -1,6 +1,6 @@
 ﻿<script>
     function fnCancelarNFSe(idRecord) {
-        fly01.modal.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta nota fiscal?", "fnCancelarNFSeConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta nota fiscal?", "fnCancelarNFSeConfirmed(\"" + idRecord + "\")");
     }
 
     function fnCancelarNFSeConfirmed(idRecord) {
@@ -12,7 +12,7 @@
         .done(function (data) {
             fly01.loading.stop();
             if (!data.success) {
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             }
             else {
                 fly01.toast(data.message, "success");

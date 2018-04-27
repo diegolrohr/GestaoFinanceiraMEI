@@ -44,7 +44,7 @@
             }
 
             $('input#numero').attr('disabled', 'disabled');
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
 
             var url;
             if (isCreate()) {
@@ -88,7 +88,7 @@
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         $('body').addClass('loaded');
-                        fly01.fns.submitErrorHandler(null, data.message);
+                        fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
@@ -103,7 +103,7 @@
         if (isCreate()) {
             var today = new Date();
             fly01._.data.set(today);
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {

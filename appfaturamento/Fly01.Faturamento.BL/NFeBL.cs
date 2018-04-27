@@ -457,7 +457,7 @@ namespace Fly01.Faturamento.BL
                             InformacoesComplementares = parametros.MensagemPadraoNota
                         };
                     }
-
+                    
                     var entidade = CertificadoDigitalBL.GetEntidade();
 
                     var notaFiscal = new TransmissaoVM()

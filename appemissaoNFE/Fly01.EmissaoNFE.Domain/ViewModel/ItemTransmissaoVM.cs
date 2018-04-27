@@ -31,6 +31,11 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public Destinatario Destinatario { get; set; }
 
         /// <summary>
+        /// Autorizados a baixar o XML da NFe
+        /// </summary>
+        public List<Autorizados> Autorizados { get; set; }
+
+        /// <summary>
         /// Detalhes (Produto/Imposto) 
         /// </summary>
         public List<Detalhe> Detalhes { get; set; }

@@ -51,8 +51,7 @@ namespace Fly01.Core.Helpers
                 select new OFXLancamento()
                 {
                     Valor = Convert.ToDouble(c.Element("TRNAMT").Value, provider),
-                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value,
-                                               "yyyyMMdd", null),
+                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value.Substring(0, 8), "yyyyMMdd", null),
                     Descricao = c.Element("MEMO").Value,
                     MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
                 }).ToList();
@@ -135,7 +134,10 @@ namespace Fly01.Core.Helpers
         private string GetTagValue(string line)
         {
             var pos_init = line.IndexOf(">") + 1;
-            var retValue = line.Substring(pos_init).Trim();
+            var subStr = line.Substring(pos_init).Trim();
+            var len = subStr.IndexOf("<");
+
+            var retValue = len > 0 ? line.Substring(pos_init, len).Trim() : subStr;
 
             if (retValue.IndexOf("[") != -1)
                 retValue = retValue.Substring(0, 8);

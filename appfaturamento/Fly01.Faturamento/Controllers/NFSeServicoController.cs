@@ -21,7 +21,7 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 servico_descricao = x.Servico.Descricao,
                 grupoTributario_descricao = x.GrupoTributario.Descricao,
-                quantidade = x.Quantidade.ToString("C", AppDefaults.CultureInfoDefault).Replace("R$", "").Replace("R$ ", ""),
+                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),

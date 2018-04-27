@@ -53,7 +53,7 @@ namespace Fly01.Core.Helpers
                 select new OFXLancamento()
                 {
                     Valor = Convert.ToDouble(c.Element("TRNAMT").Value, provider),
-                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value.Substring(0,8), "yyyyMMdd", null),
+                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value.Substring(0, 8), "yyyyMMdd", null),
                     Descricao = c.Element("MEMO").Value,
                     MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
                 }).ToList();

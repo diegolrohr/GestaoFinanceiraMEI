@@ -311,6 +311,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Widgets = new WidgetsUI();
             config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Droz = new DrozUI();
             config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Financeiro",

@@ -59,7 +59,7 @@ namespace Fly01.Financeiro.BL
 
         private Boleto2Net.Cedente GetCedenteBoletoNet(ContaBancaria contaCedente)
         {
-            var dadosEmpresaCedente = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var dadosEmpresaCedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
 
             return new Boleto2Net.Cedente
             {

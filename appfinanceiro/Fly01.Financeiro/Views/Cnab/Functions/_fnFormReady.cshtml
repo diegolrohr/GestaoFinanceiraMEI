@@ -12,7 +12,6 @@
     }
 
     function fnOverrideSubmit() {
-        debugger;
         var myForm = "form#fly01frmBoleto";
 
         $(myForm).off("submit");
@@ -79,17 +78,6 @@
         btnSalvar.html(buttonCancel.html());
     }
 
-    //function fnInventarioFechado() {
-    //    if ($('input#inventarioStatus').val() !== "Finalizado")
-    //        return;
-
-    //    $('form#fly01frmInventario').find('input').attr('disabled', 'disabled');
-
-    //    changeSaveButton();
-
-    //    $('ul.fly01-buttons').children().slice(1).hide();
-    //};
-
     function isCreate() {
         var idSelector = "input#id";
         var id = $(idSelector).val();
@@ -106,8 +94,6 @@
             inventarioItensHide();
         } else {
             inventarioItensShow();
-    //        fly01._.dtInventarioItem.refresh()
-      //      fnInventarioFechado();
         }
     };
 

@@ -131,7 +131,7 @@ namespace Fly01.Faturamento.BL
                     var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
-                    var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+                    var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
                     var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();

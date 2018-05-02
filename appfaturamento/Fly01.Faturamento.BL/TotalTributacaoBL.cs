@@ -55,7 +55,7 @@ namespace Fly01.Faturamento.BL
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
 
-            var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
             var parametros = GetParametrosTributarios();
 
@@ -144,7 +144,7 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoServicoRetorno> TotalTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
         {
             var cliente = GetPessoa(clienteId);
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoServicoRetorno>()
@@ -164,7 +164,7 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             var cliente = GetPessoa(clienteId);
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
             var result = new List<TributacaoProdutoRetorno>();

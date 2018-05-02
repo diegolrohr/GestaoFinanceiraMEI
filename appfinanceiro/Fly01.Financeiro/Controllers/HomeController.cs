@@ -8,9 +8,8 @@ using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
-using Fly01.Core.Reports;
-using Fly01.Core;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -18,7 +17,7 @@ namespace Fly01.Financeiro.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
             var cfg = new ContentUI
             {

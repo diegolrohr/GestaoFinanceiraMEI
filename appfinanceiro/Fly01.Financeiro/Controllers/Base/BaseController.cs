@@ -24,7 +24,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
         public ManagerEmpresaVM GetDadosEmpresa()
         {
-            return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            return ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
         }
 
         public ContentResult EmConstrucao(string history)

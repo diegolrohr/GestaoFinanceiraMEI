@@ -11,18 +11,13 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class ContaFinanceiraBaixaMultiplaController : BaseController<ContaFinanceiraBaixaMultiplaVM>
+    public class ContaFinanceiraBaixaMultiplaCRController : BaseController<ContaFinanceiraBaixaMultiplaVM>
     {
-        public ContaFinanceiraBaixaMultiplaController()
+        public ContaFinanceiraBaixaMultiplaCRController()
         {
         }
 
         public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ContentResult Form()
         {
             throw new NotImplementedException();
         }
@@ -34,7 +29,7 @@ namespace Fly01.Financeiro.Controllers
 
         //TODO: ver questao das rotas e renomear as controllers e classes
 
-        public ContentResult FormBaixaMultipla(string tipoConta)
+        public override ContentResult Form()
         {
             var cfg = new ContentUI
             {
@@ -45,10 +40,10 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Baixas múltiplas de contas a " + (tipoConta == "CP" ? "pagar" : "receber"),
+                    Title = "Baixas múltiplas de contas a receebr",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" + tipoConta },
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
                         new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
                     }
                 },
@@ -61,7 +56,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Create = Url.Action("Create"),
                     Get = Url.Action("Json") + "/",
-                    List = @Url.Action("List", tipoConta == "CP" ? "ContaPagar" : "ContaReceber")
+                    List = @Url.Action("List", "ContaReceber")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReadyBaixaMultipla"
@@ -69,7 +64,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasGuids" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = tipoConta == "CP" ? "ContaPagar" : "ContaReceber" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = "ContaReceber" });
 
             config.Elements.Add(new AutocompleteUI
             {
@@ -96,7 +91,7 @@ namespace Fly01.Financeiro.Controllers
             DataTableUI dtcfg = new DataTableUI
             {
                 Id = "dtContasExistentes",
-                UrlGridLoad = Url.Action("GridLoadContasNaoPagas", (tipoConta == "CP" ? "ContaPagar" : "ContaReceber")),
+                UrlGridLoad = Url.Action("GridLoadContasNaoPagas", "ContaReceber"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new DataTableUIConfig()
                 {

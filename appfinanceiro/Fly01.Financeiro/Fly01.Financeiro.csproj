@@ -61,7 +61,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
-    <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
+    <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
@@ -313,10 +313,10 @@
     <Content Include="Views\ContaPagar\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnRemoveFilter.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCR.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCP.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnFormReadyBaixaMultipla.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnFormReadyBaixaMultipla.cshtml" />
     <Content Include="Views\Home\Functions\_fnImprimirFluxoCaixa.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultiplaCR\Functions\_fnCancelar.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

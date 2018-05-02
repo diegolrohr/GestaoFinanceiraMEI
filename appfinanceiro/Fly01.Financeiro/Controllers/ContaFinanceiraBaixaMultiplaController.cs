@@ -32,12 +32,7 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
-        //if (entityVM.AccountsIds != null)
-        //    {
-        //        entityVM.AccountReceivableIds = new List<string>();
-        //        entityVM.AccountsIds.Split(',').ToList<string>().ForEach(item => entityVM.AccountReceivableIds.Add(item));
-        //    }
-        //TODO: ver questao das rotas
+        //TODO: ver questao das rotas e renomear as controllers e classes
 
         public ContentResult FormBaixaMultipla(string tipoConta)
         {
@@ -66,7 +61,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Create = Url.Action("Create"),
                     Get = Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = @Url.Action("List", tipoConta == "CP" ? "ContaPagar" : "ContaReceber")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReadyBaixaMultipla"
@@ -74,6 +69,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasGuids" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = tipoConta == "CP" ? "ContaPagar" : "ContaReceber" });
 
             config.Elements.Add(new AutocompleteUI
             {
@@ -105,7 +101,8 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" },
-                    WithoutRowMenu = true
+                    WithoutRowMenu = true,
+                    PageLength = 50
                 },
                 //Callbacks = new DataTableUICallbacks()
                 //{

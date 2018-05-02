@@ -315,7 +315,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCR.cshtml" />
     <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCP.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnFormReadyBaixaEmLote.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnFormReadyBaixaMultipla.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

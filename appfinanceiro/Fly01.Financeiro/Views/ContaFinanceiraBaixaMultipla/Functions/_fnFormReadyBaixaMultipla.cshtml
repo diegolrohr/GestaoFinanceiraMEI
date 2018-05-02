@@ -43,7 +43,7 @@
         $('input#countContasSelecionadas').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
-        if (countAtual > 0 && countAtual <= 5) {
+        if (countAtual > 0 && countAtual <= 50) {
             $('input#countContasSelecionadas').css('color', 'green');
             $('#save').removeAttr('disabled');
         }
@@ -60,6 +60,7 @@
 
     function fnFormReadyBaixaMultipla() {
         $('#Field').hide();
+        $('#save').attr('disabled', 'disabled');
         setupGridSelectEvents();
     }
 </script>

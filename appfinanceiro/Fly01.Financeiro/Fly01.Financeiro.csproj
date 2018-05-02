@@ -61,6 +61,8 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
+    <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
+    <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
@@ -172,7 +174,6 @@
     <Content Include="Views\ContaPagar\Functions\_fnNovoAdiantamento.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnExportar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnPrintList.cshtml" />
-    <Content Include="Views\ContaPagar\Functions\_fnBaixasMultiplas.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_showPopUpExcluirSchedules.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_showPopUpExcluirRenegociacao.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_showPopUpCompensar.cshtml" />
@@ -317,6 +318,7 @@
     <Content Include="Views\Home\Functions\_fnImprimirFluxoCaixa.cshtml" />
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCR\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

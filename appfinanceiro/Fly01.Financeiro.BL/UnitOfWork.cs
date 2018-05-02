@@ -128,7 +128,7 @@ namespace Fly01.Financeiro.BL
         public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
 
         private CnabBL cnabBL;
-        public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context));
+        public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context, ContaReceberBL, contaBancariaBL));
 
         #endregion
     }

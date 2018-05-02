@@ -1,39 +1,59 @@
 ﻿using System;
-using Fly01.Core;
 using System.Text;
 using Fly01.Core.BL;
 using Fly01.Core.Rest;
-using Fly01.Core.ViewModels;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Notifications;
+using System.Text.RegularExpressions;
 
 namespace Fly01.Financeiro.BL
 {
     public class CnabBL : PlataformaBaseBL<Cnab>
     {
-        private Boleto2Net.Sacado sacado;
+        protected ContaReceberBL ContaReceber;
+        protected ContaBancariaBL ContaBancaria;
         private Boleto2Net.Boletos boletos;
         const double jurosDia = 0.33;
         const double percentMulta = 2.00;
 
-        public CnabBL(AppDataContextBase context) : base(context)
+        public CnabBL(AppDataContextBase context, ContaReceberBL contaReceberBL, ContaBancariaBL contaBancariaBL) : base(context)
         {
             boletos = new Boleto2Net.Boletos();
+            ContaReceber = contaReceberBL;
+            ContaBancaria = contaBancariaBL;
+
+            //foreach (var item in boletos)
+            //{
+            //    using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
+            //    {
+            //        imprimeBoleto.Boleto = item;
+            //        imprimeBoleto.OcultarInstrucoes = false;
+            //        imprimeBoleto.MostrarComprovanteEntrega = true;
+            //        imprimeBoleto.MostrarEnderecoCedente = true;
+            //    }
+
+            //    //{
+            //    //    html.Append("<div style=\"page-break-after: always;\">");
+            //    //    html.Append(imprimeBoleto.MontaHtml());
+            //    //    html.Append("</div>");
+            //    //}
+
+            //}
         }
 
-        public Boleto2Net.Boletos GeraBoletos(string id)
+        public Boleto2Net.Boletos GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
-            var cnab = Find(id);
-            var banco = Boleto2Net.Banco.Instancia(Boleto2Net.Bancos.BancoDoBrasil);
+            var contaReceber = ContaReceber.Find(contaReceberId);
+            var contaBancaria = ContaBancaria.Find(contaBancariaId);
 
-            banco.Cedente = GetCedenteBoletoNet(cnab.ContaBancariaCedente);
+            if (!contaBancaria.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
+
+            var banco = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
+
+            banco.Cedente = GetCedenteBoletoNet(contaBancaria);
             banco.FormataCedente();
 
-            sacado = GetSacado(cnab.ContaReceber.Pessoa);
-
-            for (int i = 0; i < 1; i++)
-            {
-                boletos.Add(MontaBoleto(banco, cnab));
-            }
+            MontaBoleto(banco, contaReceber, dataDesconto, valorDesconto);
 
             return boletos;
         }
@@ -92,31 +112,33 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, Cnab dadosBoleto)
+        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
         {
+            var numerosGuidContaReceber = Regex.Replace(dadosBoleto.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
-            var nossoNumero = $"{randomNossoNumero.ToString("D7")}{dadosBoleto.NumeroBoleto.ToString("D10")}";
+            var nossoNumero = $"{randomNossoNumero.ToString("D7")}{numerosGuidContaReceber.PadLeft(10)}";
+
             var boleto = new Boleto2Net.Boleto(banco)
             {
-                Sacado = sacado,
+                Sacado = GetSacado(dadosBoleto.Pessoa),
                 DataEmissao = dadosBoleto.DataEmissao,
                 DataProcessamento = DateTime.Now,
                 DataVencimento = dadosBoleto.DataVencimento,
-                ValorTitulo = (decimal)dadosBoleto.ContaReceber.ValorPrevisto,
+                ValorTitulo = (decimal)dadosBoleto.ValorPrevisto,
                 NossoNumero = nossoNumero,
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
                 EspecieDocumento = Boleto2Net.TipoEspecieDocumento.DM,
                 Aceite = "N",
                 CodigoInstrucao1 = "11",
                 CodigoInstrucao2 = "22",
-                DataDesconto = dadosBoleto.DataDesconto,
-                ValorDesconto = (decimal)(dadosBoleto.DataDesconto <= DateTime.Now ? dadosBoleto.ValorDesconto : 0),
+                DataDesconto = dataDesconto,
+                ValorDesconto = (decimal)(dataDesconto <= DateTime.Now ? valorDesconto : 0),
                 DataMulta = dadosBoleto.DataVencimento.AddDays(1),
                 PercentualMulta = (decimal)percentMulta,
-                ValorMulta = (decimal)(dadosBoleto.ContaReceber.ValorPrevisto * (percentMulta / 100)),
+                ValorMulta = (decimal)(dadosBoleto.ValorPrevisto * (percentMulta / 100)),
                 DataJuros = dadosBoleto.DataVencimento.AddDays(1),
                 PercentualJurosDia = (decimal)jurosDia,
-                ValorJurosDia = (decimal)(dadosBoleto.ContaReceber.ValorPrevisto * (jurosDia / 100)),
+                ValorJurosDia = (decimal)(dadosBoleto.ValorPrevisto * (jurosDia / 100)),
                 MensagemArquivoRemessa = "Mensagem para o arquivo remessa",
                 NumeroControleParticipante = $"CHAVEPRIMARIA={nossoNumero}"
             };

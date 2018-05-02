@@ -25,7 +25,7 @@
                         $('input#cestDescricao').removeAttr('disabled');
                     }
                     $('#aliquotaIpi').val(data.aliquotaIpi);
-                    fly01.core.updateTextFields();
+                    fly01.fn.updateTextFields();
                 })
                 .fail(function (jqxhr, textStatus, error) {
                     var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;

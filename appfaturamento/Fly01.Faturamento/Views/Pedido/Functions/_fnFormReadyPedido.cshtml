@@ -48,7 +48,7 @@
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
@@ -58,7 +58,7 @@
                 $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
         })
@@ -101,7 +101,7 @@
 
             $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
 
             var url;
             if (isCreate()) {
@@ -146,7 +146,7 @@
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         fly01.loading.stop();
-                        fly01.fns.submitErrorHandler(null, data.message);
+                        fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
@@ -177,7 +177,7 @@
             $("#naturezaOperacaoField").hide();
             fly01._.data.set(today);
             fly01._.dataVencimento.set(today);
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {

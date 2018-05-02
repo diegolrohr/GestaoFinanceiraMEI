@@ -8,7 +8,7 @@
         .done(function (data) {
             fly01.loading.stop();
             if (data.message) {
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             } else {
                 fly01._.fly01dt.refresh();
             }

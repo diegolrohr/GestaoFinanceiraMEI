@@ -19,7 +19,7 @@
                 $('select#tipoVersaoNFe').material_select();
                 $('select#tipoAmbiente').val(data.tipoAmbiente);
                 $('select#tipoAmbiente').material_select();
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {
                 fly01.toast(data.message, 'error');

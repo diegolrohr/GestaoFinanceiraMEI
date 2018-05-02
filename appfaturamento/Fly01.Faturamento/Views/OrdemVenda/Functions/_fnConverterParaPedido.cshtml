@@ -1,6 +1,6 @@
 ﻿<script>
     function fnConverterParaPedido(idRecord) {
-        fly01.modal.confirm("Confirmar Conversão", "Deseja realmente converter este orçamento em um pedido? O número continua o mesmo e será possível seguir o fluxo para movimentar o estoque, gerar financeiro e criar as notas fiscais.", "fnConverterParaPedidoConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Conversão", "Deseja realmente converter este orçamento em um pedido? O número continua o mesmo e será possível seguir o fluxo para movimentar o estoque, gerar financeiro e criar as notas fiscais.", "fnConverterParaPedidoConfirmed(\"" + idRecord + "\")");
     }
     function fnConverterParaPedidoConfirmed(idRecord) {
         fly01.loading.start();

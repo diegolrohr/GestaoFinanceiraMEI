@@ -1,8 +1,5 @@
-﻿using Fly01.Core;
-using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
-using Fly01.Core.Reports;
-using Fly01.Core.Rest;
 using Fly01.Faturamento.BL;
 using System;
 using System.Linq;
@@ -48,7 +45,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     return await base.Post(entity);
                 }
-            }
+            } 
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
@@ -59,19 +56,12 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             try
             {
-                using (var unitOfWork = new UnitOfWork(ContextInitialize))
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-                    var empresaCnpj = dadosEmpresa.CNPJ;
-                    var empresaIE = dadosEmpresa.InscricaoEstadual;
-                    var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
-
-                    // TODO: Comparar com o certificado
-                    // TODO: Excluir o certificado em faturamento.
-                    //RestUtils.ExecuteDeleteRequest($"{urlFaturamentoApi}CertificadoDigital/{certificadoId}", "CertificadoDigital", null);
-
-                    return base.Get();
+                    unitOfWork.CertificadoDigitalBL.DeleteCertificado(string.Empty);
                 }
+
+                return base.Get();
             }
             catch (Exception ex)
             {

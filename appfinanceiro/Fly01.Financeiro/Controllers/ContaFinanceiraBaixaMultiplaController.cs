@@ -11,9 +11,9 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class ContaFinanceiraBaixaEmLoteController : BaseController<ContaFinanceiraBaixaEmLoteVM>
+    public class ContaFinanceiraBaixaMultiplaController : BaseController<ContaFinanceiraBaixaMultiplaVM>
     {
-        public ContaFinanceiraBaixaEmLoteController()
+        public ContaFinanceiraBaixaMultiplaController()
         {
         }
 
@@ -27,7 +27,7 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
-        public override Func<ContaFinanceiraBaixaEmLoteVM, object> GetDisplayData()
+        public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
@@ -39,7 +39,7 @@ namespace Fly01.Financeiro.Controllers
         //    }
         //TODO: ver questao das rotas
 
-        public ContentResult FormBaixaEmLote(string tipoConta)
+        public ContentResult FormBaixaMultipla(string tipoConta)
         {
             var cfg = new ContentUI
             {
@@ -69,7 +69,7 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnFormReadyBaixaEmLote"
+                ReadyFn = "fnFormReadyBaixaMultipla"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });

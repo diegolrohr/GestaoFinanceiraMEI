@@ -61,7 +61,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
     <Compile Include="Controllers\Base\GenericAppController.cs" />
-    <Compile Include="Controllers\ContaFinanceiraBaixaEmLoteController.cs" />
+    <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
@@ -119,7 +119,7 @@
     <Compile Include="ViewModel\ConfiguracaoNotificacaoVM.cs" />
     <Compile Include="ViewModel\ContaBancariaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraBaixaVM.cs" />
-    <Compile Include="ViewModel\ContaFinanceiraBaixaEmLoteVM.cs" />
+    <Compile Include="ViewModel\ContaFinanceiraBaixaMultiplaVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraRenegociacaoVM.cs" />
     <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ContaPagarVM.cs" />
@@ -181,7 +181,7 @@
     <Content Include="Views\ContaPagar\Functions\_showPopUpIncluirCheque.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_showPopUpExcluirCheque.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnNovaBaixa.cshtml" />
-    <Content Include="Views\ContaReceber\Functions\_fnBaixaEmLote.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnExportar.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnNovoAdiantamento.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnPrintList.cshtml" />
@@ -313,9 +313,9 @@
     <Content Include="Views\ContaPagar\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnRemoveFilter.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaEmLote\Functions\_fnCancelarCR.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaEmLote\Functions\_fnCancelarCP.cshtml" />
-    <Content Include="Views\ContaFinanceiraBaixaEmLote\Functions\_fnFormReadyBaixaEmLote.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCR.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnCancelarCP.cshtml" />
+    <Content Include="Views\ContaFinanceiraBaixaMultipla\Functions\_fnFormReadyBaixaEmLote.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

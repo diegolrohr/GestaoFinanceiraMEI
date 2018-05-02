@@ -67,7 +67,7 @@
     <Compile Include="Domains\Commons\ConfiguracaoNotificacaoFinanceiro.cs" />
     <Compile Include="Domains\Commons\ContaBancaria.cs" />
     <Compile Include="Domains\Commons\ContaFinanceira.cs" />
-    <Compile Include="Domains\Commons\ContaFinanceiraBaixaEmLote.cs" />
+    <Compile Include="Domains\Commons\ContaFinanceiraBaixaMultipla.cs" />
     <Compile Include="Domains\Commons\ContaFinanceiraBaixa.cs" />
     <Compile Include="Domains\Commons\ContaFinanceiraRenegociacao.cs" />
     <Compile Include="Domains\Commons\ContaPagar.cs" />

@@ -5,26 +5,26 @@ using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
-    public class ContaFinanceiraBaixaEmLoteBL : PlataformaBaseBL<ContaFinanceiraBaixaEmLote>
+    public class ContaFinanceiraBaixaMultiplaBL : PlataformaBaseBL<ContaFinanceiraBaixaMultipla>
     {
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
 
-        public ContaFinanceiraBaixaEmLoteBL(AppDataContext context, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL) : base(context)
+        public ContaFinanceiraBaixaMultiplaBL(AppDataContext context, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL) : base(context)
         {
             this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
         }
         
-        public override void Insert(ContaFinanceiraBaixaEmLote entity)
+        public override void Insert(ContaFinanceiraBaixaMultipla entity)
         {
             throw new BusinessException("Não é possível inserir baixas múltiplas.");
         }
 
-        public override void Update(ContaFinanceiraBaixaEmLote entity)
+        public override void Update(ContaFinanceiraBaixaMultipla entity)
         {
             throw new BusinessException("Não é possível alterar baixas múltiplas.");
         }
 
-        public override void Delete(ContaFinanceiraBaixaEmLote entity)
+        public override void Delete(ContaFinanceiraBaixaMultipla entity)
         {
             throw new BusinessException("Não é possível deletar baixas múltiplas.");
         }        

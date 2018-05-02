@@ -8,7 +8,7 @@ using System.Linq;
 namespace Fly01.Financeiro.ViewModel
 {
     [Serializable]
-    public class ContaFinanceiraBaixaEmLoteVM : DomainBaseVM
+    public class ContaFinanceiraBaixaMultiplaVM : DomainBaseVM
     {
         [Display(Name = "Data Baixa")]
         [JsonProperty("data")]

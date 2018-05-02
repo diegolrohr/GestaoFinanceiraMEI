@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ContaFinanceiraBaixaEmLote : PlataformaBase
+    public class ContaFinanceiraBaixaMultipla : PlataformaBase
     {
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }

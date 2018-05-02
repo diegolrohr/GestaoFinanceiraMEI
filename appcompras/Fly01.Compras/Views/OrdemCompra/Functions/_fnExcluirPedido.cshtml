@@ -1,6 +1,6 @@
 ﻿<script>
 function fnExcluirPedido(idRecord) {
-    fly01.modal.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirPedidoConfirmed(\""+idRecord+"\")");
+    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirPedidoConfirmed(\""+idRecord+"\")");
 }
 function fnExcluirPedidoConfirmed(idRecord) {
     $('body').removeClass('loaded');

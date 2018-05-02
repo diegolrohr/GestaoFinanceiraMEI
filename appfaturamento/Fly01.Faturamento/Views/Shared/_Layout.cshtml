@@ -10,7 +10,7 @@
     <footer>
         @Html.ScriptsTemplate()
         <script>
-            $(function() { fly01.call(fly01.navigation, "@Url.Action("Sidebar", "Home")"); });
+            $(function() { fly01.navigation("@Url.Action("Sidebar", "Home")"); });
         </script>
         @RenderSection("scripts", false)
         <div id="dynScripts"></div>

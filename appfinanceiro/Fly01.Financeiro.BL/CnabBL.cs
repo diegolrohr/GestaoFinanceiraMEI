@@ -103,7 +103,7 @@ namespace Fly01.Financeiro.BL
                     DigitoAgencia = contaCedente.DigitoAgencia,
                     Conta = contaCedente.Conta,
                     DigitoConta = contaCedente.DigitoConta,
-                    CarteiraPadrao = Boleto2Net.CarteiraPadrao.BBCarteira11CobrancaComRegistro.ToString(),
+                    CarteiraPadrao = /*Boleto2Net.CarteiraPadrao.BBCarteira11CobrancaComRegistro.ToString()*/ "",
                     VariacaoCarteiraPadrao = "019",
                     TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
                     TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,

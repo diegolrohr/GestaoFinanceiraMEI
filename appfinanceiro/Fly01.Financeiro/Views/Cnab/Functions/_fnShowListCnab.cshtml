@@ -1,0 +1,17 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function cnabItensShow() {
+        $('#dtCnabItem').show();
+        fly01._.dtCnabItem.selected = [];
+        fly01._.dtCnabItem.refresh();
+        $('#save').removeAttr('disabled');
+    }
+
+    function fnShowListCnab() {
+        if ($('#pessoaId').val().length > 0) {
+            cnabItensShow();
+        }    
+    };
+
+</script>

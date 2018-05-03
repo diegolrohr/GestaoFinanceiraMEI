@@ -11,6 +11,8 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
+using Fly01.Core.Rest;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -29,6 +31,31 @@ namespace Fly01.Financeiro.Controllers
                 dataEmissao = x.DataEmissao,
                 dataVencimento = x.DataVencimento
             };
+        }
+
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "contaReceberId", contaReceberId.ToString() }
+                , { "contaBancariaId", contaBancariaId.ToString() }
+                //, { "dataDesconto", DateTime.Now.ToString("yyyy-MM-dd") }
+                //, { "valorDesconto", "1" }
+            };
+
+            var responseChart = RestHelper.ExecuteGetRequest<CnabVM>("cnab/imprimeBoleto", queryString);
+
+            //var dadosBoleto = new
+            //{
+            //    contaReceberId = contaReceberId,
+            //    contaBancariaId = contaBancariaId,
+            //    dataDesconto = DateTime.Now.ToString("yyyy-MM-dd") /*dataDesconto.ToString("yyyy-MM-dd")*/,
+            //    valorDesconto = 1 //.Replace(",", ".")
+            //};
+
+            //var response = RestHelper.ExecutePostRequest<CnabVM>("cnab/imprimeBoleto", dadosBoleto);
+            return null;
         }
 
         public override ContentResult Form()
@@ -52,7 +79,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            var config = new FormUI
+            var configCnab = new FormUI
             {
                 Id = "fly01frmBoleto",
                 Action = new FormUIAction
@@ -65,32 +92,59 @@ namespace Fly01.Financeiro.Controllers
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-
-            config.Elements.Add(new AutocompleteUI
+            configCnab.Elements.Add(new InputHiddenUI { Id = "id" });
+            configCnab.Elements.Add(new AutocompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m6 l6",
-                Label = "Banco",
+                Label = "Banco cedente",
                 Required = true,
-                DataUrl = @Url.Action("Banco", "AutoComplete"),
+                DataUrl = @Url.Action("Banco", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
-
-            config.Elements.Add(new AutocompleteUI
-
+            configCnab.Elements.Add(new AutocompleteUI
             {
                 Id = "pessoaId",
-                Class = "col s6 l6",
+                Class = "col s12 m6 l6",
                 Label = "Cliente",
                 Required = true,
                 DataUrl = @Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
             });
+            configCnab.Elements.Add(new ButtonUI
+            {
+                Id = "btnListarContas",
+                Class = "col s4 m4",
+                Value = "Listar contas",
+                DomEvents = new List<DomEventUI>() {
+                    new DomEventUI() { DomEvent = "click", Function = "fnShowListCnab" }
+                }
+            });
 
-            cfg.Content.Add(config);
+            #region CnabItem
+
+            var dtConfig = new DataTableUI
+            {
+                Id = "dtCnabItem",
+                UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
+                UrlFunctions = Url.Action("Functions", "CnabItem", null, Request.Url.Scheme) + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
+                }
+            };
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
+
+            #endregion
+
+            cfg.Content.Add(configCnab);
+            cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }

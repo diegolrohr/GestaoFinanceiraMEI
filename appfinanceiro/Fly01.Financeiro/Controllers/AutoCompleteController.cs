@@ -288,11 +288,15 @@ namespace Fly01.Financeiro.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult Banco(string term)
+        public JsonResult Banco(string term, bool emiteBoleto = false)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(BancoVM));
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault("", "");
-            queryString.AddParam("$filter", string.Format("contains(nome, '{0}') or contains(codigo, '{1}')", term, term));
+            if (emiteBoleto)
+                queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(codigo, '{term}')) and emiteBoleto eq true");
+            else
+                queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(codigo, '{term}')");
+
             queryString.AddParam("$select", "id,codigo,nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(resourceName, queryString).Data

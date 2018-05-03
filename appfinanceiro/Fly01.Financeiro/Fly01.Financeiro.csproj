@@ -65,6 +65,7 @@
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
+    <Compile Include="Controllers\CnabItemController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
@@ -316,6 +317,8 @@
     <Content Include="Views\Home\Functions\_fnImprimirFluxoCaixa.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnCnabImprimeBoleto.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
+    <Content Include="Views\CnabItem\Functions\_fnImprimirBoleto.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -363,7 +366,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.6\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>

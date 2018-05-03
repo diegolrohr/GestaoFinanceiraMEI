@@ -106,7 +106,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\boleto2net\Boleto2.Net\Boleto2.Net.csproj">
+    <ProjectReference Include="..\..\..\Boleto2.Net\Boleto2.Net.csproj">
       <Project>{f173e80b-e36b-48ad-b483-a27f8ca86f3c}</Project>
       <Name>Boleto2.Net</Name>
     </ProjectReference>

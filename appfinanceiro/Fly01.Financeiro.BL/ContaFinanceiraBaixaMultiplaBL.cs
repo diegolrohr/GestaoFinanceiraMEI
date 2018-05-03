@@ -6,6 +6,7 @@ using System.Linq;
 using System.Data.Entity;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
+using System.Collections.Generic;
 
 namespace Fly01.Financeiro.BL
 {
@@ -31,7 +32,7 @@ namespace Fly01.Financeiro.BL
 
             base.ValidaModel(entity);
         }
-        
+
         public override void Insert(ContaFinanceiraBaixaMultipla entity)
         {
             entity.PlataformaId = PlataformaUrl;
@@ -47,28 +48,19 @@ namespace Fly01.Financeiro.BL
 
             if (entity.Id == default(Guid) || entity.Id == null)
                 entity.Id = Guid.NewGuid();
-
-            if (entity.IsValid())
-            {
-                GeraESalvaBaixas(entity);
-            }
         }
-
-        private void GeraESalvaBaixas(ContaFinanceiraBaixaMultipla entity)
+        public List<ContaFinanceiraBaixa> GeraBaixas(ContaFinanceiraBaixaMultipla entity)
         {
-            var contas = ContaFinanceiraBL.All.AsNoTracking().Where(x => entity.ContasFinanceirasIds.Contains(x.Id));
+            var contas = ContaFinanceiraBL.All.AsNoTracking().Where(x => entity.ContasFinanceirasIds.Contains(x.Id)).ToList();
 
-            foreach (var conta in contas)
+            return contas.Select(x => new ContaFinanceiraBaixa()
             {
-                ContaFinanceiraBaixaBL.Insert(new ContaFinanceiraBaixa()
-                {
-                    Data = entity.Data,
-                    ContaBancariaId = entity.ContaBancariaId,
-                    ContaFinanceiraId = conta.Id,
-                    Observacao = conta.Descricao + " " + entity.Observacao?? "",
-                    Valor = conta.Saldo
-                });
-            } 
+                Data = entity.Data,
+                ContaBancariaId = entity.ContaBancariaId,
+                ContaFinanceiraId = x.Id,
+                Observacao = x.Descricao + " " + entity.Observacao ?? "",
+                Valor = x.Saldo
+            }).ToList();
         }
 
         public override void Update(ContaFinanceiraBaixaMultipla entity)

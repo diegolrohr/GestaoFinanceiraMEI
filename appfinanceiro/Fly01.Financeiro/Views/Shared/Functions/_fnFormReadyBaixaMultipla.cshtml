@@ -5,23 +5,22 @@
         //ver validacao contador limite de 50
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
-                var valorAcumulado = getValorSomaSelecionados();
+                var valorAcumulado = parseFloat(getValorSomaSelecionados());
                 var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
                 var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
                 valorAcumulado += valorSaldo;
-                $('input#somaValoresSelecionados').val(valorAcumulado);
-                //data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 fnAtualizaCountSelecionados(1);
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
-                var valorAcumulado = getValorSomaSelecionados();
+                var valorAcumulado = parseFloat(getValorSomaSelecionados());
                 var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
                 var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
 
                 valorAcumulado -= valorSaldo;
-                $('input#somaValoresSelecionados').val(valorAcumulado);
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 fnAtualizaCountSelecionados(-1);
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
@@ -30,8 +29,7 @@
 
     function getValorSomaSelecionados() {
         var somaValores = $('#somaValoresSelecionados').val().replace("R$", "").replace("R$ ", "").replace(".", "").replace(",", ".");
-        var result = parseFloat(somaValores);
-        return result;
+        return parseFloat(somaValores).toFixed(2);
     }
 
     function fnAtualizaCountSelecionados(count) {

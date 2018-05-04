@@ -121,9 +121,9 @@ namespace Fly01.Core.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private Notification Notification { get; } = new Notification();
+        protected Notification Notification { get; } = new Notification();
 
-        private void AddErrorModelState(ModelStateDictionary modelState)
+        protected void AddErrorModelState(ModelStateDictionary modelState)
         {
             modelState.ToList().ForEach(
                 model => model.Value.Errors.ToList().ForEach(

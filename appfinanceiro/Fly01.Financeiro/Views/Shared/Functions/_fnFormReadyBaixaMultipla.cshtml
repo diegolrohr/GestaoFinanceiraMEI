@@ -1,0 +1,64 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function setupGridSelectEvents() {
+        //ver validacao contador limite de 50
+        fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                var valorAcumulado = parseFloat(getValorSomaSelecionados());
+                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
+                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                valorAcumulado += valorSaldo;
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                fnAtualizaCountSelecionados(1);
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+            }
+        }).on('deselect', function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                var valorAcumulado = parseFloat(getValorSomaSelecionados());
+                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
+                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+
+                valorAcumulado -= valorSaldo;
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                fnAtualizaCountSelecionados(-1);
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+            }
+        });
+    }
+
+    function getValorSomaSelecionados() {
+        var somaValores = $('#somaValoresSelecionados').val().replace("R$", "").replace("R$ ", "").replace(".", "").replace(",", ".");
+        return parseFloat(somaValores).toFixed(2);
+    }
+
+    function fnAtualizaCountSelecionados(count) {
+        var countAtual = parseInt($('input#countContasSelecionadas').val());
+        countAtual = countAtual + (parseInt(count));
+        $('input#countContasSelecionadas').val(countAtual);
+
+        fly01.fn.updateTextFields();
+        $('input#countContasSelecionadas').css('color', '');
+        $('#save').attr('disabled', 'disabled');
+
+        if (countAtual > 0 && countAtual <= 50) {
+            $('input#countContasSelecionadas').css('color', 'green');
+            $('#save').removeAttr('disabled');
+        }
+        else if (countAtual <= 0) {
+            $('#countContasSelecionadas').css('color', 'red');
+            $('#save').attr('disabled', 'disabled');
+        }
+        else {
+            $('#countContasSelecionadas').css('color', 'red');
+            fly01.toast('A quantidade de contas selecionadas é de até 50.', "error");
+            $('#save').attr('disabled', 'disabled');
+        }
+    }
+
+    function fnFormReadyBaixaMultipla() {
+        $('#Field').hide();
+        $('#save').attr('disabled', 'disabled');
+        setupGridSelectEvents();
+    }
+</script>

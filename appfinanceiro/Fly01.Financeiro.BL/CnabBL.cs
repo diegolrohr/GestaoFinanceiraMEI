@@ -5,6 +5,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Fly01.Financeiro.BL
 {
@@ -31,14 +32,15 @@ namespace Fly01.Financeiro.BL
             var contaBancaria = ContaBancaria.Find(contaBancariaId);
             if (contaBancaria == null) throw new BusinessException("A conta bancária informada não foi encontrada.");
 
-            if (!contaBancaria.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
+            var banco = ContaBancaria.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancaria.BancoId).FirstOrDefault();
+            if (!banco.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
 
-            var banco = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
+            var bancoCedente = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
 
-            banco.Cedente = GetCedenteBoletoNet(contaBancaria);
-            banco.FormataCedente();
+            bancoCedente.Cedente = GetCedenteBoletoNet(contaBancaria);
+            bancoCedente.FormataCedente();
 
-            MontaBoleto(banco, contaReceber, dataDesconto, valorDesconto);
+            MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto);
 
             return boletos;
         }

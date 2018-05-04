@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Fly01.Core.Helpers;
@@ -12,7 +11,6 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
-using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -33,8 +31,8 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -44,7 +42,27 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var response = RestHelper.ExecuteGetRequest<CnabVM>("cnab/imprimeBoleto", queryString);
+            var boletos = RestHelper.ExecuteGetRequest<Boleto2Net.Boletos>("cnab/imprimeBoleto", queryString);
+
+            foreach (var item in boletos)
+            {
+                using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
+                {
+                    imprimeBoleto.Boleto = item;
+                    imprimeBoleto.OcultarInstrucoes = false;
+                    imprimeBoleto.MostrarComprovanteEntrega = true;
+                    imprimeBoleto.MostrarEnderecoCedente = true;
+
+                    var htmlBoleto = imprimeBoleto.MontaHtml();
+                }
+
+                //{
+                //    html.Append("<div style=\"page-break-after: always;\">");
+                //    html.Append(imprimeBoleto.MontaHtml());
+                //    html.Append("</div>");
+                //}
+
+            }
 
             //var dadosBoleto = new
             //{

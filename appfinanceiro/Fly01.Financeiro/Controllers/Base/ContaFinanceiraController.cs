@@ -306,25 +306,6 @@ namespace Fly01.Financeiro.Controllers.Base
 
         #endregion
 
-        #region Exclusão de Parcelamento
-        //[HttpPost]
-        //public virtual JsonResult DeleteParcelamento(string id)
-        //{
-        //    try
-        //    {
-        //        TEntity itemParcelamento = Get(id);
-
-        //        RestHelper.ExecuteDeleteRequest(String.Format("{0}/{1}", ResourceName, itemParcelamento.ParentId));
-        //        return JsonResponseStatus.GetSuccess("Parcelamento excluido com sucesso.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-        //        return JsonResponseStatus.GetFailure(error.Message);
-        //    }
-        //}
-        #endregion
-
         #region Renegociação
         public virtual ActionResult Renegociacao()
         {
@@ -384,47 +365,7 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #endregion
-
-        #region BaixaMultipla
-
-        public virtual ActionResult BaixaMultipla()
-        {
-            ViewBag.OrigemChamada = ControllerContext.RouteData.Values["controller"].ToString();
-
-            TEntityBaixa model = Activator.CreateInstance<TEntityBaixa>();
-
-            return PartialView("_BaixasMultiplas", model);
-        }
-
-        public JsonResult GridLoadTitulosBaixar(string personId)
-        {
-            dynamic dataToView;
-            int dataTotal;
-            var queryString = new Dictionary<string, string>();
-            JQueryDataTableParams param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-
-            if (personId == "")
-                return null;
-
-            queryString.AddParam("personId", personId);
-            queryString.AddParam("subtitleCode", "1,3,4");
-            queryString.AddParam("page", ((param.Start / 10) + 1).ToString());
-
-            var response = RestHelper.ExecuteGetRequest<ResultBase<TEntity>>(AppDefaults.GetResourceName(typeof(TEntity)), queryString);
-
-            dataToView = response.Data.Select(GetDisplayDataBaixaMultipla());
-            dataTotal = response.Total;
-
-            return Json(new
-            {
-                recordsTotal = dataTotal,
-                recordsFiltered = dataTotal,
-                data = dataToView
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-
+        
         #region Bordero/CNAB
         /// <summary>
         /// Retorna Títulos que podem ser inclusos em um bordero

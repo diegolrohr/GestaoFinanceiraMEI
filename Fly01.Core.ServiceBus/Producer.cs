@@ -21,7 +21,7 @@ namespace Fly01.Core.ServiceBus
                         properties.Persistent = true;
                         properties.AppId = RabbitConfig.AppId;
                         properties.Type = httpVerb.ToString();
-
+                        
                         channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
                     }
                 }

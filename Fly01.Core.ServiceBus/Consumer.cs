@@ -14,10 +14,9 @@ namespace Fly01.Core.ServiceBus
         {
             get
             {
+                var userName = string.Empty;
                 if (string.IsNullOrEmpty(Message))
-                    return "";
-
-                var userName = "";
+                    return userName;
 
                 userName =
                     HTTPMethod == RabbitConfig.enHTTPVerb.POST ? JObject.Parse(Message).GetValue("usuarioInclusao")?.ToString()
@@ -27,16 +26,18 @@ namespace Fly01.Core.ServiceBus
                 return userName;
             }
         }
+
         private string Plataforma
         {
             get
             {
-                if (!string.IsNullOrEmpty(Message))
-                    return JObject.Parse(Message).GetValue("plataformaId")?.ToString(); ;
+                if (string.IsNullOrEmpty(Message))
+                    return string.Empty;
 
-                return "";
+                return JObject.Parse(Message).GetValue("plataformaId")?.ToString();
             }
         }
+
         private IConnection conn;
         private IConnection Conn
         {
@@ -48,6 +49,7 @@ namespace Fly01.Core.ServiceBus
                 return conn;
             }
         }
+
         private IModel channel
         {
             get
@@ -63,7 +65,6 @@ namespace Fly01.Core.ServiceBus
         public void Consume()
         {
             var consumer = new EventingBasicConsumer(channel);
-            var response = "OK";
 
             consumer.Received += async (sender, ea) =>
             {
@@ -75,7 +76,7 @@ namespace Fly01.Core.ServiceBus
                     {
                         Message = Encoding.UTF8.GetString(ea.Body);
                         HTTPMethod = (RabbitConfig.enHTTPVerb)Enum.Parse(typeof(RabbitConfig.enHTTPVerb), ea.BasicProperties?.Type ?? "PUT");
-
+                        
                         RabbitConfig.PlataformaUrl = Plataforma;
                         RabbitConfig.AppUser = Username;
                         RabbitConfig.RoutingKey = ea.RoutingKey ?? "";
@@ -84,9 +85,8 @@ namespace Fly01.Core.ServiceBus
                     }
                     catch (Exception ex)
                     {
-                        response = ex.Message;
-                        SlackClient.PostMessageErrorRabbit(Message, 
-                            response, 
+                        SlackClient.PostMessageErrorRabbit(Message,
+                            ex.Message, 
                             ex.StackTrace, 
                             RabbitConfig.Factory?.VirtualHost,
                             RabbitConfig.QueueName

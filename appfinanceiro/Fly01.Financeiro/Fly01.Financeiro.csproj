@@ -319,6 +319,7 @@
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCR\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
+    <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

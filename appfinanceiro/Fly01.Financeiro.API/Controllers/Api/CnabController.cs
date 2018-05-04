@@ -9,15 +9,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class CnabController : ApiBaseController
     {
         [HttpGet]
-        //public void ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         [Route("imprimeBoleto")]
         public IHttpActionResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
-            using (var unit = new UnitOfWork(ContextInitialize))
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var boletos = unit.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0);
-
-                return Ok(boletos);
+                return Ok(unitOfWork.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0));
             }
         }
     }

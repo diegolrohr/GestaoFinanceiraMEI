@@ -44,25 +44,27 @@ namespace Fly01.Financeiro.Controllers
 
             var boletos = RestHelper.ExecuteGetRequest<Boleto2Net.Boletos>("cnab/imprimeBoleto", queryString);
 
-            foreach (var item in boletos)
-            {
-                using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
-                {
-                    imprimeBoleto.Boleto = item;
-                    imprimeBoleto.OcultarInstrucoes = false;
-                    imprimeBoleto.MostrarComprovanteEntrega = true;
-                    imprimeBoleto.MostrarEnderecoCedente = true;
+            //var boletos = RestHelper.ExecuteGetRequest<List<Boleto2Net.Boleto>>("cnab/imprimeBoleto", queryString);
 
-                    var htmlBoleto = imprimeBoleto.MontaHtml();
-                }
+            //foreach (var item in boletos)
+            //{
+            //    using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
+            //    {
+            //        imprimeBoleto.Boleto = item;
+            //        imprimeBoleto.OcultarInstrucoes = false;
+            //        imprimeBoleto.MostrarComprovanteEntrega = true;
+            //        imprimeBoleto.MostrarEnderecoCedente = true;
 
-                //{
-                //    html.Append("<div style=\"page-break-after: always;\">");
-                //    html.Append(imprimeBoleto.MontaHtml());
-                //    html.Append("</div>");
-                //}
+            //        var htmlBoleto = imprimeBoleto.MontaHtml();
+            //    }
 
-            }
+            //    //{
+            //    //    html.Append("<div style=\"page-break-after: always;\">");
+            //    //    html.Append(imprimeBoleto.MontaHtml());
+            //    //    html.Append("</div>");
+            //    //}
+
+            //}
 
             //var dadosBoleto = new
             //{

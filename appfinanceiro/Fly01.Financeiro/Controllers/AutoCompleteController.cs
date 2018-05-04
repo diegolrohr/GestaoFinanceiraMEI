@@ -241,6 +241,24 @@ namespace Fly01.Financeiro.Controllers
             return GetJson(filterObjects);
         }
 
+        public JsonResult ContaBancariaBancoEmiteBoleto(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
+
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$expand", "banco($select=nome)");
+            queryString.AddParam("$filter", $"contains(banco/nome, '{term}') and banco/emiteBoleto eq true");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Banco.Nome
+                                };
+
+            return GetJson(filterObjects);
+        }
+
         public JsonResult ContaBancariaBanco(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));

@@ -117,7 +117,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m6 l6",
                 Label = "Banco cedente",
                 Required = true,
-                DataUrl = @Url.Action("Banco", "AutoComplete") + "?emiteBoleto=true",
+                DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
             configCnab.Elements.Add(new AutocompleteUI

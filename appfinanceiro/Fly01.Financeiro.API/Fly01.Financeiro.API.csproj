@@ -124,6 +124,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Boleto2.Net\Boleto2.Net.csproj">
+      <Project>{F173E80B-E36B-48AD-B483-A27F8CA86F3C}</Project>
+      <Name>Boleto2.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>

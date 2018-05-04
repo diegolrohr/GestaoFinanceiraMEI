@@ -2,6 +2,7 @@
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
 using Microsoft.OData.Edm;
+using System;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;

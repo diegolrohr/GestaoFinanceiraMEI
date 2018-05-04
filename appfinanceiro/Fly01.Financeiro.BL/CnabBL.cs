@@ -21,30 +21,15 @@ namespace Fly01.Financeiro.BL
             boletos = new Boleto2Net.Boletos();
             ContaReceber = contaReceberBL;
             ContaBancaria = contaBancariaBL;
-
-            //foreach (var item in boletos)
-            //{
-            //    using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
-            //    {
-            //        imprimeBoleto.Boleto = item;
-            //        imprimeBoleto.OcultarInstrucoes = false;
-            //        imprimeBoleto.MostrarComprovanteEntrega = true;
-            //        imprimeBoleto.MostrarEnderecoCedente = true;
-            //    }
-
-            //    //{
-            //    //    html.Append("<div style=\"page-break-after: always;\">");
-            //    //    html.Append(imprimeBoleto.MontaHtml());
-            //    //    html.Append("</div>");
-            //    //}
-
-            //}
         }
 
         public Boleto2Net.Boletos GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
             var contaReceber = ContaReceber.Find(contaReceberId);
+            if (contaReceber == null) throw new BusinessException("A conta a receber informada não foi encontrada.");
+
             var contaBancaria = ContaBancaria.Find(contaBancariaId);
+            if (contaBancaria == null) throw new BusinessException("A conta bancária informada não foi encontrada.");
 
             if (!contaBancaria.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
 

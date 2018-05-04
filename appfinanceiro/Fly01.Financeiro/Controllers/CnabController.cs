@@ -36,7 +36,7 @@ namespace Fly01.Financeiro.Controllers
         public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            var queryString = new Dictionary<string, string>
             {
                 { "contaReceberId", contaReceberId.ToString() }
                 , { "contaBancariaId", contaBancariaId.ToString() }
@@ -44,7 +44,7 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var responseChart = RestHelper.ExecuteGetRequest<CnabVM>("cnab/imprimeBoleto", queryString);
+            var response = RestHelper.ExecuteGetRequest<CnabVM>("cnab/imprimeBoleto", queryString);
 
             //var dadosBoleto = new
             //{

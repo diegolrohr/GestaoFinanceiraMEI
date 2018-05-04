@@ -4,7 +4,7 @@
     function setupGridSelectEvents() {
         //ver validacao contador limite de 50
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
-            if (type !== undefined) {
+            if (type !== undefined) {                
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
 
                 indexes.forEach(function(element, index, array) {

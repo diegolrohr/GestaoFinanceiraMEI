@@ -1,6 +1,6 @@
 ﻿<script>
     function fnExcluirOrdemVendaServico(idRecord) {
-        fly01.modal.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemVendaServicoConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemVendaServicoConfirmed(\"" + idRecord + "\")");
     }
     function fnExcluirOrdemVendaServicoConfirmed(idRecord) {
         $('body').removeClass('loaded');
@@ -16,7 +16,7 @@
                         fly01._.dtOrdemVendaServicos.refresh();
                     }
                     else {
-                        fly01.fns.submitErrorHandler(null, data.message);
+                        fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {

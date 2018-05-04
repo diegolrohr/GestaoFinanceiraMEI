@@ -77,18 +77,6 @@ namespace Fly01.Compras.API.Controllers.Api
             return Ok();
         }
 
-        private Notification Notification { get; } = new Notification();
-
-        private void AddErrorModelState(ModelStateDictionary modelState)
-        {
-            modelState.ToList().ForEach(
-                model => model.Value.Errors.ToList().ForEach(
-                    itemErro => Notification.Errors.Add(
-                        new Error(itemErro.ErrorMessage, string.Concat(char.ToLowerInvariant(model.Key[0]), model.Key.Substring(1))))));
-
-            throw new BusinessException(Notification.Get());
-        }
-
         private double GetTotalOrcamentoItens(Orcamento orcamento)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))

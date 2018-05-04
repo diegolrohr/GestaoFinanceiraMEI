@@ -7,7 +7,7 @@
         var valorLancamentoExtrato = parseFloat($('input#valor').val().replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".").replace("-", ""));
 
         $('input#somaValoresSelecionados').val(valorAcumulado);
-        fly01.core.updateTextFields();
+        fly01.fn.updateTextFields();
         $('input#somaValoresSelecionados').css('color', '');
         $('#save').attr('disabled', 'disabled');
 

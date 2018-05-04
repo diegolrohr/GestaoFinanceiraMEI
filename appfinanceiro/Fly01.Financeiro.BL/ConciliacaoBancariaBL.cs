@@ -20,6 +20,7 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = ContaBancariaBL;
         }
 
+        
         private void ValidaModel(ConciliacaoBancaria entity, string bancoDoArquivo)
         {
             if (All.Any(x => x.ContaBancariaId == entity.ContaBancariaId & x.Id != entity.Id))

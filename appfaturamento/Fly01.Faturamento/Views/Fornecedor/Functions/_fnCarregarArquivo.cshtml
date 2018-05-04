@@ -22,7 +22,7 @@
                 $("#observacao").closest("div").css("display", "block");
                 $("#observacao").val(response.Data.Retorno);
                 $("#observacao").trigger("autoresize");
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
                 $('body').addClass('loaded');
             },
             error: function (jXHR, textStatus, errorThrown) {

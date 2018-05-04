@@ -99,11 +99,7 @@ namespace Fly01.Financeiro.Controllers
                     Select = new { style = "multi" },
                     WithoutRowMenu = true,
                     PageLength = 50
-                },
-                //Callbacks = new DataTableUICallbacks()
-                //{
-                //    RowCallback = "fnRowCallbackContasExistentes"
-                //}
+                }
             };
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1 });
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4 });

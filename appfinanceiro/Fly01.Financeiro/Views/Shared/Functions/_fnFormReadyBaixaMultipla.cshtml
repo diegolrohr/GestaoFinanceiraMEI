@@ -6,22 +6,29 @@
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
-                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
-                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
-                valorAcumulado += valorSaldo;
+
+                indexes.forEach(function(element, index, array) {
+                    var rowData = fly01._.dtContasExistentes.rows(index).data().toArray();
+                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                    valorAcumulado += valorSaldo;
+                    fnAtualizaCountSelecionados(1);
+                });
+                
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
-                fnAtualizaCountSelecionados(1);
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
-                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
-                var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
 
-                valorAcumulado -= valorSaldo;
+                indexes.forEach(function(element, index, array) {
+                    var rowData = fly01._.dtContasExistentes.rows(index).data().toArray();
+                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                    valorAcumulado -= valorSaldo;
+                    fnAtualizaCountSelecionados(-1);
+                });
+                
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
-                fnAtualizaCountSelecionados(-1);
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
         });

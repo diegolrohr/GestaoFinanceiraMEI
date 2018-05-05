@@ -10,6 +10,8 @@ namespace Fly01.Core.ServiceBus
 {
     public abstract class Consumer
     {
+        private string MsgHeaderInvalid = "A 'PlataformaUrl' e o 'AppUser' devem ser informados no Header da request";
+
         private IConnection _connection;
         protected string Message;
         protected RabbitConfig.enHTTPVerb HTTPMethod;
@@ -81,7 +83,7 @@ namespace Fly01.Core.ServiceBus
 
             return Encoding.UTF8.GetString(Headers[key] as byte[]);
         }
-
+        
         public void Consume()
         {
             var consumer = new EventingBasicConsumer(Channel);
@@ -92,10 +94,13 @@ namespace Fly01.Core.ServiceBus
                 {
                     try
                     {
-                        if (args.BasicProperties.Headers == null || !HeaderIsValid())
-                            throw new ArgumentException("A 'PlataformaUrl' e o 'AppUser' devem ser informados no Header da request");
+                        if (args.BasicProperties.Headers == null)
+                            throw new ArgumentException(MsgHeaderInvalid);
 
                         Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                        if (!HeaderIsValid())
+                            throw new ArgumentException(MsgHeaderInvalid);
+
                         Message = Encoding.UTF8.GetString(args.Body);
                         HTTPMethod = (RabbitConfig.enHTTPVerb)Enum.Parse(typeof(RabbitConfig.enHTTPVerb), args.BasicProperties?.Type ?? "PUT");
 

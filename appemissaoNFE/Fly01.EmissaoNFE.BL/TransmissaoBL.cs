@@ -149,7 +149,7 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(((int)item.Identificador.Ambiente < 1 || (int)item.Identificador.Ambiente > 2),
                         new Error("Ambiente inválido para transmissão de notas.", "Item.Identificador.Ambiente"));
                     entity.Fail(((int)item.Identificador.FinalidadeEmissaoNFe < 1 || (int)item.Identificador.FinalidadeEmissaoNFe > 4),
-                        new Error("Ambiente inválido para transmissão de notas.", "Item.Identificador.FinalidadeEmissaoNFe"));
+                        new Error("Finalidade da emissão inválida.", "Item.Identificador.FinalidadeEmissaoNFe"));
                     entity.Fail(item.Identificador.ConsumidorFinal != 0 && item.Identificador.ConsumidorFinal != 1,
                         new Error("Informação de consumidor final inválida.", "Item.Identificador.ConsumidorFinal"));
                 }

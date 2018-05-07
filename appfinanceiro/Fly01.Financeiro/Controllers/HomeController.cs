@@ -97,7 +97,7 @@ namespace Fly01.Financeiro.Controllers
                     new ButtongroupUI()
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m6 l4",
+                        Class = "col s12 m6 l4 hide-on-print",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
                         Options = new List<OptionUI>

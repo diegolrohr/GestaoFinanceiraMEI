@@ -36,11 +36,11 @@ namespace Fly01.Core.Mensageria
                                     title = "Erro",
                                     value = errorMessage
                                 },
-                                new
-                                {
-                                    title = "Stack Trace",
-                                    value = errorStackTrace
-                                },
+                                //new
+                                //{
+                                //    title = "Stack Trace",
+                                //    value = errorStackTrace
+                                //},
                                 new {
                                     title = "Host",
                                     value = hostName

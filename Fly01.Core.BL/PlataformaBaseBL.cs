@@ -142,10 +142,18 @@ namespace Fly01.Core.BL
 
             foreach (var item in ResolveTypeOfMessage(message))
             {
-                if (httpMethod == RabbitConfig.enHTTPVerb.POST)
-                    Insert(item);
-                else
-                    AttachForUpdate(item);
+                switch (httpMethod)
+                {
+                    case RabbitConfig.enHTTPVerb.POST:
+                        Insert(item);
+                        break;
+                    case RabbitConfig.enHTTPVerb.PUT:
+                        AttachForUpdate(item);
+                        break;
+                    case RabbitConfig.enHTTPVerb.DELETE:
+                        Delete(item);
+                        break;
+                }
             }
         }
 

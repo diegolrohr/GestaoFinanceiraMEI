@@ -17,39 +17,7 @@ namespace Fly01.Core.ServiceBus
         protected RabbitConfig.enHTTPVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected abstract Task PersistMessage();
-
-        //private string Username
-        //{
-        //    get
-        //    {
-        //        if (Headers.Count == 0)
-        //            return string.Empty;
-
-        //        return Headers["AppUser"].ToString();
-        //        //var userName = string.Empty;
-        //        //if (string.IsNullOrEmpty(Message))
-        //        //    return userName;
-
-        //        //userName =
-        //        //    HTTPMethod == RabbitConfig.enHTTPVerb.POST ? JObject.Parse(Message).GetValue("usuarioInclusao")?.ToString()
-        //        //    : HTTPMethod == RabbitConfig.enHTTPVerb.PUT ? JObject.Parse(Message).GetValue("usuarioAlteracao")?.ToString()
-        //        //    : JObject.Parse(Message).GetValue("usuarioExclusao")?.ToString();
-
-        //        //return userName;
-        //    }
-        //}
-
-        //private string Plataforma
-        //{
-        //    get
-        //    {
-        //        if(Headers.Count == 0)
-        //            return string.Empty;
-
-        //        return Headers["PlataformaUrl"].ToString();
-        //    }
-        //}
-        
+                
         private IConnection Connection
         {
             get

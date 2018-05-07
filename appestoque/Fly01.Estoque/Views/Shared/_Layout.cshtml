@@ -5,17 +5,11 @@
 @RenderSection("styles", false)
 </head>
 <body>
-    <header></header>
-    <main></main>
-    <footer>
-        @Html.ScriptsTemplate()
-        <script>
-            $(function() { fly01.call(fly01.navigation, "@Url.Action("Sidebar", "Home")"); });
-        </script>
-        @RenderSection("scripts", false)
-
-        <div id="dynScripts"></div>
-    </footer>
+    @Html.ScriptsTemplate()
+    <script>
+            $(function() { fly01.navigation("@Url.Action("Sidebar", "Home")"); });
+    </script>
+    @RenderSection("scripts", false)
 </body>
 </html>
 @RenderBody()

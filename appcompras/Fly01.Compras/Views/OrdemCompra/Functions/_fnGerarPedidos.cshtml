@@ -1,6 +1,6 @@
 ﻿<script>
     function fnGerarPedidos(idRecord) {
-        fly01.modal.confirm("Confirmar Finalização", "Deseja realmente finalizar este orçamento e gerar os pedidos respectivos aos fornecedores? Não será mais possível editar/excluir", "fnFinalizarOrcamentoConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Finalização", "Deseja realmente finalizar este orçamento e gerar os pedidos respectivos aos fornecedores? Não será mais possível editar/excluir", "fnFinalizarOrcamentoConfirmed(\"" + idRecord + "\")");
     }
     function fnFinalizarOrcamentoConfirmed(idRecord) {        
         fly01.loading.start();

@@ -10,7 +10,7 @@
             $('form#fly01mdlfrmOrdemVendaServico input#grupoTributarioDescricaoServico').val($('form#fly01frm input#grupoTributarioPadraoDescricao').val());
         }
 
-        fly01.core.updateTextFields();
+        fly01.fn.updateTextFields();
         fnOverrideSubmitOrdemVendaServico();
 
         $('form#fly01mdlfrmOrdemVendaServico input#valor').on('change', function () {

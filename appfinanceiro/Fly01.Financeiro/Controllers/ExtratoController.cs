@@ -194,7 +194,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
-            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
             var cfg = new ContentUI
             {

@@ -42,7 +42,7 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var boletos = RestHelper.ExecuteGetRequest<Boleto2Net.Boletos>("cnab/imprimeBoleto", queryString);
+            var boletos = RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
 
             //var boletos = RestHelper.ExecuteGetRequest<List<Boleto2Net.Boleto>>("cnab/imprimeBoleto", queryString);
 

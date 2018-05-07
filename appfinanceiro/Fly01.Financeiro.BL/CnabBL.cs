@@ -26,7 +26,7 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        public Boleto2Net.Boletos GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        public Boleto2Net.Boleto GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
             if (contaReceber == null) throw new BusinessException("A conta a receber informada não foi encontrada.");
@@ -42,9 +42,7 @@ namespace Fly01.Financeiro.BL
             bancoCedente.Cedente = GetCedenteBoletoNet(contaBancaria);
             bancoCedente.FormataCedente();
 
-            boletos.Add(MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto));
-
-            return boletos;
+            return MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto);
         }
 
         private Boleto2Net.Sacado GetSacado(Guid pessoaId)
@@ -97,8 +95,8 @@ namespace Fly01.Financeiro.BL
                     DigitoAgencia = contaCedente.DigitoAgencia,
                     Conta = contaCedente.Conta,
                     DigitoConta = contaCedente.DigitoConta,
-                    CarteiraPadrao = /*Boleto2Net.CarteiraPadrao.BBCarteira11CobrancaComRegistro.ToString()*/ "11",
-                    VariacaoCarteiraPadrao = "019",
+                    CarteiraPadrao = "11", //contaCedente.CarteiraPadrao,
+                    VariacaoCarteiraPadrao = "019", //contaCedente.VariacaoCarteiraPadrao,
                     TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
                     TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,
                     TipoImpressaoBoleto = Boleto2Net.TipoImpressaoBoleto.Empresa

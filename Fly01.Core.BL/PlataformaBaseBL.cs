@@ -118,7 +118,7 @@ namespace Fly01.Core.BL
 
         public virtual void Delete(Guid id)
         {
-            repository.Delete(id);
+            Delete(Find(id));
         }
 
         public override IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)

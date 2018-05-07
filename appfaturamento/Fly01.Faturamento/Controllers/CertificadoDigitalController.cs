@@ -43,8 +43,24 @@ namespace Fly01.Faturamento.Controllers
 
             return Json(new
             {
-                dataExpiracaoCertificado = certificadoDigital.DataExpiracao
+                dataExpiracaoCertificado = certificadoDigital.DataExpiracao,
+                id = certificadoDigital.Id
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult DeletaCertificadoInvalido(Guid id)
+        {
+            var response = RestHelper.ExecuteDeleteRequest($"{ResourceName}/{id}");
+
+            if (!response)
+                return Json(new { }, JsonRequestBehavior.AllowGet);
+
+            return Json(new
+            {
+                certificadoExcluido = response,
+            }, JsonRequestBehavior.AllowGet);
+
         }
 
         public override Func<CertificadoDigitalVM, object> GetDisplayData()

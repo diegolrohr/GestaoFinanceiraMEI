@@ -45,28 +45,50 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     return await base.Post(entity);
                 }
-            } 
+            }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
             }
         }
 
-        public override IHttpActionResult Get()
+        public override Task<IHttpActionResult> Delete([FromODataUri] Guid key)
         {
-            try
-            {
-                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-                {
-                    unitOfWork.CertificadoDigitalBL.DeleteCertificado(string.Empty);
-                }
+            var certificado = Find(key);
 
-                return base.Get();
-            }
-            catch (Exception ex)
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                throw new BusinessException(ex.Message);
+                if (!unitOfWork.CertificadoDigitalBL.IsValid(certificado)) return base.Delete(certificado.Id);
             }
+
+            return null;
         }
+
+        //public override IHttpActionResult Get()
+        //{
+        //    try
+        //    {
+        //        //await DeleteCertificado();
+
+        //        return base.Get();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new BusinessException(ex.Message);
+        //    }
+        //}
+        //private async Task<IHttpActionResult> DeleteCertificado()
+        //{
+        //    using (var unitOfWork = new UnitOfWork(ContextInitialize))
+        //    {
+        //        if (!unitOfWork.CertificadoDigitalBL.IsValid())
+        //        {
+        //            var certificado = unitOfWork.CertificadoDigitalBL.All.FirstOrDefault();
+        //           await base.Delete(certificado.Id);
+
+        //        }
+        //    }
+        //}
+
     }
 }

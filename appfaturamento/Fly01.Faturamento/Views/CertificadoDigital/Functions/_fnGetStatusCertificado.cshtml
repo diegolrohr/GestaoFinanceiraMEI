@@ -9,32 +9,53 @@
             url: '@Url.Action("StatusCard", "CertificadoDigital")',
             type: "GET",
             success: function (data) {
-                var dataAtual = moment().format("X");
-                var dataExpiracao = moment(data.dataExpiracaoCertificado).format("X");
-
-                var distDataAtualExpiracao = dataExpiracao - dataAtual;
-
-                if (!data.dataExpiracaoCertificado) {//se nao ha certificado - primeira insercao
-                    fly01._.cardCertificado.setColor("red");
-                    fly01._.cardCertificado.info("<h4>Você ainda não configurou o Certificado Digital.</h4>" +
-                                                 "<p>Carregue o arquivo e informe a senha de um certificado válido.</p>");
-                }
-                else if (distDataAtualExpiracao < 0) {
-                    fly01._.cardCertificado.info("<h4>Seu certificado digital venceu em <strong>" + formataData(data.dataExpiracaoCertificado) + ".</strong></h4><p>Atualize o certificado.</p>");
-                }
-                else if (distDataAtualExpiracao < 2592000) {//30 dias em segundos
-                    fly01._.cardCertificado.setColor("orange");
-                    fly01._.cardCertificado.info("<h4>Seu certificado irá vencer em <strong>" + formataData(data.dataExpiracaoCertificado) + "</strong></h4><p>Fique atendo à atualização do seu certificado.</p>");
-                }
-                else {
-                    fly01._.cardCertificado.setColor(!isUpdateCertificadoOK ? "orange" : "green");
-                    fly01._.cardCertificado.info("<h4>" + mensagemComplementar + "O certificado atual é válido até <strong>" + formataData(data.dataExpiracaoCertificado) + "</strong></h4>");
-                }
+                debugger;
+                if (deletaCertificadoInvalido(data.id, data.dataExpiracao))
+                    showStatusCertificado(mensagemComplementar, pDataExpiracao);
             },
             error: function (jXHR, textStatus, errorThrown) {
                 fly01.toast(data.message, 'error');
             }
         });
+    }
+
+    function deletaCertificadoInvalido(idCertificado) {
+        $.ajax({
+            url: '@Url.Action("DeletaCertificadoInvalido", "CertificadoDigital")',
+            type: "POST",
+            data: { id: idCertificado },
+            success: function (data) {
+                return true;
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+    }
+
+    function showStatusCertificado(mensagemComplementar, pDataExpiracao)
+    {
+        var dataAtual = moment().format("X");
+        var dataExpiracao = moment(pDataExpiracao).format("X");
+
+        var distDataAtualExpiracao = dataExpiracao - dataAtual;
+
+        if (!pDataExpiracao) {//se nao ha certificado - primeira insercao
+            fly01._.cardCertificado.setColor("red");
+            fly01._.cardCertificado.info("<h4>Você ainda não configurou o Certificado Digital.</h4>" +
+                                         "<p>Carregue o arquivo e informe a senha de um certificado válido.</p>");
+        }
+        else if (distDataAtualExpiracao < 0) {
+            fly01._.cardCertificado.info("<h4>Seu certificado digital venceu em <strong>" + formataData(pDataExpiracao) + ".</strong></h4><p>Atualize o certificado.</p>");
+        }
+        else if (distDataAtualExpiracao < 2592000) {//30 dias em segundos
+            fly01._.cardCertificado.setColor("orange");
+            fly01._.cardCertificado.info("<h4>Seu certificado irá vencer em <strong>" + formataData(pDataExpiracao) + "</strong></h4><p>Fique atendo à atualização do seu certificado.</p>");
+        }
+        else {
+            fly01._.cardCertificado.setColor(!isUpdateCertificadoOK ? "orange" : "green");
+            fly01._.cardCertificado.info("<h4>" + mensagemComplementar + "O certificado atual é válido até <strong>" + formataData(pDataExpiracao) + "</strong></h4>");
+        }
     }
 
     function formataData(data) {

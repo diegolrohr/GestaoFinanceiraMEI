@@ -11,6 +11,8 @@ using Fly01.Core;
 using Fly01.Core.Notifications;
 using Fly01.Core.Reports;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Base;
+using System;
 
 namespace Fly01.Faturamento.BL
 {
@@ -201,21 +203,17 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public void DeleteCertificado(string plataformaId)
+        public bool IsValid(CertificadoDigital certificado)
         {
             var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaCNPJ = dadosEmpresa.CNPJ;
             var empresaIE = dadosEmpresa.InscricaoEstadual;
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-            var certificado = All.FirstOrDefault();
-
-            if (!string.IsNullOrEmpty(empresaCNPJ) && (certificado != null))
-            {
-                if ((certificado.Cnpj != empresaCNPJ) || (certificado.UF != empresaUF) || (certificado.InscricaoEstadual != empresaIE))
-                {
-                    Delete(certificado.Id);
-                }
-            }
+            //var certificado = All.FirstOrDefault();
+            
+            return (certificado == null) || (empresaCNPJ == certificado.Cnpj && 
+                empresaIE == certificado.InscricaoEstadual && 
+                empresaUF == certificado.UF);
         }
     }
 }

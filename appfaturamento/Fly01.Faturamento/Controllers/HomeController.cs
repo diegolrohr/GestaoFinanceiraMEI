@@ -152,6 +152,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Widgets = new WidgetsUI();
             config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Droz = new DrozUI();
             config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Faturamento",

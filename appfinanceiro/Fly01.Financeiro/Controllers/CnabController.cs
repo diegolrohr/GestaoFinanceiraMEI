@@ -22,8 +22,8 @@ namespace Fly01.Financeiro.Controllers
             {
                 id = x.Id,
                 numeroBoleto = x.NumeroBoleto,
-                banco = x.BancoCedente.Nome,
                 valorBoleto = x.ValorBoleto,
+                valorDesconto = x.ValorDesconto,
                 sacado = x.Pessoa.Nome,
                 status = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).Value,
                 dataEmissao = x.DataEmissao,
@@ -79,8 +79,7 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Dados para emissão de boleto",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Gerar boleto", OnClickFn = "fnCnabImprimeBoleto", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -119,6 +118,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
             });
+
             configCnab.Elements.Add(new ButtonUI
             {
                 Id = "btnListarContas",
@@ -130,7 +130,6 @@ namespace Fly01.Financeiro.Controllers
             });
 
             #region CnabItem
-
             var dtConfig = new DataTableUI
             {
                 Id = "dtCnabItem",
@@ -147,12 +146,11 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
-
             #endregion
 
             cfg.Content.Add(configCnab);
             cfg.Content.Add(dtConfig);
-
+            
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -174,24 +172,46 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            var config = new DataTableUI() { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
+            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            //config.Columns.Add(new DataTableUIColumn
+            //{
+            //    DataField = "status",
+            //    DisplayName = "Status",
+            //    Priority = 1,
+            //    Options = new List<SelectOptionUI>
+            //    (
+            //        SystemValueHelper.GetUIElementBase(typeof(StatusCnab))
+            //    )
+            //});
+
+            var config = new DataTableUI()
+            {
+                UrlGridLoad = Url.Action("GridLoad"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Options = new DataTableUIConfig()
+                {
+                    Select = new { style = "multi" }
+                }
+            };
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
+            //config.Columns.Add(new DataTableUIColumn { DataField = "valorDesconto", DisplayName = "Valor desconto", Priority = 4 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 5, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 6, Type = "date" });
+            //config.Columns.Add(new DataTableUIColumn { DataField = "dataDesconto", DisplayName = "Data desconto", Priority = 7, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "status", DisplayName = "Data desconto", Priority = 8, Type = "date" });
             config.Columns.Add(new DataTableUIColumn
             {
-                DataField = "status",
+                DataField = "statusBoletoBancario",
                 DisplayName = "Status",
-                Priority = 1,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab)))
+                Priority = 9,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusBoletoBancaria)))
+                //RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
             });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "numeroBoleto", DisplayName = "Nº Boleto", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "banco", DisplayName = "Banco", Priority = 3 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "sacado", DisplayName = "Sacado", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 5 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Dt. Emissão", Priority = 6 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Dt. Vencimento", Priority = 7 });
 
             cfg.Content.Add(config);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

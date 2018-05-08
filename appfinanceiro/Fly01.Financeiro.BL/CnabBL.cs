@@ -7,6 +7,7 @@ using Fly01.Core.Notifications;
 using System.Text.RegularExpressions;
 using System.Linq;
 using Fly01.Financeiro.Controllers;
+using System.Collections.Generic;
 
 namespace Fly01.Financeiro.BL
 {
@@ -186,6 +187,11 @@ namespace Fly01.Financeiro.BL
             grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 3, Item 4", Referencia = boleto.DataEmissao.AddMonths(+1).Month + "/" + boleto.DataEmissao.AddMonths(+1).Year, Valor = boleto.ValorTitulo * (decimal)0.08 });
 
             return grupoDemonstrativo;
+        }
+
+        public List<Cnab> Get()
+        {
+            return base.All.ToList(); 
         }
     }
 }

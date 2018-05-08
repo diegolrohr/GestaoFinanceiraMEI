@@ -2,6 +2,7 @@
 using System;
 using System.Web.Http;
 using Fly01.Core.API;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -17,5 +18,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(unitOfWork.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0));
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var data = unitOfWork.CnabBL.Get();
+                return Ok(new { value = data });
+            }
+        }
+
     }
 }

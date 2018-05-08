@@ -55,7 +55,7 @@
                 data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: $("#bancoId").val() },
                 success: function success(data) {
                     if (data.success) {
-                        var strMsg = "Saldo atualizado com sucesso.";
+                        var strMsg = "Boleto emitido com sucesso.";
                         if (data.message !== "")
                             strMsg = data.message;
                         fly01.toast(strMsg, "success");

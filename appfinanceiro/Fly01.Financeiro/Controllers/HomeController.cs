@@ -266,6 +266,16 @@ namespace Fly01.Financeiro.Controllers
 
             config.MenuItems.Add(new SidebarMenuUI()
             {
+                Label = "Cobrança",
+                Items = new List<LinkUI>
+            {
+                new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
+                new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "Cnab")}
+            }
+            });
+
+            config.MenuItems.Add(new SidebarMenuUI()
+            {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
             {

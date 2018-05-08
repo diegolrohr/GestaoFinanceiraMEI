@@ -39,8 +39,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.CertificadoDigitalBL.All.Any())
-                        return BadRequest("Já existe um certificado cadastrado para esta plataforma.");
+                    if (unitOfWork.CertificadoDigitalBL.IsValid())
+                        throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     return await base.Post(entity);
@@ -50,45 +50,26 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 throw new BusinessException(ex.Message);
             }
-        }
+        }     
 
-        public override Task<IHttpActionResult> Delete([FromODataUri] Guid key)
+        public override IHttpActionResult Get()
         {
-            var certificado = Find(key);
-
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            try
             {
-                if (!unitOfWork.CertificadoDigitalBL.IsValid(certificado)) return base.Delete(certificado.Id);
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    var entities = All();
+                    if (unitOfWork.CertificadoDigitalBL.IsValid() || !entities.Any())
+                        return Ok(entities.AsQueryable());
+                    throw new Exception("Não existe um certificado cadastrado para este CNPJ.");
+                }
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
-
-        //public override IHttpActionResult Get()
-        //{
-        //    try
-        //    {
-        //        //await DeleteCertificado();
-
-        //        return base.Get();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new BusinessException(ex.Message);
-        //    }
-        //}
-        //private async Task<IHttpActionResult> DeleteCertificado()
-        //{
-        //    using (var unitOfWork = new UnitOfWork(ContextInitialize))
-        //    {
-        //        if (!unitOfWork.CertificadoDigitalBL.IsValid())
-        //        {
-        //            var certificado = unitOfWork.CertificadoDigitalBL.All.FirstOrDefault();
-        //           await base.Delete(certificado.Id);
-
-        //        }
-        //    }
-        //}
+        
 
     }
 }

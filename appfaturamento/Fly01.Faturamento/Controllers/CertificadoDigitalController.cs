@@ -36,33 +36,69 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult StatusCard()
         {
-            var certificadoDigital = GetCertificado();
+            var empresa = GetDadosEmpresa();
 
-            if (certificadoDigital == null)
-                return Json(new { }, JsonRequestBehavior.AllowGet);
-
-            return Json(new
+            try
             {
-                dataExpiracaoCertificado = certificadoDigital.DataExpiracao,
-                id = certificadoDigital.Id
-            }, JsonRequestBehavior.AllowGet);
-        }
+                var certificadoDigital = GetCertificado();
+                if (certificadoDigital != null)
+                {
+                    string dtExpStr = certificadoDigital.DataExpiracao.Date.ToString("dd/MM/yyyy");
 
-        [HttpPost]
-        public JsonResult DeletaCertificadoInvalido(Guid id)
-        {
-            var response = RestHelper.ExecuteDeleteRequest($"{ResourceName}/{id}");
-
-            if (!response)
-                return Json(new { }, JsonRequestBehavior.AllowGet);
-
-            return Json(new
+                    if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.Date) < 1)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "red",
+                            mainInfo = "Seu certificado digital venceu em " + dtExpStr + ".",
+                            subInfo = "Atualize o certificado digital."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.AddDays(-30).Date) < 1)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "orange",
+                            mainInfo = "Seu certificado digital irá vencer em " + dtExpStr + ".",
+                            subInfo = "Providêncie a atualização do seu certificado digital."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "green",
+                            mainInfo = "O certificado digital atual é válido até " + dtExpStr + "."
+                        }, JsonRequestBehavior.AllowGet);
+                        }
+                }
+                
+                return Json(new
+                {
+                    success = true,
+                    color = "blue",
+                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui certificado digital cadastrado.",
+                    subInfo = "Envie o arquivo e informe a senha de um certificado digital válido."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
             {
-                certificadoExcluido = response,
-            }, JsonRequestBehavior.AllowGet);
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                var result = new
+                {
+                    success = false,
+                    color = "blue",
+                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui Certificado digital cadastrado.",
+                    subInfo = "Envie o arquivo e informe a senha de um certificado válido.",
+                    message = error.Message
+                };
 
+                return Json(result, JsonRequestBehavior.AllowGet); ;
+            }
         }
-
         public override Func<CertificadoDigitalVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
@@ -140,19 +176,13 @@ namespace Fly01.Faturamento.Controllers
                     md5 = Base64Helper.CalculaMD5Hash(conteudo)
                 };
 
-                var certificadoExistente = GetCertificado();
-
-                CertificadoDigitalVM arquivoRetorno;
-
-                if(certificadoExistente == null)
-                    arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
-                else
-                    arquivoRetorno = RestHelper.ExecutePutRequest<CertificadoDigitalVM>($"{ResourceName}/{certificadoExistente.Id}", JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
+                CertificadoDigitalVM arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
 
                 return Json(new
                 {
                     success = true,
                     data = arquivoRetorno,
+                    message = "Certificado digital cadastrado com sucesso.",
                     recordsFiltered = 1,
                     recordsTotal = 1
                 }, JsonRequestBehavior.AllowGet);

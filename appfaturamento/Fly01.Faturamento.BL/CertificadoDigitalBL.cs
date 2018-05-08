@@ -203,17 +203,18 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public bool IsValid(CertificadoDigital certificado)
+        public bool IsValid(CertificadoDigital certificado=null)
         {
+
             var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaCNPJ = dadosEmpresa.CNPJ;
             var empresaIE = dadosEmpresa.InscricaoEstadual;
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-            //var certificado = All.FirstOrDefault();
             
-            return (certificado == null) || (empresaCNPJ == certificado.Cnpj && 
-                empresaIE == certificado.InscricaoEstadual && 
-                empresaUF == certificado.UF);
+            if (certificado==null)
+                certificado = All.FirstOrDefault();
+            
+            return (certificado != null) && ((empresaCNPJ == certificado.Cnpj && empresaIE == certificado.InscricaoEstadual && empresaUF == certificado.UF));
         }
     }
 }

@@ -100,13 +100,10 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(string entity, RabbitConfig.enHTTPVerb httpMethod)
+        public override void PersistMessage(string message, RabbitConfig.enHTTPVerb httpMethod)
         {
-            MovimentoEstoque model = JsonConvert.DeserializeObject<MovimentoEstoque>(entity);
-
-            if (model == null) return;
-
-                Movimenta(model);
+            foreach (var item in ResolveTypeOfMessage(message))
+                Movimenta(item);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

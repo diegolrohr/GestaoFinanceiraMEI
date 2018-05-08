@@ -109,7 +109,7 @@ namespace Fly01.Compras.BL
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
 
-                Producer<ContaPagar>.Send(routePrefixNameContaPagar, contaPagar, RabbitConfig.enHTTPVerb.POST);
+                Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.enHTTPVerb.POST);
             }
 
             if (entity.MovimentaEstoque)
@@ -124,7 +124,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl
                     };
 
-                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, movimento, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, AppUser, PlataformaUrl, movimento, RabbitConfig.enHTTPVerb.POST);
                 }
             }
         }

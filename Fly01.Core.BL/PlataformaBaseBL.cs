@@ -3,7 +3,9 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -131,21 +133,38 @@ namespace Fly01.Core.BL
         /// Caso seja necessário criar regras de negócio específicas para as entidades, este método deve ser sobrescrito.
         /// Este método será chamado sempre que o construtor da BL definir a propriedade 'isServiceBusRoute = true'.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(string entity, RabbitConfig.enHTTPVerb httpMethod)
+        public virtual void PersistMessage(string message, RabbitConfig.enHTTPVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
 
-            var model = JsonConvert.DeserializeObject<TEntity>(entity);
+            foreach (var item in ResolveTypeOfMessage(message))
+            {
+                switch (httpMethod)
+                {
+                    case RabbitConfig.enHTTPVerb.POST:
+                        Insert(item);
+                        break;
+                    case RabbitConfig.enHTTPVerb.PUT:
+                        AttachForUpdate(item);
+                        break;
+                    case RabbitConfig.enHTTPVerb.DELETE:
+                        Delete(item);
+                        break;
+                }
+            }
+        }
 
-            if (model == null) return;
+        protected List<TEntity> ResolveTypeOfMessage(string message)
+        {
+            var verifyModelType = JsonConvert.DeserializeObject<dynamic>(message);
 
-            if (httpMethod == RabbitConfig.enHTTPVerb.POST)
-                Insert(model);
-            else
-                AttachForUpdate(model);
+            if (verifyModelType.Type == JTokenType.Array)
+                return JsonConvert.DeserializeObject<List<TEntity>>(message);
+
+            return new List<TEntity>() { JsonConvert.DeserializeObject<TEntity>(message) };
         }
 
         public virtual void AfterSave(TEntity entity)

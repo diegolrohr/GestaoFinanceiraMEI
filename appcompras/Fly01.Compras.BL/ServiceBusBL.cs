@@ -12,7 +12,7 @@ namespace Fly01.Compras.BL
         {
             SetupEnvironment.Create();
             
-            base.Consume();
+            Consume();
         }
 
         protected override async Task PersistMessage()

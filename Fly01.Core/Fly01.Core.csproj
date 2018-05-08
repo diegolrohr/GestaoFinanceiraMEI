@@ -48,6 +48,7 @@
     <Compile Include="ValueObjects\CNPJ.cs" />
     <Compile Include="ValueObjects\CPF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BoletoVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladoslataformaVM.cs" />
     <Compile Include="ViewModels\Presentation\AppsInstaladosVM.cs" />
     <Compile Include="ViewModels\Presentation\BatchDataVM.cs" />
@@ -86,6 +87,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Boleto2.Net.2.0.0\lib\Boleto2Net.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>

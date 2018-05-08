@@ -115,7 +115,6 @@
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
-    <Compile Include="ViewModel\BoletoVM.cs" />
     <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />

@@ -6,6 +6,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Fly01.Financeiro.Controllers;
 
 namespace Fly01.Financeiro.BL
 {
@@ -26,7 +27,7 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        public Boleto2Net.Boleto GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        public BoletoBanco GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
             if (contaReceber == null) throw new BusinessException("A conta a receber informada não foi encontrada.");
@@ -104,7 +105,7 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
+        private BoletoBanco MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
         {
             var numerosGuidContaReceber = Regex.Replace(dadosBoleto.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
@@ -137,14 +138,23 @@ namespace Fly01.Financeiro.BL
 
             boleto.MensagemInstrucoesCaixa = GetInstrucoesAoCaixa(boleto);
 
-            //boleto.Avalista = sacado;
-            //boleto.Avalista.Nome = boleto.Avalista.Nome.Replace("Sacado", "Avalista");
+            boleto.Avalista = new Boleto2Net.Sacado();
+            boleto.Avalista.Nome = boleto.Avalista.Nome.Replace("Sacado", "Avalista");
 
             boleto.Demonstrativos.Add(GetDemonstrativos(boleto));
 
             boleto.ValidarDados();
 
-            return boleto;
+            return new BoletoBanco(boleto.Banco.Codigo)
+            {
+                MeuBoleto = boleto
+            };
+
+            //return BoletoBanco()
+            //{
+            //    CodigoBanco = boleto.Banco.Codigo,
+            //    Boleto = boleto
+            //};
         }
 
         private string GetInstrucoesAoCaixa(Boleto2Net.Boleto boleto)

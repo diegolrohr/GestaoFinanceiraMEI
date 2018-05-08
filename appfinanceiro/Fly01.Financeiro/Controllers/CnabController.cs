@@ -42,39 +42,26 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var boletos = RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
+            var boleto = RestHelper.ExecuteGetRequest<BoletoBanco>("cnab/imprimeBoleto", queryString);
+            var boleto2 = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(boleto.CodigoBanco));
 
-            //var boletos = RestHelper.ExecuteGetRequest<List<Boleto2Net.Boleto>>("cnab/imprimeBoleto", queryString);
+            boleto2 = boleto.GetBoleto();
+            var boletoImpresso = new Boleto2Net.BoletoBancario
+            {
+                Boleto = boleto2,
+                OcultarInstrucoes = false,
+                MostrarComprovanteEntrega = true,
+                MostrarEnderecoCedente = true
+            };
 
-            //foreach (var item in boletos)
+            //var htmlBoleto = boletoImpresso.MontaHtml();
+
             //{
-            //    using (var imprimeBoleto = new Boleto2Net.BoletoBancario())
-            //    {
-            //        imprimeBoleto.Boleto = item;
-            //        imprimeBoleto.OcultarInstrucoes = false;
-            //        imprimeBoleto.MostrarComprovanteEntrega = true;
-            //        imprimeBoleto.MostrarEnderecoCedente = true;
-
-            //        var htmlBoleto = imprimeBoleto.MontaHtml();
-            //    }
-
-            //    //{
-            //    //    html.Append("<div style=\"page-break-after: always;\">");
-            //    //    html.Append(imprimeBoleto.MontaHtml());
-            //    //    html.Append("</div>");
-            //    //}
-
+            //    html.Append("<div style=\"page-break-after: always;\">");
+            //    html.Append(imprimeBoleto.MontaHtml());
+            //    html.Append("</div>");
             //}
 
-            //var dadosBoleto = new
-            //{
-            //    contaReceberId = contaReceberId,
-            //    contaBancariaId = contaBancariaId,
-            //    dataDesconto = DateTime.Now.ToString("yyyy-MM-dd") /*dataDesconto.ToString("yyyy-MM-dd")*/,
-            //    valorDesconto = 1 //.Replace(",", ".")
-            //};
-
-            //var response = RestHelper.ExecutePostRequest<CnabVM>("cnab/imprimeBoleto", dadosBoleto);
             return null;
         }
 
@@ -208,6 +195,25 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+    }
+
+    public class BoletoBanco
+    {
+        public BoletoBanco(int codigoBanco)
+        {
+            CodigoBanco = codigoBanco;
+        }
+
+        public Boleto2Net.Boleto MeuBoleto { get; set; }
+
+        private BoletoBanco() { }
+        public static Boleto2Net.Boleto Boleto { get; } = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(1));
+        public int CodigoBanco { get; set; }
+
+        public Boleto2Net.Boleto GetBoleto()
+        {
+            return BoletoBanco.Boleto;
         }
     }
 }

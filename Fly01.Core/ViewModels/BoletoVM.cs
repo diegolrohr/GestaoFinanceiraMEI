@@ -2,9 +2,9 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace Fly01.Financeiro.ViewModel
+namespace Fly01.Core.ViewModels
 {
-    internal class BoletoVM
+    public class BoletoVM
     {
         public int CodigoMoeda { get; set; } = 9;
         public string EspecieMoeda { get; set; } = "R$";

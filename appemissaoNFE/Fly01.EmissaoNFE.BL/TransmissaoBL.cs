@@ -126,14 +126,10 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("O código da Nota Fiscal é obrigatório.", "Item.Identificador.CodigoNF"));
                     entity.Fail(string.IsNullOrEmpty(item.Identificador.NaturezaOperacao),
                         new Error("A descrição de Natureza da Operação é obrigatória.", "Item.Identificador.NaturezaOperacao"));
-                    entity.Fail((item.Identificador.FormaPagamento < 0 || (int)item.Identificador.FormaPagamento > 2),
-                        new Error("Forma de pagamento inválida.", "Item.Identificador.FormaPagamento"));
                     entity.Fail(string.IsNullOrEmpty(item.Identificador.Serie.ToString()),
                         new Error("Série é um dado obrigatório.", "Item.Identificador.Serie"));
                     entity.Fail(item.Identificador.Serie > 889 && item.Identificador.FormaEmissao == TipoModalidade.Normal,
                         new Error("Série inválida para a modalidade 1 (Emissão Normal).", "Item.Identificador.Serie"));
-                    entity.Fail(item.Identificador.Serie < 900 && item.Identificador.FormaEmissao == TipoModalidade.SCAN,
-                        new Error("Série inválida para a modalidade 3 (Contingência SCAN).", "Item.Identificador.Serie"));
                     entity.Fail(string.IsNullOrEmpty(item.Identificador.NumeroDocumentoFiscal.ToString()),
                         new Error("O número do documento é obrigatório.", "Item.Identificador.NumeroDocumentoFiscal"));
                     entity.Fail((item.Identificador.TipoDocumentoFiscal < 0 || (int)item.Identificador.TipoDocumentoFiscal > 1),

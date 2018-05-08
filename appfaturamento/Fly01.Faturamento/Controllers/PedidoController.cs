@@ -364,6 +364,14 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
+                Id = "formaPagamentoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o pedido vai ser faturado, informe a forma de pagamento."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {

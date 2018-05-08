@@ -9,6 +9,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Rest;
 using System.Configuration;
+using Fly01.uiJS.Classes.Widgets;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -146,17 +147,19 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            config.Zendesk = new ZendeskWidget()
+            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Email = SessionManager.Current.UserData.PlatformUser;
+
+            config.Widgets = new WidgetsUI();
+            config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Droz = new DrozUI();
+            config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Faturamento",
                 AppTag = "fly01_manufatura",
-                Name = SessionManager.Current.UserData.TokenData.Username,
-                Email = SessionManager.Current.UserData.PlatformUser
             };
-
-            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
-                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
-                : string.Empty;
+            if (Request.Url.ToString().Contains("fly01.com.br"))
+                config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

@@ -2,6 +2,6 @@
 <script>
     function fnNovaBaixa(idRecord) {
         var url = "@Url.Action("ModalNovaBaixa", "ContaPagar", new { contaController = "ContaPagar" })";
-        fly01.call(fly01.modal.form, url, idRecord);
+        fly01.modal(url, idRecord);
     }
 </script>

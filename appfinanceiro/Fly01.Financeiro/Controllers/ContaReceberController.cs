@@ -184,8 +184,9 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR" },
-                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
+                        new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla" },
+                        new HtmlUIButton { Id = "renegociacaoBtn", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR" },
+                        new HtmlUIButton { Id = "printBtn", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
                         new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
                     }
                 },

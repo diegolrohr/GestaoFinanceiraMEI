@@ -46,6 +46,8 @@ namespace Fly01.Core.Helpers
             provider.NumberGroupSeparator = ",";
             provider.NumberGroupSizes = new int[] { 3 };
 
+            var list = _XElement.Descendants("STMTTRN").ToList();
+
             _lancamentos = (
                 from c in _XElement.Descendants("STMTTRN")
                 select new OFXLancamento()

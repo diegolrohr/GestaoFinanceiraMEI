@@ -59,7 +59,7 @@ namespace Fly01.Core.API
             await UnitSave();
 
             if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.POST);
+                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.POST);
 
             return Created(entity);
         }
@@ -88,7 +88,7 @@ namespace Fly01.Core.API
                 await UnitSave();
 
                 if (MustProduceMessageServiceBus)
-                    Producer<TEntity>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.PUT);
+                    Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.PUT);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -116,14 +116,14 @@ namespace Fly01.Core.API
             await UnitSave();
 
             if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.DELETE);
+                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.DELETE);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private Notification Notification { get; } = new Notification();
+        protected Notification Notification { get; } = new Notification();
 
-        private void AddErrorModelState(ModelStateDictionary modelState)
+        protected void AddErrorModelState(ModelStateDictionary modelState)
         {
             modelState.ToList().ForEach(
                 model => model.Value.Errors.ToList().ForEach(

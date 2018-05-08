@@ -29,6 +29,7 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<Cidade>("cidade");
             builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
             builder.EntitySet<ContaFinanceiraBaixa>("contafinanceirabaixa");
+            builder.EntitySet<ContaFinanceiraBaixaMultipla>("contafinanceirabaixamultipla");
             builder.EntitySet<ConciliacaoBancaria>("conciliacaobancaria");
             builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariaitem");
             builder.EntitySet<ConciliacaoBancariaItemContaFinanceira>("conciliacaobancariaitemcontafinanceira");

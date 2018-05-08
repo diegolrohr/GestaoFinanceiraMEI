@@ -1,7 +1,7 @@
 ﻿
 <script>
     function fnCancelarBaixas(idRecord) {
-        fly01.modal.confirm("Confirmar Cancelamento", "Deseja realmente cancelar o/s pagamento/s deste título?", "fnCancelarBaixasConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Cancelamento", "Deseja realmente cancelar o/s pagamento/s deste título?", "fnCancelarBaixasConfirmed(\"" + idRecord + "\")");
     }
     function fnCancelarBaixasConfirmed(idRecord) {
         if (idRecord) {

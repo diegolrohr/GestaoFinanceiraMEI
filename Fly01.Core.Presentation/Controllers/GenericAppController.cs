@@ -25,7 +25,7 @@ namespace Fly01.Core.Presentation.Controllers
             content = content.Replace("<script>", "").Replace("</script>", "");
             return Content(content, "text/javascript");
         }
-        private string RenderRazorViewToString(string viewName)
+        protected string RenderRazorViewToString(string viewName)
         {
             using (var sw = new StringWriter())
             {

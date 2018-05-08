@@ -25,10 +25,10 @@
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmTransmitirNFSe input#totalFreteNFSe').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmTransmitirNFSe input#totalNotaFiscalNFSe').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
             }
             else {
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
         })

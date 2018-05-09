@@ -42,13 +42,11 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var boleto = RestHelper.ExecuteGetRequest<BoletoBanco>("cnab/imprimeBoleto", queryString);
-            var boleto2 = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(boleto.CodigoBanco));
+            var proxyBoleto = RestHelper.ExecuteGetRequest<Boleto2Net.Boleto2NetProxy>("cnab/imprimeBoleto", queryString);
 
-            boleto2 = boleto.GetBoleto();
             var boletoImpresso = new Boleto2Net.BoletoBancario
             {
-                Boleto = boleto2,
+                Boleto = proxyBoleto.boleto,
                 OcultarInstrucoes = false,
                 MostrarComprovanteEntrega = true,
                 MostrarEnderecoCedente = true
@@ -215,25 +213,6 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
-    }
-
-    public class BoletoBanco
-    {
-        public BoletoBanco(int codigoBanco)
-        {
-            CodigoBanco = codigoBanco;
-        }
-
-        public Boleto2Net.Boleto MeuBoleto { get; set; }
-
-        private BoletoBanco() { }
-        public static Boleto2Net.Boleto Boleto { get; } = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(1));
-        public int CodigoBanco { get; set; }
-
-        public Boleto2Net.Boleto GetBoleto()
-        {
-            return BoletoBanco.Boleto;
         }
     }
 }

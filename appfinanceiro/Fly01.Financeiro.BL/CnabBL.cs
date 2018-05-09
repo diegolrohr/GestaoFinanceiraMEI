@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        public BoletoBanco GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        public Boleto2Net.Boleto GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
             if (contaReceber == null) throw new BusinessException("A conta a receber informada não foi encontrada.");
@@ -39,12 +39,38 @@ namespace Fly01.Financeiro.BL
             var banco = contaBancariaBL.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancaria.BancoId).FirstOrDefault();
             if (!banco.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
 
+
+            var proxy = new Boleto2Net.Boleto2NetProxy();
+            string mensagemBoleto = "";
+            var dadosEmpresaCedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+            var dadosSacado = GetSacado(contaReceber.PessoaId);
             var bancoCedente = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
+            codigoCedente = "1234657";
 
-            bancoCedente.Cedente = GetCedenteBoletoNet(contaBancaria);
-            bancoCedente.FormataCedente();
+            proxy.SetupCobranca(dadosSacado.CPFCNPJ, dadosSacado.Nome, dadosSacado.Endereco.LogradouroEndereco,
+                dadosSacado.Endereco.LogradouroNumero, dadosSacado.Endereco.LogradouroComplemento, dadosSacado.Endereco.Bairro,
+                dadosSacado.Endereco.Cidade, dadosSacado.Endereco.UF, dadosSacado.Endereco.CEP, dadosSacado.Observacoes, bancoCedente.Codigo,
+                banco.Agencia, banco.DigitoAgencia, "", banco.Conta, banco.DigitoConta, codigoCedente, "", "",
+                "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro,
+                (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 0, ref mensagemBoleto);
 
-            return MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto);
+            proxy.NovoBoleto(ref mensagemBoleto);
+
+            var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
+            var randomNossoNumero = new Random().Next(0, 9999999);
+            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
+
+            proxy.DefinirBoleto("R$", $"BB{randomNossoNumero.ToString("D6")}", nossoNumero,
+                contaReceber.DataEmissao, DateTime.Now, contaReceber.DataVencimento, (decimal)contaReceber.ValorPrevisto,
+                $"CHAVEPRIMARIA={nossoNumero}", "N", ref mensagemBoleto);
+            proxy.FecharBoleto(ref mensagemBoleto);
+
+            return proxy.boleto;
+            //var bancoCedente = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
+            //bancoCedente.Cedente = GetCedenteBoletoNet(contaBancaria);
+            //bancoCedente.FormataCedente();
+
+            //return MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto);
         }
 
         private Boleto2Net.Sacado GetSacado(Guid pessoaId)
@@ -106,7 +132,7 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        private BoletoBanco MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
+        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
         {
             var numerosGuidContaReceber = Regex.Replace(dadosBoleto.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
@@ -146,16 +172,7 @@ namespace Fly01.Financeiro.BL
 
             boleto.ValidarDados();
 
-            return new BoletoBanco(boleto.Banco.Codigo)
-            {
-                MeuBoleto = boleto
-            };
-
-            //return BoletoBanco()
-            //{
-            //    CodigoBanco = boleto.Banco.Codigo,
-            //    Boleto = boleto
-            //};
+            return boleto;
         }
 
         private string GetInstrucoesAoCaixa(Boleto2Net.Boleto boleto)
@@ -191,7 +208,7 @@ namespace Fly01.Financeiro.BL
 
         public List<Cnab> Get()
         {
-            return base.All.ToList(); 
+            return base.All.ToList();
         }
     }
 }

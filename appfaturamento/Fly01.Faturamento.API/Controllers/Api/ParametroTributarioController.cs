@@ -39,12 +39,26 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.ParametroTributarioBL.All.Any())
-                        return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
-
                     unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
 
                     return await base.Post(entity);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        public override IHttpActionResult Get()
+        {
+            try
+            {
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    var entities = All();
+                    if (unitOfWork.ParametroTributarioBL.IsValid() || !entities.Any())
+                        return Ok(entities.AsQueryable());
+                    return Ok();
                 }
             }
             catch (Exception ex)

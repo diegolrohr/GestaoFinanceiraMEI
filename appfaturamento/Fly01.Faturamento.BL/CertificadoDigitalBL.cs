@@ -124,7 +124,7 @@ namespace Fly01.Faturamento.BL
         public string GetEntidade(TipoAmbiente tipoAmbiente)
         {
             string entidade;
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null)
             {
@@ -150,7 +150,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null && !postCertificado)
             {
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
+            var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
 

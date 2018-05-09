@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Text;
 using Fly01.Core.BL;
-using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Notifications;
-using System.Text.RegularExpressions;
 using System.Linq;
-using Fly01.Financeiro.Controllers;
 using System.Collections.Generic;
+using Fly01.Core.ViewModels;
+using System.Text.RegularExpressions;
+using System.Text;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.BL
 {
@@ -28,187 +27,87 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        public Boleto2Net.Boleto GeraBoletos(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
+        private string GetInstrucoesAoCaixa(ContaReceber conta, DateTime dataDesconto, double valorDesconto)
         {
-            var contaReceber = contaReceberBL.Find(contaReceberId);
-            if (contaReceber == null) throw new BusinessException("A conta a receber informada não foi encontrada.");
-
-            var contaBancaria = contaBancariaBL.Find(contaBancariaId);
-            if (contaBancaria == null) throw new BusinessException("A conta bancária informada não foi encontrada.");
-
-            var banco = contaBancariaBL.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancaria.BancoId).FirstOrDefault();
-            if (!banco.Banco.EmiteBoleto) throw new BusinessException("Não é possível emitir boletos para esta instituição bancária.");
-
-
-            var proxy = new Boleto2Net.Boleto2NetProxy();
-            string mensagemBoleto = "";
-            var dadosEmpresaCedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            var dadosSacado = GetSacado(contaReceber.PessoaId);
-            var bancoCedente = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
-            codigoCedente = "1234657";
-
-            proxy.SetupCobranca(dadosSacado.CPFCNPJ, dadosSacado.Nome, dadosSacado.Endereco.LogradouroEndereco,
-                dadosSacado.Endereco.LogradouroNumero, dadosSacado.Endereco.LogradouroComplemento, dadosSacado.Endereco.Bairro,
-                dadosSacado.Endereco.Cidade, dadosSacado.Endereco.UF, dadosSacado.Endereco.CEP, dadosSacado.Observacoes, bancoCedente.Codigo,
-                banco.Agencia, banco.DigitoAgencia, "", banco.Conta, banco.DigitoConta, codigoCedente, "", "",
-                "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro,
-                (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 0, ref mensagemBoleto);
-
-            proxy.NovoBoleto(ref mensagemBoleto);
-
-            var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
-            var randomNossoNumero = new Random().Next(0, 9999999);
-            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
-
-            proxy.DefinirBoleto("R$", $"BB{randomNossoNumero.ToString("D6")}", nossoNumero,
-                contaReceber.DataEmissao, DateTime.Now, contaReceber.DataVencimento, (decimal)contaReceber.ValorPrevisto,
-                $"CHAVEPRIMARIA={nossoNumero}", "N", ref mensagemBoleto);
-            proxy.FecharBoleto(ref mensagemBoleto);
-
-            return proxy.boleto;
-            //var bancoCedente = Boleto2Net.Banco.Instancia(ushort.Parse(contaBancaria.Banco.Codigo));
-            //bancoCedente.Cedente = GetCedenteBoletoNet(contaBancaria);
-            //bancoCedente.FormataCedente();
-
-            //return MontaBoleto(bancoCedente, contaReceber, dataDesconto, valorDesconto);
-        }
-
-        private Boleto2Net.Sacado GetSacado(Guid pessoaId)
-        {
-            var pessoa = contaReceberBL
-                .AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado)
-                .Where(x => x.PessoaId == pessoaId).FirstOrDefault()?.Pessoa;
-
-            return new Boleto2Net.Sacado
-            {
-                CPFCNPJ = pessoa.CPFCNPJ,
-                Nome = pessoa.Nome,
-                Observacoes = "",
-                Endereco = new Boleto2Net.Endereco
-                {
-                    LogradouroEndereco = pessoa.Endereco,
-                    LogradouroNumero = pessoa.Numero,
-                    Bairro = pessoa.Bairro,
-                    Cidade = pessoa.Cidade?.Nome,
-                    UF = pessoa.Cidade?.Estado?.Sigla,
-                    CEP = pessoa.CEP
-                }
-            };
-        }
-
-        private Boleto2Net.Cedente GetCedenteBoletoNet(ContaBancaria contaCedente)
-        {
-            var dadosEmpresaCedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            codigoCedente = "1234657";
-
-            return new Boleto2Net.Cedente
-            {
-                CPFCNPJ = dadosEmpresaCedente.CNPJ,
-                Nome = dadosEmpresaCedente.NomeFantasia,
-                Codigo = codigoCedente,
-                CodigoDV = "",
-                Endereco = new Boleto2Net.Endereco
-                {
-                    LogradouroEndereco = dadosEmpresaCedente.Endereco,
-                    LogradouroNumero = dadosEmpresaCedente.Numero,
-                    LogradouroComplemento = "",
-                    Bairro = dadosEmpresaCedente.Bairro,
-                    Cidade = dadosEmpresaCedente.Cidade?.Nome,
-                    UF = dadosEmpresaCedente.Cidade?.Estado?.Sigla,
-                    CEP = dadosEmpresaCedente.CEP
-                },
-                ContaBancaria = new Boleto2Net.ContaBancaria
-                {
-                    Agencia = contaCedente.Agencia,
-                    DigitoAgencia = contaCedente.DigitoAgencia,
-                    Conta = contaCedente.Conta,
-                    DigitoConta = contaCedente.DigitoConta,
-                    CarteiraPadrao = "11", //contaCedente.CarteiraPadrao,
-                    VariacaoCarteiraPadrao = "019", //contaCedente.VariacaoCarteiraPadrao,
-                    TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                    TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,
-                    TipoImpressaoBoleto = Boleto2Net.TipoImpressaoBoleto.Empresa
-                }
-            };
-        }
-
-        private Boleto2Net.Boleto MontaBoleto(Boleto2Net.IBanco banco, ContaReceber dadosBoleto, DateTime dataDesconto, double valorDesconto)
-        {
-            var numerosGuidContaReceber = Regex.Replace(dadosBoleto.Id.ToString(), "[^0-9]", "");
-            var randomNossoNumero = new Random().Next(0, 9999999);
-            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
-
-            var boleto = new Boleto2Net.Boleto(banco)
-            {
-                Sacado = GetSacado(dadosBoleto.PessoaId),
-                DataEmissao = dadosBoleto.DataEmissao,
-                DataProcessamento = DateTime.Now,
-                DataVencimento = dadosBoleto.DataVencimento,
-                ValorTitulo = (decimal)dadosBoleto.ValorPrevisto,
-                NossoNumero = nossoNumero,
-                NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
-                EspecieDocumento = Boleto2Net.TipoEspecieDocumento.DM,
-                Aceite = "N",
-                CodigoInstrucao1 = "11",
-                CodigoInstrucao2 = "22",
-                DataDesconto = dataDesconto,
-                ValorDesconto = (decimal)(dataDesconto <= DateTime.Now ? valorDesconto : 0),
-                DataMulta = dadosBoleto.DataVencimento.AddDays(1),
-                PercentualMulta = (decimal)percentMulta,
-                ValorMulta = (decimal)(dadosBoleto.ValorPrevisto * (percentMulta / 100)),
-                DataJuros = dadosBoleto.DataVencimento.AddDays(1),
-                PercentualJurosDia = (decimal)jurosDia,
-                ValorJurosDia = (decimal)(dadosBoleto.ValorPrevisto * (jurosDia / 100)),
-                MensagemArquivoRemessa = "Mensagem para o arquivo remessa",
-                NumeroControleParticipante = $"CHAVEPRIMARIA={nossoNumero}"
-            };
-
-            boleto.MensagemInstrucoesCaixa = GetInstrucoesAoCaixa(boleto);
-
-            boleto.Avalista = new Boleto2Net.Sacado();
-            boleto.Avalista.Nome = boleto.Avalista.Nome.Replace("Sacado", "Avalista");
-
-            boleto.Demonstrativos.Add(GetDemonstrativos(boleto));
-
-            boleto.ValidarDados();
-
-            return boleto;
-        }
-
-        private string GetInstrucoesAoCaixa(Boleto2Net.Boleto boleto)
-        {
+            var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
+            var valorJuros = (decimal)(conta.ValorPrevisto * (jurosDia / 100));
             var msgCaixa = new StringBuilder();
-            if (boleto.ValorDesconto > 0) msgCaixa.AppendLine($"Conceder desconto de {boleto.ValorDesconto.ToString("R$ ##,##0.00")} até {boleto.DataDesconto.ToString("dd/MM/yyyy")}. ");
-            if (boleto.ValorMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {boleto.ValorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
-            if (boleto.ValorJurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {boleto.ValorJurosDia.ToString("R$ ##,##0.00")} por dia de atraso. ");
+
+            if (valorDesconto > 0) msgCaixa.AppendLine($"Conceder desconto de {valorDesconto.ToString("R$ ##,##0.00")} até {dataDesconto.ToString("dd/MM/yyyy")}. ");
+            if (percentMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
+            if (jurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
 
             return msgCaixa.ToString();
-        }
-
-        private Boleto2Net.GrupoDemonstrativo GetDemonstrativos(Boleto2Net.Boleto boleto)
-        {
-            var grupoDemonstrativo = new Boleto2Net.GrupoDemonstrativo { Descricao = "GRUPO 1" };
-
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 1, Item 1", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.15 });
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 1, Item 2", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.05 });
-            boleto.Demonstrativos.Add(grupoDemonstrativo);
-
-            grupoDemonstrativo = new Boleto2Net.GrupoDemonstrativo { Descricao = "GRUPO 2" };
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 2, Item 1", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.20 });
-            boleto.Demonstrativos.Add(grupoDemonstrativo);
-
-            grupoDemonstrativo = new Boleto2Net.GrupoDemonstrativo { Descricao = "GRUPO 3" };
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 3, Item 1", Referencia = boleto.DataEmissao.AddMonths(-1).Month + "/" + boleto.DataEmissao.AddMonths(-1).Year, Valor = boleto.ValorTitulo * (decimal)0.37 });
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 3, Item 2", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.03 });
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 3, Item 3", Referencia = boleto.DataEmissao.Month + "/" + boleto.DataEmissao.Year, Valor = boleto.ValorTitulo * (decimal)0.12 });
-            grupoDemonstrativo.Itens.Add(new Boleto2Net.ItemDemonstrativo { Descricao = "Grupo 3, Item 4", Referencia = boleto.DataEmissao.AddMonths(+1).Month + "/" + boleto.DataEmissao.AddMonths(+1).Year, Valor = boleto.ValorTitulo * (decimal)0.08 });
-
-            return grupoDemonstrativo;
         }
 
         public List<Cnab> Get()
         {
             return base.All.ToList();
+        }
+
+        public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
+        {
+            var contaReceber = contaReceberBL.Find(contaReceberId);
+            var contaBancariaCedente = contaBancariaBL.Find(contaBancariaId);
+            var banco = contaBancariaBL.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancariaCedente.BancoId).FirstOrDefault();
+            var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+            var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
+            codigoCedente = "1234657";
+
+            var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
+            var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
+            var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
+            var randomNossoNumero = new Random().Next(0, 9999999);
+            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
+
+            return new BoletoVM()
+            {
+                ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
+                ValorDesconto = (decimal)0,
+                ValorMulta = valorMulta,
+                ValorJuros = valorJuros,
+                DataEmissao = DateTime.Now,
+                DataVencimento = contaReceber.DataVencimento,
+                NossoNumero = nossoNumero,
+                EspecieMoeda = "R$",
+                NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
+                InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber, DateTime.Now, 0),
+                Cedente = new CedenteVM
+                {
+                    CNPJ = cedente.CNPJ,
+                    RazaoSocial = cedente.RazaoSocial,
+                    Endereco = cedente.Endereco,
+                    EnderecoNumero = cedente.Numero,
+                    EnderecoComplemento = "",
+                    EnderecoBairro = cedente.Bairro,
+                    EnderecoCidade = cedente.Cidade.Nome,
+                    EnderecoUF = cedente.Cidade.Estado.Sigla,
+                    EnderecoCEP = cedente.CEP,
+                    Observacoes = "",
+                    CodigoCedente = codigoCedente,
+                    ContaBancariaCedente = new ContaBancariaCedenteVM
+                    {
+                        Agencia = contaBancariaCedente.Agencia,
+                        DigitoAgencia = contaBancariaCedente.DigitoAgencia,
+                        Conta = contaBancariaCedente.Conta,
+                        DigitoConta = contaBancariaCedente.DigitoConta,
+                        CodigoBanco = int.Parse(contaBancariaCedente.Banco.Codigo)
+                    }
+                },
+                Sacado = new SacadoVM
+                {
+                    CNPJ = sacado.CPFCNPJ,
+                    Nome = sacado.Nome,
+                    Endereco = sacado.Endereco,
+                    EnderecoNumero = sacado.Numero,
+                    EnderecoComplemento = sacado.Complemento,
+                    EnderecoBairro = sacado.Bairro,
+                    EnderecoCidade = sacado.Cidade?.Nome,
+                    EnderecoUF = sacado.Cidade?.Estado?.Sigla,
+                    EnderecoCEP = sacado.CEP,
+                    Observacoes = ""
+                }
+            };
         }
     }
 }

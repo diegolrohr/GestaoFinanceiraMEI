@@ -15,7 +15,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0));
+                //return Ok(unitOfWork.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0));
+                return Ok(unitOfWork.CnabBL.GetDadosBoleto(contaReceberId, contaBancariaId));
             }
         }
 

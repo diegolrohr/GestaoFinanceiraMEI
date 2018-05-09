@@ -11,6 +11,10 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
+using Fly01.Core.Config;
+using System.Text.RegularExpressions;
+using Fly01.Core.ViewModels;
+using System.Text;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -34,6 +38,7 @@ namespace Fly01.Financeiro.Controllers
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
+            var mensagemBoleto = "";
             var queryString = new Dictionary<string, string>
             {
                 { "contaReceberId", contaReceberId.ToString() }
@@ -42,25 +47,48 @@ namespace Fly01.Financeiro.Controllers
                 //, { "valorDesconto", "1" }
             };
 
-            var boleto = RestHelper.ExecuteGetRequest<BoletoBanco>("cnab/imprimeBoleto", queryString);
-            var boleto2 = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(boleto.CodigoBanco));
+            var boleto = RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
+            var proxy = new Boleto2Net.Boleto2NetProxy();
+            var cedente = boleto.Cedente;
+            var contaCedente = cedente.ContaBancariaCedente;
+            var sacado = boleto.Sacado;
 
-            boleto2 = boleto.GetBoleto();
+            if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento,
+                cedente.EnderecoBairro, cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco,
+                contaCedente.Agencia, contaCedente.DigitoAgencia, "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", 
+                "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro,
+                (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento,
+                sacado.EnderecoBairro, sacado.EnderecoCidade, sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            if (!proxy.DefinirBoleto(boleto.EspecieMoeda, boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao, DateTime.Now, boleto.DataVencimento,
+                boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirDesconto(DateTime.Now, 0, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirInstrucoes(boleto.InstrucoesCaixa, "", "", "", "", "", "", "", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            proxy.FecharBoleto(ref mensagemBoleto);
+
             var boletoImpresso = new Boleto2Net.BoletoBancario
             {
-                Boleto = boleto2,
+                Boleto = proxy.boleto,
                 OcultarInstrucoes = false,
                 MostrarComprovanteEntrega = true,
                 MostrarEnderecoCedente = true
             };
 
-            //var htmlBoleto = boletoImpresso.MontaHtml();
+            var html = new StringBuilder();
+            html.Append("<div style=\"page-break-after: always;\">");
+            html.Append(boletoImpresso.MontaHtml());
+            html.Append("</div>");
 
-            //{
-            //    html.Append("<div style=\"page-break-after: always;\">");
-            //    html.Append(imprimeBoleto.MontaHtml());
-            //    html.Append("</div>");
-            //}
+            //if (!string.IsNullOrEmpty(html.ToString()))
+            //    RestHelper.ExecutePostRequest("cnab", new string { })
 
             return null;
         }
@@ -215,25 +243,6 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
-    }
-
-    public class BoletoBanco
-    {
-        public BoletoBanco(int codigoBanco)
-        {
-            CodigoBanco = codigoBanco;
-        }
-
-        public Boleto2Net.Boleto MeuBoleto { get; set; }
-
-        private BoletoBanco() { }
-        public static Boleto2Net.Boleto Boleto { get; } = new Boleto2Net.Boleto(Boleto2Net.Banco.Instancia(1));
-        public int CodigoBanco { get; set; }
-
-        public Boleto2Net.Boleto GetBoleto()
-        {
-            return BoletoBanco.Boleto;
         }
     }
 }

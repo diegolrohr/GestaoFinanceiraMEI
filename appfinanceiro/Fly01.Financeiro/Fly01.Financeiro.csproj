@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Controllers\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
@@ -114,6 +115,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\ArquivoRemessaVM.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
     <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />

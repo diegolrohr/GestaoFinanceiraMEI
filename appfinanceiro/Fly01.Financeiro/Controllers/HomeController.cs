@@ -259,7 +259,6 @@ namespace Fly01.Financeiro.Controllers
                 new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
                 new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
                 new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
                 new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
             }
             });
@@ -270,7 +269,7 @@ namespace Fly01.Financeiro.Controllers
                 Items = new List<LinkUI>
             {
                 new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
-                new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "Cnab")}
+                new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")}
             }
             });
 

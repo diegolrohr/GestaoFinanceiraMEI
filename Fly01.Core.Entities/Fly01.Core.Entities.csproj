@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
+    <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
     <Compile Include="Domains\Commons\CertificadoDigital.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
+    <Compile Include="Domains\Enum\StatusArquivoRemessa.cs" />
     <Compile Include="Domains\Enum\StatusCnab.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />

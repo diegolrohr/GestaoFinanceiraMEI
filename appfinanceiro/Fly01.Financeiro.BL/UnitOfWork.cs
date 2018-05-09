@@ -133,6 +133,9 @@ namespace Fly01.Financeiro.BL
         private CnabBL cnabBL;
         public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context, ContaReceberBL, ContaBancariaBL));
 
+        private ArquivoRemessaBL arquivoRemessa;
+        public ArquivoRemessaBL ArquivoRemessaBL => arquivoRemessa ?? (arquivoRemessa = new ArquivoRemessaBL(Context));
+        
         #endregion
     }
 }

@@ -28,7 +28,10 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? ContaReceberId { get; set; }
 
+        public Guid? ArquivoRemessaId { get; set; }
+
         public virtual ContaBancaria ContaBancariaCedente { get; set; }
         public virtual ContaReceber ContaReceber { get; set; }
+        public virtual ArquivoRemessa ArquivoRemessa { get; set; }
     }
 }

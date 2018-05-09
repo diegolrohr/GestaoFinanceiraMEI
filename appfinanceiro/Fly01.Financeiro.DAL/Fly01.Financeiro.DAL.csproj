@@ -156,6 +156,10 @@
     <Compile Include="Migrations\201805021904098_InsertColumnBancoEmiteBoleto.Designer.cs">
       <DependentUpon>201805021904098_InsertColumnBancoEmiteBoleto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs" />
+    <Compile Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.Designer.cs">
+      <DependentUpon>201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -256,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805021904098_InsertColumnBancoEmiteBoleto.resx">
       <DependentUpon>201805021904098_InsertColumnBancoEmiteBoleto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.resx">
+      <DependentUpon>201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

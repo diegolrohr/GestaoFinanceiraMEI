@@ -21,6 +21,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("bancoId")]
         public Guid? BancoCedenteId { get; set; }
 
+        [JsonProperty("arquivoRemessaId")]
+        public Guid? ArquivoRemessaId { get; set; }
+
         [JsonProperty("status")]
         public string Status { get; set; }
 
@@ -35,5 +38,8 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("banco")]
         public virtual BancoVM BancoCedente { get; set; }
+
+        [JsonProperty("arquivoRemessa")]
+        public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
     }
 }

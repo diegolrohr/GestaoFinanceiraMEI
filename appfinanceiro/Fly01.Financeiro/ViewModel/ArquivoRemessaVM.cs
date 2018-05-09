@@ -20,9 +20,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("totalBoletos")]
         public int TotalBoletos { get; set; }
 
-        [JsonProperty("cnabId")]
-        public int CnabId { get; set; }
-
         [JsonProperty("valorTotal")]
         public double ValorTotal { get; set; }
 
@@ -33,10 +30,8 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("dataExportacao")]
         public DateTime DataExportacao { get; set; }
 
-        #region Navigation
-        [JsonProperty("Cnab")]
-        public virtual CnabVM CnabBoleto { get; set; }
-        #endregion
+        [JsonProperty("dataRetorno")]
+        public DateTime DataRetorno { get; set; }
 
     }
 }

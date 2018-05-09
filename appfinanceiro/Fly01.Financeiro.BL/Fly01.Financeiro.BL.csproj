@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArquivoBL.cs" />
+    <Compile Include="ArquivoRemessaBL.cs" />
     <Compile Include="CnabBL.cs" />
     <Compile Include="ConfiguracaoNotificacaoBL.cs" />
     <Compile Include="CategoriaBL.cs" />

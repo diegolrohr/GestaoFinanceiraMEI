@@ -12,6 +12,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Estoque.Controllers.Base;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -182,7 +183,7 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l3 m3 s12", Label = "Código" });
 
-            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras" });
+            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras", Value = "SEM GTIN" });
 
             config.Elements.Add(new SelectUI
             {
@@ -270,6 +271,15 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "codigoBarras",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
+                }
+            });
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }

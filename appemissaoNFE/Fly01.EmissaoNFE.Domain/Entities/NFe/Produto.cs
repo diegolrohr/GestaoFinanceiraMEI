@@ -108,6 +108,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o GTIN (Global Trade Item Number) da unidade de tributação do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12,
         /// GTIN-13 ou GTIN-14 (antigos códigos EAN, UPC e DUN-14), não informar o conteúdo da TAG em caso de o produto não possuir este código.
+        /// Para produtos que não possuem código de barras com GTIN, deve ser informado o literal “SEM GTIN”
         /// </summary>
         [XmlElement(ElementName = "cEANTrib")]
         public string GTIN_UnidadeMedidaTributada { get; set; }

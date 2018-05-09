@@ -76,7 +76,7 @@ namespace Fly01.EmissaoNFE.BL
             nota.InfoNFe.Cobranca = item.Cobranca;
             nota.InfoNFe.InformacoesAdicionais = item.InformacoesAdicionais;
 
-            if(item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || nota.InfoNFe.Autorizados.Count <= 0))
+            if(item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || !nota.InfoNFe.Autorizados.Any()))
             {
                 nota.InfoNFe.Autorizados = new List<Autorizados>();
                 nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
@@ -367,7 +367,7 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(string.IsNullOrEmpty(detalhe.Produto.Codigo),
                             new Error("Código do produto é um dado obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.Codigo"));
                         entity.Fail(string.IsNullOrEmpty(detalhe.Produto.GTIN),
-                            new Error("Codigo de barras (GTIN/EAN) do produto é um dado obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.GTIN"));
+                            new Error("Codigo de barras (GTIN/EAN) do produto é um dado obrigatório. Se não tiver informe SEM GTIN. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.GTIN"));
                         entity.Fail(string.IsNullOrEmpty(detalhe.Produto.Descricao),
                             new Error("Descrição do produto é um dado obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.Descricao"));
                         entity.Fail(string.IsNullOrEmpty(detalhe.Produto.NCM),

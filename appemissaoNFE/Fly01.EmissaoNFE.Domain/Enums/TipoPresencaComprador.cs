@@ -18,12 +18,16 @@ namespace Fly01.EmissaoNFE.Domain.Enums
         Internet = 2,
 
         [XmlEnum(Name = "3")]
-        [Subtitle("Teleatendimento", "3", "Operação não presencial, Teleatendimento")]
-        Teleatendimento = 3,
+        [Subtitle("TeleAtendimento", "3", "Operação não presencial, Teleatendimento")]
+        TeleAtendimento = 3,
 
         [XmlEnum(Name = "4")]
         [Subtitle("EntregaDomicilio", "4", "NFC-e em operação com entrega a domicílio")]
         EntregaDomicilio = 4,
+
+        [XmlEnum(Name = "5")]
+        [Subtitle("PresencialForaEstabelecimento", "5", "Operação presencial, fora do estabelecimento;")]
+        PresencialForaEstabelecimento = 5,
 
         [XmlEnum(Name = "9")]
         [Subtitle("Outros", "9", "Operação não presencial, outros")]

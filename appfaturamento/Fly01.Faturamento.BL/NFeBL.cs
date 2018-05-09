@@ -459,10 +459,13 @@ namespace Fly01.Faturamento.BL
                     #region Pagamento
                     itemTransmissao.Pagamento = new Pagamento()
                     {
-                        DetalhePagamento = new DetalhePagamento()
+                        DetalhesPagamentos = new List<DetalhePagamento>()
                         {
-                            TipoFormaPagamento = formaPagamento != null ? formaPagamento.TipoFormaPagamento : TipoFormaPagamento.Outros,
-                            ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                            new DetalhePagamento()
+                            {
+                                TipoFormaPagamento = formaPagamento != null ? formaPagamento.TipoFormaPagamento : TipoFormaPagamento.Outros,
+                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                            }
                         }
                     };
                     #endregion

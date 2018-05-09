@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -6,13 +7,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
     public class Pagamento
     {
         /// <summary>
-        /// Detalhe do pagamento
+        /// Detalhes dos pagamentos
         /// </summary>
         [XmlElement(ElementName = "detPag")]
-        public DetalhePagamento DetalhePagamento { get; set; }
+        public List<DetalhePagamento> DetalhesPagamentos { get; set; }
 
         /// <summary>
         /// Informar o valor do Troco caso exista.
+        /// O valor do Troco na NFe deve ser informado quando o valor da NFe (campo vNF)
+        /// for diferente dos valores dos Pagamentos(campos vPag).
         /// </summary>
         [XmlIgnore]
         public double? ValorTroco { get; set; }

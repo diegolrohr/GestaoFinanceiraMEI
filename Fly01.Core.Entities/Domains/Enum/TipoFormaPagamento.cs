@@ -42,17 +42,17 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("ValePresente", "Vale Presente")]
         ValePresente = 12,
 
-        //[XmlEnum(Name = "13")]
-        //[Subtitle("ValeCombustivel", "Vale Combustível")]
-        //ValeCombustivel = 13,
+        [XmlEnum(Name = "13")]
+        [Subtitle("ValeCombustivel", "Vale Combustível")]
+        ValeCombustivel = 13,
 
         [XmlEnum(Name = "15")]
         [Subtitle("Boleto", "Boleto")]
         Boleto = 15,
 
-        //[XmlEnum(Name = "90")]
-        //[Subtitle("SemPagamento", "Sem Pagamento")]
-        //SemPagamento = 90,
+        [XmlEnum(Name = "90")]
+        [Subtitle("SemPagamento", "Sem Pagamento")]
+        SemPagamento = 90,
 
         [XmlEnum(Name = "99")]
         [Subtitle("Outros", "Outros")]

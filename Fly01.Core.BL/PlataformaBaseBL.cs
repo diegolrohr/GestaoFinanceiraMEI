@@ -147,11 +147,8 @@ namespace Fly01.Core.BL
                     case RabbitConfig.enHTTPVerb.POST:
                         Insert(item);
                         break;
-                    case RabbitConfig.enHTTPVerb.PUT:
+                    default:
                         AttachForUpdate(item);
-                        break;
-                    case RabbitConfig.enHTTPVerb.DELETE:
-                        Delete(item);
                         break;
                 }
             }

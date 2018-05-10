@@ -187,7 +187,7 @@ namespace Fly01.Faturamento.BL
                         FinalidadeEmissaoNFe = TipoFinalidadeEmissaoNFe.Normal,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
                         PresencaComprador = TipoPresencaComprador.Presencial,
-                        Versao = "2.78", //TODO: ver se mudou 
+                        Versao = "2.78",
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
@@ -334,7 +334,7 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
                             
-                            if (versao == "4.0")
+                            if (versao == "4.00")
                             {
                                 // FCP (201, 202, 203 e 900)
                                 detalhe.Imposto.ICMS.BaseFCPST = Math.Round(itemTributacao.FCPSTBase, 2);

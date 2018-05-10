@@ -74,6 +74,7 @@ namespace Fly01.EmissaoNFE.BL
             nota.InfoNFe.Total = item.Total;
             nota.InfoNFe.Transporte = item.Transporte;
             nota.InfoNFe.Cobranca = item.Cobranca;
+            nota.InfoNFe.Pagamento = item.Pagamento;
             nota.InfoNFe.InformacoesAdicionais = item.InformacoesAdicionais;
 
             if(item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || !nota.InfoNFe.Autorizados.Any()))
@@ -110,7 +111,7 @@ namespace Fly01.EmissaoNFE.BL
         {
             EntidadeBL.ValidaModel(entity);
 
-            var nItem = 0;
+            var nItem = 1;
             foreach (var item in entity.Item)
             {
                 entity.Fail(string.IsNullOrEmpty(item.Versao), new Error("A versão da nota é um dado obrigatório.", "Item.Versao"));
@@ -353,7 +354,7 @@ namespace Fly01.EmissaoNFE.BL
 
                 #endregion
 
-                var nItemDetalhe = 0;
+                var nItemDetalhe = 1;
                 foreach (var detalhe in item.Detalhes)
                 {
                     #region Validações da classe Detalhe.Produto
@@ -619,7 +620,7 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorICMSST"));
 
-                                    if (item.Versao == "4.0")
+                                    if (item.Versao == "4.00")
                                     {
                                         entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                             new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
@@ -644,7 +645,7 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorICMSST"));
 
-                                    if (item.Versao == "4.0")
+                                    if (item.Versao == "4.00")
                                     {
                                         entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                         new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
@@ -669,7 +670,7 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                         new Error("Valor do ICMS ST é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorICMSST"));
 
-                                    if (item.Versao == "4.0")
+                                    if (item.Versao == "4.00")
                                     {
                                         entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                         new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
@@ -692,7 +693,7 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue,
                                         new Error("Valor do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorICMSSTRetido"));
 
-                                    if (item.Versao == "4.0")
+                                    if (item.Versao == "4.00")
                                     {
                                         entity.Fail(!detalhe.Imposto.ICMS.BaseFCPSTRetido.HasValue,
                                             new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPSTRet"));
@@ -752,7 +753,7 @@ namespace Fly01.EmissaoNFE.BL
                                         entity.Fail(!detalhe.Imposto.ICMS.ValorICMSST.HasValue,
                                             new Error("Valor da Substituição Tributária é requerido. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
 
-                                        if (item.Versao == "4.0")
+                                        if (item.Versao == "4.00")
                                         {
                                             entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                             new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
@@ -1140,7 +1141,7 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(true, new Error("Os dados dos detalhes dos pagamentos são obrigatórios.", "Item.Pagamento.DetalhesPagamentos"));
                     else
                     {
-                        var nItemPagamento = 0;
+                        var nItemPagamento = 1;
                         foreach (var detalhePagamento in item.Pagamento.DetalhesPagamentos)
                         {
                             var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao;

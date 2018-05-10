@@ -26,12 +26,13 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
+                pessoa_nome = "" ,/*x.ContaReceber.Pessoa.Nome,*/
                 numeroBoleto = x.NumeroBoleto,
                 valorBoleto = x.ValorBoleto,
                 valorDesconto = x.ValorDesconto,
-                status = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).Value,
-                dataEmissao = x.DataEmissao,
-                dataVencimento = x.DataVencimento
+                status = x.Status,
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy")
             };
         }
 

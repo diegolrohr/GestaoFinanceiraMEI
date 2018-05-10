@@ -60,8 +60,32 @@ namespace Fly01.Financeiro.Controllers
                 //UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
             };
 
-            //config.Elements.Add(new LabelsetUI)
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            //config.Elements.Add(new LabelsetUI)  Verificar elemento Label  para inserir dados.
 
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s12",
+                UrlGridLoad = Url.Action("LoadGridBoletos", "Cnab"),
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "Id" }
+                },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10
+                },
+                Columns = new List<DataTableUIColumn>
+                {
+                    new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Orderable = false, Searchable = false, Type = "number" },
+                    new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 2, Orderable = false, Searchable = false },
+                    new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3, Orderable = false, Searchable = false, Type = "currency" },
+                    new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 5, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 6, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))}
+                }
+            });
+            
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 

@@ -1,6 +1,39 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
+    var arrayTeste = [];
+    function setupGridSelectEvents() {
+        fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                var arrayTeste = row.is;
+
+                indexes.forEach(function (element, index, array) {
+                    var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
+                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                    valorAcumulado += valorSaldo;
+                    fnAtualizaCountSelecionados(1);
+                });
+
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+            }
+        }).on('deselect', function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                var valorAcumulado = parseFloat(getValorSomaSelecionados());
+
+                indexes.forEach(function (element, index, array) {
+                    var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
+                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                    valorAcumulado -= valorSaldo;
+                    fnAtualizaCountSelecionados(-1);
+                });
+
+                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+            }
+        });
+    }
+
     function cnabItensHide() {  
         $('#dtCnabItem').hide();
         $('#btnListarBoletos').hide();
@@ -9,6 +42,7 @@
 
     function fnFormReady() {
         cnabItensHide();
+        setupGridSelectEvents();
     };
 
 </script>

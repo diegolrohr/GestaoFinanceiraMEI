@@ -11,12 +11,11 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
-using Fly01.Core.Config;
-using System.Text.RegularExpressions;
 using Fly01.Core.ViewModels;
 using System.Text;
 using Fly01.Core.Presentation.JQueryDataTable;
 using System.Linq;
+using System.Net.Http;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -38,7 +37,8 @@ namespace Fly01.Financeiro.Controllers
         }
 
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        [HttpGet]
+        public HttpResponseMessage ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
 
@@ -185,7 +185,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(configCnab);
             cfg.Content.Add(dtConfig);
-            
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 

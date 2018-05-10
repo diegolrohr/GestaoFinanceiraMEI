@@ -2,9 +2,6 @@
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Fly01.Financeiro.ViewModel
 {
@@ -32,6 +29,5 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("dataRetorno")]
         public DateTime DataRetorno { get; set; }
-
     }
 }

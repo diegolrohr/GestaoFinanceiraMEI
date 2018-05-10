@@ -38,7 +38,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorPagamentoString
         {
             get { return ValorPagamento.ToString("0.00").Replace(",", "."); }
-            set { ValorPagamento = double.Parse(value); }
+            set { ValorPagamento = double.Parse(value.Replace(".", ",")); }
         }
     }
 }

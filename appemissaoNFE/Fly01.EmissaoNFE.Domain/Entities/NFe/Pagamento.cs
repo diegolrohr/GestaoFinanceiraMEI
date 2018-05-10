@@ -23,7 +23,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "vTroco_Opc")]
         public string ValorTrocoString
         {
-            get { return ValorTroco.Value.ToString("0.00").Replace(",", "."); }
+            get { return ValorTroco.HasValue ? ValorTroco.Value.ToString("0.00").Replace(",", ".") : null; }
             set { ValorTroco = double.Parse(value); }
         }
 

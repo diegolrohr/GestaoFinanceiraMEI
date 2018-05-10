@@ -31,8 +31,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
 
-            if ((DateTime.Now.Date > dataInicial) || (DateTime.Now.Date > dataFinal))
-                return BadRequest("O período informado deve ser superior ao dia de hoje.");
+            //if ((DateTime.Now.Date > dataInicial.Date) || (DateTime.Now.Date > dataFinal.Date))
+            //    return BadRequest("O período informado deve ser superior ao dia de hoje.");
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -48,8 +48,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
 
-            if ((DateTime.Now.Date > dataInicial) || (DateTime.Now.Date > dataFinal))
-                return BadRequest("O período informado deve ser superior ao dia de hoje.");
+            //if ((DateTime.Now.Date > dataInicial.Date) || (DateTime.Now.Date > dataFinal.Date))
+            //    return BadRequest("O período informado deve ser superior ao dia de hoje.");
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -64,7 +64,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("projecaoNextDays")]
         public IHttpActionResult GetProjecaoNextDays(DateTime dataInicial, DateTime dataFinal)
         {
-            if (dataInicial > dataFinal)
+            if (dataInicial.Date > dataFinal.Date)
                 return BadRequest("Data inicial não pode ser superior a data final.");
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))

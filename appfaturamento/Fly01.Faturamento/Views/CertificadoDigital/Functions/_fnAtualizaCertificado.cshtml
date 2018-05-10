@@ -32,11 +32,12 @@
             },
             success: function (response) {
                 if (response.success) {
-                    fnGetStatusCertificado(true);
+                    fnGetStatusCertificado();
                     fly01.fn.updateTextFields();
+                    fly01.toast(response.message, "success");
                 }
                 else {
-                    fnGetStatusCertificado(false);
+                    fnGetStatusCertificado();
                     fly01.fn.submitErrorHandler(null, response.message);
                 }
             }

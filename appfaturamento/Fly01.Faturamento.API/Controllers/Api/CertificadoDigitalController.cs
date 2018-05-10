@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     var entities = All();
                     if (unitOfWork.CertificadoDigitalBL.IsValid() || !entities.Any())
                         return Ok(entities.AsQueryable());
-                    throw new Exception("Não existe um certificado cadastrado para este CNPJ.");
+                    return Ok();
                 }
             }
             catch (Exception ex)

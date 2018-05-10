@@ -15,15 +15,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("valorDesconto")]
         public double ValorDesconto { get; set; }
 
-        [JsonProperty("pessoaId")]
-        public Guid? PessoaId { get; set; }
-
-        [JsonProperty("bancoId")]
-        public Guid? BancoCedenteId { get; set; }
-
-        [JsonProperty("arquivoRemessaId")]
-        public Guid? ArquivoRemessaId { get; set; }
-
         [JsonProperty("status")]
         public string Status { get; set; }
 
@@ -33,13 +24,26 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
 
-        [JsonProperty("pessoa")]
-        public virtual PessoaVM Pessoa { get; set; }
+        [JsonProperty("arquivoRemessaId")]
+        public Guid? ArquivoRemessaId { get; set; }
 
-        [JsonProperty("banco")]
-        public virtual BancoVM BancoCedente { get; set; }
+        [JsonProperty("contaBancariaCedenteId")]
+        public Guid? ContaBancariaCedenteId { get; set; }
+
+        [JsonProperty("contaReceberId")]
+        public Guid? ContaReceberId { get; set; }
+
+        #region Navigation Property
+        [JsonProperty("contaBancaria")]
+        public virtual ContaBancariaVM ContaBancariaCedente { get; set; }
+
+        [JsonProperty("contaReceber")]
+        public virtual ContaReceberVM ContaReceber { get; set; }
 
         [JsonProperty("arquivoRemessa")]
         public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
+        #endregion
+
+
     }
 }

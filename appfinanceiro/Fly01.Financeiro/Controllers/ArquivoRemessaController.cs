@@ -23,9 +23,9 @@ namespace Fly01.Financeiro.Controllers
                 numeroArquivo = x.NumeroArquivo,
                 descricao = x.Descricao,
                 valorTotal = x.ValorTotal,
-                dataExportacao = x.DataExportacao,
+                dataExportacao = x.DataExportacao.ToString("dd/MM/yyyy"),
                 totalBoletos = x.TotalBoletos,
-                status = EnumHelper.SubtitleDataAnotation(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa).Value
+                status = x.StatusArquivoRemessa
             };
         }
 

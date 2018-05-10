@@ -29,7 +29,6 @@ namespace Fly01.Financeiro.Controllers
                 numeroBoleto = x.NumeroBoleto,
                 valorBoleto = x.ValorBoleto,
                 valorDesconto = x.ValorDesconto,
-                sacado = x.Pessoa.Nome,
                 status = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).Value,
                 dataEmissao = x.DataEmissao,
                 dataVencimento = x.DataVencimento
@@ -47,8 +46,8 @@ namespace Fly01.Financeiro.Controllers
             html.Append(boletoImpresso.MontaHtml());
             html.Append("</div>");
 
-            //if (!string.IsNullOrEmpty(html.ToString()))
-            //    RestHelper.ExecutePostRequest("cnab", new string { })
+            if (!string.IsNullOrEmpty(html.ToString()))
+                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(boletoImpresso));
 
             return null;
         }
@@ -247,7 +246,7 @@ namespace Fly01.Financeiro.Controllers
                 data = response.Data.Select(item => new
                 {
                     numero = item.NumeroBoleto,
-                    pessoa_nome = item.Pessoa.Nome,
+                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
                     valorBoleto = item.ValorBoleto,
                     dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
                     dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),

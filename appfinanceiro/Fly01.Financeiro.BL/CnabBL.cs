@@ -114,5 +114,13 @@ namespace Fly01.Financeiro.BL
         {
             return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
         }
+
+        public override void Insert(Cnab entity)
+        {
+            entity.DataEmissao = DateTime.Now;
+            entity.DataVencimento = DateTime.Now.AddDays(1);
+
+            base.Insert(entity);
+        }
     }
 }

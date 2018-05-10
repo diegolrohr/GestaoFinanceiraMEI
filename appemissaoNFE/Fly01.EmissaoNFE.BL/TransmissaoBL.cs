@@ -363,7 +363,7 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(true, new Error("Os dados de produto são obrigatórios. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto"));
                     else
                     {
-                        detalhe.NumeroItem = nItem;
+                        detalhe.NumeroItem = nItemDetalhe;
 
                         entity.Fail(string.IsNullOrEmpty(detalhe.Produto.Codigo),
                             new Error("Código do produto é um dado obrigatório. Item: " + nItem, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.Codigo"));

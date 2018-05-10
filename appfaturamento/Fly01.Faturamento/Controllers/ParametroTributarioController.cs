@@ -50,7 +50,7 @@ namespace Fly01.Faturamento.Controllers
                     aliquotaCOFINS = "2",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
-                    tipoVersaoNFe = "v3",
+                    tipoVersaoNFe = "v4",
                     tipoAmbiente = "Producao",
                     tipoModalidade = "Normal",
                     aliquotaFCP = "0"

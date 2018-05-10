@@ -1,5 +1,4 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -281,7 +280,8 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult ImportaArquivo(string conteudo)
         {
-            return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Fornecedores", conteudo));
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", conteudo);
+            return JsonResponseStatus.GetJson(arquivoVM);
         }
     }
 }

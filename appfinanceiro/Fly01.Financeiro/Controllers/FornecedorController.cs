@@ -274,7 +274,6 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Label = "Baixar arquivo modelo"
                 }
-
             });
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -282,7 +281,8 @@ namespace Fly01.Financeiro.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Fornecedores", pConteudo));
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo);
+            return JsonResponseStatus.GetJson(arquivoVM);
         }
 
         public JsonResult PostFornecedor(string term)

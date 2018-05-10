@@ -11,10 +11,12 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
-using Fly01.Core.Config;
-using System.Text.RegularExpressions;
 using Fly01.Core.ViewModels;
 using System.Text;
+using System.IO;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -36,7 +38,8 @@ namespace Fly01.Financeiro.Controllers
         }
 
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        [HttpGet]
+        public HttpResponseMessage ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var mensagemBoleto = "";
             var queryString = new Dictionary<string, string>
@@ -55,7 +58,7 @@ namespace Fly01.Financeiro.Controllers
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento,
                 cedente.EnderecoBairro, cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco,
-                contaCedente.Agencia, contaCedente.DigitoAgencia, "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", 
+                contaCedente.Agencia, contaCedente.DigitoAgencia, "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "",
                 "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro,
                 (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
@@ -87,10 +90,17 @@ namespace Fly01.Financeiro.Controllers
             html.Append(boletoImpresso.MontaHtml());
             html.Append("</div>");
 
+            var stream = new MemoryStream();
+
+            var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(stream.ToArray()) };
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Boleto.pdf" };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentLength = stream.Length;
+
+            return result;
+
             //if (!string.IsNullOrEmpty(html.ToString()))
             //    RestHelper.ExecutePostRequest("cnab", new string { })
-
-            return null;
         }
 
         public override ContentResult Form()
@@ -178,7 +188,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(configCnab);
             cfg.Content.Add(dtConfig);
-            
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 

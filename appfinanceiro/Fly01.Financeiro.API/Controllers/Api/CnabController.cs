@@ -25,10 +25,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var data = unitOfWork.CnabBL.Get();
-                return Ok(new { value = data });
+                return Ok(new { value = unitOfWork.CnabBL.Get() });
             }
         }
 
+        [HttpGet]
+        [Route("contasReceberarquivo")]
+        public IHttpActionResult GetContasReceber(Guid IdArquivoRemessa)
+        {
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                return Ok(new { value = unitOfWork.CnabBL.GetContasReceberArquivo(IdArquivoRemessa)});
+            }
+        }
     }
 }

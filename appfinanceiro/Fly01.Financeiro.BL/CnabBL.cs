@@ -109,5 +109,10 @@ namespace Fly01.Financeiro.BL
                 }
             };
         }
+
+        public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)
+        {
+            return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
+        }
     }
 }

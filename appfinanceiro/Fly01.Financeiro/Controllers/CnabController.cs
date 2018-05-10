@@ -13,10 +13,9 @@ using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using System.Text;
-using System.IO;
+using Fly01.Core.Presentation.JQueryDataTable;
+using System.Linq;
 using System.Net.Http;
-using System.Net;
-using System.Net.Http.Headers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -40,6 +39,21 @@ namespace Fly01.Financeiro.Controllers
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         [HttpGet]
         public HttpResponseMessage ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        {
+            var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
+
+            var html = new StringBuilder();
+            html.Append("<div style=\"page-break-after: always;\">");
+            html.Append(boletoImpresso.MontaHtml());
+            html.Append("</div>");
+
+            //if (!string.IsNullOrEmpty(html.ToString()))
+            //    RestHelper.ExecutePostRequest("cnab", new string { })
+
+            return null;
+        }
+
+        private Boleto2Net.BoletoBancario GetBoletoBancario(Guid contaReceberId, Guid contaBancariaId)
         {
             var mensagemBoleto = "";
             var queryString = new Dictionary<string, string>
@@ -77,30 +91,13 @@ namespace Fly01.Financeiro.Controllers
 
             proxy.FecharBoleto(ref mensagemBoleto);
 
-            var boletoImpresso = new Boleto2Net.BoletoBancario
+            return new Boleto2Net.BoletoBancario
             {
                 Boleto = proxy.boleto,
                 OcultarInstrucoes = false,
                 MostrarComprovanteEntrega = true,
                 MostrarEnderecoCedente = true
             };
-
-            var html = new StringBuilder();
-            html.Append("<div style=\"page-break-after: always;\">");
-            html.Append(boletoImpresso.MontaHtml());
-            html.Append("</div>");
-
-            var stream = new MemoryStream();
-
-            var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(stream.ToArray()) };
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Boleto.pdf" };
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentLength = stream.Length;
-
-            return result;
-
-            //if (!string.IsNullOrEmpty(html.ToString()))
-            //    RestHelper.ExecutePostRequest("cnab", new string { })
         }
 
         public override ContentResult Form()
@@ -203,28 +200,13 @@ namespace Fly01.Financeiro.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "new", Label = "Gerar boleto", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "new", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "new", Label = "CARREGAR ARQ. RETORNO", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "status",
-            //    DisplayName = "Status",
-            //    Priority = 1,
-            //    Options = new List<SelectOptionUI>
-            //    (
-            //        SystemValueHelper.GetUIElementBase(typeof(StatusCnab))
-            //    )
-            //});
-
-            var config = new DataTableUI()
+            var configdt = new DataTableUI()
             {
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -233,26 +215,58 @@ namespace Fly01.Financeiro.Controllers
                     Select = new { style = "multi" }
                 }
             };
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "valorDesconto", DisplayName = "Valor desconto", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 5, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 6, Type = "date" });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "dataDesconto", DisplayName = "Data desconto", Priority = 7, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "status", DisplayName = "Data desconto", Priority = 8, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn
+            
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
+            configdt.Columns.Add(new DataTableUIColumn
             {
-                DataField = "statusBoletoBancario",
+                DataField = "statusArquivoRemessa",
                 DisplayName = "Status",
-                Priority = 9,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusBoletoBancaria)))
-                //RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
+                Priority = 7,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))
             });
 
-            cfg.Content.Add(config);
+            cfg.Content.Add(configdt);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public JsonResult LoadGridBoletos(Guid IdArquivo)
+        {
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetContasReceber(IdArquivo, pageNo);
+
+            return Json(new
+            {
+                recordsTotal = response.Paging.TotalRecordCount,
+                recordsFiltered = response.Paging.TotalRecordCount,
+                data = response.Data.Select(item => new
+                {
+                    numero = item.NumeroBoleto,
+                    pessoa_nome = item.Pessoa.Nome,
+                    valorBoleto = item.ValorBoleto,
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status
+                })
+
+            },JsonRequestBehavior.AllowGet);
+        }
+
+        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "arquivoRemessaId", idArquivo.ToString()},
+                { "pageNo", pageNo.ToString() },
+                { "pageSize", "10"}
+            };
+            
+            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
         }
     }
 }

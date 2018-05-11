@@ -122,11 +122,11 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=",
-                ReadyFn = "fnFormReady"
+                ReadyFn = "fnFormReady",
+                AfterLoadFn = "fnAfterLoad"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            //config.Elements.Add(new InputHiddenUI { Id = "agenciaContaRequired" });
             config.Elements.Add(new AutocompleteUI
             {
                 Id = "bancoId",

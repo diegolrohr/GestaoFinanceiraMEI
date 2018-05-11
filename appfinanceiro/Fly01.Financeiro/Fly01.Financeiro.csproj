@@ -321,6 +321,7 @@
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

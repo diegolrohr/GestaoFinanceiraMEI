@@ -186,6 +186,12 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
 
                 context.SaveChanges();
             }
+
+            if(!context.Bancos.Any(x => x.Codigo == "999"))
+            {
+                context.Bancos.AddOrUpdate(new Banco() { Id = Guid.NewGuid(), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "999", Nome = "Outros" });
+                context.SaveChanges();
+            }
         }
     }
 }

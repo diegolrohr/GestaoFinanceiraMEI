@@ -1,0 +1,8 @@
+﻿<script>
+    function fnChangeBanco(event, data) {
+        var bancoId = data.item.id;
+        $("#bancoId").val(bancoId);
+
+        controlaCamposConta(data.item.agenciaContaRequired);
+   }
+</script>

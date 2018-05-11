@@ -8,6 +8,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -15,7 +16,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaBancariaController()
         {
-            ExpandProperties = "banco($select=id,nome)";
+            ExpandProperties = "banco($select=id,nome,codigo)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -37,10 +38,28 @@ namespace Fly01.Financeiro.Controllers
                 nomeConta = x.NomeConta,
                 agencia = x.Agencia,
                 digitoAgencia = x.DigitoAgencia,
-                conta = x.Conta +" - "+ x.DigitoConta,
+                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ? 
+                    $"{x.Conta} - {x.DigitoConta}"
+                    : string.Empty,
                 digitoConta = x.DigitoConta
             };
         }
+
+        //public override ContentResult Json(Guid id)
+        //{
+        //    try
+        //    {
+        //        ContaBancariaVM entity = Get(id);
+        //        entity.AgenciaContaRequired = entity.Banco.Codigo != "999";
+                
+        //        return Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+        //        return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message).Data), "application/json");
+        //    }
+        //}
 
         public override ContentResult List()
         {
@@ -102,7 +121,9 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=",
+                ReadyFn = "fnFormReady",
+                AfterLoadFn = "fnAfterLoad"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -113,7 +134,12 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Banco",
                 Required = true,
                 DataUrl = @Url.Action("Banco", "AutoComplete"),
-                LabelId = "bancoNome"
+                LabelId = "bancoNome",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" },
+                    new DomEventUI() { DomEvent = "autocompletechange", Function = "fnChangeBanco" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "nomeConta", Class = "col s4 m4 l6", Label = "Nome da Conta", Required = true, MaxLength = 150 });
@@ -121,8 +147,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-
-
+            
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -150,7 +175,11 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Banco",
                 Required = true,
                 DataUrl = @Url.Action("Banco", "AutoComplete"),
-                LabelId = "bancoNome"
+                LabelId = "bancoNome",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "nomeConta", Class = "col s4 m4 l6", Label = "Nome da Conta", Required = true, MaxLength = 150 });
@@ -158,8 +187,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-
-
+            
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

@@ -1,9 +1,10 @@
 ﻿<script>
-    @Html.Partial("Functions/_fnMain");
+    @*@Html.Partial("Functions/_fnMain");
 
     var arrayTeste = [];
 
     function setupGridSelectEvents() {
+        debugger;
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 indexes.forEach(function (element, index, array) {
@@ -28,8 +29,9 @@
     }
 
     function fnFormReady() {
+        debugger;
         cnabItensHide();
         setupGridSelectEvents();
-    };
+    };*@
 
 </script>

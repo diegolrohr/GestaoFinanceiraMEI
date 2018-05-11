@@ -1,0 +1,17 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+    
+    function fnGerarArquivoRemessa() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '@Url.Action("GerarArquivoRemessa","Cnab")',
+            contentType: "application/json",
+            data: JSON.stringify({ 'ids': fly01._.dtBoletos.selected }),
+            success: function (data) {
+                ShowSuccess(data.message);
+            }
+        });
+    };
+
+</script>

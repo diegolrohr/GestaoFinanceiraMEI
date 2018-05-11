@@ -45,6 +45,11 @@ namespace Fly01.Financeiro.BL
             return base.All.ToList();
         }
 
+        public Cnab Get(Guid Id)
+        {
+            return base.All.Where(x => x.Id == Id).FirstOrDefault();
+        }
+
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);

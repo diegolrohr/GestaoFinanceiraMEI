@@ -33,6 +33,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
         }
 
         [HttpGet]
+        [Route("GetCnab")]
+        public IHttpActionResult GetCnab(Guid Id)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var data = unitOfWork.CnabBL.Get(Id);
+
+                return Ok(data);
+            }
+        }
+
+        [HttpGet]
         [Route("contasReceberarquivo")]
         public IHttpActionResult GetContasReceber(Guid IdArquivoRemessa)
         {

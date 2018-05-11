@@ -9,12 +9,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("numeroBoleto")]
         public int NumeroBoleto { get; set; }
 
-        [JsonProperty("valorBoleto")]
-        public double ValorBoleto { get; set; }
-
-        [JsonProperty("valorDesconto")]
-        public double ValorDesconto { get; set; }
-
         [JsonProperty("status")]
         public string Status { get; set; }
 
@@ -24,8 +18,14 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
 
-        [JsonProperty("arquivoRemessaId")]
-        public Guid? ArquivoRemessaId { get; set; }
+        [JsonProperty("nossoNumero")]
+        public string NossoNumero { get; set; }
+
+        [JsonProperty("dataDesconto")]
+        public DateTime DataDesconto { get; set; }
+
+        [JsonProperty("valorDesconto")]
+        public double ValorDesconto { get; set; }
 
         [JsonProperty("contaBancariaCedenteId")]
         public Guid? ContaBancariaCedenteId { get; set; }
@@ -33,17 +33,22 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("contaReceberId")]
         public Guid? ContaReceberId { get; set; }
 
+        [JsonProperty("arquivoRemessaId")]
+        public Guid? ArquivoRemessaId { get; set; }
+
+        [JsonProperty("valorBoleto")]
+        public double ValorBoleto { get; set; }
+
         #region Navigation Property
-        [JsonProperty("contaBancaria")]
-        public virtual ContaBancariaVM ContaBancariaCedente { get; set; }
 
         [JsonProperty("contaReceber")]
         public virtual ContaReceberVM ContaReceber { get; set; }
 
+        [JsonProperty("contaBancaria")]
+        public virtual ContaBancariaVM ContaBancariaCedente { get; set; }
+
         [JsonProperty("arquivoRemessa")]
         public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
         #endregion
-
-
     }
 }

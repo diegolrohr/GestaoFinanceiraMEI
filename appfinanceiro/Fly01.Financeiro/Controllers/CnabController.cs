@@ -16,6 +16,8 @@ using System.Text;
 using Fly01.Core.Presentation.JQueryDataTable;
 using System.Linq;
 using System.Net.Http;
+using System.IO;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -53,7 +55,7 @@ namespace Fly01.Financeiro.Controllers
             return null;
         }
 
-        private Boleto2Net.BoletoBancario GetBoletoBancario(Guid contaReceberId, Guid contaBancariaId)
+        private Boleto2Net.BoletoBancario GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
         {
             var mensagemBoleto = "";
             var queryString = new Dictionary<string, string>
@@ -203,11 +205,13 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton { Id = "new", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
                     }
                 },
+                Functions = new List<string> { "fnFormReady" },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             var configdt = new DataTableUI()
             {
+                Id = "dtBoletos", 
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new DataTableUIConfig()
@@ -215,7 +219,6 @@ namespace Fly01.Financeiro.Controllers
                     Select = new { style = "multi" }
                 }
             };
-            
             configdt.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
             configdt.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
             configdt.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
@@ -267,6 +270,81 @@ namespace Fly01.Financeiro.Controllers
             };
             
             return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
+        }
+
+        [HttpPost]
+        public HttpRequestMessage GerarArquivoRemessa(List<Guid> ids)
+        {
+            var boletosCnab = Getcnab(ids);
+            var boletos = new Boleto2Net.Boletos();
+            
+            foreach (var item in boletosCnab)
+            {
+                var boleto = GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId).Boleto;
+
+                boletos.Add(boleto);
+                boletos.Banco = boleto.Banco;
+            }
+            
+            //nome do arquivo
+            var dadosCedente = base.GetDadosEmpresa();
+            var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
+            var nomeArquivoPDF = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.PDF");
+
+            //validando diretorio do arquivo remessa
+            if (!Directory.Exists(Path.GetDirectoryName(nomeArquivoREM)))
+                Directory.CreateDirectory(Path.GetDirectoryName(nomeArquivoREM));
+            if (System.IO.File.Exists(nomeArquivoREM))
+            {
+                System.IO.File.Delete(nomeArquivoREM);
+                if (System.IO.File.Exists(nomeArquivoREM))                    
+                    throw new Exception("Arquivo Remessa não foi excluído: " + nomeArquivoREM);
+            }
+            if (System.IO.File.Exists(nomeArquivoPDF))
+            {
+                System.IO.File.Delete(nomeArquivoPDF);
+                if (System.IO.File.Exists(nomeArquivoPDF))
+                    throw new Exception("Arquivo Boletos (PDF) não foi excluído: " + nomeArquivoPDF);
+            }
+
+            // Arquivo Remessa.
+            try
+            {
+                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avalirar os dados passados(tipoArquivo, NumeroArquivo)
+
+                using (var fileStream = new FileStream(nomeArquivoREM, FileMode.Create))
+                    arquivoRemessa.GerarArquivoRemessa(boletos, fileStream);
+
+                if (!System.IO.File.Exists(nomeArquivoREM))
+                    throw new Exception("Arquivo Remessa não encontrado: " + nomeArquivoREM);
+            }
+            catch (Exception e)
+            {
+                if (System.IO.File.Exists(nomeArquivoREM))
+                    System.IO.File.Delete(nomeArquivoREM);
+                throw new Exception(e.InnerException.ToString());
+            }
+
+            return null; 
+        }
+
+        private List<CnabVM> Getcnab(List<Guid> idsBoletos)
+        {
+            List<CnabVM> listaCnab = new List<CnabVM>();
+            foreach (var item in idsBoletos)
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "Id", item.ToString()},
+                    { "pageSize", "10"}
+                };
+
+                var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab/GetCnab", queryString);
+
+                if (restResponse != null)
+                    listaCnab.Add(restResponse);
+            }
+            return listaCnab;
         }
     }
 }

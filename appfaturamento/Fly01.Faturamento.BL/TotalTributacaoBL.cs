@@ -18,6 +18,7 @@ namespace Fly01.Faturamento.BL
 {
     public class TotalTributacaoBL : PlataformaBaseBL<TotalTributacao>
     {
+        private ManagerEmpresaVM empresa;
         protected PessoaBL PessoaBL { get; set; }
         protected GrupoTributarioBL GrupoTributarioBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }
@@ -33,6 +34,7 @@ namespace Fly01.Faturamento.BL
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
         }
 
         public GrupoTributario GetGrupoTributario(Guid grupoTributarioId)
@@ -47,7 +49,7 @@ namespace Fly01.Faturamento.BL
 
         public ParametroTributario GetParametrosTributarios()
         {
-            return ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
+            return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
         }
 
         public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)

@@ -157,7 +157,7 @@ namespace Fly01.Faturamento.BL
                 throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
             }
 
-            var parametros = ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
+            var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             var ambiente = parametros != null ? (TipoAmbiente)parametros.TipoAmbiente : TipoAmbiente.Homologacao;
             var retorno = new EntidadeVM();
@@ -179,7 +179,7 @@ namespace Fly01.Faturamento.BL
         {
             var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
-            var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
+            var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null || ambiente == null || plataformaId == null)
                 return null;

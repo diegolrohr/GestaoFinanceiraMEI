@@ -148,6 +148,10 @@
     <Compile Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.Designer.cs">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805101842210_AlterContaBancariaCamposRequired.cs" />
+    <Compile Include="Migrations\201805101842210_AlterContaBancariaCamposRequired.Designer.cs">
+      <DependentUpon>201805101842210_AlterContaBancariaCamposRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.resx">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805101842210_AlterContaBancariaCamposRequired.resx">
+      <DependentUpon>201805101842210_AlterContaBancariaCamposRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

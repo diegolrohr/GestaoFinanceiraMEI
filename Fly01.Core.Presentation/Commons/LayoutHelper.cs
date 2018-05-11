@@ -21,8 +21,8 @@ namespace Fly01.Core.Presentation.Commons
         public static IHtmlString ScriptsTemplate(this HtmlHelper html)
         {
             return new HtmlString(
-                "<script src=\"https://cdnfly01.azureedge.net/fly/1.1.0/fly01ui.min.js\"></script>"
-                //"<script src=\"http://poad257.poa01.local:8000/1.1.0/fly01ui.js\"></script>"
+                //"<script src=\"https://cdnfly01.azureedge.net/fly/1.1.0/fly01ui.min.js\"></script>"
+                "<script src=\"http://poad257.poa01.local:8000/1.1.0/fly01ui.js\"></script>"
             );
         }
     }

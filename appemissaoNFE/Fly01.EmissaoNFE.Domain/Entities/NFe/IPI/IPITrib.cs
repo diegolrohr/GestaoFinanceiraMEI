@@ -37,7 +37,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public string ValorBaseCalculoString
         {
             get { return ValorBaseCalculo.Value.ToString("0.00").Replace(",", "."); }
-            set { ValorBaseCalculo = double.Parse(value); }
+            set { ValorBaseCalculo = double.Parse(value.Replace(".", ",")); }
         }
 
         public bool ShouldSerializeValorBaseCalculoString()
@@ -66,7 +66,25 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public string ValorIPIString
         {
             get { return ValorIPI.ToString("0.00").Replace(",", "."); }
-            set { ValorIPI = double.Parse(value); }
+            set { ValorIPI = double.Parse(value.Replace(".", ",")); }
+        }
+
+        /// <summary>
+        /// Deve ser informado quando preenchido o Grupo Tributos Devolvidos na emissão de nota finNFe=4 (devolução) nas operações com não contribuintes do IPI.
+        /// </summary>
+        [XmlIgnore]
+        public double? ValorIPIDevolucao { get; set; }
+
+        [XmlElement(ElementName = "vIPIDevol")]
+        public string ValorIPIDevolucaoString
+        {
+            get { return ValorIPIDevolucao.HasValue ? ValorIPIDevolucao.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { ValorIPIDevolucao = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorIPIDevolucaoString()
+        {
+            return ValorIPIDevolucao.HasValue && ValorIPIDevolucao.Value > 0;
         }
     }
 }

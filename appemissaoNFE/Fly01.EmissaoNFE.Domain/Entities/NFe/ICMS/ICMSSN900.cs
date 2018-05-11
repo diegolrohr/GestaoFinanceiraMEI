@@ -42,7 +42,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBC.HasValue ? ValorBC.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorBC = double.Parse(value); }
+            set { ValorBC = double.Parse(value.Replace(".", ",")); }
         }
 
         [XmlIgnore]
@@ -237,7 +237,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPSTString()
         {
-            return AliquotaFCPST.HasValue && BaseFCPST.Value > 0;
+            return AliquotaFCPST.HasValue && AliquotaFCPST.Value > 0;
         }
 
         [XmlIgnore]
@@ -253,7 +253,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPSTString()
         {
-            return ValorFCPST.HasValue && BaseFCPST.Value > 0;
+            return ValorFCPST.HasValue && ValorFCPST.Value > 0;
         }
     }
 }

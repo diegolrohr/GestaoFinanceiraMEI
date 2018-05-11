@@ -52,6 +52,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         public double SomatorioIPI { get; set; }
 
         [XmlIgnore]
+        public double SomatorioIPIDevolucao { get; set; }
+
+        [XmlIgnore]
         public double SomatorioPis { get; set; }
 
         [XmlIgnore]
@@ -170,6 +173,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         {
             get { return SomatorioIPI.ToString("0.00").Replace(",", "."); }
             set { SomatorioIPI = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlElement("vIPIDevol")]
+        public string SomatorioIPIDevolucaoString
+        {
+            get { return SomatorioIPIDevolucao.ToString("0.00").Replace(",", "."); }
+            set { SomatorioIPIDevolucao = double.Parse(value.Replace(".", ",")); }
         }
 
         [XmlElement("vPIS")]

@@ -126,6 +126,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.IPI
         public double ValorIPI { get; set; }
 
         /// <summary>
+        /// Deve ser informado quando preenchido o Grupo Tributos Devolvidos na emissão de nota finNFe=4 (devolução) nas operações com não contribuintes do IPI.
+        /// </summary>
+        [XmlIgnore]
+        public double ValorIPIDevolucao { get; set; }
+
+        /// <summary>
         /// Informar false caso não haja tributação de IPI
         /// </summary>
         [XmlIgnore]

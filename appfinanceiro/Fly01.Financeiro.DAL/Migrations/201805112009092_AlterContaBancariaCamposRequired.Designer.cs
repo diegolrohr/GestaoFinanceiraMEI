@@ -13,7 +13,7 @@ namespace Fly01.Financeiro.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201805101842210_AlterContaBancariaCamposRequired"; }
+            get { return "201805112009092_AlterContaBancariaCamposRequired"; }
         }
         
         string IMigrationMetadata.Source

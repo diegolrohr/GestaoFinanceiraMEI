@@ -39,28 +39,30 @@
         var that = $(this);
         that.loading("start");
         e.preventDefault();
+
         if (!that.valid()) {
             that.loading("stop");
             return false;
         }
         else {
-            //var formData = that.serializeObject();
-
             $.ajax({
                 type: "GET",
                 dataType: "json",
                 url: '@Url.Action("ImprimeBoleto", "Cnab")',
                 contentType: "application/json",
-                //data: JSON.stringify(formData),
                 data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: $("#bancoId").val() },
                 success: function success(data) {
                     if (data.success) {
                         var strMsg = "Boleto emitido com sucesso.";
-                        if (data.message !== "")
-                            strMsg = data.message;
                         fly01.toast(strMsg, "success");
                         that.loading("stop");
-                        fly01._.dtInventarioItem.refresh();
+
+                        if (data.message !== "" && data.message !== undefined) {
+                            var win = window.open("", "_blank");
+                            win.document.write(data.message);
+                            win.print();
+                            win.close();
+                        }
                     } else {
                         that.loading("stop");
 
@@ -93,5 +95,4 @@
             });
         }
     });
-
 </script>

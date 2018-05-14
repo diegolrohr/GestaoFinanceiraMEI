@@ -40,19 +40,31 @@ namespace Fly01.Financeiro.Controllers
 
         //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         [HttpGet]
-        public HttpResponseMessage ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
-            var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
+            try
+            {
+                var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
 
-            var html = new StringBuilder();
-            html.Append("<div style=\"page-break-after: always;\">");
-            html.Append(boletoImpresso.MontaHtml());
-            html.Append("</div>");
+                var html = new StringBuilder();
+                html.Append("<div style=\"page-break-after: always;\">");
+                html.Append(boletoImpresso.MontaHtml());
+                html.Append("</div>");
 
-            if (!string.IsNullOrEmpty(html.ToString()))
-                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(boletoImpresso));
+                //if (!string.IsNullOrEmpty(html.ToString()))
+                //    RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(boletoImpresso));
 
-            return null;
+                return Json(new
+                {
+                    success = true,
+                    message = html.ToString()
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = string.Format("Ocorreu um erro ao gerar boleto: {0}", ex.Message) }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         private Boleto2Net.BoletoBancario GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)

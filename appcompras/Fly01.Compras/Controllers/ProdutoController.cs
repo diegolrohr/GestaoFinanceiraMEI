@@ -26,7 +26,7 @@ namespace Fly01.Compras.Controllers
             ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo)";
             ExpandProperties = string.Concat(ExpandProperties, ",enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)");
 
-            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto";
+            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo";
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
@@ -36,7 +36,8 @@ namespace Fly01.Compras.Controllers
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
                 tipoProduto = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
                 tipoProdutoCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description
+                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -71,8 +72,8 @@ namespace Fly01.Compras.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });

@@ -44,11 +44,11 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "menu", Value= "AvaliaçãoAPP" });
+            config.Elements.Add(new InputHiddenUI { Id = "aplicativo"});
             config.Elements.Add(new InputTextUI { Id = "titulo", Class = "col s12 l3", Label = "Título", Required = true, MaxLength = 45 });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m12 24", Label = "Descrição", Required = true });
-            config.Elements.Add(new InputHiddenUI { Id = "menu", Value= "AvaliaçãoAPP" });
             config.Elements.Add(new InputTextUI { Id = "satisfacao", Class = "col s12 l3", Label = "Satisfação", Required = true });
-            config.Elements.Add(new InputHiddenUI { Id = "aplicativo", Class = "col s12 l3", Label = "Aplicativo"});
 
             cfg.Content.Add(config);
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");

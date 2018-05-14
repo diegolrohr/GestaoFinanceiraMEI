@@ -21,6 +21,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlIgnore]
         public double AliquotaConsumidorFinal { get; set; }
+        //Ele é composto pela soma das tags pFCPSTRet e pICMSST
         [XmlElement(ElementName = "pST")]
         public string AliquotaConsumidorFinalString
         {

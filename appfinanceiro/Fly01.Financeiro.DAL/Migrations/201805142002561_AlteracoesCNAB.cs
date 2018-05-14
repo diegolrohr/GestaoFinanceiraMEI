@@ -3,7 +3,7 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CreateTableArquivoRemessaAndAlterTableCnab : DbMigration
+    public partial class AlteracoesCNAB : DbMigration
     {
         public override void Up()
         {
@@ -30,7 +30,15 @@ namespace Fly01.Financeiro.DAL.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            AddColumn("dbo.Banco", "EmiteBoleto", c => c.Boolean(nullable: false));
             AddColumn("dbo.Cnab", "ArquivoRemessaId", c => c.Guid());
+            AlterColumn("dbo.Cnab", "DataEmissao", c => c.DateTime(nullable: false, storeType: "date"));
+            AlterColumn("dbo.Cnab", "DataVencimento", c => c.DateTime(nullable: false, storeType: "date"));
+            AlterColumn("dbo.Cnab", "DataDesconto", c => c.DateTime(nullable: false, storeType: "date"));
+            AlterColumn("dbo.ContaBancaria", "Agencia", c => c.String(maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "DigitoAgencia", c => c.String(maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "Conta", c => c.String(maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "DigitoConta", c => c.String(maxLength: 200, unicode: false));
             CreateIndex("dbo.Cnab", "ArquivoRemessaId");
             AddForeignKey("dbo.Cnab", "ArquivoRemessaId", "dbo.ArquivoRemessa", "Id");
         }
@@ -39,7 +47,15 @@ namespace Fly01.Financeiro.DAL.Migrations
         {
             DropForeignKey("dbo.Cnab", "ArquivoRemessaId", "dbo.ArquivoRemessa");
             DropIndex("dbo.Cnab", new[] { "ArquivoRemessaId" });
+            AlterColumn("dbo.ContaBancaria", "DigitoConta", c => c.String(nullable: false, maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "Conta", c => c.String(nullable: false, maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "DigitoAgencia", c => c.String(nullable: false, maxLength: 200, unicode: false));
+            AlterColumn("dbo.ContaBancaria", "Agencia", c => c.String(nullable: false, maxLength: 200, unicode: false));
+            AlterColumn("dbo.Cnab", "DataDesconto", c => c.DateTime(nullable: false));
+            AlterColumn("dbo.Cnab", "DataVencimento", c => c.DateTime(nullable: false));
+            AlterColumn("dbo.Cnab", "DataEmissao", c => c.DateTime(nullable: false));
             DropColumn("dbo.Cnab", "ArquivoRemessaId");
+            DropColumn("dbo.Banco", "EmiteBoleto");
             DropTable("dbo.ArquivoRemessa");
         }
     }

@@ -152,21 +152,9 @@
     <Compile Include="Migrations\201805021300552_CreateCnab.Designer.cs">
       <DependentUpon>201805021300552_CreateCnab.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805021904098_InsertColumnBancoEmiteBoleto.cs" />
-    <Compile Include="Migrations\201805021904098_InsertColumnBancoEmiteBoleto.Designer.cs">
-      <DependentUpon>201805021904098_InsertColumnBancoEmiteBoleto.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs" />
-    <Compile Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.Designer.cs">
-      <DependentUpon>201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805102138133_AlteracaoFormatoDatas.cs" />
-    <Compile Include="Migrations\201805102138133_AlteracaoFormatoDatas.Designer.cs">
-      <DependentUpon>201805102138133_AlteracaoFormatoDatas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.cs" />
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.Designer.cs">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
+    <Compile Include="Migrations\201805142002561_AlteracoesCNAB.cs" />
+    <Compile Include="Migrations\201805142002561_AlteracoesCNAB.Designer.cs">
+      <DependentUpon>201805142002561_AlteracoesCNAB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -266,17 +254,8 @@
     <EmbeddedResource Include="Migrations\201805021300552_CreateCnab.resx">
       <DependentUpon>201805021300552_CreateCnab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805021904098_InsertColumnBancoEmiteBoleto.resx">
-      <DependentUpon>201805021904098_InsertColumnBancoEmiteBoleto.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.resx">
-      <DependentUpon>201805091845084_CreateTableArquivoRemessaAndAlterTableCnab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805102138133_AlteracaoFormatoDatas.resx">
-      <DependentUpon>201805102138133_AlteracaoFormatoDatas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.resx">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805142002561_AlteracoesCNAB.resx">
+      <DependentUpon>201805142002561_AlteracoesCNAB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

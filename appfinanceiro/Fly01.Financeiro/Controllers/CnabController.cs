@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
-                pessoa_nome = "" ,/*x.ContaReceber.Pessoa.Nome,*/
+                pessoa_nome = "",/*x.ContaReceber.Pessoa.Nome,*/
                 numeroBoleto = x.NumeroBoleto,
                 valorBoleto = x.ValorBoleto,
                 valorDesconto = x.ValorDesconto,
@@ -45,14 +45,26 @@ namespace Fly01.Financeiro.Controllers
             try
             {
                 var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
+                if (boletoImpresso == null) throw new Exception("O boleto não pôde ser gerado");
 
                 var html = new StringBuilder();
-                html.Append("<div style=\"page-break-after: always;\">");
-                html.Append(boletoImpresso.MontaHtml());
-                html.Append("</div>");
+                //html.Append($"<div style=\"page-break-after: always; margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
+                html.Append($"<div style=\"margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
 
-                //if (!string.IsNullOrEmpty(html.ToString()))
-                //    RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(boletoImpresso));
+                var cnab = new CnabVM()
+                {
+                    NumeroBoleto = 1,
+                    Status = StatusCnab.EmAberto.ToString(),
+                    DataEmissao = boletoImpresso.Boleto.DataEmissao,
+                    DataVencimento = boletoImpresso.Boleto.DataVencimento,
+                    NossoNumero = boletoImpresso.Boleto.NossoNumero,
+                    DataDesconto = boletoImpresso.Boleto.DataDesconto,
+                    ValorDesconto = (double)boletoImpresso.Boleto.ValorDesconto,
+                    ContaBancariaCedenteId = contaBancariaId,
+                    ContaReceberId = contaReceberId
+                };
+
+                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
 
                 return Json(new
                 {
@@ -64,7 +76,6 @@ namespace Fly01.Financeiro.Controllers
             {
                 return Json(new { success = false, message = string.Format("Ocorreu um erro ao gerar boleto: {0}", ex.Message) }, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         private Boleto2Net.BoletoBancario GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
@@ -223,7 +234,7 @@ namespace Fly01.Financeiro.Controllers
 
             var configdt = new DataTableUI()
             {
-                Id = "dtBoletos", 
+                Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new DataTableUIConfig()
@@ -269,7 +280,7 @@ namespace Fly01.Financeiro.Controllers
                     statusArquivoRemessa = item.Status
                 })
 
-            },JsonRequestBehavior.AllowGet);
+            }, JsonRequestBehavior.AllowGet);
         }
 
         private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
@@ -280,7 +291,7 @@ namespace Fly01.Financeiro.Controllers
                 { "pageNo", pageNo.ToString() },
                 { "pageSize", "10"}
             };
-            
+
             return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
         }
 
@@ -289,7 +300,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var boletosCnab = Getcnab(ids);
             var boletos = new Boleto2Net.Boletos();
-            
+
             foreach (var item in boletosCnab)
             {
                 var boleto = GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId).Boleto;
@@ -297,7 +308,7 @@ namespace Fly01.Financeiro.Controllers
                 boletos.Add(boleto);
                 boletos.Banco = boleto.Banco;
             }
-            
+
             //nome do arquivo
             var dadosCedente = base.GetDadosEmpresa();
             var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
@@ -309,7 +320,7 @@ namespace Fly01.Financeiro.Controllers
             if (System.IO.File.Exists(nomeArquivoREM))
             {
                 System.IO.File.Delete(nomeArquivoREM);
-                if (System.IO.File.Exists(nomeArquivoREM))                    
+                if (System.IO.File.Exists(nomeArquivoREM))
                     throw new Exception("Arquivo Remessa não foi excluído: " + nomeArquivoREM);
             }
             if (System.IO.File.Exists(nomeArquivoPDF))
@@ -337,7 +348,7 @@ namespace Fly01.Financeiro.Controllers
                 throw new Exception(e.InnerException.ToString());
             }
 
-            return null; 
+            return null;
         }
 
         private List<CnabVM> Getcnab(List<Guid> idsBoletos)

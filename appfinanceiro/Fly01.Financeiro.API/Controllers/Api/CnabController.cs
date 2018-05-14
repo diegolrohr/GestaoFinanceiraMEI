@@ -60,7 +60,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             try
             {
-                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
                     unitOfWork.CnabBL.Insert(entity);
                     await unitOfWork.Save();

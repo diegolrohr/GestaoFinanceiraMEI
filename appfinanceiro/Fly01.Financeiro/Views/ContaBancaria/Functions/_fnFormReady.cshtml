@@ -1,0 +1,20 @@
+﻿<script>
+    function controlaCamposConta(v) {
+        if (v) {
+            $('input#agencia').removeAttr('disabled');
+            $('input#digitoAgencia').removeAttr('disabled');
+            $('input#conta').removeAttr('disabled');
+            $('input#digitoConta').removeAttr('disabled');
+        }
+        else {
+            $('input#agencia').attr('disabled', 'disabled');
+            $('input#digitoAgencia').attr('disabled', 'disabled');
+            $('input#conta').attr('disabled', 'disabled');
+            $('input#digitoConta').attr('disabled', 'disabled');
+        }
+    }
+
+    function fnFormReady() {
+
+    }
+</script>

@@ -23,103 +23,125 @@ namespace Fly01.Financeiro.Controllers
     {
         public JsonResult LoadContasBancarias()
         {
-            var response = RestHelper.ExecuteGetRequest<ResponseExtratoContaSaldoVM>("extrato/saldos");
-            if (response == null)
-                return Json(new { }, JsonRequestBehavior.AllowGet);
-
-            var saldoAbsolutoTodasContas = response.Values.Where(x => x.ContaBancariaId != Guid.Empty).Sum(x => Math.Abs(x.SaldoConsolidado));
-            var responseToView = response.Values.Select(item => new
+            try
             {
-                contaBancariaId = item.ContaBancariaId.ToString() == Guid.Empty.ToString()
-                    ? string.Empty
-                    : item.ContaBancariaId.ToString(),
-                contaBancariaDescricao = item.ContaBancariaDescricao,
-                contaSaldo = item.SaldoConsolidado.ToString("C", AppDefaults.CultureInfoDefault),
-                progressSaldo = item.ContaBancariaId == Guid.Empty || saldoAbsolutoTodasContas == default(double)
-                    ? 100
-                    : Math.Round(Math.Abs(item.SaldoConsolidado) / saldoAbsolutoTodasContas * 100, 2)
-            }).OrderByDescending(x => x.progressSaldo).ToList();
+                var response = RestHelper.ExecuteGetRequest<ResponseExtratoContaSaldoVM>("extrato/saldos");
+                if (response == null)
+                    return Json(new { }, JsonRequestBehavior.AllowGet);
 
-            return Json(new
+                var saldoAbsolutoTodasContas = response.Values.Where(x => x.ContaBancariaId != Guid.Empty).Sum(x => Math.Abs(x.SaldoConsolidado));
+                var responseToView = response.Values.Select(item => new
+                {
+                    contaBancariaId = item.ContaBancariaId.ToString() == Guid.Empty.ToString()
+                        ? string.Empty
+                        : item.ContaBancariaId.ToString(),
+                    contaBancariaDescricao = item.ContaBancariaDescricao,
+                    contaSaldo = item.SaldoConsolidado.ToString("C", AppDefaults.CultureInfoDefault),
+                    progressSaldo = item.ContaBancariaId == Guid.Empty || saldoAbsolutoTodasContas == default(double)
+                        ? 100
+                        : Math.Round(Math.Abs(item.SaldoConsolidado) / saldoAbsolutoTodasContas * 100, 2)
+                }).OrderByDescending(x => x.progressSaldo).ToList();
+
+                return Json(new
+                {
+                    recordsTotal = responseToView.Count,
+                    recordsFiltered = responseToView.Count,
+                    data = responseToView
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
             {
-                recordsTotal = responseToView.Count,
-                recordsFiltered = responseToView.Count,
-                data = responseToView
-            }, JsonRequestBehavior.AllowGet);
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, string contaBancariaId)
         {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            try
             {
-                { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "contaBancariaId", contaBancariaId ?? string.Empty }
-            };
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
+                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "contaBancariaId", contaBancariaId ?? string.Empty }
+                };
 
-            var responseChart = RestHelper.ExecuteGetRequest<ResponseExtratoHistoricoSaldoVM>("extrato/historicosaldos", queryString);
-            var dataChartToView = new
-            {
-                success = true,
-                labels = responseChart.Value.Saldos.Select(x => x.Data.ToString("dd/MM")).ToArray(),
-                datasets = new object[] {
-                    new {
-                            type = "line",
-                            label = "Saldo Consolidado",
-                            backgroundColor = "rgb(99, 99, 99)",
-                            borderColor = "rgb(99, 99, 99)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.SaldoConsolidado, 2)).ToArray(),
-                            fill = false
-                        },
-                    new {
-                            label = "Recebimentos",
-                            fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
-                        },
-                    new {
-                            label = "Pagamentos",
-                            fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                var responseChart = RestHelper.ExecuteGetRequest<ResponseExtratoHistoricoSaldoVM>("extrato/historicosaldos", queryString);
+                var dataChartToView = new
+                {
+                    success = true,
+                    labels = responseChart.Value.Saldos.Select(x => x.Data.ToString("dd/MM")).ToArray(),
+                    datasets = new object[] {
+                        new {
+                                type = "line",
+                                label = "Saldo Consolidado",
+                                backgroundColor = "rgb(99, 99, 99)",
+                                borderColor = "rgb(99, 99, 99)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.SaldoConsolidado, 2)).ToArray(),
+                                fill = false
+                            },
+                        new {
+                                label = "Recebimentos",
+                                fill = false,
+                                backgroundColor = "rgb(75, 192, 192)",
+                                borderColor = "rgb(75, 192, 192)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
+                            },
+                        new {
+                                label = "Pagamentos",
+                                fill = false,
+                                backgroundColor = "rgb(255, 99, 132)",
+                                borderColor = "rgb(255, 99, 132)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                        }
                     }
-                }
-            };
+                };
 
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+                return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
+
         }
 
         public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId)
         {
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-
-            var pageNo = param.Start > 0 ? (param.Start / 50) + 1 : 1;
-
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            try
             {
-                { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "contaBancariaId", contaBancariaId ?? string.Empty },
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "50" }
-            };
+                var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
-            var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
-            return Json(new
-            {
-                recordsTotal = responseExtratoDetalhe.Paging.TotalRecordCount,
-                recordsFiltered = responseExtratoDetalhe.Paging.TotalRecordCount,
-                data = responseExtratoDetalhe.Data.Select(item => new
+                var pageNo = param.Start > 0 ? (param.Start / 50) + 1 : 1;
+
+                Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    data = item.DataMovimento.ToString("dd/MM/yyyy"),
-                    descricaoLancamento = item.DescricaoLancamento,
-                    pessoaNome = item.PessoaNome,
-                    contaBancariaDescricao = item.ContaBancariaDescricao,
-                    valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
-                })
-            }, JsonRequestBehavior.AllowGet);
+                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
+                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "contaBancariaId", contaBancariaId ?? string.Empty },
+                    { "pageNo", pageNo.ToString() },
+                    { "pageSize", "50" }
+                };
+
+                var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
+                return Json(new
+                {
+                    recordsTotal = responseExtratoDetalhe.Paging.TotalRecordCount,
+                    recordsFiltered = responseExtratoDetalhe.Paging.TotalRecordCount,
+                    data = responseExtratoDetalhe.Data.Select(item => new
+                    {
+                        data = item.DataMovimento.ToString("dd/MM/yyyy"),
+                        descricaoLancamento = item.DescricaoLancamento,
+                        pessoaNome = item.PessoaNome,
+                        contaBancariaDescricao = item.ContaBancariaDescricao,
+                        valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -684,6 +706,5 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
     }
 }

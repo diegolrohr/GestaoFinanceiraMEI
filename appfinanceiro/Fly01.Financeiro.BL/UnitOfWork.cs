@@ -35,7 +35,7 @@ namespace Fly01.Financeiro.BL
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
 
         private ContaBancariaBL contaBancariaBL;
-        public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL));
+        public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL, BancoBL));
 
         private FeriadoBL feriadoBL;
         public FeriadoBL FeriadoBL => feriadoBL ?? (feriadoBL = new FeriadoBL(Context));

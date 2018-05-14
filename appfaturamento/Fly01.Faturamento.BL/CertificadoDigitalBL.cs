@@ -4,7 +4,6 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.Rest;
 using Fly01.Core;
@@ -27,11 +26,13 @@ namespace Fly01.Faturamento.BL
 
         protected EstadoBL EstadoBL;
         protected ParametroTributarioBL ParametroTributarioBL;
+        private ManagerEmpresaVM empresa;
 
         public CertificadoDigitalBL(AppDataContext context, EstadoBL estadoBL, ParametroTributarioBL parametroTributarioBL) : base(context)
         {
             EstadoBL = estadoBL;
             ParametroTributarioBL = parametroTributarioBL;
+            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
         }
 
         public IQueryable<CertificadoDigital> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
@@ -54,6 +55,14 @@ namespace Fly01.Faturamento.BL
         public CertificadoDigital ProcessEntity(CertificadoDigital entity)
         {
             var ambiente = GetEntidade(true);
+
+            #region ResgataDadosEmpresa
+
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
+            #endregion
 
             entity.Md5 = Base64Helper.CalculaMD5Hash(entity.Certificado);
 
@@ -78,8 +87,6 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-
             string estadoNome = empresa.EstadoNome;
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 
@@ -110,11 +117,11 @@ namespace Fly01.Faturamento.BL
 
             return empresaNfe;
         }
-        
+
         public string GetEntidade(TipoAmbiente tipoAmbiente)
         {
             string entidade;
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null)
             {
@@ -124,7 +131,7 @@ namespace Fly01.Faturamento.BL
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
             {
                 entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
-                    certificado.EntidadeHomologacao:
+                    certificado.EntidadeHomologacao :
                     certificado.EntidadeProducao;
             }
             else
@@ -140,14 +147,14 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
-            if(certificado == null && !postCertificado)
+            if (certificado == null && !postCertificado)
             {
                 throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
             }
 
-            var parametros = ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
+            var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             var ambiente = parametros != null ? (TipoAmbiente)parametros.TipoAmbiente : TipoAmbiente.Homologacao;
             var retorno = new EntidadeVM();
@@ -167,9 +174,9 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
-            
-            var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
+            var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
+
+            var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null || ambiente == null || plataformaId == null)
                 return null;
@@ -186,11 +193,25 @@ namespace Fly01.Faturamento.BL
             }
             else
             {
-                var entidades =  RetornaEntidade();
+                var entidades = RetornaEntidade();
                 retorno.Homologacao = entidades.Homologacao;
                 retorno.Producao = entidades.Producao;
             }
             return retorno;
+        }
+
+        public bool IsValid(CertificadoDigital certificado=null)
+        {
+
+            var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            var empresaCNPJ = dadosEmpresa.CNPJ;
+            var empresaIE = dadosEmpresa.InscricaoEstadual;
+            var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            
+            if (certificado==null)
+                certificado = All.FirstOrDefault();
+            
+            return (certificado != null) && ((empresaCNPJ == certificado.Cnpj && empresaIE == certificado.InscricaoEstadual && empresaUF == certificado.UF));
         }
     }
 }

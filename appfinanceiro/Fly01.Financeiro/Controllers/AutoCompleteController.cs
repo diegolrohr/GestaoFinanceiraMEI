@@ -111,8 +111,7 @@ namespace Fly01.Financeiro.Controllers
 
             queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCarteira} and categoriaPaiId eq null");
             queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
-            //queryString.AddParam("$orderby", "tipoCarteira,categoriaPaiId,descricao");
-
+            
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
                                 select new
                                 {
@@ -274,9 +273,7 @@ namespace Fly01.Financeiro.Controllers
                                 {
                                     id = item.Id,
                                     label = item.NomeConta,
-                                    detail = "Ag: " + item.Agencia +
-                                             " Conta: " + item.Conta +
-                                             " Banco: " + item.Banco.Codigo + " " + item.Banco.Nome
+                                    detail = $"Ag: {item.Agencia} Conta: {item.Conta} Banco : {item.Banco.Codigo} {item.Banco.Nome}"
                                 };
 
             return GetJson(filterObjects);
@@ -298,9 +295,7 @@ namespace Fly01.Financeiro.Controllers
                                 {
                                     id = item.Id,
                                     label = item.NomeConta,
-                                    detail = "Ag: " + item.Agencia +
-                                             " Conta: " + item.Conta +
-                                             " Banco: " + item.Banco.Codigo + " " + item.Banco.Nome
+                                    detail = $"Ag: {item.Agencia} Conta: {item.Conta} Banco : {item.Banco.Codigo} {item.Banco.Nome}"
                                 };
 
             return GetJson(filterObjects);
@@ -323,7 +318,8 @@ namespace Fly01.Financeiro.Controllers
                                     id = item.Id,
                                     banco_codigo = item.Codigo,
                                     label = item.Nome,
-                                    detail = String.Format("Banco: ({0}) - {1}", item.Codigo, item.Nome)
+                                    detail = $"Banco: {item.Codigo} - {item.Nome}",
+                                    agenciaContaRequired = item.Codigo != "999"
                                 };
 
             return GetJson(filterObjects);

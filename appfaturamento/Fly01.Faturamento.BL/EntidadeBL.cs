@@ -22,10 +22,12 @@ namespace Fly01.Faturamento.BL
         }
 
         protected EstadoBL EstadoBL;
+        private ManagerEmpresaVM empresa;
 
         public EntidadeBL(AppDataContext context, EstadoBL estadoBL) : base(context)
         {
             EstadoBL = estadoBL;
+            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
         }
 
         public EntidadeVM RetornaEntidade()
@@ -65,7 +67,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade()
         {
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
             
             if (certificado != null && certificado.EntidadeHomologacao != null && certificado.EntidadeProducao != null)
             {

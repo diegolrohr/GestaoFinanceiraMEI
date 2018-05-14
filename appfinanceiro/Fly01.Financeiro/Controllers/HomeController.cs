@@ -301,7 +301,8 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"},
+                    new LinkUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")}
                 }
             });
             #endregion

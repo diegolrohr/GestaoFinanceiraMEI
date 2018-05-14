@@ -152,6 +152,10 @@
     <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.Designer.cs">
       <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.cs" />
+    <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.Designer.cs">
+      <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -249,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.resx">
       <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.resx">
+      <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

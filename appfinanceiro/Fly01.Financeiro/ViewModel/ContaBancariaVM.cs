@@ -47,5 +47,8 @@ namespace Fly01.Financeiro.ViewModel
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(40, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string NomeConta { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

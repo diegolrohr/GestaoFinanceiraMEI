@@ -303,7 +303,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente)
+        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador)
         {
             try
             {
@@ -320,7 +320,8 @@ namespace Fly01.Faturamento.Controllers
                     tipoModalidade = modalidade,
                     tipoVersaoNFe = versao,
                     mensagemPadraoNota = mensagem,
-                    tipoAmbiente = ambiente
+                    tipoAmbiente = ambiente,
+                    tipoPresencaComprador = tipoPresencaComprador
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 200)

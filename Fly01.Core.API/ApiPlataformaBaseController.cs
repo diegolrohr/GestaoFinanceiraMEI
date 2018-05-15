@@ -115,7 +115,7 @@ namespace Fly01.Core.API
                 throw new BusinessException("Registro não encontrado ou já excluído");
 
             if (entity.RegistroFixo)
-                throw new BusinessException("Registro não pode ser editado (RegistroFixo)");
+                throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
 
             Delete(entity);
 

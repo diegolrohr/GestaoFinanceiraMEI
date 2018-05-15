@@ -27,6 +27,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonProperty("bancoId")]
         public Guid BancoId { get; set; }
 
+        public string CodigoBanco { get; set; }
+
         [JsonProperty("banco")]
         public virtual Banco Banco { get; set; }
     }

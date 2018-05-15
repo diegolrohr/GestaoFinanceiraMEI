@@ -186,8 +186,8 @@ namespace Fly01.Faturamento.BL
                         Ambiente = parametros.TipoAmbiente,
                         FinalidadeEmissaoNFe = TipoFinalidadeEmissaoNFe.Normal,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
-                        PresencaComprador = TipoPresencaComprador.Presencial,
-                        Versao = "2.78",
+                        PresencaComprador = parametros.TipoPresencaComprador,
+                        Versao = "2.78",//versao do TSS
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };

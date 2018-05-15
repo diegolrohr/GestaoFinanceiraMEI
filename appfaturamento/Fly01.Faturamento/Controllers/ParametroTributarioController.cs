@@ -53,7 +53,8 @@ namespace Fly01.Faturamento.Controllers
                     tipoVersaoNFe = "v4",
                     tipoAmbiente = "Producao",
                     tipoModalidade = "Normal",
-                    aliquotaFCP = "0"
+                    aliquotaFCP = "0",
+                    tipoPresencaComprador = "Presencial"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -68,7 +69,8 @@ namespace Fly01.Faturamento.Controllers
                 tipoVersaoNFe = parametroTributario.TipoVersaoNFe,
                 mensagemPadraoNota = parametroTributario.MensagemPadraoNota,
                 tipoAmbiente = parametroTributario.TipoAmbiente,
-                aliquotaFCP = parametroTributario.AliquotaFCP
+                aliquotaFCP = parametroTributario.AliquotaFCP,
+                tipoPresencaComprador = parametroTributario.TipoPresencaComprador
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -180,19 +182,28 @@ namespace Fly01.Faturamento.Controllers
 
             };
 
-            form3.Elements.Add(new InputCustommaskUI
+            //form3.Elements.Add(new InputCustommaskUI
+            //{
+            //    Id = "numeroRetornoNF",
+            //    Class = "col s12 m3",
+            //    Label = "Número de Retorno da NF",
+            //    MaxLength = 20,
+            //    Data = new { inputmask = "'regex': '[0-9]*'" }
+            //});
+            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF"});
+
+            form3.Elements.Add(new SelectUI
             {
-                Id = "numeroRetornoNF",
-                Class = "col s12 m3",
-                Label = "Número de Retorno da NF",
-                MaxLength = 20,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
+                Id = "tipoPresencaComprador",
+                Class = "col s12 m4",
+                Label = "Presença do Comprador",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPresencaComprador)))
             });
-            
+
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
-                Class = "col s12 m6",
+                Class = "col s12 m5",
                 Label = "Modalidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });

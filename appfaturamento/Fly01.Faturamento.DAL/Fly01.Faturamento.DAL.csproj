@@ -244,6 +244,10 @@
     <Compile Include="Migrations\201805091322374_AlterParametroTributario.Designer.cs">
       <DependentUpon>201805091322374_AlterParametroTributario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805142116147_AlterPlataformaBaseRegistroFixo.cs" />
+    <Compile Include="Migrations\201805142116147_AlterPlataformaBaseRegistroFixo.Designer.cs">
+      <DependentUpon>201805142116147_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -420,6 +424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805091322374_AlterParametroTributario.resx">
       <DependentUpon>201805091322374_AlterParametroTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805142116147_AlterPlataformaBaseRegistroFixo.resx">
+      <DependentUpon>201805142116147_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

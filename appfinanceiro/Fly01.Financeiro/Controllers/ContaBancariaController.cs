@@ -23,7 +23,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", "id,bancoId,nomeConta,agencia,digitoAgencia,conta,digitoConta");
+            customFilters.AddParam("$select", "id,bancoId,nomeConta,agencia,digitoAgencia,conta,digitoConta,registroFixo");
 
             return customFilters;
         }
@@ -41,7 +41,8 @@ namespace Fly01.Financeiro.Controllers
                 conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ? 
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
-                digitoConta = x.DigitoConta
+                digitoConta = x.DigitoConta,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -79,8 +80,8 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nomeConta", DisplayName = "Nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });

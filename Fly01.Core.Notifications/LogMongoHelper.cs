@@ -8,8 +8,26 @@ using System.Security.Authentication;
 
 namespace Fly01.Core.Notifications
 {
+    public enum NoSQLDataBase
+    {
+        LogDB,
+        AvaliacaoAppDB
+    }
+
     public class LogMongoHelper<T> : IDisposable
     {
+        public LogMongoHelper()
+        {
+            noSQLDataBase = NoSQLDataBase.LogDB;
+        }
+
+        public LogMongoHelper(NoSQLDataBase pNoSQLDataBase)
+        {
+            noSQLDataBase = pNoSQLDataBase;
+        }
+
+        private NoSQLDataBase noSQLDataBase;
+
         private bool disposed = false;
         #region IDisposable
         public void Dispose()
@@ -48,12 +66,24 @@ namespace Fly01.Core.Notifications
 
         private string dataBaseName
         {
-            get { return ConfigurationManager.AppSettings["MongoDataBaseName"]; }
+            get
+            {
+                if (noSQLDataBase == NoSQLDataBase.AvaliacaoAppDB)
+                    return ConfigurationManager.AppSettings["MongoDataBaseNameAvaliacaoApp"];
+
+                return ConfigurationManager.AppSettings["MongoDataBaseName"];
+            }
         }
 
         private string collectionName
         {
-            get { return ConfigurationManager.AppSettings["MongoCollectionNameLog"]; }
+            get
+            {
+                if (noSQLDataBase == NoSQLDataBase.AvaliacaoAppDB)
+                    return ConfigurationManager.AppSettings["MongoCollectionNameAvaliacaoApp"];
+
+                return ConfigurationManager.AppSettings["MongoCollectionNameLog"];
+            }
         }
 
         private MongoClient _mongoClient;

@@ -129,6 +129,7 @@
     <Compile Include="Commons\LayoutHelper.cs" />
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />
+    <Compile Include="Controllers\AvaliacaoAppBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GenericAppController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

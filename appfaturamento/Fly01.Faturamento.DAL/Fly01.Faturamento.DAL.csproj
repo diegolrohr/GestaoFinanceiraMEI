@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201805152026535_AlterParametroTributarioPresencaComprador.Designer.cs">
       <DependentUpon>201805152026535_AlterParametroTributarioPresencaComprador.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805152118237_AlterNCMInativoFormaPagamento.cs" />
+    <Compile Include="Migrations\201805152118237_AlterNCMInativoFormaPagamento.Designer.cs">
+      <DependentUpon>201805152118237_AlterNCMInativoFormaPagamento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -434,6 +438,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805152026535_AlterParametroTributarioPresencaComprador.resx">
       <DependentUpon>201805152026535_AlterParametroTributarioPresencaComprador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152118237_AlterNCMInativoFormaPagamento.resx">
+      <DependentUpon>201805152118237_AlterNCMInativoFormaPagamento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -93,7 +93,8 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 descricao = x.Descricao,
                 categoriaPaiId = x.CategoriaPaiId,
-                tipoCarteira = x.TipoCarteira
+                tipoCarteira = x.TipoCarteira,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -121,8 +122,8 @@ namespace Fly01.Faturamento.Controllers
                 Options = new DataTableUIConfig { PageLength = 50 }
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "descricao",

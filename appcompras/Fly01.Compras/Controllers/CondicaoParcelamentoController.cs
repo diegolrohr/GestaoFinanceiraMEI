@@ -57,7 +57,8 @@ namespace Fly01.Compras.Controllers
                 qtdParcelas = x.QtdParcelas,
                 condicoesParcelamento = x.CondicoesParcelamento,
                 valorReferencia = "",
-                dataReferencia = DateTime.Now
+                dataReferencia = DateTime.Now,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -89,8 +90,8 @@ namespace Fly01.Compras.Controllers
 
             DataTableUI config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
 

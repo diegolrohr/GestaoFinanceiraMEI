@@ -19,7 +19,7 @@ namespace Fly01.Estoque.Controllers
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$select", "id,descricao,tipoEntradaSaida");
+            customFilters.AddParam("$select", "id,descricao,tipoEntradaSaida,registroFixo");
 
             return customFilters;
         }
@@ -34,6 +34,7 @@ namespace Fly01.Estoque.Controllers
                 tipoEntradaSaidaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Description,
                 tipoEntradaSaidaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).CssClass,
                 tipoEntradaSaidaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Value,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -54,8 +55,8 @@ namespace Fly01.Estoque.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn

@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
+            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa :  RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
 
             var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 

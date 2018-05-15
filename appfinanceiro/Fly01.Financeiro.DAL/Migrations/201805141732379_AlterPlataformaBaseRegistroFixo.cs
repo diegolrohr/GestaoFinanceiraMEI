@@ -24,6 +24,7 @@ namespace Fly01.Financeiro.DAL.Migrations
             AddColumn("dbo.Movimentacao", "RegistroFixo", c => c.Boolean(nullable: false));
             AddColumn("dbo.RenegociacaoContaFinanceira", "RegistroFixo", c => c.Boolean(nullable: false));
             AddColumn("dbo.SaldoHistorico", "RegistroFixo", c => c.Boolean(nullable: false));
+
             AlterStoredProcedure(
                 "dbo.SaldoHistorico_Insert",
                 p => new
@@ -46,8 +47,17 @@ namespace Fly01.Financeiro.DAL.Migrations
                         Ativo = p.Boolean(),
                     },
                 body:
-                    @"INSERT [dbo].[SaldoHistorico]([Id], [Data], [ContaBancariaId], [SaldoDia], [SaldoConsolidado], [TotalRecebimentos], [TotalPagamentos], [PlataformaId], [RegistroFixo], [DataInclusao], [DataAlteracao], [DataExclusao], [UsuarioInclusao], [UsuarioAlteracao], [UsuarioExclusao], [Ativo])
-                      VALUES (@Id, @Data, @ContaBancariaId, @SaldoDia, @SaldoConsolidado, @TotalRecebimentos, @TotalPagamentos, @PlataformaId, @RegistroFixo, @DataInclusao, @DataAlteracao, @DataExclusao, @UsuarioInclusao, @UsuarioAlteracao, @UsuarioExclusao, @Ativo)"
+                    @"
+                      INSERT [dbo].[SaldoHistorico]([Id], [Data], [ContaBancariaId], [SaldoDia], [SaldoConsolidado], [TotalRecebimentos], [TotalPagamentos], [PlataformaId], [RegistroFixo], [DataInclusao], [DataAlteracao], [DataExclusao], [UsuarioInclusao], [UsuarioAlteracao], [UsuarioExclusao], [Ativo])
+                      VALUES (@Id, @Data, @ContaBancariaId, @SaldoDia, @SaldoConsolidado, @TotalRecebimentos, @TotalPagamentos, @PlataformaId, @RegistroFixo, @DataInclusao, @DataAlteracao, @DataExclusao, @UsuarioInclusao, @UsuarioAlteracao, @UsuarioExclusao, @Ativo)
+                      
+                      -- Recalculo de Saldos
+                      UPDATE [dbo].[SaldoHistorico] SET [SaldoConsolidado] = [SaldoConsolidado] + @SaldoDia
+                      WHERE 
+                      	[ContaBancariaId] = @ContaBancariaId AND 
+                      	[PlataformaId] = @PlataformaId AND 
+                      	[Ativo] = 1 AND
+                      	[Data] > @Data"
             );
             
             AlterStoredProcedure(
@@ -72,11 +82,35 @@ namespace Fly01.Financeiro.DAL.Migrations
                         Ativo = p.Boolean(),
                     },
                 body:
-                    @"UPDATE [dbo].[SaldoHistorico]
+                    @"
+                      DECLARE @DiferencaSaldo float
+                      SELECT @DiferencaSaldo = @SaldoDia - S.[SaldoDia]
+                      FROM [dbo].[SaldoHistorico] S
+                      WHERE ([Id] = @Id)
+
+                      UPDATE [dbo].[SaldoHistorico]
                       SET [Data] = @Data, [ContaBancariaId] = @ContaBancariaId, [SaldoDia] = @SaldoDia, [SaldoConsolidado] = @SaldoConsolidado, [TotalRecebimentos] = @TotalRecebimentos, [TotalPagamentos] = @TotalPagamentos, [PlataformaId] = @PlataformaId, [RegistroFixo] = @RegistroFixo, [DataInclusao] = @DataInclusao, [DataAlteracao] = @DataAlteracao, [DataExclusao] = @DataExclusao, [UsuarioInclusao] = @UsuarioInclusao, [UsuarioAlteracao] = @UsuarioAlteracao, [UsuarioExclusao] = @UsuarioExclusao, [Ativo] = @Ativo
+                      WHERE ([Id] = @Id)
+
+                      -- Recalculo de Saldos
+                      UPDATE [dbo].[SaldoHistorico] SET [SaldoConsolidado] = [SaldoConsolidado] + @DiferencaSaldo
+                      WHERE 
+                      	[ContaBancariaId] = @ContaBancariaId AND 
+                      	[PlataformaId] = @PlataformaId AND 
+                      	[Ativo] = 1 AND
+                      	[Data] > @Data"
+            );
+
+            AlterStoredProcedure(
+                "dbo.SaldoHistorico_Delete",
+                p => new
+                    {
+                        Id = p.Guid(),
+                    },
+                body:
+                    @"DELETE [dbo].[SaldoHistorico]
                       WHERE ([Id] = @Id)"
             );
-            
         }
         
         public override void Down()

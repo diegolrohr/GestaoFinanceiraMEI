@@ -7,6 +7,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     /*
      * ATENÇÃO: Entidade utiliza StoreProcedures
      * para recalculo de saldos.
+     * MigrationName: SaldoHistoricoCreateSP
      * (Follmann)
     */
     public class SaldoHistorico : PlataformaBase

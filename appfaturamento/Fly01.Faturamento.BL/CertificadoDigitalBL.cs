@@ -177,8 +177,8 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
+            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa :  RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
             var certificado = Everything.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
-
             var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             if (certificado == null || ambiente == null || plataformaId == null)
@@ -205,7 +205,6 @@ namespace Fly01.Faturamento.BL
 
         public bool IsValid(CertificadoDigital certificado=null)
         {
-
             var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaCNPJ = dadosEmpresa.CNPJ;
             var empresaIE = dadosEmpresa.InscricaoEstadual;

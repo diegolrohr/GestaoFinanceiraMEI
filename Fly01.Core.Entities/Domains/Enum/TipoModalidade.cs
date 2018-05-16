@@ -13,10 +13,6 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("FSIA", "Contingência FS-IA, com impressão do DANFE em formulário de segurança")]
         FSIA = 2,
 
-        [XmlEnum(Name = "3")]
-        [Subtitle("SCAN", "Sistema de Contingência do Ambiente Nacional")]
-        SCAN = 3,
-
         [XmlEnum(Name = "4")]
         [Subtitle("DPEC", "Declaração Prévia da Emissão em Contingência")]
         DPEC = 4,

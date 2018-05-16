@@ -131,7 +131,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l3 m3 s12", Label = "Código" });
 
-            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras" });
+            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras", Value = "SEM GTIN" });
 
             config.Elements.Add(new SelectUI
             {
@@ -225,6 +225,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Informe o enquadramento legal do IPI, se utilizar este produto com um grupo tributário que calcula IPI ao emitir notas fiscais."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "codigoBarras",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
                 }
             });
             #endregion

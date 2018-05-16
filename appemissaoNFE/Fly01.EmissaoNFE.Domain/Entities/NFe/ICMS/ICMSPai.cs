@@ -154,6 +154,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                     ToValidate.Add(NewKeyValuePair("BaseFCPSTRetido", BaseFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("AliquotaFCPSTRetido", AliquotaFCPSTRetido));
                     ToValidate.Add(NewKeyValuePair("ValorFCPSTRetido", ValorFCPSTRetido));
+                    ToValidate.Add(NewKeyValuePair("AliquotaConsumidorFinal", AliquotaConsumidorFinal));
 
                     DoTheValidation();
 
@@ -163,7 +164,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
                         ValorICMSSTRetido = ValorICMSSTRetido.Value,
                         BaseFCPSTRetido = BaseFCPSTRetido,
                         AliquotaFCPSTRetido = AliquotaFCPSTRetido,
-                        ValorFCPSTRetido = ValorFCPSTRetido
+                        ValorFCPSTRetido = ValorFCPSTRetido,
+                        AliquotaConsumidorFinal = AliquotaConsumidorFinal.Value
                     };
                     break;
                 case "900"://Outros
@@ -288,6 +290,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 
         [XmlIgnore]
         public double? ValorFCPSTRetido { get; set; }
+
+        [XmlIgnore]
+        public double? AliquotaConsumidorFinal { get; set; }
 
         #endregion FCP
 

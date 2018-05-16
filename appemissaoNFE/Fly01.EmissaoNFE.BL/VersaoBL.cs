@@ -16,7 +16,7 @@ namespace Fly01.EmissaoNFE.BL
         {
             EntidadeBL.ValidaModel(entity);
             
-            entity.Fail(!(entity.VersaoNFe == "3.10" || entity.VersaoNFe == "4.0"), VersaoInvalida);
+            entity.Fail(!(entity.VersaoNFe == "3.10" || entity.VersaoNFe == "4.00"), VersaoInvalida);
 
             base.ValidaModel(entity);
         }

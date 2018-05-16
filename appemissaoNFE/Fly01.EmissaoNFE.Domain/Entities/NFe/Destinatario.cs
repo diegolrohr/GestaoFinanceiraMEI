@@ -22,6 +22,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "CPF")]
         public string Cpf { get; set; }
 
+        [MaxLength(20)]
+        /// <summary>
+        /// No caso de operação com o exterior, ou para comprador estrangeiro informar com o número do passaporte ou outro documento legal para identificar pessoa estrangeira.
+        /// Campo aceita valor Nulo.
+        /// </summary>
+        [XmlElement(ElementName = "idEstrangeiro")]
+        public string IdentificacaoEstrangeiro { get; set; }
+
         [MaxLength(60)]
         /// <summary>
         /// informar a razão social do destinatário, pode ser omitida no caso de NFC-e.

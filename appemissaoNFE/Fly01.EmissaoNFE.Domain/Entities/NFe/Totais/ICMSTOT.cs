@@ -52,6 +52,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         public double SomatorioIPI { get; set; }
 
         [XmlIgnore]
+        public double SomatorioIPIDevolucao { get; set; }
+
+        [XmlIgnore]
         public double SomatorioPis { get; set; }
 
         [XmlIgnore]
@@ -93,12 +96,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
-        //[XmlElement("vFCP")]
-        //public string SomatorioFCPString
-        //{
-        //    get { return SomatorioFCP.ToString("0.00").Replace(",", "."); }
-        //    set { SomatorioFCP = double.Parse(value.Replace(".", ",")); }
-        //}
+        [XmlElement("vFCP")]
+        public string SomatorioFCPString
+        {
+            get { return SomatorioFCP.ToString("0.00").Replace(",", "."); }
+            set { SomatorioFCP = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlElement("vBCST")]
         public string SomatorioBCSTString
@@ -115,20 +118,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
-        //[XmlElement("vFCPST")]
-        //public string SomatorioFCPSTString
-        //{
-        //    get { return SomatorioFCPST.ToString("0.00").Replace(",", "."); }
-        //    set { SomatorioFCPST = double.Parse(value.Replace(".", ",")); }
-        //}
+        [XmlElement("vFCPST")]
+        public string SomatorioFCPSTString
+        {
+            get { return SomatorioFCPST.ToString("0.00").Replace(",", "."); }
+            set { SomatorioFCPST = double.Parse(value.Replace(".", ",")); }
+        }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
-        //[XmlElement("vFCPSTRet")]
-        //public string SomatorioFCPSTRetidoString
-        //{
-        //    get { return SomatorioFCPSTRetido.ToString("0.00").Replace(",", "."); }
-        //    set { SomatorioFCPSTRetido = double.Parse(value.Replace(".", ",")); }
-        //}
+        [XmlElement("vFCPSTRet")]
+        public string SomatorioFCPSTRetidoString
+        {
+            get { return SomatorioFCPSTRetido.ToString("0.00").Replace(",", "."); }
+            set { SomatorioFCPSTRetido = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlElement("vProd")]
         public string SomatorioProdutosString
@@ -170,6 +173,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         {
             get { return SomatorioIPI.ToString("0.00").Replace(",", "."); }
             set { SomatorioIPI = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlElement("vIPIDevol")]
+        public string SomatorioIPIDevolucaoString
+        {
+            get { return SomatorioIPIDevolucao.ToString("0.00").Replace(",", "."); }
+            set { SomatorioIPIDevolucao = double.Parse(value.Replace(".", ",")); }
         }
 
         [XmlElement("vPIS")]

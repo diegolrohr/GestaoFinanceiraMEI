@@ -9,11 +9,25 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
 
         public COFINSAliq(string codigoSituacaoTributaria) : base(codigoSituacaoTributaria) { }
 
-        [XmlElement(ElementName = "vBC")]
+        [XmlIgnore]
         public double ValorBC { get; set; }
-        
-        [XmlElement(ElementName = "pCOFINS")]
+
+        [XmlElement(ElementName = "vBC")]
+        public string ValorBCString
+        {
+            get { return ValorBC.ToString("0.00").Replace(",", "."); }
+            set { ValorBC = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double AliquotaPercentual { get; set; }
+
+        [XmlElement(ElementName = "pCOFINS")]
+        public string AliquotaPercentualString
+        {
+            get { return AliquotaPercentual.ToString("0.00").Replace(",", "."); }
+            set { AliquotaPercentual = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlIgnore]
         public double ValorCOFINS { get; set; }
@@ -22,7 +36,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS
         public string ValorCOFINSString
         {
             get { return ValorCOFINS.ToString("0.00").Replace(",", ".");  }
-            set { ValorCOFINS = double.Parse(value); }
+            set { ValorCOFINS = double.Parse(value.Replace(".", ",")); }
         }
     }
 }

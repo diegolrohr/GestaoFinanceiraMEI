@@ -17,7 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using System.Linq;
 using System.Net.Http;
 using System.IO;
-using Fly01.Core;
+using System.Net;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
-                pessoa_nome = "",/*x.ContaReceber.Pessoa.Nome,*/
+                pessoa_nome = x.ContaReceber.Pessoa.Nome,
                 numeroBoleto = x.NumeroBoleto,
                 valorBoleto = x.ValorBoleto,
                 valorDesconto = x.ValorDesconto,
@@ -38,39 +38,20 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        //public ContentResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, DateTime dataDesconto, double valorDesconto)
         [HttpGet]
         public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             try
             {
-                var boletoImpresso = GetBoletoBancario(contaReceberId, contaBancariaId);
-                if (boletoImpresso == null) throw new Exception("O boleto não pôde ser gerado");
+                var boletoImpresso = GeraBoleto(GetBoletoBancario(contaReceberId, contaBancariaId));
+                if (boletoImpresso == null) throw new Exception("O boleto não pôde ser gerado.");
 
                 var html = new StringBuilder();
-                //html.Append($"<div style=\"page-break-after: always; margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
                 html.Append($"<div style=\"margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
 
-                var cnab = new CnabVM()
-                {
-                    NumeroBoleto = 1,
-                    Status = StatusCnab.EmAberto.ToString(),
-                    DataEmissao = boletoImpresso.Boleto.DataEmissao,
-                    DataVencimento = boletoImpresso.Boleto.DataVencimento,
-                    NossoNumero = boletoImpresso.Boleto.NossoNumero,
-                    DataDesconto = boletoImpresso.Boleto.DataDesconto,
-                    ValorDesconto = (double)boletoImpresso.Boleto.ValorDesconto,
-                    ContaBancariaCedenteId = contaBancariaId,
-                    ContaReceberId = contaReceberId
-                };
+                SalvaBoleto(boletoImpresso, contaReceberId, contaBancariaId);
 
-                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
-
-                return Json(new
-                {
-                    success = true,
-                    message = html.ToString()
-                }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, message = html.ToString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -78,40 +59,33 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        private Boleto2Net.BoletoBancario GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
+        private Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
         {
             var mensagemBoleto = "";
-            var queryString = new Dictionary<string, string>
-            {
-                { "contaReceberId", contaReceberId.ToString() }
-                , { "contaBancariaId", contaBancariaId.ToString() }
-                //, { "dataDesconto", DateTime.Now.ToString("yyyy-MM-dd") }
-                //, { "valorDesconto", "1" }
-            };
-
-            var boleto = RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
             var proxy = new Boleto2Net.Boleto2NetProxy();
             var cedente = boleto.Cedente;
             var contaCedente = cedente.ContaBancariaCedente;
             var sacado = boleto.Sacado;
 
-            if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento,
-                cedente.EnderecoBairro, cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco,
-                contaCedente.Agencia, contaCedente.DigitoAgencia, "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "",
-                "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro,
-                (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
+                cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
+                "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
+                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento,
-                sacado.EnderecoBairro, sacado.EnderecoCidade, sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
+                sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirBoleto(boleto.EspecieMoeda, boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao, DateTime.Now, boleto.DataVencimento,
-                boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirBoleto(boleto.EspecieMoeda, boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao, DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto,
+                boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
             if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
-            if (!proxy.DefinirDesconto(DateTime.Now, 0, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
+            if (boleto.DataDesconto.HasValue)
+                if (!proxy.DefinirDesconto(boleto.DataDesconto.Value, boleto.ValorDesconto.Value, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+
             if (!proxy.DefinirInstrucoes(boleto.InstrucoesCaixa, "", "", "", "", "", "", "", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             proxy.FecharBoleto(ref mensagemBoleto);
@@ -123,6 +97,155 @@ namespace Fly01.Financeiro.Controllers
                 MostrarComprovanteEntrega = true,
                 MostrarEnderecoCedente = true
             };
+        }
+
+        private void SalvaBoleto(Boleto2Net.BoletoBancario boletoImpresso, Guid contaReceberId, Guid contaBancariaId)
+        {
+            var cnab = new CnabVM()
+            {
+                NumeroBoleto = 1,
+                Status = StatusCnab.EmAberto.ToString(),
+                DataEmissao = boletoImpresso.Boleto.DataEmissao,
+                DataVencimento = boletoImpresso.Boleto.DataVencimento,
+                NossoNumero = boletoImpresso.Boleto.NossoNumero,
+                DataDesconto = boletoImpresso.Boleto.DataDesconto,
+                ValorDesconto = (double)boletoImpresso.Boleto.ValorDesconto,
+                ContaBancariaCedenteId = contaBancariaId,
+                ContaReceberId = contaReceberId,
+                ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo
+            };
+
+            RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
+        }
+
+        public JsonResult LoadGridBoletos(Guid IdArquivo)
+        {
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetContasReceber(IdArquivo, pageNo);
+
+            return Json(new
+            {
+                recordsTotal = response.Paging.TotalRecordCount,
+                recordsFiltered = response.Paging.TotalRecordCount,
+                data = response.Data.Select(item => new
+                {
+                    numero = item.NumeroBoleto,
+                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
+                    valorBoleto = item.ValorBoleto,
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status
+                })
+
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
+        {
+            var queryString = new Dictionary<string, string>
+            {
+                { "contaReceberId", contaReceberId.ToString() }
+                , { "contaBancariaId", contaBancariaId.ToString() }
+            };
+
+            return RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
+        }
+
+        private List<CnabVM> GetCnab(List<Guid> idsBoletos)
+        {
+            List<CnabVM> listaCnab = new List<CnabVM>();
+
+            foreach (var item in idsBoletos)
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "Id", item.ToString()},
+                    { "pageSize", "10"}
+                };
+
+                var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab/GetCnab", queryString);
+
+                if (restResponse != null)
+                    listaCnab.Add(restResponse);
+            }
+
+            return listaCnab;
+        }
+
+        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "arquivoRemessaId", idArquivo.ToString()},
+                { "pageNo", pageNo.ToString() },
+                { "pageSize", "10"}
+            };
+
+            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
+        }
+
+        [HttpGet]
+        //public FileResult GerarArquivoRemessa(List<Guid> ids)
+        public FileResult GerarArquivoRemessa(string ids)
+        {
+            var boletosCnab = GetCnab(ids.Split(',').Select(item => new Guid(item)).ToList());
+            var boletos = new Boleto2Net.Boletos();
+
+            foreach (var item in boletosCnab)
+            {
+                var boleto = GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto;
+
+                boletos.Add(boleto);
+                boletos.Banco = boleto.Banco;
+            }
+
+            //nome do arquivo
+            //var dadosCedente = base.GetDadosEmpresa();
+            //var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
+            //var nomeArquivoPDF = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.PDF");
+
+            ////validando diretorio do arquivo remessa
+            //if (!Directory.Exists(Path.GetDirectoryName(nomeArquivoREM)))
+            //    Directory.CreateDirectory(Path.GetDirectoryName(nomeArquivoREM));
+
+            //if (System.IO.File.Exists(nomeArquivoREM))
+            //{
+            //    System.IO.File.Delete(nomeArquivoREM);
+            //    if (System.IO.File.Exists(nomeArquivoREM))
+            //        throw new Exception("Arquivo Remessa não foi excluído: " + nomeArquivoREM);
+            //}
+
+            //if (System.IO.File.Exists(nomeArquivoPDF))
+            //{
+            //    System.IO.File.Delete(nomeArquivoPDF);
+            //    if (System.IO.File.Exists(nomeArquivoPDF))
+            //        throw new Exception("Arquivo Boletos (PDF) não foi excluído: " + nomeArquivoPDF);
+            //}
+
+            try
+            {
+                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+
+                //var fileStream = new FileStream(nomeArquivoREM, FileMode.Create);
+                var ms = new MemoryStream();
+                arquivoRemessa.GerarArquivoRemessa(boletos, ms);
+
+                return File("", "");
+                //if (!System.IO.File.Exists(nomeArquivoREM))
+                //    throw new Exception("Arquivo Remessa não encontrado: " + nomeArquivoREM);
+
+                //return File(new FileStream(ms, FileMode.Open), "application/octet-stream");
+                //return new JsonResult() { Data = new { success = true, message = new FileStream(nomeArquivoREM, FileMode.Open) } };
+            }
+            catch (Exception e)
+            {
+                //if (System.IO.File.Exists(nomeArquivoREM))
+                //    System.IO.File.Delete(nomeArquivoREM);
+
+                throw new Exception(e.InnerException.ToString());
+            }
         }
 
         public override ContentResult Form()
@@ -155,7 +278,6 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
             configCnab.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -224,12 +346,12 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Boletos",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Gerar boleto", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "new", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
+                        new HtmlUIButton { Id = "btnGerarBoleto", Label = "GERAR BOLETO", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
                     }
                 },
-                Functions = new List<string> { "fnFormReady" },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                Functions = new List<string> { "fnFormReadyCnab" },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
             };
 
             var configdt = new DataTableUI()
@@ -237,12 +359,14 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnFormReadyCnab" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
                 }
             };
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
+
+            configdt.Columns.Add(new DataTableUIColumn { DataField = "numeroBoleto", DisplayName = "Nº", Priority = 1, Type = "number" });
             configdt.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
             configdt.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
             configdt.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
@@ -256,118 +380,8 @@ namespace Fly01.Financeiro.Controllers
             });
 
             cfg.Content.Add(configdt);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
 
-        public JsonResult LoadGridBoletos(Guid IdArquivo)
-        {
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
-
-            var response = GetContasReceber(IdArquivo, pageNo);
-
-            return Json(new
-            {
-                recordsTotal = response.Paging.TotalRecordCount,
-                recordsFiltered = response.Paging.TotalRecordCount,
-                data = response.Data.Select(item => new
-                {
-                    numero = item.NumeroBoleto,
-                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
-                    valorBoleto = item.ValorBoleto,
-                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
-                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
-                })
-
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
-        }
-
-        [HttpPost]
-        public HttpRequestMessage GerarArquivoRemessa(List<Guid> ids)
-        {
-            var boletosCnab = Getcnab(ids);
-            var boletos = new Boleto2Net.Boletos();
-
-            foreach (var item in boletosCnab)
-            {
-                var boleto = GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId).Boleto;
-
-                boletos.Add(boleto);
-                boletos.Banco = boleto.Banco;
-            }
-
-            //nome do arquivo
-            var dadosCedente = base.GetDadosEmpresa();
-            var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
-            var nomeArquivoPDF = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.PDF");
-
-            //validando diretorio do arquivo remessa
-            if (!Directory.Exists(Path.GetDirectoryName(nomeArquivoREM)))
-                Directory.CreateDirectory(Path.GetDirectoryName(nomeArquivoREM));
-            if (System.IO.File.Exists(nomeArquivoREM))
-            {
-                System.IO.File.Delete(nomeArquivoREM);
-                if (System.IO.File.Exists(nomeArquivoREM))
-                    throw new Exception("Arquivo Remessa não foi excluído: " + nomeArquivoREM);
-            }
-            if (System.IO.File.Exists(nomeArquivoPDF))
-            {
-                System.IO.File.Delete(nomeArquivoPDF);
-                if (System.IO.File.Exists(nomeArquivoPDF))
-                    throw new Exception("Arquivo Boletos (PDF) não foi excluído: " + nomeArquivoPDF);
-            }
-
-            // Arquivo Remessa.
-            try
-            {
-                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avalirar os dados passados(tipoArquivo, NumeroArquivo)
-
-                using (var fileStream = new FileStream(nomeArquivoREM, FileMode.Create))
-                    arquivoRemessa.GerarArquivoRemessa(boletos, fileStream);
-
-                if (!System.IO.File.Exists(nomeArquivoREM))
-                    throw new Exception("Arquivo Remessa não encontrado: " + nomeArquivoREM);
-            }
-            catch (Exception e)
-            {
-                if (System.IO.File.Exists(nomeArquivoREM))
-                    System.IO.File.Delete(nomeArquivoREM);
-                throw new Exception(e.InnerException.ToString());
-            }
-
-            return null;
-        }
-
-        private List<CnabVM> Getcnab(List<Guid> idsBoletos)
-        {
-            List<CnabVM> listaCnab = new List<CnabVM>();
-            foreach (var item in idsBoletos)
-            {
-                Dictionary<string, string> queryString = new Dictionary<string, string>
-                {
-                    { "Id", item.ToString()},
-                    { "pageSize", "10"}
-                };
-
-                var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab/GetCnab", queryString);
-
-                if (restResponse != null)
-                    listaCnab.Add(restResponse);
-            }
-            return listaCnab;
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
     }
 }

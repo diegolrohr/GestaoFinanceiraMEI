@@ -3,15 +3,14 @@
     
     function fnGerarArquivoRemessa() {
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "json",
-            url: '@Url.Action("GerarArquivoRemessa","Cnab")',
+            url: '@Url.Action("GerarArquivoRemessa","Cnab")?ids=' + fly01._.dtBoletos.selected,
             contentType: "application/json",
-            data: JSON.stringify({ 'ids': fly01._.dtBoletos.selected }),
             success: function (data) {
+                debugger;
                 ShowSuccess(data.message);
             }
         });
     };
-
 </script>

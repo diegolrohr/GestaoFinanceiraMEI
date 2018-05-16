@@ -156,6 +156,10 @@
     <Compile Include="Migrations\201805142002561_AlteracoesCNAB.Designer.cs">
       <DependentUpon>201805142002561_AlteracoesCNAB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805151343426_AddColumnDataDescontoContaFinanceira.cs" />
+    <Compile Include="Migrations\201805151343426_AddColumnDataDescontoContaFinanceira.Designer.cs">
+      <DependentUpon>201805151343426_AddColumnDataDescontoContaFinanceira.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -256,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805142002561_AlteracoesCNAB.resx">
       <DependentUpon>201805142002561_AlteracoesCNAB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805151343426_AddColumnDataDescontoContaFinanceira.resx">
+      <DependentUpon>201805151343426_AddColumnDataDescontoContaFinanceira.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

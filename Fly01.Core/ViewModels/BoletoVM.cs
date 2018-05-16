@@ -5,11 +5,12 @@ namespace Fly01.Core.ViewModels
     public sealed class BoletoVM
     {
         public decimal ValorPrevisto { get; set; }
-        public decimal ValorDesconto { get; set; }
         public decimal ValorMulta { get; set; }
+        public decimal? ValorDesconto { get; set; }
         public decimal ValorJuros { get; set; }
         public DateTime DataEmissao { get; set; }
         public DateTime DataVencimento { get; set; }
+        public DateTime? DataDesconto { get; set; }
         public string NossoNumero { get; set; }
         public string EspecieMoeda { get; set; }
         public string NumeroDocumento { get; set; }

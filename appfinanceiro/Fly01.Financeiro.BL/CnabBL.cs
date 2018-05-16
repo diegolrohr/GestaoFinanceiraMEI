@@ -15,25 +15,23 @@ namespace Fly01.Financeiro.BL
         protected ContaReceberBL contaReceberBL;
         protected ContaBancariaBL contaBancariaBL;
 
-        private Boleto2Net.Boletos boletos;
         private string codigoCedente;
         const double jurosDia = 0.33;
         const double percentMulta = 2.00;
 
         public CnabBL(AppDataContextBase context, ContaReceberBL contaReceberBL, ContaBancariaBL contaBancariaBL) : base(context)
         {
-            boletos = new Boleto2Net.Boletos();
             this.contaReceberBL = contaReceberBL;
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        private string GetInstrucoesAoCaixa(ContaReceber conta, DateTime dataDesconto, double valorDesconto)
+        private string GetInstrucoesAoCaixa(ContaReceber conta)
         {
             var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
             var valorJuros = (decimal)(conta.ValorPrevisto * (jurosDia / 100));
             var msgCaixa = new StringBuilder();
-
-            if (valorDesconto > 0) msgCaixa.AppendLine($"Conceder desconto de {valorDesconto.ToString("R$ ##,##0.00")} até {dataDesconto.ToString("dd/MM/yyyy")}. ");
+            
+            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
             if (percentMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
             if (jurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
 
@@ -42,12 +40,12 @@ namespace Fly01.Financeiro.BL
 
         public List<Cnab> Get()
         {
-            return base.All.ToList();
+            return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).ToList();
         }
 
         public Cnab Get(Guid Id)
         {
-            return base.All.Where(x => x.Id == Id).FirstOrDefault();
+            return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).Where(x => x.Id == Id).FirstOrDefault();
         }
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
@@ -68,15 +66,16 @@ namespace Fly01.Financeiro.BL
             return new BoletoVM()
             {
                 ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
-                ValorDesconto = (decimal)0,
+                ValorDesconto = contaReceber.ValorDesconto.HasValue ?  (decimal)contaReceber.ValorDesconto : 0,
                 ValorMulta = valorMulta,
                 ValorJuros = valorJuros,
                 DataEmissao = DateTime.Now,
+                DataDesconto = contaReceber.DataDesconto ?? null,
                 DataVencimento = contaReceber.DataVencimento,
                 NossoNumero = nossoNumero,
                 EspecieMoeda = "R$",
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
-                InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber, DateTime.Now, 0),
+                InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber),
                 Cedente = new CedenteVM
                 {
                     CNPJ = cedente.CNPJ,
@@ -118,14 +117,6 @@ namespace Fly01.Financeiro.BL
         public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)
         {
             return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
-        }
-
-        public override void Insert(Cnab entity)
-        {
-            entity.DataEmissao = DateTime.Now;
-            entity.DataVencimento = DateTime.Now.AddDays(1);
-
-            base.Insert(entity);
         }
     }
 }

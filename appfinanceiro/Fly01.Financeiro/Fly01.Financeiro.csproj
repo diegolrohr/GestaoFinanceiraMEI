@@ -326,7 +326,7 @@
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnCnabImprimeBoleto.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
     <Content Include="Views\CnabItem\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />

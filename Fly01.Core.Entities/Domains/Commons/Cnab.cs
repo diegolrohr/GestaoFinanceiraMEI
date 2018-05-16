@@ -28,6 +28,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double ValorDesconto { get; set; }
 
+        public double ValorBoleto { get; set; }
+
         public Guid? ContaBancariaCedenteId { get; set; }
 
         public Guid? ContaReceberId { get; set; }

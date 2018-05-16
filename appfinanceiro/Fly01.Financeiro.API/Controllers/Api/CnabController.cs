@@ -2,11 +2,9 @@
 using System;
 using System.Web.Http;
 using Fly01.Core.API;
-using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Threading.Tasks;
-
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [RoutePrefix("api/cnab")]
@@ -18,7 +16,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                //return Ok(unitOfWork.CnabBL.GeraBoletos(contaReceberId, contaBancariaId, DateTime.Now, 0));
                 return Ok(unitOfWork.CnabBL.GetDadosBoleto(contaReceberId, contaBancariaId));
             }
         }

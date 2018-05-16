@@ -162,6 +162,7 @@
     <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />
+    <Compile Include="Domains\Enum\TipoPresencaComprador.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />
     <Compile Include="Domains\Enum\TipoRegimeEspecialTrib.cs" />
     <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />

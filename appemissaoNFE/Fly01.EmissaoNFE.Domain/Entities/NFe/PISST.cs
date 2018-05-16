@@ -6,10 +6,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Informar o Valor da BC do PIS ST, este campo deve ser informado em caso de alíquota ad valorem.
         /// </summary>
-        [XmlElement(ElementName = "vBC", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorBC { get; set; }
-
-        public bool ShouldSerializeValorBC()
+        [XmlElement(ElementName = "vBC", IsNullable = true)]
+        public string SomatorioBCString
+        {
+            get { return ValorBC.HasValue ? ValorBC.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { ValorBC = double.Parse(value.Replace(".", ",")); }
+        }
+        public bool ShouldSerializeValorBCString()
         {
             return ValorBC.HasValue;
         }
@@ -17,10 +22,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Informar a alíquota percentual do PIS ST, este campo deve ser informado em caso de alíquota ad valorem.
         /// </summary>
-        [XmlElement(ElementName = "pPIS", IsNullable = true)]
+        [XmlIgnore]
         public double? AliquotaPercentual { get; set; }
-
-        public bool ShouldSerializeAliquotaPercentual()
+        [XmlElement(ElementName = "pPIS", IsNullable = true)]
+        public string AliquotaPercentualString
+        {
+            get { return AliquotaPercentual.HasValue ? AliquotaPercentual.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { AliquotaPercentual = double.Parse(value.Replace(".", ",")); }
+        }
+        public bool ShouldSerializeAliquotaPercentualString()
         {
             return AliquotaPercentual.HasValue;
         }

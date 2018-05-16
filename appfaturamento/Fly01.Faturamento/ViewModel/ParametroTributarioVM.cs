@@ -46,6 +46,10 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("aliquotaFCP")]
         public double AliquotaFCP { get; set; }
+
+        [JsonProperty("tipoPresencaComprador")]
+        [APIEnum("TipoPresencaComprador")]
+        public string TipoPresencaComprador { get; set; }
         
         #region NFS
         //[JsonProperty("incentivoCultura")]

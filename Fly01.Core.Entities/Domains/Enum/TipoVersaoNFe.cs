@@ -9,8 +9,8 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("v3", "3.10", "Versão 3.10")]
         v3 = 3,
         
-        [XmlEnum(Name = "4.0")]
-        [Subtitle("v4", "4.0", "Versão 4.0")]
+        [XmlEnum(Name = "4.00")]
+        [Subtitle("v4", "4.00", "Versão 4.00")]
         v4 = 4
     }
 }

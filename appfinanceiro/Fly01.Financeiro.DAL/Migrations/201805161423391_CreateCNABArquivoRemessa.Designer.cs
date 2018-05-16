@@ -7,13 +7,13 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AlteracoesCNAB : IMigrationMetadata
+    public sealed partial class CreateCNABArquivoRemessa : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AlteracoesCNAB));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateCNABArquivoRemessa));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805142002561_AlteracoesCNAB"; }
+            get { return "201805161423391_CreateCNABArquivoRemessa"; }
         }
         
         string IMigrationMetadata.Source

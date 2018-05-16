@@ -190,31 +190,26 @@ namespace Fly01.Financeiro.Controllers
         //public FileResult GerarArquivoRemessa(List<Guid> ids)
         public FileResult GerarArquivoRemessa(string ids)
         {
-            var boletosCnab = GetCnab(ids.Split(',').Select(item => new Guid(item)).ToList());
-            var boletos = new Boleto2Net.Boletos();
-
-            foreach (var item in boletosCnab)
-            {
-                var boleto = GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto;
-
-                boletos.Add(boleto);
-                boletos.Banco = boleto.Banco;
-            }
-
-            var dadosCedente = base.GetDadosEmpresa();
-            var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
-            
             try
             {
+                var boletosCnab = GetCnab(ids.Split(',').Select(item => new Guid(item)).ToList());
+                var boletos = new Boleto2Net.Boletos();
+
+                foreach (var item in boletosCnab)
+                {
+                    var boleto = GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto;
+
+                    boletos.Add(boleto);
+                    boletos.Banco = boleto.Banco;
+                }
+
+                var nomeArquivoREM = GetDadosEmpresa().CNPJ + ".REM";
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
 
-                //var fileStream = new FileStream(nomeArquivoREM, FileMode.Create);
                 var ms = new MemoryStream();
                 arquivoRemessa.GerarArquivoRemessa(boletos, ms);
 
                 return File("", "");
-                //if (!System.IO.File.Exists(nomeArquivoREM))
-                //    throw new Exception("Arquivo Remessa não encontrado: " + nomeArquivoREM);
 
                 //return File(new FileStream(ms, FileMode.Open), "application/octet-stream");
                 //return new JsonResult() { Data = new { success = true, message = new FileStream(nomeArquivoREM, FileMode.Open) } };

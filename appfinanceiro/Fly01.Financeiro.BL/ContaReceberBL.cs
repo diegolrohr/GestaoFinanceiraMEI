@@ -131,7 +131,7 @@ namespace Fly01.Financeiro.BL
 
         public override void Delete(ContaReceber entityToDelete)
         {
-            contaFinanceiraBaixaBL.All.Where(x => x.ContaFinanceiraId == entityToDelete.Id).ToList()
+            contaFinanceiraBaixaBL.All.Where(x => x.ContaFinanceiraId == entityToDelete.Id).OrderBy(x => x.DataInclusao).ToList()
                 .ForEach(itemBaixa => { contaFinanceiraBaixaBL.Delete(itemBaixa); });
 
             base.Delete(entityToDelete);

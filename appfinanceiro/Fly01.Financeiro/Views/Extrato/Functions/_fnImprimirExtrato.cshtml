@@ -1,5 +1,29 @@
 ﻿<script>
+
     function fnImprimirExtrato() {
-        window.print();
+        var dataInicio = $('input#dataInicial').val();
+        var dataFim = $('input#dataFinal').val();
+        var contaBancaria = $('input#contaBancariaId').val();
+        var pageSize = "500";
+        {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadExtratoDetalhes", "Extrato")',
+                data: {
+                    dataInicial: dataInicio,
+                    dataFinal: dataFim,
+                    contaBancariaId: contaBancaria,
+                    pageSize: pageSize
+                },
+                success: function (data) {
+                    fly01._.dtExtratoDetalhe.page.len(-1);
+                    fly01._.dtExtratoDetalhe.refresh();
+                    window.print();
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    fly01.toast(textStatus, "error");
+                }
+            });
+        }
     }
 </script>

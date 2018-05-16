@@ -247,6 +247,7 @@
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -261,7 +262,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.6\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.1.8\lib\net452\Fly01.uiJS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>

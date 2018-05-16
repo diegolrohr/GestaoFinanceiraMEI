@@ -16,8 +16,6 @@
                     pageSize: pageSize
                 },
                 success: function (data) {
-                    fly01._.dtExtratoDetalhe.page.len(-1);
-                    fly01._.dtExtratoDetalhe.refresh();
                     window.print();
                 },
                 error: function (jXHR, textStatus, errorThrown) {

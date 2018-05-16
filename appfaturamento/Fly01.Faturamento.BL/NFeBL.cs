@@ -54,7 +54,7 @@ namespace Fly01.Faturamento.BL
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
         }
 
-        public IQueryable<NFe> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<NFe> Everything => repository.All.Where(x => x.Ativo);
 
         public override void ValidaModel(NFe entity)
         {

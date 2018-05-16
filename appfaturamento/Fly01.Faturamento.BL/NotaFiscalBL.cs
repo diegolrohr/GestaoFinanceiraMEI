@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.BL
             TotalTributacaoBL = totalTributacaoBL;
         }
 
-        public IQueryable<NotaFiscal> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<NotaFiscal> Everything => repository.All.Where(x => x.Ativo);
 
         public override void Insert(NotaFiscal entity)
         {

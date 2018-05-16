@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.BL
             TotalTributacaoBL = totalTributacaoBL;
         }
 
-        public IQueryable<NFSe> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<NFSe> Everything => repository.All.Where(x => x.Ativo);
 
         public override void ValidaModel(NFSe entity)
         {

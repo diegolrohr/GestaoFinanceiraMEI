@@ -166,18 +166,14 @@ namespace Fly01.Financeiro.BL
             var contasBancarias = contaBancariaBL.All.Select(x => new { x.Id, x.NomeConta }).ToList();
 
             var movimentacoes = (from mov in movimentacaoBL.AllIncluding(x => x.ContaFinanceira, x => x.ContaFinanceira.Pessoa, x => x.ContaBancariaDestino, x => x.ContaBancariaOrigem)
-
                                  where (mov.Data >= dataInicial && mov.Data <= dataFinal) && mov.Ativo &&
-
-                                 ((mov.ContaFinanceira != null && (mov.ContaFinanceira.Ativo && mov.ContaFinanceira.Pessoa.Ativo)) || (mov.ContaFinanceira == null)) &&
-
+                                 //((mov.ContaFinanceira != null && (mov.ContaFinanceira.Ativo && mov.ContaFinanceira.Pessoa.Ativo)) || (mov.ContaFinanceira == null)) &&
                                  (mov.ContaBancariaDestino.Ativo || mov.ContaBancariaOrigem.Ativo) &&
                                  (
                                      (contaBancariaId.HasValue) ?
                                      (mov.ContaBancariaDestinoId == contaBancariaId) || (mov.ContaBancariaOrigemId == contaBancariaId) :
                                      (mov.ContaBancariaDestino == null) || (mov.ContaBancariaOrigemId == null)
                                  )
-
                                  select new ExtratoDetalhe()
                                  {
                                      ContaBancariaId = (Guid)(mov.ContaBancariaDestinoId ?? mov.ContaBancariaOrigemId),
@@ -199,8 +195,7 @@ namespace Fly01.Financeiro.BL
         {
             var countRecords = movimentacaoBL.AllIncluding(x => x.ContaFinanceira, x => x.ContaFinanceira.Pessoa, x => x.ContaBancariaDestino, x => x.ContaBancariaOrigem)
                 .Count(x => x.Data >= dataInicial && x.Data <= dataFinal && x.Ativo &&
-                (x.ContaFinanceira != null && (x.ContaFinanceira.Ativo && x.ContaFinanceira.Pessoa.Ativo) || x.ContaFinanceira == null) &&
-                
+                //(x.ContaFinanceira != null && (x.ContaFinanceira.Ativo && x.ContaFinanceira.Pessoa.Ativo) || x.ContaFinanceira == null) &&
                 (x.ContaBancariaDestino.Ativo || x.ContaBancariaOrigem.Ativo) &&
                 (
                     (contaBancariaId.HasValue)?

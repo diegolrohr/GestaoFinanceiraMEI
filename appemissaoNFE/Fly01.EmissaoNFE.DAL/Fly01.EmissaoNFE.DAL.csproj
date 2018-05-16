@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201804162111308_AlterNCM.Designer.cs">
       <DependentUpon>201804162111308_AlterNCM.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805152115020_AlterNCMInativo.cs" />
+    <Compile Include="Migrations\201805152115020_AlterNCMInativo.Designer.cs">
+      <DependentUpon>201805152115020_AlterNCMInativo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804162111308_AlterNCM.resx">
       <DependentUpon>201804162111308_AlterNCM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152115020_AlterNCMInativo.resx">
+      <DependentUpon>201805152115020_AlterNCMInativo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

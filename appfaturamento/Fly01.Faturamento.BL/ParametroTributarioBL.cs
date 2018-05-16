@@ -58,7 +58,7 @@ namespace Fly01.Faturamento.BL
                         Producao = entidade.Producao,
                         EntidadeAmbiente = parametroTributario.TipoAmbiente,
                         TipoAmbiente = parametroTributario.TipoAmbienteRest,
-                        VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.0",
+                        VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.00",
                         VersaoNFSe = "0.00",
                         VersaoDPEC = "1.01",
                         TipoModalidade = parametroTributario.TipoModalidadeRest,

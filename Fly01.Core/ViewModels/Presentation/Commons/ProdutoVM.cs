@@ -66,5 +66,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("enquadramentoLegalIPI")]
         public virtual EnquadramentoLegalIpiVM EnquadramentoLegalIPI { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

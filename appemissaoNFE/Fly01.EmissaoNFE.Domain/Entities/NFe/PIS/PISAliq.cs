@@ -11,12 +11,27 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         {
         }
 
-        [XmlElement(ElementName = "vBC")]
+        [XmlIgnore]
         public double? ValorBCDoPIS { get; set; }
 
-        [XmlElement(ElementName = "pPIS")]
+        [XmlElement(ElementName = "vBC")]
+        public string ValorBCDoPISString
+        {
+            get { return ValorBCDoPIS.HasValue ? ValorBCDoPIS.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { ValorBCDoPIS = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double? PercentualPIS { get; set; }
-        
+
+        [XmlElement(ElementName = "pPIS")]
+        public string PercentualPISString
+        {
+            get { return PercentualPIS.HasValue ? PercentualPIS.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
+            set { PercentualPIS = double.Parse(value.Replace(".", ",")); }
+        }
+
+
         [XmlIgnore]
         public double ValorPIS { get; set; }
 
@@ -24,7 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string ValorPISString
         {
             get { return ValorPIS.ToString("0.00").Replace(",", "."); }
-            set { ValorPIS = double.Parse(value); }
+            set { ValorPIS = double.Parse(value.Replace(".", ",")); }
         }
     }
 }

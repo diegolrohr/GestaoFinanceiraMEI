@@ -19,6 +19,8 @@
                 $('select#tipoVersaoNFe').material_select();
                 $('select#tipoAmbiente').val(data.tipoAmbiente);
                 $('select#tipoAmbiente').material_select();
+                $('select#tipoPresencaComprador').val(data.tipoPresencaComprador);
+                $('select#tipoPresencaComprador').material_select();
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

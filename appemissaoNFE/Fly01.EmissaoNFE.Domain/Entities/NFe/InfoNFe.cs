@@ -66,6 +66,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public Cobranca Cobranca { get; set; }
 
         /// <summary>
+        /// Pagamento
+        /// </summary>
+        [XmlElement(ElementName = "pag")]
+        public Pagamento Pagamento { get; set; }
+
+        /// <summary>
         /// Informações Adicionais
         /// </summary>
         [XmlElement(ElementName = "infAdic")]

@@ -30,6 +30,7 @@ namespace Fly01.Faturamento.Controllers
                 descricao = x.Descricao,
                 cfopId = x.CfopId,
                 cfop_descricao = string.IsNullOrEmpty(x.Cfop.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -50,8 +51,8 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "GrupoTributario"), UrlFunctions = Url.Action("Functions", "GrupoTributario", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cfop_descricao", DisplayName = "CFOP", Priority = 2 });

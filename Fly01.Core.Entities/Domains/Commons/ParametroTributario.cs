@@ -67,6 +67,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(2)]
         public string UF { get; set; }
 
+        public TipoPresencaComprador TipoPresencaComprador { get; set; }
+
         #region NFS
         //public bool IncentivoCultura { get; set; }
 

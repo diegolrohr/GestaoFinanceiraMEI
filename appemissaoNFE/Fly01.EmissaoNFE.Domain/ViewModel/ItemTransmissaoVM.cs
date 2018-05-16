@@ -56,6 +56,11 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public Cobranca Cobranca { get; set; }
 
         /// <summary>
+        /// Pagamento
+        /// </summary>
+        public Pagamento Pagamento { get; set; }
+
+        /// <summary>
         /// Informações Adicionais
         /// </summary>
         public InformacoesAdicionais InformacoesAdicionais { get; set; }

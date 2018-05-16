@@ -201,29 +201,9 @@ namespace Fly01.Financeiro.Controllers
                 boletos.Banco = boleto.Banco;
             }
 
-            //nome do arquivo
-            //var dadosCedente = base.GetDadosEmpresa();
-            //var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
-            //var nomeArquivoPDF = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.PDF");
-
-            ////validando diretorio do arquivo remessa
-            //if (!Directory.Exists(Path.GetDirectoryName(nomeArquivoREM)))
-            //    Directory.CreateDirectory(Path.GetDirectoryName(nomeArquivoREM));
-
-            //if (System.IO.File.Exists(nomeArquivoREM))
-            //{
-            //    System.IO.File.Delete(nomeArquivoREM);
-            //    if (System.IO.File.Exists(nomeArquivoREM))
-            //        throw new Exception("Arquivo Remessa não foi excluído: " + nomeArquivoREM);
-            //}
-
-            //if (System.IO.File.Exists(nomeArquivoPDF))
-            //{
-            //    System.IO.File.Delete(nomeArquivoPDF);
-            //    if (System.IO.File.Exists(nomeArquivoPDF))
-            //        throw new Exception("Arquivo Boletos (PDF) não foi excluído: " + nomeArquivoPDF);
-            //}
-
+            var dadosCedente = base.GetDadosEmpresa();
+            var nomeArquivoREM = Path.Combine(Path.GetTempPath(), "BoletoFly01", $"{dadosCedente.CNPJ}.REM");
+            
             try
             {
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)

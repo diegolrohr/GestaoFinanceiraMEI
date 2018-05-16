@@ -34,6 +34,7 @@ namespace Fly01.Estoque.Controllers
                 tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
                 tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
                 tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -54,8 +55,8 @@ namespace Fly01.Estoque.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn

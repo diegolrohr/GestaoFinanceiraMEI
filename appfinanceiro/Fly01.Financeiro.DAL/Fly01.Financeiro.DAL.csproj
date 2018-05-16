@@ -160,6 +160,14 @@
     <Compile Include="Migrations\201805151343426_AddColumnDataDescontoContaFinanceira.Designer.cs">
       <DependentUpon>201805151343426_AddColumnDataDescontoContaFinanceira.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.cs" />
+    <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.Designer.cs">
+      <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.cs" />
+    <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.Designer.cs">
+      <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -263,6 +271,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805151343426_AddColumnDataDescontoContaFinanceira.resx">
       <DependentUpon>201805151343426_AddColumnDataDescontoContaFinanceira.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.resx">
+      <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.resx">
+      <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

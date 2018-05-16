@@ -174,6 +174,8 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
+            var empresa = string.IsNullOrEmpty(plataformaId) ? this.empresa : ApiEmpresaManager.GetEmpresa(plataformaId);
+
             var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
 
             var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
@@ -200,17 +202,16 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public bool IsValid(CertificadoDigital certificado=null)
+        public bool IsValid(CertificadoDigital certificado = null)
         {
-
             var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             var empresaCNPJ = dadosEmpresa.CNPJ;
             var empresaIE = dadosEmpresa.InscricaoEstadual;
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-            
-            if (certificado==null)
+
+            if (certificado == null)
                 certificado = All.FirstOrDefault();
-            
+
             return (certificado != null) && ((empresaCNPJ == certificado.Cnpj && empresaIE == certificado.InscricaoEstadual && empresaUF == certificado.UF));
         }
     }

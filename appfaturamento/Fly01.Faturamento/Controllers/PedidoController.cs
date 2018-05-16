@@ -280,8 +280,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)).ToList()
-                    .FindAll(x => "FOB,CIF,Terceiro,SemFrete".Contains(x.Value))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
@@ -360,6 +359,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Gerar Financeiro, serão criadas contas a receber do valor total do pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "formaPagamentoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o pedido vai ser faturado, informe a forma de pagamento."
                 }
             });
             config.Helpers.Add(new TooltipUI

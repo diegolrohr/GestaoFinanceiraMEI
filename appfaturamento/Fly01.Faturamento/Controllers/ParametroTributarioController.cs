@@ -50,10 +50,11 @@ namespace Fly01.Faturamento.Controllers
                     aliquotaCOFINS = "2",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
-                    tipoVersaoNFe = "v3",
+                    tipoVersaoNFe = "v4",
                     tipoAmbiente = "Producao",
                     tipoModalidade = "Normal",
-                    aliquotaFCP = "0"
+                    aliquotaFCP = "0",
+                    tipoPresencaComprador = "Presencial"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -68,7 +69,8 @@ namespace Fly01.Faturamento.Controllers
                 tipoVersaoNFe = parametroTributario.TipoVersaoNFe,
                 mensagemPadraoNota = parametroTributario.MensagemPadraoNota,
                 tipoAmbiente = parametroTributario.TipoAmbiente,
-                aliquotaFCP = parametroTributario.AliquotaFCP
+                aliquotaFCP = parametroTributario.AliquotaFCP,
+                tipoPresencaComprador = parametroTributario.TipoPresencaComprador
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -180,19 +182,28 @@ namespace Fly01.Faturamento.Controllers
 
             };
 
-            form3.Elements.Add(new InputCustommaskUI
+            //form3.Elements.Add(new InputCustommaskUI
+            //{
+            //    Id = "numeroRetornoNF",
+            //    Class = "col s12 m3",
+            //    Label = "Número de Retorno da NF",
+            //    MaxLength = 20,
+            //    Data = new { inputmask = "'regex': '[0-9]*'" }
+            //});
+            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF"});
+
+            form3.Elements.Add(new SelectUI
             {
-                Id = "numeroRetornoNF",
-                Class = "col s12 m3",
-                Label = "Número de Retorno da NF",
-                MaxLength = 20,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
+                Id = "tipoPresencaComprador",
+                Class = "col s12 m4",
+                Label = "Presença do Comprador",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPresencaComprador)))
             });
-            
+
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
-                Class = "col s12 m6",
+                Class = "col s12 m5",
                 Label = "Modalidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });
@@ -292,7 +303,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente)
+        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador)
         {
             try
             {
@@ -309,7 +320,8 @@ namespace Fly01.Faturamento.Controllers
                     tipoModalidade = modalidade,
                     tipoVersaoNFe = versao,
                     mensagemPadraoNota = mensagem,
-                    tipoAmbiente = ambiente
+                    tipoAmbiente = ambiente,
+                    tipoPresencaComprador = tipoPresencaComprador
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 200)

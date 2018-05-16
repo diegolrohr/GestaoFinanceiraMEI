@@ -36,5 +36,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("cest")]
         public virtual CestVM Cest { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

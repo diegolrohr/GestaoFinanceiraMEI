@@ -98,7 +98,6 @@
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaReceberVM.cs" />
     <Compile Include="Models\ViewModel\RenegociacaoRelacionamentoContaPagarVM.cs" />
     <Compile Include="Models\ViewModel\ReciboContaReceberVM.cs" />
-    <Compile Include="Models\ViewModel\TipoFormaPagamento.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

@@ -23,8 +23,6 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
-        //TODO: ver questao das rotas e renomear as controllers e classes
-
         public override ContentResult Form()
         {
             throw new NotImplementedException();

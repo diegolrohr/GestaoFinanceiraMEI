@@ -16,23 +16,14 @@ namespace Fly01.Core.BL
             repository = new GenericRepository<TEntity>(context);
         }
 
-        public virtual IQueryable<TEntity> All
-        {
-            get
-            {
-                return repository.All;
-            }
-        }
+        public virtual IQueryable<TEntity> All => repository.All;
 
         public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return repository.AllIncluding(includeProperties);
         }
-        
-        public virtual TEntity Find(object id)
-        {
-            return repository.Find(id);
-        }
+
+        public virtual TEntity Find(object id) => repository.Find(id);
 
         public void Delete(int id)
         {
@@ -60,14 +51,8 @@ namespace Fly01.Core.BL
                 repository.AttachForUpdate(entity);
         }
 
-        public virtual bool Exists(object primaryKey)
-        {
-            return repository.Exists(primaryKey);
-        }
+        public virtual bool Exists(object primaryKey) => repository.Exists(primaryKey);
 
-        public virtual void DetachEntity(TEntity entityToDetach)
-        {
-            repository.DetachEntity(entityToDetach);
-        }
+        public virtual void DetachEntity(TEntity entityToDetach) => repository.DetachEntity(entityToDetach);
     }
 }

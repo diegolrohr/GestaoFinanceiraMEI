@@ -179,10 +179,11 @@ namespace Fly01.Financeiro.BL
                                      ContaBancariaId = (Guid)(mov.ContaBancariaDestinoId ?? mov.ContaBancariaOrigemId),
                                      ContaBancariaDescricao = string.Empty,
                                      DataMovimento = mov.Data,
+                                     DataInclusao = mov.DataInclusao,
                                      DescricaoLancamento = mov.Descricao == null ? (mov.ContaFinanceira != null ? mov.ContaFinanceira.Descricao : "") : mov.Descricao,
                                      PessoaNome = mov.ContaFinanceira.Pessoa.Nome,
                                      ValorLancamento = Math.Round(mov.Valor, 2),
-                                 }).OrderBy(x => x.DataMovimento).Skip(skipRecords).Take(takeRecords).ToList();
+                                 }).OrderBy(x => x.DataInclusao).Skip(skipRecords).Take(takeRecords).ToList();
 
             movimentacoes.ForEach(item =>
                 item.ContaBancariaDescricao = contasBancarias.FirstOrDefault(x => x.Id == item.ContaBancariaId).NomeConta ?? item.DescricaoLancamento

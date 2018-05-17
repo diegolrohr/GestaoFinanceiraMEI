@@ -18,6 +18,8 @@ namespace Fly01.Financeiro.Controllers
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
+
 
             var cfg = new ContentUI
             {
@@ -43,25 +45,20 @@ namespace Fly01.Financeiro.Controllers
             var dataFinal = DateTime.Now.AddMonths(1);
             var dataFinalFiltroDefault = new DateTime(dataFinal.Year, dataFinal.Month, DateTime.DaysInMonth(dataFinal.Year, dataFinal.Month));
 
-            cfg.Content.Add(new DivUI
+            cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m12 printinfo",
+                Class = "col s12 m8 offset-m2 printinfo",
+                Color = "orange",
                 Id = "fly01cardCabecalho",
-                Elements = new List<BaseUI>
+                Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
+                              " | Endereço: " + response.Endereco + ", "+ response.Numero +
+                              " | Bairro: " + response.Bairro + " | CEP: " + response.CEP +
+                              " | Cidade: " + responseCidade + " | Email: " + response.Email,
+                Action = new LinkUI
                 {
-                    new StatictextUI
-                    {
-                        Class= "col s12",
-                        Lines = new List<LineUI>{
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = response.RazaoSocial + " | " + "CNPJ: " + response.CNPJ  },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Endereço: " + response.Endereco + ", " + response.Numero },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text ="Bairro: " + response.Bairro + " | " + "CEP: " + response.CEP },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Cidade: " + response.Cidade.Nome + " | " + "Email: " + response.Email },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = " " }
-                        }
-                    }
+                    Label = "",
+                    OnClick= ""
                 }
-
             });
 
             cfg.Content.Add(new FormUI

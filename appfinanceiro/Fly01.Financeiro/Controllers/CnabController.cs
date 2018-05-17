@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Financeiro.ViewModel;
@@ -13,9 +12,6 @@ using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using System.Text;
-using Fly01.Core.Presentation.JQueryDataTable;
-using System.Linq;
-using System.IO;
 using System.Net.Mime;
 using Fly01.Core;
 

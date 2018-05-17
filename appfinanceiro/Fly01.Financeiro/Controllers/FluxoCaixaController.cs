@@ -87,7 +87,7 @@ namespace Fly01.Financeiro.Controllers
                 { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
                 { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
                 { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
+                { "pageSize", "60"}
             };
             var response = RestHelper.ExecuteGetRequest<PagedResult<FluxoCaixaProjecaoVM>>("fluxocaixa/projecaodetalhe", queryString);
 

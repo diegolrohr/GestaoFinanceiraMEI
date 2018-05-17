@@ -22,7 +22,7 @@
             url: "@Url.Action("LoadSaldos", "FluxoCaixa")",
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardSaldo.info(data.SaldoAtual);
+                fly01._.fly01cardSA.info(data.SaldoAtual);
                 fly01._.fly01cardCP.info(data.TotalPagamentos);
                 fly01._.fly01cardCR.info(data.TotalRecebimentos);
                 fly01._.fly01cardSC.info(data.SaldoProjetado);

@@ -4,7 +4,7 @@
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
 
         $.ajax({
-            url: "@Url.Action("LoadChangeSaldos", "FluxoCaixa")?dataInicial=" + inicial + "&dataFinal=" + final,
+            url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
             type: "GET",
             success: function (data) {
                 fly01._.fly01cardCP.info(data.TotalPagamentos);

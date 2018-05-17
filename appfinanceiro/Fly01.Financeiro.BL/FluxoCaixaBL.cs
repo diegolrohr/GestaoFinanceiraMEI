@@ -22,10 +22,10 @@ namespace Fly01.Financeiro.BL
         }
 
         #region #1 Saldo de Todas as Contas (Consolidado) + AReceber e APagar (hoje)
-        public FluxoCaixaSaldo GetSaldos()
+        public FluxoCaixaSaldo GetSaldos(DateTime dataFinal)
         {
             var saldoTodasAsContas = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
-            var dataBase = DateTime.Now.Date;
+            var dataBase = dataFinal;
 
             var contasFinanceirasBase = contaFinanceiraBL.All
                 .Where(x => x.DataVencimento <= dataBase)
@@ -122,54 +122,54 @@ namespace Fly01.Financeiro.BL
         #endregion
 
         #region #3 Projeção por periodo do Fluxo de Caixa
-        public FluxoCaixaProjecao GetAllNextDays(DateTime dataInicial, DateTime dataFinal)
-        {
-            var saldoInicial = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
+        //public FluxoCaixaProjecao GetAllNextDays(DateTime dataInicial, DateTime dataFinal)
+        //{
+        //    var saldoInicial = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
 
-            var contasAReceber = contaFinanceiraBL.All
-                .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber &&
-                            (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                 )
-                .Where(x => x.DataVencimento <= dataFinal)
-                .Select(item => new
-                {
-                    Id = item.Id,
-                    Data = item.DataVencimento,
-                    TipoContaFinanceira = item.TipoContaFinanceira,
-                    ValorPrevisto = item.ValorPrevisto,
-                    ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
-                }).ToList();
-
-
-            var contasAPagar = contaFinanceiraBL.All
-                .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar &&
-                            (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-                 )
-                .Where(x => x.DataVencimento <= dataFinal)
-                .Select(item => new
-                {
-                    Id = item.Id,
-                    Data = item.DataVencimento,
-                    TipoContaFinanceira = item.TipoContaFinanceira,
-                    ValorPrevisto = item.ValorPrevisto,
-                    ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
-                }).ToList();
-
-            var allContasFinanceiras = contasAPagar.Union(contasAReceber).OrderBy(x => x.Data).ThenBy( n => n.Id);
-
-            var sumTotalPagar = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar).Sum(x => x.ValorPrevisto - x.ValorPago);
-            var sumTotalReceber = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber).Sum(x => x.ValorPrevisto - x.ValorPago);
+        //    var contasAReceber = contaFinanceiraBL.All
+        //        .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber &&
+        //                    (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+        //         )
+        //        .Where(x => x.DataVencimento <= dataFinal)
+        //        .Select(item => new
+        //        {
+        //            Id = item.Id,
+        //            Data = item.DataVencimento,
+        //            TipoContaFinanceira = item.TipoContaFinanceira,
+        //            ValorPrevisto = item.ValorPrevisto,
+        //            ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
+        //        }).ToList();
 
 
-            var saldoTotalFinal = Math.Round(sumTotalReceber + (sumTotalPagar * -1) + saldoInicial, 2);
+        //    var contasAPagar = contaFinanceiraBL.All
+        //        .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar &&
+        //                    (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+        //         )
+        //        .Where(x => x.DataVencimento <= dataFinal)
+        //        .Select(item => new
+        //        {
+        //            Id = item.Id,
+        //            Data = item.DataVencimento,
+        //            TipoContaFinanceira = item.TipoContaFinanceira,
+        //            ValorPrevisto = item.ValorPrevisto,
+        //            ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
+        //        }).ToList();
 
-            return new FluxoCaixaProjecao()
-            {
-                TotalRecebimentos = sumTotalReceber,
-                TotalPagamentos = sumTotalPagar,
-                SaldoFinal = saldoTotalFinal
-            };
-        }
+        //    var allContasFinanceiras = contasAPagar.Union(contasAReceber).OrderBy(x => x.Data).ThenBy(n => n.Id);
+
+        //    var sumTotalPagar = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar).Sum(x => x.ValorPrevisto - x.ValorPago);
+        //    var sumTotalReceber = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber).Sum(x => x.ValorPrevisto - x.ValorPago);
+
+
+        //    var saldoTotalFinal = Math.Round(sumTotalReceber + (sumTotalPagar * -1) + saldoInicial, 2);
+
+        //    return new FluxoCaixaProjecao()
+        //    {
+        //        TotalRecebimentos = sumTotalReceber,
+        //        TotalPagamentos = sumTotalPagar,
+        //        SaldoFinal = saldoTotalFinal
+        //    };
+        //}
         #endregion
     }
 }

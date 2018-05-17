@@ -14,12 +14,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
     {
         [HttpGet]
         [Route("saldos")]
-        public IHttpActionResult GetSaldos()
+        public IHttpActionResult GetSaldos(DateTime dataFinal)
         {
             //#1 Saldo de Todas as Contas (Consolidado) + AReceber e APagar (hoje)
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos() });
+                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos(dataFinal) });
             }
         }
 
@@ -60,17 +60,17 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
         }
 
-        [HttpGet]
-        [Route("projecaoNextDays")]
-        public IHttpActionResult GetProjecaoNextDays(DateTime dataInicial, DateTime dataFinal)
-        {
-            if (dataInicial.Date > dataFinal.Date)
-                return BadRequest("Data inicial não pode ser superior a data final.");
+        //[HttpGet]
+        //[Route("projecaoNextDays")]
+        //public IHttpActionResult GetProjecaoNextDays(DateTime dataInicial, DateTime dataFinal)
+        //{
+        //    if (dataInicial.Date > dataFinal.Date)
+        //        return BadRequest("Data inicial não pode ser superior a data final.");
 
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                return Ok(unitOfWork.FluxoCaixaBL.GetAllNextDays(dataInicial, dataFinal));
-            }
-        }
+        //    using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+        //    {
+        //        return Ok(unitOfWork.FluxoCaixaBL.GetAllNextDays(dataInicial, dataFinal));
+        //    }
+        //}
     }
 }

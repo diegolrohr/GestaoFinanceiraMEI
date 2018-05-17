@@ -369,7 +369,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @Url.Action("LoadChart"),
-                Class = "col s12 m10 l8",
+                Class = "col s12 m12 l8",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },

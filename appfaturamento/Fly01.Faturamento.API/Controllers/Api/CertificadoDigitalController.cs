@@ -39,7 +39,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.CertificadoDigitalBL.IsValid())
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
@@ -50,26 +50,20 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 throw new BusinessException(ex.Message);
             }
-        }     
+        }
 
         public override IHttpActionResult Get()
         {
             try
             {
-                using (var unitOfWork = new UnitOfWork(ContextInitialize))
-                {
-                    var entities = All();
-                    if (unitOfWork.CertificadoDigitalBL.IsValid() || !entities.Any())
-                        return Ok(entities.AsQueryable());
-                    return Ok();
-                }
+                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido());
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
             }
         }
-        
+
 
     }
 }

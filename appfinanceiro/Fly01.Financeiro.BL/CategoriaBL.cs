@@ -3,37 +3,22 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using System.Linq;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
     public class CategoriaBL : PlataformaBaseBL<Categoria>
     {
-        private ContaPagarBL ContaPagarBL;
-        private ContaReceberBL ContaReceberBL;
-
-        public CategoriaBL(AppDataContext context, ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL) : base(context)
+        public CategoriaBL(AppDataContext context) : base(context)
         {
             MustConsumeMessageServiceBus = true;
-            this.ContaPagarBL = ContaPagarBL;
-            this.ContaReceberBL = ContaReceberBL;
-        }
-
-        public override void Insert(Categoria entity)
-        {
-            ValidaModel(entity);
-            base.Insert(entity);
         }
 
         public override void Update(Categoria entity)
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
-            bool temContaReceberRelacionada = ContaReceberBL.All.Where(e => e.CategoriaId == entity.Id && e.Ativo).Any();
-            bool temContaPagarRelacionada = ContaPagarBL.All.Where(e => e.CategoriaId == entity.Id && e.Ativo).Any();
 
-            entity.Fail((temContaPagarRelacionada && entity.TipoCarteira == TipoCarteira.Receita) || (temContaReceberRelacionada && entity.TipoCarteira == TipoCarteira.Despesa), AlterarTipoInvalidaFK);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);

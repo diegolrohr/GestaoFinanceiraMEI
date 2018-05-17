@@ -13,12 +13,15 @@ namespace Fly01.Financeiro.BL
     public class ContaPagarBL : PlataformaBaseBL<ContaPagar>
     {
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
+        private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
 
-        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL) : base(context)
+        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL)
+            : base(context)
         {
             MustConsumeMessageServiceBus = true;
 
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
+            this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
         }
 
         public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
@@ -39,7 +42,7 @@ namespace Fly01.Financeiro.BL
 
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
-            
+
             entity.Fail(entity.Repetir && entity.TipoPeriodicidade == TipoPeriodicidade.Nenhuma, TipoPeriodicidadeInvalida);
             entity.Fail(entity.Repetir && !entity.NumeroRepeticoes.HasValue, NumeroRepeticoesInvalido);
 
@@ -125,6 +128,14 @@ namespace Fly01.Financeiro.BL
             entity.Numero = contaPagarDb.Numero;
 
             base.Update(entity);
+        }
+
+        public override void Delete(ContaPagar entityToDelete)
+        {
+            contaFinanceiraBaixaBL.All.Where(x => x.ContaFinanceiraId == entityToDelete.Id).OrderBy(x => x.DataInclusao).ToList()
+                .ForEach(itemBaixa => { contaFinanceiraBaixaBL.Delete(itemBaixa); });
+
+            base.Delete(entityToDelete);
         }
 
         public static Error RepeticoesInvalidas = new Error("Número de repetições inválido. Somente até 48 Meses (4 Anos / 208 Semanas).");

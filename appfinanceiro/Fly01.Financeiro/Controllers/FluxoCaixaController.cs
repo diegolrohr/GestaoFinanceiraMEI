@@ -26,9 +26,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaSaldoVM>("fluxocaixa/saldos", queryString);
-                if (response == null)
-                    return Json(new FluxoCaixaSaldoVM { SaldoAtual = 0, SaldoProjetado = 0, TotalPagamentos = 0, TotalRecebimentos = 0 }, JsonRequestBehavior.AllowGet);
-
+               
                 var responseToView = new
                 {
                     TotalPagamentos = response.Value.TotalPagamentos.ToString("C", AppDefaults.CultureInfoDefault),

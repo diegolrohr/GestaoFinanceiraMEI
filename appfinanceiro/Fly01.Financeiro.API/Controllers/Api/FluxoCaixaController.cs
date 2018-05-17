@@ -59,18 +59,5 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(new PagedResult<FluxoCaixaProjecao>(projecao.Skip(skipRecords).Take(pageSize), pageNo, pageSize, projecao.Count));
             }
         }
-
-        //[HttpGet]
-        //[Route("projecaoNextDays")]
-        //public IHttpActionResult GetProjecaoNextDays(DateTime dataInicial, DateTime dataFinal)
-        //{
-        //    if (dataInicial.Date > dataFinal.Date)
-        //        return BadRequest("Data inicial não pode ser superior a data final.");
-
-        //    using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-        //    {
-        //        return Ok(unitOfWork.FluxoCaixaBL.GetAllNextDays(dataInicial, dataFinal));
-        //    }
-        //}
     }
 }

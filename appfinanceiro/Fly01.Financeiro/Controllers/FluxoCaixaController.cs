@@ -27,13 +27,14 @@ namespace Fly01.Financeiro.Controllers
 
                 var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaSaldoVM>("fluxocaixa/saldos", queryString);
                 if (response == null)
-                    return Json(new FluxoCaixaSaldoVM { SaldoConsolidado = 0, APagarHoje = 0, AReceberHoje = 0 }, JsonRequestBehavior.AllowGet);
+                    return Json(new FluxoCaixaSaldoVM { SaldoAtual = 0, SaldoProjetado = 0, TotalPagamentos = 0, TotalRecebimentos = 0 }, JsonRequestBehavior.AllowGet);
 
                 var responseToView = new
                 {
-                    TotalPagamentos = response.Value.APagarHoje.ToString("C", AppDefaults.CultureInfoDefault),
-                    TotalRecebimentos = response.Value.AReceberHoje.ToString("C", AppDefaults.CultureInfoDefault),
-                    SaldoFinal = response.Value.SaldoConsolidado.ToString("C", AppDefaults.CultureInfoDefault)
+                    TotalPagamentos = response.Value.TotalPagamentos.ToString("C", AppDefaults.CultureInfoDefault),
+                    TotalRecebimentos = response.Value.TotalRecebimentos.ToString("C", AppDefaults.CultureInfoDefault),
+                    SaldoAtual = response.Value.SaldoAtual.ToString("C", AppDefaults.CultureInfoDefault),
+                    SaldoProjetado = response.Value.SaldoProjetado.ToString("C", AppDefaults.CultureInfoDefault)
                 };
 
                 return Json(responseToView, JsonRequestBehavior.AllowGet);
@@ -43,36 +44,6 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(ex.Message);
             }
         }
-
-        //public JsonResult LoadChangeSaldos(string dataInicial, string dataFinal)
-        //{
-        //    try
-        //    {
-        //        Dictionary<string, string> queryString = new Dictionary<string, string>
-        //        {
-        //            { "dataInicial", dataInicial},
-        //            { "dataFinal", dataFinal }
-        //        };
-
-        //        var response = RestHelper.ExecuteGetRequest<FluxoCaixaProjecaoVM>("fluxocaixa/projecaoNextDays", queryString);
-
-        //        if (response == null)
-        //            return Json(new FluxoCaixaProjecaoVM { SaldoFinal = 0, TotalPagamentos = 0, TotalRecebimentos = 0 }, JsonRequestBehavior.AllowGet);
-
-        //        var responseToView = new
-        //        {
-        //            TotalPagamentos = response.TotalPagamentos.ToString("C", AppDefaults.CultureInfoDefault),
-        //            TotalRecebimentos = response.TotalRecebimentos.ToString("C", AppDefaults.CultureInfoDefault),
-        //            SaldoFinal = response.SaldoFinal.ToString("C", AppDefaults.CultureInfoDefault)
-        //        };
-
-        //        return Json(responseToView, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return JsonResponseStatus.GetFailure(ex.Message);
-        //    }
-        //}
 
         private List<FluxoCaixaProjecaoVM> GetProjecao(DateTime dataInicial, DateTime dataFinal)
         {

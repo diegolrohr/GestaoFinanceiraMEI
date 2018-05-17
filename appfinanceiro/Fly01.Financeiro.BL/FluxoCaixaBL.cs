@@ -37,23 +37,26 @@ namespace Fly01.Financeiro.BL
                     ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
                 });
 
-            var totalAReceberHoje = contasFinanceirasBase
+            var totalAReceber = contasFinanceirasBase
                 .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber)
                 .AsNoTracking()
                 .ToList()
                 .Sum(x => x.ValorPrevisto - x.ValorPago);
 
-            var totalAPagarHoje = contasFinanceirasBase
+            var totalAPagar = contasFinanceirasBase
                 .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar)
                 .AsNoTracking()
                 .ToList()
                 .Sum(x => x.ValorPrevisto - x.ValorPago);
 
+            var saldoProjetado = totalAReceber + (totalAPagar * -1) + saldoTodasAsContas;
+
             return new FluxoCaixaSaldo()
             {
-                SaldoConsolidado = Math.Round(saldoTodasAsContas, 2),
-                AReceberHoje = Math.Round(totalAReceberHoje, 2),
-                APagarHoje = Math.Round(totalAPagarHoje, 2)
+                SaldoAtual = Math.Round(saldoTodasAsContas, 2),
+                TotalRecebimentos = Math.Round(totalAReceber, 2),
+                TotalPagamentos = Math.Round(totalAPagar, 2),
+                SaldoProjetado = Math.Round(saldoProjetado, 2)
             };
         }
         #endregion
@@ -119,57 +122,6 @@ namespace Fly01.Financeiro.BL
 
             return projecaoFluxoCaixa;
         }
-        #endregion
-
-        #region #3 Projeção por periodo do Fluxo de Caixa
-        //public FluxoCaixaProjecao GetAllNextDays(DateTime dataInicial, DateTime dataFinal)
-        //{
-        //    var saldoInicial = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
-
-        //    var contasAReceber = contaFinanceiraBL.All
-        //        .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber &&
-        //                    (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-        //         )
-        //        .Where(x => x.DataVencimento <= dataFinal)
-        //        .Select(item => new
-        //        {
-        //            Id = item.Id,
-        //            Data = item.DataVencimento,
-        //            TipoContaFinanceira = item.TipoContaFinanceira,
-        //            ValorPrevisto = item.ValorPrevisto,
-        //            ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
-        //        }).ToList();
-
-
-        //    var contasAPagar = contaFinanceiraBL.All
-        //        .Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar &&
-        //                    (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
-        //         )
-        //        .Where(x => x.DataVencimento <= dataFinal)
-        //        .Select(item => new
-        //        {
-        //            Id = item.Id,
-        //            Data = item.DataVencimento,
-        //            TipoContaFinanceira = item.TipoContaFinanceira,
-        //            ValorPrevisto = item.ValorPrevisto,
-        //            ValorPago = item.ValorPago == null ? default(double) : (double)item.ValorPago
-        //        }).ToList();
-
-        //    var allContasFinanceiras = contasAPagar.Union(contasAReceber).OrderBy(x => x.Data).ThenBy(n => n.Id);
-
-        //    var sumTotalPagar = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar).Sum(x => x.ValorPrevisto - x.ValorPago);
-        //    var sumTotalReceber = allContasFinanceiras.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber).Sum(x => x.ValorPrevisto - x.ValorPago);
-
-
-        //    var saldoTotalFinal = Math.Round(sumTotalReceber + (sumTotalPagar * -1) + saldoInicial, 2);
-
-        //    return new FluxoCaixaProjecao()
-        //    {
-        //        TotalRecebimentos = sumTotalReceber,
-        //        TotalPagamentos = sumTotalPagar,
-        //        SaldoFinal = saldoTotalFinal
-        //    };
-        //}
         #endregion
     }
 }

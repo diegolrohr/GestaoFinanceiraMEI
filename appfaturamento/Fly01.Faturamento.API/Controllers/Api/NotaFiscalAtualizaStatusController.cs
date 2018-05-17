@@ -3,6 +3,8 @@ using System;
 using System.Web.Http;
 using System.Threading.Tasks;
 using Fly01.Core.API;
+using System.Linq;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -15,6 +17,15 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
+                    if (!unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                    {
+                        throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
+                    }
+                    if (!unitOfWork.ParametroTributarioBL.ParametroAtualValido().Any())
+                    {
+                        throw new BusinessException("Cadastre os Parâmetros Tributários em Configurações");
+                    }
+
                     unitOfWork.MonitorNFBL.AtualizaStatusTSS(PlataformaUrl);
                     await unitOfWork.Save();
                 }
@@ -23,7 +34,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                throw new BusinessException(ex.Message);
             }
         }
     }

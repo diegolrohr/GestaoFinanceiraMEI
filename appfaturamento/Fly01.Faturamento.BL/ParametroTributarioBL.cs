@@ -81,19 +81,11 @@ namespace Fly01.Faturamento.BL
                 }
             }
         }
-        public bool IsValid(ParametroTributario parametro = null)
+        
+        public IQueryable<ParametroTributario> ParametroAtualValido()
         {
-
-            var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-            var empresaCNPJ = dadosEmpresa.CNPJ;
-            var empresaIE = dadosEmpresa.InscricaoEstadual;
-            var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-
-            if (parametro == null)
-                parametro = All.FirstOrDefault();
-
-            return (parametro != null) && ((empresaCNPJ == parametro.Cnpj && empresaIE == parametro.InscricaoEstadual && empresaUF == parametro.UF));
+            //retorna conforme os dados atuais da empresa
+            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
         }
-
     }
 }

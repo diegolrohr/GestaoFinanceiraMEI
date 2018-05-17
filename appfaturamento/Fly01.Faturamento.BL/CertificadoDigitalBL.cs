@@ -123,32 +123,32 @@ namespace Fly01.Faturamento.BL
             return empresaNfe;
         }
 
-        public string GetEntidade(TipoAmbiente tipoAmbiente)
-        {
-            string entidade;
-            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+        //public string GetEntidade(TipoAmbiente tipoAmbiente)
+        //{
+        //    string entidade;
+        //    var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
-            if (certificado == null)
-            {
-                throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
-            }
+        //    if (certificado == null)
+        //    {
+        //        throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
+        //    }
 
-            if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
-            {
-                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
-                    certificado.EntidadeHomologacao :
-                    certificado.EntidadeProducao;
-            }
-            else
-            {
-                var retorno = RetornaEntidade();
-                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
-                    retorno.Homologacao :
-                    retorno.Producao;
-            }
+        //    if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
+        //    {
+        //        entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+        //            certificado.EntidadeHomologacao :
+        //            certificado.EntidadeProducao;
+        //    }
+        //    else
+        //    {
+        //        var retorno = RetornaEntidade();
+        //        entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+        //            retorno.Homologacao :
+        //            retorno.Producao;
+        //    }
 
-            return entidade;
-        }
+        //    return entidade;
+        //}
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
@@ -188,7 +188,7 @@ namespace Fly01.Faturamento.BL
 
             var retorno = new EntidadeVM
             {
-                EntidadeAmbiente = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
+                EntidadeAmbiente = ambiente.TipoAmbiente
             };
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
@@ -205,28 +205,10 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public IQueryable<CertificadoDigital> CertificadoValido()
-        {            
+        public IQueryable<CertificadoDigital> CertificadoAtualValido()
+        {
+            //retorna conforme os dados atuais da empresa
             return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
         }
-
-        public override void Insert(CertificadoDigital entity)
-        {
-            entity.Fail(All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).Any(), new Error("Já existe um certificado cadastrado para esta plataforma."));
-
-            if (entity.IsValid())
-            {
-                entity = ProcessEntity(entity);
-            }
-
-            base.Insert(entity);
-        }
-
-        public override void Update(CertificadoDigital entity)
-        {
-            entity = ProcessEntity(entity);
-            base.Update(entity);
-        }
-
     }
 }

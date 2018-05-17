@@ -177,7 +177,14 @@ namespace Fly01.Faturamento.Controllers
                     md5 = Base64Helper.CalculaMD5Hash(conteudo)
                 };
 
-                CertificadoDigitalVM arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
+                var certificadoExistente = GetCertificado();
+
+                CertificadoDigitalVM arquivoRetorno;
+
+                if (certificadoExistente == null)
+                    arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
+                else
+                    arquivoRetorno = RestHelper.ExecutePutRequest<CertificadoDigitalVM>($"{ResourceName}/{certificadoExistente.Id}", JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
 
                 return Json(new
                 {

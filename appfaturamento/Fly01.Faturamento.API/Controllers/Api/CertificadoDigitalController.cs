@@ -13,50 +13,50 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [ODataRoutePrefix("certificadodigital")]
     public class CertificadoDigitalController : ApiPlataformaController<CertificadoDigital, CertificadoDigitalBL>
     {
-        //public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<CertificadoDigital> model)
-        //{
-        //    using (var unitOfWork = new UnitOfWork(ContextInitialize))
-        //    {
-        //        if (!unitOfWork.CertificadoDigitalBL.All.Any())
-        //            return BadRequest("Nenhum certificado foi encontrado para esta plataforma.");
+        public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<CertificadoDigital> model)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                if (!unitOfWork.CertificadoDigitalBL.All.Any())
+                    return BadRequest("Nenhum certificado foi encontrado para esta plataforma.");
 
-        //        if (model == null || key == default(Guid) || key == null)
-        //            return BadRequest(ModelState);
+                if (model == null || key == default(Guid) || key == null)
+                    return BadRequest(ModelState);
 
-        //        var entity = Find(key);
+                var entity = Find(key);
 
-        //        if (entity == null || !entity.Ativo)
-        //            throw new BusinessException("Registro não encontrado ou já excluído");
+                model.CopyChangedValues(entity);
 
-        //        model.CopyChangedValues(entity);
+                unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
 
-        //        unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
+                return await base.Put(entity.Id, model);
+            }
+        }
 
-        //        return await base.Put(entity.Id, model);
-        //    }
-        //}
+        public override async Task<IHttpActionResult> Post(CertificadoDigital entity)
+        {
+            try
+            {
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                        throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
-        //public override async Task<IHttpActionResult> Post(CertificadoDigital entity)
-        //{
-        //    try
-        //    {
-        //        if (UnitOfWork.CertificadoDigitalBL.CertificadoValido().Any())
-        //            throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
-
-        //        entity = UnitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
-        //        return await base.Post(entity);                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new BusinessException(ex.Message);
-        //    }
-        //}
+                    entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
+                    return await base.Post(entity);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
 
         public override IHttpActionResult Get()
         {
             try
             {
-                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoValido());
+                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido());
             }
             catch (Exception ex)
             {

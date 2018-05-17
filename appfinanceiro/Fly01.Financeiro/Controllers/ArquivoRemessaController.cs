@@ -24,7 +24,6 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
-                numeroArquivo = x.NumeroArquivo,
                 descricao = x.Descricao,
                 valorTotal = x.ValorTotal,
                 dataExportacao = x.DataExportacao.ToString("dd/MM/yyyy"),
@@ -125,7 +124,7 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 6, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))}
                 }
             });
-            
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -134,23 +133,14 @@ namespace Fly01.Financeiro.Controllers
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Arquivos remessa"
-                    //Buttons = new List<HtmlUIButton>
-                    //{
-                    //    new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                    //    new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
-                    //}
-                },
+                Header = new HtmlUIHeader { Title = "Arquivos remessa" },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Listar Boletos" });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numeroArquivo", DisplayName = "Nº", Priority = 1, Type = "number" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descricão Arquivo", Priority =2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Valor Total", Priority = 4, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn

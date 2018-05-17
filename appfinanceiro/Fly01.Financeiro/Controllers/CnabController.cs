@@ -115,6 +115,20 @@ namespace Fly01.Financeiro.Controllers
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
         }
 
+        private void SalvaArquivoRemessa(int qtdBoletos, double valorBoletos)
+        {
+            var arquivoRemessa = new ArquivoRemessaVM()
+            {
+                Descricao = Guid.NewGuid().ToString() + ".REM",
+                TotalBoletos = qtdBoletos,
+                DataExportacao = DateTime.Now,
+                StatusArquivoRemessa = StatusArquivoRemessa.Exportado.ToString(),
+                ValorTotal = valorBoletos
+            };
+
+            RestHelper.ExecutePostRequest("arquivoRemessa", JsonConvert.SerializeObject(arquivoRemessa));
+        }
+
         private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
         {
             var queryString = new Dictionary<string, string>
@@ -154,6 +168,8 @@ namespace Fly01.Financeiro.Controllers
             {
                 var boletosCnab = GetCnab(ids);
                 var boletos = new Boleto2Net.Boletos();
+                var qtdBoletos = 0;
+                var valorBoletos = 0.0;
 
                 foreach (var item in boletosCnab)
                 {
@@ -161,12 +177,17 @@ namespace Fly01.Financeiro.Controllers
 
                     boletos.Add(boleto);
                     boletos.Banco = boleto.Banco;
+                    qtdBoletos += 1;
+                    valorBoletos += (double)boleto.ValorTitulo;
                 }
 
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
 
                 var nomeArquivo = Guid.NewGuid().ToString();
                 Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
+
+                if (Session[nomeArquivo] != null)
+                    SalvaArquivoRemessa(qtdBoletos, valorBoletos);
 
                 return Json(new { FileGuid = nomeArquivo });
             }

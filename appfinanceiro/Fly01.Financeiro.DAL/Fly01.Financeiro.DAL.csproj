@@ -164,6 +164,10 @@
     <Compile Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.Designer.cs">
       <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805172024114_ArquivoRemessaDropColumn.cs" />
+    <Compile Include="Migrations\201805172024114_ArquivoRemessaDropColumn.Designer.cs">
+      <DependentUpon>201805172024114_ArquivoRemessaDropColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -270,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.resx">
       <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805172024114_ArquivoRemessaDropColumn.resx">
+      <DependentUpon>201805172024114_ArquivoRemessaDropColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

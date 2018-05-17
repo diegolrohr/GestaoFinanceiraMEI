@@ -10,12 +10,12 @@ namespace Fly01.Faturamento.BL
 {
     public class CategoriaBL : PlataformaBaseBL<Categoria>
     {
-        private OrdemVendaBL OrdemVendaBL;
+        private OrdemVendaBL ordemVendaBL;
 
-        public CategoriaBL(AppDataContext context, OrdemVendaBL OrdemVendaBL) : base(context)
+        public CategoriaBL(AppDataContext context, OrdemVendaBL ordemVendaBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
-            this.OrdemVendaBL = OrdemVendaBL;
+            this.ordemVendaBL = ordemVendaBL;
         }
 
         public override void Insert(Categoria entity)
@@ -28,7 +28,7 @@ namespace Fly01.Faturamento.BL
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
-            bool categoriaTemOrdemDeVenda = OrdemVendaBL.All.Where(x => x.CategoriaId == entity.Id && x.Ativo).Any();
+            bool categoriaTemOrdemDeVenda = ordemVendaBL.All.Where(x => x.CategoriaId == entity.Id && x.Ativo).Any();
 
             entity.Fail(categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);

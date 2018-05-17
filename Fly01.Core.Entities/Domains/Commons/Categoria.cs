@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using System.Collections.Generic;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {

@@ -17,6 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using System.Linq;
 using System.IO;
 using System.Net.Mime;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -29,7 +30,7 @@ namespace Fly01.Financeiro.Controllers
                 id = x.Id,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
                 numeroBoleto = x.NumeroBoleto,
-                valorBoleto = x.ValorBoleto,
+                valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
@@ -132,7 +133,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     numero = item.NumeroBoleto,
                     pessoa_nome = item.ContaReceber.Pessoa.Nome,
-                    valorBoleto = item.ValorBoleto,
+                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                     dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
                     dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
                     statusArquivoRemessa = item.Status
@@ -175,14 +176,14 @@ namespace Fly01.Financeiro.Controllers
 
         private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
         {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            var queryString = new Dictionary<string, string>
             {
                 { "arquivoRemessaId", idArquivo.ToString()},
                 { "pageNo", pageNo.ToString() },
                 { "pageSize", "10"}
             };
 
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
+            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/contasReceberarquivo", queryString);
         }
 
         [HttpPost]

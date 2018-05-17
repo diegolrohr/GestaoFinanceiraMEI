@@ -7,6 +7,7 @@ using Fly01.Core.ViewModels;
 using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
@@ -48,10 +49,18 @@ namespace Fly01.Financeiro.BL
             return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).Where(x => x.Id == Id).FirstOrDefault();
         }
 
+        public override void Insert(Cnab entity)
+        {
+            if (All.Any(x => x.ContaReceberId == entity.ContaReceberId)) return;
+
+            base.Insert(entity);
+        }
+
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
             var contaBancariaCedente = contaBancariaBL.Find(contaBancariaId);
+
             var banco = contaBancariaBL.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancariaCedente.BancoId).FirstOrDefault();
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;

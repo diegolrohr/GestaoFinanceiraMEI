@@ -1,13 +1,8 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
-using Fly01.Core.Presentation.Commons;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.ViewModel;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -19,7 +14,7 @@ namespace Fly01.Estoque.Controllers
 
         public CnabItemController()
         {
-            //ExpandProperties = "produto($select=descricao,codigoProduto,valorCusto,saldoProduto,unidadeMedidaId),produto($expand=unidadeMedida)";
+            //ExpandProperties = "cnab($select=status,dataEmissao,nossoNumero)";
         }
 
         public override ContentResult Form()
@@ -32,34 +27,19 @@ namespace Fly01.Estoque.Controllers
             return x => new
             {
                 id = x.Id.ToString(),
-                statusEnum = x.StatusContaBancaria,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Description,
-                statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
-                statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Value,
-                contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
-                tipoPeriodicidade = x.TipoPeriodicidade,
+                //statusEnum = x.StatusContaBancaria,
+                //statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Description,
+                //statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
+                //statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Value,
+                //contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
+                //tipoPeriodicidade = x.TipoPeriodicidade,
                 numero = x.Numero,
-                pessoaId = x.PessoaId,
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 descricao = x.Descricao,
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
-                formaPagamento_descricao = "",
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
-                categoria_descricao = "",
-                pessoa_nome = "",
-                saldo = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
-                saldoSemFormatacao = x.Saldo,
                 diasVencidos = x.DiasVencidos,
-                condicaoParcelamento_descricao = "",
-                observacao = x.Observacao,
-                repetir = x.Repetir,
-                valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
-                NumeroRepeticoes = x.NumeroRepeticoes,
-                valorPago = x.ValorPago,
-                FormaPagamentoObject = x.FormaPagamento,
-                Pessoa = x.Pessoa,
-                dataVencimentoObject = x.DataVencimento
+                valorPago = x.ValorPago
             };
         }
 

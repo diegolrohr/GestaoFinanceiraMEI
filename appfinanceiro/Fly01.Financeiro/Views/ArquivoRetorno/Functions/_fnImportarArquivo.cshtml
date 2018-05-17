@@ -1,6 +1,5 @@
 ﻿<script>
     function fnImportarArquivo(input) {
-        debugger;
         if (!window.FileReader) return; // Browser is not compatible
 
         var reader = new FileReader();
@@ -18,7 +17,7 @@
         $.ajax({
             type: "POST",
             url: "@Url.Action("ImportaArquivoRetorno")",
-            data: { valueArquivo: ret },
+            data: { valueArquivo: ret, contaBancariaId: $('#contaBancariaId').val()},
             success: function (response) {
                 //$("#observacao").closest("div").css("display", "block");
                 //$("#observacao").val(response.Retorno);

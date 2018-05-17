@@ -13,6 +13,10 @@ using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Text;
 using System.IO;
+using Fly01.Core.Rest;
+using Fly01.Core;
+using System.Linq;
+using Fly01.Core.Config;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -34,6 +38,7 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" }
                     }
                 },
+                Functions = new List<string> { "fnFormReady" },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
@@ -46,13 +51,13 @@ namespace Fly01.Financeiro.Controllers
                     Get = Url.Action("Json", "Fornecedor") + "/ImportarCadastro",
                     List = @Url.Action("List")
                 },
-                //ReadyFn = "fnImportaCadastroFormReady",
-                //UrlFunctions = Url.Action("Functions") + "?fns="
+                ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             config.Elements.Add(new AutocompleteUI
             {
-                Id = "bancoId",
+                Id = "contaBancariaId",
                 Class = "col s12 m6 l6",
                 Label = "Banco cedente",
                 Required = true,
@@ -67,7 +72,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Class = "col s12",
                 Color = "blue",
-                //Id = "cardDuvidas",
+                Id = "cardDuvidas",
                 Title = "Dicas",
                 Placeholder = "Selecione o banco de origem do arquivo, e localize o arquivo que deseja importar",
                 Action = new LinkUI()
@@ -90,11 +95,16 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
-        public JsonResult ImportaArquivoRetorno(string valueArquivo)
+        public JsonResult ImportaArquivoRetorno(string valueArquivo, Guid contaBancariaId)
         {
+            var entityContaBancaria = GetContaBancaria(contaBancariaId);
             var formatoArquivo = 1;
-            var boletos = new Boleto2Net.Boletos();
-            boletos.Banco =  Boleto2Net.Banco.Instancia(001);
+            var boletos = new Boleto2Net.Boletos()
+            {
+                Banco = Boleto2Net.Banco.Instancia(Convert.ToInt32(entityContaBancaria.Data.FirstOrDefault().Banco.Codigo))
+            };
+
+            boletos.Banco.Cedente = GetCedente(entityContaBancaria);
 
             byte[] byteArray = Encoding.ASCII.GetBytes(valueArquivo);
             MemoryStream pConteudo = new MemoryStream(byteArray);
@@ -103,6 +113,47 @@ namespace Fly01.Financeiro.Controllers
             var boletosRetorno = arquivoRetorno.LerArquivoRetorno(pConteudo);
 
             return null;
+        }
+
+        private Boleto2Net.Cedente GetCedente(ResultBase<ContaBancariaVM> entityContaBancaria)
+        {
+            var contaBancaria = entityContaBancaria.Data.FirstOrDefault();
+            var dadosCedente = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+
+            return new Boleto2Net.Cedente
+            {
+                CPFCNPJ = dadosCedente.CNPJ,
+                Nome = dadosCedente.NomeFantasia,
+                Observacoes = "",
+                ContaBancaria = new Boleto2Net.ContaBancaria
+                {
+                    Agencia = contaBancaria.Agencia,
+                    DigitoAgencia = contaBancaria.DigitoAgencia,
+                    OperacaoConta = "",
+                    Conta = contaBancaria.Conta,
+                    DigitoConta = contaBancaria.DigitoConta,
+                    CarteiraPadrao = "11",
+                    VariacaoCarteiraPadrao = "019",
+                    TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
+                    TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,
+                    TipoImpressaoBoleto = Boleto2Net.TipoImpressaoBoleto.Empresa,
+                    TipoDocumento = Boleto2Net.TipoDocumento.Tradicional
+                },
+                Codigo = "",
+                CodigoDV = "",
+                CodigoTransmissao = ""
+            };
+        }
+
+        private ResultBase<ContaBancariaVM> GetContaBancaria(Guid contaBancariaId)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
+
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$expand", "banco($select=codigo)");
+            queryString.AddParam("$filter", $"id eq {contaBancariaId}");
+                      
+            return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString);
         }
     }
 }

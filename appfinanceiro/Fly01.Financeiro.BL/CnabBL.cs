@@ -52,7 +52,6 @@ namespace Fly01.Financeiro.BL
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
             var contaBancariaCedente = contaBancariaBL.Find(contaBancariaId);
-          //  var banco = contaBancariaBL.AllIncluding(b => b.Banco).Where(x => x.BancoId == contaBancariaCedente.BancoId).FirstOrDefault();
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
             codigoCedente = "1234657";

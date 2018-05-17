@@ -270,7 +270,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
                 new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
-                new LinkUI() { Label = "Importar de retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
+                new LinkUI() { Label = "Importar A. retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
             }
             });
 

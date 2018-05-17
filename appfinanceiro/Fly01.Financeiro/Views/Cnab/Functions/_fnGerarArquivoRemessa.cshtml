@@ -1,15 +1,16 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
-    
+
     function fnGerarArquivoRemessa() {
         $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: '@Url.Action("GerarArquivoRemessa","Cnab")?ids=' + fly01._.dtBoletos.selected,
-            contentType: "application/json",
-            success: function (data) {
-                debugger;
-                ShowSuccess(data.message);
+            type: "POST",
+            url: '@Url.Action("GerarArquivoRemessa","Cnab")',
+            data: { ids: fly01._.dtBoletos.selected },
+            success: function (retorno) {
+                if (retorno.FileGuid != null)
+                    window.location = '@Url.Action("Download", "Cnab")?fileName=' + retorno.FileGuid;
+                else
+                    fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
             }
         });
     };

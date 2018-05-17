@@ -15,9 +15,8 @@ using Fly01.Core.ViewModels;
 using System.Text;
 using Fly01.Core.Presentation.JQueryDataTable;
 using System.Linq;
-using System.Net.Http;
 using System.IO;
-using System.Net;
+using System.Net.Mime;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -186,13 +185,12 @@ namespace Fly01.Financeiro.Controllers
             return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
         }
 
-        [HttpGet]
-        //public FileResult GerarArquivoRemessa(List<Guid> ids)
-        public FileResult GerarArquivoRemessa(string ids)
+        [HttpPost]
+        public ActionResult GerarArquivoRemessa(List<Guid> ids)
         {
             try
             {
-                var boletosCnab = GetCnab(ids.Split(',').Select(item => new Guid(item)).ToList());
+                var boletosCnab = GetCnab(ids);
                 var boletos = new Boleto2Net.Boletos();
 
                 foreach (var item in boletosCnab)
@@ -203,24 +201,31 @@ namespace Fly01.Financeiro.Controllers
                     boletos.Banco = boleto.Banco;
                 }
 
-                var nomeArquivoREM = GetDadosEmpresa().CNPJ + ".REM";
-                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
 
-                var ms = new MemoryStream();
-                arquivoRemessa.GerarArquivoRemessa(boletos, ms);
+                var nomeArquivo = Guid.NewGuid().ToString();
+                Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
-                return File("", "");
-
-                //return File(new FileStream(ms, FileMode.Open), "application/octet-stream");
-                //return new JsonResult() { Data = new { success = true, message = new FileStream(nomeArquivoREM, FileMode.Open) } };
+                return Json(new { FileGuid = nomeArquivo });
             }
             catch (Exception e)
             {
-                //if (System.IO.File.Exists(nomeArquivoREM))
-                //    System.IO.File.Delete(nomeArquivoREM);
-
                 throw new Exception(e.InnerException.ToString());
             }
+        }
+
+        [HttpGet]
+        public ActionResult Download(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                var arquivoDownload = File((byte[])Session[fileName], MediaTypeNames.Application.Octet, fileName + ".REM");
+                Session[fileName] = null;
+
+                return arquivoDownload;
+            }
+
+            return null;
         }
 
         public override ContentResult Form()

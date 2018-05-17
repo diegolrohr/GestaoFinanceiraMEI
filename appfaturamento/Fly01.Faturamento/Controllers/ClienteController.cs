@@ -154,6 +154,7 @@ namespace Fly01.Faturamento.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReady"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -164,11 +165,11 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l6", Label = "Nome Comercial", MaxLength = 100 });
             config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s7 l6", Label = "E-mail", MaxLength = 70 });
 
-            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s12 l3", Label = "Pessoa de Contato", MaxLength = 45 });
-            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s3 l2", Label = "Celular", MaxLength = 15 });
-            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s3 l2", Label = "Telefone", MaxLength = 15 });
+            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s5 l3", Label = "Pessoa de Contato", MaxLength = 45 });
+            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s4 l2", Label = "Celular", MaxLength = 15 });
+            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s4 l2", Label = "Telefone", MaxLength = 15 });
 
-            config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s3 l2", Label = "CEP", MaxLength = 9 });
+            config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s4 l2", Label = "CEP", MaxLength = 9 });
 
             config.Elements.Add(new AutocompleteUI
             {
@@ -195,20 +196,20 @@ namespace Fly01.Faturamento.Controllers
                 PreFilter = "estadoId"
             });
 
+            config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 30 });
+            config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s12 l4", Label = "Endereço", MaxLength = 50 });
+            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
+            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l3", Label = "Complemento", MaxLength = 20 });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoIndicacaoInscricaoEstadual",
-                Class = "col s3 12",
+                Class = "col s12 l3",
                 Label = "Indicação Inscrição Estadual",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
                 ConstrainWidth = true
             });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s12 l3", Label = "Inscrição Estadual", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s12 l3", Label = "Inscrição Municipal", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 30 });
-            config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s12 l5", Label = "Endereço", MaxLength = 50 });
-            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
-            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
+            config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
+            config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });
 
             config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 

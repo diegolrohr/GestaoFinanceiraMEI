@@ -106,13 +106,16 @@ namespace Fly01.Financeiro.Controllers
 
         }
 
-        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId)
+        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId, int length)
         {
             try
             {
+                if (length == default(int))
+                    length = 50;
+
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
-                var pageNo = param.Start > 0 ? (param.Start / 50) + 1 : 1;
+                var pageNo = param.Start > 0 ? (param.Start / length) + 1 : 1;
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
@@ -120,7 +123,7 @@ namespace Fly01.Financeiro.Controllers
                     { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
                     { "contaBancariaId", contaBancariaId ?? string.Empty },
                     { "pageNo", pageNo.ToString() },
-                    { "pageSize", "50" }
+                    { "pageSize", length.ToString() }
                 };
 
                 var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
@@ -217,6 +220,7 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List()
         {
             var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
             var cfg = new ContentUI
             {
@@ -236,25 +240,20 @@ namespace Fly01.Financeiro.Controllers
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var dataFinalFiltroDefault = DateTime.Now;
 
-            cfg.Content.Add(new DivUI
+            cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m12 printinfo",
+                Class = "col s12 m8 offset-m2 printinfo",
+                Color = "orange",
                 Id = "fly01cardCabecalho",
-                Elements = new List<BaseUI>
+                Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
+                              " | Endereço: " + response.Endereco + ", " + response.Numero +
+                              " | Bairro: " + response.Bairro + " | CEP: " + response.CEP +
+                              " | Cidade: " + responseCidade + " | Email: " + response.Email,
+                Action = new LinkUI
                 {
-                    new StatictextUI
-                    {
-                        Class= "col s12",
-                        Lines = new List<LineUI>{
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = response.RazaoSocial + " | " + "CNPJ: " + response.CNPJ  },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Endereço: " + response.Endereco + ", " + response.Numero },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text ="Bairro: " + response.Bairro + " | " + "CEP: " + response.CEP },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Cidade: " + response.Cidade.Nome + " | " + "Email: " + response.Email },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = " " }
-                        }
-                    }
+                    Label = "",
+                    OnClick = ""
                 }
-
             });
 
             cfg.Content.Add(new FormUI
@@ -307,7 +306,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contasBancariasList",
                 Class = "col s12 m12 l4",
-                UrlGridLoad = @Url.Action("LoadContasBancarias"),
+                UrlGridLoad = @Url.Action("LoadContasBancarias"),               
                 Columns = new List<DataTableUIColumn>
                     {
                         new DataTableUIColumn
@@ -322,7 +321,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig
                 {
                     ScrollLength = 300,
-                    WithoutRowMenu = true
+                    WithoutRowMenu = true                 
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
 
@@ -433,7 +432,8 @@ namespace Fly01.Financeiro.Controllers
                     },
                 Options = new DataTableUIConfig()
                 {
-                    PageLength = 50
+                    PageLength = 50,
+                    LengthChange = true
                 },
                 Columns = new List<DataTableUIColumn>
                     {

@@ -32,7 +32,7 @@ namespace Fly01.Faturamento.BL
             };
         }
 
-        public IQueryable<ParametroTributario> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<ParametroTributario> Everything => repository.All.Where(x => x.Ativo);
         
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {

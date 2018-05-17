@@ -6,8 +6,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class ArquivoRemessa : PlataformaBase
     {
-        [Required]
-        public int NumeroArquivo { get; set; }
+        //[Required]
+        //public int NumeroArquivo { get; set; }
 
         [Required]
         public string Descricao { get; set; }

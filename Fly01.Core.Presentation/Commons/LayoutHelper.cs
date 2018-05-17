@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Commons
                 "<base href=\"~/\" />" +
                 $"<link rel=\"icon\" type=\"image/ico\" href=\"{cdnUrl}/img/fly01icon.ico\" />" +
                 $"<link type=\"text/css\" rel=\"stylesheet\" href=\"{cdnUrl}/fly/{cdnVersion}/fly01ui.css\" />"
-                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"http://poad257.poa01.local:8000/{cdnVersion}/fly01ui.css\" />"
+                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"http://poad040100303.poa01.local:8000/{cdnVersion}/fly01ui.css\" />"
             );
         }
 
@@ -25,7 +25,7 @@ namespace Fly01.Core.Presentation.Commons
         {
             return new HtmlString(
                 $"<script src=\"{cdnUrl}/fly/{cdnVersion}/fly01ui.min.js\"></script>"
-                //$"<script src=\""http://poad257.poa01.local:8000/{cdnVersion}/fly01ui.js\"></script>"
+            //$"<script src=\"http://poad040100303.poa01.local:8000/{cdnVersion}/fly01ui.js\"></script>"
             );
         }
     }

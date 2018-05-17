@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Financeiro.ViewModel;
@@ -13,11 +12,8 @@ using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using System.Text;
-using Fly01.Core.Presentation.JQueryDataTable;
-using System.Linq;
-using System.Net.Http;
-using System.IO;
-using System.Net;
+using System.Net.Mime;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -28,9 +24,11 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
+                contaReceberId = x.ContaReceberId,
+                contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
-                numeroBoleto = x.NumeroBoleto,
-                valorBoleto = x.ValorBoleto,
+                nossoNumero = x.NossoNumero,
+                valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
@@ -103,7 +101,6 @@ namespace Fly01.Financeiro.Controllers
         {
             var cnab = new CnabVM()
             {
-                NumeroBoleto = 1,
                 Status = StatusCnab.EmAberto.ToString(),
                 DataEmissao = boletoImpresso.Boleto.DataEmissao,
                 DataVencimento = boletoImpresso.Boleto.DataVencimento,
@@ -118,28 +115,18 @@ namespace Fly01.Financeiro.Controllers
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
         }
 
-        public JsonResult LoadGridBoletos(Guid IdArquivo)
+        private void SalvaArquivoRemessa(int qtdBoletos, double valorBoletos)
         {
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
-
-            var response = GetContasReceber(IdArquivo, pageNo);
-
-            return Json(new
+            var arquivoRemessa = new ArquivoRemessaVM()
             {
-                recordsTotal = response.Paging.TotalRecordCount,
-                recordsFiltered = response.Paging.TotalRecordCount,
-                data = response.Data.Select(item => new
-                {
-                    numero = item.NumeroBoleto,
-                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
-                    valorBoleto = item.ValorBoleto,
-                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
-                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
-                })
+                Descricao = Guid.NewGuid().ToString() + ".REM",
+                TotalBoletos = qtdBoletos,
+                DataExportacao = DateTime.Now,
+                StatusArquivoRemessa = StatusArquivoRemessa.Exportado.ToString(),
+                ValorTotal = valorBoletos
+            };
 
-            }, JsonRequestBehavior.AllowGet);
+            RestHelper.ExecutePostRequest("arquivoRemessa", JsonConvert.SerializeObject(arquivoRemessa));
         }
 
         private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
@@ -174,26 +161,15 @@ namespace Fly01.Financeiro.Controllers
             return listaCnab;
         }
 
-        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("canb/contasReceberarquivo", queryString);
-        }
-
-        [HttpGet]
-        //public FileResult GerarArquivoRemessa(List<Guid> ids)
-        public FileResult GerarArquivoRemessa(string ids)
+        [HttpPost]
+        public ActionResult GerarArquivoRemessa(List<Guid> ids)
         {
             try
             {
-                var boletosCnab = GetCnab(ids.Split(',').Select(item => new Guid(item)).ToList());
+                var boletosCnab = GetCnab(ids);
                 var boletos = new Boleto2Net.Boletos();
+                var qtdBoletos = 0;
+                var valorBoletos = 0.0;
 
                 foreach (var item in boletosCnab)
                 {
@@ -201,26 +177,38 @@ namespace Fly01.Financeiro.Controllers
 
                     boletos.Add(boleto);
                     boletos.Banco = boleto.Banco;
+                    qtdBoletos += 1;
+                    valorBoletos += (double)boleto.ValorTitulo;
                 }
 
-                var nomeArquivoREM = GetDadosEmpresa().CNPJ + ".REM";
-                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, 0, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
 
-                var ms = new MemoryStream();
-                arquivoRemessa.GerarArquivoRemessa(boletos, ms);
+                var nomeArquivo = Guid.NewGuid().ToString();
+                Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
-                return File("", "");
+                if (Session[nomeArquivo] != null)
+                    SalvaArquivoRemessa(qtdBoletos, valorBoletos);
 
-                //return File(new FileStream(ms, FileMode.Open), "application/octet-stream");
-                //return new JsonResult() { Data = new { success = true, message = new FileStream(nomeArquivoREM, FileMode.Open) } };
+                return Json(new { FileGuid = nomeArquivo });
             }
             catch (Exception e)
             {
-                //if (System.IO.File.Exists(nomeArquivoREM))
-                //    System.IO.File.Delete(nomeArquivoREM);
-
                 throw new Exception(e.InnerException.ToString());
             }
+        }
+
+        [HttpGet]
+        public ActionResult Download(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                var arquivoDownload = File((byte[])Session[fileName], MediaTypeNames.Application.Octet, fileName + ".REM");
+                Session[fileName] = null;
+
+                return arquivoDownload;
+            }
+
+            return null;
         }
 
         public override ContentResult Form()
@@ -297,8 +285,8 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
                 }
             };
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº Conta", Priority = 2, Type = "number" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1, Width = "30%" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
@@ -329,7 +317,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
             };
 
-            var configdt = new DataTableUI()
+            var dtConfig = new DataTableUI()
             {
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
@@ -341,20 +329,24 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "numeroBoleto", DisplayName = "Nº", Priority = 1, Type = "number" });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
-            configdt.Columns.Add(new DataTableUIColumn
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "id" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceberId", Visible = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaId", Visible = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso Número", Priority = 1, Type = "number", Width = "10%" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusArquivoRemessa",
                 DisplayName = "Status",
-                Priority = 7,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))
             });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
 
-            cfg.Content.Add(configdt);
+            cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }

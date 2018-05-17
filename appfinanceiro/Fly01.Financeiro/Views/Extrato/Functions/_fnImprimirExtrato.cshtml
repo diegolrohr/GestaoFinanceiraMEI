@@ -1,27 +1,18 @@
 ﻿<script>
 
     function fnImprimirExtrato() {
-        var dataInicio = $('input#dataInicial').val();
-        var dataFim = $('input#dataFinal').val();
-        var contaBancaria = $('input#contaBancariaId').val();
-        var pageSize = "500";
-        {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("LoadExtratoDetalhes", "Extrato")',
-                data: {
-                    dataInicial: dataInicio,
-                    dataFinal: dataFim,
-                    contaBancariaId: contaBancaria,
-                    pageSize: pageSize
-                },
-                success: function (data) {
-                    window.print();
-                },
-                error: function (jXHR, textStatus, errorThrown) {
-                    fly01.toast(textStatus, "error");
-                }
-            });
+        $("#print").loading("start");
+        $("#dtExtratoDetalhe").on('draw.dt', function () {
+            if (fly01._.dtExtratoDetalhe.page.info().length == 500) {
+                $("#print").loading("stop");
+                window.print();
+            }
+        });
+        if (fly01._.dtExtratoDetalhe.page.info().length != 500)
+            fly01._.dtExtratoDetalhe.page.len(500).draw();
+        else {
+            $("#print").loading("stop");
+            window.print();
         }
     }
 </script>

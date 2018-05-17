@@ -106,16 +106,16 @@ namespace Fly01.Financeiro.Controllers
 
         }
 
-        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId, string pageSize)
+        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId, int length)
         {
             try
             {
-                if (pageSize == null)
-                    pageSize = "50";
+                if (length == default(int))
+                    length = 50;
 
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
-                var pageNo = param.Start > 0 ? (param.Start / 50) + 1 : 1;
+                var pageNo = param.Start > 0 ? (param.Start / length) + 1 : 1;
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
@@ -123,7 +123,7 @@ namespace Fly01.Financeiro.Controllers
                     { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
                     { "contaBancariaId", contaBancariaId ?? string.Empty },
                     { "pageNo", pageNo.ToString() },
-                    { "pageSize", pageSize }
+                    { "pageSize", length.ToString() }
                 };
 
                 var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
@@ -369,7 +369,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @Url.Action("LoadChart"),
-                Class = "col s12 m12 l8",
+                Class = "col s12 m10 l8",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },

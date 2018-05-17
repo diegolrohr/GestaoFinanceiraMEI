@@ -30,12 +30,14 @@ namespace Fly01.Faturamento.BL
         protected EstadoBL EstadoBL;
         protected ParametroTributarioBL ParametroTributarioBL;
         private ManagerEmpresaVM empresa;
+        private string empresaUF;
 
         public CertificadoDigitalBL(AppDataContext context, EstadoBL estadoBL, ParametroTributarioBL parametroTributarioBL) : base(context)
         {
             EstadoBL = estadoBL;
             ParametroTributarioBL = parametroTributarioBL;
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
 
         public IQueryable<CertificadoDigital> Everything => repository.All.Where(x => x.Ativo);
@@ -62,7 +64,7 @@ namespace Fly01.Faturamento.BL
             #region ResgataDadosEmpresa
 
             entity.Cnpj = empresa.CNPJ;
-            entity.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            entity.UF = empresaUF;
             entity.InscricaoEstadual = empresa.InscricaoEstadual;
 
             #endregion
@@ -124,7 +126,7 @@ namespace Fly01.Faturamento.BL
         public string GetEntidade(TipoAmbiente tipoAmbiente)
         {
             string entidade;
-            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             if (certificado == null)
             {
@@ -150,16 +152,16 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
-            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             if (certificado == null && !postCertificado)
             {
                 throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
             }
 
-            var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
+            var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
-            var ambiente = parametros != null ? (TipoAmbiente)parametros.TipoAmbiente : TipoAmbiente.Homologacao;
+            var ambiente = parametros != null ? parametros.TipoAmbiente : TipoAmbiente.Homologacao;
             var retorno = new EntidadeVM();
 
             if (certificado != null && !string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
@@ -171,15 +173,15 @@ namespace Fly01.Faturamento.BL
             {
                 retorno = RetornaEntidade();
             }
-            retorno.EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
+            retorno.EntidadeAmbiente = ambiente;
             return retorno;
         }
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
             var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa :  RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
-            var certificado = Everything.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
-            var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId).Where(x => x.Cnpj == empresa.CNPJ).FirstOrDefault();
+            var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+            var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             if (certificado == null || ambiente == null || plataformaId == null)
                 return null;
@@ -203,17 +205,28 @@ namespace Fly01.Faturamento.BL
             return retorno;
         }
 
-        public bool IsValid(CertificadoDigital certificado=null)
-        {
-            var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-            var empresaCNPJ = dadosEmpresa.CNPJ;
-            var empresaIE = dadosEmpresa.InscricaoEstadual;
-            var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-            
-            if (certificado==null)
-                certificado = All.FirstOrDefault();
-            
-            return (certificado != null) && ((empresaCNPJ == certificado.Cnpj && empresaIE == certificado.InscricaoEstadual && empresaUF == certificado.UF));
+        public IQueryable<CertificadoDigital> CertificadoValido()
+        {            
+            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
         }
+
+        public override void Insert(CertificadoDigital entity)
+        {
+            entity.Fail(All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).Any(), new Error("Já existe um certificado cadastrado para esta plataforma."));
+
+            if (entity.IsValid())
+            {
+                entity = ProcessEntity(entity);
+            }
+
+            base.Insert(entity);
+        }
+
+        public override void Update(CertificadoDigital entity)
+        {
+            entity = ProcessEntity(entity);
+            base.Update(entity);
+        }
+
     }
 }

@@ -28,6 +28,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>(ResourceName);
 
+
             if (response == null || response.Data == null)
                 return null;
 

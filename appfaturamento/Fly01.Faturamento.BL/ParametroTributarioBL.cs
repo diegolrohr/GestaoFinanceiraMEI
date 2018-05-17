@@ -16,11 +16,13 @@ namespace Fly01.Faturamento.BL
         private readonly Dictionary<string, string> _queryString;
         private readonly Dictionary<string, string> _header;
         private ManagerEmpresaVM empresa;
+        private string empresaUF;
         protected EntidadeBL EntidadeBL { get; set; }
 
         public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             EntidadeBL = entidadeBL;
             _queryString = AppDefaults.GetQueryStringDefault();
             _header = new Dictionary<string, string>

@@ -7,9 +7,6 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Cnab : PlataformaBase
     {
         [Required]
-        public int NumeroBoleto { get; set; }
-
-        [Required]
         public string Status { get; set; }
 
         [Required]

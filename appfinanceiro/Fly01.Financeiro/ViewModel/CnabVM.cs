@@ -6,9 +6,6 @@ namespace Fly01.Financeiro.ViewModel
 {
     public class CnabVM : DomainBaseVM
     {
-        [JsonProperty("numeroBoleto")]
-        public int NumeroBoleto { get; set; }
-
         [JsonProperty("status")]
         public string Status { get; set; }
 

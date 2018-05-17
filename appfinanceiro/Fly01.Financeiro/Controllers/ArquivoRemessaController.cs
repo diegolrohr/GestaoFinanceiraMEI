@@ -9,6 +9,11 @@ using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Helpers;
+using Fly01.Core.Rest;
+using System.Linq;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -26,6 +31,42 @@ namespace Fly01.Financeiro.Controllers
                 totalBoletos = x.TotalBoletos,
                 status = x.StatusArquivoRemessa
             };
+        }
+
+        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
+        {
+            var queryString = new Dictionary<string, string>
+            {
+                { "arquivoRemessaId", idArquivo.ToString()},
+                { "pageNo", pageNo.ToString() },
+                { "pageSize", "10"}
+            };
+
+            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/contasReceberarquivo", queryString);
+        }
+
+        public JsonResult LoadGridBoletos(Guid IdArquivo)
+        {
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetContasReceber(IdArquivo, pageNo);
+
+            return Json(new
+            {
+                recordsTotal = response.Paging.TotalRecordCount,
+                recordsFiltered = response.Paging.TotalRecordCount,
+                data = response.Data.Select(item => new
+                {
+                    nossoNumero = item.NossoNumero,
+                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
+                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status
+                })
+
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public override ContentResult Form()

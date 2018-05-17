@@ -16,7 +16,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.CnabBL.GetDadosBoleto(contaReceberId, contaBancariaId));
+                var data = unitOfWork.CnabBL.GetDadosBoleto(contaReceberId, contaBancariaId);
+
+                return Ok(data);
             }
         }
 
@@ -25,7 +27,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.CnabBL.Get() });
+                var data = unitOfWork.CnabBL.GetCnab();
+
+                return Ok(new { value = data });
             }
         }
 
@@ -35,7 +39,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var data = unitOfWork.CnabBL.Get(Id);
+                var data = unitOfWork.CnabBL.GetCnab(Id);
 
                 return Ok(data);
             }
@@ -47,7 +51,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.CnabBL.GetContasReceberArquivo(IdArquivoRemessa)});
+                var data = unitOfWork.CnabBL.GetContasReceberArquivo(IdArquivoRemessa);
+
+                return Ok(new { value = data });
             }
         }
 

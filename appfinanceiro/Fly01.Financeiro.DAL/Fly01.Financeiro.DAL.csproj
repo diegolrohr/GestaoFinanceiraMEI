@@ -160,6 +160,10 @@
     <Compile Include="Migrations\201805161423391_CreateCNABArquivoRemessa.Designer.cs">
       <DependentUpon>201805161423391_CreateCNABArquivoRemessa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.cs" />
+    <Compile Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.Designer.cs">
+      <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -263,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805161423391_CreateCNABArquivoRemessa.resx">
       <DependentUpon>201805161423391_CreateCNABArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.resx">
+      <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

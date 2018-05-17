@@ -28,8 +28,10 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
+                contaReceberId = x.ContaReceberId,
+                contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
-                numeroBoleto = x.NumeroBoleto,
+                nossoNumero = x.NossoNumero,
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
@@ -103,7 +105,6 @@ namespace Fly01.Financeiro.Controllers
         {
             var cnab = new CnabVM()
             {
-                NumeroBoleto = 1,
                 Status = StatusCnab.EmAberto.ToString(),
                 DataEmissao = boletoImpresso.Boleto.DataEmissao,
                 DataVencimento = boletoImpresso.Boleto.DataVencimento,
@@ -116,30 +117,6 @@ namespace Fly01.Financeiro.Controllers
             };
 
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
-        }
-
-        public JsonResult LoadGridBoletos(Guid IdArquivo)
-        {
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
-
-            var response = GetContasReceber(IdArquivo, pageNo);
-
-            return Json(new
-            {
-                recordsTotal = response.Paging.TotalRecordCount,
-                recordsFiltered = response.Paging.TotalRecordCount,
-                data = response.Data.Select(item => new
-                {
-                    numero = item.NumeroBoleto,
-                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
-                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
-                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
-                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
-                })
-
-            }, JsonRequestBehavior.AllowGet);
         }
 
         private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
@@ -172,18 +149,6 @@ namespace Fly01.Financeiro.Controllers
             }
 
             return listaCnab;
-        }
-
-        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
-        {
-            var queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/contasReceberarquivo", queryString);
         }
 
         [HttpPost]
@@ -303,8 +268,8 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
                 }
             };
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº Conta", Priority = 2, Type = "number" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1, Width = "30%" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
@@ -335,7 +300,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
             };
 
-            var configdt = new DataTableUI()
+            var dtConfig = new DataTableUI()
             {
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
@@ -347,20 +312,24 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "numeroBoleto", DisplayName = "Nº", Priority = 1, Type = "number" });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
-            configdt.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
-            configdt.Columns.Add(new DataTableUIColumn
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "id" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceberId", Visible = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaId", Visible = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso Número", Priority = 1, Type = "number", Width = "10%" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusArquivoRemessa",
                 DisplayName = "Status",
-                Priority = 7,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))
             });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
 
-            cfg.Content.Add(configdt);
+            cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }

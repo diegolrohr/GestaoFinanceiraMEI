@@ -26,27 +26,14 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        private string GetInstrucoesAoCaixa(ContaReceber conta)
-        {
-            var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
-            var valorJuros = (decimal)(conta.ValorPrevisto * (jurosDia / 100));
-            var msgCaixa = new StringBuilder();
-            
-            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
-            if (percentMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
-            if (jurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
-
-            return msgCaixa.ToString();
-        }
-
-        public List<Cnab> Get()
+        public List<Cnab> GetCnab()
         {
             return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).ToList();
         }
 
-        public Cnab Get(Guid Id)
+        public Cnab GetCnab(Guid Id)
         {
-            return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).Where(x => x.Id == Id).FirstOrDefault();
+            return GetCnab().Where(x => x.Id == Id).FirstOrDefault();
         }
 
         public override void Insert(Cnab entity)
@@ -121,6 +108,19 @@ namespace Fly01.Financeiro.BL
                     Observacoes = ""
                 }
             };
+        }
+
+        private string GetInstrucoesAoCaixa(ContaReceber conta)
+        {
+            var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
+            var valorJuros = (decimal)(conta.ValorPrevisto * (jurosDia / 100));
+            var msgCaixa = new StringBuilder();
+
+            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
+            if (percentMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
+            if (jurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
+
+            return msgCaixa.ToString();
         }
 
         public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)

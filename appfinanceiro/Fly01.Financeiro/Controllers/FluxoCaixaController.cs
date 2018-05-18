@@ -13,6 +13,8 @@ namespace Fly01.Financeiro.Controllers
 {
     public class FluxoCaixaController : Controller
     {
+        public string GroupType = "3";
+
         public JsonResult LoadSaldos(string dataFinal)
         {
             try
@@ -48,7 +50,8 @@ namespace Fly01.Financeiro.Controllers
             Dictionary<string, string> queryString = new Dictionary<string, string>
             {
                 { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") }
+                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                { "groupType", GroupType }
             };
             var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaProjecaoVM>("fluxocaixa/projecao", queryString);
             if (response == null)
@@ -63,6 +66,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
                 { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                { "groupType", GroupType },
                 { "pageNo", pageNo.ToString() },
                 { "pageSize", "10"}
             };
@@ -80,7 +84,7 @@ namespace Fly01.Financeiro.Controllers
                 var dataChartToView = new
                 {
                     success = true,
-                    labels = response.Select(x => x.Data.ToString("dd/MM/yyyy")).ToArray(),
+                    labels = response.Select(x => x.Label).ToArray(),
                     datasets = new object[] {
                         new {
                                 type = "line",
@@ -130,7 +134,7 @@ namespace Fly01.Financeiro.Controllers
                     recordsFiltered = response.Paging.TotalRecordCount,
                     data = response.Data.Select(item => new
                     {
-                        data = item.Data.ToString("dd/MM/yyyy"),
+                        data = item.Label,
                         totalRecebimentos = item.TotalRecebimentos.ToString("C", AppDefaults.CultureInfoDefault),
                         totalPagamentos = (item.TotalPagamentos * -1).ToString("C", AppDefaults.CultureInfoDefault),
                         saldoFinal = item.SaldoFinal.ToString("C", AppDefaults.CultureInfoDefault)

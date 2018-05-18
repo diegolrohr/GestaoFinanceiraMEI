@@ -6,6 +6,7 @@ using Fly01.Financeiro.API.Models.DAL;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Globalization;
 
 namespace Fly01.Financeiro.BL
 {
@@ -130,6 +131,8 @@ namespace Fly01.Financeiro.BL
 
         private List<FluxoCaixaProjecao> ResolveGroup(List<FluxoCaixaProjecao> items, DateGroupType groupType)
         {
+            var defaultCulture = new CultureInfo("pt-BR");
+
             switch (groupType)
             {
                 case DateGroupType.Day:
@@ -146,8 +149,8 @@ namespace Fly01.Financeiro.BL
                 case DateGroupType.Month:
                     return items.GroupBy(cc => new { cc.Data.Month, cc.Data.Year })
                         .Select(g => new FluxoCaixaProjecao() {
-                            Label = $"{g.Key.Month}/{g.Key.Year}",
-                            TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos)),
+                            Label = $"{defaultCulture.DateTimeFormat.GetAbbreviatedMonthName(g.Key.Month)}/{g.Key.Year}",
+                            TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos), 2),
                             TotalRecebimentos = Math.Round(g.Sum(x => x.TotalRecebimentos), 2)
                         }).ToList();
                 case DateGroupType.Quarter:
@@ -170,7 +173,7 @@ namespace Fly01.Financeiro.BL
                     return items.GroupBy(cc => new { cc.Data.Year })
                         .Select(g => new FluxoCaixaProjecao() {
                             Label = $"{g.Key.Year}",
-                            TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos)),
+                            TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos), 2),
                             TotalRecebimentos = Math.Round(g.Sum(x => x.TotalRecebimentos), 2)
                         }).ToList();
             }

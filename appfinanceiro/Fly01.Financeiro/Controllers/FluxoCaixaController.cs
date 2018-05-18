@@ -8,13 +8,12 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class FluxoCaixaController : Controller
     {
-        public string GroupType = "3";
-
         public JsonResult LoadSaldos(string dataFinal)
         {
             try
@@ -45,13 +44,13 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        private List<FluxoCaixaProjecaoVM> GetProjecao(DateTime dataInicial, DateTime dataFinal)
+        private List<FluxoCaixaProjecaoVM> GetProjecao(DateTime dataInicial, DateTime dataFinal, int groupType)
         {
             Dictionary<string, string> queryString = new Dictionary<string, string>
             {
                 { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
                 { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "groupType", GroupType }
+                { "groupType", groupType.ToString() }
             };
             var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaProjecaoVM>("fluxocaixa/projecao", queryString);
             if (response == null)
@@ -60,13 +59,13 @@ namespace Fly01.Financeiro.Controllers
             return response.Values;
         }
 
-        private PagedResult<FluxoCaixaProjecaoVM> GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, int pageNo)
+        private PagedResult<FluxoCaixaProjecaoVM> GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, int groupType, int pageNo)
         {
             Dictionary<string, string> queryString = new Dictionary<string, string>
             {
                 { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
                 { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "groupType", GroupType },
+                { "groupType", groupType.ToString() },
                 { "pageNo", pageNo.ToString() },
                 { "pageSize", "10"}
             };
@@ -75,11 +74,11 @@ namespace Fly01.Financeiro.Controllers
             return response;
         }
 
-        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal)
+        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, int groupType)
         {
             try
             {
-                var response = GetProjecao(dataInicial, dataFinal);
+                var response = GetProjecao(dataInicial, dataFinal, groupType);
 
                 var dataChartToView = new
                 {
@@ -119,14 +118,14 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult LoadGridFluxoCaixa(DateTime dataInicial, DateTime dataFinal)
+        public JsonResult LoadGridFluxoCaixa(DateTime dataInicial, DateTime dataFinal, int groupType)
         {
             try
             {
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
                 var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
 
-                var response = GetProjecaoDetalhe(dataInicial, dataFinal, pageNo);
+                var response = GetProjecaoDetalhe(dataInicial, dataFinal, groupType, pageNo);
 
                 return Json(new
                 {

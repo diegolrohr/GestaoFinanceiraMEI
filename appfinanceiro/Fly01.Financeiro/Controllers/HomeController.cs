@@ -74,9 +74,9 @@ namespace Fly01.Financeiro.Controllers
                     new InputDateUI
                     {
                         Id = "dataInicial",
-                        Class = "col s6 m3 l4",
+                        Class = "col s6 m3 l4 offset-l2 offset-m3",
                         Label = "Data Inicial",
-                        //Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
+                        Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI>
                         {
                             new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
@@ -89,22 +89,26 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataFinal",
                         Class = "col s6 m3 l4",
                         Label = "Data Final",
-                        //Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
+                        Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
                         Max = 60,
                         Min = true
                     },
+                    new InputHiddenUI{ Id = "groupType", Value = "1" },
                     new ButtongroupUI()
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m6 l4 hide-on-print",
-                        Label = "Selecione o período",
-                        OnClickFn = "fnAtualizarPeriodo",
+                        Class = "col s12 hide-on-print",
+                        Label = "",
+                        OnClickFn = "fnAtualizaAgrupamento",
                         Options = new List<OptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "1", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "7", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new OptionUI { Id = "btnDia", Value = "1", Label = "Dia" },
+                            //new OptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
+                            new OptionUI { Id = "btnMes", Value = "3", Label = "Mês" },
+                            new OptionUI { Id = "btnAno", Value = "6", Label = "Ano" },
+                            new OptionUI { Id = "btnSem", Value = "5", Label = "Semestre" },
+                            new OptionUI { Id = "btnTri", Value = "4", Label = "Trimestre" }
                         }
                     }
                 }
@@ -209,7 +213,8 @@ namespace Fly01.Financeiro.Controllers
                 Parameters = new List<ChartUIParameter>
                 {
                     new ChartUIParameter { Id = "dataInicial" },
-                    new ChartUIParameter { Id = "dataFinal" }
+                    new ChartUIParameter { Id = "dataFinal" },
+                    new ChartUIParameter { Id = "groupType" }
                 }
             });
 
@@ -220,7 +225,8 @@ namespace Fly01.Financeiro.Controllers
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "dataInicial", Required = true },
-                    new DataTableUIParameter { Id = "dataFinal", Required = true }
+                    new DataTableUIParameter { Id = "dataFinal", Required = true },
+                    new DataTableUIParameter { Id = "groupType", Required = true }
                 },
                 Options = new DataTableUIConfig()
                 {
@@ -228,7 +234,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Columns = new List<DataTableUIColumn>
                 {
-                    new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "data", DisplayName = "Periodo", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
                     new DataTableUIColumn { DataField = "totalRecebimentos", DisplayName = "Total Recebimentos", Priority = 3, Orderable = false, Searchable = false, Type = "currency" },
                     new DataTableUIColumn { DataField = "totalPagamentos", DisplayName = "Total Pagamentos", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
                     new DataTableUIColumn { DataField = "saldoFinal", DisplayName = "Saldo Final", Priority = 2, Orderable = false, Searchable = false, Type = "currency" }

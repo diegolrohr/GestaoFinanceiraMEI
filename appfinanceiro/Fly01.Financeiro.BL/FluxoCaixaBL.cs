@@ -149,7 +149,7 @@ namespace Fly01.Financeiro.BL
                 case DateGroupType.Month:
                     return items.GroupBy(cc => new { cc.Data.Month, cc.Data.Year })
                         .Select(g => new FluxoCaixaProjecao() {
-                            Label = $"{defaultCulture.DateTimeFormat.GetAbbreviatedMonthName(g.Key.Month)}/{g.Key.Year}",
+                            Label = $"{defaultCulture.DateTimeFormat.GetAbbreviatedMonthName(g.Key.Month)} / {g.Key.Year}",
                             TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos), 2),
                             TotalRecebimentos = Math.Round(g.Sum(x => x.TotalRecebimentos), 2)
                         }).ToList();
@@ -157,7 +157,7 @@ namespace Fly01.Financeiro.BL
                     return items.GroupBy(cc => new { Quarter = (cc.Data.Month - 1) / 3, cc.Data.Year })
                         .Select(g => new FluxoCaixaProjecao()
                         {
-                            Label = $"Q{g.Key.Quarter + 1}/{g.Key.Year}",
+                            Label = $"T{g.Key.Quarter + 1} / {g.Key.Year}",
                             TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos), 2),
                             TotalRecebimentos = Math.Round(g.Sum(x => x.TotalRecebimentos), 2)
                         }).ToList();
@@ -165,7 +165,7 @@ namespace Fly01.Financeiro.BL
                     return items.GroupBy(cc => new { Halfyear = (cc.Data.Month - 1) / 6, cc.Data.Year })
                         .Select(g => new FluxoCaixaProjecao()
                         {
-                            Label = $"{g.Key.Year + 1}/{g.Key.Halfyear}",
+                            Label = $"{g.Key.Year} / {g.Key.Halfyear + 1}",
                             TotalPagamentos = Math.Round(g.Sum(x => x.TotalPagamentos), 2),
                             TotalRecebimentos = Math.Round(g.Sum(x => x.TotalRecebimentos), 2)
                         }).ToList();

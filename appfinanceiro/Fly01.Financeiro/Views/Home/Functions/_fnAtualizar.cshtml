@@ -17,11 +17,12 @@
         else {
             fly01._.fly01chart.refresh();
             fly01._.fly01dt.refresh();
+            getSaldos(dataFinal);
         }
         
-        if (e != null) {
-            if (e.type == "click" && e.currentTarget.id == "save")
-                getSaldos(dataFinal);
-        }
+        //if (e != null) {
+        //    if (e.type == "click" && e.currentTarget.id == "save")
+        //        getSaldos(dataFinal);
+        //}
     }
 </script>

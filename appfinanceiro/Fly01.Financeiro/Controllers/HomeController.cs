@@ -76,7 +76,7 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataInicial",
                         Class = "col s6 m3 l4",
                         Label = "Data Inicial",
-                        Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
+                        //Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI>
                         {
                             new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
@@ -89,7 +89,7 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataFinal",
                         Class = "col s6 m3 l4",
                         Label = "Data Final",
-                        Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
+                        //Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
                         Max = 60,
                         Min = true
@@ -219,8 +219,8 @@ namespace Fly01.Financeiro.Controllers
                 UrlGridLoad = Url.Action("LoadGridFluxoCaixa", "FluxoCaixa"),
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter { Id = "dataInicial" },
-                    new DataTableUIParameter { Id = "dataFinal" }
+                    new DataTableUIParameter { Id = "dataInicial", Required = true },
+                    new DataTableUIParameter { Id = "dataFinal", Required = true }
                 },
                 Options = new DataTableUIConfig()
                 {

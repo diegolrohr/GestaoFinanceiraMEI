@@ -17,25 +17,8 @@
         fly01._.fly01chart.update();
     }
 
-    function __getSaldos() {
-        $.ajax({
-            url: "@Url.Action("LoadSaldos", "FluxoCaixa")",
-            type: "GET",
-            success: function (data) {
-                fly01._.fly01cardSA.info(data.SaldoAtual);
-                fly01._.fly01cardCP.info(data.TotalPagamentos);
-                fly01._.fly01cardCR.info(data.TotalRecebimentos);
-                fly01._.fly01cardSC.info(data.SaldoProjetado);
-            },
-            error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
-            }
-        });
-    }
-
     function fnFormReady() {
         __configsChart();
-        __getSaldos();
         $("#btnMes").click();
     }
 </script>

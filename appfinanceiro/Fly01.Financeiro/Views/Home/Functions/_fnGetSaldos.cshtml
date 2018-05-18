@@ -1,6 +1,5 @@
 ﻿<script>
-    function getSaldos(dataInicial, dataFinal) {
-        var inicial = isValidDate(dataInicial.toString()) ? dataInicial : formatDate(dataInicial);
+    function getSaldos(dataFinal) {
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
 
         $.ajax({

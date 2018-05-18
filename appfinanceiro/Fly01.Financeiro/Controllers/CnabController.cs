@@ -118,18 +118,19 @@ namespace Fly01.Financeiro.Controllers
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
         }
 
-        private void SalvaArquivoRemessa(int qtdBoletos, double valorBoletos)
+        private Guid SalvaArquivoRemessa(string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
-                Descricao = Guid.NewGuid().ToString() + ".REM",
+                Descricao = $"{nomeArquivo}.REM",
                 TotalBoletos = qtdBoletos,
-                DataExportacao = DateTime.Now,
                 StatusArquivoRemessa = StatusArquivoRemessa.Exportado.ToString(),
                 ValorTotal = valorBoletos
             };
 
-            RestHelper.ExecutePostRequest("arquivoRemessa", JsonConvert.SerializeObject(arquivoRemessa));
+            var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
+
+            return result.Id;
         }
 
         private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
@@ -190,8 +191,18 @@ namespace Fly01.Financeiro.Controllers
                 Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
                 if (Session[nomeArquivo] != null)
-                    SalvaArquivoRemessa(qtdBoletos, valorBoletos);
+                {
+                    var idArquivoRemessa = SalvaArquivoRemessa(nomeArquivo, qtdBoletos, valorBoletos);
 
+                    var arquivoRemessaCnab = new ArquivoRemessaCnabVM
+                    {
+                        IdsBoleto = ids,
+                        ArquivoRemessaId = idArquivoRemessa
+                    };
+
+                    //Não está funcionando ainda.
+                    RestHelper.ExecutePutRequest("cnab", JsonConvert.SerializeObject(arquivoRemessaCnab, JsonSerializerSetting.Default));
+                }
                 return Json(new { FileGuid = nomeArquivo });
             }
             catch (Exception e)

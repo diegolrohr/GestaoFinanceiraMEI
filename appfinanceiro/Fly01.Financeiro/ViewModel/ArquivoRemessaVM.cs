@@ -5,7 +5,6 @@ using System;
 
 namespace Fly01.Financeiro.ViewModel
 {
-    [Serializable]
     public class ArquivoRemessaVM : DomainBaseVM
     {
         [JsonProperty("descricao")]
@@ -25,6 +24,6 @@ namespace Fly01.Financeiro.ViewModel
         public DateTime DataExportacao { get; set; }
 
         [JsonProperty("dataRetorno")]
-        public DateTime DataRetorno { get; set; }
+        public DateTime? DataRetorno { get; set; }
     }
 }

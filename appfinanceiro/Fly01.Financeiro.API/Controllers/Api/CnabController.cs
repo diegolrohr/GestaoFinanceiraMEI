@@ -5,6 +5,9 @@ using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Fly01.Financeiro.ViewModel;
+
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [RoutePrefix("api/cnab")]
@@ -75,6 +78,26 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 throw new BusinessException(ex.Message);
             }
 
+        }
+
+        [HttpPut]
+        //[Route("atualizaBoleto")]
+        //[ActionName("atualizaBoleto")]
+        public async Task<IHttpActionResult> AtualizaBoleto(ArquivoRemessaCnabVM boletoToUpdate)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                foreach (var item in boletoToUpdate.IdsBoleto)
+                {
+                    var entity = unitOfWork.CnabBL.Find(item);
+                    entity.ArquivoRemessaId = boletoToUpdate.ArquivoRemessaId;
+
+                    unitOfWork.CnabBL.Update(entity);
+                    await unitOfWork.Save();
+                }
+
+                return Ok();
+            }
         }
     }
 }

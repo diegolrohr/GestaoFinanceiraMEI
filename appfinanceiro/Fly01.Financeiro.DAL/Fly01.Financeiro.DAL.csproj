@@ -172,6 +172,14 @@
     <Compile Include="Migrations\201805181301372_AlterColumnStatusCnab.Designer.cs">
       <DependentUpon>201805181301372_AlterColumnStatusCnab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.Designer.cs">
+      <DependentUpon>201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.Designer.cs">
+      <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -284,6 +292,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805181301372_AlterColumnStatusCnab.resx">
       <DependentUpon>201805181301372_AlterColumnStatusCnab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.resx">
+      <DependentUpon>201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.resx">
+      <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

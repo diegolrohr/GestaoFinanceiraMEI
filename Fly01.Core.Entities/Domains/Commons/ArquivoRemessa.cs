@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -16,12 +18,21 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double ValorTotal { get; set; }
 
         [Required]
-        public string StatusArquivoRemessa { get; set; }
+        [JsonIgnore]
+        public StatusArquivoRemessa StatusArquivoRemessa { get; set; }
+
+        [NotMapped]
+        [JsonProperty("statusArquivoRemessa")]
+        public string StatusArquivoRemessaRest
+        {
+            get { return ((int)StatusArquivoRemessa).ToString(); }
+            set { StatusArquivoRemessa = (StatusArquivoRemessa)System.Enum.Parse(typeof(StatusArquivoRemessa), value); }
+        }
 
         [Required]
         public DateTime DataExportacao { get; set; }
 
-        public DateTime DataRetorno { get; set; }
+        public DateTime? DataRetorno { get; set; }
 
     }
 }

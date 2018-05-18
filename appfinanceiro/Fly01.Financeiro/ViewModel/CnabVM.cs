@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Helpers.Attribute;
+using System.Collections.Generic;
 
 namespace Fly01.Financeiro.ViewModel
 {
@@ -49,5 +50,14 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("arquivoRemessa")]
         public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
         #endregion
+    }
+
+    public class ArquivoRemessaCnabVM
+    {
+        [JsonProperty("idsBoleto")]
+        public List<Guid> IdsBoleto { get; set; }
+
+        [JsonProperty("arquivoRemessaId")]
+        public Guid ArquivoRemessaId { get; set; }
     }
 }

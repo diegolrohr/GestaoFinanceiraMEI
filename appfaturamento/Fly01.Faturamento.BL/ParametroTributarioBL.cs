@@ -8,6 +8,7 @@ using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Notifications;
 using Fly01.Core.Reports;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL
 {
@@ -86,6 +87,12 @@ namespace Fly01.Faturamento.BL
         {
             //retorna conforme os dados atuais da empresa
             return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
+        }
+
+        public override void ValidaModel(ParametroTributario entity)
+        {
+            entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
+            base.ValidaModel(entity);
         }
     }
 }

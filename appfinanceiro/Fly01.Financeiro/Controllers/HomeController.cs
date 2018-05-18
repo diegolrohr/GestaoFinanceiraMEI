@@ -99,16 +99,16 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 hide-on-print",
-                        Label = "",
+                        Label = "Tipo de Visualização",
                         OnClickFn = "fnAtualizaAgrupamento",
                         Options = new List<OptionUI>
                         {
                             new OptionUI { Id = "btnDia", Value = "1", Label = "Dia" },
                             //new OptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
                             new OptionUI { Id = "btnMes", Value = "3", Label = "Mês" },
-                            new OptionUI { Id = "btnAno", Value = "6", Label = "Ano" },
+                            new OptionUI { Id = "btnTri", Value = "4", Label = "Trimestre" },
                             new OptionUI { Id = "btnSem", Value = "5", Label = "Semestre" },
-                            new OptionUI { Id = "btnTri", Value = "4", Label = "Trimestre" }
+                            new OptionUI { Id = "btnAno", Value = "6", Label = "Ano" },
                         }
                     }
                 }

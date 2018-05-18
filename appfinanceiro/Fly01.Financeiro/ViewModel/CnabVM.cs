@@ -1,12 +1,14 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Financeiro.ViewModel
 {
     public class CnabVM : DomainBaseVM
     {
         [JsonProperty("status")]
+        [APIEnum("StatusCnab")]
         public string Status { get; set; }
 
         [JsonProperty("dataEmissao")]

@@ -135,7 +135,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Tipo",
                 Priority = 1,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoOrdemCompraCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoOrdemCompraDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription); }"
             });
             config.Columns.Add(new DataTableUIColumn
             {

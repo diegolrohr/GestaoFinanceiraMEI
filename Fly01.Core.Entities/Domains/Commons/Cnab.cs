@@ -13,10 +13,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         public StatusCnab Status { get; set; }
 
         [NotMapped]
-        [JsonProperty("status")]
+        [JsonProperty("Status")]
         public string StatusRest
         {
-            get { return ((int)Status).ToString(); }
+            get { return Status.ToString(); }
             set { Status = (StatusCnab)System.Enum.Parse(typeof(StatusCnab), value); }
         }
 

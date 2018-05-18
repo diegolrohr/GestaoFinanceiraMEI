@@ -337,6 +337,7 @@
     <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

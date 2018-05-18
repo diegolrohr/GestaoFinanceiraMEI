@@ -35,7 +35,7 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetTitle(Type enumType, string value)
+        public static string GetDescription(Type enumType, string value)
         {
             try
             {
@@ -47,13 +47,11 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetCSS(this Enum value)
+        public static string GetCSS(Type enumType, string value)
         {
             try
             {
-                var result = SubtitleDataAnotation(value);
-
-                return result.CssClass;
+                return SubtitleDataAnotation(enumType, value)?.CssClass;
             }
             catch (Exception)
             {

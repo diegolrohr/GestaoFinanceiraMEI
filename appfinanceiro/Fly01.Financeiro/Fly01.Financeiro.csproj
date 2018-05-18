@@ -56,6 +56,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Controllers\ArquivoRetornoController.cs" />
     <Compile Include="Controllers\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
@@ -332,6 +333,8 @@
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
     <None Include="Web.Homologacao.config">

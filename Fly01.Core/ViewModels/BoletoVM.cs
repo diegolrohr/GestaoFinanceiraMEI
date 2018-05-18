@@ -11,11 +11,31 @@ namespace Fly01.Core.ViewModels
         public DateTime DataEmissao { get; set; }
         public DateTime DataVencimento { get; set; }
         public DateTime? DataDesconto { get; set; }
+        public DateTime? DataProcessamento { get; set; }
+        public DateTime? DataCredito { get; set; }
+
+        public string VariacaoCarteira { get; set; }
+        public string Carteira { get; set; } = string.Empty;
+
+        public string RegistroArquivoRetorno { get; set; } 
         public string NossoNumero { get; set; }
         public string EspecieMoeda { get; set; }
         public string NumeroDocumento { get; set; }
         public string InstrucoesCaixa { get; set; }
+        public string NossoNumeroDV { get; set; }
+        public string NossoNumeroFormatado { get; set; }
+        public string CodigoOcorrencia { get; set; }
+        public string DescricaoOcorrencia { get; set; }
+        public string CodigoOcorrenciaAuxiliar { get; set; }
+        public decimal ValorTitulo { get; set; }
+        public decimal ValorTarifas { get; set; }
+        public decimal ValorOutrasDespesas { get; set; }
+        public decimal ValorOutrosCreditos { get; set; }
+        public decimal ValorIOF { get; set; }
+        public decimal ValorAbatimento { get; set; }
 
+        // Verificar EspecieDocumento
+        //public TipoEspecieDocumento EspecieDocumento { get; set; } = TipoEspecieDocumento.NaoDefinido;
         public CedenteVM Cedente { get; set; }
         public SacadoVM Sacado { get; set; }
     }

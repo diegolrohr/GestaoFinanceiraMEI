@@ -33,9 +33,9 @@ namespace Fly01.Estoque.Controllers
                 descricao = x.Descricao,
                 grupoProdutoId = x.GrupoProdutoId,
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
-                tipoProduto = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
-                tipoProdutoCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
+                tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -136,7 +136,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Tipo",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoProdutoCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoProdutoDescricao + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao); }"
             });
 
             cfg.Content.Add(config);

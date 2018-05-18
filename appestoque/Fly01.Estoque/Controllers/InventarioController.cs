@@ -162,9 +162,9 @@ namespace Fly01.Estoque.Controllers
                 descricao = x.Descricao,
                 dataUltimaInteracao = x.DataUltimaInteracao.ToString("dd/MM/yyyy"),
                 inventarioStatus = x.InventarioStatus,
-                inventarioStatusDescription = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).Description,
-                inventarioStatusCssClass = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).CssClass,
-                inventarioStatusValue = EnumHelper.SubtitleDataAnotation(typeof(InventarioStatus), x.InventarioStatus).Value,
+                inventarioStatusDescription = EnumHelper.GetDescription(typeof(InventarioStatus), x.InventarioStatus),
+                inventarioStatusCssClass = EnumHelper.GetCSS(typeof(InventarioStatus), x.InventarioStatus),
+                inventarioStatusValue = EnumHelper.GetValue(typeof(InventarioStatus), x.InventarioStatus),
             };
         }
 

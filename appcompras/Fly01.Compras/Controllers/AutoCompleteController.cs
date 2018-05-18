@@ -139,7 +139,7 @@ namespace Fly01.Compras.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), item.TipoFormaPagamento).Value };
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento) };
 
             return GetJson(filterObjects);
         }

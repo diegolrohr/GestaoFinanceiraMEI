@@ -30,20 +30,20 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id.ToString(),
                 tipoNotaFiscal = x.TipoNotaFiscal,
-                tipoNotaFiscalDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).Description,
-                tipoNotaFiscalCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).CssClass,
-                tipoNotaFiscalValue = EnumHelper.SubtitleDataAnotation(typeof(TipoNotaFiscal), x.TipoNotaFiscal).Value,
+                tipoNotaFiscalDescription = EnumHelper.GetDescription(typeof(TipoNotaFiscal), x.TipoNotaFiscal),
+                tipoNotaFiscalCssClass = EnumHelper.GetCSS(typeof(TipoNotaFiscal), x.TipoNotaFiscal),
+                tipoNotaFiscalValue = EnumHelper.GetValue(typeof(TipoNotaFiscal), x.TipoNotaFiscal),
                 status = x.Status,
-                statusDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).Description,
-                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).CssClass,
-                statusValue = EnumHelper.SubtitleDataAnotation(typeof(StatusNotaFiscal), x.Status).Value,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusNotaFiscal), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusNotaFiscal), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 cliente_nome = x.Cliente.Nome,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Description,
-                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).CssClass,
-                tipoVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Value,
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
@@ -159,7 +159,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Status",
                 Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }"
             });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -167,19 +167,11 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Tipo",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNotaFiscal))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoNotaFiscalCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoNotaFiscalDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoNotaFiscalCssClass, full.tipoNotaFiscalDescription); }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 7 });//numero int e pesquisa string
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoVenda",
-            //    DisplayName = "Tipo Venda",
-            //    Priority = 7,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false)),
-            //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
-            //});
             config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 8 });
 
             cfg.Content.Add(config);

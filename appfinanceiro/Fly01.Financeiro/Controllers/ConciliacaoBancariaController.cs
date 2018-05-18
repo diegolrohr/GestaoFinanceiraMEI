@@ -251,9 +251,9 @@ namespace Fly01.Financeiro.Controllers
                         valorFormat2 = x.Valor.ToString("N", AppDefaults.CultureInfoDefault).Replace(".", ""),
                         data = x.Data.ToString("dd/MM/yyyy"),
                         statusConciliado = x.StatusConciliado,
-                        conciliadoDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).Description,
-                        conciliadoCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).CssClass,
-                        conciliadoValue = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).Value,
+                        conciliadoDescription = EnumHelper.GetDescription(typeof(StatusConciliado), x.StatusConciliado),
+                        conciliadoCssClass = EnumHelper.GetCSS(typeof(StatusConciliado), x.StatusConciliado),
+                        conciliadoValue = EnumHelper.GetValue(typeof(StatusConciliado), x.StatusConciliado),
                         conciliacaoBancariaItemContasFinanceiras = x.ConciliacaoBancariaItemContasFinanceiras != null ?
                             x.ConciliacaoBancariaItemContasFinanceiras.Select(y => new
                             {

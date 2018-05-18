@@ -31,9 +31,9 @@ namespace Fly01.Estoque.Controllers
                 id = x.Id.ToString(),
                 descricao = x.Descricao,
                 tipoProduto = x.TipoProduto,
-                tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
-                tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                tipoProdutoDescription = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoCssClass = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoValue = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
                 registroFixo = x.RegistroFixo
             };
         }

@@ -37,9 +37,9 @@ namespace Fly01.Faturamento.Controllers
                 cest_codigo = x.Cest != null ? x.Cest.Codigo : "",
                 estadoOrigem_nome = x.EstadoOrigem != null ? x.EstadoOrigem.Nome : "",
                 estadoDestino_nome = x.EstadoDestino != null ? x.EstadoDestino.Nome : "",
-                tipoSubstituicaoTributaria = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Value,
-                tipoSubstituicaoTributariaCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).CssClass,
-                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Description,
+                tipoSubstituicaoTributaria = EnumHelper.GetValue(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
+                tipoSubstituicaoTributariaCSS = EnumHelper.GetCSS(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
+                tipoSubstituicaoTributariaDescricao = EnumHelper.GetDescription(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
                 registroFixo = x.RegistroFixo
             };
         }

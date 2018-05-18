@@ -13,7 +13,6 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Core.Config;
@@ -46,9 +45,9 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 id = x.Id.ToString(),
                 statusEnum = x.StatusContaBancaria,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Description,
-                statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
-                statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Value,
+                statusContaBancaria = EnumHelper.GetDescription(typeof(StatusContaBancaria), x.StatusContaBancaria),
+                statusContaBancariaCssClass = EnumHelper.GetCSS(typeof(StatusContaBancaria), x.StatusContaBancaria),
+                statusContaBancariaNomeCompleto = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria),
                 contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
                 tipoPeriodicidade = x.TipoPeriodicidade,
                 numero = x.Numero,
@@ -107,7 +106,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return x => new
             {
                 id = x.Id != null ? x.Id : Guid.Empty,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
+                statusContaBancaria = EnumHelper.GetCSS(typeof(StatusContaBancaria), x.StatusContaBancaria),
                 numero = x.Id.ToString(),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),

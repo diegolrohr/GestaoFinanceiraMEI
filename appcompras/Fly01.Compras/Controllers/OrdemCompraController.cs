@@ -24,16 +24,16 @@ namespace Fly01.Compras.Controllers
                 id = x.Id.ToString(),
                 numero = x.Numero.ToString(),
                 tipoOrdemCompra = x.TipoOrdemCompra,
-                tipoOrdemCompraDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemCompra), x.TipoOrdemCompra).Description,
-                tipoOrdemCompraCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemCompra), x.TipoOrdemCompra).CssClass,
-                tipoOrdemCompraValue = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemCompra), x.TipoOrdemCompra).Value,
+                tipoOrdemCompraDescription = EnumHelper.GetDescription(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
+                tipoOrdemCompraCssClass = EnumHelper.GetCSS(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
+                tipoOrdemCompraValue = EnumHelper.GetValue(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
                 status = x.Status,
-                statusDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemCompra), x.Status).Description,
-                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemCompra), x.Status).CssClass,
-                statusValue = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemCompra), x.Status).Value,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemCompra), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemCompra), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusOrdemCompra), x.Status),
             };
         }
 
@@ -143,7 +143,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Status",
                 Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemCompra))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }",
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });

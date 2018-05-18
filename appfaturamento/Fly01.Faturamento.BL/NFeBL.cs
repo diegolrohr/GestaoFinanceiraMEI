@@ -19,7 +19,6 @@ using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Enums;
-using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.BL
 {
@@ -132,7 +131,7 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
                     }
 
-                    var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
+                    var versao = EnumHelper.GetDescription(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);

@@ -256,7 +256,7 @@ namespace Fly01.Financeiro.Controllers
                 DisplayName = "Status",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancaria); }"
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });

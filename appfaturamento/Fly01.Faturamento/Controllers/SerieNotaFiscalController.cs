@@ -34,7 +34,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id,
                 serie = x.Serie.PadLeft(3, '0'),
-                tipoOperacaoSerieNotaFiscal = EnumHelper.SubtitleDataAnotation(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal).Value,
+                tipoOperacaoSerieNotaFiscal = EnumHelper.GetValue(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal),
                 numNotaFiscal = x.NumNotaFiscal.ToString().PadLeft(8, '0'),
             };
         }

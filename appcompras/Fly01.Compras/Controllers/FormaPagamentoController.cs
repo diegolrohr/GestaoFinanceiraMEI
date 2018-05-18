@@ -22,7 +22,7 @@ namespace Fly01.Compras.Controllers
             {
                 id = x.Id,
                 descricao = x.Descricao,
-                tipoFormaPagamento = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), x.TipoFormaPagamento).Value,
+                tipoFormaPagamento = EnumHelper.GetValue(typeof(TipoFormaPagamento), x.TipoFormaPagamento),
                 registroFixo = x.RegistroFixo
             };
         }

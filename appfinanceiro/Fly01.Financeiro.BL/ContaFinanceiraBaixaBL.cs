@@ -14,14 +14,16 @@ namespace Fly01.Financeiro.BL
         private ContaBancariaBL contaBancariaBL;
         private SaldoHistoricoBL saldoHistoricoBL;
         private MovimentacaoBL movimentacaoBL;
+        private BancoBL bancoBL;
 
-        public ContaFinanceiraBaixaBL(AppDataContext context, ContaFinanceiraBL contaFinanceiraBL, ContaBancariaBL contaBancariaBL, SaldoHistoricoBL saldoHistoricoBL, MovimentacaoBL movimentacaoBL)
+        public ContaFinanceiraBaixaBL(AppDataContext context, ContaFinanceiraBL contaFinanceiraBL, ContaBancariaBL contaBancariaBL, SaldoHistoricoBL saldoHistoricoBL, MovimentacaoBL movimentacaoBL, BancoBL bancoBL)
             : base(context)
         {
             this.contaFinanceiraBL = contaFinanceiraBL;
             this.contaBancariaBL = contaBancariaBL;
             this.saldoHistoricoBL = saldoHistoricoBL;
             this.movimentacaoBL = movimentacaoBL;
+            this.bancoBL = bancoBL;
         }
 
         public override void Insert(ContaFinanceiraBaixa entity)
@@ -87,6 +89,21 @@ namespace Fly01.Financeiro.BL
 
             base.Delete(entity);
         }
+
+        //Se status pago, gera uma baixa (contaFinanceiraBaixa)
+        //internal void GeraContaFinanceiraBaixa(ContaReceber entityContaFinanceira)
+        //{
+        //    var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
+        //    var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);
+        //    var baixa = new ContaFinanceiraBaixa()
+        //    {
+        //        Data = entityContaFinanceira.DataVencimento,
+        //        ContaFinanceiraId = entityContaFinanceira.Id,
+        //        ContaBancariaId = ContaBancariaPadrao.Id,
+        //        Valor = entityContaFinanceira.ValorPrevisto 
+        //    };
+        //    base.Insert(baixa);
+        //}
 
         public static Error ContaInvalida = new Error("Conta Bancária inválida.");
         public static Error ValorPagoInvalido = new Error("Valor pago não pode ser superior ao valor da conta.");

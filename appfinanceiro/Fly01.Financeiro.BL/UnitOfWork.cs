@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.BL
         public ContaPagarBL ContaPagarBL => contaPagarBL ?? (contaPagarBL = new ContaPagarBL(Context, CondicaoParcelamentoBL));
 
         private ContaReceberBL contaReceberBL;
-        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL));
+        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL));
 
         private ArquivoBL arquivoBL;
         public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));
@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.BL
         public MovimentacaoBL MovimentacaoBL => movimentacaoBL ?? (movimentacaoBL = new MovimentacaoBL(Context, CategoriaBL, SaldoHistoricoBL));
 
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
-        public ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL => contaFinanceiraBaixaBL ?? (contaFinanceiraBaixaBL = new ContaFinanceiraBaixaBL(Context, ContaFinanceiraBL, ContaBancariaBL, SaldoHistoricoBL, MovimentacaoBL));
+        public ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL => contaFinanceiraBaixaBL ?? (contaFinanceiraBaixaBL = new ContaFinanceiraBaixaBL(Context, ContaFinanceiraBL, ContaBancariaBL, SaldoHistoricoBL, MovimentacaoBL, BancoBL));
 
         private ContaFinanceiraBaixaMultiplaBL contaFinanceiraBaixaMultiplaBL;
         public ContaFinanceiraBaixaMultiplaBL ContaFinanceiraBaixaMultiplaBL => contaFinanceiraBaixaMultiplaBL ?? (contaFinanceiraBaixaMultiplaBL = new ContaFinanceiraBaixaMultiplaBL(Context, ContaFinanceiraBaixaBL, ContaFinanceiraBL));

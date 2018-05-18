@@ -136,6 +136,7 @@
     <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\DateGroupType.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />

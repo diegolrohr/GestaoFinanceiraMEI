@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +9,16 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Cnab : PlataformaBase
     {
         [Required]
-        public string Status { get; set; }
+        [JsonIgnore]
+        public StatusCnab Status { get; set; }
+
+        [NotMapped]
+        [JsonProperty("status")]
+        public string StatusRest
+        {
+            get { return ((int)Status).ToString(); }
+            set { Status = (StatusCnab)System.Enum.Parse(typeof(StatusCnab), value); }
+        }
 
         [Required]
         [Column(TypeName = "date")]

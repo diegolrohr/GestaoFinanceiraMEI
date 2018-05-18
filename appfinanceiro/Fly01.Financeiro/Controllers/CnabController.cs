@@ -14,6 +14,7 @@ using Fly01.Core.ViewModels;
 using System.Text;
 using System.Net.Mime;
 using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -30,7 +31,9 @@ namespace Fly01.Financeiro.Controllers
                 nossoNumero = x.NossoNumero,
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
-                status = x.Status,
+                status = EnumHelper.GetTitle(typeof(StatusCnab), x.Status),
+                //status = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).Description,
+                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusCnab), x.Status).CssClass,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy")
             };
@@ -333,16 +336,17 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceberId", Visible = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaId", Visible = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso Número", Priority = 1, Type = "number", Width = "10%" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 2 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 2 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data vencimento", Priority = 5, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn
             {
-                DataField = "statusArquivoRemessa",
+                DataField = "status",
                 DisplayName = "Status",
                 Priority = 6,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))),
+                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.status + \"</span>\" }"
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
 

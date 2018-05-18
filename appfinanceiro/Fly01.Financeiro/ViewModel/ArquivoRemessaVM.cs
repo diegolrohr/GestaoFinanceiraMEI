@@ -8,9 +8,6 @@ namespace Fly01.Financeiro.ViewModel
     [Serializable]
     public class ArquivoRemessaVM : DomainBaseVM
     {
-        //[JsonProperty("numeroArquivo")]
-        //public int NumeroArquivo { get; set; }
-
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 

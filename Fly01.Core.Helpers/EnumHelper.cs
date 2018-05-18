@@ -35,13 +35,11 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetTitle(this Enum value)
+        public static string GetTitle(Type enumType, string value)
         {
             try
             {
-                var result = SubtitleDataAnotation(value);
-
-                return result.Description;
+                return SubtitleDataAnotation(enumType, value)?.Description;
             }
             catch (Exception)
             {

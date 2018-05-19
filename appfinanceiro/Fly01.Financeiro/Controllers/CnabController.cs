@@ -15,6 +15,7 @@ using System.Text;
 using System.Net.Mime;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using System.Dynamic;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -141,7 +142,7 @@ namespace Fly01.Financeiro.Controllers
                 , { "contaBancariaId", contaBancariaId.ToString() }
             };
 
-            return RestHelper.ExecuteGetRequest<BoletoVM>("cnab/imprimeBoleto", queryString);
+            return RestHelper.ExecuteGetRequest<BoletoVM>("cnab/ImprimeBoleto", queryString);
         }
 
         private List<CnabVM> GetCnab(List<Guid> idsBoletos)
@@ -193,15 +194,7 @@ namespace Fly01.Financeiro.Controllers
                 if (Session[nomeArquivo] != null)
                 {
                     var idArquivoRemessa = SalvaArquivoRemessa(nomeArquivo, qtdBoletos, valorBoletos);
-
-                    var arquivoRemessaCnab = new ArquivoRemessaCnabVM
-                    {
-                        IdsBoleto = ids,
-                        ArquivoRemessaId = idArquivoRemessa
-                    };
-
-                    //Não está funcionando ainda.
-                    RestHelper.ExecutePutRequest("cnab", JsonConvert.SerializeObject(arquivoRemessaCnab, JsonSerializerSetting.Default));
+                    AtualizaBoletos(ids, idArquivoRemessa);
                 }
                 return Json(new { FileGuid = nomeArquivo });
             }
@@ -209,6 +202,17 @@ namespace Fly01.Financeiro.Controllers
             {
                 throw new Exception(e.InnerException.ToString());
             }
+        }
+
+        private void AtualizaBoletos(List<Guid> ids, Guid idArquivoRemessa)
+        {
+            var boletos = new
+            {
+                boletoIds = ids,
+                arquivoRemessaId = idArquivoRemessa
+            };
+
+            RestHelper.ExecutePutRequest($"cnab", JsonConvert.SerializeObject(boletos, JsonSerializerSetting.Edit));
         }
 
         [HttpGet]

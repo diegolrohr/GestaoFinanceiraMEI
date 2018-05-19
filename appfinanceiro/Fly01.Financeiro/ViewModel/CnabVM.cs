@@ -51,13 +51,4 @@ namespace Fly01.Financeiro.ViewModel
         public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
         #endregion
     }
-
-    public class ArquivoRemessaCnabVM
-    {
-        [JsonProperty("idsBoleto")]
-        public List<Guid> IdsBoleto { get; set; }
-
-        [JsonProperty("arquivoRemessaId")]
-        public Guid ArquivoRemessaId { get; set; }
-    }
 }

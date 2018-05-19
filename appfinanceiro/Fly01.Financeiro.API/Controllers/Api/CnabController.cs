@@ -6,7 +6,6 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Fly01.Financeiro.ViewModel;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -14,7 +13,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class CnabController : ApiBaseController
     {
         [HttpGet]
-        [Route("imprimeBoleto")]
+        [Route("ImprimeBoleto")]
         public IHttpActionResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
@@ -49,7 +48,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         }
 
         [HttpGet]
-        [Route("contasReceberarquivo")]
+        [Route("GetContasReceberArquivo")]
         public IHttpActionResult GetContasReceber(Guid IdArquivoRemessa)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
@@ -81,18 +80,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
         }
 
         [HttpPut]
-        //[Route("atualizaBoleto")]
-        //[ActionName("atualizaBoleto")]
-        public async Task<IHttpActionResult> AtualizaBoleto(ArquivoRemessaCnabVM boletoToUpdate)
+        [Route("AtualizaIdArquivoRemessa")]
+        public async Task<IHttpActionResult> AtualizaIdArquivoRemessa(List<Guid> ids, Guid idArquivoRemessa)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                foreach (var item in boletoToUpdate.IdsBoleto)
+                foreach (var id in ids)
                 {
-                    var entity = unitOfWork.CnabBL.Find(item);
-                    entity.ArquivoRemessaId = boletoToUpdate.ArquivoRemessaId;
+                    var model = unitOfWork.CnabBL.Find(id);
+                    model.ArquivoRemessaId = idArquivoRemessa;
 
-                    unitOfWork.CnabBL.Update(entity);
+                    unitOfWork.CnabBL.Update(model);
+
                     await unitOfWork.Save();
                 }
 

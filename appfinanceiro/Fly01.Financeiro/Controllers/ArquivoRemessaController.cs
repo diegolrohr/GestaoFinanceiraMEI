@@ -41,7 +41,7 @@ namespace Fly01.Financeiro.Controllers
                 { "pageSize", "10"}
             };
 
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/contasReceberarquivo", queryString);
+            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/GetContasReceberArquivo", queryString);
         }
 
         public JsonResult LoadGridBoletos(Guid IdArquivo)

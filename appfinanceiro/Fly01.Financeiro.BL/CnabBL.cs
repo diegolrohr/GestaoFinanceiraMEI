@@ -46,9 +46,6 @@ namespace Fly01.Financeiro.BL
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
-            var contaBancariaCedente = contaBancariaBL.AllIncluding(b => b.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
-            var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
             codigoCedente = "1234657";
 
             var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
@@ -60,7 +57,7 @@ namespace Fly01.Financeiro.BL
             return new BoletoVM()
             {
                 ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
-                ValorDesconto = contaReceber.ValorDesconto.HasValue ?  (decimal)contaReceber.ValorDesconto : 0,
+                ValorDesconto = contaReceber.ValorDesconto.HasValue ? (decimal)contaReceber.ValorDesconto : 0,
                 ValorMulta = valorMulta,
                 ValorJuros = valorJuros,
                 DataEmissao = DateTime.Now,
@@ -70,41 +67,62 @@ namespace Fly01.Financeiro.BL
                 EspecieMoeda = "R$",
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
                 InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber),
-                Cedente = new CedenteVM
-                {
-                    CNPJ = cedente.CNPJ,
-                    RazaoSocial = cedente.RazaoSocial,
-                    Endereco = cedente.Endereco,
-                    EnderecoNumero = cedente.Numero,
-                    EnderecoComplemento = "",
-                    EnderecoBairro = cedente.Bairro,
-                    EnderecoCidade = cedente.Cidade.Nome,
-                    EnderecoUF = cedente.Cidade.Estado.Sigla,
-                    EnderecoCEP = cedente.CEP,
-                    Observacoes = "",
-                    CodigoCedente = codigoCedente,
-                    ContaBancariaCedente = new ContaBancariaCedenteVM
-                    {
-                        Agencia = contaBancariaCedente.Agencia,
-                        DigitoAgencia = contaBancariaCedente.DigitoAgencia,
-                        Conta = contaBancariaCedente.Conta,
-                        DigitoConta = contaBancariaCedente.DigitoConta,
-                        CodigoBanco = int.Parse(contaBancariaCedente.Banco.Codigo)
-                    }
-                },
-                Sacado = new SacadoVM
-                {
-                    CNPJ = sacado.CPFCNPJ,
-                    Nome = sacado.Nome,
-                    Endereco = sacado.Endereco,
-                    EnderecoNumero = sacado.Numero,
-                    EnderecoComplemento = sacado.Complemento,
-                    EnderecoBairro = sacado.Bairro,
-                    EnderecoCidade = sacado.Cidade?.Nome,
-                    EnderecoUF = sacado.Cidade?.Estado?.Sigla,
-                    EnderecoCEP = sacado.CEP,
-                    Observacoes = ""
-                }
+                Cedente = GetDadosCedente(contaBancariaId),
+                Sacado = GetDadosSacado(contaReceber.PessoaId)
+            };
+        }
+
+        private SacadoVM GetDadosSacado(Guid pessoaId)
+        {
+            var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == pessoaId).FirstOrDefault()?.Pessoa;
+
+            return new SacadoVM
+            {
+                CNPJ = sacado.CPFCNPJ,
+                Nome = sacado.Nome,
+                Endereco = sacado.Endereco,
+                EnderecoNumero = sacado.Numero,
+                EnderecoComplemento = sacado.Complemento,
+                EnderecoBairro = sacado.Bairro,
+                EnderecoCidade = sacado.Cidade?.Nome,
+                EnderecoUF = sacado.Cidade?.Estado?.Sigla,
+                EnderecoCEP = sacado.CEP,
+                Observacoes = ""
+            };
+        }
+
+        private CedenteVM GetDadosCedente(Guid contaBancariaId)
+        {
+            var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+
+            return new CedenteVM
+            {
+                CNPJ = cedente.CNPJ,
+                RazaoSocial = cedente.RazaoSocial,
+                Endereco = cedente.Endereco,
+                EnderecoNumero = cedente.Numero,
+                EnderecoComplemento = "",
+                EnderecoBairro = cedente.Bairro,
+                EnderecoCidade = cedente.Cidade.Nome,
+                EnderecoUF = cedente.Cidade.Estado.Sigla,
+                EnderecoCEP = cedente.CEP,
+                Observacoes = "",
+                CodigoCedente = codigoCedente,
+                ContaBancariaCedente = GetContaBancariaCedente(contaBancariaId)
+            };
+        }
+
+        private ContaBancariaCedenteVM GetContaBancariaCedente(Guid contaBancariaId)
+        {
+            var contaBancariaCedente = contaBancariaBL.AllIncluding(b => b.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
+
+            return new ContaBancariaCedenteVM
+            {
+                Agencia = contaBancariaCedente.Agencia,
+                DigitoAgencia = contaBancariaCedente.DigitoAgencia,
+                Conta = contaBancariaCedente.Conta,
+                DigitoConta = contaBancariaCedente.DigitoConta,
+                CodigoBanco = int.Parse(contaBancariaCedente.Banco.Codigo)
             };
         }
 

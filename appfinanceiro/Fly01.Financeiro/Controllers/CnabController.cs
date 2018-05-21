@@ -33,7 +33,6 @@ namespace Fly01.Financeiro.Controllers
                 contaReceberId = x.ContaReceberId,
                 contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
-                //nossoNumero = x.NossoNumero,
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
@@ -123,7 +122,7 @@ namespace Fly01.Financeiro.Controllers
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
         }
 
-        private Guid SalvaArquivoRemessa(string nomeArquivo, int qtdBoletos, double valorBoletos)
+        private void SalvaArquivoRemessa(List<Guid> ids, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -135,7 +134,11 @@ namespace Fly01.Financeiro.Controllers
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
 
-            return result.Id;
+            ids.ForEach(x =>
+            {
+                var resource = $"cnab/{x}";
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = result.Id }));
+            });
         }
 
         private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
@@ -171,7 +174,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpPost]
-        public ActionResult GerarArquivoRemessa(List<Guid> ids)
+        public ActionResult GeraArquivoRemessa(List<Guid> ids)
         {
             try
             {
@@ -191,30 +194,19 @@ namespace Fly01.Financeiro.Controllers
                 }
 
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-
-                var nomeArquivo = Guid.NewGuid().ToString();
+                
+                var nomeArquivo = $"{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
                 Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
                 if (Session[nomeArquivo] != null)
-                {
-                    var idArquivoRemessa = SalvaArquivoRemessa(nomeArquivo, qtdBoletos, valorBoletos);
-                    AtualizaBoletos(ids, idArquivoRemessa);
-                }
+                    SalvaArquivoRemessa(ids, nomeArquivo, qtdBoletos, valorBoletos);
+
                 return Json(new { FileGuid = nomeArquivo });
             }
             catch (Exception e)
             {
                 throw new Exception(e.InnerException.ToString());
             }
-        }
-
-        private void AtualizaBoletos(List<Guid> ids, Guid idArquivoRemessa)
-        {
-            ids.ForEach(x =>
-            {
-                var resource = $"cnab/{x}";
-                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = idArquivoRemessa }));
-            });
         }
 
         [HttpGet]
@@ -342,16 +334,12 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum" },
+                Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum", "fnImprimirBoleto" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
                 }
             };
-
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "id" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceberId", Visible = false });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaId", Visible = false });
             dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
@@ -360,11 +348,10 @@ namespace Fly01.Financeiro.Controllers
                 Priority = 1,
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }",
             });
-            //dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", Priority = 2, DisplayName = "Nosso Número", Type = "number" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "function(data, type, full, meta) { fnImprimirBoleto(full); }" });
 
             cfg.Content.Add(dtConfig);
 

@@ -24,11 +24,6 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        //public List<Cnab> GetCnab()
-        //{
-        //    return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).ToList();
-        //}
-
         public Cnab GetCnab(Guid Id)
         {
             var cnab = base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa);
@@ -137,10 +132,5 @@ namespace Fly01.Financeiro.BL
 
             return msgCaixa.ToString();
         }
-
-        //public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)
-        //{
-        //    return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
-        //}
     }
 }

@@ -167,7 +167,7 @@ namespace Fly01.Faturamento.Controllers
                 {
                     Edit = @Url.Action("Transmitir"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "NotaFiscal")
+                    //List = @Url.Action("List", "NotaFiscal")
                 },
                 ReadyFn = "fnFormReadyTransmitirNFSe",
                 Id = "fly01mdlfrmTransmitirNFSe"

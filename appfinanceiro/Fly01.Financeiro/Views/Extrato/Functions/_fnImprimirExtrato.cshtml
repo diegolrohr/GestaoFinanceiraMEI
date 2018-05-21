@@ -1,5 +1,18 @@
 ﻿<script>
+
     function fnImprimirExtrato() {
-        window.print();
+        $("#print").loading("start");
+        $("#dtExtratoDetalhe").on('draw.dt', function () {
+            if (fly01._.dtExtratoDetalhe.page.info().length == 500) {
+                $("#print").loading("stop");
+                window.print();
+            }
+        });
+        if (fly01._.dtExtratoDetalhe.page.info().length != 500)
+            fly01._.dtExtratoDetalhe.page.len(500).draw();
+        else {
+            $("#print").loading("stop");
+            window.print();
+        }
     }
 </script>

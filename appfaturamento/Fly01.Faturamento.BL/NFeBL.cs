@@ -132,6 +132,11 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
                     }
 
+                    if (parametros.TipoVersaoNFe != TipoVersaoNFe.v4)
+                    {
+                        throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
+                    }
+
                     var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);

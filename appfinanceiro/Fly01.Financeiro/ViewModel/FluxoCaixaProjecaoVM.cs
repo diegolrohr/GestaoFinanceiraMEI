@@ -12,8 +12,8 @@ namespace Fly01.Financeiro.ViewModel
 
     public class FluxoCaixaProjecaoVM
     {
-        [JsonProperty("data")]
-        public DateTime Data { get; set; }
+        [JsonProperty("label")]
+        public string Label { get; set; }
 
         [JsonProperty("totalRecebimentos")]
         public double TotalRecebimentos { get; set; }

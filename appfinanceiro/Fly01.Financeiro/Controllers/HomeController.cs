@@ -72,14 +72,14 @@ namespace Fly01.Financeiro.Controllers
                     new InputDateUI
                     {
                         Id = "dataInicial",
-                        Class = "col s6 m3 l4",
+                        Class = "col s6 m3 l4 offset-l2 offset-m3",
                         Label = "Data Inicial",
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI>
                         {
                             new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
                         },
-                        Max = 60,
+                        Max = 90,
                         Min = true
                     },
                     new InputDateUI
@@ -89,31 +89,34 @@ namespace Fly01.Financeiro.Controllers
                         Label = "Data Final",
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
-                        Max = 60,
+                        Max = 90,
                         Min = true
                     },
+                    new InputHiddenUI{ Id = "groupType", Value = "1" },
                     new ButtongroupUI()
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m6 l4 hide-on-print",
-                        Label = "Selecione o período",
-                        OnClickFn = "fnAtualizarPeriodo",
+                        Class = "col s12 hide-on-print",
+                        Label = "Tipo de Visualização",
+                        OnClickFn = "fnAtualizaAgrupamento",
                         Options = new List<OptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "1", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "7", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new OptionUI { Id = "btnDia", Value = "1", Label = "Dia" },
+                            //new OptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
+                            new OptionUI { Id = "btnMes", Value = "3", Label = "Mês" },
+                            new OptionUI { Id = "btnTri", Value = "4", Label = "Trimestre" },
+                            new OptionUI { Id = "btnSem", Value = "5", Label = "Semestre" },
+                            new OptionUI { Id = "btnAno", Value = "6", Label = "Ano" },
                         }
                     }
                 }
-
             });
 
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
                 Color = "orange",
-                Id = "fly01cardSaldo",
+                Id = "fly01cardSA",
                 Title = "Saldo atual",
                 Placeholder = "R$ 0,00",
                 Action = new LinkUI
@@ -121,7 +124,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "Ver mais",
                     OnClick = @Url.Action("List", "Extrato")
                 }
-
             });
             cfg.Content.Add(new CardUI
             {
@@ -135,7 +137,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "Ver mais",
                     OnClick = @Url.Action("List", "ContaPagar")
                 }
-
             });
             cfg.Content.Add(new CardUI
             {
@@ -149,7 +150,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "Ver mais",
                     OnClick = @Url.Action("List", "ContaReceber")
                 }
-
             });
             cfg.Content.Add(new CardUI
             {
@@ -163,7 +163,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "",
                     OnClick = ""
                 }
-
             });
 
             cfg.Content.Add(new ChartUI
@@ -210,11 +209,11 @@ namespace Fly01.Financeiro.Controllers
                 UrlData = @Url.Action("LoadChart", "FluxoCaixa"),
                 Class = "col s12",
                 Parameters = new List<ChartUIParameter>
-                    {
-                        new ChartUIParameter { Id = "dataInicial" },
-                        new ChartUIParameter { Id = "dataFinal" }
-                    }
-
+                {
+                    new ChartUIParameter { Id = "dataInicial" },
+                    new ChartUIParameter { Id = "dataFinal" },
+                    new ChartUIParameter { Id = "groupType" }
+                }
             });
 
             cfg.Content.Add(new DataTableUI
@@ -222,22 +221,22 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12",
                 UrlGridLoad = Url.Action("LoadGridFluxoCaixa", "FluxoCaixa"),
                 Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataInicial" },
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
+                {
+                    new DataTableUIParameter { Id = "dataInicial", Required = true },
+                    new DataTableUIParameter { Id = "dataFinal", Required = true },
+                    new DataTableUIParameter { Id = "groupType", Required = true }
+                },
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10
                 },
                 Columns = new List<DataTableUIColumn>
-                    {
-                        new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
-                        new DataTableUIColumn { DataField = "totalRecebimentos", DisplayName = "Total Recebimentos", Priority = 3, Orderable = false, Searchable = false, Type = "currency" },
-                        new DataTableUIColumn { DataField = "totalPagamentos", DisplayName = "Total Pagamentos", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
-                        new DataTableUIColumn { DataField = "saldoFinal", DisplayName = "Saldo Final", Priority = 2, Orderable = false, Searchable = false, Type = "currency" }
-                    }
-
+                {
+                    new DataTableUIColumn { DataField = "data", DisplayName = "Periodo", Priority = 1, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "totalRecebimentos", DisplayName = "Total Recebimentos", Priority = 3, Orderable = false, Searchable = false, Type = "currency" },
+                    new DataTableUIColumn { DataField = "totalPagamentos", DisplayName = "Total Pagamentos", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
+                    new DataTableUIColumn { DataField = "saldoFinal", DisplayName = "Saldo Final", Priority = 2, Orderable = false, Searchable = false, Type = "currency" }
+                }
             });
 
             return cfg;
@@ -251,29 +250,29 @@ namespace Fly01.Financeiro.Controllers
             {
                 Label = "Financeiro",
                 Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
-                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
-                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                //new LinkUI() { Label = "Borderôs/CNAB", OnClick = @Url.Action("CNAB", "Json")},
-                new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-            }
+                {
+                    new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
+                    new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                    new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
+                    new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
+                    new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                    //new LinkUI() { Label = "Borderôs/CNAB", OnClick = @Url.Action("CNAB", "Json")},
+                    new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+                }
             });
 
             config.MenuItems.Add(new SidebarMenuUI()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
-                new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
-                new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
-                new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
-                new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
-                new LinkUI() { Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")}
-            }
+                {
+                    new LinkUI() { Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
+                    new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                    new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
+                    new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
+                    new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
+                    new LinkUI() { Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")}
+                }
             });
 
             config.MenuItems.Add(new SidebarMenuUI()

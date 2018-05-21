@@ -245,7 +245,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnNovaRenegociacaoCR.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnListaTitulosCR.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnAtualizarPeriodo.cshtml" />
-    <Content Include="Views\Home\Functions\_fnAtualizarPeriodo.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAtualizaAgrupamento.cshtml" />
     <Content Include="Views\ContaPagar\Renegociacao.cshtml" />
     <Content Include="Views\ContaReceber\Renegociacao.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnNovoPagamento.cshtml" />

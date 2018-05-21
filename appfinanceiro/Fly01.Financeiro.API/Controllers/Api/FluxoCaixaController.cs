@@ -6,6 +6,7 @@ using Fly01.Core.API;
 using System.Linq;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -14,18 +15,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
     {
         [HttpGet]
         [Route("saldos")]
-        public IHttpActionResult GetSaldos()
+        public IHttpActionResult GetSaldos(DateTime dataFinal)
         {
             //#1 Saldo de Todas as Contas (Consolidado) + AReceber e APagar (hoje)
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos() });
+                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos(dataFinal) });
             }
         }
 
         [HttpGet]
         [Route("projecao")]
-        public IHttpActionResult GetProjecao(DateTime dataInicial, DateTime dataFinal)
+        public IHttpActionResult GetProjecao(DateTime dataInicial, DateTime dataFinal, DateGroupType groupType)
         {
             //#2 Projeções do Fluxo de Caixa
             if (dataInicial > dataFinal)
@@ -36,13 +37,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetProjecao(dataInicial, dataFinal) });
+                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetProjecao(dataInicial, dataFinal, groupType) });
             }
         }
 
         [HttpGet]
         [Route("projecaodetalhe")]
-        public IHttpActionResult GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, int pageNo, int pageSize)
+        public IHttpActionResult GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, DateGroupType groupType, int pageNo, int pageSize)
         {
             //#3 Projeções do Fluxo de Caixa paginação
             if (dataInicial > dataFinal)
@@ -53,23 +54,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var projecao = unitOfWork.FluxoCaixaBL.GetProjecao(dataInicial, dataFinal);
+                var projecao = unitOfWork.FluxoCaixaBL.GetProjecao(dataInicial, dataFinal, groupType);
                 int skipRecords = (pageNo - 1) * pageSize;
 
                 return Ok(new PagedResult<FluxoCaixaProjecao>(projecao.Skip(skipRecords).Take(pageSize), pageNo, pageSize, projecao.Count));
-            }
-        }
-
-        [HttpGet]
-        [Route("projecaoNextDays")]
-        public IHttpActionResult GetProjecaoNextDays(DateTime dataInicial, DateTime dataFinal)
-        {
-            if (dataInicial.Date > dataFinal.Date)
-                return BadRequest("Data inicial não pode ser superior a data final.");
-
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                return Ok(unitOfWork.FluxoCaixaBL.GetAllNextDays(dataInicial, dataFinal));
             }
         }
     }

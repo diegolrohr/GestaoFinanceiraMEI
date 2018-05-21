@@ -15,12 +15,16 @@ using System.Text;
 using System.Net.Mime;
 using Fly01.Core;
 using Fly01.Core.Helpers;
-using System.Dynamic;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class CnabController : BaseController<CnabVM>
     {
+        public CnabController()
+        {
+            ExpandProperties = "contaReceber($expand=pessoa($select=nome))";
+        }
+
         public override Func<CnabVM, object> GetDisplayData()
         {
             return x => new
@@ -116,7 +120,7 @@ namespace Fly01.Financeiro.Controllers
                 ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo
             };
 
-            RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab));
+            RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
         }
 
         private Guid SalvaArquivoRemessa(string nomeArquivo, int qtdBoletos, double valorBoletos)
@@ -142,22 +146,22 @@ namespace Fly01.Financeiro.Controllers
                 , { "contaBancariaId", contaBancariaId.ToString() }
             };
 
-            return RestHelper.ExecuteGetRequest<BoletoVM>("cnab/ImprimeBoleto", queryString);
+            return RestHelper.ExecuteGetRequest<BoletoVM>("boleto/imprimeBoleto", queryString);
         }
 
         private List<CnabVM> GetCnab(List<Guid> idsBoletos)
         {
-            List<CnabVM> listaCnab = new List<CnabVM>();
+            var listaCnab = new List<CnabVM>();
 
             foreach (var item in idsBoletos)
             {
-                Dictionary<string, string> queryString = new Dictionary<string, string>
+                var queryString = new Dictionary<string, string>
                 {
                     { "Id", item.ToString()},
                     { "pageSize", "10"}
                 };
 
-                var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab/GetCnab", queryString);
+                var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab", queryString);
 
                 if (restResponse != null)
                     listaCnab.Add(restResponse);
@@ -206,13 +210,11 @@ namespace Fly01.Financeiro.Controllers
 
         private void AtualizaBoletos(List<Guid> ids, Guid idArquivoRemessa)
         {
-            var boletos = new
+            ids.ForEach(x =>
             {
-                boletoIds = ids,
-                arquivoRemessaId = idArquivoRemessa
-            };
-
-            RestHelper.ExecutePutRequest($"cnab", JsonConvert.SerializeObject(boletos, JsonSerializerSetting.Edit));
+                var resource = $"cnab/{x}";
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = idArquivoRemessa }));
+            });
         }
 
         [HttpGet]
@@ -243,7 +245,7 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Dados para emissão de boleto",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" }
+                        new HtmlUIButton { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -357,8 +359,6 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))),
                 Priority = 1,
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }",
-                Orderable = false,
-                Searchable = false
             });
             //dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", Priority = 2, DisplayName = "Nosso Número", Type = "number" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });

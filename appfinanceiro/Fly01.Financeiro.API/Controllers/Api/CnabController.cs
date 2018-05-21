@@ -1,43 +1,18 @@
 ﻿using Fly01.Financeiro.BL;
 using System;
 using System.Web.Http;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Notifications;
+using System.Web.OData.Routing;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
-    [RoutePrefix("api/cnab")]
-    public class CnabController : ApiBaseController
+    [ODataRoutePrefix("cnab")]
+    public class CnabController : ApiPlataformaController<Cnab, CnabBL>
     {
         [HttpGet]
-        [Route("ImprimeBoleto")]
-        public IHttpActionResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
-        {
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var data = unitOfWork.CnabBL.GetDadosBoleto(contaReceberId, contaBancariaId);
-
-                return Ok(data);
-            }
-        }
-
-        [HttpGet]
-        public IHttpActionResult Get()
-        {
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var data = unitOfWork.CnabBL.GetCnab();
-
-                return Ok(new { value = data });
-            }
-        }
-
-        [HttpGet]
-        [Route("GetCnab")]
-        public IHttpActionResult GetCnab(Guid Id)
+        public override IHttpActionResult Get(Guid Id)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -47,56 +22,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
         }
 
-        [HttpGet]
-        [Route("GetContasReceberArquivo")]
-        public IHttpActionResult GetContasReceber(Guid IdArquivoRemessa)
+        public async override Task<IHttpActionResult> Post(Cnab entity)
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var data = unitOfWork.CnabBL.GetContasReceberArquivo(IdArquivoRemessa);
+            if (!base.All().Any(x => x.ContaReceberId == entity.ContaReceberId))
+                return await base.Post(entity);
 
-                return Ok(new { value = data });
-            }
-        }
-
-        [HttpPost]
-        [ActionName("Post")]
-        public async Task<IHttpActionResult> PostAsync(Cnab entity)
-        {
-            try
-            {
-                using (var unitOfWork = new UnitOfWork(ContextInitialize))
-                {
-                    unitOfWork.CnabBL.Insert(entity);
-                    await unitOfWork.Save();
-                    return Ok();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new BusinessException(ex.Message);
-            }
-
-        }
-
-        [HttpPut]
-        [Route("AtualizaIdArquivoRemessa")]
-        public async Task<IHttpActionResult> AtualizaIdArquivoRemessa(List<Guid> ids, Guid idArquivoRemessa)
-        {
-            using (var unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                foreach (var id in ids)
-                {
-                    var model = unitOfWork.CnabBL.Find(id);
-                    model.ArquivoRemessaId = idArquivoRemessa;
-
-                    unitOfWork.CnabBL.Update(model);
-
-                    await unitOfWork.Save();
-                }
-
-                return Ok();
-            }
+            return Ok();
         }
     }
 }

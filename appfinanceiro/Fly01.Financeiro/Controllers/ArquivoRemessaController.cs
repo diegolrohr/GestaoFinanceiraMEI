@@ -32,7 +32,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        private PagedResult<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
+        private List<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -41,7 +41,9 @@ namespace Fly01.Financeiro.Controllers
                 { "pageSize", "10"}
             };
 
-            return RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab/GetContasReceberArquivo", queryString);
+            var boletos = RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab", queryString);
+
+            return boletos.Data.Where(x => x.ArquivoRemessaId == idArquivo).ToList();
         }
 
         public JsonResult LoadGridBoletos(Guid IdArquivo)
@@ -50,12 +52,11 @@ namespace Fly01.Financeiro.Controllers
             var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
 
             var response = GetContasReceber(IdArquivo, pageNo);
-
             return Json(new
             {
-                recordsTotal = response.Paging.TotalRecordCount,
-                recordsFiltered = response.Paging.TotalRecordCount,
-                data = response.Data.Select(item => new
+                recordsTotal = response.Count,
+                recordsFiltered = response.Count,
+                data = response.Select(item => new
                 {
                     nossoNumero = item.NossoNumero,
                     pessoa_nome = item.ContaReceber.Pessoa.Nome,

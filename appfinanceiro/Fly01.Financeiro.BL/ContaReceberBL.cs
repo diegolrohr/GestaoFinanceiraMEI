@@ -40,6 +40,7 @@ namespace Fly01.Financeiro.BL
 
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
+            entity.StatusContaBancaria = StatusContaBancaria.Pago; //apagar
 
             entity.Fail(entity.Repetir && entity.TipoPeriodicidade == TipoPeriodicidade.Nenhuma, TipoPeriodicidadeInvalida);
             entity.Fail(entity.Repetir && !entity.NumeroRepeticoes.HasValue, NumeroRepeticoesInvalido);
@@ -51,26 +52,25 @@ namespace Fly01.Financeiro.BL
             , RepeticoesInvalidas);
 
 
-
-            ////Se status "pago" (informacao importado), gerar ContaFinanceiraBaixa
-            //if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-            //{
-            //    entity.Numero = ++max;
-            //    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity);
-            //    base.Insert(entity);
-            //}
-            //else
-            //{
-                //na nova Transação já é informado o id e o status
-                if (entity.Id == default(Guid))
-                    entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
-
             //ContaFinanceira.Número
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
+            //Se status "pago", gerar ContaFinanceiraBaixa
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+            {
+                entity.Numero = ++max;
+                base.Insert(entity);
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);//Adicionar parcelas aqui
+            }
+            else
+            {
+                //na nova Transação já é informado o id e o status
+                if (entity.Id == default(Guid))
+                    entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
+
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
                 {
@@ -123,7 +123,7 @@ namespace Fly01.Financeiro.BL
                             base.Insert(itemContaReceberRepeticao);
                         }
                     }
-                //}
+                }
             }
         }
 

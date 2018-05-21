@@ -167,6 +167,8 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmContaBancaria",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnChangeBanco", "fnFormReady", "fnAfterLoad" }
             };
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new AutocompleteUI
@@ -179,7 +181,8 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "bancoNome",
                 DomEvents = new List<DomEventUI>()
                 {
-                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" }
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" },
+                    new DomEventUI() { DomEvent = "autocompletechange", Function = "fnChangeBanco" }
                 }
             });
 

@@ -4,7 +4,7 @@
     function fnGerarArquivoRemessa() {
         $.ajax({
             type: "POST",
-            url: '@Url.Action("GerarArquivoRemessa","Cnab")',
+            url: '@Url.Action("GeraArquivoRemessa","Cnab")',
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
                 if (retorno.FileGuid != null)

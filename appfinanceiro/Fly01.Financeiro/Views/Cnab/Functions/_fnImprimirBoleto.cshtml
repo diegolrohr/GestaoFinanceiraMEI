@@ -29,7 +29,7 @@
         ]);
     };
 
-    function fnImprimirBoleto(data, type, row, meta) {
+    function fnImprimirBoleto(row) {
         return createForm(row).outerHTML;
     };
 
@@ -49,7 +49,7 @@
                 dataType: "json",
                 url: '@Url.Action("ImprimeBoleto", "Cnab")',
                 contentType: "application/json",
-                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: that.serializeObject().contaBancariaId },
+                data: { contaReceberId: contaReceberId, contaBancariaId: contaBancariaId },
                 success: function success(data) {
                     if (data.success) {
                         var strMsg = "Boleto emitido com sucesso.";

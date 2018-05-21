@@ -2,12 +2,10 @@
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Linq;
-using System.Collections.Generic;
 using Fly01.Core.ViewModels;
 using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
-using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
@@ -26,21 +24,19 @@ namespace Fly01.Financeiro.BL
             this.contaBancariaBL = contaBancariaBL;
         }
 
-        public List<Cnab> GetCnab()
-        {
-            return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).ToList();
-        }
+        //public List<Cnab> GetCnab()
+        //{
+        //    return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).ToList();
+        //}
 
         public Cnab GetCnab(Guid Id)
         {
-            return GetCnab().Where(x => x.Id == Id).FirstOrDefault();
-        }
+            var cnab = base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa);
 
-        public override void Insert(Cnab entity)
-        {
-            if (All.Any(x => x.ContaReceberId == entity.ContaReceberId)) return;
+            if (Id != Guid.Empty)
+                return cnab.Where(x => x.Id == Id).FirstOrDefault();
 
-            base.Insert(entity);
+            return cnab.FirstOrDefault();
         }
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
@@ -142,9 +138,9 @@ namespace Fly01.Financeiro.BL
             return msgCaixa.ToString();
         }
 
-        public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)
-        {
-            return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
-        }
+        //public List<Cnab> GetContasReceberArquivo(Guid IdArquivoRemessa)
+        //{
+        //    return base.All.Where(x => x.Id == IdArquivoRemessa).ToList();
+        //}
     }
 }

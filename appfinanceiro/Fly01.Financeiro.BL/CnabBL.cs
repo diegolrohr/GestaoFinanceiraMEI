@@ -46,6 +46,9 @@ namespace Fly01.Financeiro.BL
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
             var contaReceber = contaReceberBL.Find(contaReceberId);
+            var contaBancariaCedente = contaBancariaBL.AllIncluding(r => r.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
+            var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+            var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
             codigoCedente = "1234657";
 
             var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));

@@ -325,7 +325,7 @@
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReadyRemessa.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
     <Content Include="Views\CnabItem\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
@@ -338,6 +338,9 @@
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnListBoletosArquivo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

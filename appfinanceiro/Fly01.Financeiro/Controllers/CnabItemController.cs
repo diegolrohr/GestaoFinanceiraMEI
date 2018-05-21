@@ -38,6 +38,19 @@ namespace Fly01.Estoque.Controllers
             }
         }
 
+
+        public JsonResult GridLoadContaCnabItemByArquivo(string arqiovoId)
+        {
+            try
+            {
+                return base.GridLoad(new Dictionary<string, string> { { "pessoaId eq", arqiovoId } });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = string.Format("Ocorreu um erro ao carregar dados: {0}", ex.Message) }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         #region NotImplementedMethods
 
         public override ContentResult List()

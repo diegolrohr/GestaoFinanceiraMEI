@@ -87,6 +87,24 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+            var arquivo = "honatel.Rem";
+            var metodoPagamento = "Boleto bancário";
+            var dataImportacao = "01/02/1987";
+            var status = "Aguardando aprovação";
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12",
+                Color = "blue",
+                Id = "cardObs",
+                Title = "Transmissão de arquivo",
+                Placeholder = $"Arquivo {arquivo} com o metodo de pagamento {metodoPagamento} dataImoportação {dataImportacao} e status {status}, Esta aguardando a sua aprovação manual.",
+                Action = new LinkUI()
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+
             var config = new FormUI
             {
                 Action = new FormUIAction
@@ -95,17 +113,16 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                //ReadyFn = "fnFormReady",
-                //UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
+                ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            //config.Elements.Add(new LabelsetUI)  Verificar elemento Label  para inserir dados.
 
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s12",
-                UrlGridLoad = Url.Action("LoadGridBoletos", "Cnab"),
+                UrlGridLoad = Url.Action("LoadGridBoletos"),
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "Id" }
@@ -133,13 +150,29 @@ namespace Fly01.Financeiro.Controllers
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader { Title = "Arquivos remessa" },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                Header = new HtmlUIHeader
+                {
+                    Title = "Arquivos remessa",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualisar boletos", OnClickFn = "fnListBoletosArquivo" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
             };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
+            var config = new DataTableUI
+            {
+                Id = "dtRemessa",
+                UrlGridLoad = Url.Action("GridLoad"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnFormReadyRemessa"},
+                Options = new DataTableUIConfig()
+                {
+                    Select = new { style = "multi" }
+                }
+            };
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Listar Boletos" });
-
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Valor Total", Priority = 4, Orderable = false, Searchable = false });

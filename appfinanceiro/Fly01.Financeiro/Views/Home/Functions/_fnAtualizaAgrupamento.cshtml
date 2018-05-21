@@ -1,6 +1,39 @@
 ﻿<script>
+    function resolveRanges(groupType) {
+        var startdate = moment();
+        var finalDate = moment();
+
+        switch (groupType) {
+            case '1':
+            default:
+                finalDate = moment(startdate).add(90, 'days');
+                break;
+            case '3':
+                finalDate = moment(startdate).add(24, 'months');
+                break;
+            case '4':
+                finalDate = moment(startdate).add(24, 'quarters');
+                break;
+            case '5':
+                finalDate = moment(startdate).add(5, 'years');
+                break;
+            case '6':
+                finalDate = moment(startdate).add(10, 'years');
+                break;
+        }
+
+        var calculateFinalDate = new Date(moment(finalDate).format('YYYY'), moment(finalDate).format('MM'), moment(finalDate).format('D'));
+
+        var selectedFinalDate = moment(fly01._.dataFinal.pickadate("picker").get(), 'DD/MM/YYYY');
+        if (selectedFinalDate > finalDate)
+            fly01._.dataFinal.pickadate("picker").set('select', calculateFinalDate);
+
+        fly01._.dataFinal.pickadate("picker").set('max', calculateFinalDate);
+    }
+
     function fnAtualizaAgrupamento(type) {
         $("input#groupType").val(type);
+        resolveRanges(type);
         fnAtualizar();
     }
 </script>

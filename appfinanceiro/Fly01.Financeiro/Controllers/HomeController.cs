@@ -81,7 +81,7 @@ namespace Fly01.Financeiro.Controllers
                         {
                             new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
                         },
-                        Max = 60,
+                        Max = 90,
                         Min = true
                     },
                     new InputDateUI
@@ -91,7 +91,7 @@ namespace Fly01.Financeiro.Controllers
                         Label = "Data Final",
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
-                        Max = 60,
+                        Max = 90,
                         Min = true
                     },
                     new InputHiddenUI{ Id = "groupType", Value = "1" },

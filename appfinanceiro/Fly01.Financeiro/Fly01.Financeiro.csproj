@@ -340,7 +340,7 @@
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
-    <Content Include="Views\ArquivoRemessa\Functions\_fnListBoletosArquivo.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

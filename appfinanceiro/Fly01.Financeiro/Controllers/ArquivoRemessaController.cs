@@ -156,7 +156,7 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Arquivos remessa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualisar boletos", OnClickFn = "fnListBoletosArquivo" }
+                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -173,7 +173,6 @@ namespace Fly01.Financeiro.Controllers
                     Select = new { style = "multi" }
                 }
             };
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Listar Boletos" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Dt. Exportação", Priority = 3, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Qtd. Boletos", Priority = 4, Orderable = false, Searchable = false });

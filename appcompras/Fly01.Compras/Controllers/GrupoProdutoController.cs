@@ -60,7 +60,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id"});
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI { Id = "ncmId", Class = "col s12 l6", Label = "NCM",
+            config.Elements.Add(new AutoCompleteUI { Id = "ncmId", Class = "col s12 l6", Label = "NCM",
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI>()
@@ -77,7 +77,7 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
             });
 
-            config.Elements.Add(new AutocompleteUI { Id = "unidadeMedidaId", Class = "col s12 l6", Label = "Unidade de Medida", 
+            config.Elements.Add(new AutoCompleteUI { Id = "unidadeMedidaId", Class = "col s12 l6", Label = "Unidade de Medida", 
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });

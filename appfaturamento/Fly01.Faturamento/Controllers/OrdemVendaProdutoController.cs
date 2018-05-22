@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioTipoTributacaoICMS" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s12 m6",
@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioIdProduto",
                 Class = "col s12 m6",

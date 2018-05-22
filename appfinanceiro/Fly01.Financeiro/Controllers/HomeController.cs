@@ -93,20 +93,20 @@ namespace Fly01.Financeiro.Controllers
                         Min = true
                     },
                     new InputHiddenUI{ Id = "groupType", Value = "1" },
-                    new ButtongroupUI()
+                    new ButtonGroupUI()
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 hide-on-print",
                         Label = "Tipo de Visualização",
                         OnClickFn = "fnAtualizaAgrupamento",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI { Id = "btnDia", Value = "1", Label = "Dia" },
-                            //new OptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
-                            new OptionUI { Id = "btnMes", Value = "3", Label = "Mês" },
-                            new OptionUI { Id = "btnTri", Value = "4", Label = "Trimestre" },
-                            new OptionUI { Id = "btnSem", Value = "5", Label = "Semestre" },
-                            new OptionUI { Id = "btnAno", Value = "6", Label = "Ano" },
+                            new ButtonGroupOptionUI { Id = "btnDia", Value = "1", Label = "Dia", Class = "col s2" },
+                            //new ButtonGroupOptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
+                            new ButtonGroupOptionUI { Id = "btnMes", Value = "3", Label = "Mês", Class = "col s2" },
+                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s2" },
+                            new ButtonGroupOptionUI { Id = "btnTri", Value = "4", Label = "Trimestre", Class = "col s3" },
+                            new ButtonGroupOptionUI { Id = "btnSem", Value = "5", Label = "Semestre", Class = "col s3" },
                         }
                     }
                 }

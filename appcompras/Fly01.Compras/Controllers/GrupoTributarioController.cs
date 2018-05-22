@@ -98,7 +98,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cfopId",
                 Class = "col s12",
@@ -109,7 +109,7 @@ namespace Fly01.Compras.Controllers
             });
 
             //ST
-            config.Elements.Add(new LabelsetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
+            config.Elements.Add(new LabelSetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaSubstituicaoTributaria",
@@ -126,7 +126,7 @@ namespace Fly01.Compras.Controllers
 
 
             //ICMS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "ICMS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ICMS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIcms",
@@ -152,7 +152,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //Aba IPI
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIpi",
@@ -177,7 +177,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //PIS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "PIS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "PIS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaPis",
@@ -201,7 +201,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBasePis", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //COFINS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "COFINS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "COFINS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaCofins",
@@ -225,7 +225,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseCofins", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //ISS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "ISS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ISS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIss",

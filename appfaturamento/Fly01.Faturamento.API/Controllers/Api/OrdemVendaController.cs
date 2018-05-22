@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System;
 using System.Web.OData;
-using Fly01.Core.Notifications;
-using System.Web.Http.ModelBinding;
 using System.Data.Entity.Infrastructure;
 using System.Net;
-using System.Linq;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {

@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -9,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.API;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
 using Fly01.Core;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;

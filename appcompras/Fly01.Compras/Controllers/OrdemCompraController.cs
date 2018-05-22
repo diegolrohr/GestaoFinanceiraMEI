@@ -1,7 +1,6 @@
 ﻿using Fly01.Compras.Controllers.Base;
 using Fly01.Compras.ViewModel;
 using Fly01.Core;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;

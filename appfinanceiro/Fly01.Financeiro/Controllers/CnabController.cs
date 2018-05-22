@@ -75,16 +75,16 @@ namespace Fly01.Financeiro.Controllers
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
-                "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
+                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
+            if (!proxy.DefinirSacado(cedente.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
                 sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirBoleto(boleto.EspecieMoeda, boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao, DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto,
-                boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao,
+                DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
             if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto)) throw new Exception(mensagemBoleto);

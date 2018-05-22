@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json.Linq;
-using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
@@ -96,7 +95,7 @@ namespace Fly01.Faturamento.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodpickerUI
+                        new PeriodPickerUI
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",

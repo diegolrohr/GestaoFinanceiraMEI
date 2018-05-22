@@ -13,8 +13,6 @@ using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Presentation.Controllers;
-using Fly01.Core.ViewModels.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -174,7 +172,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s4 l2", Label = "CEP", MaxLength = 9 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoId",
                 Class = "col s6 l3",
@@ -188,7 +186,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
                 Class = "col s6 l3",
@@ -214,7 +212,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
@@ -266,7 +264,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
 
             cfg.Content.Add(config);
 

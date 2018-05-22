@@ -417,7 +417,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6",
@@ -432,7 +432,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            config.Elements.Add(new LabelsetUI { Id = "extratoLancamentosLabel", Class = "col s12", Label = "Movimentações importadas" });
+            config.Elements.Add(new LabelSetUI { Id = "extratoLancamentosLabel", Class = "col s12", Label = "Movimentações importadas" });
 
             DataTableUI dtcfg = new DataTableUI
             {
@@ -527,7 +527,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            config.Elements.Add(new LabelsetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Contas financeiras" });
+            config.Elements.Add(new LabelSetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Contas financeiras" });
 
             DataTableUI dtcfg = new DataTableUI
             {
@@ -583,7 +583,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "dataVencimento", Class = "col s12 l6", Label = "Data Vencimento", Required = true, Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 l6", Label = "Valor", Required = true, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -593,7 +593,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "pessoaNome",
                 DataUrlPost = tipoConta == "ContaPagar" ? @Url.Action("PostFornecedor", "Fornecedor") : @Url.Action("PostCliente", "Cliente")
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -604,7 +604,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -614,7 +614,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPost = Url.Action("PostCondicaoParcelamento", "CondicaoParcelamento"),
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12",

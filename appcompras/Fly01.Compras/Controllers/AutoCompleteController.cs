@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using Fly01.Compras.ViewModel;
 using Fly01.Core;
 using System.Collections.Generic;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
-using Fly01.Core.API;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 

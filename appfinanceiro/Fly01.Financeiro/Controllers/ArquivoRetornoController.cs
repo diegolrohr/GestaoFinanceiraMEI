@@ -55,7 +55,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6 l6",

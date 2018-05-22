@@ -285,17 +285,17 @@ namespace Fly01.Financeiro.Controllers
                         Max = true,
                         Min = -60
                     },
-                    new ButtongroupUI
+                    new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m6 l4 hide-on-print",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
                         }
                     }
                 }
@@ -474,7 +474,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoDestino" });
             config.Elements.Add(new InputHiddenUI { Id = "descricao" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdTransf",
                 Class = "col s12 m6",
@@ -492,7 +492,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -510,7 +510,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdTransf",
                 Class = "col s12 m6",
@@ -523,7 +523,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaDespesa"),
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -568,7 +568,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdReceb",
                 Class = "col s12",
@@ -582,7 +582,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdReceb",
                 Class = "col s12",
@@ -610,7 +610,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorReceb", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -632,7 +632,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdPgto",
                 Class = "col s12",
@@ -646,7 +646,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdPgto",
                 Class = "col s12",
@@ -674,7 +674,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorPgto", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

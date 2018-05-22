@@ -160,7 +160,7 @@ namespace Fly01.Faturamento.Controllers
             //});
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
                 Class = "col s12 m6",
@@ -172,7 +172,7 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12",
@@ -183,7 +183,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPost = Url.Action("PostCliente")
             });
             
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
             #region step Produtos
@@ -228,7 +228,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -239,7 +239,7 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -250,7 +250,7 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -263,7 +263,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -293,7 +293,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Placa Veículo",
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
                 Class = "col s12 m4",
@@ -339,7 +339,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60});
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelsetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
+            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });
             config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
             #endregion

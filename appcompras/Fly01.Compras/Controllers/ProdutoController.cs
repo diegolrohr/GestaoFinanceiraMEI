@@ -1,5 +1,4 @@
 ﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -9,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.API;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -145,7 +143,7 @@ namespace Fly01.Compras.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m3",
@@ -158,7 +156,7 @@ namespace Fly01.Compras.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m3",
@@ -168,7 +166,7 @@ namespace Fly01.Compras.Controllers
                 LabelId = "unidadeMedidaDescricao"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
                 Class = "col s12 m9",
@@ -186,7 +184,7 @@ namespace Fly01.Compras.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cestId",
                 Class = "col s12",
@@ -196,7 +194,7 @@ namespace Fly01.Compras.Controllers
                 PreFilter = "ncmId"
             });
 
-            config.Elements.Add(new AutocompleteUI()
+            config.Elements.Add(new AutoCompleteUI()
             {
                 Id = "enquadramentoLegalIPIId",
                 Class = "col s12",
@@ -218,7 +216,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 
@@ -268,7 +266,7 @@ namespace Fly01.Compras.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
@@ -290,7 +288,7 @@ namespace Fly01.Compras.Controllers
                 Required = true
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m3",

@@ -62,9 +62,9 @@ namespace Fly01.Estoque.Controllers
                         OnClickFn = "fnAtualizarPeriodo",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnDia", Value = "dia", Label = "Dia"},
-                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "semana", Label = "Semana"},
-                            new ButtonGroupOptionUI {Id = "btnMes", Value = "mes", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "dia", Label = "Dia", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "semana", Label = "Semana", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "mes", Label = "Mês", Class = "col s4"}
                         }
                     }
                 }

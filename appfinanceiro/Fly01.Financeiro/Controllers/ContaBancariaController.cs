@@ -8,7 +8,6 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -45,22 +44,6 @@ namespace Fly01.Financeiro.Controllers
                 registroFixo = x.RegistroFixo
             };
         }
-
-        //public override ContentResult Json(Guid id)
-        //{
-        //    try
-        //    {
-        //        ContaBancariaVM entity = Get(id);
-        //        entity.AgenciaContaRequired = entity.Banco.Codigo != "999";
-                
-        //        return Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-        //        return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message).Data), "application/json");
-        //    }
-        //}
 
         public override ContentResult List()
         {

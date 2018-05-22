@@ -13,7 +13,6 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Financeiro.Models.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Core.Config;

@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.API;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;

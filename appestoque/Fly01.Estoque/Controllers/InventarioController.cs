@@ -16,7 +16,6 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Helpers.Attribute;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Controllers

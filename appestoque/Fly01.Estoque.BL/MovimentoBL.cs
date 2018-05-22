@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Core.BL;
-using Newtonsoft.Json;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;

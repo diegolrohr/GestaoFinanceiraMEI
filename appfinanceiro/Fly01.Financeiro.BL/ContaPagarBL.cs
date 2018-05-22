@@ -61,7 +61,7 @@ namespace Fly01.Financeiro.BL
             {
                 entity.Numero = ++max;
                 base.Insert(entity);
-                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);//Adicionar parcelas aqui
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
             }
             else
             {

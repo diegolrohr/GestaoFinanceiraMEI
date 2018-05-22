@@ -60,9 +60,9 @@ namespace Fly01.Financeiro.BL
             //Se status "pago", gerar ContaFinanceiraBaixa
             if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
             {
-                entity.Numero = ++max;
+                entity.Numero = ++max;// parcelas serão informadas pelo Integrador - Apagar
                 base.Insert(entity);
-                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);//Adicionar parcelas aqui
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
             }
             else
             {

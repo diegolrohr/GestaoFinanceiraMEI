@@ -91,13 +91,13 @@ namespace Fly01.Financeiro.BL
         }
 
         //Se status pago, gera uma baixa(contaFinanceiraBaixa)
-        internal void GeraContaFinanceiraBaixa(DateTime dataVencimento, Guid contaFinanceiraId, double valorPrevisto, TipoContaFinanceira tipoContaFinanceira, string observacao)
+        internal void GeraContaFinanceiraBaixa(DateTime dataVencimento, Guid contaFinanceiraId, double valorPrevisto, TipoContaFinanceira tipoContaFinanceira, string descricao)
         {
             if (contaFinanceiraId == default(Guid))
                 throw new BusinessException("Conta Financeira inválida.");
 
             var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
-            var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);//Banco Default
+            var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);//Banco Default - Se aceitar null, mudar regra
 
             //if (ContaBancariaPadrao.Id == default(Guid))
                 //throw new BusinessException("Conta bancária inválida.");
@@ -109,7 +109,7 @@ namespace Fly01.Financeiro.BL
                 ContaFinanceiraId = contaFinanceiraId,
                 ContaBancariaId = guidid, //ContaBancariaPadrao.Id
                 Valor = valorPrevisto,
-                Observacao = observacao
+                Observacao = descricao
             };
             base.Insert(baixa);
 

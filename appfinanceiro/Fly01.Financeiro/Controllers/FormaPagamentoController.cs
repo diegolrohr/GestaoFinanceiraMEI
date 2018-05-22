@@ -8,7 +8,6 @@ using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
@@ -19,7 +18,7 @@ namespace Fly01.Financeiro.Controllers
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
-            customFilters.AddParam("$select", "id,descricao,tipoFormaPagamento");
+            customFilters.AddParam("$select", "id,descricao,tipoFormaPagamento,registroFixo");
 
             return customFilters;
         }
@@ -30,7 +29,8 @@ namespace Fly01.Financeiro.Controllers
             {
                 id = x.Id,
                 descricao = x.Descricao,
-                tipoFormaPagamento = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), x.TipoFormaPagamento).Value
+                tipoFormaPagamento = EnumHelper.SubtitleDataAnotation(typeof(TipoFormaPagamento), x.TipoFormaPagamento).Value,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -52,8 +52,8 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new DataTableUI() { UrlGridLoad = Url.Action("GridLoad", "FormaPagamento"), UrlFunctions = Url.Action("Functions", "FormaPagamento", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir",  ShowIf = "row.registroFixo == 0" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "tipoFormaPagamento",

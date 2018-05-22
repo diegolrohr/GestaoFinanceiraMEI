@@ -9,7 +9,7 @@ namespace Fly01.Financeiro.BL
     {
         public ConfiguracaoNotificacaoBL(AppDataContextBase context) : base(context) {}
 
-        public IQueryable<ConfiguracaoNotificacaoFinanceiro> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<ConfiguracaoNotificacaoFinanceiro> Everything => repository.All.Where(x => x.Ativo);
 
         public override void Insert(ConfiguracaoNotificacaoFinanceiro entity)
         {

@@ -129,6 +129,7 @@ namespace Fly01.Financeiro.BL
         public static Error NomeCidadeInvalido = new Error("O nome da cidade está incorreto ou a cidade não pertence ao estado selecionado.", "cidadeNome");
         public static Error EmailInvalido = new Error("Informe um e-mail válido.", "email");
         public static Error NomeInvalido = new Error("Informe um nome válido.", "nome");
+        public static Error CidadeInvalida = new Error("Código da cidade inválida.", "cidadeId");
 
         public bool IsValid(Pessoa entity)
         {
@@ -139,6 +140,16 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(Pessoa entity)
         {
+            if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CodigoIBGECidade))
+            {
+                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CodigoIBGECidade);
+                if (dadosCidade != null)
+                {
+                    entity.EstadoId = dadosCidade.EstadoId;
+                    entity.CidadeId = dadosCidade.Id;
+                }
+            }
+
             ValidaModel(entity);
             if (!IsValid(entity))
             {

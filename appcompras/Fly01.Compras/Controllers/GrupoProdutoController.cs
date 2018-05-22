@@ -11,7 +11,6 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
@@ -61,7 +60,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id"});
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI { Id = "ncmId", Class = "col s12 l6", Label = "NCM",
+            config.Elements.Add(new AutoCompleteUI { Id = "ncmId", Class = "col s12 l6", Label = "NCM",
                 DataUrl = @Url.Action("Ncm", "AutoComplete"),
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI>()
@@ -78,7 +77,7 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
             });
 
-            config.Elements.Add(new AutocompleteUI { Id = "unidadeMedidaId", Class = "col s12 l6", Label = "Unidade de Medida", 
+            config.Elements.Add(new AutoCompleteUI { Id = "unidadeMedidaId", Class = "col s12 l6", Label = "Unidade de Medida", 
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
@@ -99,6 +98,7 @@ namespace Fly01.Compras.Controllers
                 tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
                 tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
                 tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -119,8 +119,8 @@ namespace Fly01.Compras.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn

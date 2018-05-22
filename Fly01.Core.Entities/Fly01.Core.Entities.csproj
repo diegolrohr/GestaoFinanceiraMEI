@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
+    <Compile Include="Domains\Commons\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
     <Compile Include="Domains\Commons\CertificadoDigital.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
     <Compile Include="Domains\DomainBase.cs" />
+    <Compile Include="Domains\Enum\DateGroupType.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Domains\Enum\TipoPagamentoImpostoISS.cs" />
     <Compile Include="Domains\Enum\TipoPeriodicidade.cs" />
     <Compile Include="Domains\Enum\TipoPessoa.cs" />
+    <Compile Include="Domains\Enum\TipoPresencaComprador.cs" />
     <Compile Include="Domains\Enum\TipoProduto.cs" />
     <Compile Include="Domains\Enum\TipoRegimeEspecialTrib.cs" />
     <Compile Include="Domains\Enum\TipoRenegociacaoCalculo.cs" />

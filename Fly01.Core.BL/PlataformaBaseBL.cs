@@ -20,7 +20,7 @@ namespace Fly01.Core.BL
             get
             {
                 if (string.IsNullOrWhiteSpace(_plataformaUrl))
-                    throw new ApplicationException("ERRO! PlataformaUrl não informado.");
+                    throw new BusinessException("ERRO!PlataformaUrl não informado.");
 
                 return _plataformaUrl;
             }
@@ -36,7 +36,7 @@ namespace Fly01.Core.BL
             get
             {
                 if (string.IsNullOrWhiteSpace(_appUser))
-                    throw new ApplicationException("ERRO! AppUser não informado.");
+                    throw new BusinessException("ERRO! AppUser não informado.");
 
                 return _appUser;
             }
@@ -55,13 +55,7 @@ namespace Fly01.Core.BL
             PlataformaUrl = context.PlataformaUrl;
         }
 
-        public override IQueryable<TEntity> All
-        {
-            get
-            {
-                return base.All.Where(PredicatePlatform);
-            }
-        }
+        public override IQueryable<TEntity> All => base.All.Where(PredicatePlatform);
 
         public virtual void ValidaModel(TEntity entity)
         {
@@ -118,10 +112,7 @@ namespace Fly01.Core.BL
             repository.Delete(entityToDelete);
         }
 
-        public virtual void Delete(Guid id)
-        {
-            repository.Delete(id);
-        }
+        public virtual void Delete(Guid id) => Delete(Find(id));
 
         public override IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
@@ -147,7 +138,12 @@ namespace Fly01.Core.BL
                     case RabbitConfig.enHTTPVerb.POST:
                         Insert(item);
                         break;
-                    default:
+                    case RabbitConfig.enHTTPVerb.PUT:
+                        Update(item);
+                        AttachForUpdate(item);
+                        break;
+                    case RabbitConfig.enHTTPVerb.DELETE:
+                        Delete(item);
                         AttachForUpdate(item);
                         break;
                 }

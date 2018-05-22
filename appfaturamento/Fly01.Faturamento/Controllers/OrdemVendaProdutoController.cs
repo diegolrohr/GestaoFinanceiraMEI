@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioTipoTributacaoICMS" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s12 m6",
@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioIdProduto",
                 Class = "col s12 m6",
@@ -182,7 +182,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorBCFCPSTRetidoAnterior",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor Base do Fundo de Combate à Pobreza retido anteriormente. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                    Text = "Valor Base do Fundo de Combate à Pobreza retido anteriormente. O percentual será calculado conforme base e valor informados. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -190,7 +190,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorFCPSTRetidoAnterior",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor do Fundo de Combate à Pobreza retido anteriormente. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                    Text = "Valor do Fundo de Combate à Pobreza retido anteriormente. O percentual será calculado conforme base e valor informados. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
                 }
             });
             #endregion

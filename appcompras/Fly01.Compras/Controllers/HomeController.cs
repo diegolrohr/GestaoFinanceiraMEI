@@ -55,6 +55,8 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
+            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
+
             #endregion
 
             #region User Menu Items

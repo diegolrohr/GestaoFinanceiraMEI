@@ -35,22 +35,22 @@ namespace Fly01.Financeiro.BL
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
 
         private ContaBancariaBL contaBancariaBL;
-        public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL));
+        public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL, BancoBL));
 
         private FeriadoBL feriadoBL;
         public FeriadoBL FeriadoBL => feriadoBL ?? (feriadoBL = new FeriadoBL(Context));
 
         private CategoriaBL categoriaBL;
-        public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context, ContaPagarBL, ContaReceberBL));
+        public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context));
 
         private BancoBL bancoBL;
         public BancoBL BancoBL => bancoBL ?? (bancoBL = new BancoBL(Context));
 
         private ContaPagarBL contaPagarBL;
-        public ContaPagarBL ContaPagarBL => contaPagarBL ?? (contaPagarBL = new ContaPagarBL(Context, CondicaoParcelamentoBL));
+        public ContaPagarBL ContaPagarBL => contaPagarBL ?? (contaPagarBL = new ContaPagarBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL));
 
         private ContaReceberBL contaReceberBL;
-        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL));
+        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL));
 
         private ArquivoBL arquivoBL;
         public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));

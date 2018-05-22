@@ -22,13 +22,14 @@ namespace Fly01.Faturamento.Controllers
         {
             ExpandProperties = "nbs($select=id,descricao)";
             //SelectProperties = "id,codigoServico,descricao,tipoServico";
-            SelectProperties = "id,codigoServico,descricao";
+            SelectProperties = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
                 codigoServico = x.CodigoServico,
                 descricao = x.Descricao,
+                registroFixo = x.RegistroFixo
                 //tipoServico = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).Value,
                 //tipoServicoCSS = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).CssClass,
                 //tipoServicoDescricao = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).Description
@@ -66,8 +67,8 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoServico", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
@@ -127,7 +128,7 @@ namespace Fly01.Faturamento.Controllers
             //{
             //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoServico", true, false))
             //});
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "nbsId",
                 Class = "col s12",
@@ -156,7 +157,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 

@@ -3,7 +3,6 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -30,6 +29,7 @@ namespace Fly01.Faturamento.Controllers
                 descricao = x.Descricao,
                 cfopId = x.CfopId,
                 cfop_descricao = string.IsNullOrEmpty(x.Cfop.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -50,8 +50,8 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "GrupoTributario"), UrlFunctions = Url.Action("Functions", "GrupoTributario", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cfop_descricao", DisplayName = "CFOP", Priority = 2 });
@@ -98,7 +98,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cfopId",
                 Class = "col s12",
@@ -109,7 +109,7 @@ namespace Fly01.Faturamento.Controllers
             });
 
             //ST
-            config.Elements.Add(new LabelsetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
+            config.Elements.Add(new LabelSetUI { Id = "stLabel", Class = "col s12", Label = "Substituição Tributária" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaSubstituicaoTributaria",
@@ -126,7 +126,7 @@ namespace Fly01.Faturamento.Controllers
 
 
             //ICMS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "ICMS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ICMS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIcms",
@@ -152,7 +152,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //Aba IPI
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIpi",
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //PIS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "PIS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "PIS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaPis",
@@ -201,7 +201,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBasePis", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //COFINS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "COFINS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "COFINS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaCofins",
@@ -225,7 +225,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseCofins", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
             //ISS
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "ISS" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "ISS" });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIss",
@@ -292,7 +292,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l12", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cfopId",
                 Class = "col s12 l12",

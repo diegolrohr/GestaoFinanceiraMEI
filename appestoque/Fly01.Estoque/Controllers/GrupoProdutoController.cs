@@ -9,7 +9,6 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.API;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
@@ -34,6 +33,7 @@ namespace Fly01.Estoque.Controllers
                 tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
                 tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
                 tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -54,8 +54,8 @@ namespace Fly01.Estoque.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn
@@ -109,7 +109,7 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 40 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
                 Class = "col s12 l6",
@@ -139,7 +139,7 @@ namespace Fly01.Estoque.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 l6",

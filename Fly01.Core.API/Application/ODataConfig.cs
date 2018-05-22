@@ -14,7 +14,7 @@ namespace Fly01.Core.API.Application
         private static EnableQueryAttribute queryAttribute => new EnableQueryAttribute()
         {
             AllowedQueryOptions = AllowedQueryOptions.All,
-            MaxTop = 50,
+            MaxTop = 500,
             PageSize = 50,
             MaxExpansionDepth = 10,
             EnableConstantParameterization = true,

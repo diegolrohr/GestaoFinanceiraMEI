@@ -15,14 +15,14 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaBancariaController()
         {
-            ExpandProperties = "banco($select=id,nome)";
+            ExpandProperties = "banco($select=id,nome,codigo)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
-            customFilters.AddParam("$select", "id,bancoId,nomeConta,agencia,digitoAgencia,conta,digitoConta");
+            customFilters.AddParam("$select", "id,bancoId,nomeConta,agencia,digitoAgencia,conta,digitoConta,registroFixo");
 
             return customFilters;
         }
@@ -37,8 +37,11 @@ namespace Fly01.Financeiro.Controllers
                 nomeConta = x.NomeConta,
                 agencia = x.Agencia,
                 digitoAgencia = x.DigitoAgencia,
-                conta = x.Conta +" - "+ x.DigitoConta,
-                digitoConta = x.DigitoConta
+                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ? 
+                    $"{x.Conta} - {x.DigitoConta}"
+                    : string.Empty,
+                digitoConta = x.DigitoConta,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -60,8 +63,8 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nomeConta", DisplayName = "Nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });
@@ -102,18 +105,25 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=",
+                ReadyFn = "fnFormReady",
+                AfterLoadFn = "fnAfterLoad"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m12 12",
                 Label = "Banco",
                 Required = true,
                 DataUrl = @Url.Action("Banco", "AutoComplete"),
-                LabelId = "bancoNome"
+                LabelId = "bancoNome",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" },
+                    new DomEventUI() { DomEvent = "autocompletechange", Function = "fnChangeBanco" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "nomeConta", Class = "col s4 m4 l6", Label = "Nome da Conta", Required = true, MaxLength = 150 });
@@ -121,8 +131,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-
-
+            
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -141,16 +150,23 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmContaBancaria",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnChangeBanco", "fnFormReady", "fnAfterLoad" }
             };
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m12 12",
                 Label = "Banco",
                 Required = true,
                 DataUrl = @Url.Action("Banco", "AutoComplete"),
-                LabelId = "bancoNome"
+                LabelId = "bancoNome",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeBanco" },
+                    new DomEventUI() { DomEvent = "autocompletechange", Function = "fnChangeBanco" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "nomeConta", Class = "col s4 m4 l6", Label = "Nome da Conta", Required = true, MaxLength = 150 });
@@ -158,8 +174,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-
-
+            
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

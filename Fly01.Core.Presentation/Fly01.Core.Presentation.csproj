@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fly01.uiJS.2.0.1.6\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\packages\Fly01.uiJS.2.0.2\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -125,9 +125,11 @@
     <Compile Include="Application\GlobalHttpApplication.cs" />
     <Compile Include="Application\RouteConfig.cs" />
     <Compile Include="Application\WebAPIConfig.cs" />
+    <Compile Include="Commons\ImportacaoArquivoHelper.cs" />
     <Compile Include="Commons\LayoutHelper.cs" />
     <Compile Include="Commons\AutoCompleteHelper.cs" />
     <Compile Include="Commons\ImportHelper.cs" />
+    <Compile Include="Controllers\AvaliacaoAppBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GenericAppController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

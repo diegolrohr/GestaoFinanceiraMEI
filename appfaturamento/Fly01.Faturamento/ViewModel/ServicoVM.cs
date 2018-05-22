@@ -32,5 +32,8 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("nbs")]
         public virtual NBSVM Nbs { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

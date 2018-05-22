@@ -1,5 +1,4 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -69,7 +68,7 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = tempExpand;
 
             customFilters.AddParam("$filter", "fornecedor eq true");
-            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao");
+            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
 
             return customFilters;
         }
@@ -84,7 +83,8 @@ namespace Fly01.Faturamento.Controllers
                 email = x.Email,
                 telefone = string.IsNullOrEmpty(x.Telefone)
                             ? ""
-                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3")
+                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -106,8 +106,8 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Fornecedor", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
@@ -166,7 +166,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s3 l2", Label = "CEP", MaxLength = 9 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoId",
                 Class = "col s6 l3",
@@ -180,7 +180,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
                 Class = "col s6 l3",
@@ -206,7 +206,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
             config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
@@ -258,7 +258,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
 
             cfg.Content.Add(config);
 
@@ -281,7 +281,8 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult ImportaArquivo(string conteudo)
         {
-            return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Fornecedores", conteudo));
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", conteudo);
+            return JsonResponseStatus.GetJson(arquivoVM);
         }
     }
 }

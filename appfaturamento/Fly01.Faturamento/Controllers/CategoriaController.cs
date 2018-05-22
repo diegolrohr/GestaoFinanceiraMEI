@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -71,7 +70,7 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoCarteira" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaPaiId",
                 Class = "col s12",
@@ -93,7 +92,8 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 descricao = x.Descricao,
                 categoriaPaiId = x.CategoriaPaiId,
-                tipoCarteira = x.TipoCarteira
+                tipoCarteira = x.TipoCarteira,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -121,8 +121,8 @@ namespace Fly01.Faturamento.Controllers
                 Options = new DataTableUIConfig { PageLength = 50 }
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "descricao",

@@ -23,103 +23,128 @@ namespace Fly01.Financeiro.Controllers
     {
         public JsonResult LoadContasBancarias()
         {
-            var response = RestHelper.ExecuteGetRequest<ResponseExtratoContaSaldoVM>("extrato/saldos");
-            if (response == null)
-                return Json(new { }, JsonRequestBehavior.AllowGet);
-
-            var saldoAbsolutoTodasContas = response.Values.Where(x => x.ContaBancariaId != Guid.Empty).Sum(x => Math.Abs(x.SaldoConsolidado));
-            var responseToView = response.Values.Select(item => new
+            try
             {
-                contaBancariaId = item.ContaBancariaId.ToString() == Guid.Empty.ToString()
-                    ? string.Empty
-                    : item.ContaBancariaId.ToString(),
-                contaBancariaDescricao = item.ContaBancariaDescricao,
-                contaSaldo = item.SaldoConsolidado.ToString("C", AppDefaults.CultureInfoDefault),
-                progressSaldo = item.ContaBancariaId == Guid.Empty || saldoAbsolutoTodasContas == default(double)
-                    ? 100
-                    : Math.Round(Math.Abs(item.SaldoConsolidado) / saldoAbsolutoTodasContas * 100, 2)
-            }).OrderByDescending(x => x.progressSaldo).ToList();
+                var response = RestHelper.ExecuteGetRequest<ResponseExtratoContaSaldoVM>("extrato/saldos");
+                if (response == null)
+                    return Json(new { }, JsonRequestBehavior.AllowGet);
 
-            return Json(new
+                var saldoAbsolutoTodasContas = response.Values.Where(x => x.ContaBancariaId != Guid.Empty).Sum(x => Math.Abs(x.SaldoConsolidado));
+                var responseToView = response.Values.Select(item => new
+                {
+                    contaBancariaId = item.ContaBancariaId.ToString() == Guid.Empty.ToString()
+                        ? string.Empty
+                        : item.ContaBancariaId.ToString(),
+                    contaBancariaDescricao = item.ContaBancariaDescricao,
+                    contaSaldo = item.SaldoConsolidado.ToString("C", AppDefaults.CultureInfoDefault),
+                    progressSaldo = item.ContaBancariaId == Guid.Empty || saldoAbsolutoTodasContas == default(double)
+                        ? 100
+                        : Math.Round(Math.Abs(item.SaldoConsolidado) / saldoAbsolutoTodasContas * 100, 2)
+                }).OrderByDescending(x => x.progressSaldo).ToList();
+
+                return Json(new
+                {
+                    recordsTotal = responseToView.Count,
+                    recordsFiltered = responseToView.Count,
+                    data = responseToView
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
             {
-                recordsTotal = responseToView.Count,
-                recordsFiltered = responseToView.Count,
-                data = responseToView
-            }, JsonRequestBehavior.AllowGet);
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, string contaBancariaId)
         {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            try
             {
-                { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "contaBancariaId", contaBancariaId ?? string.Empty }
-            };
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
+                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "contaBancariaId", contaBancariaId ?? string.Empty }
+                };
 
-            var responseChart = RestHelper.ExecuteGetRequest<ResponseExtratoHistoricoSaldoVM>("extrato/historicosaldos", queryString);
-            var dataChartToView = new
-            {
-                success = true,
-                labels = responseChart.Value.Saldos.Select(x => x.Data.ToString("dd/MM")).ToArray(),
-                datasets = new object[] {
-                    new {
-                            type = "line",
-                            label = "Saldo Consolidado",
-                            backgroundColor = "rgb(99, 99, 99)",
-                            borderColor = "rgb(99, 99, 99)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.SaldoConsolidado, 2)).ToArray(),
-                            fill = false
-                        },
-                    new {
-                            label = "Recebimentos",
-                            fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
-                        },
-                    new {
-                            label = "Pagamentos",
-                            fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
-                            data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                var responseChart = RestHelper.ExecuteGetRequest<ResponseExtratoHistoricoSaldoVM>("extrato/historicosaldos", queryString);
+                var dataChartToView = new
+                {
+                    success = true,
+                    labels = responseChart.Value.Saldos.Select(x => x.Data.ToString("dd/MM")).ToArray(),
+                    datasets = new object[] {
+                        new {
+                                type = "line",
+                                label = "Saldo Consolidado",
+                                backgroundColor = "rgb(99, 99, 99)",
+                                borderColor = "rgb(99, 99, 99)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.SaldoConsolidado, 2)).ToArray(),
+                                fill = false
+                            },
+                        new {
+                                label = "Recebimentos",
+                                fill = false,
+                                backgroundColor = "rgb(75, 192, 192)",
+                                borderColor = "rgb(75, 192, 192)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
+                            },
+                        new {
+                                label = "Pagamentos",
+                                fill = false,
+                                backgroundColor = "rgb(255, 99, 132)",
+                                borderColor = "rgb(255, 99, 132)",
+                                data = responseChart.Value.Saldos.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                        }
                     }
-                }
-            };
+                };
 
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+                return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
+
         }
 
-        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId)
+        public JsonResult LoadExtratoDetalhes(DateTime dataInicial, DateTime dataFinal, string contaBancariaId, int length)
         {
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-
-            var pageNo = param.Start > 0 ? (param.Start / 50) + 1 : 1;
-
-            Dictionary<string, string> queryString = new Dictionary<string, string>
+            try
             {
-                { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
-                { "contaBancariaId", contaBancariaId ?? string.Empty },
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "50" }
-            };
+                if (length == default(int))
+                    length = 50;
 
-            var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
-            return Json(new
-            {
-                recordsTotal = responseExtratoDetalhe.Paging.TotalRecordCount,
-                recordsFiltered = responseExtratoDetalhe.Paging.TotalRecordCount,
-                data = responseExtratoDetalhe.Data.Select(item => new
+                var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+
+                var pageNo = param.Start > 0 ? (param.Start / length) + 1 : 1;
+
+                Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    data = item.DataMovimento.ToString("dd/MM/yyyy"),
-                    descricaoLancamento = item.DescricaoLancamento,
-                    pessoaNome = item.PessoaNome,
-                    contaBancariaDescricao = item.ContaBancariaDescricao,
-                    valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
-                })
-            }, JsonRequestBehavior.AllowGet);
+                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
+                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "contaBancariaId", contaBancariaId ?? string.Empty },
+                    { "pageNo", pageNo.ToString() },
+                    { "pageSize", length.ToString() }
+                };
+
+                var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
+                return Json(new
+                {
+                    recordsTotal = responseExtratoDetalhe.Paging.TotalRecordCount,
+                    recordsFiltered = responseExtratoDetalhe.Paging.TotalRecordCount,
+                    data = responseExtratoDetalhe.Data.Select(item => new
+                    {
+                        data = item.DataMovimento.ToString("dd/MM/yyyy"),
+                        descricaoLancamento = item.DescricaoLancamento,
+                        pessoaNome = item.PessoaNome,
+                        contaBancariaDescricao = item.ContaBancariaDescricao,
+                        valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -195,6 +220,7 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List()
         {
             ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
             var cfg = new ContentUI
             {
@@ -214,25 +240,20 @@ namespace Fly01.Financeiro.Controllers
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var dataFinalFiltroDefault = DateTime.Now;
 
-            cfg.Content.Add(new DivUI
+            cfg.Content.Add(new CardUI
             {
-                Class = "col s12 m12 printinfo",
+                Class = "col s12 m8 offset-m2 printinfo",
+                Color = "orange",
                 Id = "fly01cardCabecalho",
-                Elements = new List<BaseUI>
+                Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
+                              " | Endereço: " + response.Endereco + ", " + response.Numero +
+                              " | Bairro: " + response.Bairro + " | CEP: " + response.CEP +
+                              " | Cidade: " + responseCidade + " | Email: " + response.Email,
+                Action = new LinkUI
                 {
-                    new StatictextUI
-                    {
-                        Class= "col s12",
-                        Lines = new List<LineUI>{
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = response.RazaoSocial + " | " + "CNPJ: " + response.CNPJ  },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Endereço: " + response.Endereco + ", " + response.Numero },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text ="Bairro: " + response.Bairro + " | " + "CEP: " + response.CEP },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = "Cidade: " + response.Cidade.Nome + " | " + "Email: " + response.Email },
-                            new LineUI {Class = "cabecalho05", Tag = "p", Text = " " }
-                        }
-                    }
+                    Label = "",
+                    OnClick = ""
                 }
-
             });
 
             cfg.Content.Add(new FormUI
@@ -264,17 +285,17 @@ namespace Fly01.Financeiro.Controllers
                         Max = true,
                         Min = -60
                     },
-                    new ButtongroupUI
+                    new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m6 l4 hide-on-print",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
                         }
                     }
                 }
@@ -285,7 +306,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contasBancariasList",
                 Class = "col s12 m12 l4",
-                UrlGridLoad = @Url.Action("LoadContasBancarias"),
+                UrlGridLoad = @Url.Action("LoadContasBancarias"),               
                 Columns = new List<DataTableUIColumn>
                     {
                         new DataTableUIColumn
@@ -300,7 +321,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig
                 {
                     ScrollLength = 300,
-                    WithoutRowMenu = true
+                    WithoutRowMenu = true                 
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
 
@@ -411,7 +432,8 @@ namespace Fly01.Financeiro.Controllers
                     },
                 Options = new DataTableUIConfig()
                 {
-                    PageLength = 50
+                    PageLength = 50,
+                    LengthChange = true
                 },
                 Columns = new List<DataTableUIColumn>
                     {
@@ -452,7 +474,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoDestino" });
             config.Elements.Add(new InputHiddenUI { Id = "descricao" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdTransf",
                 Class = "col s12 m6",
@@ -470,7 +492,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -488,7 +510,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdTransf",
                 Class = "col s12 m6",
@@ -501,7 +523,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaDespesa"),
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaDestinoIdTransf",
                 Class = "col s12 m6",
@@ -546,7 +568,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaDestinoIdReceb",
                 Class = "col s12",
@@ -560,7 +582,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdReceb",
                 Class = "col s12",
@@ -588,7 +610,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorReceb", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "descricaoReceb", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -610,7 +632,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaOrigemIdPgto",
                 Class = "col s12",
@@ -624,7 +646,7 @@ namespace Fly01.Financeiro.Controllers
                 DataPostField = "nomeConta"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaIdPgto",
                 Class = "col s12",
@@ -652,7 +674,7 @@ namespace Fly01.Financeiro.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorPgto", Class = "col s12 m6", Label = "Valor", Required = true, Name = "valor" });
-            config.Elements.Add(new TextareaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "descricaoPgto", Class = "col s12", Label = "Descrição", Required = true, Name = "descricao", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -684,6 +706,5 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
     }
 }

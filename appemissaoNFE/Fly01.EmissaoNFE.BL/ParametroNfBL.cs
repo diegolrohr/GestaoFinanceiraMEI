@@ -20,7 +20,7 @@ namespace Fly01.EmissaoNFE.BL
             int x = default(int);
             entity.Fail(!Int32.TryParse(entity.TipoAmbiente, out x) || x < 0 || x > 2, AmbienteInvalido);
             entity.Fail(!Int32.TryParse(entity.TipoModalidade, out x) || x < 1 || x > 7, ModalidadeInvalida);
-            entity.Fail(!(entity.VersaoNFe == "3.10" || entity.VersaoNFe == "4.0"), VersaoInvalida);
+            entity.Fail(!(entity.VersaoNFe == "3.10" || entity.VersaoNFe == "4.00"), VersaoInvalida);
             entity.Fail(!string.IsNullOrEmpty(entity.VersaoNFSe) && !Int32.TryParse(entity.VersaoNFSe.Replace(".", ""), out x), VersaoNFSeInvalida);
             entity.Fail(!string.IsNullOrEmpty(entity.VersaoDPEC) && !Int32.TryParse(entity.VersaoDPEC.Replace(".", ""), out x), VersaoDPECInvalida);
 

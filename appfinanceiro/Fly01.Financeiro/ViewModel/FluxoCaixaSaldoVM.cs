@@ -10,13 +10,16 @@ namespace Fly01.Financeiro.ViewModel
 
     public class FluxoCaixaSaldoVM
     {
-        [JsonProperty("saldoConsolidado")]
-        public double SaldoConsolidado { get; set; }
+        [JsonProperty("saldoAtual")]
+        public double SaldoAtual { get; set; }
 
-        [JsonProperty("areceberhoje")]
-        public double AReceberHoje { get; set; }
+        [JsonProperty("totalRecebimentos")]
+        public double TotalRecebimentos { get; set; }
 
-        [JsonProperty("apagarhoje")]
-        public double APagarHoje { get; set; }
+        [JsonProperty("totalPagamentos")]
+        public double TotalPagamentos { get; set; }
+
+        [JsonProperty("saldoProjetado")]
+        public double SaldoProjetado { get; set; }
     }
 }

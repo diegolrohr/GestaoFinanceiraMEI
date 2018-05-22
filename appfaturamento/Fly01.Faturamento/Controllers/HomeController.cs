@@ -119,19 +119,16 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-
             config.MenuItems.Add(new SidebarMenuUI()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI()
-                    {
-                        Label = "Assistência Remota",
-                        Link = "https://secure.logmeinrescue.com/customer/code.aspx"
-                    }
+                    new LinkUI() { Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

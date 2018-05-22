@@ -1,5 +1,4 @@
 ﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.API;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -39,7 +37,8 @@ namespace Fly01.Faturamento.Controllers
                 estadoDestino_nome = x.EstadoDestino != null ? x.EstadoDestino.Nome : "",
                 tipoSubstituicaoTributaria = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Value,
                 tipoSubstituicaoTributariaCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).CssClass,
-                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Description
+                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Description,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -102,7 +101,7 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSubstituicaoTributaria)))
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
                 Class = "col l9 m9 s12",
@@ -113,7 +112,7 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cestId",
                 Class = "col l12 m12 s12",
@@ -141,7 +140,7 @@ namespace Fly01.Faturamento.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoOrigemId",
                 Class = "col l4 m4 s12",
@@ -152,7 +151,7 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoDestinoId",
                 Class = "col l4 m4 s12",
@@ -185,8 +184,8 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "ncm_codigo", DisplayName = "NCM", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cest_codigo", DisplayName = "CEST", Priority = 2 });

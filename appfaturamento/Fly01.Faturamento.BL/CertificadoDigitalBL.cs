@@ -4,13 +4,13 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Notifications;
 using Fly01.Core.Reports;
 using Fly01.Core.Entities.Domains.Enum;
+using System;
 
 namespace Fly01.Faturamento.BL
 {
@@ -27,14 +27,18 @@ namespace Fly01.Faturamento.BL
 
         protected EstadoBL EstadoBL;
         protected ParametroTributarioBL ParametroTributarioBL;
+        private ManagerEmpresaVM empresa;
+        private string empresaUF;
 
         public CertificadoDigitalBL(AppDataContext context, EstadoBL estadoBL, ParametroTributarioBL parametroTributarioBL) : base(context)
         {
             EstadoBL = estadoBL;
             ParametroTributarioBL = parametroTributarioBL;
+            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
 
-        public IQueryable<CertificadoDigital> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<CertificadoDigital> Everything => repository.All.Where(x => x.Ativo);
 
         private CertificadoRetornoVM EnviaCertificadoEmissaoNFE(CertificadoDigital entity)
         {
@@ -54,6 +58,14 @@ namespace Fly01.Faturamento.BL
         public CertificadoDigital ProcessEntity(CertificadoDigital entity)
         {
             var ambiente = GetEntidade(true);
+
+            #region ResgataDadosEmpresa
+
+            entity.Cnpj = empresa.CNPJ;
+            entity.UF = empresaUF;
+            entity.InscricaoEstadual = empresa.InscricaoEstadual;
+
+            #endregion
 
             entity.Md5 = Base64Helper.CalculaMD5Hash(entity.Certificado);
 
@@ -78,7 +90,6 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             string estadoNome = empresa.EstadoNome;
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
 
@@ -109,46 +120,46 @@ namespace Fly01.Faturamento.BL
 
             return empresaNfe;
         }
-        
-        public string GetEntidade(TipoAmbiente tipoAmbiente)
-        {
-            string entidade;
-            var certificado = All.FirstOrDefault();
 
-            if (certificado == null)
-            {
-                throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
-            }
+        //public string GetEntidade(TipoAmbiente tipoAmbiente)
+        //{
+        //    string entidade;
+        //    var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
-            {
-                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
-                    certificado.EntidadeHomologacao:
-                    certificado.EntidadeProducao;
-            }
-            else
-            {
-                var retorno = RetornaEntidade();
-                entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
-                    retorno.Homologacao :
-                    retorno.Producao;
-            }
+        //    if (certificado == null)
+        //    {
+        //        throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
+        //    }
 
-            return entidade;
-        }
+        //    if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
+        //    {
+        //        entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+        //            certificado.EntidadeHomologacao :
+        //            certificado.EntidadeProducao;
+        //    }
+        //    else
+        //    {
+        //        var retorno = RetornaEntidade();
+        //        entidade = (tipoAmbiente == TipoAmbiente.Homologacao) ?
+        //            retorno.Homologacao :
+        //            retorno.Producao;
+        //    }
+
+        //    return entidade;
+        //}
 
         public EntidadeVM GetEntidade(bool postCertificado = false)
         {
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
-            if(certificado == null && !postCertificado)
+            if (certificado == null && !postCertificado)
             {
                 throw new BusinessException("Cadastre o seu Certificado Digital em Configurações");
             }
 
-            var parametros = ParametroTributarioBL.All.AsNoTracking().FirstOrDefault();
+            var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
-            var ambiente = parametros != null ? (TipoAmbiente)parametros.TipoAmbiente : TipoAmbiente.Homologacao;
+            var ambiente = parametros != null ? parametros.TipoAmbiente : TipoAmbiente.Homologacao;
             var retorno = new EntidadeVM();
 
             if (certificado != null && !string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
@@ -160,22 +171,22 @@ namespace Fly01.Faturamento.BL
             {
                 retorno = RetornaEntidade();
             }
-            retorno.EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.ToString());
+            retorno.EntidadeAmbiente = ambiente;
             return retorno;
         }
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var certificado = AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
-            
-            var ambiente = ParametroTributarioBL.AllWithoutPlataformaId.Where(x => x.PlataformaId == plataformaId).FirstOrDefault();
+            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa :  RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
+            var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+            var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             if (certificado == null || ambiente == null || plataformaId == null)
                 return null;
 
             var retorno = new EntidadeVM
             {
-                EntidadeAmbiente = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), ambiente.TipoAmbiente.ToString())
+                EntidadeAmbiente = ambiente.TipoAmbiente
             };
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
@@ -185,11 +196,17 @@ namespace Fly01.Faturamento.BL
             }
             else
             {
-                var entidades =  RetornaEntidade();
+                var entidades = RetornaEntidade();
                 retorno.Homologacao = entidades.Homologacao;
                 retorno.Producao = entidades.Producao;
             }
             return retorno;
+        }
+
+        public IQueryable<CertificadoDigital> CertificadoAtualValido()
+        {
+            //retorna conforme os dados atuais da empresa
+            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
         }
     }
 }

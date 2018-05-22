@@ -103,5 +103,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("cidade")]
         public virtual CidadeVM Cidade { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

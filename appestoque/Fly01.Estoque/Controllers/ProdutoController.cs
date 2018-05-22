@@ -12,6 +12,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Estoque.Controllers.Base;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -24,7 +25,7 @@ namespace Fly01.Estoque.Controllers
             ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo)";
             ExpandProperties = string.Concat(ExpandProperties, ",enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)");
 
-            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto";
+            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo";
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
@@ -34,7 +35,8 @@ namespace Fly01.Estoque.Controllers
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
                 tipoProduto = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
                 tipoProdutoCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description
+                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -122,8 +124,8 @@ namespace Fly01.Estoque.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
@@ -182,7 +184,7 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l3 m3 s12", Label = "Código" });
 
-            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras" });
+            config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l3 m3 s12", Label = "Código de barras", Value = "SEM GTIN" });
 
             config.Elements.Add(new SelectUI
             {
@@ -194,7 +196,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col l3 m3 s12",
@@ -207,7 +209,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col l3 m3 s12",
@@ -217,7 +219,7 @@ namespace Fly01.Estoque.Controllers
                 LabelId = "unidadeMedidaDescricao"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
                 Class = "col l9 m9 s12",
@@ -236,7 +238,7 @@ namespace Fly01.Estoque.Controllers
 
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cestId",
                 Class = "col l12 m12 s12",
@@ -246,7 +248,7 @@ namespace Fly01.Estoque.Controllers
                 PreFilter = "ncmId"
             });
 
-            config.Elements.Add(new AutocompleteUI()
+            config.Elements.Add(new AutoCompleteUI()
             {
                 Id = "enquadramentoLegalIPIId",
                 Class = "col s12",
@@ -267,9 +269,18 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col l3 m3 s12", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col l3 m3 s12", Label = "Valor Venda" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
+
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "codigoBarras",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
+                }
+            });
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
@@ -334,7 +345,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
@@ -354,7 +365,7 @@ namespace Fly01.Estoque.Controllers
                 Value = "0",
                 Required = true
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m3",

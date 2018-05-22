@@ -36,5 +36,14 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [MaxLength(32)]
         public string Md5 { get; set; }
+
+        [MaxLength(16)]
+        public string Cnpj { get; set; }
+
+        [MaxLength(18)]
+        public string InscricaoEstadual { get; set; }
+
+        [MaxLength(2)]
+        public string UF { get; set; }
     }
 }

@@ -4,11 +4,9 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
@@ -69,7 +67,7 @@ namespace Fly01.Compras.Controllers
             ExpandProperties = tempExpand;
 
             customFilters.AddParam("$filter", "fornecedor eq true");
-            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao");
+            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
 
             return customFilters;
         }
@@ -84,7 +82,8 @@ namespace Fly01.Compras.Controllers
                 email = x.Email,
                 telefone = string.IsNullOrEmpty(x.Telefone)
                     ? ""
-                    : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3")
+                    : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
+                registroFixo = x.RegistroFixo
             };
         }
 
@@ -106,8 +105,8 @@ namespace Fly01.Compras.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Fornecedor", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
@@ -166,7 +165,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s3 l2", Label = "CEP", MaxLength = 9 });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoId",
                 Class = "col s6 l3",
@@ -180,7 +179,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
                 Class = "col s6 l3",
@@ -206,7 +205,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
             config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
@@ -258,7 +257,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
 
             cfg.Content.Add(config);
 
@@ -281,7 +280,8 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Fornecedores", pConteudo));
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo);
+            return JsonResponseStatus.GetJson(arquivoVM);
         }
 
         public ContentResult FormModal()
@@ -310,59 +310,5 @@ namespace Fly01.Compras.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
-    }
-
-    // TODO: Alocar a classe ImportacaoArquivo em outro local
-    public class ImportacaoArquivo : GenericAppController
-    {
-        public JsonResult ImportaArquivo(string pdescricao, string pConteudo)
-        {
-            var arquivo = new
-            {
-                descricao = pdescricao,
-                conteudo = Base64Helper.CodificaBase64(pConteudo),
-                cadastro = "Pessoa",
-                md5 = Base64Helper.CalculaMD5Hash(pConteudo)
-            };
-
-            var arquivoRetorno = RestHelper.ExecutePostRequest<ArquivoVM>("arquivo", JsonConvert.SerializeObject(arquivo, JsonSerializerSetting.Default));
-
-            return JsonResponseStatus.GetJson(arquivoRetorno);
-        }
-    }
-
-    public class ArquivoVM
-    {
-        [JsonProperty("descricao")]
-        public string Descricao { get; set; }
-        [JsonProperty("conteudo")]
-        public string Conteudo { get; set; }
-        [JsonProperty("md5")]
-        public string MD5 { get; set; }
-        [JsonProperty("cadastro")]
-        public string Cadastro { get; set; }
-        [JsonProperty("totalProcessado")]
-        public string TotalProcessado { get; set; }
-        [JsonProperty("retorno")]
-        public string Retorno { get; set; }
-        [JsonProperty("plataformaId")]
-        public string PlataformaId { get; set; }
-        [JsonProperty("id")]
-        public string Id { get; set; }
-        [JsonProperty("dataInclusao")]
-        public string DataInclusao { get; set; }
-        [JsonProperty("dataAlteracao")]
-        public string DataAlteracao { get; set; }
-        [JsonProperty("dataExclusao")]
-        public string DataExclusao { get; set; }
-        [JsonProperty("usuarioInclusao")]
-        public string UsuarioInclusao { get; set; }
-        [JsonProperty("usuarioAlteracao")]
-        public string UsuarioAlteracao { get; set; }
-        [JsonProperty("usuarioExclusao")]
-        public string UsuarioExclusao { get; set; }
-        [JsonProperty("ativo")]
-        public string Ativo { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.Helpers;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
 {
@@ -29,6 +30,7 @@ namespace Fly01.Faturamento.BL
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected CondicaoParcelamentoBL CondicaoParcelamentoBL { get; set; }
+        protected FormaPagamentoBL FormaPagamentoBL { get; set; }
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
@@ -41,7 +43,8 @@ namespace Fly01.Faturamento.BL
                      PessoaBL pessoaBL,
                      CondicaoParcelamentoBL condicaoParcelamentoBL,
                      SubstituicaoTributariaBL substituicaoTributariaBL,
-                     NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL)
+                     NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL,
+                     FormaPagamentoBL formaPagamentoBL)
             : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
@@ -52,9 +55,10 @@ namespace Fly01.Faturamento.BL
             CondicaoParcelamentoBL = condicaoParcelamentoBL;
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
+            FormaPagamentoBL = formaPagamentoBL;
         }
 
-        public IQueryable<NFe> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<NFe> Everything => repository.All.Where(x => x.Ativo);
 
         public override void ValidaModel(NFe entity)
         {
@@ -128,11 +132,17 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
                     }
 
+                    if (parametros.TipoVersaoNFe != TipoVersaoNFe.v4)
+                    {
+                        throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
+                    }
+
                     var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
 
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
+                    var formaPagamento = FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == entity.FormaPagamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
                     var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
                     var NFeProdutos = NFeProdutoBL.AllIncluding(
@@ -144,19 +154,19 @@ namespace Fly01.Faturamento.BL
 
                     var totalNFe = CalculaTotalNFe(entity.Id, entity.ValorFrete);
 
-                    var destinoOperacao = EmissaoNFE.Domain.Enums.TipoDestinoOperacao.Interna;
+                    var destinoOperacao = TipoDestinoOperacao.Interna;
                     if (cliente.Estado != null && cliente.Estado.Sigla.ToUpper() == "EX" || (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla.ToUpper() : "") == "EX")
                     {
-                        destinoOperacao = EmissaoNFE.Domain.Enums.TipoDestinoOperacao.Exterior;
+                        destinoOperacao = TipoDestinoOperacao.Exterior;
                     }
                     else if (cliente.Estado != null && empresa.Cidade.Estado != null && (cliente.Estado.Sigla.ToUpper() != empresa.Cidade.Estado.Sigla.ToUpper()))
                     {
-                        destinoOperacao = EmissaoNFE.Domain.Enums.TipoDestinoOperacao.Interestadual;
+                        destinoOperacao = TipoDestinoOperacao.Interestadual;
                     }
-                    var formPag = EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.Outros;
+                    var formPag = FormaPagamentoEmissaoNFE.Outros;
                     if (condicaoParcelamento != null)
                     {
-                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.AVista : EmissaoNFE.Domain.Enums.FormaPagamentoEmissaoNFE.APrazo;
+                        formPag = (condicaoParcelamento.QtdParcelas == 1 || condicaoParcelamento.CondicoesParcelamento == "0") ? FormaPagamentoEmissaoNFE.AVista : FormaPagamentoEmissaoNFE.APrazo;
                     }
 
                     var itemTransmissao = new ItemTransmissaoVM();
@@ -167,23 +177,22 @@ namespace Fly01.Faturamento.BL
                     {
                         CodigoUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? int.Parse(empresa.Cidade.Estado.CodigoIbge) : 0) : 0,
                         NaturezaOperacao = entity.NaturezaOperacao,
-                        FormaPagamento = formPag,
                         ModeloDocumentoFiscal = 55,
                         Serie = int.Parse(serieNotaFiscal.Serie),
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = DateTime.Now,
                         EntradaSaida = DateTime.Now,
-                        TipoDocumentoFiscal = EmissaoNFE.Domain.Enums.TipoNota.Saida,
+                        TipoDocumentoFiscal = TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
-                        ImpressaoDANFE = EmissaoNFE.Domain.Enums.TipoImpressaoDanfe.Retrato,
+                        ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
                         ChaveAcessoDV = 0,
                         CodigoNF = entity.NumNotaFiscal.Value.ToString(),
                         Ambiente = parametros.TipoAmbiente,
-                        FinalidadeEmissaoNFe = EmissaoNFE.Domain.Enums.TipoFinalidadeEmissaoNFe.Normal,
+                        FinalidadeEmissaoNFe = TipoFinalidadeEmissaoNFe.Normal,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
-                        PresencaComprador = EmissaoNFE.Domain.Enums.TipoPresencaComprador.Presencial,
-                        Versao = "2.77",
+                        PresencaComprador = parametros.TipoPresencaComprador,
+                        Versao = "2.78",//versao do TSS
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
@@ -196,7 +205,7 @@ namespace Fly01.Faturamento.BL
                         Nome = empresa.RazaoSocial,
                         NomeFantasia = empresa.NomeFantasia,
                         InscricaoEstadual = empresa.InscricaoEstadual,
-                        CRT = EmissaoNFE.Domain.Enums.CRT.SimplesNacional,
+                        CRT = CRT.SimplesNacional,
                         Endereco = new Endereco()
                         {
                             Bairro = empresa.Bairro,
@@ -216,8 +225,9 @@ namespace Fly01.Faturamento.BL
                     {
                         Cnpj = cliente.TipoDocumento == "J" ? cliente.CPFCNPJ : null,
                         Cpf = cliente.TipoDocumento == "F" ? cliente.CPFCNPJ : null,
-                        IndInscricaoEstadual = (EmissaoNFE.Domain.Enums.IndInscricaoEstadual)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.IndInscricaoEstadual), cliente.TipoIndicacaoInscricaoEstadual.ToString()),
+                        IndInscricaoEstadual = (IndInscricaoEstadual)System.Enum.Parse(typeof(IndInscricaoEstadual), cliente.TipoIndicacaoInscricaoEstadual.ToString()),
                         InscricaoEstadual = cliente.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? cliente.InscricaoEstadual : null,
+                        IdentificacaoEstrangeiro = null,
                         Nome = cliente.Nome,
                         Endereco = new Endereco()
                         {
@@ -236,7 +246,7 @@ namespace Fly01.Faturamento.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (EmissaoNFE.Domain.Enums.ModalidadeFrete)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.ModalidadeFrete), entity.TipoFrete.ToString())
+                        ModalidadeFrete = (ModalidadeFrete)System.Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString())
                     };
                     if (transportadora != null)
                     {
@@ -276,18 +286,18 @@ namespace Fly01.Faturamento.BL
                             CFOP = item.GrupoTributario.Cfop.Codigo,
                             Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop.Codigo.ToString()) : item.Produto.CodigoProduto,
                             Descricao = item.Produto.Descricao,
-                            GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? null : item.Produto.CodigoBarras,
-                            GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? null : item.Produto.CodigoBarras,
+                            GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
+                            GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
                             NCM = item.Produto.Ncm != null ? item.Produto.Ncm.Codigo : null,
-                            Quantidade = item.Quantidade.ToString(),
-                            QuantidadeTributada = item.Quantidade.ToString(),
+                            Quantidade = item.Quantidade,
+                            QuantidadeTributada = item.Quantidade,
                             UnidadeMedida = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
                             UnidadeMedidaTributada = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
                             ValorBruto = (item.Quantidade * item.Valor),
                             ValorUnitario = item.Valor,
                             ValorUnitarioTributado = item.Valor,
                             ValorDesconto = item.Desconto,
-                            AgregaTotalNota = EmissaoNFE.Domain.Enums.CompoemValorTotal.Compoe,
+                            AgregaTotalNota = CompoemValorTotal.Compoe,
                             CEST = item.Produto.Cest != null ? item.Produto.Cest.Codigo : null,
                             ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
                         };
@@ -301,7 +311,7 @@ namespace Fly01.Faturamento.BL
 
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
-                            OrigemMercadoria = EmissaoNFE.Domain.Enums.OrigemMercadoria.Nacional,
+                            OrigemMercadoria = OrigemMercadoria.Nacional,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
@@ -315,9 +325,9 @@ namespace Fly01.Faturamento.BL
 
                             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
                             {
-                                detalhe.Imposto.ICMS.ModalidadeBC = EmissaoNFE.Domain.Enums.ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
+                                detalhe.Imposto.ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
-                                detalhe.Imposto.ICMS.ModalidadeBCST = EmissaoNFE.Domain.Enums.ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                                detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                             }
                         }
                         if (itemTributacao.CalculaST)
@@ -329,16 +339,18 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
                             
-                            if (versao == "4.0")
+                            if (versao == "4.00")
                             {
                                 // FCP (201, 202, 203 e 900)
                                 detalhe.Imposto.ICMS.BaseFCPST = Math.Round(itemTributacao.FCPSTBase, 2);
                                 detalhe.Imposto.ICMS.AliquotaFCPST = Math.Round(itemTributacao.FCPSTAliquota, 2);
                                 detalhe.Imposto.ICMS.ValorFCPST = Math.Round(itemTributacao.FCPSTValor, 2);
                                 // FCP (500)
+                                var AliquotaFCPSTRetido = item.ValorBCFCPSTRetidoAnterior > 0 ? Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2) : 0;
                                 detalhe.Imposto.ICMS.BaseFCPSTRetido = Math.Round(item.ValorBCFCPSTRetidoAnterior, 2);
-                                detalhe.Imposto.ICMS.AliquotaFCPSTRetido = item.ValorBCFCPSTRetidoAnterior > 0 ? Math.Round(((item.ValorFCPSTRetidoAnterior / item.ValorBCFCPSTRetidoAnterior) * 100), 2) : 0;
+                                detalhe.Imposto.ICMS.AliquotaFCPSTRetido = AliquotaFCPSTRetido;
                                 detalhe.Imposto.ICMS.ValorFCPSTRetido = Math.Round(item.ValorFCPSTRetidoAnterior, 2);
+                                detalhe.Imposto.ICMS.AliquotaConsumidorFinal = itemTributacao.STAliquota > 0 ? Math.Round(itemTributacao.STAliquota, 2) + AliquotaFCPSTRetido : 0;
                             }
                         }
 
@@ -347,8 +359,8 @@ namespace Fly01.Faturamento.BL
                             detalhe.Imposto.IPI = new IPIPai()
                             {
                                 CodigoST = item.GrupoTributario.TipoTributacaoIPI.HasValue ?
-                                    (EmissaoNFE.Domain.Enums.CSTIPI)System.Enum.Parse(typeof(EmissaoNFE.Domain.Enums.CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
-                                    EmissaoNFE.Domain.Enums.CSTIPI.OutrasSaidas,
+                                    (CSTIPI)System.Enum.Parse(typeof(CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
+                                    CSTIPI.OutrasSaidas,
                                 ValorIPI = itemTributacao.IPIValor,
                                 CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI != null ?
                                     item.Produto.EnquadramentoLegalIPI.Codigo :
@@ -362,8 +374,8 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.PIS = new PISPai()
                         {
                             CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ?
-                                (EmissaoNFE.Domain.Enums.CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
-                                EmissaoNFE.Domain.Enums.CSTPISCOFINS.IsentaDaContribuicao,
+                                (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
+                                CSTPISCOFINS.IsentaDaContribuicao,
                         };
 
                         if (itemTributacao.CalculaPIS)
@@ -384,8 +396,8 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.COFINS = new COFINSPai()
                         {
                             CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ?
-                                ((EmissaoNFE.Domain.Enums.CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
-                                EmissaoNFE.Domain.Enums.CSTPISCOFINS.OutrasOperacoes
+                                ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
+                                CSTPISCOFINS.OutrasOperacoes
                         };
 
                         if (itemTributacao.CalculaCOFINS)
@@ -423,6 +435,7 @@ namespace Fly01.Faturamento.BL
                             ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                             ValorSeguro = 0,
                             SomatorioIPI = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
+                            SomatorioIPIDevolucao = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
                             SomatorioPis = itemTransmissao.Detalhes.Sum(y => y.Imposto.PIS.ValorPIS),
                             //+(itemTransmissao.Detalhes.Select(x => x.Imposto.PISST).Any(x => x != null) ? itemTransmissao.Detalhes.Where(x => x.Imposto.PISST != null).Sum(y => y.Imposto.PISST.ValorPISST) : 0),
                             SomatorioProdutos = itemTransmissao.Detalhes.Sum(x => x.Produto.ValorBruto),
@@ -448,6 +461,20 @@ namespace Fly01.Faturamento.BL
                         itemTransmissao.Total.ICMSTotal.SomatorioIPI +
                         itemTransmissao.Total.ICMSTotal.SomatorioFCPST) -
                         itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
+                    #endregion
+
+                    #region Pagamento
+                    itemTransmissao.Pagamento = new Pagamento()
+                    {
+                        DetalhesPagamentos = new List<DetalhePagamento>()
+                        {
+                            new DetalhePagamento()
+                            {
+                                TipoFormaPagamento = formaPagamento != null ? formaPagamento.TipoFormaPagamento : TipoFormaPagamento.Outros,
+                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                            }
+                        }
+                    };
                     #endregion
 
                     if (!string.IsNullOrEmpty(parametros.MensagemPadraoNota))
@@ -479,6 +506,8 @@ namespace Fly01.Faturamento.BL
 
                     entity.Mensagem = null;
                     entity.Recomendacao = null;
+                    entity.XML = null;
+                    entity.PDF = null;
 
                     var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal), null, header);
                     var retorno = response.Notas.FirstOrDefault();

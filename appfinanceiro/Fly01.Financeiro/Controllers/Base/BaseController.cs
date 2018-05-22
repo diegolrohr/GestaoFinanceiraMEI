@@ -45,7 +45,7 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 Elements = new List<BaseUI>()
                     {
-                        new LabelsetUI {
+                        new LabelSetUI {
                             Class = "col s12",
                             Id = "underconstruction",
                             Name = "underconstruction",

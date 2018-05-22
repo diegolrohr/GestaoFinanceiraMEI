@@ -33,13 +33,14 @@ namespace Fly01.Financeiro.Controllers
                 contaReceberId = x.ContaReceberId,
                 contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
+                nossoNumero = x.NossoNumero,
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
-                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy")
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
             };
         }
 
@@ -194,7 +195,7 @@ namespace Fly01.Financeiro.Controllers
                 }
 
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-                
+
                 var nomeArquivo = $"{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
                 Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
@@ -225,6 +226,8 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult Form()
         {
+            #region Headers
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -285,13 +288,16 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI() { DomEvent = "click", Function = "fnShowListCnab" }
                 }
             });
+            cfg.Content.Add(configCnab);
+
+            #endregion
 
             #region CnabItem
             var dtConfig = new DataTableUI
             {
                 Id = "dtCnabItem",
                 UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
-                UrlFunctions = Url.Action("Functions", "CnabItem", null, Request.Url.Scheme) + "?fns=",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
@@ -305,7 +311,6 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
             #endregion
 
-            cfg.Content.Add(configCnab);
             cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -334,7 +339,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum", "fnImprimirBoleto" },
+                Functions = new List<string> { "fnFormReadyCnab" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
@@ -345,13 +350,15 @@ namespace Fly01.Financeiro.Controllers
                 DataField = "status",
                 DisplayName = "Status",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))),
-                Priority = 1,
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }",
+                Priority = 6,
+                Width = "12%",
+                RenderFn = "fnRenderEnum"
             });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nº boleto", Priority = 6 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "function(data, type, full, meta) { fnImprimirBoleto(full); }" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
 
             cfg.Content.Add(dtConfig);
 

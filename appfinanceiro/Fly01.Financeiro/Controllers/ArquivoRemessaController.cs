@@ -25,7 +25,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 id = x.Id,
                 descricao = x.Descricao,
-                valorTotal = x.ValorTotal,
+                valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
                 dataExportacao = x.DataExportacao.ToString("dd/MM/yyyy"),
                 totalBoletos = x.TotalBoletos,
                 status = x.StatusArquivoRemessa

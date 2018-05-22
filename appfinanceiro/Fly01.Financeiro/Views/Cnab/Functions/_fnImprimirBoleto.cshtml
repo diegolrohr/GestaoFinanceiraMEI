@@ -15,21 +15,19 @@
     };
 
     function createForm(row) {
-        var action = "@Url.Action("Edit", "Cnab")" + "/{" + row.id + "}";
-
         var formAttr = {
-            "method": "GET", "action": action,
+            "method": "GET",
+            "action": "@Url.Action("Edit", "Cnab")" + "/{" + row.id + "}",
             "class": "cnabForm valign-wrapper right col s12"
-        }
-
-        return createElem("form", formAttr,[ //Inner Content
+        };
+        return createElem("form", formAttr,[
             inputHiddenId("contaReceberId", row.contaReceberId),
             inputHiddenId("contaBancariaId", row.contaBancariaId),
             submitButton()
         ]);
     };
 
-    function fnImprimirBoleto(row) {
+    function fnImprimirBoleto(data, type, row, meta) {
         return createForm(row).outerHTML;
     };
 
@@ -49,7 +47,7 @@
                 dataType: "json",
                 url: '@Url.Action("ImprimeBoleto", "Cnab")',
                 contentType: "application/json",
-                data: { contaReceberId: contaReceberId, contaBancariaId: contaBancariaId },
+                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: that.serializeObject().contaBancariaId },
                 success: function success(data) {
                     if (data.success) {
                         var strMsg = "Boleto emitido com sucesso.";

@@ -54,7 +54,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\CnabItem\Functions\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />
     <Compile Include="Controllers\ArquivoRemessaController.cs" />
@@ -327,7 +329,6 @@
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
-    <Content Include="Views\CnabItem\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />

@@ -17,11 +17,11 @@ namespace Fly01.Estoque.Controllers
             {
                 id = x.Id.ToString(),
                 numero = x.Numero,
-                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 descricao = x.Descricao,
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
-                diasVencidos = x.DiasVencidos,
+                nossoNumero = x.Numero,
                 valorPago = x.ValorPago
             };
         }

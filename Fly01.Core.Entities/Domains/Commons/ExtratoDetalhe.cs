@@ -14,6 +14,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonProperty("data")]
         public DateTime DataMovimento { get; set; }
 
+        [JsonIgnore]
+        public DateTime DataInclusao { get; set; }
+
         [JsonProperty("descricaoLancamento")]
         public string DescricaoLancamento { get; set; }
 

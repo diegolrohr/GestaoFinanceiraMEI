@@ -19,6 +19,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         [XmlElement("vBCSTRet")]
         public double ValorBCSTRetido { get; set; }
 
+        [XmlIgnore]
+        public double AliquotaConsumidorFinal { get; set; }
+        //Ele é composto pela soma das tags pFCPSTRet e pICMSST
+        [XmlElement(ElementName = "pST")]
+        public string AliquotaConsumidorFinalString
+        {
+            get
+            {
+                return AliquotaConsumidorFinal.ToString("0.00").Replace(",", ".");
+            }
+            set { AliquotaConsumidorFinal = double.Parse(value); }
+        }
+
         [XmlElement("vICMSSTRet")]
         public double ValorICMSSTRetido { get; set; }
         
@@ -51,7 +64,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeAliquotaFCPSTRetidoString()
         {
-            return AliquotaFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+            return AliquotaFCPSTRetido.HasValue && AliquotaFCPSTRetido.Value > 0;
         }
 
         [XmlIgnore]
@@ -67,7 +80,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         }
         public bool ShouldSerializeValorFCPSTRetidoString()
         {
-            return ValorFCPSTRetido.HasValue && BaseFCPSTRetido.Value > 0;
+            return ValorFCPSTRetido.HasValue && ValorFCPSTRetido.Value > 0;
         }
     }
 }

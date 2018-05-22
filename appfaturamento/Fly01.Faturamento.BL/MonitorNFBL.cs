@@ -30,7 +30,7 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.AllWithoutPlataformaId.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.BL
                         foreach (var itemNF in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfe = NFeBL.AllWithoutPlataformaId.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                            var nfe = NFeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
                             if (nfe != null)
                             {
                                 nfe.Mensagem = null;
@@ -81,7 +81,7 @@ namespace Fly01.Faturamento.BL
                             }
                             else
                             {
-                                var nfse = NFSeBL.AllWithoutPlataformaId.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                                var nfse = NFSeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
                                 if (nfse != null)
                                 {
                                     nfse.Mensagem = null;

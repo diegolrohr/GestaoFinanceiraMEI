@@ -5,8 +5,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class FluxoCaixaProjecao
     {
-        [JsonProperty("data")]
+        [JsonIgnore]
         public DateTime Data { get; set; }
+
+        [JsonProperty("label")]
+        public string Label { get; set; }
 
         [JsonProperty("totalRecebimentos")]
         public double TotalRecebimentos { get; set; }

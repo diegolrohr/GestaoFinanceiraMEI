@@ -37,7 +37,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                     using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                     {
-                        var plataformasNotificacoes = unitOfWork.ConfiguracaoNotificacaoBL.AllWithoutPlataformaId.Where(
+                        var plataformasNotificacoes = unitOfWork.ConfiguracaoNotificacaoBL.Everything.Where(
                             x => x.DiaSemana == DateTime.Today.DayOfWeek && (x.NotificaViaEmail || x.NotificaViaSMS)).ToList();
 
                         foreach (var item in plataformasNotificacoes.ToList())

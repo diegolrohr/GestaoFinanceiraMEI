@@ -140,6 +140,14 @@ namespace Fly01.Financeiro.BL
             base.Update(entity);
         }
 
+        public override void Delete(ContaReceber entityToDelete)
+        {
+            contaFinanceiraBaixaBL.All.Where(x => x.ContaFinanceiraId == entityToDelete.Id).OrderBy(x => x.DataInclusao).ToList()
+                .ForEach(itemBaixa => { contaFinanceiraBaixaBL.Delete(itemBaixa); });
+
+            base.Delete(entityToDelete);
+        }
+
         public static Error RepeticoesInvalidas = new Error("Número de repetições inválido. Somente até 48 Meses (4 Anos / 208 Semanas).");
         public static Error AlteracaoCondicaoParcelamento = new Error("Não é permitido alterar a condição de parcelamento.");
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");

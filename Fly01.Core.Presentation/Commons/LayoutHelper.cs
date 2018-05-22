@@ -5,6 +5,7 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
+        private static string localUrl = "http://poad257.poa01.local:8000";
         private static string cdnUrl = "https://cdnfly01.azureedge.net";
         private static string cdnVersion = "1.1.1";
 
@@ -17,7 +18,7 @@ namespace Fly01.Core.Presentation.Commons
                 "<base href=\"~/\" />" +
                 $"<link rel=\"icon\" type=\"image/ico\" href=\"{cdnUrl}/img/fly01icon.ico\" />" +
                 $"<link type=\"text/css\" rel=\"stylesheet\" href=\"{cdnUrl}/fly/{cdnVersion}/fly01ui.css\" />"
-                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"http://poad257.poa01.local:8000/{cdnVersion}/fly01ui.css\" />"
+                //$"<link type=\"text/css\" rel=\"stylesheet\" href=\"{localUrl}/{cdnVersion}/fly01ui.css\" />"
             );
         }
 
@@ -25,7 +26,7 @@ namespace Fly01.Core.Presentation.Commons
         {
             return new HtmlString(
                 $"<script src=\"{cdnUrl}/fly/{cdnVersion}/fly01ui.min.js\"></script>"
-                //$"<script src=\""http://poad257.poa01.local:8000/{cdnVersion}/fly01ui.js\"></script>"
+                //$"<script src=\"{localUrl}/{cdnVersion}/fly01ui.js\"></script>"
             );
         }
     }

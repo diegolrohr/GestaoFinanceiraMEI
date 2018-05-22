@@ -3,7 +3,6 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using System.Linq;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
@@ -20,12 +19,6 @@ namespace Fly01.Financeiro.BL
             //this.contaPagarBL = contaPagarBL;
             //this.contaReceberBL = contaReceberBL;
             this.contaFinanceiraBL = contaFinanceiraBL;
-        }
-
-        public override void Insert(Categoria entity)
-        {
-            ValidaModel(entity);
-            base.Insert(entity);
         }
 
         public override void Update(Categoria entity)

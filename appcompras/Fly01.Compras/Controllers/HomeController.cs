@@ -51,10 +51,11 @@ namespace Fly01.Compras.Controllers
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"},
-                    new LinkUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")}
+                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

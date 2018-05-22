@@ -2,9 +2,6 @@
 using System.Web.OData.Routing;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Fly01.Core.Notifications;
-using System.Web.Http.ModelBinding;
-using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api

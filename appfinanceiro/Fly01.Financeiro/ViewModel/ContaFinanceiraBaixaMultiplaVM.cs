@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System.Collections.Generic;

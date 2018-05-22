@@ -130,6 +130,10 @@
     <Compile Include="Migrations\201805142123363_AlterPlataformaBaseRegistroFixo.Designer.cs">
       <DependentUpon>201805142123363_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805152119147_AlterNCMInativo.cs" />
+    <Compile Include="Migrations\201805152119147_AlterNCMInativo.Designer.cs">
+      <DependentUpon>201805152119147_AlterNCMInativo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -206,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805142123363_AlterPlataformaBaseRegistroFixo.resx">
       <DependentUpon>201805142123363_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152119147_AlterNCMInativo.resx">
+      <DependentUpon>201805152119147_AlterNCMInativo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

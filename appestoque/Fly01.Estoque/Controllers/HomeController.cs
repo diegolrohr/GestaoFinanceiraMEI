@@ -54,17 +54,17 @@ namespace Fly01.Estoque.Controllers
                 {
                     new InputDateUI { Id =  "dataInicial", Class = "col s6 m3 l4", Label = "Data Inicial", Value= dataInicialFiltroDefault.ToString("dd/MM/yyyy")},
                     new InputDateUI { Id =  "dataFinal", Class = "col s6 m3 l4", Label = "Data Final", Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy")},
-                    new ButtongroupUI()
+                    new ButtonGroupUI()
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m6 l4",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "dia", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "semana", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "mes", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "dia", Label = "Dia"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "semana", Label = "Semana"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "mes", Label = "Mês"}
                         }
                     }
                 }
@@ -75,7 +75,7 @@ namespace Fly01.Estoque.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Produtos"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Produtos"}
                 }
 
             });
@@ -226,10 +226,11 @@ namespace Fly01.Estoque.Controllers
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"},
-                    new LinkUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")}
+                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

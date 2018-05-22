@@ -42,7 +42,7 @@ namespace Fly01.Estoque.Controllers.Base
             config.Content.Add(new FormUI
             {
                 Elements = new List<BaseUI>{
-                        new LabelsetUI
+                        new LabelSetUI
                         {
                             Class = "col s12",
                             Id = "underconstruction",

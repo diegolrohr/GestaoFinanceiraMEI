@@ -84,7 +84,7 @@ namespace Fly01.Compras.Controllers
                     UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodpickerUI()
+                        new PeriodPickerUI()
                         {
                            Label= "Selecione o período",
                            Id= "mesPicker",

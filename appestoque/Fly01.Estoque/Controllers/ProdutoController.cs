@@ -196,7 +196,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col l3 m3 s12",
@@ -209,7 +209,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col l3 m3 s12",
@@ -219,7 +219,7 @@ namespace Fly01.Estoque.Controllers
                 LabelId = "unidadeMedidaDescricao"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "ncmId",
                 Class = "col l9 m9 s12",
@@ -238,7 +238,7 @@ namespace Fly01.Estoque.Controllers
 
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cestId",
                 Class = "col l12 m12 s12",
@@ -248,7 +248,7 @@ namespace Fly01.Estoque.Controllers
                 PreFilter = "ncmId"
             });
 
-            config.Elements.Add(new AutocompleteUI()
+            config.Elements.Add(new AutoCompleteUI()
             {
                 Id = "enquadramentoLegalIPIId",
                 Class = "col s12",
@@ -269,7 +269,7 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col l3 m3 s12", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col l3 m3 s12", Label = "Valor Venda" });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 
@@ -345,7 +345,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
@@ -365,7 +365,7 @@ namespace Fly01.Estoque.Controllers
                 Value = "0",
                 Required = true
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m3",

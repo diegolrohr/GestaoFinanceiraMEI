@@ -256,7 +256,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
             configCnab.Elements.Add(new InputHiddenUI { Id = "id" });
-            configCnab.Elements.Add(new AutocompleteUI
+            configCnab.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m6 l6",
@@ -265,7 +265,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
-            configCnab.Elements.Add(new AutocompleteUI
+            configCnab.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 m6 l6",

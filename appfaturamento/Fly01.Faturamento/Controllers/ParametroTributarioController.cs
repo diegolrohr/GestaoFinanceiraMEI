@@ -125,7 +125,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
 
             };
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
                 }
 
             };
@@ -224,11 +224,11 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new TextareaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });
+            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });
 
             #region NFS
             ////Paramentro NFS
-            //config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
+            //config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
 
             //config.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12", Label = "Incentivo à Cultura" });
 

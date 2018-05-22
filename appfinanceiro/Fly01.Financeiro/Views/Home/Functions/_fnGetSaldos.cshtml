@@ -1,15 +1,15 @@
 ﻿<script>
-    function getSaldos(dataInicial, dataFinal) {
-        var inicial = isValidDate(dataInicial.toString()) ? dataInicial : formatDate(dataInicial);
+    function getSaldos(dataFinal) {
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
 
         $.ajax({
-            url: "@Url.Action("LoadChangeSaldos", "FluxoCaixa")?dataInicial=" + inicial + "&dataFinal=" + final,
+            url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
             type: "GET",
             success: function (data) {
+                fly01._.fly01cardSA.info(data.SaldoAtual);
                 fly01._.fly01cardCP.info(data.TotalPagamentos);
                 fly01._.fly01cardCR.info(data.TotalRecebimentos);
-                fly01._.fly01cardSC.info(data.SaldoFinal);
+                fly01._.fly01cardSC.info(data.SaldoProjetado);
             },
             error: function (jXHR, textStatus) {
                 fly01.toast(textStatus, 'error');

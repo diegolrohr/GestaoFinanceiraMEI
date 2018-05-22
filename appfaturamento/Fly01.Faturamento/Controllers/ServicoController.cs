@@ -120,7 +120,7 @@ namespace Fly01.Faturamento.Controllers
             //{
             //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoServico", true, false))
             //});
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "nbsId",
                 Class = "col s12",
@@ -149,7 +149,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 

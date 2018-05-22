@@ -13,7 +13,6 @@ using Fly01.uiJS.Classes.Helpers;
 using System.Text.RegularExpressions;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
-using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 
@@ -130,7 +129,7 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12 m6",
@@ -140,7 +139,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "clienteNome",
                 DataUrlPost = Url.Action("PostCliente")
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
                 Class = "col s12 m6",
@@ -150,7 +149,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
             #region step Produtos
@@ -184,7 +183,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Financeiro
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -194,7 +193,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -204,7 +203,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -217,7 +216,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -246,7 +245,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Placa Veículo",
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
                 Class = "col s12 m4",

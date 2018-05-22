@@ -154,7 +154,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTimeUI { Id = "horaEnvio", Class = "col s12 m6", Label = "Horário de envio", Required = true, });
             config.Elements.Add(new InputTelUI { Id = "contatoDestino", Class = "col s12 m6", Label = "Celular destino", Required = true, MaxLength = 20 });
             config.Elements.Add(new InputEmailUI { Id = "emailDestino", Class = "col s12 m6", Label = "E-mail destino", Required = true, MaxLength = 70 });
-            config.Elements.Add(new StatictextUI
+            config.Elements.Add(new StaticTextUI
             {
                 Id = "textInfo",
                 Class = "col s12",

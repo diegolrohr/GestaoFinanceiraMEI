@@ -47,7 +47,7 @@ namespace Fly01.Faturamento.Controllers.Base
             {
                 Elements = new List<BaseUI>()
                     {
-                        new LabelsetUI()
+                        new LabelSetUI()
                         {
                             Class = "col s12",
                             Id = "underconstruction",

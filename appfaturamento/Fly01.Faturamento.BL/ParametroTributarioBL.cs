@@ -7,6 +7,8 @@ using System.Linq;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Notifications;
+using Fly01.Core.Reports;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.BL
@@ -16,11 +18,13 @@ namespace Fly01.Faturamento.BL
         private readonly Dictionary<string, string> _queryString;
         private readonly Dictionary<string, string> _header;
         private ManagerEmpresaVM empresa;
+        private string empresaUF;
         protected EntidadeBL EntidadeBL { get; set; }
 
         public ParametroTributarioBL(AppDataContextBase context, EntidadeBL entidadeBL) : base(context)
         {
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             EntidadeBL = entidadeBL;
             _queryString = AppDefaults.GetQueryStringDefault();
             _header = new Dictionary<string, string>
@@ -79,19 +83,17 @@ namespace Fly01.Faturamento.BL
                 }
             }
         }
-        public bool IsValid(ParametroTributario parametro = null)
+        
+        public IQueryable<ParametroTributario> ParametroAtualValido()
         {
-
-            var dadosEmpresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
-            var empresaCNPJ = dadosEmpresa.CNPJ;
-            var empresaIE = dadosEmpresa.InscricaoEstadual;
-            var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
-
-            if (parametro == null)
-                parametro = All.FirstOrDefault();
-
-            return (parametro != null) && ((empresaCNPJ == parametro.Cnpj && empresaIE == parametro.InscricaoEstadual && empresaUF == parametro.UF));
+            //retorna conforme os dados atuais da empresa
+            return All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).AsQueryable();
         }
 
+        public override void ValidaModel(ParametroTributario entity)
+        {
+            entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
+            base.ValidaModel(entity);
+        }
     }
 }

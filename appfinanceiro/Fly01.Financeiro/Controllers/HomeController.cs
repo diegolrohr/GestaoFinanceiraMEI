@@ -218,6 +218,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new DataTableUI
             {
+                Id = "dtGridFluxoCaixa",
                 Class = "col s12",
                 UrlGridLoad = Url.Action("LoadGridFluxoCaixa", "FluxoCaixa"),
                 Parameters = new List<DataTableUIParameter>
@@ -228,7 +229,8 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Options = new DataTableUIConfig()
                 {
-                    PageLength = 10
+                    PageLength = 10,
+                    LengthChange = true
                 },
                 Columns = new List<DataTableUIColumn>
                 {
@@ -289,10 +291,11 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"},
-                    new LinkUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")}
+                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")});
             #endregion
 
             #region User Menu Items

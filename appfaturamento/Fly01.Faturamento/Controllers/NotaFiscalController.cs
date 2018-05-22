@@ -95,7 +95,7 @@ namespace Fly01.Faturamento.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodpickerUI
+                        new PeriodPickerUI
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",

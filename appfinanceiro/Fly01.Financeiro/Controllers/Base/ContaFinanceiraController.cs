@@ -507,7 +507,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 l6", Label = "Data", Required = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valor", Class = "col s12 l6", Label = "Valor", Required = true });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
@@ -519,7 +519,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 DataPostField = "nomeConta",
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -544,7 +544,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s12 m4 l3", Label = "Número", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m8 l9", Label = "Descrição", Disabled = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 m6 l6",
@@ -553,7 +553,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 DataUrl = @Url.Action("Pessoa", "AutoComplete"),
                 LabelId = "pessoaNome"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6 l6",
@@ -575,7 +575,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeVencimento" }
                 }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6 l6",
@@ -584,7 +584,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 DataUrl = @Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6 l6",
@@ -594,11 +594,11 @@ namespace Fly01.Financeiro.Controllers.Base
                 LabelId = "condicaoParcelamentoDescricao"
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
             #endregion
 
             #region Relação Baixas
-            config.Elements.Add(new LabelsetUI { Id = "relacaoBaixaLabel", Class = "col s12", Label = "Relação de baixas" });
+            config.Elements.Add(new LabelSetUI { Id = "relacaoBaixaLabel", Class = "col s12", Label = "Relação de baixas" });
 
             config.Elements.Add(new TableUI
             {
@@ -617,7 +617,7 @@ namespace Fly01.Financeiro.Controllers.Base
             #endregion
 
             #region Dados Renegociação
-            config.Elements.Add(new LabelsetUI { Id = "dadosRenegociacaoLabel", Class = "col s12", Label = "Dados da renegociação" });
+            config.Elements.Add(new LabelSetUI { Id = "dadosRenegociacaoLabel", Class = "col s12", Label = "Dados da renegociação" });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoRenegociacaoValorDiferenca",
@@ -645,8 +645,8 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputFloatUI { Id = "valorDiferenca", Class = "col s12 m6", Label = "Valor Diferença ", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFinal", Class = "col s12 m6", Label = "Valor Final ", Disabled = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "lblRenegociacaoOrigem", Class = "col s12", Label = "Contas originais renegociadas" });
-            config.Elements.Add(new LabelsetUI { Id = "lblRenegociacaoRenegociadas", Class = "col s12", Label = "Contas geradas pela renegociação" });
+            config.Elements.Add(new LabelSetUI { Id = "lblRenegociacaoOrigem", Class = "col s12", Label = "Contas originais renegociadas" });
+            config.Elements.Add(new LabelSetUI { Id = "lblRenegociacaoRenegociadas", Class = "col s12", Label = "Contas geradas pela renegociação" });
             config.Elements.Add(new TableUI
             {
                 Id = "datatableRenegociacaoRelacionamento",

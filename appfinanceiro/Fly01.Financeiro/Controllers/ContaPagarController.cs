@@ -202,7 +202,7 @@ namespace Fly01.Financeiro.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodpickerUI()
+                        new PeriodPickerUI()
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",
@@ -329,7 +329,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoParcela" });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -366,7 +366,7 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI { DomEvent = "change", Function = "fnChangeVencimento" }
                 }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -377,7 +377,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -388,7 +388,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 l6",
@@ -399,7 +399,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
             });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             config.Elements.Add(new InputCheckboxUI
             {
@@ -492,7 +492,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "renegociacaoPessoaId",
                 Class = "col s12 m10 l10",
@@ -515,7 +515,7 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnListaTitulosCP" }
                 }
             });
-            config.Elements.Add(new LabelsetUI { Id = "selecaoTitulosLabel", Class = "col s12", Label = "Seleção das contas" });
+            config.Elements.Add(new LabelSetUI { Id = "selecaoTitulosLabel", Class = "col s12", Label = "Seleção das contas" });
 
             cfg.Content.Add(config);
 
@@ -558,7 +558,7 @@ namespace Fly01.Financeiro.Controllers
             config2.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = "ContaPagar" });
             config2.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasIds" });
 
-            config2.Elements.Add(new LabelsetUI { Id = "informacoesRenegociacaoLabel", Class = "col s12", Label = "Informações da renegociação" });
+            config2.Elements.Add(new LabelSetUI { Id = "informacoesRenegociacaoLabel", Class = "col s12", Label = "Informações da renegociação" });
 
             config2.Elements.Add(new InputTextUI { Id = "motivo", Class = "col s12 m9 l9", Label = "Motivo", Required = true, MaxLength = 200 });
             config2.Elements.Add(new InputCurrencyUI { Id = "valorAcumulado", Class = "col s12 m3 l3", Label = "Valor Acumulado", Readonly = true });
@@ -606,12 +606,12 @@ namespace Fly01.Financeiro.Controllers
             });
             config2.Elements.Add(new InputCurrencyUI { Id = "valorFinal", Class = "col s12 m3 l3", Label = "Valor Final ", Readonly = true });
 
-            config2.Elements.Add(new LabelsetUI { Id = "informacoesNovoTituloLabel", Class = "col s12", Label = "Informações da nova conta a pagar" });
+            config2.Elements.Add(new LabelSetUI { Id = "informacoesNovoTituloLabel", Class = "col s12", Label = "Informações da nova conta a pagar" });
 
             config2.Elements.Add(new InputTextUI { Id = "descricaoRenegociacao", Class = "col s12 m6 l6", Label = "Descrição", Required = true, MaxLength = 200 });
             config2.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3 l3", Label = "Emissão", Required = true });
             config2.Elements.Add(new InputDateUI { Id = "dtVencimento", Class = "col s12 m3 l3", Label = "Vencimento", Required = true });
-            config2.Elements.Add(new AutocompleteUI
+            config2.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -622,7 +622,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
             });
-            config2.Elements.Add(new AutocompleteUI
+            config2.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -633,7 +633,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
             });
-            config2.Elements.Add(new AutocompleteUI
+            config2.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 l6",
@@ -666,7 +666,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "Id" });
             config.Elements.Add(new InputTextUI { Id = "Descricao", Class = "col s12 l3", Label = "Descrição" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "PessoaId",
                 Class = "col s8 l7",
@@ -679,7 +679,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "Valor", Class = "col s4 l2", Label = "Valor" });
             config.Elements.Add(new InputTextUI { Id = "Categoria", Class = "col s6 l6", Label = "Categoria" });
             config.Elements.Add(new InputTextUI { Id = "Banco", Class = "col s6 l6", Label = "Banco" });
-            config.Elements.Add(new TextareaUI { Id = "Observacao", Class = "col s12 l12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "Observacao", Class = "col s12 l12", Label = "Observação", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

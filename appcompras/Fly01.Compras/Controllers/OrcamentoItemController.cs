@@ -55,14 +55,14 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "orcamentoId" });
             config.Elements.Add(new InputHiddenUI { Id = "fornecedorNome" });
 
-            config.Elements.Add(new AutocompleteUI { Id = "fornecedorId", Class = "col s12 l6", Label = "Fornecedor", Required = true,
+            config.Elements.Add(new AutoCompleteUI { Id = "fornecedorId", Class = "col s12 l6", Label = "Fornecedor", Required = true,
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "itemFornecedorNome",
                 DataUrlPost = Url.Action("PostFornecedor", "Orcamento"),
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNomeFornecedor" } }
             });
 
-            config.Elements.Add(new AutocompleteUI { Id = "produtoId", Class = "col s12 l6", Label = "Produto", Required = true,
+            config.Elements.Add(new AutoCompleteUI { Id = "produtoId", Class = "col s12 l6", Label = "Produto", Required = true,
                 DataUrl = Url.Action("Produto", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),

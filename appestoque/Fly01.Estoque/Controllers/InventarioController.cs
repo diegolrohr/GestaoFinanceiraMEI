@@ -82,11 +82,11 @@ namespace Fly01.Estoque.Controllers
                 UrlFunctions = Url.Action("Functions", nomeCtrl, null, Request.Url.Scheme) + "?fns="
             };
 
-            formConfigInventarioItem.Elements.Add(new LabelsetUI { Id = "inventarioItemLabelSet", Class = "col s12", Label = "Produtos" });
+            formConfigInventarioItem.Elements.Add(new LabelSetUI { Id = "inventarioItemLabelSet", Class = "col s12", Label = "Produtos" });
 
             formConfigInventarioItem.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
 
-            formConfigInventarioItem.Elements.Add(new AutocompleteUI
+            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoCodigoId",
                 Class = "col s5",
@@ -97,7 +97,7 @@ namespace Fly01.Estoque.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
             });
 
-            formConfigInventarioItem.Elements.Add(new AutocompleteUI
+            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s5",

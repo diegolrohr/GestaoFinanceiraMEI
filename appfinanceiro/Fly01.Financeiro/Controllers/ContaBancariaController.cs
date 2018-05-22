@@ -111,7 +111,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m12 12",
@@ -154,7 +154,7 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string>() { "fnChangeBanco", "fnFormReady", "fnAfterLoad" }
             };
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "bancoId",
                 Class = "col s12 m12 12",

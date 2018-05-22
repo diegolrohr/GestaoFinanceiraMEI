@@ -162,7 +162,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "Simular Condição de Parcelamento" });
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Simular Condição de Parcelamento" });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorReferencia", Class = "col s6 l5", Label = "Valor Referência" });
             config.Elements.Add(new InputDateUI { Id = "dataReferencia", Class = "col s6 l5", Label = "Data Referência" });

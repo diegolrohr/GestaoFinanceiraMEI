@@ -97,17 +97,16 @@ namespace Fly01.Financeiro.BL
                 throw new BusinessException("Conta Financeira inválida.");
 
             var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
-            var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);//Banco Default - Se aceitar null, mudar regra
+            var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);//Banco Default
 
-            //if (ContaBancariaPadrao.Id == default(Guid))
-                //throw new BusinessException("Conta bancária inválida.");
-            Guid guidid = new Guid("28E1B75B-8DA5-43E1-8F8E-1C18E8E91AE9");//Apagar
+            if (ContaBancariaPadrao.Id == default(Guid))
+                throw new BusinessException("Conta bancária inválida.");
 
             var baixa = new ContaFinanceiraBaixa()
             {
                 Data = dataVencimento,
                 ContaFinanceiraId = contaFinanceiraId,
-                ContaBancariaId = guidid, //ContaBancariaPadrao.Id
+                ContaBancariaId = ContaBancariaPadrao.Id,
                 Valor = valorPrevisto,
                 Observacao = descricao
             };
@@ -117,7 +116,7 @@ namespace Fly01.Financeiro.BL
             saldoHistoricoBL.AtualizaSaldoHistorico(dataVencimento, valorPrevisto, ContaBancariaPadrao.Id, tipoContaFinanceira);
 
             //Atualiza movimentações
-            movimentacaoBL.CriaMovimentacao(dataVencimento, valorPrevisto, guidid, tipoContaFinanceira, contaFinanceiraId);//ContaBancariaPadrao.Id
+            movimentacaoBL.CriaMovimentacao(dataVencimento, valorPrevisto, ContaBancariaPadrao.Id, tipoContaFinanceira, contaFinanceiraId);
 
         }
 

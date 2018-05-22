@@ -40,7 +40,6 @@ namespace Fly01.Financeiro.BL
 
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
-            entity.StatusContaBancaria = StatusContaBancaria.Pago; //apagar
 
             entity.Fail(entity.Repetir && entity.TipoPeriodicidade == TipoPeriodicidade.Nenhuma, TipoPeriodicidadeInvalida);
             entity.Fail(entity.Repetir && !entity.NumeroRepeticoes.HasValue, NumeroRepeticoesInvalido);
@@ -57,10 +56,10 @@ namespace Fly01.Financeiro.BL
 
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            //Se status "pago", gerar ContaFinanceiraBaixa
+            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
             if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
             {
-                entity.Numero = ++max;// parcelas serão informadas pelo Integrador - Apagar
+                entity.Numero = ++max;
                 base.Insert(entity);
                 contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
             }

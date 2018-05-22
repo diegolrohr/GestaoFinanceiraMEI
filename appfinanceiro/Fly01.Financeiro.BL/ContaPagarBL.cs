@@ -56,7 +56,7 @@ namespace Fly01.Financeiro.BL
 
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            //Se status "pago", gerar ContaFinanceiraBaixa
+            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
             if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
             {
                 entity.Numero = ++max;

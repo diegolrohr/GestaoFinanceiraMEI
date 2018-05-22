@@ -78,6 +78,5 @@ namespace Fly01.Core.ViewModels
         public string EnderecoUF { get; set; }
         public string EnderecoCEP { get; set; }
         public string Observacoes { get; set; }
-
     }
 }

@@ -1,0 +1,37 @@
+﻿<script>
+    function fnBuscaCEP(d) {
+        var cep = $(this).val();
+
+        if (cep.length == 8) {
+            fnLoadingCamposEndereco("start");
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("BuscaCEP")?cep=" + cep,
+                success: function (data) {
+                    var endereco = JSON.parse(data);
+                    $("#estadoNome").val(endereco.State);
+                    $("#cidadeNome").val(endereco.City);
+                    $("#bairro").val(endereco.Neighborhood);
+                    $("#endereco").val(endereco.Address);
+                    $("#numero").val("");
+
+                    fnLoadingCamposEndereco("stop");
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+
+                    fnLoadingCamposEndereco("stop");
+                }
+            });
+        }
+    }
+
+    function fnLoadingCamposEndereco(evento) {
+        $("#cep").loading(evento);
+        $("#estadoNome").loading(evento);
+        $("#cidadeNome").loading(evento);
+        $("#bairro").loading(evento);
+        $("#endereco").loading(evento);
+    }
+</script>

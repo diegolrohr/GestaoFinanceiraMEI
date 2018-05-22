@@ -170,7 +170,14 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s4 l2", Label = "Celular", MaxLength = 15 });
             config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s4 l2", Label = "Telefone", MaxLength = 15 });
 
-            config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s4 l2", Label = "CEP", MaxLength = 9 });
+            config.Elements.Add(new InputCepUI
+            {
+                Id = "cep",
+                Class = "col s4 l2",
+                Label = "CEP",
+                MaxLength = 9,
+                DomEvents = new List<DomEventUI>() { new DomEventUI { DomEvent = "keyup", Function = "fnBuscaCEP" } }
+            });
 
             config.Elements.Add(new AutoCompleteUI
             {

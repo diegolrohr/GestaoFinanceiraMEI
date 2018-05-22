@@ -28,31 +28,19 @@ namespace Fly01.Core.Presentation
 
         #region BUSCA DE DADOS MASHUP
 
-        public JsonResult GetZipCode(string zipCode)
+        public JsonResult BuscaCEP(string cep)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(zipCode))
-                {
+                if (string.IsNullOrWhiteSpace(cep))
                     return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não são válidos.");
-                }
 
-                dynamic dynamicObj = SOADataManager.BuscaCEP(zipCode, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
+                dynamic dynamicObj = SOADataManager.BuscaCEP(cep, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
+
                 if (dynamicObj != null)
-                {
-                    bool retorno = string.IsNullOrWhiteSpace(dynamicObj.ZipCode) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.Address) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.Neighborhood) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.City) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.State);
-
-                    if (retorno)
-                    {
-                        return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
-                    }
-                }
-
-                return JsonResponseStatus.GetJson(dynamicObj);
+                    return JsonResponseStatus.GetJson(JsonConvert.SerializeObject(dynamicObj));
+                else
+                    return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
             }
             catch (Exception ex)
             {

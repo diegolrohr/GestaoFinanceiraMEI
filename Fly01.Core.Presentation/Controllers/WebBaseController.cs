@@ -38,7 +38,10 @@ namespace Fly01.Core.Presentation
                 dynamic dynamicObj = SOADataManager.BuscaCEP(cep, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
 
                 if (dynamicObj != null)
+                {
+                    //dynamicObj.State
                     return JsonResponseStatus.GetJson(JsonConvert.SerializeObject(dynamicObj));
+                }
                 else
                     return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
             }

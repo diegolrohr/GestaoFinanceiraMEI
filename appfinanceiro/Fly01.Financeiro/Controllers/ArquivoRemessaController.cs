@@ -32,7 +32,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        private List<CnabVM> GetContasReceber(Guid idArquivo, int pageNo)
+        private List<CnabVM> GetContasReceber(Guid? idArquivo, int pageNo)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -46,12 +46,24 @@ namespace Fly01.Financeiro.Controllers
             return boletos.Data.Where(x => x.ArquivoRemessaId == idArquivo).ToList();
         }
 
-        public JsonResult LoadGridBoletos(Guid IdArquivo)
+        private List<CnabVM> GetCnab(Guid? idArquivo)
         {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"arquivoRemessaId eq {idArquivo}");
+
+            var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
+
+            return boletos.Data;
+        }
+
+        public JsonResult LoadGridBoletos()
+        {
+            var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());
+
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
             var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
 
-            var response = GetContasReceber(IdArquivo, pageNo);
+            var response = GetCnab(Id);
             return Json(new
             {
                 recordsTotal = response.Count,
@@ -59,7 +71,7 @@ namespace Fly01.Financeiro.Controllers
                 data = response.Select(item => new
                 {
                     nossoNumero = item.NossoNumero,
-                    pessoa_nome = item.ContaReceber.Pessoa.Nome,
+                    pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
                     valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                     dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
                     dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
@@ -75,7 +87,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 History = new ContentUIHistory()
                 {
-                    Default = Url.Action("Create"),// Tem que revisar(Colocar Edit)
+                    WithParams = Url.Action("Edit"),
                 },
                 Header = new HtmlUIHeader()
                 {
@@ -85,26 +97,9 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnFormReady" }
             };
-
-            var arquivo = "honatel.Rem";
-            var metodoPagamento = "Boleto bancário";
-            var dataImportacao = "01/02/1987";
-            var status = "Aguardando aprovação";
-            cfg.Content.Add(new CardUI
-            {
-                Class = "col s12",
-                Color = "blue",
-                Id = "cardObs",
-                Title = "Transmissão de arquivo",
-                Placeholder = $"Arquivo {arquivo} com o metodo de pagamento {metodoPagamento} dataImoportação {dataImportacao} e status {status}, Esta aguardando a sua aprovação manual.",
-                Action = new LinkUI()
-                {
-                    Label = "",
-                    OnClick = ""
-                }
-            });
 
             var config = new FormUI
             {
@@ -114,20 +109,36 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
+                ReadyFn = "fnFormReady"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            cfg.Content.Add(config);
+
+            var arquivo = "honatel.Rem";
+            var metodoPagamento = "Boleto bancário";
+            var dataImportacao = "01/02/1987";
+            var status = "Aguardando aprovação";
+
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12",
+                Color = "blue",
+                Id = "cardObs",
+                Title = "Transmissão de arquivo",
+                Functions = new List<string>() { "fnFormReady" },
+                Placeholder = $"Arquivo {arquivo} com o metodo de pagamento {metodoPagamento} dataImoportação {dataImportacao} e status {status}, Esta aguardando a sua aprovação manual.",
+                Action = new LinkUI()
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
 
             cfg.Content.Add(new DataTableUI
             {
+                Id = "dtListcnab",
                 Class = "col s12",
                 UrlGridLoad = Url.Action("LoadGridBoletos"),
-                Parameters = new List<DataTableUIParameter>
-                {
-                    new DataTableUIParameter { Id = "Id" }
-                },
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10
@@ -160,6 +171,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnEditar" }
             };
 
             var config = new DataTableUI
@@ -167,7 +179,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtRemessa",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyRemessa"},
+                Functions = new List<string> { "fnFormReadyRemessa" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }

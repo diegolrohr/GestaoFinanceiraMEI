@@ -4,7 +4,7 @@ using System;
 
 namespace Fly01.Core.Notifications
 {
-    public class LogEvent
+    public class LogRecordEvent
     {
         [BsonId(IdGenerator = typeof(CombGuidGenerator))]
         public Guid Id { get; set; }
@@ -33,7 +33,7 @@ namespace Fly01.Core.Notifications
         [BsonElement("NewValues")]
         public dynamic NewValues { get; set; }
 
-        public LogEvent()
+        public LogRecordEvent()
         {
             Id = Guid.NewGuid();
             EventDate = DateTime.Now;

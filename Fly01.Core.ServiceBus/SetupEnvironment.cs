@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
+using System;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -23,11 +24,11 @@ namespace Fly01.Core.ServiceBus
                 }
 
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 SlackClient.PostErrorRabbitMQ(
                     $"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", 
-                    ex.Message, 
+                    ex, 
                     RabbitConfig.Factory?.VirtualHost,
                     RabbitConfig.QueueName
                 );

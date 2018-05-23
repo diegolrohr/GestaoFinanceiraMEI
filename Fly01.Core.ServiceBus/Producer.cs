@@ -37,7 +37,7 @@ namespace Fly01.Core.ServiceBus
             {
                 SlackClient.PostErrorRabbitMQ(
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), 
-                    ex.Message, 
+                    ex, 
                     RabbitConfig.Factory?.VirtualHost,
                     RabbitConfig.QueueName
                 );

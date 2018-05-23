@@ -2,6 +2,9 @@
 using Newtonsoft.Json;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using Fly01.Core.Notifications;
+using System.Configuration;
+using System;
 
 namespace Fly01.Core.Mensageria
 {
@@ -20,7 +23,7 @@ namespace Fly01.Core.Mensageria
             }
         }
 
-        public static void PostErrorRabbitMQ(string data, string errorMessage, string hostName, string queueName)
+        public static void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName)
         {
             var slackChannel = string.Empty;
             if (hostName == "prod")
@@ -40,7 +43,7 @@ namespace Fly01.Core.Mensageria
                         Fields = new List<SlackField>()
                         {
                             new SlackField("Dados", data),
-                            new SlackField("Erro", errorMessage),
+                            new SlackField("Erro", exception.Message),
                             new SlackField("Host", hostName),
                             new SlackField("Fila", queueName),
                         }
@@ -48,10 +51,14 @@ namespace Fly01.Core.Mensageria
                 }
             };
 
+            var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
+            var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
+            collection.InsertOne(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, Host = hostName, Queue = queueName });
+
             Post(slackChannel, message);
         }
     }
-    
+
     public class SlackMessage
     {
         [JsonProperty("attachments")]

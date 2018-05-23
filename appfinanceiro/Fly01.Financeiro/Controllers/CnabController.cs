@@ -33,13 +33,14 @@ namespace Fly01.Financeiro.Controllers
                 contaReceberId = x.ContaReceberId,
                 contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
+                nossoNumero = x.NossoNumero,
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
-                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy")
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
             };
         }
 
@@ -74,16 +75,16 @@ namespace Fly01.Financeiro.Controllers
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
-                "", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, 1, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
+                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
+            if (!proxy.DefinirSacado(cedente.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
                 sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirBoleto(boleto.EspecieMoeda, boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao, DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto,
-                boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao,
+                DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
             if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
@@ -194,7 +195,7 @@ namespace Fly01.Financeiro.Controllers
                 }
 
                 var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-                
+
                 var nomeArquivo = $"{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
                 Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
@@ -225,6 +226,8 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult Form()
         {
+            #region Headers
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -285,13 +288,16 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI() { DomEvent = "click", Function = "fnShowListCnab" }
                 }
             });
+            cfg.Content.Add(configCnab);
+
+            #endregion
 
             #region CnabItem
             var dtConfig = new DataTableUI
             {
                 Id = "dtCnabItem",
                 UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
-                UrlFunctions = Url.Action("Functions", "CnabItem", null, Request.Url.Scheme) + "?fns=",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
@@ -305,7 +311,6 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
             #endregion
 
-            cfg.Content.Add(configCnab);
             cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -334,7 +339,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum", "fnImprimirBoleto" },
+                Functions = new List<string> { "fnFormReadyCnab" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
@@ -345,13 +350,15 @@ namespace Fly01.Financeiro.Controllers
                 DataField = "status",
                 DisplayName = "Status",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))),
-                Priority = 1,
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }",
+                Priority = 6,
+                Width = "12%",
+                RenderFn = "fnRenderEnum"
             });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nº boleto", Priority = 6 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "function(data, type, full, meta) { fnImprimirBoleto(full); }" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
 
             cfg.Content.Add(dtConfig);
 

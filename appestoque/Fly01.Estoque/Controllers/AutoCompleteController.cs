@@ -5,95 +5,12 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Estoque.Controllers
 {
-    public class AutoCompleteController : Controller
+    public class AutoCompleteController : AutoCompleteBaseController
     {
-        #region Private Methods
-        private JsonResult GetJson(object data)
-        {
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
-        #endregion
-
-        #region Public Methods
-
-        public JsonResult Estado(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(EstadoVM));
-
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(sigla, '{term}')");
-            queryString.AddParam("$select", "id,nome,sigla");
-            queryString.AddParam("$orderby", "nome");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EstadoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, detail = item.Sigla };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Cidade(string term, string prefilter = "")
-        {
-            if (string.IsNullOrEmpty(prefilter)) return null;
-
-            var resourceName = AppDefaults.GetResourceName(typeof(CidadeVM));
-
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(nome, '{term}') and estadoId eq {prefilter}");
-            queryString.AddParam("$select", "id,nome,estadoId");
-            queryString.AddParam("$orderby", "nome");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Ncm(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(NcmVM));
-
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
-            queryString.AddParam("$select", "id,codigo,descricao,aliquotaIPI");
-            queryString.AddParam("$orderby", "codigo");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<NcmVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.Descricao,
-                                    detail = string.Format("Cod: {0} - Alíquota IPI: {1}", item.Codigo, (item.AliquotaIPI / 100).ToString("P", AppDefaults.CultureInfoDefault))
-                                };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Cest(string term, string prefilter = "")
-        {
-            if (string.IsNullOrEmpty(prefilter)) return null;
-
-            var resourceName = AppDefaults.GetResourceName(typeof(CestVM));
-
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigo, '{term}')) and ncmId eq {prefilter}");
-            queryString.AddParam("$select", "id,codigo,descricao,segmento");
-            queryString.AddParam("$orderby", "codigo");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CestVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.Descricao,
-                                    detail = string.Format("Cód: {0} - Segmento: {1}", item.Codigo, item.Segmento)
-                                };
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult UnidadeMedida(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(UnidadeMedidaVM));
@@ -208,7 +125,5 @@ namespace Fly01.Estoque.Controllers
 
             return GetJson(filterObjects);
         }
-
-        #endregion
     }
 }

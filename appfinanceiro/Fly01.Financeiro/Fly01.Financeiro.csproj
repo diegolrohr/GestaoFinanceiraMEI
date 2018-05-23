@@ -54,7 +54,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\CnabItem\Functions\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />
     <Compile Include="Controllers\ArquivoRemessaController.cs" />
@@ -327,7 +329,6 @@
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnFormReadyRemessa.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
-    <Content Include="Views\CnabItem\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
@@ -338,6 +339,7 @@
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
@@ -572,11 +574,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Fly01.Financeiro</IISUrl>
+          <IISUrl>http://localhost:57633/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/Fly01.Financeiro</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

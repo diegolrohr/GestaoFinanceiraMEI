@@ -1,5 +1,5 @@
 ﻿<script>
-    function fnRenderEnum(fieldCssClass, fieldDescription) {
-        return "<span class='new badge " + fieldCssClass + " left' data-badge-caption=' '>" + fieldDescription + "</span>"
+    function fnRenderEnum(data, type, row, meta) {
+        return "<span class='new badge " + row.statusCssClass + " left' data-badge-caption=' '>" + row.statusDescription + "</span>"
     }
 </script>

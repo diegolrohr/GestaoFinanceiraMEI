@@ -58,7 +58,7 @@ namespace Fly01.Financeiro.Controllers
             return response.Values;
         }
 
-        private PagedResult<FluxoCaixaProjecaoVM> GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, int groupType, int pageNo)
+        private PagedResult<FluxoCaixaProjecaoVM> GetProjecaoDetalhe(DateTime dataInicial, DateTime dataFinal, int groupType, int pageNo, int length)
         {
             Dictionary<string, string> queryString = new Dictionary<string, string>
             {
@@ -66,7 +66,7 @@ namespace Fly01.Financeiro.Controllers
                 { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
                 { "groupType", groupType.ToString() },
                 { "pageNo", pageNo.ToString() },
-                { "pageSize", "60"}
+                { "pageSize", length.ToString()}
             };
             var response = RestHelper.ExecuteGetRequest<PagedResult<FluxoCaixaProjecaoVM>>("fluxocaixa/projecaodetalhe", queryString);
 
@@ -117,14 +117,14 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult LoadGridFluxoCaixa(DateTime dataInicial, DateTime dataFinal, int groupType)
+        public JsonResult LoadGridFluxoCaixa(DateTime dataInicial, DateTime dataFinal, int groupType, int length)
         {
             try
             {
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-                var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+                var pageNo = param.Start > 0 ? (param.Start / length) + 1 : 1;
 
-                var response = GetProjecaoDetalhe(dataInicial, dataFinal, groupType, pageNo);
+                var response = GetProjecaoDetalhe(dataInicial, dataFinal, groupType, pageNo, length);
 
                 return Json(new
                 {

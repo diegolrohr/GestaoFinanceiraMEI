@@ -1,6 +1,15 @@
 ﻿<script>
+    function lockSaldos(elName, lock) {
+        $("#" + elName).loading(lock ? "start" : "stop");
+    }
+
     function getSaldos(dataFinal) {
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+
+        lockSaldos("fly01cardSA", true);
+        lockSaldos("fly01cardCP", true);
+        lockSaldos("fly01cardCR", true);
+        lockSaldos("fly01cardSC", true);
 
         $.ajax({
             url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
@@ -10,6 +19,11 @@
                 fly01._.fly01cardCP.info(data.TotalPagamentos);
                 fly01._.fly01cardCR.info(data.TotalRecebimentos);
                 fly01._.fly01cardSC.info(data.SaldoProjetado);
+
+                lockSaldos("fly01cardSA", false);
+                lockSaldos("fly01cardCP", false);
+                lockSaldos("fly01cardCR", false);
+                lockSaldos("fly01cardSC", false);
             },
             error: function (jXHR, textStatus) {
                 fly01.toast(textStatus, 'error');

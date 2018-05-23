@@ -559,7 +559,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 Class = "col s12 m6 l6",
                 Label = "Categoria Financeira",
                 Disabled = true,
-                DataUrl = @Url.Action("categoriaVisualizar", "AutoComplete"),
+                DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao"
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 m4 l4", Label = "Valor", Disabled = true });

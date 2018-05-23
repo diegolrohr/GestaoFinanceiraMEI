@@ -135,7 +135,8 @@ namespace Fly01.Faturamento.Controllers
                     new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarNFe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFe')" });

@@ -4,6 +4,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System.Collections.Generic;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -148,6 +149,147 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
+        public JsonResult UnidadeMedida(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(UnidadeMedidaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(abreviacao, '{term}')");
+            queryString.AddParam("$select", "id,descricao,abreviacao");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<UnidadeMedidaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = item.Abreviacao };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult GrupoProduto(string term, string prefilter = "")
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(GrupoProdutoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and tipoProduto eq {AppDefaults.APIEnumResourceName}TipoProduto'{prefilter}'");
+            queryString.AddParam("$select", "id,descricao,aliquotaIpi,ncmId,unidadeMedidaId");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<GrupoProdutoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = "" };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult FormaPagamento(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(FormaPagamentoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", string.Format("contains(descricao, '{0}')", term));
+            queryString.AddParam("$select", "id,descricao,tipoFormaPagamento");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento) };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Produto(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')");
+            queryString.AddParam("$select", "id,descricao,codigoProduto,codigoBarras,valorCusto,saldoProduto");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código Produto: {item.CodigoProduto} - Código de Barras: {item.CodigoBarras}", valor = item.ValorCusto };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult EnquadramentoLegalIPI(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(EnquadramentoLegalIpiVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
+            queryString.AddParam("$select", "id,codigo,descricao,grupoCST");
+            queryString.AddParam("$orderby", "codigo");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EnquadramentoLegalIpiVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Descricao,
+                                    detail = string.Format("Grupo: {0} - Código: {1}", item.GrupoCST, item.Codigo)
+                                };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult CondicaoParcelamento(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(CondicaoParcelamentoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
+            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CondicaoParcelamentoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Transportadora(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(cpfcnpj, '{term}')) and transportadora eq true");
+            queryString.AddParam("$select", "id,nome,cpfcnpj");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Nome, detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : item.CPFCNPJ };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult CategoriaPai(string term, string prefilter)
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+
+            var filterTipoCarteira = (prefilter != "")
+                ? $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
+                : "";
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira} and categoriaPaiId eq null");
+            queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, categoriaPaiId = item.CategoriaPaiId, level = item.Level };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Categoria(string term, string filterTipoCarteira)
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCarteira}");
+            queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, categoriaPaiId = item.CategoriaPaiId, level = item.Level };
+
+            return GetJson(filterObjects);
+        }
 
     }
 }

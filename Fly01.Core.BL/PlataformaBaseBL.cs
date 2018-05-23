@@ -144,8 +144,11 @@ namespace Fly01.Core.BL
                         break;
                     case RabbitConfig.enHTTPVerb.DELETE:
                         var itemToDelete = Find(item.Id);
-                        Delete(itemToDelete);
-                        AttachForUpdate(itemToDelete);
+                        if(itemToDelete != null)
+                        {
+                            Delete(itemToDelete);
+                            AttachForUpdate(itemToDelete);
+                        }
                         break;
                 }
             }

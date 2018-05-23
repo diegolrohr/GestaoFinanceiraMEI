@@ -180,7 +180,8 @@ namespace Fly01.Faturamento.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -198,7 +199,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Tipo",
                 Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSubstituicaoTributaria))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoSubstituicaoTributariaCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoSubstituicaoTributariaDescricao + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoSubstituicaoTributariaCSS, full.tipoSubstituicaoTributariaDescricao); }",
             });
 
             cfg.Content.Add(config);

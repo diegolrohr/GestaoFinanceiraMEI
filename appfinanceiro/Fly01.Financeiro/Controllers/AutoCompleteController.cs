@@ -13,99 +13,25 @@ namespace Fly01.Financeiro.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public JsonResult CategoriaPai(string term, string prefilter)
-        {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
-
-            var filterTipoCarteira = (prefilter != "")
-                ? $" and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
-                : "";
-
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCarteira} and categoriaPaiId eq null");
-            queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
-            
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.Descricao,
-                                    categoriaPaiId = item.CategoriaPaiId,
-                                    level = item.CategoriaPaiId == null ? 0 : 1
-                                };
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult Categoria(string term)
         {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
-
             var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and {filterTipoCarteira}");
-            queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, categoriaPaiId = item.CategoriaPaiId, level = item.Level };
-
-            return GetJson(filterObjects);
-        }
-
-        private JsonResult Categoria(string term, string prefilter)
-        {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
-
-            var filterTipoCarteira = prefilter != ""
-                ? $" and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'"
-                : "";
-
-            queryString.AddParam("$filter", $"contains(descricao, '{term}')" + filterTipoCarteira);
-            queryString.AddParam("$select", "id,descricao,categoriaPaiId");
-
-            var filterObjects = from item
-                                in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.Descricao,
-                                    categoriaPaiId = item.CategoriaPaiId,
-                                    level = item.Level
-                                };
-
-            return GetJson(filterObjects);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCP(string term)
         {
-            return Categoria(term, "Despesa");
+            var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
+
+            return Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCR(string term)
         {
-            return Categoria(term, "Receita");
-        }
+            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
 
-        public JsonResult CategoriaVisualizar(string term)
-        {
-            return Categoria(term);
-        }
-
-        public JsonResult CondicaoParcelamento(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(CondicaoParcelamentoVM));
-
-            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
-            queryString.AddParam("$select", "id,descricao");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CondicaoParcelamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao };
-
-            return GetJson(filterObjects);
+            return Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CondicaoParcelamentoAVista(string term)
@@ -119,21 +45,6 @@ namespace Fly01.Financeiro.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CondicaoParcelamentoVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Descricao };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult FormaPagamento(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(FormaPagamentoVM));
-
-            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", string.Format("contains(descricao, '{0}')", term));
-            queryString.AddParam("$select", "id,descricao,tipoFormaPagamento");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<FormaPagamentoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento) };
 
             return GetJson(filterObjects);
         }

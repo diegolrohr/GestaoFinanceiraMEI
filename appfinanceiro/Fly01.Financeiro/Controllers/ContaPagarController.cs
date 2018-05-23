@@ -241,7 +241,8 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
@@ -257,7 +258,7 @@ namespace Fly01.Financeiro.Controllers
                 DisplayName = "Status",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancaria); }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });

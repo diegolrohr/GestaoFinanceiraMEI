@@ -162,8 +162,8 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
                     }
                 },
-                Functions = new List<string> { "fnFormReadyCnab" },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnFormReadyCnab" }
             };
 
             var dtConfig = new DataTableUI()
@@ -171,7 +171,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtBoletos",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyCnab" },
+                Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
@@ -184,7 +184,8 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))),
                 Priority = 6,
                 Width = "12%",
-                RenderFn = "fnRenderEnum"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
+
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nº boleto", Priority = 6 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });

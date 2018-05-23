@@ -67,7 +67,8 @@ namespace Fly01.Compras.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 

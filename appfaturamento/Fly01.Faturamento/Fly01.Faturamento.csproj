@@ -314,6 +314,7 @@
     <Content Include="Views\OrdemVenda\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

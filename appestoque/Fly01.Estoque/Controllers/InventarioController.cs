@@ -180,7 +180,8 @@ namespace Fly01.Estoque.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions", "Inventario", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "Inventario", null, Request.Url?.Scheme) + "?fns=" };
 
@@ -195,7 +196,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Status do Inventário",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(InventarioStatus))),
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.inventarioStatusCssClass + \" left\", \"data-badge-caption\": \" \" }, row.inventarioStatusValue).outerHTML; }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription); }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataUltimaInteracao", DisplayName = "Ultima Interação", Priority = 1, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Type = "string" });

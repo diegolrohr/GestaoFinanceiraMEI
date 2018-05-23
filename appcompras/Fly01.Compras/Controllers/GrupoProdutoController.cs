@@ -115,7 +115,8 @@ namespace Fly01.Compras.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
@@ -129,7 +130,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Tipo de Produto",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoProdutoCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoProdutoValue).outerHTML; }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCssClass, full.tipoProdutoValue); }"
             });
 
             cfg.Content.Add(config);

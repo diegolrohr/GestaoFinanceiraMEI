@@ -50,7 +50,8 @@ namespace Fly01.Estoque.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns=" };
 
@@ -64,7 +65,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Entrada/Saida",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoEntradaSaidaCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoEntradaSaidaValue).outerHTML; }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue); }"
             });
 
             cfg.Content.Add(config);

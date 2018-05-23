@@ -45,7 +45,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '@Url.Action("ImprimeBoleto", "Cnab")',
+                url: '@Url.Action("ImprimeBoleto", "Boleto")',
                 contentType: "application/json",
                 data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: that.serializeObject().contaBancariaId },
                 success: function success(data) {

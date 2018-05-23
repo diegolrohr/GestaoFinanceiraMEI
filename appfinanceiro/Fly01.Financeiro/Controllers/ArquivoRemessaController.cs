@@ -9,15 +9,11 @@ using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Helpers;
-using Fly01.Core.Rest;
-using System.Linq;
 using Fly01.Core;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class ArquivoRemessaController : BaseController<ArquivoRemessaVM>
+    public class ArquivoRemessaController : BoletoController<ArquivoRemessaVM>
     {
         public override Func<ArquivoRemessaVM, object> GetDisplayData()
         {
@@ -30,55 +26,6 @@ namespace Fly01.Financeiro.Controllers
                 totalBoletos = x.TotalBoletos,
                 status = x.StatusArquivoRemessa
             };
-        }
-
-        private List<CnabVM> GetContasReceber(Guid? idArquivo, int pageNo)
-        {
-            var queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            var boletos = RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab", queryString);
-
-            return boletos.Data.Where(x => x.ArquivoRemessaId == idArquivo).ToList();
-        }
-
-        private List<CnabVM> GetCnab(Guid? idArquivo)
-        {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"arquivoRemessaId eq {idArquivo}");
-
-            var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
-
-            return boletos.Data;
-        }
-
-        public JsonResult LoadGridBoletos()
-        {
-            var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());
-
-            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
-
-            var response = GetCnab(Id);
-            return Json(new
-            {
-                recordsTotal = response.Count,
-                recordsFiltered = response.Count,
-                data = response.Select(item => new
-                {
-                    nossoNumero = item.NossoNumero,
-                    pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
-                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
-                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
-                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
-                })
-
-            }, JsonRequestBehavior.AllowGet);
         }
 
         public override ContentResult Form()

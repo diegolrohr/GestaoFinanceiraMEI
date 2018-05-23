@@ -54,7 +54,7 @@ namespace Fly01.Compras.Controllers
                 UrlFunctions = url.Action("Functions", "Dashboard") + "?fns=",
                 Elements = new List<BaseUI>()
                 {
-                    new PeriodpickerUI()
+                    new PeriodPickerUI()
                     {
                        Label= "Selecione o período",
                        Id= "mesPicker",
@@ -93,15 +93,15 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m6 l6",
                 Elements = new List<BaseUI>
                 {
-                    new ButtongroupUI
+                    new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m12 l12",
                         OnClickFn = "fnAtualizarChart",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnStatus", Value = "1", Label = "Status"},
-                            new OptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento"}
+                            new ButtonGroupOptionUI {Id = "btnStatus", Value = "1", Label = "Status", Class="col s4"},
+                            new ButtonGroupOptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento", Class="col s8"}
                         }
                     }
                 }
@@ -247,7 +247,7 @@ namespace Fly01.Compras.Controllers
                 }
             };
 
-            cfgTable.Elements.Add(new LabelsetUI { Id = "titleLabel", Class = "col s12", Label = "TOP 10 - PRODUTOS MAIS COMPRADOS" });
+            cfgTable.Elements.Add(new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "TOP 10 - PRODUTOS MAIS COMPRADOS" });
             cfg.Content.Add(cfgTable);
 
             var configTable = new DataTableUI

@@ -75,7 +75,6 @@
     <Compile Include="Controllers\CondicaoParcelamentoController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
-    <Compile Include="Controllers\Base\GenericAppController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CfopController.cs" />

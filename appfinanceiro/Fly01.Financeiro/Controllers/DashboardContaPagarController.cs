@@ -54,7 +54,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = url.Action("Functions", "DashboardContaPagar") + "?fns=",
                 Elements = new List<BaseUI>()
                 {
-                    new PeriodpickerUI()
+                    new PeriodPickerUI()
                     {
                        Label= "Selecione o período",
                        Id= "mesPicker",
@@ -93,16 +93,16 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m8 offset-m2",
                 Elements = new List<BaseUI>
                 {
-                    new ButtongroupUI
+                    new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m12 l12",
                         OnClickFn = "fnAtualizarChart",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnStatus", Value = "1", Label = "Status"},
-                            new OptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento"},
-                            new OptionUI {Id = "btnCategoria", Value = "3", Label = "Categoria"}
+                            new ButtonGroupOptionUI {Id = "btnStatus", Value = "1", Label = "Status", Class="col s3"},
+                            new ButtonGroupOptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento", Class="col s6"},
+                            new ButtonGroupOptionUI {Id = "btnCategoria", Value = "3", Label = "Categoria", Class="col s3" }
                         }
                     }
                 }
@@ -277,7 +277,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            cfgTable.Elements.Add(new LabelsetUI { Id = "titleLabel", Class = "col s12", Label = "Contas a Pagar - Dia" });
+            cfgTable.Elements.Add(new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "Contas a Pagar - Dia" });
             cfg.Content.Add(cfgTable);
 
             var configTable = new DataTableUI
@@ -330,7 +330,7 @@ namespace Fly01.Financeiro.Controllers
                 Searchable = false
             });
             cfg.Content.Add(configTable);
-            return cfg;           
+            return cfg;
         }
 
         [HttpGet]

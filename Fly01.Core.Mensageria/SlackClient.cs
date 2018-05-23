@@ -6,10 +6,9 @@ namespace Fly01.Core.Mensageria
 {
     public static class SlackClient
     {
-        public static void PostMessageErrorRabbit(string data, string errorMessage, string errorStackTrace, string hostName, string queueName)
+        public static void PostMessage(string data, string errorMessage, string hostName, string queueName)
         {
-            var slackChannel = "";
-
+            var slackChannel = string.Empty;
             if (hostName == "prod")
                 slackChannel = "https://hooks.slack.com/services/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";
             else
@@ -19,7 +18,9 @@ namespace Fly01.Core.Mensageria
             {
                 var message = JsonConvert.SerializeObject(new
                 {
-                    attachments = new[]{ new
+                    attachments = new[] 
+                    {
+                        new
                         {
                             fallback = "Required plain-text summary of the attachment.",
                             color = "danger",
@@ -36,11 +37,6 @@ namespace Fly01.Core.Mensageria
                                     title = "Erro",
                                     value = errorMessage
                                 },
-                                //new
-                                //{
-                                //    title = "Stack Trace",
-                                //    value = errorStackTrace
-                                //},
                                 new {
                                     title = "Host",
                                     value = hostName

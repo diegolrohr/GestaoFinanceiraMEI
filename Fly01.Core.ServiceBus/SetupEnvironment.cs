@@ -25,7 +25,7 @@ namespace Fly01.Core.ServiceBus
             }
             catch (System.Exception ex)
             {
-                SlackClient.PostMessageErrorRabbit(
+                SlackClient.PostMessage(
                     $"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", 
                     ex.Message, 
                     ex.StackTrace, 

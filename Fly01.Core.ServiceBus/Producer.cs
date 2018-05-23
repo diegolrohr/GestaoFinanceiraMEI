@@ -35,7 +35,7 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                SlackClient.PostMessageErrorRabbit(
+                SlackClient.PostMessage(
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), 
                     ex.Message, 
                     ex.StackTrace,

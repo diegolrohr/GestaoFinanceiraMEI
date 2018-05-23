@@ -80,7 +80,7 @@ namespace Fly01.Core.ServiceBus
                     }
                     catch (Exception ex)
                     {
-                        SlackClient.PostMessageErrorRabbit(Message,
+                        SlackClient.PostMessage(Message,
                             ex.Message, 
                             ex.StackTrace, 
                             RabbitConfig.Factory?.VirtualHost,

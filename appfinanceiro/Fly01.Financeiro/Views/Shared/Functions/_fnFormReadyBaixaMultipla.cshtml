@@ -1,19 +1,26 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
+    var rows_selected = [];
+
     function setupGridSelectEvents() {
         //ver validacao contador limite de 50
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
-            if (type !== undefined) {                
+            if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
 
-                indexes.forEach(function(element, index, array) {
+                indexes.forEach(function (element, index, array) {
                     var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
-                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
-                    valorAcumulado += valorSaldo;
-                    fnAtualizaCountSelecionados(1);
+                    
+                    var index = $.inArray(rowData[0].id, rows_selected);
+                    if (index == -1) {//se não tem, add, mas se ficar clicando inúmeras vezes em selecionar tudo, tem este array auxiliar
+                        rows_selected.push(rowData[0].id);
+                        var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                        valorAcumulado += valorSaldo;
+                        fnAtualizaCountSelecionados(1);
+                    }
                 });
-                
+
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
@@ -21,13 +28,22 @@
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
 
-                indexes.forEach(function(element, index, array) {
+                indexes.forEach(function (element, index, array) {
                     var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
-                    var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
-                    valorAcumulado -= valorSaldo;
-                    fnAtualizaCountSelecionados(-1);
+                    
+                    var index = $.inArray(rowData[0].id, rows_selected);
+                    if (index !== -1) {//se achou remove
+                        rows_selected.splice(index, 1);
+                        var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                        valorAcumulado -= valorSaldo;
+                        fnAtualizaCountSelecionados(-1);
+                    }
                 });
-                
+
+                if (valorAcumulado < 0) {
+                    valorAcumulado = 0.0;
+                }
+
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
@@ -55,11 +71,13 @@
         else if (countAtual <= 0) {
             $('#countContasSelecionadas').css('color', 'red');
             $('#save').attr('disabled', 'disabled');
+            return false;
         }
         else {
             $('#countContasSelecionadas').css('color', 'red');
             fly01.toast('A quantidade de contas selecionadas é de até 50.', "error");
             $('#save').attr('disabled', 'disabled');
+            return false;
         }
     }
 
@@ -67,5 +85,6 @@
         $('#Field').hide();
         $('#save').attr('disabled', 'disabled');
         setupGridSelectEvents();
+        rows_selected = [];
     }
 </script>

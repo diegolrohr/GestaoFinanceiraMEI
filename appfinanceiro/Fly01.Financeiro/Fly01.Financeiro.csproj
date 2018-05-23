@@ -323,6 +323,8 @@
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSelectAllBaixaMultipla.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnDeselectAllBaixaMultipla.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

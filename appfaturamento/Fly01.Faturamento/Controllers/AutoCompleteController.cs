@@ -13,6 +13,18 @@ namespace Fly01.Faturamento.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
+        public JsonResult Categoria(string term)
+        {
+            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
+
+            return base.Categoria(term, filterTipoCarteira);
+        }
+
+        public JsonResult Cfop(string term)
+        {
+            return base.Cfop(term, $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
+        }
+
         public JsonResult Nbs(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(NBSVM));
@@ -35,23 +47,7 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult GrupoTributario(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
-            queryString.AddParam("$select", "id,descricao,tipoTributacaoICMS");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<GrupoTributarioVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = "", tipoTributacaoICMS = item.TipoTributacaoICMS };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Categoria(string term)
-        {
-            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
-
-            return base.Categoria(term, filterTipoCarteira);
+            return base.GrupoTributario(term, $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
         }
 
         public JsonResult Servico(string term)
@@ -65,23 +61,6 @@ namespace Fly01.Faturamento.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ServicoVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Descricao, valor = item.ValorServico };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult Cfop(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(CfopVM));
-            int codigo = 0;
-            int.TryParse(term, out codigo);
-
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
-            queryString.AddParam("$select", "id,descricao,codigo");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CfopVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = item.Codigo };
 
             return GetJson(filterObjects);
         }

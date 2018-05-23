@@ -249,6 +249,15 @@ namespace Fly01.Financeiro.Controllers
             #region MenuItems
             config.MenuItems.Add(new SidebarMenuUI()
             {
+                Label = "Dashboard",
+                Items = new List<LinkUI>
+            {
+                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
+                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
+            }
+            });
+            config.MenuItems.Add(new SidebarMenuUI()
+            {
                 Label = "Financeiro",
                 Items = new List<LinkUI>
                 {

@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Fly01.Compras.Controllers.Base;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
@@ -280,8 +282,7 @@ namespace Fly01.Compras.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
+            return JsonResponseStatus.GetJson(new ImportacaoArquivo().ImportaArquivo("Cadastro de Fornecedores", pConteudo));
         }
 
         public ContentResult FormModal()
@@ -310,5 +311,59 @@ namespace Fly01.Compras.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+    }
+
+    // TODO: Alocar a classe ImportacaoArquivo em outro local
+    public class ImportacaoArquivo : GenericAppController
+    {
+        public JsonResult ImportaArquivo(string pdescricao, string pConteudo)
+        {
+            var arquivo = new
+            {
+                descricao = pdescricao,
+                conteudo = Base64Helper.CodificaBase64(pConteudo),
+                cadastro = "Pessoa",
+                md5 = Base64Helper.CalculaMD5Hash(pConteudo)
+            };
+
+            var arquivoRetorno = RestHelper.ExecutePostRequest<ArquivoVM>("arquivo", JsonConvert.SerializeObject(arquivo, JsonSerializerSetting.Default));
+
+            return JsonResponseStatus.GetJson(arquivoRetorno);
+        }
+    }
+
+    public class ArquivoVM
+    {
+        [JsonProperty("descricao")]
+        public string Descricao { get; set; }
+        [JsonProperty("conteudo")]
+        public string Conteudo { get; set; }
+        [JsonProperty("md5")]
+        public string MD5 { get; set; }
+        [JsonProperty("cadastro")]
+        public string Cadastro { get; set; }
+        [JsonProperty("totalProcessado")]
+        public string TotalProcessado { get; set; }
+        [JsonProperty("retorno")]
+        public string Retorno { get; set; }
+        [JsonProperty("plataformaId")]
+        public string PlataformaId { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+        [JsonProperty("dataInclusao")]
+        public string DataInclusao { get; set; }
+        [JsonProperty("dataAlteracao")]
+        public string DataAlteracao { get; set; }
+        [JsonProperty("dataExclusao")]
+        public string DataExclusao { get; set; }
+        [JsonProperty("usuarioInclusao")]
+        public string UsuarioInclusao { get; set; }
+        [JsonProperty("usuarioAlteracao")]
+        public string UsuarioAlteracao { get; set; }
+        [JsonProperty("usuarioExclusao")]
+        public string UsuarioExclusao { get; set; }
+        [JsonProperty("ativo")]
+        public string Ativo { get; set; }
     }
 }

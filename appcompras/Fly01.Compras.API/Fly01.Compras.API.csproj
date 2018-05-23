@@ -61,6 +61,9 @@
     <Compile Include="Controllers\Api\CidadeController.cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CfopController.cs" />
+    <Compile Include="Controllers\Api\DashboardProdutosMaisCompradosController.cs" />
+    <Compile Include="Controllers\Api\DashboardStatusController.cs" />
+    <Compile Include="Controllers\Api\DashboardFormasPagamentoController.cs" />
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\GrupoTributarioController.cs" />
     <Compile Include="Controllers\Api\CestController.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Controllers\Api\TipoFreteController.cs" />
     <Compile Include="Controllers\Api\TipoOrdemCompraController.cs" />
     <Compile Include="Controllers\Api\TipoCarteiraController.cs" />
+    <Compile Include="Controllers\Api\DashboardController.cs" />
     <Compile Include="Controllers\Api\TipoSubstituicaoTributariaController.cs" />
     <Compile Include="Controllers\Api\TipoProdutoController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />

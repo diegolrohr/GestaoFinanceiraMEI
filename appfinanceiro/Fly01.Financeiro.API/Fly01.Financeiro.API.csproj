@@ -164,10 +164,6 @@
       <Project>{e292ea68-56ce-4d3f-ba97-06da892174f9}</Project>
       <Name>Fly01.Financeiro.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fly01.Financeiro\Fly01.Financeiro.csproj">
-      <Project>{74F85E28-C4B7-434D-A9A7-0AED58789137}</Project>
-      <Name>Fly01.Financeiro</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -37,6 +37,10 @@
         that.loading("start");
         e.preventDefault();
 
+        var contaBancariaId = $("#bancoId").val();
+        if (that.serializeObject().contaBancariaId != "undefined")
+            contaBancariaId = that.serializeObject().contaBancariaId;
+
         if (!that.valid()) {
             that.loading("stop");
             return false;
@@ -45,9 +49,9 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '@Url.Action("ImprimeBoleto", "Boleto")',
+                url: '@Url.Action("ImprimeBoleto", "Cnab")',
                 contentType: "application/json",
-                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: that.serializeObject().contaBancariaId },
+                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: contaBancariaId },
                 success: function success(data) {
                     if (data.success) {
                         var strMsg = "Boleto emitido com sucesso.";

@@ -1,18 +1,18 @@
-﻿using Fly01.Core;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Presentation.JQueryDataTable;
-using Fly01.Core.Rest;
-using Fly01.Core.ViewModels;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Financeiro.ViewModel;
-using Fly01.uiJS.Defaults;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Fly01.Core;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
+using Newtonsoft.Json;
+using Fly01.Core.Helpers;
+using Fly01.uiJS.Defaults;
+using Fly01.Core.ViewModels;
+using Fly01.Financeiro.ViewModel;
+using System.Collections.Generic;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -34,6 +34,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 if (restResponse != null)
                     listaCnab.Add(restResponse);
             }
+
             return listaCnab;
         }
 
@@ -148,7 +149,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             var cnab = new CnabVM()
             {
-                Status = StatusCnab.EmAberto.ToString(),
+                Status = StatusCnab.BoletoGerado.ToString(),
                 DataEmissao = boletoImpresso.Boleto.DataEmissao,
                 DataVencimento = boletoImpresso.Boleto.DataVencimento,
                 NossoNumero = boletoImpresso.Boleto.NossoNumero,

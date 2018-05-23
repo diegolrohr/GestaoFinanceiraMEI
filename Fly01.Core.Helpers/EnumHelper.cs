@@ -9,7 +9,7 @@ namespace Fly01.Core.Helpers
     {
         private static APIEnumData SubtitleDataAnotation(Type enumType, string itemValue)
         {
-            var items = GetDataEnumValues(enumType).Select(x => new APIEnumData() { Key = x.Key, Value = x.Value, CssClass = x.CssClass, Description = x.Description });
+            var items = GetDataEnumValues(enumType).Select(x => new APIEnumData() { Key = x.Key, Value = x.Value, CssClass = x.CssClass, Description = x.Description, TooltipHint = x.TooltipHint });
 
             return items.SingleOrDefault(x => x.Key.Equals(itemValue, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -51,6 +51,20 @@ namespace Fly01.Core.Helpers
             try
             {
                 return SubtitleDataAnotation(enumType, value)?.Description;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        public static string GetTooltipHint(Type enumType, string value)
+        {
+            try
+            {
+                var dataValue = SubtitleDataAnotation(enumType, value);
+
+                return dataValue.TooltipHint != "" ? dataValue.TooltipHint : dataValue.Value;
             }
             catch (Exception)
             {

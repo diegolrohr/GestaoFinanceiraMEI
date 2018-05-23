@@ -35,8 +35,9 @@ namespace Fly01.Financeiro.Controllers
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
                 status = x.Status,
-                statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
+                statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
+                statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
             };
         }

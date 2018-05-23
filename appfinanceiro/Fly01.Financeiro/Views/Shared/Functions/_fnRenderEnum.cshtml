@@ -1,5 +1,17 @@
 ﻿<script>
     function fnRenderEnum(data, type, row, meta) {
-        return "<span class='new badge " + row.statusCssClass + " left' data-badge-caption=' '>" + row.statusDescription + "</span>"
+        var cssStyle = "";
+        var tooltipValue = "";
+        var description = "";
+
+        return "<span class='cool badge left " + row.statusCssClass + "' data-tooltip='" + row.statusTooltip + "'>" + row.statusDescription + "</span>";
     }
+
+    $(document).on("preDraw.dt", ".dataTable", () => {
+        $("span.cool.badge").tooltip('remove');
+    });
+
+    $(document).on("draw.dt", ".dataTable", () => {
+        $("span.cool.badge").tooltip({ position: "top" });
+    });
 </script>

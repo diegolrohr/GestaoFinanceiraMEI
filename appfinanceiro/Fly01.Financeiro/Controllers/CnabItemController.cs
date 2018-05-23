@@ -15,7 +15,7 @@ namespace Fly01.Estoque.Controllers
         {
             return x => new
             {
-                id = x.Id.ToString(),
+                contaReceberId = x.Id.ToString(),
                 numero = x.Numero,
                 descricao = x.Descricao,
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),

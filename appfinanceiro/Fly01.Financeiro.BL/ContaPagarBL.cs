@@ -15,8 +15,7 @@ namespace Fly01.Financeiro.BL
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
 
-        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL)
-            : base(context)
+        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
 
@@ -52,66 +51,77 @@ namespace Fly01.Financeiro.BL
                 (entity.TipoPeriodicidade == TipoPeriodicidade.Anual && !(entity.NumeroRepeticoes.Value > 0 && entity.NumeroRepeticoes.Value <= limiteAnual)))
             , RepeticoesInvalidas);
 
-            //na nova Transação já é informado o id e o status
-            if (entity.Id == default(Guid))
-                entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
-
+            //ContaFinanceira.Número
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
-            Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
-            for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
+            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
             {
-                var parcela = condicoesParcelamento[iParcela];
+                entity.Numero = ++max;
+                base.Insert(entity);
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
+            }
+            else
+            {
+                //na nova Transação já é informado o id e o status
+                if (entity.Id == default(Guid))
+                    entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
-                var itemContaPagar = new ContaPagar();
-                entity.CopyProperties<ContaPagar>(itemContaPagar);
-
-                // CopyProperties não copia as notificações
-                itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors);
-
-                itemContaPagar.DataVencimento = parcela.DataVencimento;
-                itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
-                itemContaPagar.ValorPrevisto = parcela.Valor;
-
-                itemContaPagar.Id = iParcela == default(int) ? contaFinanceiraPrincipal : Guid.NewGuid();
-
-                itemContaPagar.Numero = ++max;
-
-                base.Insert(itemContaPagar);
-
-                if (entity.Repetir && entity.TipoPeriodicidade != TipoPeriodicidade.Nenhuma)
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
+                Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
+                for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
                 {
-                    for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
+                    var parcela = condicoesParcelamento[iParcela];
+
+                    var itemContaPagar = new ContaPagar();
+                    entity.CopyProperties<ContaPagar>(itemContaPagar);
+
+                    // CopyProperties não copia as notificações
+                    itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors);
+
+                    itemContaPagar.DataVencimento = parcela.DataVencimento;
+                    itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
+                    itemContaPagar.ValorPrevisto = parcela.Valor;
+
+                    itemContaPagar.Id = iParcela == default(int) ? contaFinanceiraPrincipal : Guid.NewGuid();
+
+                    itemContaPagar.Numero = ++max;
+
+                    base.Insert(itemContaPagar);
+
+                    if (entity.Repetir && entity.TipoPeriodicidade != TipoPeriodicidade.Nenhuma)
                     {
-                        var itemContaPagarRepeticao = new ContaPagar();
-
-                        itemContaPagar.CopyProperties<ContaPagar>(itemContaPagarRepeticao);
-
-                        // CopyProperties não copia as notificações
-                        itemContaPagarRepeticao.Notification.Errors.AddRange(itemContaPagar.Notification.Errors);
-
-                        itemContaPagarRepeticao.Id = default(Guid);
-                        itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
-
-                        switch (entity.TipoPeriodicidade)
+                        for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
                         {
-                            case TipoPeriodicidade.Semanal:
-                                itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddDays(iRepeticao * 7);
-                                break;
-                            case TipoPeriodicidade.Mensal:
-                                itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddMonths(iRepeticao);
-                                break;
-                            case TipoPeriodicidade.Anual:
-                                itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
-                                break;
+                            var itemContaPagarRepeticao = new ContaPagar();
+
+                            itemContaPagar.CopyProperties<ContaPagar>(itemContaPagarRepeticao);
+
+                            // CopyProperties não copia as notificações
+                            itemContaPagarRepeticao.Notification.Errors.AddRange(itemContaPagar.Notification.Errors);
+
+                            itemContaPagarRepeticao.Id = default(Guid);
+                            itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+
+                            switch (entity.TipoPeriodicidade)
+                            {
+                                case TipoPeriodicidade.Semanal:
+                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddDays(iRepeticao * 7);
+                                    break;
+                                case TipoPeriodicidade.Mensal:
+                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddMonths(iRepeticao);
+                                    break;
+                                case TipoPeriodicidade.Anual:
+                                    itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
+                                    break;
+                            }
+
+                            itemContaPagarRepeticao.Numero = ++max;
+
+                            base.Insert(itemContaPagarRepeticao);
                         }
-
-                        itemContaPagarRepeticao.Numero = ++max;
-
-                        base.Insert(itemContaPagarRepeticao);
                     }
                 }
             }

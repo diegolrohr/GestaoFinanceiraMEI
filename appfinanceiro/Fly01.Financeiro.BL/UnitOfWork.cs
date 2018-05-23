@@ -41,7 +41,7 @@ namespace Fly01.Financeiro.BL
         public FeriadoBL FeriadoBL => feriadoBL ?? (feriadoBL = new FeriadoBL(Context));
 
         private CategoriaBL categoriaBL;
-        public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context));
+        public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context, ContaFinanceiraBL));
 
         private BancoBL bancoBL;
         public BancoBL BancoBL => bancoBL ?? (bancoBL = new BancoBL(Context));
@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.BL
         public MovimentacaoBL MovimentacaoBL => movimentacaoBL ?? (movimentacaoBL = new MovimentacaoBL(Context, CategoriaBL, SaldoHistoricoBL));
 
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
-        public ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL => contaFinanceiraBaixaBL ?? (contaFinanceiraBaixaBL = new ContaFinanceiraBaixaBL(Context, ContaFinanceiraBL, ContaBancariaBL, SaldoHistoricoBL, MovimentacaoBL));
+        public ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL => contaFinanceiraBaixaBL ?? (contaFinanceiraBaixaBL = new ContaFinanceiraBaixaBL(Context, ContaFinanceiraBL, ContaBancariaBL, SaldoHistoricoBL, MovimentacaoBL, BancoBL));
 
         private ContaFinanceiraBaixaMultiplaBL contaFinanceiraBaixaMultiplaBL;
         public ContaFinanceiraBaixaMultiplaBL ContaFinanceiraBaixaMultiplaBL => contaFinanceiraBaixaMultiplaBL ?? (contaFinanceiraBaixaMultiplaBL = new ContaFinanceiraBaixaMultiplaBL(Context, ContaFinanceiraBaixaBL, ContaFinanceiraBL));

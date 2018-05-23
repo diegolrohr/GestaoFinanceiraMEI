@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Newtonsoft.Json;
+﻿using Fly01.Core.Config;
 using Fly01.uiJS.Classes;
-using Fly01.Core.Config;
-using Fly01.uiJS.Defaults;
-using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
@@ -13,7 +13,8 @@ namespace Fly01.Compras.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl, "GridLoad");
+            //return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
+            return DashboardController.DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
         }
         public override ContentResult Sidebar()
         {
@@ -26,7 +27,8 @@ namespace Fly01.Compras.Controllers
                 Label = "Compras",
                 Items = new List<LinkUI>
             {
-                new LinkUI() { Label = "Orçamento/Pedido", OnClick = @Url.Action("List", "Home")},
+                new LinkUI() { Label = "DashBoard", OnClick = @Url.Action("List", "Dashboard")},
+                new LinkUI() { Label = "Orçamento/Pedido", OnClick = @Url.Action("List", "OrdemCompra")},
             }
             });
 

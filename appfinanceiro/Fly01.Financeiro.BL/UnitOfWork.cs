@@ -1,9 +1,9 @@
-﻿using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Core.Base;
+﻿using Fly01.Core.Base;
+using Fly01.Core.Entities.Domains;
+using Fly01.Financeiro.API.Models.DAL;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-using Fly01.Core.Entities.Domains;
 
 namespace Fly01.Financeiro.BL
 {
@@ -129,6 +129,9 @@ namespace Fly01.Financeiro.BL
 
         private ConfiguracaoNotificacaoBL configuracaoNotificacaoBL;
         public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
+
+        private DashboardBL dashboardBL;
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
 
         #endregion
     }

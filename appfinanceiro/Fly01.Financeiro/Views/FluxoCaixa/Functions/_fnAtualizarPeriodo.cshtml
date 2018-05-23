@@ -1,0 +1,13 @@
+﻿<script>
+    function fnAtualizarPeriodo(days) {        
+        var today = new Date();
+        var finalDate = new Date();
+        finalDate.setDate(today.getDate() + parseInt(days));
+
+        fly01._.dataFinal.set(finalDate);
+        fly01._.dataInicial.set(today);
+
+        getSaldos(today, finalDate);
+        fnAtualizar();
+    }
+</script>

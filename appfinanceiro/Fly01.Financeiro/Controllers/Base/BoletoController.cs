@@ -42,6 +42,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"arquivoRemessaId eq {idArquivo}");
+            queryString.AddParam("$expand", "contaReceber , contaReceber($expand=pessoa)");
 
             var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
 
@@ -169,16 +170,17 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 Descricao = $"{nomeArquivo}.REM",
                 TotalBoletos = qtdBoletos,
-                StatusArquivoRemessa = StatusArquivoRemessa.Exportado.ToString(),
+                StatusArquivoRemessa = StatusArquivoRemessa.AguardandoRetorno.ToString(),
                 ValorTotal = valorBoletos
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
+            var status = ((int)StatusCnab.AguardandoRetorno).ToString();
 
             ids.ForEach(x =>
             {
                 var resource = $"cnab/{x}";
-                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = result.Id }));
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = result.Id, status = status}));
             });
         }
 
@@ -226,7 +228,10 @@ namespace Fly01.Financeiro.Controllers.Base
                     valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                     dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
                     dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
+                    status = item.Status,
+                    statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), item.Status),
+                    statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), item.Status),
+                    statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), item.Status),
                 })
 
             }, JsonRequestBehavior.AllowGet);

@@ -10,6 +10,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -20,11 +21,14 @@ namespace Fly01.Financeiro.Controllers
             return x => new
             {
                 id = x.Id,
+                statusArquivoRemessa = x.StatusArquivoRemessa,
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
+                statusDescription = EnumHelper.GetDescription(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
+                statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
                 descricao = x.Descricao,
-                valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
                 dataExportacao = x.DataExportacao.ToString("dd/MM/yyyy"),
                 totalBoletos = x.TotalBoletos,
-                status = x.StatusArquivoRemessa
+                valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
             };
         }
 
@@ -86,18 +90,18 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtListcnab",
                 Class = "col s12",
                 UrlGridLoad = Url.Action("LoadGridBoletos"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10
                 },
                 Columns = new List<DataTableUIColumn>
                 {
-                    new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Orderable = false, Searchable = false, Type = "number" },
-                    new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 2, Orderable = false, Searchable = false },
-                    new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 3, Orderable = false, Searchable = false, Type = "currency" },
-                    new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data emissão", Priority = 4, Orderable = false, Searchable = false, Type = "date" },
-                    new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 5, Orderable = false, Searchable = false, Type = "date" },
-                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 6, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))}
+                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="fnRenderEnum"},
+                    new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso numero", Priority = 6 },
+                    new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
+                    new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
+                    new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
                 }
             });
 
@@ -132,17 +136,20 @@ namespace Fly01.Financeiro.Controllers
                     Select = new { style = "multi" }
                 }
             };
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Dt. Exportação", Priority = 3, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Qtd. Boletos", Priority = 4, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 4, Orderable = false, Searchable = false });
+
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusArquivoRemessa",
                 DisplayName = "Status",
-                Priority = 5,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa))),
+                Priority = 1,
+                Width = "12%",
+                RenderFn = "fnRenderEnum"
             });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Dt. Exportação", Priority = 3, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Qtd. Boletos", Priority = 4, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 5, Orderable = false, Searchable = false });
 
             cfg.Content.Add(config);
 

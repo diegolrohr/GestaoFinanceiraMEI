@@ -25,12 +25,12 @@ namespace Fly01.Core.ServiceBus
             }
             catch (System.Exception ex)
             {
-                SlackClient.PostMessage(
+                SlackClient.PostErrorRabbitMQ(
                     $"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", 
                     ex.Message, 
-                    ex.StackTrace, 
                     RabbitConfig.Factory?.VirtualHost,
-                    RabbitConfig.QueueName);
+                    RabbitConfig.QueueName
+                );
             }
         }
     }

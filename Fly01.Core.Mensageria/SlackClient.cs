@@ -1,12 +1,26 @@
 ﻿using System.Net;
 using Newtonsoft.Json;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace Fly01.Core.Mensageria
 {
     public static class SlackClient
     {
-        public static void PostMessage(string data, string errorMessage, string hostName, string queueName)
+        public static void Post(string slackUrl, SlackMessage message)
+        {
+            using (var client = new WebClient())
+            {
+                var data = new NameValueCollection
+                {
+                    ["payload"] = JsonConvert.SerializeObject(message)
+                };
+
+                client.UploadValues(slackUrl, "POST", data);
+            }
+        }
+
+        public static void PostErrorRabbitMQ(string data, string errorMessage, string hostName, string queueName)
         {
             var slackChannel = string.Empty;
             if (hostName == "prod")
@@ -14,47 +28,60 @@ namespace Fly01.Core.Mensageria
             else
                 slackChannel = "https://hooks.slack.com/services/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";
 
-            using (var client = new WebClient())
+            var message = new SlackMessage()
             {
-                var message = JsonConvert.SerializeObject(new
+                Attachments = new List<SlackAttachment>()
                 {
-                    attachments = new[] 
+                    new SlackAttachment()
                     {
-                        new
+                        Fallback = "Required plain-text summary of the attachment.",
+                        Color = "danger",
+                        Title = "Erro Rabbit MQ",
+                        Fields = new List<SlackField>()
                         {
-                            fallback = "Required plain-text summary of the attachment.",
-                            color = "danger",
-                            title = "Erro Rabbit MQ",
-                            fields = new[]
-                            {
-                                new
-                                {
-                                    title = "Dados",
-                                    value = data
-                                },
-                                new
-                                {
-                                    title = "Erro",
-                                    value = errorMessage
-                                },
-                                new {
-                                    title = "Host",
-                                    value = hostName
-                                },
-                                new
-                                {
-                                    title = "Fila",
-                                    value = queueName
-                                }
-                            }
+                            new SlackField("Dados", data),
+                            new SlackField("Erro", errorMessage),
+                            new SlackField("Host", hostName),
+                            new SlackField("Fila", queueName),
                         }
                     }
-                });
+                }
+            };
 
-                var dados = new NameValueCollection { ["payload"] = message };
+            Post(slackChannel, message);
+        }
+    }
+    
+    public class SlackMessage
+    {
+        [JsonProperty("attachments")]
+        public List<SlackAttachment> Attachments { get; set; }
+    }
 
-                client.UploadValues(slackChannel, "POST", dados);
-            }
+    public class SlackAttachment
+    {
+        [JsonProperty("fallback")]
+        public string Fallback { get; set; }
+        [JsonProperty("color")]
+        public string Color { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
+        [JsonProperty("fields")]
+        public List<SlackField> Fields { get; set; }
+    }
+
+    public class SlackField
+    {
+        [JsonProperty("title")]
+        public string Title { get; set; }
+        [JsonProperty("value")]
+        public string Value { get; set; }
+
+        public SlackField() { }
+        public SlackField(string title, string value)
+        {
+            Title = title;
+            Value = value;
         }
     }
 }

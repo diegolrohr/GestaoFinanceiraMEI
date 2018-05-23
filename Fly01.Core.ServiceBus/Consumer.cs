@@ -80,12 +80,11 @@ namespace Fly01.Core.ServiceBus
                     }
                     catch (Exception ex)
                     {
-                        SlackClient.PostMessage(Message,
+                        SlackClient.PostErrorRabbitMQ(Message,
                             ex.Message, 
-                            ex.StackTrace, 
                             RabbitConfig.Factory?.VirtualHost,
                             RabbitConfig.QueueName
-                            );
+                        );
                         Channel.BasicNack(args.DeliveryTag, false, true);
                     }
                     finally

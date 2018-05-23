@@ -35,12 +35,12 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                SlackClient.PostMessage(
+                SlackClient.PostErrorRabbitMQ(
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), 
                     ex.Message, 
-                    ex.StackTrace,
                     RabbitConfig.Factory?.VirtualHost,
-                    RabbitConfig.QueueName);
+                    RabbitConfig.QueueName
+                );
             }
         }
     }

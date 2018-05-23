@@ -8,6 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Fly01.Core.Notifications;
+using System.Configuration;
 
 namespace Fly01.Core.BL
 {
@@ -127,8 +128,8 @@ namespace Fly01.Core.BL
             {
                 await Task.Factory.StartNew(async () =>
                 {
-                    var mongoHelper = new LogMongoHelper<LogEvent>();
-                    var collection = mongoHelper.GetCollection();
+                    var mongoHelper = new LogMongoHelper<LogEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
+                    var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameLog"]);
 
                     if (logDocuments.Count > 0)
                         await collection.InsertManyAsync(logDocuments);

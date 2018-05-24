@@ -11,12 +11,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
     [ODataRoutePrefix("pessoa")]
     public class PessoaController : ApiPlataformaController<Pessoa, PessoaBL>
     {
-        public override Task<IHttpActionResult> Post(Pessoa entity)
-        {
-            SlackClient.PostErrorRabbitMQ(JsonConvert.SerializeObject(entity), new System.Exception("Teste FOLLMANN"), "FollmannHost", "FollmannQueue");
-            return base.Post(entity);
-        }
-
         public PessoaController()
         {
             MustProduceMessageServiceBus = true;

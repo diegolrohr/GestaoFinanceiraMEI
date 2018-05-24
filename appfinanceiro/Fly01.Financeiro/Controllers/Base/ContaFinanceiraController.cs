@@ -18,6 +18,7 @@ using Fly01.Financeiro.Models.Reports;
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -31,7 +32,7 @@ namespace Fly01.Financeiro.Controllers.Base
         /// </summary>
         protected ContaFinanceiraController()
         {
-            ResourceName = AppDefaults.GetResourceName(typeof(TEntity));
+            //ResourceName = AppDefaults.GetResourceName(typeof(TEntity));
         }
 
         /// <summary>

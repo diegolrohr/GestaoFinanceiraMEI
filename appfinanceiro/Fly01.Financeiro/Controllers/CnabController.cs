@@ -42,7 +42,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpGet]
-        public ActionResult Download(string fileName)
+        public ActionResult DownloadArquivoRemessa(string fileName)
         {
             if (Session[fileName] != null)
             {

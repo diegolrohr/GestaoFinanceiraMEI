@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Faturamento.Helpers;
 using Fly01.Faturamento.Models.Reports;
 using Fly01.Faturamento.Models.ViewModel;
@@ -19,6 +18,7 @@ using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {

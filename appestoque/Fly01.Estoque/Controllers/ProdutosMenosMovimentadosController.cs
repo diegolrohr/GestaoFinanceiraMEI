@@ -1,5 +1,5 @@
 ﻿using Fly01.Core.Helpers;
-using Fly01.Estoque.Controllers.Base;
+using Fly01.Core.Presentation;
 using Fly01.Estoque.ViewModel;
 using System;
 using System.Collections.Generic;

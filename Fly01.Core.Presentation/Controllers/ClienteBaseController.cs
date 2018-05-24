@@ -1,46 +1,77 @@
 ﻿using System;
-using System.Web.Mvc;
-using Newtonsoft.Json;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core;
-using Fly01.Core.Rest;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Presentation;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
-namespace Fly01.Financeiro.Controllers
+namespace Fly01.Core.Presentation.Controllers
 {
-    public class FornecedorController : BaseController<PessoaVM>
+    public class ClienteBaseController<T> : BaseController<T> where T : PessoaVM
     {
-        public FornecedorController()
+        public override ContentResult List()
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Clientes",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public ClienteBaseController()
         {
             ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
         }
 
-        public override JsonResult Create(PessoaVM entityVM)
+        public override JsonResult Create(T entityVM)
         {
             NormarlizarEntidade(ref entityVM);
+
             return base.Create(entityVM);
         }
 
         [HttpPost]
-        public override JsonResult Edit(PessoaVM entityVM)
+        public override JsonResult Edit(T entityVM)
         {
             NormarlizarEntidade(ref entityVM);
+
             return base.Edit(entityVM);
         }
 
-        private void NormarlizarEntidade(ref PessoaVM entityVM)
+        protected void NormarlizarEntidade(ref T entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";
 
-            entityVM.Fornecedor = true;
+            entityVM.Cliente = true;
             entityVM.CPFCNPJ = Regex.Replace(entityVM.CPFCNPJ ?? "", regexSomenteDigitos, "");
             entityVM.TipoDocumento = GetTipoDocumento(entityVM.CPFCNPJ ?? "");
             entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
@@ -66,16 +97,17 @@ namespace Fly01.Financeiro.Controllers
         {
             var tempExpand = ExpandProperties;
             ExpandProperties = string.Empty;
+
             var customFilters = base.GetQueryStringDefaultGridLoad();
             ExpandProperties = tempExpand;
 
-            customFilters.AddParam("$filter", "fornecedor eq true");
+            customFilters.AddParam("$filter", "cliente eq true");
             customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
 
             return customFilters;
         }
 
-        public override Func<PessoaVM, object> GetDisplayData()
+        public override Func<T, object> GetDisplayData()
         {
             return x => new
             {
@@ -90,37 +122,6 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        public override ContentResult List()
-        {
-            var cfg = new ContentUI
-            {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Fornecedores",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "import", Label = "Importar fornecedores", OnClickFn = "fnImportarCadastro" }
-                    }
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Fornecedor", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
-
-            cfg.Content.Add(config);
-
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
-
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -132,7 +133,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Dados do fornecedor",
+                    Title = "Dados do cliente",
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
@@ -149,9 +150,10 @@ namespace Fly01.Financeiro.Controllers
                     Create = Url.Action("Create"),
                     Edit = Url.Action("Edit"),
                     Get = Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Fornecedor")
+                    List = @Url.Action("List")
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReady"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -162,11 +164,18 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l6", Label = "Nome Comercial", MaxLength = 100 });
             config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s7 l6", Label = "E-mail", MaxLength = 70 });
 
-            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s12 l3", Label = "Pessoa de Contato", MaxLength = 45 });
-            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s3 l2", Label = "Celular", MaxLength = 15 });
-            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s3 l2", Label = "Telefone", MaxLength = 15 });
+            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s5 l3", Label = "Pessoa de Contato", MaxLength = 45 });
+            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s4 l2", Label = "Celular", MaxLength = 15 });
+            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s4 l2", Label = "Telefone", MaxLength = 15 });
 
-            config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s3 l2", Label = "CEP", MaxLength = 9 });
+            config.Elements.Add(new InputCepUI
+            {
+                Id = "cep",
+                Class = "col s4 l2",
+                Label = "CEP",
+                MaxLength = 9,
+                DomEvents = new List<DomEventUI>() { new DomEventUI { DomEvent = "keyup", Function = "fnBuscaCEP" } }
+            });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -193,27 +202,29 @@ namespace Fly01.Financeiro.Controllers
                 PreFilter = "estadoId"
             });
 
+            config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 30 });
+            config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s12 l4", Label = "Endereço", MaxLength = 50 });
+            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
+            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l3", Label = "Complemento", MaxLength = 20 });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoIndicacaoInscricaoEstadual",
-                Class = "col s3 12",
+                Class = "col s12 l3",
                 Label = "Indicação Inscrição Estadual",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
                 ConstrainWidth = true
             });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s12 l3", Label = "Inscrição Estadual", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s12 l3", Label = "Inscrição Municipal", MaxLength = 18 });
-            config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 30 });
-            config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s12 l5", Label = "Endereço", MaxLength = 50 });
-            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
-            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
+            config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
+            config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
 
-            config.Elements.Add(new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" });
+            config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
             config.Elements.Add(new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" });
+
+            config.Helpers.Add(AdicionaHelper());
 
             cfg.Content.Add(config);
 
@@ -235,7 +246,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Header = new HtmlUIHeader()
                 {
-                    Title = "Importar fornecedores",
+                    Title = "Importar clientes",
                     Buttons = new List<HtmlUIButton>()
                     {
                         new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" },
@@ -251,7 +262,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Create = Url.Action("ImportaCadastro"),
                     Edit = Url.Action("ImportaCadastro"),
-                    Get = Url.Action("Json", "Fornecedor") + "/ImportarCadastro",
+                    Get = Url.Action("Json", "Cliente") + "/ImportarCadastro",
                     List = @Url.Action("List")
                 },
                 ReadyFn = "fnImportaCadastroFormReady",
@@ -264,17 +275,18 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            cfg.Content.Add(new CardUI
+            cfg.Content.Add(new CardUI()
             {
                 Class = "col s12",
                 Color = "blue",
                 Id = "cardDuvidas",
                 Title = "Dúvidas",
-                Placeholder = "Se preferir você pode baixar um arquivo modelo de importação",
-                Action = new LinkUI
+                Placeholder = "Se preferir você pode baixar um arquivo modelo de importação.",
+                Action = new LinkUI()
                 {
                     Label = "Baixar arquivo modelo"
                 }
+
             });
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -282,33 +294,13 @@ namespace Fly01.Financeiro.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo);
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Clientes", pConteudo);
             return JsonResponseStatus.GetJson(arquivoVM);
         }
 
-        public JsonResult PostFornecedor(string term)
+        protected virtual TooltipUI AdicionaHelper()
         {
-            var entity = new PessoaVM
-            {
-                Nome = term,
-                Fornecedor = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
-            };
-
-            NormarlizarEntidade(ref entity);
-
-            try
-            {
-                var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
-                var data = RestHelper.ExecutePostRequest<PessoaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
+            return null;
         }
 
     }

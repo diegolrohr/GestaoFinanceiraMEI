@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public class AvaliacaoAppBaseController<T> : WebBaseController<T> where T : DomainBaseVM
+    public class AvaliacaoAppBaseController<T> : BaseController<T> where T : DomainBaseVM
     {
         public override ContentResult Form()
         {

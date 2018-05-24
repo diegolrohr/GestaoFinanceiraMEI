@@ -9,7 +9,7 @@
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
                 if (retorno.FileGuid != null)
-                    window.location = '@Url.Action("Download", "Cnab")?fileName=' + retorno.FileGuid;
+                    window.location = '@Url.Action("DownloadArquivoRemessa", "Cnab")?fileName=' + retorno.FileGuid;
                 else
                     fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
 

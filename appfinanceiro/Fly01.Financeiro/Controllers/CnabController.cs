@@ -30,7 +30,6 @@ namespace Fly01.Financeiro.Controllers
                 contaReceberId = x.ContaReceberId,
                 contaBancariaId = x.ContaBancariaCedenteId,
                 pessoa_nome = x.ContaReceber.Pessoa.Nome,
-                nossoNumero = x.NossoNumero,
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorDesconto = x.ValorDesconto,
@@ -88,8 +87,10 @@ namespace Fly01.Financeiro.Controllers
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReady"
             };
+
             configCnab.Elements.Add(new InputHiddenUI { Id = "id" });
             configCnab.Elements.Add(new AutoCompleteUI
             {
@@ -135,7 +136,6 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
                 }
             };
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº Conta", Priority = 2, Type = "number" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1, Width = "30%" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });

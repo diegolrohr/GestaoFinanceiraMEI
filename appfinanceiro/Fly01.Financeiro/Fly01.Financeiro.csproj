@@ -344,6 +344,7 @@
     <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

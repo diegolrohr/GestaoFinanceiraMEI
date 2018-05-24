@@ -62,13 +62,10 @@ namespace Fly01.Financeiro.Controllers
                 },
                 ReadyFn = "fnFormReady"
             };
-
+            config.Elements.Add(new InputHiddenUI { Id = "descricao" }); 
+            config.Elements.Add(new InputHiddenUI { Id = "dataExportacao" });
+            config.Elements.Add(new InputHiddenUI { Id = "statusArquivoRemessa" });
             cfg.Content.Add(config);
-
-            var arquivo = "honatel.Rem";
-            var metodoPagamento = "Boleto bancário";
-            var dataImportacao = "01/02/1987";
-            var status = "Aguardando aprovação";
 
             cfg.Content.Add(new CardUI
             {
@@ -77,7 +74,6 @@ namespace Fly01.Financeiro.Controllers
                 Id = "cardObs",
                 Title = "Transmissão de arquivo",
                 Functions = new List<string>() { "fnFormReady" },
-                Placeholder = $"Arquivo {arquivo} com o metodo de pagamento {metodoPagamento} dataImoportação {dataImportacao} e status {status}, Esta aguardando a sua aprovação manual.",
                 Action = new LinkUI()
                 {
                     Label = "",
@@ -91,13 +87,14 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12",
                 UrlGridLoad = Url.Action("LoadGridBoletos"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnFormReadyRemessa", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10
                 },
                 Columns = new List<DataTableUIColumn>
                 {
-                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="fnRenderEnum"},
+                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"},
                     new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso numero", Priority = 6 },
                     new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
@@ -130,7 +127,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtRemessa",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyRemessa" },
+                Functions = new List<string> { "fnFormReadyRemessa", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
                     Select = new { style = "multi" }
@@ -144,7 +141,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa))),
                 Priority = 1,
                 Width = "12%",
-                RenderFn = "fnRenderEnum"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Dt. Exportação", Priority = 3, Type = "date" });

@@ -8,6 +8,15 @@ namespace Fly01.Core.API
 {
     public class ApiPlataformaMongoBaseController<T> : ApiBaseController where T : PlataformaBase, new()
     {
+        private string MongoDBName { get; set; }
+        private string MongoCollectionName { get; set; }
+
+        public ApiPlataformaMongoBaseController(string mongoDBName, string mongoCollectionName)
+        {
+            MongoDBName = mongoDBName;
+            MongoCollectionName = mongoCollectionName;
+        }
+
         [HttpPost]
         public virtual async Task<IHttpActionResult> Post(T entity)
         {
@@ -17,13 +26,12 @@ namespace Fly01.Core.API
             entity.UsuarioInclusao = AppUser;
             entity.PlataformaId = PlataformaUrl;
             
-            var mongoHelper = new LogMongoHelper<T>(NoSQLDataBase.AvaliacaoAppDB);
-            var collection = mongoHelper.GetCollection();
+            var mongoHelper = new LogMongoHelper<T>(MongoDBName);
+            var collection = mongoHelper.GetCollection(MongoCollectionName);
 
             await collection.InsertOneAsync(entity);
 
-            return Ok(new { Id = entity.Id });
-
+            return Ok(new { entity.Id });
         }
     }
 }

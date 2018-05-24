@@ -35,12 +35,20 @@ namespace Fly01.Core.Presentation
                 if (string.IsNullOrWhiteSpace(cep))
                     return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não são válidos.");
 
-                dynamic dynamicObj = SOADataManager.BuscaCEP(cep, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
+                var buscaCepVM = SOADataManager.BuscaCEP(cep, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
 
-                if (dynamicObj != null)
+                if (buscaCepVM != null)
                 {
-                    //dynamicObj.State
-                    return JsonResponseStatus.GetJson(JsonConvert.SerializeObject(dynamicObj));
+                    var queryString = AppDefaults.GetQueryStringDefault();
+                    queryString.AddParam("$expand", "estado");
+                    queryString.AddParam("$filter", $"(nome eq '{buscaCepVM.City}' and (estado/sigla eq '{buscaCepVM.State}') or estado/nome eq '{buscaCepVM.State}')");
+
+                    var data = RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(AppDefaults.GetResourceName(typeof(CidadeVM)), queryString).Data.FirstOrDefault();
+
+                    buscaCepVM.StateId = data.EstadoId.ToString();
+                    buscaCepVM.CityId = data.Id.ToString();
+
+                    return JsonResponseStatus.GetJson(new { success = true, endereco = buscaCepVM });
                 }
                 else
                     return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
@@ -518,6 +526,7 @@ namespace Fly01.Core.Presentation
         #region SYSTEM VALUES
 
         private Dictionary<string, List<SystemValueVM>> _systemValues = null;
+
         public Dictionary<string, List<SystemValueVM>> SystemValues
         {
             get
@@ -546,11 +555,6 @@ namespace Fly01.Core.Presentation
 
             return listReturn;
         }
-
-        //public List<KeyValueVM> GetSystemKeyValue(string systemValue)
-        //{
-        //    return this.ExecuteGetRequest<List<KeyValueVM>>(string.Format("systemvalue/{0}", systemValue));
-        //}
 
         public List<KeyValueVM> GetSystemKeyValue(string systemValue, bool fieldStruct = false)
         {
@@ -589,6 +593,7 @@ namespace Fly01.Core.Presentation
         {
             return RestHelper.ExecuteGetRequest<List<TReturn>>(string.Format("systemvalue/{0}", systemEntity));
         }
+
         #endregion
 
         #region Importação

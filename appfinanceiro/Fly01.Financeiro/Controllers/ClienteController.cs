@@ -1,23 +1,54 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
+﻿using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core;
-using Fly01.Core.Entities.Domains.Enum;
+using Fly01.uiJS.Classes;
+using System.Collections.Generic;
+using Fly01.uiJS.Defaults;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Text.RegularExpressions;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Financeiro.Controllers.Base;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class ClienteController : BaseController<PessoaVM>
     {
+        public override ContentResult List()
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Clientes",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
         public ClienteController()
         {
             ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
@@ -38,7 +69,7 @@ namespace Fly01.Financeiro.Controllers
             return base.Edit(entityVM);
         }
 
-        private void NormarlizarEntidade(ref PessoaVM entityVM)
+        protected void NormarlizarEntidade(ref PessoaVM entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";
 
@@ -91,37 +122,6 @@ namespace Fly01.Financeiro.Controllers
                             : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
                 registroFixo = x.RegistroFixo
             };
-        }
-
-        public override ContentResult List()
-        {
-            var cfg = new ContentUI
-            {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Clientes",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
-                    }
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
-
-            cfg.Content.Add(config);
-
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
         public override ContentResult Form()

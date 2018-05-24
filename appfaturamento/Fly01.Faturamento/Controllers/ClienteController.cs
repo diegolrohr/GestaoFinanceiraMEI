@@ -1,22 +1,53 @@
-﻿using Fly01.Faturamento.Controllers.Base;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Faturamento.Controllers.Base;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
     public class ClienteController : BaseController<PessoaVM>
     {
+        public override ContentResult List()
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Clientes",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
         public ClienteController()
         {
             ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
@@ -37,7 +68,7 @@ namespace Fly01.Faturamento.Controllers
             return base.Edit(entityVM);
         }
 
-        private void NormarlizarEntidade(ref PessoaVM entityVM)
+        protected void NormarlizarEntidade(ref PessoaVM entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";
 
@@ -92,37 +123,6 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult List()
-        {
-            var cfg = new ContentUI
-            {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Clientes",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
-                    }
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
-
-            cfg.Content.Add(config);
-
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
-
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -169,7 +169,14 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s4 l2", Label = "Celular", MaxLength = 15 });
             config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s4 l2", Label = "Telefone", MaxLength = 15 });
 
-            config.Elements.Add(new InputCepUI { Id = "cep", Class = "col s4 l2", Label = "CEP", MaxLength = 9 });
+            config.Elements.Add(new InputCepUI
+            {
+                Id = "cep",
+                Class = "col s4 l2",
+                Label = "CEP",
+                MaxLength = 9,
+                DomEvents = new List<DomEventUI>() { new DomEventUI { DomEvent = "keyup", Function = "fnBuscaCEP" } }
+            });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -218,16 +225,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" });
 
-            #region Helpers 
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "estadoId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
-                }
-            });
-            #endregion
+            config.Helpers.Add(AdicionaHelper());
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -294,9 +293,9 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public JsonResult ImportaArquivo(string conteudo)
+        public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Clientes", conteudo);
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Clientes", pConteudo);
             return JsonResponseStatus.GetJson(arquivoVM);
         }
 
@@ -351,6 +350,18 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l6", Label = "Número", Required = true, MaxLength = 20 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public TooltipUI AdicionaHelper()
+        {
+            return new TooltipUI
+            {
+                Id = "estadoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
+                }
+            };
         }
     }
 }

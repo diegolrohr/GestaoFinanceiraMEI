@@ -322,7 +322,5 @@ namespace Fly01.Core.Presentation.Controllers
 
             return GetJson(filterObjects);
         }
-
-
     }
 }

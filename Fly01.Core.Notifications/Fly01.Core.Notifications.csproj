@@ -69,7 +69,8 @@
     <Compile Include="BusinessException.cs" />
     <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Error.cs" />
-    <Compile Include="LogEvent.cs" />
+    <Compile Include="RecordBaseMongoDB.cs" />
+    <Compile Include="LogRecordEvent.cs" />
     <Compile Include="LogMongoHelper.cs" />
     <Compile Include="LogServiceBusEvent.cs" />
     <Compile Include="Message.cs" />

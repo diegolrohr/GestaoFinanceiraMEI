@@ -22,7 +22,6 @@ namespace Fly01.Core.ServiceBus
                         //channel.QueueBind(RabbitConfig.QueueName + "_callback", RabbitConfig.AMQPExchange, "callback", null);
                     }
                 }
-
             }
             catch (Exception ex)
             {

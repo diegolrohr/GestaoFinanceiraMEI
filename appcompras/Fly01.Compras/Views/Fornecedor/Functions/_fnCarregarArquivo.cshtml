@@ -20,7 +20,7 @@
             data: { pConteudo: csv },
             success: function (response) {
                 $("#observacao").closest("div").css("display", "block");
-                $("#observacao").val(response.Retorno);
+                $("#observacao").val(response.Data.Retorno);
                 $("#observacao").trigger("autoresize");
                 fly01.fn.updateTextFields();
                 $('body').addClass('loaded');

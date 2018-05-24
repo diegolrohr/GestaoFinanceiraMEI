@@ -55,6 +55,7 @@
     <Compile Include="ConciliacaoBancariaItemContaFinanceiraBL.cs" />
     <Compile Include="ConciliacaoBancariaItemBL.cs" />
     <Compile Include="ContaFinanceiraBaixaMultiplaBL.cs" />
+    <Compile Include="DashboardBL.cs" />
     <Compile Include="DespesaPorCategoriaBL.cs" />
     <Compile Include="MovimentacaoPorCategoriaBL.cs" />
     <Compile Include="ReceitaPorCategoriaBL.cs" />

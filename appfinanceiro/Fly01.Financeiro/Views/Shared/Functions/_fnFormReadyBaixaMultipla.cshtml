@@ -2,31 +2,35 @@
     @Html.Partial("Functions/_fnMain");
 
     var rows_selected = [];
+    const qtLimiteBaixaMultipla = 50;
 
     function setupGridSelectEvents() {
-        //ver validacao contador limite de 50
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
+                var rowsCount = 0;
+
                 indexes.forEach(function (element, index, array) {
                     var rowData = fly01._.dtContasExistentes.row(element).data();
+                    $('#btnDeselectAll').removeAttr('disabled');
 
                     var index = $.inArray(rowData.id, rows_selected);
                     if (index == -1) {//se não tem, add, mas se ficar clicando inúmeras vezes em selecionar tudo, tem este array auxiliar
                         rows_selected.push(rowData.id);
                         var valorSaldo = parseFloat(rowData.saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
                         valorAcumulado += valorSaldo;
-                        $('#btnDeselectAll').removeAttr('disabled');
-                        fnAtualizaCountSelecionados(1);
+                        rowsCount++;
                     }
                 });
 
+                fnAtualizaCountSelecionados(rowsCount);
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
+                var rowsCount = 0;
 
                 indexes.forEach(function (element, index, array) {
                     var rowData = fly01._.dtContasExistentes.row(element).data();
@@ -36,14 +40,14 @@
                         rows_selected.splice(index, 1);
                         var valorSaldo = parseFloat(rowData.saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
                         valorAcumulado -= valorSaldo;
-                        fnAtualizaCountSelecionados(-1);
+                        rowsCount++;
                     }
                 });
 
                 if (valorAcumulado < 0) {
                     valorAcumulado = 0.0;
                 }
-
+                fnAtualizaCountSelecionados(-rowsCount);
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
                 $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
             }
@@ -55,8 +59,12 @@
         return parseFloat(somaValores).toFixed(2);
     }
 
+    function getCountAtual() {
+        return parseInt($('input#countContasSelecionadas').val());
+    }
+
     function fnAtualizaCountSelecionados(count) {
-        var countAtual = parseInt($('input#countContasSelecionadas').val());
+        var countAtual = getCountAtual();
         countAtual = countAtual + (parseInt(count));
         $('input#countContasSelecionadas').val(countAtual);
 
@@ -64,10 +72,10 @@
         $('input#countContasSelecionadas').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
-        if (countAtual > 0 && countAtual <= 50) {
+        if (countAtual > 0 && countAtual <= qtLimiteBaixaMultipla) {
             $('input#countContasSelecionadas').css('color', 'green');
             $('#save').removeAttr('disabled');
-            if (countAtual == 50) {
+            if (countAtual == qtLimiteBaixaMultipla) {
                 $('#btnSelectAll').attr('disabled', 'disabled');
             }
             else {
@@ -78,12 +86,13 @@
             $('#countContasSelecionadas').css('color', 'red');
             $('#save').attr('disabled', 'disabled');
             $('#btnDeselectAll').attr('disabled', 'disabled');
+            $('#btnSelectAll').removeAttr('disabled');
         }
         else {
             $('#countContasSelecionadas').css('color', 'red');
-            fly01.toast('A quantidade de contas selecionadas é de até 50.', "error");
             $('#save').attr('disabled', 'disabled');
             $('#btnSelectAll').attr('disabled', 'disabled');
+            fly01.toast('Permitido selecionar até ' + qtLimiteBaixaMultipla + ' contas.', "error")
         }
     }
 

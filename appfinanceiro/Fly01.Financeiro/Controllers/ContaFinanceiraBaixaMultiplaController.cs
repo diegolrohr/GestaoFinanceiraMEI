@@ -95,7 +95,7 @@ namespace Fly01.Financeiro.Controllers
             });
             config.Elements.Add(new ButtonUI
             {
-                Id = "btnDeSelectAll",
+                Id = "btnDeselectAll",
                 Class = "col s12 m4",
                 Value = "Deselecionar todas",
                 DomEvents = new List<DomEventUI>

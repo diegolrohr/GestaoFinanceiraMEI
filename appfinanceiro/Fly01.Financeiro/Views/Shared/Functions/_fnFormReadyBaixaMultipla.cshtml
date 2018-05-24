@@ -8,15 +8,15 @@
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
-
                 indexes.forEach(function (element, index, array) {
-                    var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
-                    
-                    var index = $.inArray(rowData[0].id, rows_selected);
+                    var rowData = fly01._.dtContasExistentes.row(element).data();
+
+                    var index = $.inArray(rowData.id, rows_selected);
                     if (index == -1) {//se não tem, add, mas se ficar clicando inúmeras vezes em selecionar tudo, tem este array auxiliar
-                        rows_selected.push(rowData[0].id);
-                        var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                        rows_selected.push(rowData.id);
+                        var valorSaldo = parseFloat(rowData.saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
                         valorAcumulado += valorSaldo;
+                        $('#btnDeselectAll').removeAttr('disabled');
                         fnAtualizaCountSelecionados(1);
                     }
                 });
@@ -29,12 +29,12 @@
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
 
                 indexes.forEach(function (element, index, array) {
-                    var rowData = fly01._.dtContasExistentes.rows(element).data().toArray();
-                    
-                    var index = $.inArray(rowData[0].id, rows_selected);
+                    var rowData = fly01._.dtContasExistentes.row(element).data();
+
+                    var index = $.inArray(rowData.id, rows_selected);
                     if (index !== -1) {//se achou remove
                         rows_selected.splice(index, 1);
-                        var valorSaldo = parseFloat(rowData[0].saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
+                        var valorSaldo = parseFloat(rowData.saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
                         valorAcumulado -= valorSaldo;
                         fnAtualizaCountSelecionados(-1);
                     }
@@ -67,23 +67,30 @@
         if (countAtual > 0 && countAtual <= 50) {
             $('input#countContasSelecionadas').css('color', 'green');
             $('#save').removeAttr('disabled');
+            if (countAtual == 50) {
+                $('#btnSelectAll').attr('disabled', 'disabled');
+            }
+            else {
+                $('#btnSelectAll').removeAttr('disabled');
+            }
         }
         else if (countAtual <= 0) {
             $('#countContasSelecionadas').css('color', 'red');
             $('#save').attr('disabled', 'disabled');
-            return false;
+            $('#btnDeselectAll').attr('disabled', 'disabled');
         }
         else {
             $('#countContasSelecionadas').css('color', 'red');
             fly01.toast('A quantidade de contas selecionadas é de até 50.', "error");
             $('#save').attr('disabled', 'disabled');
-            return false;
+            $('#btnSelectAll').attr('disabled', 'disabled');
         }
     }
 
     function fnFormReadyBaixaMultipla() {
         $('#Field').hide();
         $('#save').attr('disabled', 'disabled');
+        $('#btnDeselectAll').attr('disabled', 'disabled');
         setupGridSelectEvents();
         rows_selected = [];
     }

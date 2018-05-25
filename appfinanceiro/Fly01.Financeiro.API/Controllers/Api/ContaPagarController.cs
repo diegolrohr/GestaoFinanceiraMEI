@@ -55,7 +55,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-
                 var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
                 var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
 
@@ -66,7 +65,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     childs = unitOfWork
                         .ContaPagarBL
                         .All
-                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId ||
+                                    x.Id == entity.ContaFinanceiraRepeticaoPaiId)
                         .ToList();
                 }
                 else if (isParent)
@@ -79,7 +79,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 }
 
                 if (childs != null)
-                    foreach (var child in childs)
+                {
+                    // Exclui filhas
+                    foreach (var child in childs.Where(x => x.ContaFinanceiraRepeticaoPaiId == null))
                     {
                         Delete(child);
                         await unitOfWork.Save();
@@ -87,6 +89,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
                             Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
                                 RabbitConfig.enHTTPVerb.DELETE);
                     }
+
+                    // Exclui pai
+                    var parent = childs.First(x => x.ContaFinanceiraRepeticaoPaiId != null);
+                    if (parent == null) return StatusCode(HttpStatusCode.NoContent);
+                    Delete(parent);
+                    await unitOfWork.Save();
+                    if (MustProduceMessageServiceBus)
+                        Producer<ContaPagar>.Send(parent.GetType().Name, AppUser, PlataformaUrl, parent,
+                            RabbitConfig.enHTTPVerb.DELETE);
+                }
                 else
                 {
                     Delete(entity);

@@ -132,6 +132,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtCnabItem",
                 UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" },
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
@@ -141,6 +142,14 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
+            dtConfig.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "statusContaBancaria",
+                DisplayName = "Status",
+                Priority = 5,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
+            });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
             #endregion
 

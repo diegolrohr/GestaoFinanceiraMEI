@@ -9,10 +9,10 @@ using Fly01.uiJS.Defaults;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Estoque.Controllers.Base;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {

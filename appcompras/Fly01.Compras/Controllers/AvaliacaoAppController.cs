@@ -9,7 +9,7 @@ namespace Fly01.Compras.Controllers
     {
         public AvaliacaoAppController()
         {
-            ResourceName = AppDefaults.GetResourceName(typeof(AvaliacaoAppVM));
+            //ResourceName = AppDefaults.GetResourceName(typeof(AvaliacaoAppVM));
         }
 
         public override JsonResult Create(AvaliacaoAppVM entityVM)

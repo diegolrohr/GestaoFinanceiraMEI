@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {

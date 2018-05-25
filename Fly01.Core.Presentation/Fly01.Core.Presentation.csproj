@@ -131,6 +131,8 @@
     <Compile Include="Commons\ImportHelper.cs" />
     <Compile Include="Controllers\AutoCompleteBaseController.cs" />
     <Compile Include="Controllers\AvaliacaoAppBaseController.cs" />
+    <Compile Include="Controllers\ClienteBaseController.cs" />
+    <Compile Include="Controllers\FornecedorBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GenericAppController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -148,7 +150,7 @@
     <Compile Include="JQueryDataTable\JQueryDataTableParamsOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commons\ValidatorUtils.cs" />
-    <Compile Include="Controllers\WebBaseController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

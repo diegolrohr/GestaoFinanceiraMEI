@@ -1,9 +1,9 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {

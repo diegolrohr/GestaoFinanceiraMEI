@@ -10,19 +10,54 @@
     });
 
     function setupGridSelectEvents() {
-        fly01._.dtRemessa.on("select", function (e, dt, type, indexes) {
-            if (type !== undefined) {
-                indexes.forEach(function (element, index, array) {
-                    fnAtualizaCountSelecionados(1);
-                });
-            }
+        //fly01._.dtRemessa.on('click', 'tr', function (e, dt, type, indexes) {
+        //    var linha = $(this);
+        //    var todasLinhas = fly01._.dtRemessa.$('tr.selected');
+
+        //    linha.not(todasLinhas).toggleClass('selected');
+        //    todasLinhas.not(linha).toggleClass('selected');
+        //});
+
+        fly01._.dtRemessa.on('select', function (e, dt, type, indexes) {
+            var linha = this.rows[indexes];
+
+            if ($(this.rows[indexes]).hasClass('selected'))
+                $(this.rows[indexes]).removeClass('selected');
+
+            linha.addClass('selected');
+
+            //if (type !== undefined) {
+            //    indexes.forEach(function (element, index, array) {
+            //        fnAtualizaCountSelecionados(1);
+            //        $(this).removeClass('selected');
+            //    });
+            //}
         }).on('deselect', function (e, dt, type, indexes) {
-            if (type !== undefined) {
-                indexes.forEach(function (element, index, array) {
-                    fnAtualizaCountSelecionados(-1);
-                });
-            }
+            var linha = $(this);
+            linha.removeClass('selected');
+
+            //if (type !== undefined) {
+            //    indexes.forEach(function (element, index, array) {
+            //        fnAtualizaCountSelecionados(-1);
+            //        $(this).removeClass('selected');
+            //    });
+            //}
         });
+
+        //fly01._.dtRemessa.on("select", function (e, dt, type, indexes) {
+        //    debugger;
+        //    if (type !== undefined) {
+        //        indexes.forEach(function (element, index, array) {
+        //            fnAtualizaCountSelecionados(1);
+        //        });
+        //    }
+        //}).on('deselect', function (e, dt, type, indexes) {
+        //    if (type !== undefined) {
+        //        indexes.forEach(function (element, index, array) {
+        //            fnAtualizaCountSelecionados(-1);
+        //        });
+        //    }
+        //});
     }
 
     function fnAtualizaCountSelecionados(count) {

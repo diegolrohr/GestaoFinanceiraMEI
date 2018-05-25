@@ -75,7 +75,8 @@ namespace Fly01.Financeiro.BL
                 else
                 {
                     itemContaReceber.Id = Guid.NewGuid();
-                    itemContaReceber.ContaFinanceiraRepeticaoPaiId = repetir ? contaFinanceiraPrincipal : Guid.Empty;
+                    if (repetir)
+                        itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                 }
 
                 itemContaReceber.Numero = ++max;

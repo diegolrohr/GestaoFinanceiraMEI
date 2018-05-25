@@ -44,7 +44,7 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("contaReceber")]
         public virtual ContaReceberVM ContaReceber { get; set; }
 
-        [JsonProperty("contaBancaria")]
+        [JsonProperty("contaBancariaCedente")]
         public virtual ContaBancariaVM ContaBancariaCedente { get; set; }
 
         [JsonProperty("arquivoRemessa")]

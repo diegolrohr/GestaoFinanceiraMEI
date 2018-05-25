@@ -131,6 +131,7 @@
     <Compile Include="Commons\ImportHelper.cs" />
     <Compile Include="Controllers\AutoCompleteBaseController.cs" />
     <Compile Include="Controllers\AvaliacaoAppBaseController.cs" />
+    <Compile Include="Controllers\CategoriaBaseController.cs" />
     <Compile Include="Controllers\ClienteBaseController.cs" />
     <Compile Include="Controllers\FornecedorBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

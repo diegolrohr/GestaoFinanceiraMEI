@@ -63,6 +63,11 @@
     <Compile Include="Controllers\Api\CnabController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
+    <Compile Include="Controllers\Api\DashboardContaPagarDiaController.cs" />
+    <Compile Include="Controllers\Api\DashboardSaldoDiaController.cs" />
+    <Compile Include="Controllers\Api\DashboardFormaPagamentoController.cs" />
+    <Compile Include="Controllers\Api\DashboardCategoriaController.cs" />
+    <Compile Include="Controllers\Api\DashboardStatusController.cs" />
     <Compile Include="Controllers\Api\SendTaskController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
@@ -147,10 +152,6 @@
     <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
       <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
       <Name>Fly01.Core.Mensageria</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>

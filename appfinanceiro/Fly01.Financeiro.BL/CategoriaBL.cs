@@ -4,21 +4,33 @@ using Fly01.Core.Notifications;
 using System.Collections.Generic;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
     public class CategoriaBL : PlataformaBaseBL<Categoria>
     {
-        public CategoriaBL(AppDataContext context) : base(context)
+        //private ContaPagarBL contaPagarBL;
+        //private ContaReceberBL contaReceberBL;
+        private ContaFinanceiraBL contaFinanceiraBL;
+
+        public CategoriaBL(AppDataContext context, ContaFinanceiraBL contaFinanceiraBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
+            //this.contaPagarBL = contaPagarBL;
+            //this.contaReceberBL = contaReceberBL;
+            this.contaFinanceiraBL = contaFinanceiraBL;
         }
 
         public override void Update(Categoria entity)
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
+            bool temContaReceberRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaReceber  && e.Ativo).Any();
+            bool temContaPagarRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && e.Ativo).Any();
 
+
+            entity.Fail((temContaPagarRelacionada && entity.TipoCarteira == TipoCarteira.Receita) || (temContaReceberRelacionada && entity.TipoCarteira == TipoCarteira.Despesa), AlterarTipoInvalidaFK);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);

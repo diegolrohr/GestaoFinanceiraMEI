@@ -15,13 +15,11 @@ namespace Fly01.Financeiro.BL
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
 
-        public ContaReceberBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL)
-            : base(context)
+        public ContaReceberBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL) : base(context)
         {
-            MustConsumeMessageServiceBus = true;
-
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
             this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
+            MustConsumeMessageServiceBus = true;
         }
 
         public virtual IQueryable<ContaReceber> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
@@ -52,13 +50,19 @@ namespace Fly01.Financeiro.BL
                 (entity.TipoPeriodicidade == TipoPeriodicidade.Anual && !(entity.NumeroRepeticoes.Value > 0 && entity.NumeroRepeticoes.Value <= limiteAnual)))
             , RepeticoesInvalidas);
 
-            //na nova Transação já é informado o id e o status
-            if (entity.Id == default(Guid))
-                entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
+            //ContaFinanceira.Número
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
+
+            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
+
+            //na nova Transação já é informado o id e o status
+            if (entity.Id == default(Guid))
+                entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
             var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
             Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;

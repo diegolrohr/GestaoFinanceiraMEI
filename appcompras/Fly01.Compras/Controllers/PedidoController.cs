@@ -133,7 +133,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Home")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",

@@ -21,6 +21,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonIgnore]
         public StatusArquivoRemessa StatusArquivoRemessa { get; set; }
 
+        public Guid BancoId { get; set; }
+
         [NotMapped]
         [JsonProperty("statusArquivoRemessa")]
         public string StatusArquivoRemessaRest
@@ -34,5 +36,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public DateTime? DataRetorno { get; set; }
 
+        public virtual Banco Banco { get; set; }
     }
 }

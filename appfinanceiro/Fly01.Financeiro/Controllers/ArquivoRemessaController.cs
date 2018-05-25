@@ -16,12 +16,19 @@ namespace Fly01.Financeiro.Controllers
 {
     public class ArquivoRemessaController : BoletoController<ArquivoRemessaVM>
     {
+        public ArquivoRemessaController()
+        {
+            ExpandProperties = "banco($select=nome)";
+        }
+
         public override Func<ArquivoRemessaVM, object> GetDisplayData()
         {
             return x => new
             {
                 id = x.Id,
                 statusArquivoRemessa = x.StatusArquivoRemessa,
+                bancoId = x.BancoId,
+                banco_nome = x.Banco?.Nome,
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusArquivoRemessa), x.StatusArquivoRemessa),
@@ -144,6 +151,7 @@ namespace Fly01.Financeiro.Controllers
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataExportacao", DisplayName = "Dt. Exportação", Priority = 3, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "totalBoletos", DisplayName = "Qtd. Boletos", Priority = 4, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 5, Orderable = false, Searchable = false });

@@ -1,12 +1,12 @@
-﻿using Fly01.Financeiro.API.Models.DAL;
-using Fly01.Core.BL;
-using Fly01.Core.Notifications;
-using System;
-using System.Linq;
-using Fly01.Core.Helpers;
-using Fly01.Core.Entities.Domains.Enum;
-using System.Data.Entity;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Notifications;
+using Fly01.Financeiro.API.Models.DAL;
+using System;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Fly01.Financeiro.BL
 {

@@ -68,7 +68,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
-                Class = "col s12 l6",
+                Class = "col s12 m6",
                 Label = "Conta Bancária",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancaria", "AutoComplete"),
@@ -83,7 +83,27 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputNumbersUI { Id = "countContasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Disabled = true });
 
             config.Elements.Add(new LabelSetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Selecione as contas que deseja baixar" });
-            
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnSelectAll",
+                Class = "col s12 m4 l3",
+                Value = "Selecionar todas",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnSelectAllBaixaMultipla" }
+                }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnDeselectAll",
+                Class = "col s12 m4 l3",
+                Value = "Deselecionar todas",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnDeselectAllBaixaMultipla" }
+                }
+            });
+
             cfg.Content.Add(config);
 
 
@@ -99,6 +119,7 @@ namespace Fly01.Financeiro.Controllers
                     PageLength = 50
                 }
             };
+
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1 });
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4 });
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 3 });

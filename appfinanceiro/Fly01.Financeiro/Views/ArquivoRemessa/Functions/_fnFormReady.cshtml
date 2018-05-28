@@ -4,11 +4,11 @@
         var dataExportacao = $('#dataExportacao').val();
         
         if ($('#statusArquivoRemessa').val() == "AguardandoRetorno") 
-            return `Arquivo ${arquivo} com a data exportação ${dataExportacao}, Esta aguardando o arquivo retorno para ser finalizado`;
+            return `Arquivo ${arquivo} exportado no dia ${dataExportacao}, está aguardando o arquivo de retorno para ser finalizado.`;
         else if ($('#statusArquivoRemessa').val() == "RetornoParcial")
-            return `Os boletos do arquivo ${arquivo} com a data exportação ${dataExportacao}, foram pagos parcialmente`;
+            return `Os boletos do arquivo ${arquivo} exportado no dia ${dataExportacao}, foram pagos parcialmente.`;
         else
-            return `Arquivo ${arquivo} com a data exportação ${dataExportacao}, foi finalizado`;
+            return `Arquivo ${arquivo} exportado no dia ${dataExportacao}, foi finalizado.`;
     }
 
     function fnFormReady() {        

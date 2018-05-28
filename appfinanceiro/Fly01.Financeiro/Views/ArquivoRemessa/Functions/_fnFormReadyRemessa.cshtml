@@ -6,7 +6,24 @@
 
     $().ready(function () {
         $('#btnViewBoletos').attr('disabled', 'disabled');
+        setupGridSelectEvents();
     });
+
+    function setupGridSelectEvents() {
+        fly01._.dtRemessa.on("select", function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                indexes.forEach(function (element, index, array) {
+                    fnAtualizaCountSelecionados(1);
+                });
+            }
+        }).on('deselect', function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                indexes.forEach(function (element, index, array) {
+                    fnAtualizaCountSelecionados(-1);
+                });
+            }
+        });
+    }
 
     function fnAtualizaCountSelecionados(count) {
         var countAtual = qtdItensSelecionados;

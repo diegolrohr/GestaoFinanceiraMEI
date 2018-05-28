@@ -30,7 +30,6 @@ namespace Fly01.Financeiro.BL
         {
             entity.Fail(entity.Numero < 1, NumeroContaInvalido);
             entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
-            entity.Fail(entity.StatusContaBancaria == StatusContaBancaria.Pago && entity.ValorPrevisto != entity.ValorPago, StatusPagoSaldoInvalido);
 
             base.ValidaModel(entity);
         }
@@ -80,6 +79,7 @@ namespace Fly01.Financeiro.BL
                     itemContaReceber.DataVencimento = parcela.DataVencimento;
                     itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaReceber.ValorPrevisto = parcela.Valor;
+                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                     {
@@ -95,6 +95,10 @@ namespace Fly01.Financeiro.BL
                     itemContaReceber.Numero = ++max;
 
                     base.Insert(itemContaReceber);
+
+                    //Se status "pago", gerar ContaFinanceiraBaixa
+                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber.DataVencimento, itemContaReceber.Id, itemContaReceber.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
                 }
 
                 var itemContaReceberEntity = new ContaReceber();
@@ -132,9 +136,6 @@ namespace Fly01.Financeiro.BL
                     }
                 }
             }
-            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
-            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
         }
 
         public override void Update(ContaReceber entity)
@@ -186,7 +187,6 @@ namespace Fly01.Financeiro.BL
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");
         public static Error TipoPeriodicidadeInvalida = new Error("Periodicidade inválida", "tipoPeriodicidade");
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
-        public static Error StatusPagoSaldoInvalido = new Error("Status Conta Bancária Paga, Valor Previsto deve ser igual a Valor Pago", "valorPrevisto");
         public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
         public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
     }

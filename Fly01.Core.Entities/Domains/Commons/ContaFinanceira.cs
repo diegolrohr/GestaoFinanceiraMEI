@@ -79,5 +79,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
+
+        public string NomePessoa { get; set; }
     }
 }

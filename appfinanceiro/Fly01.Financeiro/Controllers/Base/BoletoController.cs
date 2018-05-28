@@ -8,12 +8,13 @@ using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation;
 using Fly01.Financeiro.ViewModel;
 using System.Collections.Generic;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -71,29 +72,35 @@ namespace Fly01.Financeiro.Controllers.Base
                     qtdBoletos += 1;
                     valorBoletos += (double)boleto.ValorTitulo;
                     listaBancosBoletos.Add(boleto.Banco);
-                    //get bancoId
                 }
 
                 listaBancosBoletos.ForEach(banco =>
                 {
                     var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-                    var nomeArquivo = $"{banco.Nome}-{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+                    var nomeArquivo = $"{banco.Codigo}-{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
 
                     Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
                     if (Session[nomeArquivo] != null)
-                        SalvaArquivoRemessa(ids, banco.Codigo, nomeArquivo, qtdBoletos, valorBoletos);
+                    {
+                        var queryString = AppDefaults.GetQueryStringDefault();
+                        queryString.AddParam("$filter", $"contains(codigo, '{banco.Codigo.ToString("000")}')");
 
-                    listaArquivosGerados.Add(nomeArquivo);
+                        var bancoId = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data.FirstOrDefault().Id;
+
+                        if (bancoId != Guid.Empty)
+                        {
+                            SalvaArquivoRemessa(ids, bancoId, nomeArquivo, qtdBoletos, valorBoletos);
+                            listaArquivosGerados.Add(nomeArquivo);
+                        }
+                    }
                 });
 
-
-                //corrigir retorno do método
                 return Json(new { FileGuid = listaArquivosGerados });
             }
             catch (Exception e)
             {
-                throw new Exception(e.InnerException.ToString());
+                return JsonResponseStatus.GetFailure($"Ocorreu um erro: {e.Message}");
             }
         }
 
@@ -176,18 +183,15 @@ namespace Fly01.Financeiro.Controllers.Base
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
         }
 
-        private void SalvaArquivoRemessa(List<Guid> ids, int codigoBanco, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"codigo eq {codigoBanco}");
-
             var arquivoRemessa = new ArquivoRemessaVM()
             {
                 Descricao = $"{nomeArquivo}.REM",
                 TotalBoletos = qtdBoletos,
                 StatusArquivoRemessa = StatusArquivoRemessa.AguardandoRetorno.ToString(),
                 ValorTotal = valorBoletos,
-                BancoId = RestHelper.ExecuteGetRequest<BancoVM>("banco", queryString).Id
+                BancoId = bancoId
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));

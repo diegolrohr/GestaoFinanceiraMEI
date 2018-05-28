@@ -11,6 +11,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using System.Net.Mime;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -37,6 +38,20 @@ namespace Fly01.Financeiro.Controllers
                 totalBoletos = x.TotalBoletos,
                 valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
             };
+        }
+
+        [HttpGet]
+        public ActionResult DownloadArquivoRemessa(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                var arquivoDownload = File((byte[])Session[fileName], MediaTypeNames.Application.Octet, fileName + ".REM");
+                Session[fileName] = null;
+
+                return arquivoDownload;
+            }
+
+            return null;
         }
 
         public override ContentResult Form()

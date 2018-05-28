@@ -9,7 +9,6 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
-using System.Net.Mime;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 
@@ -40,20 +39,6 @@ namespace Fly01.Financeiro.Controllers
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
             };
-        }
-
-        [HttpGet]
-        public ActionResult DownloadArquivoRemessa(string fileName)
-        {
-            if (Session[fileName] != null)
-            {
-                var arquivoDownload = File((byte[])Session[fileName], MediaTypeNames.Application.Octet, fileName + ".REM");
-                Session[fileName] = null;
-
-                return arquivoDownload;
-            }
-
-            return null;
         }
 
         public override ContentResult Form()

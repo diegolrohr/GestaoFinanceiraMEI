@@ -19,12 +19,14 @@
         //});
 
         fly01._.dtRemessa.on('select', function (e, dt, type, indexes) {
+            debugger;
             var linha = this.rows[indexes];
 
             if ($(this.rows[indexes]).hasClass('selected'))
                 $(this.rows[indexes]).removeClass('selected');
 
-            linha.addClass('selected');
+            //linha.addClass('selected');|
+            $(this).addClass('selected');
 
             //if (type !== undefined) {
             //    indexes.forEach(function (element, index, array) {
@@ -33,8 +35,10 @@
             //    });
             //}
         }).on('deselect', function (e, dt, type, indexes) {
+            debugger;
             var linha = $(this);
-            linha.removeClass('selected');
+            $(this).removeClass('selected');
+            //linha.removeClass('selected');
 
             //if (type !== undefined) {
             //    indexes.forEach(function (element, index, array) {

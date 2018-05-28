@@ -14,21 +14,23 @@ namespace Fly01.Financeiro.BL
     {
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
+        private PessoaBL pessoaBL;
 
-        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL) : base(context)
+        public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL, PessoaBL pessoaBL) : base(context)
         {
-            MustConsumeMessageServiceBus = true;
-
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
             this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
+            this.pessoaBL = pessoaBL;
+            MustConsumeMessageServiceBus = true;
         }
 
         public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
         public override void ValidaModel(ContaPagar entity)
         {
-            entity.Fail(entity.Numero < 1, new Error("Número da conta inválido", "numero"));
-            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Número da conta duplicado", "numero"));
+            entity.Fail(entity.Numero < 1, NumeroContaInvalido);
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
+            entity.Fail(entity.StatusContaBancaria == StatusContaBancaria.Pago && entity.ValorPrevisto != entity.ValorPago, StatusPagoSaldoInvalido);
 
             base.ValidaModel(entity);
         }
@@ -42,16 +44,15 @@ namespace Fly01.Financeiro.BL
 
             //ContaFinanceira.Número
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
-
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
-            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaPagar, entity.Descricao);
-
-            //na nova Transação já é informado o id e o status
-            if (entity.Id == default(Guid))
+            //na nova Transação já é informado o id e o status (se .Pago, id deve ser informado)
+            if (entity.Id == default(Guid) && entity.StatusContaBancaria != StatusContaBancaria.Pago)
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
+
+            //Se Cliente não informado, busca pelo nome ou Insere
+            if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
+                entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, false, true);
 
             var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
             var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
@@ -117,6 +118,9 @@ namespace Fly01.Financeiro.BL
                     }
                 }
             }
+            //Se status "pago", gerar ContaFinanceiraBaixa - Unica Baixa
+            if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity.DataVencimento, entity.Id, entity.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
         }
 
         public override void Update(ContaPagar entity)
@@ -168,5 +172,8 @@ namespace Fly01.Financeiro.BL
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");
         public static Error TipoPeriodicidadeInvalida = new Error("Periodicidade inválida", "tipoPeriodicidade");
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
+        public static Error StatusPagoSaldoInvalido = new Error("Status Conta Bancária Paga, Valor Previsto deve ser igual a Valor Pago", "valorPrevisto");
+        public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
+        public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
     }
 }

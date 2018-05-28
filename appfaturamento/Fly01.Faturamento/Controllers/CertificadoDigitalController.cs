@@ -120,7 +120,7 @@ namespace Fly01.Faturamento.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Certificado Digital",
+                    Title = "Certificado Digital A1",
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit" }

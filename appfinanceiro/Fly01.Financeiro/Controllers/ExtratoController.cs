@@ -292,9 +292,9 @@ namespace Fly01.Financeiro.Controllers
                         OnClickFn = "fnAtualizarPeriodo",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
-                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
-                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês", Class = "col s4"}
                         }
                     }
                 }

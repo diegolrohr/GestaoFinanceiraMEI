@@ -1,9 +1,16 @@
-﻿using Fly01.Financeiro.BL;
-using System.Web.OData.Routing;
+﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
+using Fly01.Financeiro.BL;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
-using System.Linq;
-using Fly01.Core.Entities.Domains.Commons;
+using System.Web.OData.Routing;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -18,7 +25,79 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [EnableQuery(PageSize = 1000, MaxTop = 1000, MaxExpansionDepth = 10)]
         public override IHttpActionResult Get()
         {
-            return Ok(All().AsQueryable());   
+            return Ok(All().AsQueryable());
+        }
+
+        [HttpDelete]
+        public override Task<IHttpActionResult> Delete(Guid key)
+        {
+            var allUrlKeyValues = ControllerContext.Request.GetQueryNameValuePairs();
+            bool excluirRecorrencias;
+            bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "excluirrecorrencias").Value, out excluirRecorrencias);
+
+            return excluirRecorrencias
+                ? DeleteAll(key)
+                : base.Delete(key);
+        }
+
+        public async Task<IHttpActionResult> DeleteAll(Guid key)
+        {
+            if (key == default(Guid))
+                return BadRequest();
+
+            var entity = Find(key);
+
+            if (entity == null || !entity.Ativo)
+                throw new BusinessException("Registro não encontrado ou já excluído");
+
+            if (entity.RegistroFixo)
+                throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
+
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+
+                var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
+                var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
+
+                List<ContaPagar> childs = null;
+
+                if (isChild)
+                {
+                    childs = unitOfWork
+                        .ContaPagarBL
+                        .All
+                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                        .ToList();
+                }
+                else if (isParent)
+                {
+                    childs = unitOfWork
+                        .ContaPagarBL
+                        .All
+                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id)
+                        .ToList();
+                }
+
+                if (childs != null)
+                    foreach (var child in childs)
+                    {
+                        Delete(child);
+                        await unitOfWork.Save();
+                        if (MustProduceMessageServiceBus)
+                            Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
+                                RabbitConfig.enHTTPVerb.DELETE);
+                    }
+                else
+                {
+                    Delete(entity);
+                    await UnitSave();
+                    if (MustProduceMessageServiceBus)
+                        Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity,
+                            RabbitConfig.enHTTPVerb.DELETE);
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using Fly01.Financeiro.ViewModel;
 using System.Collections.Generic;
 using Fly01.Financeiro.Controllers.Base;
+using Fly01.Core.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -19,6 +21,9 @@ namespace Fly01.Estoque.Controllers
                 numero = x.Numero,
                 descricao = x.Descricao,
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
+                statusContaBancaria = x.StatusContaBancaria,
+                statusContaBancariaCssClass = EnumHelper.GetCSS(typeof(StatusContaBancaria), x.StatusContaBancaria),
+                statusContaBancariaNomeCompleto = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria),
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 nossoNumero = x.Numero,
@@ -30,7 +35,14 @@ namespace Fly01.Estoque.Controllers
         {
             try
             {
-                return base.GridLoad(new Dictionary<string, string> { { "pessoaId eq", pessoaId } });
+                var filters = new Dictionary<string, string>()
+                {
+                    {
+                        "pessoaId", $" eq {pessoaId} and ativo and (statusContaBancaria ne {AppDefaults.APIEnumResourceName}StatusContaBancaria'Pago')"
+                    }
+                };
+
+                return base.GridLoad(filters);
             }
             catch (Exception ex)
             {
@@ -39,11 +51,11 @@ namespace Fly01.Estoque.Controllers
         }
 
 
-        public JsonResult GridLoadContaCnabItemByArquivo(string arqiovoId)
+        public JsonResult GridLoadContaCnabItemByArquivo(string arquivoId)
         {
             try
             {
-                return base.GridLoad(new Dictionary<string, string> { { "pessoaId eq", arqiovoId } });
+                return base.GridLoad(new Dictionary<string, string> { { "pessoaId eq", arquivoId } });
             }
             catch (Exception ex)
             {

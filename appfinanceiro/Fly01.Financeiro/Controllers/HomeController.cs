@@ -101,7 +101,6 @@ namespace Fly01.Financeiro.Controllers
                         Options = new List<ButtonGroupOptionUI>
                         {
                             new ButtonGroupOptionUI { Id = "btnDia", Value = "1", Label = "Dia", Class = "col s4 m2" },
-                            //new ButtonGroupOptionUI { Id = "btnSemana", Value = "2", Label = "Semana" },
                             new ButtonGroupOptionUI { Id = "btnMes", Value = "3", Label = "Mês", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnTri", Value = "4", Label = "Trimestre", Class = "col s6 m3" },
@@ -247,6 +246,15 @@ namespace Fly01.Financeiro.Controllers
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
 
             #region MenuItems
+            config.MenuItems.Add(new SidebarMenuUI()
+            {
+                Label = "Dashboard",
+                Items = new List<LinkUI>
+            {
+                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
+                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
+            }
+            });
             config.MenuItems.Add(new SidebarMenuUI()
             {
                 Label = "Financeiro",

@@ -1,8 +1,8 @@
 ﻿using Fly01.Compras.ViewModel;
+using Fly01.Core;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 Id = "fly01mdlfrmPedidoItem",
                 ReadyFn = "fnFormReadyPedidoItem"

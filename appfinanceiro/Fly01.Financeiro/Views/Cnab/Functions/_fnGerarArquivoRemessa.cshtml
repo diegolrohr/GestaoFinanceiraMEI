@@ -8,10 +8,12 @@
             url: '@Url.Action("GeraArquivoRemessa","Cnab")',
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
-                if (retorno.FileGuid != null)
-                    window.location = '@Url.Action("DownloadArquivoRemessa", "Cnab")?fileName=' + retorno.FileGuid;
-                else
-                    fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
+                retorno.FileGuid.forEach(function(filename) {
+                    if (filename != null)
+                        window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?fileName=' + filename;
+                    else
+                        fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
+                });
 
                 fly01._.dtBoletos.refresh();
                 $("#dtBoletos").loading("stop");

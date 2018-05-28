@@ -25,5 +25,11 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("dataRetorno")]
         public DateTime? DataRetorno { get; set; }
+
+        [JsonProperty("bancoId")]
+        public Guid BancoId { get; set; }
+
+        [JsonProperty("banco")]
+        public virtual BancoVM Banco { get; set; }
     }
 }

@@ -81,9 +81,9 @@ namespace Fly01.Faturamento.BL
             entity.Tipo = int.Parse(responseNFE.Tipo);
             entity.DataEmissao = responseNFE.DataEmissao;
             entity.DataExpiracao = responseNFE.DataExpiracao;
-            entity.Emissor = responseNFE.Emissor;
-            entity.Pessoa = responseNFE.Pessoa;
-            entity.Versao = responseNFE.Versao;
+            entity.Emissor = responseNFE.Emissor.Substring(0, responseNFE.Emissor.Length > 200 ? 200 : responseNFE.Emissor.Length);
+            entity.Pessoa = responseNFE.Pessoa.Substring(0, responseNFE.Pessoa.Length > 200 ? 200 : responseNFE.Pessoa.Length);
+            entity.Versao = responseNFE.Versao.Substring(0, responseNFE.Versao.Length > 200 ? 200 : responseNFE.Versao.Length);
 
             return entity;
         }

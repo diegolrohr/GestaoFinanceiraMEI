@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.Designer.cs">
       <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.cs" />
+    <Compile Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.Designer.cs">
+      <DependentUpon>201805251826544_AlterTableArquivoRemessaColumnBancoId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -298,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.resx">
       <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.resx">
+      <DependentUpon>201805251826544_AlterTableArquivoRemessaColumnBancoId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

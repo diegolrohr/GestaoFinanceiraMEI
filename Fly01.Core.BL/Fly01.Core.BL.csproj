@@ -62,6 +62,7 @@
       <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
@@ -92,13 +93,13 @@
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
       <Name>Fly01.Core.ServiceBus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

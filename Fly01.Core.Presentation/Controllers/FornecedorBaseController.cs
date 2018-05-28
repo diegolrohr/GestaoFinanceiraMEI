@@ -285,8 +285,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
+            return JsonResponseStatus.GetJson(ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Fornecedores", pConteudo));
         }
     }
 }

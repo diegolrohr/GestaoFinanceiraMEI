@@ -8,12 +8,13 @@ using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation;
 using Fly01.Financeiro.ViewModel;
 using System.Collections.Generic;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -59,6 +60,8 @@ namespace Fly01.Financeiro.Controllers.Base
                 var boletos = new Boleto2Net.Boletos();
                 var qtdBoletos = 0;
                 var valorBoletos = 0.0;
+                var listaBancosBoletos = new List<Boleto2Net.IBanco>();
+                var listaArquivosGerados = new List<string>();
 
                 foreach (var item in boletosCnab)
                 {
@@ -68,21 +71,36 @@ namespace Fly01.Financeiro.Controllers.Base
                     boletos.Banco = boleto.Banco;
                     qtdBoletos += 1;
                     valorBoletos += (double)boleto.ValorTitulo;
+                    listaBancosBoletos.Add(boleto.Banco);
                 }
 
-                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(boletos.Banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                listaBancosBoletos.ForEach(banco =>
+                {
+                    var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                    var nomeArquivo = $"{banco.Codigo}-{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
 
-                var nomeArquivo = $"{boletos.Banco.Cedente.CPFCNPJ}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
-                Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
+                    Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
-                if (Session[nomeArquivo] != null)
-                    SalvaArquivoRemessa(ids, nomeArquivo, qtdBoletos, valorBoletos);
+                    if (Session[nomeArquivo] != null)
+                    {
+                        var queryString = AppDefaults.GetQueryStringDefault();
+                        queryString.AddParam("$filter", $"contains(codigo, '{banco.Codigo.ToString("000")}')");
 
-                return Json(new { FileGuid = nomeArquivo });
+                        var bancoId = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data.FirstOrDefault().Id;
+
+                        if (bancoId != Guid.Empty)
+                        {
+                            SalvaArquivoRemessa(ids, bancoId, nomeArquivo, qtdBoletos, valorBoletos);
+                            listaArquivosGerados.Add(nomeArquivo);
+                        }
+                    }
+                });
+
+                return Json(new { FileGuid = listaArquivosGerados });
             }
             catch (Exception e)
             {
-                throw new Exception(e.InnerException.ToString());
+                return JsonResponseStatus.GetFailure($"Ocorreu um erro: {e.Message}");
             }
         }
 
@@ -165,14 +183,15 @@ namespace Fly01.Financeiro.Controllers.Base
             RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
         }
 
-        private void SalvaArquivoRemessa(List<Guid> ids, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
                 Descricao = $"{nomeArquivo}.REM",
                 TotalBoletos = qtdBoletos,
                 StatusArquivoRemessa = StatusArquivoRemessa.AguardandoRetorno.ToString(),
-                ValorTotal = valorBoletos
+                ValorTotal = valorBoletos,
+                BancoId = bancoId
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
@@ -181,7 +200,11 @@ namespace Fly01.Financeiro.Controllers.Base
             ids.ForEach(x =>
             {
                 var resource = $"cnab/{x}";
-                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new { arquivoRemessaId = result.Id, status = status}));
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
+                {
+                    arquivoRemessaId = result.Id,
+                    status = status
+                }));
             });
         }
 

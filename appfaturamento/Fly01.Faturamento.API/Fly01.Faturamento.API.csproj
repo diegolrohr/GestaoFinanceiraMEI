@@ -170,7 +170,7 @@
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Reports\Fly01.Core.Reports.csproj">

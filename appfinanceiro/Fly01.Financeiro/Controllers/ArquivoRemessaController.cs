@@ -152,7 +152,7 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string> { "fnFormReadyRemessa", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
-                    Select = new { style = "multi" }
+                    Select = new { style = "single" }
                 }
             };
 

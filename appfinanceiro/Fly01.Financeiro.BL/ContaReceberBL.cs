@@ -54,46 +54,61 @@ namespace Fly01.Financeiro.BL
             if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
+            //post bemacash ignorando condicao parcelamento
+            if (entity.DescricaoParcela != null)
+            {
+                entity.Id = Guid.NewGuid();
+                entity.Numero = ++max;
+
+                base.Insert(entity);
+            }
+
+            if (string.IsNullOrEmpty(entity.DescricaoParcela))
+            {
             var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
             Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
-            for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
-            {
-                var parcela = condicoesParcelamento[iParcela];
-
-                var itemContaReceber = new ContaReceber();
-                entity.CopyProperties<ContaReceber>(itemContaReceber);
-
-                // CopyProperties não copia as notificações
-                itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors);
-
-                itemContaReceber.DataVencimento = parcela.DataVencimento;
-                itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
-                itemContaReceber.ValorPrevisto = parcela.Valor;
-
-                if (iParcela == default(int))
+                for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
                 {
-                    itemContaReceber.Id = contaFinanceiraPrincipal;
-                }
-                else
-                {
-                    itemContaReceber.Id = Guid.NewGuid();
-                    if (repetir)
-                        itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+                    var parcela = condicoesParcelamento[iParcela];
+
+                    var itemContaReceber = new ContaReceber();
+                    entity.CopyProperties<ContaReceber>(itemContaReceber);
+
+                    // CopyProperties não copia as notificações
+                    itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors);
+
+                    itemContaReceber.DataVencimento = parcela.DataVencimento;
+                    itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
+                    itemContaReceber.ValorPrevisto = parcela.Valor;
+
+                    if (iParcela == default(int))
+                    {
+                        itemContaReceber.Id = contaFinanceiraPrincipal;
+                    }
+                    else
+                    {
+                        itemContaReceber.Id = Guid.NewGuid();
+                        if (repetir)
+                            itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+                    }
+
+                    itemContaReceber.Numero = ++max;
+
+                    base.Insert(itemContaReceber);
                 }
 
-                itemContaReceber.Numero = ++max;
-
-                base.Insert(itemContaReceber);
+                var itemContaReceberEntity = new ContaReceber();
+                entity.CopyProperties<ContaReceber>(itemContaReceberEntity);
 
                 if (repetir)
                 {
                     for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
                     {
                         var itemContaReceberRepeticao = new ContaReceber();
-                        itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                        itemContaReceberEntity.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
 
                         // CopyProperties não copia as notificações
-                        itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors);
+                        itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceberEntity.Notification.Errors);
 
                         itemContaReceberRepeticao.Id = default(Guid);
                         itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;

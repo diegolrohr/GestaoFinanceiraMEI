@@ -107,7 +107,10 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             try
             {
-                var boletoImpresso = GeraBoleto(GetBoletoBancario(contaReceberId, contaBancariaId));
+                var boletoBancario = GetBoletoBancario(contaReceberId, contaBancariaId);
+                if (boletoBancario == null) throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
+
+                var boletoImpresso = GeraBoleto(boletoBancario);
                 if (boletoImpresso == null) throw new Exception("O boleto não pôde ser gerado.");
 
                 var html = new StringBuilder();

@@ -651,6 +651,38 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        public ContentResult FormImprimeBoleto(Guid contaReceberId)
+        {
+            //parei aqui
+            var config = new ModalUIForm()
+            {
+                Title = "Selecionar Conta Bancária",
+                UrlFunctions = @Url.Action("Functions", "PedidoItem", null, Request.Url.Scheme) + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                },
+                Id = "fly01mdlfrmFormaPagamento",
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoFormaPagamento",
+                Class = "col s4",
+                Label = "Tipo",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
+            });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+
+        }
+
         #region OnDemmand
 
         [HttpPost]

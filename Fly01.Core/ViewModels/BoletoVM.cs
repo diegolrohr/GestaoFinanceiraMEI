@@ -53,6 +53,7 @@ namespace Fly01.Core.ViewModels
         public string EnderecoCEP { get; set; }
         public string Observacoes { get; set; }
         public string CodigoCedente { get; set; }
+        public string CodigoDV { get; set; }
 
         public ContaBancariaCedenteVM ContaBancariaCedente { get; set; }
     }

@@ -337,7 +337,8 @@
     <Content Include="Views\DashboardContaPagar\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateDataFinal.cshtml" />
-    <Content Include="Views\ContaPagar\Functions\_fnExcluir.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnExcluirRecorrencias.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnExcluirRecorrencias.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

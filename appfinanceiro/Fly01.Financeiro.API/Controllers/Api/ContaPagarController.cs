@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.BL;
@@ -56,7 +57,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
-                var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
+                //var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
+                var isParent = entity.ContaFinanceiraRepeticaoPaiId == null && entity.Repetir;
+                //TODO: Replicar para contas a receber
 
                 List<ContaPagar> childs = null;
 
@@ -65,8 +68,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     childs = unitOfWork
                         .ContaPagarBL
                         .All
-                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId ||
-                                    x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId) 
+                                    && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.DataInclusao > entity.DataInclusao)
                         .ToList();
                 }
                 else if (isParent)
@@ -74,7 +77,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     childs = unitOfWork
                         .ContaPagarBL
                         .All
-                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id)
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.DataInclusao > entity.DataInclusao)
                         .ToList();
                 }
 

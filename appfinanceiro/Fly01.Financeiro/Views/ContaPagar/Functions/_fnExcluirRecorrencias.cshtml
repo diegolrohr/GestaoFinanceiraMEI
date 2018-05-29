@@ -1,5 +1,5 @@
 ﻿<script>
-    function fnExcluir(idRecord) {
+    function fnExcluirRecorrencias(idRecord) {
         var customConfirm = (title, message, confirmedFunction) => {
             const modalId = `modal${Math.random().toString(36).substr(2, 7)}`;
             const modal = createElem("div", { "id": modalId, "class": "modal" }, [
@@ -26,10 +26,10 @@
             $(".modal").modal();
             $(`#${modalId}`).modal("open");
         }
-        customConfirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\"" + idRecord + "\")");
+        customConfirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirRecorrenciasConfirmed(\"" + idRecord + "\")");
     }
 
-    function fnExcluirConfirmed(idRecord, excluirRecorrencias) {
+    function fnExcluirRecorrenciasConfirmed(idRecord, excluirRecorrencias) {
         $('body').removeClass('loaded');
         if (idRecord) {
             $.ajax({

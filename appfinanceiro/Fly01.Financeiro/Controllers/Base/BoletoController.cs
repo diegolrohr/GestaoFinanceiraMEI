@@ -58,12 +58,15 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
                 var listaArquivosGerados = new List<string>();
-                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM))).Data;
+                var queryString = AppDefaults.GetQueryStringDefault();
+                queryString.AddParam("$filter", $"emiteBoleto eq true");
+
+                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
 
                 foreach (var item in GetCnab(ids))
                 {
                     dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
-                        item.ContaBancariaCedenteId, 
+                        item.ContaBancariaCedenteId,
                         GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
                 }
 
@@ -80,12 +83,12 @@ namespace Fly01.Financeiro.Controllers.Base
                     boletos.AddRange(lstBoletos);
 
                     var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-                    var nomeArquivo = $"{banco.Nome}-{DateTime.Now.ToString("dd-MM-YYYY HH:mm:ss")}";
+                    var nomeArquivo = $"{banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
                     Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
                     if (Session[nomeArquivo] != null)
                     {
-                        var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo == codigoBanco);
+                        var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
                         if (dadosBanco != null)
                         {
                             SalvaArquivoRemessa(ids, dadosBanco.Id, nomeArquivo, lstBoletos.Count(), total);

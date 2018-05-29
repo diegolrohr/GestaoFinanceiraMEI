@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.BL
             var randomNossoNumero = new Random().Next(0, 9999999);
             var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
 
-            return new BoletoVM()
+            var boletoVM = new BoletoVM()
             {
                 ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
                 ValorDesconto = contaReceber.ValorDesconto.HasValue ? (decimal)contaReceber.ValorDesconto : 0,
@@ -65,6 +65,19 @@ namespace Fly01.Financeiro.BL
                 Cedente = GetDadosCedente(contaBancariaId),
                 Sacado = GetDadosSacado(contaReceber.PessoaId)
             };
+
+            if (ValidaDadosBoleto(boletoVM))
+                return boletoVM;
+            else
+                return null;
+        }
+
+        private bool ValidaDadosBoleto(BoletoVM boleto)
+        {
+            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoComplemento)) boleto.Cedente.EnderecoComplemento = "---";
+            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
+            
+            return true;
         }
 
         private SacadoVM GetDadosSacado(Guid pessoaId)

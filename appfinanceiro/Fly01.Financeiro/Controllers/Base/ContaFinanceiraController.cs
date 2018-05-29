@@ -27,13 +27,7 @@ namespace Fly01.Financeiro.Controllers.Base
         where TEntityBaixa : ContaFinanceiraBaixaVM
         where TEntityRenegociacao : ContaFinanceiraRenegociacaoVM
     {
-        /// <summary>
-        /// Construtor
-        /// </summary>
-        protected ContaFinanceiraController()
-        {
-            //ResourceName = AppDefaults.GetResourceName(typeof(TEntity));
-        }
+        protected ContaFinanceiraController() { }
 
         /// <summary>
         /// Método Responsável por definir as colunas que serão apresentadas 
@@ -58,6 +52,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 descricao = x.Descricao,
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 formaPagamento_descricao = x.FormaPagamento.Descricao,
+                formaPagamento = x.FormaPagamento.TipoFormaPagamento,
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 categoria_descricao = x.Categoria.Descricao,
                 pessoa_nome = x.Pessoa.Nome,
@@ -70,7 +65,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
                 NumeroRepeticoes = x.NumeroRepeticoes,
                 valorPago = x.ValorPago,
-                FormaPagamentoObject = x.FormaPagamento,
+                //FormaPagamentoObject = x.FormaPagamento,
                 Pessoa = x.Pessoa,
                 dataVencimentoObject = x.DataVencimento
             };

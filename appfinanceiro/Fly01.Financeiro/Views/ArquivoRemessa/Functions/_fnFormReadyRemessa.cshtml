@@ -5,12 +5,12 @@
     var qtdItensSelecionados = 0;
 
     $().ready(function () {
-        $('#btnViewBoletos').attr('disabled', 'disabled');        
+        $('#btnViewBoletos').attr('disabled', 'disabled');
         setupGridSelectEvents();
     });
 
     function setupGridSelectEvents() {
-        fly01._.dtRemessa.on("select", function (e, dt, type, indexes) {            
+        fly01._.dtRemessa.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 indexes.forEach(function (element, index, array) {
                     fnAtualizaCountSelecionados(1);

@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Collections.Generic;
@@ -186,7 +187,7 @@ namespace Fly01.Compras.BL
                 {
 
                     List<ComprasFormasPagamentoVM> quantidadeLista = getQuantidadeComprasPagamento(TipoOrdemCompra.Pedido);
-                    List<ComprasFormasPagamentoVM> pedidos = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == TipoOrdemCompra.Pedido)
+                    var lista = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == TipoOrdemCompra.Pedido)
                     .GroupJoin(_formaPagamentoBL.All, v =>
                     v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
                     new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
@@ -209,14 +210,26 @@ namespace Fly01.Compras.BL
                         TipoFormaPagamento = x.TipoFormaPagamento
                     })
                     .GroupBy(x => new { x.TipoFormaPagamento })
-                    .Select(x => new ComprasFormasPagamentoVM
+                    .Select(x => new ComprasPagamentosVM
                     {
-                        TipoFormaPagamento = x.Key.TipoFormaPagamento.ToString() == "" ? "Não Definido" : x.Key.TipoFormaPagamento.ToString(),
+                        TipoFormaPagamento = x.Key.TipoFormaPagamento,
                         Total = Math.Round(x.Sum(u => u.Total), 2),
                         Quantidade = x.Count()
                     }).ToList();
 
-                    return (from x in pedidos
+
+                    List<ComprasFormasPagamentoVM> dashComprasFormas = new List<ComprasFormasPagamentoVM>();
+
+                    foreach (var item in lista)
+                    {
+                        ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
+                        itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : item.TipoFormaPagamento.GetDescription();
+                        itemCompras.Total = item.Total;
+                        itemCompras.Quantidade = item.Quantidade;
+                        dashComprasFormas.Add(itemCompras);
+                    }
+
+                    return (from x in dashComprasFormas
                             join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
                             select new ComprasFormasPagamentoVM
                             { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
@@ -230,7 +243,7 @@ namespace Fly01.Compras.BL
         public List<ComprasFormasPagamentoVM> getQuantidadeComprasPagamento(TipoOrdemCompra tipoOrdemCompra)
         {
             //Select realizado para mostrar a quantidade de orçamentos mesmo sem Itens
-            return _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
+            var lista = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
              .GroupJoin(_formaPagamentoBL.All, v =>
              v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
              new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
@@ -238,10 +251,23 @@ namespace Fly01.Compras.BL
              temp => temp.FormaPagamento.DefaultIfEmpty(),
              (temp, x) => new
              {
-                 TipoFormaPagamento = x.TipoFormaPagamento.ToString()
+                 TipoFormaPagamento = x.TipoFormaPagamento
              })
             .GroupBy(x => new { x.TipoFormaPagamento })
-            .Select(x => new ComprasFormasPagamentoVM { TipoFormaPagamento = x.Key.TipoFormaPagamento.ToString() == "" ? "Não Definido" : x.Key.TipoFormaPagamento.ToString(), Quantidade = x.Count() }).ToList();
+            .Select(x => new ComprasPagamentosVM { TipoFormaPagamento = x.Key.TipoFormaPagamento, Quantidade = x.Count() }).ToList();
+
+            List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
+
+            foreach (var item in lista)
+            {
+                ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
+                itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : item.TipoFormaPagamento.GetDescription();
+                itemCompras.Quantidade = item.Quantidade;
+                itemCompras.Total = item.Total;
+                listaComprasPagamento.Add(itemCompras);
+            }
+
+            return listaComprasPagamento;
         }
 
         public List<ComprasStatusVM> getQuantidadeStatus(TipoOrdemCompra tipoOrdemCompra)

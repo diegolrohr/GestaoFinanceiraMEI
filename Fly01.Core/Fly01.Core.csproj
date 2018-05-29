@@ -114,6 +114,10 @@
     <Folder Include="ViewModels\Api\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
+      <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
+      <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>

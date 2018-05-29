@@ -90,8 +90,8 @@ namespace Fly01.Financeiro.Controllers
                 OnClickFn = "fnSelectsAllClick",
                 Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar todas", Class = "col s6 m5 l4"},
-                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar todas", Class = "col s6 m5 l4"},
+                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar página", Class = "col s6 m5 l4"},
+                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar página", Class = "col s6 m5 l4"},
                         }
             });
 
@@ -126,6 +126,14 @@ namespace Fly01.Financeiro.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Número de contas selecionadas. O número máximo permitido é de 50."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "contasFinanceirasLabel",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Basta clicar nas contas desejadas abaixo. É listado as contas com status Em Aberto ou status Baixado Parcialmente."
                 }
             });
             #endregion

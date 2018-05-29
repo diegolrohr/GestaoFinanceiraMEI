@@ -63,6 +63,38 @@ namespace Fly01.Core.Rest
                 throw e;
             }
         }
+
+        public static bool ExecuteDeleteRequest(string url, string resource, out HttpStatusCode statusCode, out string statusDescription, Dictionary<string, string> header, Dictionary<string, string> queryString, int timeout = DEFAULT_TIMEOUT)
+        {
+            try
+            {
+                RestClient client = RestUtils.CreateRestClient(url, timeout);
+                RestRequest request = CreateJsonRequest(resource, Method.DELETE);
+
+                if (queryString != null)
+                    queryString.ToList().ForEach(x => request.AddParameter(x.Key, x.Value, ParameterType.QueryString));
+
+                if (header != null)
+                    header.ToList().ForEach(x => request.AddHeader(x.Key, x.Value));
+
+                IRestResponse response = client.Execute(request);
+                statusCode = response.StatusCode;
+                statusDescription = response.StatusDescription;
+                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent || response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.Accepted)
+                {
+                    return true;
+                }
+                else
+                {
+                    string errorMessage = !string.IsNullOrEmpty(response.Content) ? response.Content : response.ErrorMessage;
+                    throw new ApiException(statusCode, errorMessage);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         #endregion
 
         #region GETs

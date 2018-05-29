@@ -1,25 +1,27 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.ViewModel;
+﻿using Fly01.Core;
+using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.Financeiro.Models.ViewModel;
+using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
-using Fly01.Core.Config;
-using Fly01.Core.Helpers;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Newtonsoft.Json.Linq;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -108,7 +110,7 @@ namespace Fly01.Financeiro.Controllers
         public virtual ActionResult ImprimirListContas(string queryStringOdata, string tipoStatus)
         {
             var contas = GetListContaPagar(queryStringOdata, tipoStatus);
-            return base.PrintList(contas, "Lista de Contas a Pagar");            
+            return base.PrintList(contas, "Lista de Contas a Pagar");
         }
 
         public override string GetResourceDeleteTituloBordero(string id)
@@ -231,7 +233,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 cfg.Content.Add(cfgForm);
-            }            
+            }
 
             var config = new DataTableUI
             {
@@ -267,8 +269,8 @@ namespace Fly01.Financeiro.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 5, Orderable = false, Searchable = false });
             //config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 6, Orderable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 8});
-                        
+            config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 8 });
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -337,7 +339,7 @@ namespace Fly01.Financeiro.Controllers
                 Required = true,
                 DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "pessoaNome",
-                DataUrlPost = Url.Action("PostFornecedor","Fornecedor")
+                DataUrlPost = Url.Action("PostFornecedor", "Fornecedor")
             });
             config.Elements.Add(new InputCurrencyUI
             {
@@ -447,6 +449,15 @@ namespace Fly01.Financeiro.Controllers
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangeNumeroRepeticoes" }
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "numeroRepeticoes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será gerado um registro principal mais o numero de repetições. Este total de recorrências também será multiplicado pelo número de parcelas da condição de parcelamento.",
+                    Position = TooltopUIPosition.Top
                 }
             });
             config.Elements.Add(new InputDateUI

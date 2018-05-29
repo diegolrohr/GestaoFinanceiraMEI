@@ -55,7 +55,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Create = Url.Action("Create"),
                     Get = Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Conta" +tipoConta)
+                    List = @Url.Action("List", "Conta" + tipoConta)
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReadyBaixaMultipla"
@@ -68,7 +68,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
-                Class = "col s12 l6",
+                Class = "col s12 m6",
                 Label = "Conta Bancária",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancaria", "AutoComplete"),
@@ -76,14 +76,25 @@ namespace Fly01.Financeiro.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
             });
-            
+
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true, Value = DateTime.Now.ToString("dd/MM/yyyy") });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             config.Elements.Add(new InputCurrencyUI { Id = "somaValoresSelecionados", Class = "col s12 m6", Label = "Total das Baixas", Value = "0", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "countContasSelecionadas", Class = "col s12 m6", Label = "Contas Selecionadas", Value = "0", Disabled = true });
 
             config.Elements.Add(new LabelSetUI { Id = "contasFinanceirasLabel", Class = "col s12", Label = "Selecione as contas que deseja baixar" });
-            
+            config.Elements.Add(new ButtonGroupUI
+            {
+                Id = "selectAllBtnGrp",
+                Class = "col s12 m10",
+                OnClickFn = "fnSelectsAllClick",
+                Options = new List<ButtonGroupOptionUI>
+                        {
+                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar todas", Class = "col s6 m5 l4"},
+                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar todas", Class = "col s6 m5 l4"},
+                        }
+            });
+
             cfg.Content.Add(config);
 
 
@@ -99,6 +110,7 @@ namespace Fly01.Financeiro.Controllers
                     PageLength = 50
                 }
             };
+
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1 });
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4 });
             dtcfg.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Pessoa", Priority = 3 });
@@ -119,7 +131,7 @@ namespace Fly01.Financeiro.Controllers
             #endregion
 
             cfg.Content.Add(dtcfg);
-            
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 

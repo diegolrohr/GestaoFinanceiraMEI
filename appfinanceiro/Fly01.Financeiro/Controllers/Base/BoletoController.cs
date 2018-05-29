@@ -15,6 +15,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.ViewModels.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -136,10 +137,11 @@ namespace Fly01.Financeiro.Controllers.Base
             var cedente = boleto.Cedente;
             var contaCedente = cedente.ContaBancariaCedente;
             var sacado = boleto.Sacado;
+            var carteira =  new CarteiraVM(boleto.Cedente.ContaBancariaCedente.CodigoBanco);
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
-                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", "11", "019", (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
+                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", carteira.CarteiraPadrao, carteira.VariacaoCarteira, (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
                 (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
@@ -264,5 +266,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
             }, JsonRequestBehavior.AllowGet);
         }
+
+       
     }
 }

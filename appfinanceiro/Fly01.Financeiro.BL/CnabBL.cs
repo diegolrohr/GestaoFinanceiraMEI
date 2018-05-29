@@ -40,7 +40,8 @@ namespace Fly01.Financeiro.BL
             var contaBancariaCedente = contaBancariaBL.AllIncluding(r => r.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
-            codigoCedente = "1234657";
+            //codigoCedente = "1234657";
+            codigoCedente = "123465";
 
             var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
             var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));

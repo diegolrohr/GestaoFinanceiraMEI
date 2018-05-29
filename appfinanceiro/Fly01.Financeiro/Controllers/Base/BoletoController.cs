@@ -45,7 +45,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", filter);
-            queryString.AddParam("$expand", "contaReceber,contaReceber($expand=pessoa)");
+            queryString.AddParam("$expand", "contaReceber($expand=pessoa),contaBancariaCedente($expand=banco)");
 
             var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
 
@@ -107,7 +107,7 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         [HttpGet]
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId)
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
         {
             try
             {
@@ -115,23 +115,24 @@ namespace Fly01.Financeiro.Controllers.Base
                 if (boletoBancario == null)
                     throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
 
+                if (!reimprimeBoleto)
+                    if (BoletoJaGeradoParaOutroBanco(contaReceberId, boletoBancario.Cedente.ContaBancariaCedente.CodigoBanco))
+                        throw new Exception("erro_validacao_boleto");
+
                 var boletoImpresso = GeraBoleto(boletoBancario);
                 if (boletoImpresso == null)
                     throw new Exception("O boleto não pôde ser gerado.");
 
-                if (BoletoJaGeradoParaOutroBanco(contaReceberId, boletoBancario.Cedente.ContaBancariaCedente.CodigoBanco))
-                    throw new Exception("Já existe um boleto gerado para esta conta no [banco x], gostaria que este boleto seja remetido ao [banco y]?");
-
                 var html = new StringBuilder();
                 html.Append($"<div style=\"margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
 
-                SalvaBoleto(boletoImpresso, contaReceberId, contaBancariaId);
+                SalvaBoleto(boletoImpresso, contaReceberId, contaBancariaId, reimprimeBoleto);
 
                 return Json(new { success = true, message = html.ToString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = string.Format("Ocorreu um erro ao gerar boleto: {0}", ex.Message) }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = $"Ocorreu um erro ao gerar boleto: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -176,7 +177,7 @@ namespace Fly01.Financeiro.Controllers.Base
             };
         }
 
-        private void SalvaBoleto(Boleto2Net.BoletoBancario boletoImpresso, Guid contaReceberId, Guid contaBancariaId)
+        private void SalvaBoleto(Boleto2Net.BoletoBancario boletoImpresso, Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto)
         {
             var cnab = new CnabVM()
             {
@@ -191,7 +192,10 @@ namespace Fly01.Financeiro.Controllers.Base
                 ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo
             };
 
-            RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
+            if (!reimprimeBoleto)
+                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
+            else
+                RestHelper.ExecutePutRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Edit));
         }
 
         private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
@@ -274,7 +278,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
         private bool BoletoJaGeradoParaOutroBanco(Guid contaReceberId, int codigoBanco)
         {
-            if (GetCnab($"contaReceberId eq {contaReceberId}").Any(x => x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco))) return true;
+            if (GetCnab($"contaReceberId eq {contaReceberId}").Any(x => !x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco.ToString("000")))) return true;
 
             return false;
         }

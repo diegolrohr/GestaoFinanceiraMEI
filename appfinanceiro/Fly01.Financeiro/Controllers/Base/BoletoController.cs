@@ -41,17 +41,17 @@ namespace Fly01.Financeiro.Controllers.Base
             return listaCnab;
         }
 
-        private List<CnabVM> GetCnab(Guid? idArquivo)
+        private List<CnabVM> GetCnab(string filter)
         {
             var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"arquivoRemessaId eq {idArquivo}");
-            queryString.AddParam("$expand", "contaReceber , contaReceber($expand=pessoa)");
+            queryString.AddParam("$filter", filter);
+            queryString.AddParam("$expand", "contaReceber,contaReceber($expand=pessoa)");
 
             var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
 
             return boletos.Data;
         }
-
+        
         [HttpPost]
         public ActionResult GeraArquivoRemessa(List<Guid> ids)
         {
@@ -112,10 +112,15 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 var boletoBancario = GetBoletoBancario(contaReceberId, contaBancariaId);
-                if (boletoBancario == null) throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
+                if (boletoBancario == null)
+                    throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
 
                 var boletoImpresso = GeraBoleto(boletoBancario);
-                if (boletoImpresso == null) throw new Exception("O boleto não pôde ser gerado.");
+                if (boletoImpresso == null)
+                    throw new Exception("O boleto não pôde ser gerado.");
+
+                if (BoletoJaGeradoParaOutroBanco(contaReceberId, boletoBancario.Cedente.ContaBancariaCedente.CodigoBanco))
+                    throw new Exception("Já existe um boleto gerado para esta conta no [banco x], gostaria que este boleto seja remetido ao [banco y]?");
 
                 var html = new StringBuilder();
                 html.Append($"<div style=\"margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
@@ -246,7 +251,7 @@ namespace Fly01.Financeiro.Controllers.Base
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
             var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
 
-            var response = GetCnab(Id);
+            var response = GetCnab($"arquivoRemessaId eq {Id}");
             return Json(new
             {
                 recordsTotal = response.Count,
@@ -267,6 +272,11 @@ namespace Fly01.Financeiro.Controllers.Base
             }, JsonRequestBehavior.AllowGet);
         }
 
-       
+        private bool BoletoJaGeradoParaOutroBanco(Guid contaReceberId, int codigoBanco)
+        {
+            if (GetCnab($"contaReceberId eq {contaReceberId}").Any(x => x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco))) return true;
+
+            return false;
+        }
     }
 }

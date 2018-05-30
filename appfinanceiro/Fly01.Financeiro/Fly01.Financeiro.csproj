@@ -404,6 +404,9 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
+    </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Fly01.uiJS.2.0.2\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
@@ -524,10 +527,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Boleto2.Net\Boleto2.Net.csproj">
-      <Project>{f173e80b-e36b-48ad-b483-a27f8ca86f3c}</Project>
-      <Name>Boleto2.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
       <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
       <Name>Fly01.EmissaoNFE.Domain</Name>

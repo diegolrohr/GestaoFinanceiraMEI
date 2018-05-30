@@ -28,6 +28,7 @@ namespace Fly01.Core.Mensageria
         {
             var slackChannel = string.Empty;
             var isProd = (hostName == "prod");
+            var isHomolog = (hostName == "homolog");
 
             slackChannel = isProd
                 ? "https://hooks.slack.com/services/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"
@@ -53,10 +54,13 @@ namespace Fly01.Core.Mensageria
                 }
             };
 
-            var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
-            var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
-            await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
-            
+            if (isHomolog || isProd)
+            {
+                var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
+                var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
+                await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
+            }
+
             Post(slackChannel, message);
         }
     }

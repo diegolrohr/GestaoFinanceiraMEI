@@ -462,6 +462,12 @@ namespace Fly01.Faturamento.BL
                         itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
                     #endregion
 
+                    var tipoFormaPagamento = TipoFormaPagamento.Outros;
+                    if(formaPagamento != null)
+                    {
+                        tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
+                    }
+
                     #region Pagamento
                     itemTransmissao.Pagamento = new Pagamento()
                     {
@@ -469,7 +475,7 @@ namespace Fly01.Faturamento.BL
                         {
                             new DetalhePagamento()
                             {
-                                TipoFormaPagamento = formaPagamento != null ? formaPagamento.TipoFormaPagamento : TipoFormaPagamento.Outros,
+                                TipoFormaPagamento = tipoFormaPagamento,
                                 ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }

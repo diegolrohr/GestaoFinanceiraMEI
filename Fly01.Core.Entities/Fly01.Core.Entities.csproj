@@ -144,6 +144,7 @@
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
     <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
+    <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Domains\Enum\TipoLayoutNFSE.cs" />
     <Compile Include="Domains\Enum\TipoMensagemNFSE.cs" />
     <Compile Include="Domains\Enum\TipoModalidade.cs" />
+    <Compile Include="Domains\Enum\TipoHorarioTSS.cs" />
     <Compile Include="Domains\Enum\TipoNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoOperacaoSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\TipoOrdemCompra.cs" />

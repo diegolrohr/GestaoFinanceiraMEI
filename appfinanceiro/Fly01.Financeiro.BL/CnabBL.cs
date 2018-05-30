@@ -47,7 +47,7 @@ namespace Fly01.Financeiro.BL
             var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
             var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
-            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}";
+            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}"; //cnab.nossonumero + 1
 
             var boletoVM = new BoletoVM()
             {

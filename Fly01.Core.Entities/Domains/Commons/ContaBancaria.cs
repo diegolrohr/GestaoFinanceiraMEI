@@ -23,13 +23,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string CodigoBanco { get; set; }
 
         public virtual Banco Banco { get; set; }
-
-        //public string Carteira { get; set; }
-
-        //public string VariacaoCarteira { get; set; }
-
-        //public int TipoCarteira { get; set; } //Boleto2Net.TipoCarteira
-
-        //public int TipoEspecieDocumento { get; set; } //Boleto2Net.TipoEspecieDocumento
     }
 }

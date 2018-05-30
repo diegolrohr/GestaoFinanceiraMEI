@@ -7,13 +7,13 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ArquivoRemessaDropColumn : IMigrationMetadata
+    public sealed partial class CreateCnabArquivoRemessa : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ArquivoRemessaDropColumn));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateCnabArquivoRemessa));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805172024114_ArquivoRemessaDropColumn"; }
+            get { return "201805301323512_CreateCnabArquivoRemessa"; }
         }
         
         string IMigrationMetadata.Source

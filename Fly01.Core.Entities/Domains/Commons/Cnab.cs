@@ -29,7 +29,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public DateTime DataVencimento { get; set; }
 
         [Required]
-        public string NossoNumero { get; set; }
+        public int NossoNumero { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime DataDesconto { get; set; }

@@ -147,8 +147,8 @@ namespace Fly01.Financeiro.Controllers.Base
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
-                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, "", "", carteira.CarteiraPadrao, carteira.VariacaoCarteira, (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, cedente.CodigoDV, "", carteira.CarteiraPadrao, carteira.VariacaoCarteira, 
+                (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 

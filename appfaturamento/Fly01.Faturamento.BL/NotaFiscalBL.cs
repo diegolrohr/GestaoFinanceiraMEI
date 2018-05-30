@@ -188,11 +188,12 @@ namespace Fly01.Faturamento.BL
         {
             var notaFiscal = All.AsNoTracking().Where(x => x.Id == id).FirstOrDefault();
 
-            if (notaFiscal.Status != StatusNotaFiscal.Autorizada && notaFiscal.Status != StatusNotaFiscal.FalhaNoCancelamento)
-            {
-                throw new BusinessException("Somente nota fiscal com status Autorizada ou Falha no Cancelamento, pode ser cancelada");
-            }
-            else if (!TotalTributacaoBL.ConfiguracaoTSSOK())
+            //if (notaFiscal.Status != StatusNotaFiscal.Autorizada && notaFiscal.Status != StatusNotaFiscal.FalhaNoCancelamento)
+            //{
+            //    throw new BusinessException("Somente nota fiscal com status Autorizada ou Falha no Cancelamento, pode ser cancelada");
+            //}
+            //else 
+            if (!TotalTributacaoBL.ConfiguracaoTSSOK())
             {
                 throw new BusinessException("Configuração inválida para comunicação com TSS");
             }

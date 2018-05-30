@@ -54,13 +54,18 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Views\CnabItem\Functions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ArquivoRetornoController.cs" />
+    <Compile Include="Controllers\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="Controllers\DashboardContaPagarController.cs" />
     <Compile Include="Controllers\DashboardContaReceberController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
+    <Compile Include="Controllers\CnabItemController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
@@ -114,7 +120,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\ArquivoRemessaVM.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
+    <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
@@ -323,12 +331,14 @@
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReadyRemessa.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSelectAllBaixaMultipla.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnDeselectAllBaixaMultipla.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSelectsAllClick.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnAtualizarChart.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
@@ -337,6 +347,17 @@
     <Content Include="Views\DashboardContaPagar\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -382,6 +403,9 @@
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Fly01.uiJS.2.0.2\lib\net452\Fly01.uiJS.dll</HintPath>
@@ -564,11 +588,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Fly01.Financeiro</IISUrl>
+          <IISUrl>http://localhost:57633/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/Fly01.Financeiro</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

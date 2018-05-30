@@ -47,10 +47,10 @@ namespace Fly01.Financeiro.BL
         public BancoBL BancoBL => bancoBL ?? (bancoBL = new BancoBL(Context));
 
         private ContaPagarBL contaPagarBL;
-        public ContaPagarBL ContaPagarBL => contaPagarBL ?? (contaPagarBL = new ContaPagarBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL));
+        public ContaPagarBL ContaPagarBL => contaPagarBL ?? (contaPagarBL = new ContaPagarBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL, PessoaBL));
 
         private ContaReceberBL contaReceberBL;
-        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL));
+        public ContaReceberBL ContaReceberBL => contaReceberBL ?? (contaReceberBL = new ContaReceberBL(Context, CondicaoParcelamentoBL, ContaFinanceiraBaixaBL, PessoaBL));
 
         private ArquivoBL arquivoBL;
         public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));
@@ -130,6 +130,12 @@ namespace Fly01.Financeiro.BL
         private ConfiguracaoNotificacaoBL configuracaoNotificacaoBL;
         public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
 
+        private CnabBL cnabBL;
+        public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context, ContaReceberBL, ContaBancariaBL));
+
+        private ArquivoRemessaBL arquivoRemessa;
+        public ArquivoRemessaBL ArquivoRemessaBL => arquivoRemessa ?? (arquivoRemessa = new ArquivoRemessaBL(Context));
+        
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
 

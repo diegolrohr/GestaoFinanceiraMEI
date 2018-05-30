@@ -123,6 +123,10 @@
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Reports\Fly01.Core.Reports.csproj">
       <Project>{1A7C9367-04E5-41F0-B142-D66935CE3305}</Project>
       <Name>Fly01.Core.Reports</Name>
@@ -138,10 +142,6 @@
     <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26e9896f-edf5-4e59-9e0f-627c70e2e59e}</Project>
       <Name>Fly01.Core.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
-      <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>

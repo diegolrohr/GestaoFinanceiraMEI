@@ -1,5 +1,4 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.uiJS.Classes;
+﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
@@ -18,6 +17,7 @@ using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.Entities.ViewModel;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -251,9 +251,9 @@ namespace Fly01.Financeiro.Controllers
                         valorFormat2 = x.Valor.ToString("N", AppDefaults.CultureInfoDefault).Replace(".", ""),
                         data = x.Data.ToString("dd/MM/yyyy"),
                         statusConciliado = x.StatusConciliado,
-                        conciliadoDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).Description,
-                        conciliadoCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).CssClass,
-                        conciliadoValue = EnumHelper.SubtitleDataAnotation(typeof(StatusConciliado), x.StatusConciliado).Value,
+                        conciliadoDescription = EnumHelper.GetDescription(typeof(StatusConciliado), x.StatusConciliado),
+                        conciliadoCssClass = EnumHelper.GetCSS(typeof(StatusConciliado), x.StatusConciliado),
+                        conciliadoValue = EnumHelper.GetValue(typeof(StatusConciliado), x.StatusConciliado),
                         conciliacaoBancariaItemContasFinanceiras = x.ConciliacaoBancariaItemContasFinanceiras != null ?
                             x.ConciliacaoBancariaItemContasFinanceiras.Select(y => new
                             {

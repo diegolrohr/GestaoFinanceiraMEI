@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.uiJS.Classes;
+﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
@@ -13,6 +12,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
@@ -33,9 +33,9 @@ namespace Fly01.Compras.Controllers
                 descricao = x.Descricao,
                 grupoProdutoId = x.GrupoProdutoId,
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
-                tipoProduto = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
-                tipoProdutoCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
+                tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -67,7 +67,8 @@ namespace Fly01.Compras.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -83,7 +84,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Tipo",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoProdutoCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoProdutoDescricao + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao); }",
             });
 
             cfg.Content.Add(config);

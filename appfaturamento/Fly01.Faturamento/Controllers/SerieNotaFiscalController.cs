@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -12,6 +11,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -33,7 +33,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id,
                 serie = x.Serie.PadLeft(3, '0'),
-                tipoOperacaoSerieNotaFiscal = EnumHelper.SubtitleDataAnotation(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal).Value,
+                tipoOperacaoSerieNotaFiscal = EnumHelper.GetValue(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal),
                 numNotaFiscal = x.NumNotaFiscal.ToString().PadLeft(8, '0'),
             };
         }

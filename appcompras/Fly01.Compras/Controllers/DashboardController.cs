@@ -349,13 +349,13 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "#26be8d",
+                            backgroundColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     },
                     new {
                             label = "Quantidade",
                             fill = false,
-                            backgroundColor = "#f58542",
+                            backgroundColor = "rgb(255, 99, 132)",
                             data = response.Select(x => (x.Quantidade)).ToArray()
                         }
                 }

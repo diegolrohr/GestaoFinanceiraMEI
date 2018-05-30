@@ -8,6 +8,8 @@ using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -41,7 +43,9 @@ namespace Fly01.Financeiro.Controllers
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
-                registroFixo = x.RegistroFixo
+                registroFixo = x.RegistroFixo,
+                codigoCedente = x.CodigoCedente,
+                codigoDV = x.CodigoDV
             };
         }
 
@@ -135,14 +139,25 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "checkCedente",
-                Class = "col s12 l12",
-                Label = "Esta conta bancária gera boletos bancários? Marque para informar o código do cedente para este banco.",
+                Class = "col s12 l10",
+                Label = "Informe o código do cedente",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
                 }
             });
-            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s4 m4 l4", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "checkCedente",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Esta conta bancária emite boletos bancários? Marque para informar o código do cedente para este banco.",
+                    Position = TooltopUIPosition.Top
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s6 m6 l6", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col s6 m6 l6", Label = "CódigoDV", Required = false, MaxLength = 150 });
 
             cfg.Content.Add(config);
 

@@ -164,6 +164,10 @@
     <Compile Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.Designer.cs">
       <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.cs" />
+    <Compile Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.Designer.cs">
+      <DependentUpon>201805301932055_AddColumnCodigoDVContaBancaria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -270,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.resx">
       <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.resx">
+      <DependentUpon>201805301932055_AddColumnCodigoDVContaBancaria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

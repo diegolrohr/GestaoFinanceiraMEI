@@ -65,14 +65,16 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        protected override TooltipUI AdicionaHelper()
+        protected override List<TooltipUI> GetHelpers()
         {
-            return new TooltipUI
-            {
-                Id = "estadoId",
-                Tooltip = new HelperUITooltip()
+            return new List<TooltipUI> {
+                new TooltipUI
                 {
-                    Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
+                    Id = "estadoId",
+                    Tooltip = new HelperUITooltip()
+                    {
+                        Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
+                    }
                 }
             };
         }

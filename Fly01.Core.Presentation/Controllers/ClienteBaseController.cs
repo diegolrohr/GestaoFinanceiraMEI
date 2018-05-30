@@ -224,7 +224,10 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" });
 
-            config.Helpers.Add(AdicionaHelper());
+            List<TooltipUI> tooltips = GetHelpers();
+
+            if (tooltips != null)
+                config.Helpers.AddRange(tooltips);
 
             cfg.Content.Add(config);
 
@@ -298,7 +301,7 @@ namespace Fly01.Core.Presentation.Controllers
             return JsonResponseStatus.GetJson(arquivoVM);
         }
 
-        protected virtual TooltipUI AdicionaHelper()
+        protected virtual List<TooltipUI> GetHelpers()
         {
             return null;
         }

@@ -25,5 +25,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual Banco Banco { get; set; }
 
         public string CodigoCedente { get; set; }
+
+        public string CodigoDV { get; set; }
     }
 }

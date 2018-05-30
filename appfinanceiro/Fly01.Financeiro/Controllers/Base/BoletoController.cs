@@ -278,7 +278,9 @@ namespace Fly01.Financeiro.Controllers.Base
 
         private bool BoletoJaGeradoParaOutroBanco(Guid contaReceberId, int codigoBanco)
         {
-            if (GetCnab($"contaReceberId eq {contaReceberId}").Any(x => !x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco.ToString("000")))) return true;
+            var cnab = GetCnab($"contaReceberId eq {contaReceberId}");
+
+            if (cnab.Count > 0 && cnab.Any(x => !x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco.ToString("000")))) return true;
 
             return false;
         }

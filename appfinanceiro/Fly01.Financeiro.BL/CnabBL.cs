@@ -40,8 +40,8 @@ namespace Fly01.Financeiro.BL
             var contaBancariaCedente = contaBancariaBL.AllIncluding(r => r.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
-            //codigoCedente = "1234657";
-            codigoCedente = "123465";
+
+            codigoCedente = contaBancariaCedente.CodigoCedente;
 
             var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
             var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
@@ -75,7 +75,9 @@ namespace Fly01.Financeiro.BL
         private bool ValidaDadosBoleto(BoletoVM boleto)
         {
             if (string.IsNullOrEmpty(boleto.Cedente.EnderecoComplemento)) boleto.Cedente.EnderecoComplemento = "---";
+            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoNumero)) boleto.Cedente.EnderecoNumero = "0";
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
+            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero)) boleto.Sacado.EnderecoNumero = "0";
             
             return true;
         }

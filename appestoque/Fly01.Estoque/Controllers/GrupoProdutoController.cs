@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Core;
+﻿using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
@@ -13,6 +12,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -30,9 +30,9 @@ namespace Fly01.Estoque.Controllers
                 id = x.Id.ToString(),
                 descricao = x.Descricao,
                 tipoProduto = x.TipoProduto,
-                tipoProdutoDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Description,
-                tipoProdutoCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).CssClass,
-                tipoProdutoValue = EnumHelper.SubtitleDataAnotation(typeof(TipoProduto), x.TipoProduto).Value,
+                tipoProdutoDescription = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoCssClass = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoValue = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -50,7 +50,8 @@ namespace Fly01.Estoque.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
@@ -64,7 +65,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Tipo de Produto",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoProdutoCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoProdutoValue).outerHTML; }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCssClass, full.tipoProdutoValue); }"
             });
 
             cfg.Content.Add(config);
@@ -152,8 +153,6 @@ namespace Fly01.Estoque.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
-
-
 
         public JsonResult GetAliquotaIPI(string ncmId)
         {

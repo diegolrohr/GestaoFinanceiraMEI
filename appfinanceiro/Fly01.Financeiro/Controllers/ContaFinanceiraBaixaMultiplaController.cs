@@ -1,5 +1,4 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.uiJS.Classes;
+﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {

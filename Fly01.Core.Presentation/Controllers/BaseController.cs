@@ -16,43 +16,47 @@ using System.Web.Script.Serialization;
 using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.ViewModels;
+using Fly01.Core.Config;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using System.Web.Configuration;
 
 namespace Fly01.Core.Presentation
 {
-    public abstract class WebBaseController<T> : Controller where T : DomainBaseVM
+    public abstract class BaseController<T> : Controller where T : DomainBaseVM
     {
-        protected string ResourceName { get; set; }
+        protected string ResourceName => AppDefaults.GetResourceName(typeof(T));
         protected string ExpandProperties { get; set; }
-        protected string AppEntitiesResourceName { get; set; }
-        protected string AppViewModelResourceName { get; set; }
+        protected string AppEntitiesResourceName => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
+        protected string AppViewModelResourceName => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
 
         #region BUSCA DE DADOS MASHUP
 
-        public JsonResult GetZipCode(string zipCode)
+        public JsonResult BuscaCEP(string cep)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(zipCode))
-                {
+                if (string.IsNullOrWhiteSpace(cep))
                     return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não são válidos.");
-                }
 
-                dynamic dynamicObj = SOADataManager.BuscaCEP(zipCode, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
-                if (dynamicObj != null)
+                var buscaCepVM = SOADataManager.BuscaCEP(cep, new SOAConnectionConfig(AppDefaults.MashupClientId, AppDefaults.MashupUser, AppDefaults.MashupPassword));
+
+                if (buscaCepVM != null)
                 {
-                    bool retorno = string.IsNullOrWhiteSpace(dynamicObj.ZipCode) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.Address) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.Neighborhood) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.City) &&
-                        string.IsNullOrWhiteSpace(dynamicObj.State);
+                    var queryString = AppDefaults.GetQueryStringDefault();
+                    queryString.AddParam("$expand", "estado");
+                    queryString.AddParam("$filter", $"(nome eq '{buscaCepVM.City}' and (estado/sigla eq '{buscaCepVM.State}') or estado/nome eq '{buscaCepVM.State}')");
 
-                    if (retorno)
-                    {
-                        return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
-                    }
+                    var data = RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(AppDefaults.GetResourceName(typeof(CidadeVM)), queryString).Data.FirstOrDefault();
+
+                    buscaCepVM.StateId = data.EstadoId.ToString();
+                    buscaCepVM.CityId = data.Id.ToString();
+
+                    return JsonResponseStatus.GetJson(new { success = true, endereco = buscaCepVM });
                 }
-
-                return JsonResponseStatus.GetJson(dynamicObj);
+                else
+                    return JsonResponseStatus.GetFailure("Busca de CEP: Os parâmetros informados não retornaram nenhum resultado válido.");
             }
             catch (Exception ex)
             {
@@ -141,6 +145,43 @@ namespace Fly01.Core.Presentation
         }
 
         #endregion
+
+        public ManagerEmpresaVM GetDadosEmpresa()
+        {
+            return ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+        }
+
+        public ContentResult EmConstrucao(string history)
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory() { Default = history },
+                Header = new HtmlUIHeader()
+                {
+                    Title = "Opção indisponível",
+                    Buttons = new List<HtmlUIButton>()
+                },
+                UrlFunctions = ""
+            };
+
+
+            cfg.Content.Add(new FormUI()
+            {
+                Elements = new List<BaseUI>()
+                {
+                    new LabelSetUI()
+                    {
+                        Class = "col s12",
+                        Id = "underconstruction",
+                        Name = "underconstruction",
+                        Label = "O recurso está em desenvolvimento."
+                    }
+                },
+                Class = "col s12"
+            });
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
 
         public K GetBranchInformation<K>()
         {
@@ -527,6 +568,7 @@ namespace Fly01.Core.Presentation
         #region SYSTEM VALUES
 
         private Dictionary<string, List<SystemValueVM>> _systemValues = null;
+
         public Dictionary<string, List<SystemValueVM>> SystemValues
         {
             get
@@ -555,11 +597,6 @@ namespace Fly01.Core.Presentation
 
             return listReturn;
         }
-
-        //public List<KeyValueVM> GetSystemKeyValue(string systemValue)
-        //{
-        //    return this.ExecuteGetRequest<List<KeyValueVM>>(string.Format("systemvalue/{0}", systemValue));
-        //}
 
         public List<KeyValueVM> GetSystemKeyValue(string systemValue, bool fieldStruct = false)
         {
@@ -598,6 +635,7 @@ namespace Fly01.Core.Presentation
         {
             return RestHelper.ExecuteGetRequest<List<TReturn>>(string.Format("systemvalue/{0}", systemEntity));
         }
+
         #endregion
 
         #region Importação
@@ -705,5 +743,51 @@ namespace Fly01.Core.Presentation
         public abstract ContentResult List();
 
         public abstract ContentResult Form();
+
+        [HttpGet]
+        public virtual ActionResult Download(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                byte[] data = Convert.FromBase64String(Session[fileName].ToString());
+                Session.Remove(fileName);
+                return File(data, "application/octet-stream", fileName);
+            }
+            else
+            {
+                return new HttpNotFoundResult("O arquivo solicitado não está disponível para download.");
+            }
+        }
+
+        [HttpGet]
+        public virtual ActionResult DownloadPDF(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                byte[] data = Convert.FromBase64String(Session[fileName].ToString());
+                Session.Remove(fileName);
+                return File(data, "application/pdf", fileName);
+            }
+            else
+            {
+                return new HttpNotFoundResult("O PDF solicitado não está disponível para download.");
+            }
+        }
+
+        [HttpGet]
+        public virtual ActionResult DownloadXMLString(string fileName)
+        {
+            if (Session[fileName] != null)
+            {
+                byte[] data = Convert.FromBase64String(Base64Helper.CodificaBase64(Session[fileName].ToString()));
+                Session.Remove(fileName);
+                return File(data, "text/xml", fileName);
+            }
+            else
+            {
+                return new HttpNotFoundResult("O XML solicitado não está disponível para download.");
+            }
+        }
+
     }
 }

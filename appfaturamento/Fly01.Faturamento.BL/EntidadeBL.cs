@@ -6,7 +6,7 @@ using System.Linq;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Reports;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.BL
 {
@@ -34,7 +34,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");            
+            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoNome =  empresa.Cidade != null && empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Nome : string.Empty;
 
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Fly01.Core.SOAManager.ViewModel;
 using Fly01.Core.SOAManager.SOAManager;
 using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Core.SOAManager
 {
@@ -26,7 +27,7 @@ namespace Fly01.Core.SOAManager
             Session[SESSION_NAME] = soaDataSession;
         }
 
-        public static object BuscaCEP(string cep, SOAConnectionConfig conn)
+        public static BuscaCepVM BuscaCEP(string cep, SOAConnectionConfig conn)
         {
             SOAManager.SOAManager client = GetManagerClient();
             SOAConnectionData connectionData = GetConnectionData(conn);
@@ -58,13 +59,15 @@ namespace Fly01.Core.SOAManager
 
             if (resultTypeCEP != SOAResultType.Error)
             {
-                return new
+                return new BuscaCepVM()
                 {
                     ZipCode = results.Where(r => r.Name.Equals("CEP")).FirstOrDefault().Value,
                     Address = results.Where(r => r.Name.Equals("Endereço")).FirstOrDefault().Value,
                     Neighborhood = results.Where(r => r.Name.Equals("Bairro")).FirstOrDefault().Value,
                     City = results.Where(r => r.Name.Equals("Cidade")).FirstOrDefault().Value,
-                    State = results.Where(r => r.Name.Equals("Estado")).FirstOrDefault().Value
+                    State = results.Where(r => r.Name.Equals("Estado")).FirstOrDefault().Value,
+                    StateId = "",
+                    CityId = ""
                 };
             }
 

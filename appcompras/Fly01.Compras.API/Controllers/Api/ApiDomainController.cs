@@ -11,8 +11,6 @@ namespace Fly01.Compras.API.Controllers.Api
         where TEntity : DomainBase, new()
         where TBL : DomainBaseBL<TEntity>
     {
-        protected bool isServiceBusRoute { get; set; }
-
         private UnitOfWork _unitOfWork;
         protected UnitOfWork UnitOfWork
         {

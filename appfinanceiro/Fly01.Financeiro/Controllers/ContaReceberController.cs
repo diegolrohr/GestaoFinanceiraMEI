@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public ContaReceberController()
         {
-            ExpandProperties = "condicaoParcelamento($select=id,descricao),pessoa($select=id,nome),categoria($select=id,descricao),formaPagamento($select=descricao)";
+            ExpandProperties = "condicaoParcelamento($select=id,descricao),pessoa($select=id,nome),categoria($select=id,descricao),formaPagamento($select=descricao,tipoFormaPagamento)";
         }
 
         public override ActionResult ImprimirRecibo(Guid id)
@@ -242,7 +242,8 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
-                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
@@ -251,6 +252,7 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirBoletoContaReceber", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -258,7 +260,7 @@ namespace Fly01.Financeiro.Controllers
                 DisplayName = "Status",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusContaBancariaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusContaBancaria + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
@@ -658,6 +660,35 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config2);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public ContentResult FormImprimeBoleto(string contaReceberId)
+        {
+            var config = new ModalUIForm()
+            {
+                Title = "Selecionar Conta Bancária",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Imprimir" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("ImprimeBoleto", "Cnab") + $"?contaReceberId={contaReceberId}&contaBancariaId=como pegar o id da conta bancária aqui?"
+                },
+                Id = "fly01mdlfrmSelecionaContaBancaria"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "contaReceberId", Value = contaReceberId });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "contaBancariaId",
+                Class = "col s12",
+                Label = "Banco cedente",
+                Required = true,
+                DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
+                LabelId = "bancoNome"
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+
         }
 
         #region OnDemmand

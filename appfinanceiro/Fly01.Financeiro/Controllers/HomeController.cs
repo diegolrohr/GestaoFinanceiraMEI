@@ -8,9 +8,8 @@ using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
-using Fly01.Core.Reports;
-using Fly01.Core;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -18,7 +17,7 @@ namespace Fly01.Financeiro.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
 
@@ -260,15 +259,25 @@ namespace Fly01.Financeiro.Controllers
             {
                 Label = "Financeiro",
                 Items = new List<LinkUI>
-                {
-                    new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                    new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
-                    new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
-                    new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                    new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                    //new LinkUI() { Label = "Borderôs/CNAB", OnClick = @Url.Action("CNAB", "Json")},
-                    new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-                }
+            {
+                new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
+                new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
+                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
+                new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+            }
+            });
+
+            config.MenuItems.Add(new SidebarMenuUI()
+            {
+                Label = "Cobrança",
+                Items = new List<LinkUI>
+            {
+                new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
+                new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
+                new LinkUI() { Label = "Importar A. retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
+            }
             });
 
             config.MenuItems.Add(new SidebarMenuUI()

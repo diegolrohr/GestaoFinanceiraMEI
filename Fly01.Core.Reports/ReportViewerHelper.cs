@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,13 @@ namespace Fly01.Core.Reports
 
         public static DataTable dataTable { get; set; }
 
-        private static ReportConfig GetReportConfig(string reportTitle,
-                                                    string userName,
-                                                    string platformUrl)
+        private static ReportConfig GetReportConfig(string reportTitle, string userName, string platformUrl)
         {
             if (string.IsNullOrEmpty(platformUrl))
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
             string logoBase64 = string.Empty;
-            ManagerEmpresaVM empresaVM = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{platformUrl}");
+            var empresaVM = ApiEmpresaManager.GetEmpresa(platformUrl);
 
             var headerDefault = new StringBuilder();
             if (empresaVM != null)

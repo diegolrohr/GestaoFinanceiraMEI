@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD2DFC64-88AB-47EF-B42B-B6D8DC177834}"
 	ProjectSection(SolutionItems) = preProject
@@ -90,6 +90,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{1005E8B8-FC2
 	ProjectSection(SolutionItems) = preProject
 		MigrationCommands.md = MigrationCommands.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto2.Net", "..\Boleto2.Net\Boleto2.Net.csproj", "{F173E80B-E36B-48AD-B483-A27F8CA86F3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6334FCAC-BF9B-4C98-BD88-F65EC823714D}"
 	ProjectSection(SolutionItems) = preProject
@@ -297,6 +299,12 @@ Global
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Homologacao|Any CPU.Build.0 = Release|Any CPU
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Homologacao|Any CPU.ActiveCfg = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Homologacao|Any CPU.Build.0 = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

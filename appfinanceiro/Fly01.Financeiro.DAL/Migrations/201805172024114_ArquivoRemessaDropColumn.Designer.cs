@@ -7,13 +7,13 @@ namespace Fly01.Financeiro.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AlterContaBancariaCamposRequired : IMigrationMetadata
+    public sealed partial class ArquivoRemessaDropColumn : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AlterContaBancariaCamposRequired));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ArquivoRemessaDropColumn));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805112009092_AlterContaBancariaCamposRequired"; }
+            get { return "201805172024114_ArquivoRemessaDropColumn"; }
         }
         
         string IMigrationMetadata.Source

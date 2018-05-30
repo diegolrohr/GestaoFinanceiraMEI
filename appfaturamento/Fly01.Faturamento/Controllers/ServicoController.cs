@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -10,6 +9,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -72,14 +72,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoServico", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoServico",
-            //    DisplayName = "Tipo",
-            //    Priority = 4,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoServico", true, false)),
-            //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoServicoCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoServicoDescricao + \"</span>\" }"
-            //});
 
             cfg.Content.Add(config);
 

@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public class AvaliacaoAppBaseController<T> : WebBaseController<T> where T :DomainBaseVM
+    public class AvaliacaoAppBaseController<T> : BaseController<T> where T : DomainBaseVM
     {
         public override ContentResult Form()
         {
@@ -44,8 +44,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "menu", Value= "AvaliaçãoAPP" });
-            config.Elements.Add(new InputHiddenUI { Id = "aplicativo"});
+            config.Elements.Add(new InputHiddenUI { Id = "menu", Value = "AvaliaçãoAPP" });
+            config.Elements.Add(new InputHiddenUI { Id = "aplicativo" });
             config.Elements.Add(new InputTextUI { Id = "titulo", Class = "col s12 m12 l6", Label = "Título", Required = true, MaxLength = 45 });
             config.Elements.Add(new RatingUI { Id = "satisfacao", Class = "col s12 l3", Label = "Dê sua nota para o aplicativo" });
             config.Elements.Add(new TextAreaUI { Id = "descricao", Class = "col s12 m12 24", Label = "Descrição", Required = true });
@@ -72,7 +72,7 @@ namespace Fly01.Core.Presentation.Controllers
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 T postResult = JsonConvert.DeserializeObject<T>(postResponse);
                 var response = new JsonResult();
-                response.Data = new { success = true, message = "Avaliação enviada com sucesso."};
+                response.Data = new { success = true, message = "Avaliação enviada com sucesso." };
                 return (response);
             }
             catch (Exception ex)

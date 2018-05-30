@@ -130,6 +130,12 @@ namespace Fly01.Financeiro.BL
         private ConfiguracaoNotificacaoBL configuracaoNotificacaoBL;
         public ConfiguracaoNotificacaoBL ConfiguracaoNotificacaoBL => configuracaoNotificacaoBL ?? (configuracaoNotificacaoBL = new ConfiguracaoNotificacaoBL(Context));
 
+        private CnabBL cnabBL;
+        public CnabBL CnabBL => cnabBL ?? (cnabBL = new CnabBL(Context, ContaReceberBL, ContaBancariaBL));
+
+        private ArquivoRemessaBL arquivoRemessa;
+        public ArquivoRemessaBL ArquivoRemessaBL => arquivoRemessa ?? (arquivoRemessa = new ArquivoRemessaBL(Context));
+        
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
 

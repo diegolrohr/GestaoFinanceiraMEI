@@ -148,10 +148,6 @@
     <Compile Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.Designer.cs">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.cs" />
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.Designer.cs">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.cs" />
     <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.Designer.cs">
       <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
@@ -159,6 +155,34 @@
     <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.cs" />
     <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.Designer.cs">
       <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805161423391_CreateCNABArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805161423391_CreateCNABArquivoRemessa.Designer.cs">
+      <DependentUpon>201805161423391_CreateCNABArquivoRemessa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.cs" />
+    <Compile Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.Designer.cs">
+      <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805172024114_ArquivoRemessaDropColumn.cs" />
+    <Compile Include="Migrations\201805172024114_ArquivoRemessaDropColumn.Designer.cs">
+      <DependentUpon>201805172024114_ArquivoRemessaDropColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805181301372_AlterColumnStatusCnab.cs" />
+    <Compile Include="Migrations\201805181301372_AlterColumnStatusCnab.Designer.cs">
+      <DependentUpon>201805181301372_AlterColumnStatusCnab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.Designer.cs">
+      <DependentUpon>201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.Designer.cs">
+      <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.cs" />
+    <Compile Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.Designer.cs">
+      <DependentUpon>201805251826544_AlterTableArquivoRemessaColumnBancoId.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -255,14 +279,32 @@
     <EmbeddedResource Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.resx">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.resx">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.resx">
       <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.resx">
       <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805161423391_CreateCNABArquivoRemessa.resx">
+      <DependentUpon>201805161423391_CreateCNABArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805171910002_CnabDropColumnNumeroBoleto.resx">
+      <DependentUpon>201805171910002_CnabDropColumnNumeroBoleto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805172024114_ArquivoRemessaDropColumn.resx">
+      <DependentUpon>201805172024114_ArquivoRemessaDropColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805181301372_AlterColumnStatusCnab.resx">
+      <DependentUpon>201805181301372_AlterColumnStatusCnab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.resx">
+      <DependentUpon>201805181939366_AlterColumnStatusArquivoRemessa_ArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805182048288_AlterColumnDateTimeNullableArquivoRemessa.resx">
+      <DependentUpon>201805182048288_AlterColumnDateTimeNullableArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805251826544_AlterTableArquivoRemessaColumnBancoId.resx">
+      <DependentUpon>201805251826544_AlterTableArquivoRemessaColumnBancoId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.Core;
 using Newtonsoft.Json;
 using System;
@@ -8,6 +7,7 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {

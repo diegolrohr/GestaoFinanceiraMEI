@@ -62,7 +62,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\InventarioItemController.cs" />
@@ -201,6 +200,7 @@
     <Content Include="Views\AjusteManual\Functions\_fnEntradaSaida.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -392,11 +392,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53203</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Fly01.Estoque</IISUrl>
+          <IISUrl>http://localhost:53203/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

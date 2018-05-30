@@ -7,6 +7,7 @@ using Fly01.Core.ValueObjects;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -195,6 +196,31 @@ namespace Fly01.Financeiro.BL
         public void Persist()
         {
 
+        }
+
+        public Guid BuscaPessoaNome(string nomePessoa, bool cliente, bool fornecedor)
+        {
+            var pessoaPadrao = All.FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true && x.RegistroFixo == true);
+
+            //Se Pessoa nao existe, insere
+            if (pessoaPadrao == null)
+            {
+                var novaPessoa = new Pessoa
+                {
+                    Id = Guid.NewGuid(),
+                    Nome = nomePessoa,
+                    TipoDocumento = "F",
+                    Cliente = cliente,
+                    Fornecedor = fornecedor,
+                    ConsumidorFinal = cliente,
+                    TipoIndicacaoInscricaoEstadual = TipoIndicacaoInscricaoEstadual.ContribuinteIsento,
+                    CPFCNPJ = string.Empty,
+                    RegistroFixo = true
+                };
+                base.Insert(novaPessoa);
+                return novaPessoa.Id;
+            }
+            return pessoaPadrao.Id;
         }
     }
 }

@@ -52,12 +52,14 @@
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\AvaliacaoApp.cs" />
+    <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
     <Compile Include="Domains\Commons\CertificadoDigital.cs" />
     <Compile Include="Domains\Commons\Cest.cs" />
     <Compile Include="Domains\Commons\Cfop.cs" />
     <Compile Include="Domains\Commons\Cidade.cs" />
+    <Compile Include="Domains\Commons\Cnab.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancaria.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItem.cs" />
     <Compile Include="Domains\Commons\ConciliacaoBancariaItemContaFinanceira.cs" />
@@ -138,7 +140,10 @@
     <Compile Include="Domains\DomainBase.cs" />
     <Compile Include="Domains\Enum\DateGroupType.cs" />
     <Compile Include="Domains\Enum\InventarioStatus.cs" />
+    <Compile Include="Domains\Enum\StatusArquivoRemessa.cs" />
+    <Compile Include="Domains\Enum\StatusCnab.cs" />
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
+    <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
@@ -146,6 +151,7 @@
     <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
+    <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />
     <Compile Include="Domains\Enum\TipoCarteira.cs" />
     <Compile Include="Domains\Enum\TipoCfop.cs" />
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
@@ -188,7 +194,7 @@
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
-      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,6 +1,6 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
@@ -35,9 +35,9 @@ namespace Fly01.Compras.Controllers
                 cest_codigo = x.Cest != null ? x.Cest.Codigo : "",
                 estadoOrigem_nome = x.EstadoOrigem != null ? x.EstadoOrigem.Nome : "",
                 estadoDestino_nome = x.EstadoDestino != null ? x.EstadoDestino.Nome : "",
-                tipoSubstituicaoTributaria = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Value,
-                tipoSubstituicaoTributariaCSS = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).CssClass,
-                tipoSubstituicaoTributariaDescricao = EnumHelper.SubtitleDataAnotation(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria).Description,
+                tipoSubstituicaoTributaria = EnumHelper.GetValue(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
+                tipoSubstituicaoTributariaCSS = EnumHelper.GetCSS(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
+                tipoSubstituicaoTributariaDescricao = EnumHelper.GetDescription(typeof(TipoSubstituicaoTributaria), x.TipoSubstituicaoTributaria),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -180,7 +180,8 @@ namespace Fly01.Compras.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -198,7 +199,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Tipo",
                 Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSubstituicaoTributaria))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoSubstituicaoTributariaCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoSubstituicaoTributariaDescricao + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoSubstituicaoTributariaCSS, full.tipoSubstituicaoTributariaDescricao); }",
             });
 
             cfg.Content.Add(config);

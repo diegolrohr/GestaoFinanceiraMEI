@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
@@ -14,8 +13,8 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Reports;
 using Fly01.Core.Config;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -219,7 +218,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
-            ManagerEmpresaVM response = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{SessionManager.Current.UserData.PlatformUrl}");
+            var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
             var cfg = new ContentUI
@@ -293,9 +292,9 @@ namespace Fly01.Financeiro.Controllers
                         OnClickFn = "fnAtualizarPeriodo",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia"},
-                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana"},
-                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "0", Label = "Dia", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "6", Label = "Semana", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "30", Label = "Mês", Class = "col s4"}
                         }
                     }
                 }

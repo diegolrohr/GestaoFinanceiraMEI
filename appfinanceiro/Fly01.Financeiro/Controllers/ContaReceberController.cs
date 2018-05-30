@@ -109,7 +109,7 @@ namespace Fly01.Financeiro.Controllers
         public List<ContaReceberVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
         {
             var queryString = new Dictionary<string, string>();
-            var strStatusConta = !string.IsNullOrEmpty(queryStringOdata) 
+            var strStatusConta = !string.IsNullOrEmpty(queryStringOdata)
                 ? $" and statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'"
                 : $" statusContaBancaria eq {AppDefaults.APIEnumResourceName}StatusContaBancaria" + "'" + tipoStatus + "'";
 
@@ -133,7 +133,7 @@ namespace Fly01.Financeiro.Controllers
             var contas = GetListContaPagar(queryStringOdata, tipoStatus);
             return base.PrintList(contas, "Lista de Contas a Receber");
         }
-       
+
         public override JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId)
         {
             try
@@ -651,33 +651,30 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public ContentResult FormImprimeBoleto(Guid contaReceberId)
+        public ContentResult FormImprimeBoleto(string contaReceberId)
         {
-            //parei aqui
             var config = new ModalUIForm()
             {
                 Title = "Selecionar Conta Bancária",
-                UrlFunctions = @Url.Action("Functions", "PedidoItem", null, Request.Url.Scheme) + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Imprimir" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
+                    Create = @Url.Action("ImprimeBoleto", "Cnab") + $"?contaReceberId={contaReceberId}&contaBancariaId=como pegar o id da conta bancária aqui?"
                 },
-                Id = "fly01mdlfrmFormaPagamento",
+                Id = "fly01mdlfrmSelecionaContaBancaria"
             };
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new SelectUI
+            config.Elements.Add(new InputHiddenUI { Id = "contaReceberId", Value = contaReceberId });
+            config.Elements.Add(new AutoCompleteUI
             {
-                Id = "tipoFormaPagamento",
-                Class = "col s4",
-                Label = "Tipo",
+                Id = "contaBancariaId",
+                Class = "col s12",
+                Label = "Banco cedente",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
+                DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
+                LabelId = "bancoNome"
             });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
 

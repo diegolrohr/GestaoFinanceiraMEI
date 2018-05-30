@@ -1,8 +1,6 @@
 ﻿<script>
     function fnImprimirBoletoContaReceber(contaReceberId) {
-        debugger;
-
-        var url = "@Url.Action("Form", "OrcamentoItem")?contaReceberId=" + contaReceberId;
+        var url = "@Url.Action("FormImprimeBoleto", "ContaReceber")?contaReceberId=" + contaReceberId;
         fly01.modal(url);
     }
 </script>

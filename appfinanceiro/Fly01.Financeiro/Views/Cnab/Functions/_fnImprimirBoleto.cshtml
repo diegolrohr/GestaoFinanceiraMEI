@@ -29,11 +29,7 @@
     function fnImprimirBoleto(data, type, row, meta) {
         return createForm(row).outerHTML;
     };
-
-    //function fnImprimeBoleto(contaReceberId, reimprimeBoleto)
-    //{
-    //}
-
+    
     $(document).off("submit", "form.cnabForm");
     $(document).on("submit", "form.cnabForm", function (e) {
         var that = $(this);

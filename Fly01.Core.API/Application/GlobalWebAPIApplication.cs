@@ -29,6 +29,7 @@ namespace Fly01.Core.API.Application
                 FloatFormatHandling = FloatFormatHandling.DefaultValue,
                 FloatParseHandling = FloatParseHandling.Decimal,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                
                 Converters = new[] { new IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AdjustToUniversal } }
             };
 

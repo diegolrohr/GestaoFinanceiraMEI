@@ -2,7 +2,6 @@
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
-using Fly01.Core.Reports;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
@@ -137,10 +136,10 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
                     }
 
-                    var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
-
+                    //var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
+                    var versao = EnumHelper.GetDescription(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
-                    var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+                    var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
                     var formaPagamento = FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == entity.FormaPagamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
@@ -463,6 +462,12 @@ namespace Fly01.Faturamento.BL
                         itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
                     #endregion
 
+                    var tipoFormaPagamento = TipoFormaPagamento.Outros;
+                    if(formaPagamento != null)
+                    {
+                        tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
+                    }
+
                     #region Pagamento
                     itemTransmissao.Pagamento = new Pagamento()
                     {
@@ -470,7 +475,7 @@ namespace Fly01.Faturamento.BL
                         {
                             new DetalhePagamento()
                             {
-                                TipoFormaPagamento = formaPagamento != null ? formaPagamento.TipoFormaPagamento : TipoFormaPagamento.Outros,
+                                TipoFormaPagamento = tipoFormaPagamento,
                                 ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }

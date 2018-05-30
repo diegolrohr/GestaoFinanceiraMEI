@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Estoque.Controllers.Base;
 using Fly01.Estoque.ViewModel;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
@@ -10,6 +9,7 @@ using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -30,9 +30,9 @@ namespace Fly01.Estoque.Controllers
                 id = x.Id,
                 descricao = x.Descricao,
                 tipoEntradaSaida = x.TipoEntradaSaida,
-                tipoEntradaSaidaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Description,
-                tipoEntradaSaidaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).CssClass,
-                tipoEntradaSaidaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoEntradaSaida), x.TipoEntradaSaida).Value,
+                tipoEntradaSaidaDescription = EnumHelper.GetDescription(typeof(TipoEntradaSaida), x.TipoEntradaSaida),
+                tipoEntradaSaidaCssClass = EnumHelper.GetCSS(typeof(TipoEntradaSaida), x.TipoEntradaSaida),
+                tipoEntradaSaidaValue = EnumHelper.GetValue(typeof(TipoEntradaSaida), x.TipoEntradaSaida),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -50,7 +50,8 @@ namespace Fly01.Estoque.Controllers
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
                     }
                 },
-                UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns=" };
 
@@ -64,7 +65,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Entrada/Saida",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
-                RenderFn = "function(data, type, row, meta) { return createElem(\"span\", {\"class\":\"new badge \" + row.tipoEntradaSaidaCssClass + \" left\", \"data-badge-caption\": \" \" }, row.tipoEntradaSaidaValue).outerHTML; }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue); }"
             });
 
             cfg.Content.Add(config);

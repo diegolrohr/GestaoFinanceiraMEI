@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.Models.Reports;
+﻿using Fly01.Compras.Models.Reports;
 using Fly01.Compras.Models.ViewModel;
 using Fly01.Compras.ViewModel;
 using Fly01.Core;
@@ -17,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {

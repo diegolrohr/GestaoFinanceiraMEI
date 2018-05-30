@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Core.Reports
+namespace Fly01.Core.ViewModels
 {
     public class ManagerEstadoVM
     {
@@ -98,10 +98,7 @@ namespace Fly01.Core.Reports
         [JsonProperty("platformUrlId")]
         public int PlatformUrlId { get; set; }
 
-
-        #region Navigations Properties
         [JsonProperty("cidade")]
         public virtual ManagerCidadeVM Cidade { get; set; }
-        #endregion
     }
 }

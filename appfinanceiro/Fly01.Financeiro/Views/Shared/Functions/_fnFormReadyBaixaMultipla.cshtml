@@ -2,7 +2,7 @@
     @Html.Partial("Functions/_fnMain");
 
     var rows_selected = [];
-    const qtLimiteBaixaMultipla = 50;
+    var qtLimiteBaixaMultipla = 50;
 
     function setupGridSelectEvents() {
         fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {

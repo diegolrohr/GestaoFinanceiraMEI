@@ -24,7 +24,7 @@ namespace Fly01.Core.Mensageria
             }
         }
 
-        public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName)
+        public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl)
         {
             var slackChannel = string.Empty;
             var isProd = (hostName == "prod");
@@ -55,7 +55,7 @@ namespace Fly01.Core.Mensageria
 
             var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
             var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
-            await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName });
+            await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
             
             Post(slackChannel, message);
         }

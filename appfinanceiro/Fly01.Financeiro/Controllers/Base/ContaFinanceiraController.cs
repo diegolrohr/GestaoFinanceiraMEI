@@ -18,6 +18,7 @@ using Fly01.Financeiro.Models.Reports;
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -26,13 +27,7 @@ namespace Fly01.Financeiro.Controllers.Base
         where TEntityBaixa : ContaFinanceiraBaixaVM
         where TEntityRenegociacao : ContaFinanceiraRenegociacaoVM
     {
-        /// <summary>
-        /// Construtor
-        /// </summary>
-        protected ContaFinanceiraController()
-        {
-            ResourceName = AppDefaults.GetResourceName(typeof(TEntity));
-        }
+        protected ContaFinanceiraController() { }
 
         /// <summary>
         /// Método Responsável por definir as colunas que serão apresentadas 
@@ -45,18 +40,19 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 id = x.Id.ToString(),
                 statusEnum = x.StatusContaBancaria,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Description,
-                statusContaBancariaCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
-                statusContaBancariaNomeCompleto = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).Value,
+                statusContaBancaria = EnumHelper.GetDescription(typeof(StatusContaBancaria), x.StatusContaBancaria),
+                statusContaBancariaCssClass = EnumHelper.GetCSS(typeof(StatusContaBancaria), x.StatusContaBancaria),
+                statusContaBancariaNomeCompleto = EnumHelper.GetValue(typeof(StatusContaBancaria), x.StatusContaBancaria),
                 contaFinanceiraRepeticaoPaiId = x.ContaFinanceiraRepeticaoPaiId,
                 tipoPeriodicidade = x.TipoPeriodicidade,
                 numero = x.Numero,
                 pessoaId = x.PessoaId,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
-                descricao = x.Descricao,
+                descricao = x.Descricao.Substring(0, x.Descricao.Length > 40 ? 40 : x.Descricao.Length),
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 formaPagamento_descricao = x.FormaPagamento.Descricao,
+                formaPagamento = x.FormaPagamento.TipoFormaPagamento,
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 categoria_descricao = x.Categoria.Descricao,
                 pessoa_nome = x.Pessoa.Nome,
@@ -69,7 +65,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 valorConciliado = x.Saldo.ToString("C", AppDefaults.CultureInfoDefault),
                 NumeroRepeticoes = x.NumeroRepeticoes,
                 valorPago = x.ValorPago,
-                FormaPagamentoObject = x.FormaPagamento,
+                //FormaPagamentoObject = x.FormaPagamento,
                 Pessoa = x.Pessoa,
                 dataVencimentoObject = x.DataVencimento,
                 repeticaoPai = x.ContaFinanceiraRepeticaoPaiId == null && x.Repetir,
@@ -108,7 +104,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return x => new
             {
                 id = x.Id != null ? x.Id : Guid.Empty,
-                statusContaBancaria = EnumHelper.SubtitleDataAnotation(typeof(StatusContaBancaria), x.StatusContaBancaria).CssClass,
+                statusContaBancaria = EnumHelper.GetCSS(typeof(StatusContaBancaria), x.StatusContaBancaria),
                 numero = x.Id.ToString(),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
@@ -561,7 +557,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 Class = "col s12 m6 l6",
                 Label = "Categoria Financeira",
                 Disabled = true,
-                DataUrl = @Url.Action("categoriaVisualizar", "AutoComplete"),
+                DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao"
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 m4 l4", Label = "Valor", Disabled = true });

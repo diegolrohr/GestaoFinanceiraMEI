@@ -148,10 +148,6 @@
     <Compile Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.Designer.cs">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.cs" />
-    <Compile Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.Designer.cs">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.cs" />
     <Compile Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.Designer.cs">
       <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
@@ -159,6 +155,10 @@
     <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.cs" />
     <Compile Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.Designer.cs">
       <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805301323512_CreateCnabArquivoRemessa.cs" />
+    <Compile Include="Migrations\201805301323512_CreateCnabArquivoRemessa.Designer.cs">
+      <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -255,14 +255,14 @@
     <EmbeddedResource Include="Migrations\201804161310118_Alter_ContaFinanceira_NumeroDaConta.resx">
       <DependentUpon>201804161310118_Alter_ContaFinanceira_NumeroDaConta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805112009092_AlterContaBancariaCamposRequired.resx">
-      <DependentUpon>201805112009092_AlterContaBancariaCamposRequired.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805141732379_AlterPlataformaBaseRegistroFixo.resx">
       <DependentUpon>201805141732379_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805152120535_AlterFormaPagamentoSefaz.resx">
       <DependentUpon>201805152120535_AlterFormaPagamentoSefaz.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805301323512_CreateCnabArquivoRemessa.resx">
+      <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

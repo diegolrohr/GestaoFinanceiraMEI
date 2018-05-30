@@ -8,6 +8,9 @@ namespace Fly01.Financeiro.ViewModel
     [Serializable]
     public class ContaBancariaVM : DomainBaseVM
     {
+        [JsonProperty("codigoBanco")]
+        public string CodigoBanco { get; set; }
+
         [JsonProperty("bancoId")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Banco")]

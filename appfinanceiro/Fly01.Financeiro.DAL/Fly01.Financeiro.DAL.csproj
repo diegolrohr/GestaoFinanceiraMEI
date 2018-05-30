@@ -160,6 +160,10 @@
     <Compile Include="Migrations\201805301323512_CreateCnabArquivoRemessa.Designer.cs">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.cs" />
+    <Compile Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.Designer.cs">
+      <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -263,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805301323512_CreateCnabArquivoRemessa.resx">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.resx">
+      <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

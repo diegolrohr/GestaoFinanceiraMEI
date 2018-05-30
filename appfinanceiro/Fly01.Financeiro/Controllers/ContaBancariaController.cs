@@ -131,7 +131,19 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-            
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "checkCedente",
+                Class = "col s12 l12",
+                Label = "Esta conta bancária gera boletos bancários? Marque para informar o código do cedente para este banco.",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
+                }
+            });
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s4 m4 l4", Label = "Código cedente", Required = false, MaxLength = 150 });
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

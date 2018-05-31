@@ -124,7 +124,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
             var cc = new SPEDCFGNFE.SPEDCFGNFE().CFGCCE(
                 AppDefault.Token,
-                entity.Producao,
+                entity.Homologacao,
                 entity.TipoAmbiente,
                 entity.TipoAmbiente,
                 "1.00",

@@ -702,14 +702,19 @@ namespace Fly01.Financeiro.Controllers
         {
             if (Request.QueryString["excluirRecorrencias"] == "true")
             {
-                Dictionary<string, string> queryString = new Dictionary<string, string>();
-                queryString.AddParam("excluirRecorrencias", "true");
-                RestHelper.ExecuteDeleteRequest($"{ResourceName}/{id}/", ResourceName, queryString);
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Delete);
-            }
-            else
-                return base.Delete(id);
+                var queryString = new Dictionary<string, string>
+                {
+                    { "excluirRecorrencias", "true" }
+                };
 
+                RestHelper.ExecuteDeleteRequest($"{ResourceName}/{id}/",
+                                                ResourceName,
+                                                null,
+                                                queryString);
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
+            }
+
+            return base.Delete(id);
         }
 
         #region OnDemmand

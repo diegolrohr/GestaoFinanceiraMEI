@@ -29,12 +29,14 @@ namespace Fly01.Core.Rest
         }
 
         #region DELETEs
+
         public static bool ExecuteDeleteRequest(string url, string resource, Dictionary<string, string> header, int timeout = DEFAULT_TIMEOUT)
         {
             HttpStatusCode statusCode;
             string statusDescription;
             return ExecuteDeleteRequest(url, resource, out statusCode, out statusDescription, header, timeout);
         }
+
         public static bool ExecuteDeleteRequest(string url, string resource, out HttpStatusCode statusCode, out string statusDescription, Dictionary<string, string> header, int timeout = DEFAULT_TIMEOUT)
         {
             try
@@ -95,6 +97,7 @@ namespace Fly01.Core.Rest
                 throw e;
             }
         }
+
         #endregion
 
         #region GETs

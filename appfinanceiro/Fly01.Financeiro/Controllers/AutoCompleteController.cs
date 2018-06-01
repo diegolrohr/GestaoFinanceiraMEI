@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Fly01.Core;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Financeiro.ViewModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core;
-using Fly01.Core.Rest;
-using Fly01.Core.Helpers;
-using Fly01.Financeiro.ViewModel;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation.Controllers;
-using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -22,7 +21,7 @@ namespace Fly01.Financeiro.Controllers
 
         public JsonResult CategoriaCP(string term)
         {
-            var filterTipoCarteira = $"tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
+            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
             return Categoria(term, filterTipoCarteira);
         }

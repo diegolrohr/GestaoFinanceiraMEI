@@ -6,7 +6,6 @@ using Fly01.Financeiro.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -36,15 +35,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
             bool excluirRecorrencias;
             bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "excluirrecorrencias").Value, out excluirRecorrencias);
 
-            return excluirRecorrencias
-                ? DeleteAll(key)
-                : base.Delete(key);
+            if (excluirRecorrencias)
+                DeleteAll(key);
+
+            return base.Delete(key);
         }
 
-        public async Task<IHttpActionResult> DeleteAll(Guid key)
+        public async void DeleteAll(Guid key)
         {
             if (key == default(Guid))
-                return BadRequest();
+                return;
 
             var entity = Find(key);
 
@@ -56,63 +56,62 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
+                //var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
                 //var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
                 var isParent = entity.ContaFinanceiraRepeticaoPaiId == null && entity.Repetir;
                 //TODO: Replicar para contas a receber
+                List<ContaPagar> recorrencias;
 
-                List<ContaPagar> childs = null;
-
-                if (isChild)
+                if (isParent)
                 {
-                    childs = unitOfWork
+                    recorrencias = unitOfWork
                         .ContaPagarBL
                         .All
-                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId) 
-                                    && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.DataInclusao > entity.DataInclusao)
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) &&
+                                    x.StatusContaBancaria == StatusContaBancaria.EmAberto)
                         .ToList();
-                }
-                else if (isParent)
-                {
-                    childs = unitOfWork
-                        .ContaPagarBL
-                        .All
-                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.DataInclusao > entity.DataInclusao)
-                        .ToList();
-                }
-
-                if (childs != null)
-                {
-                    // Exclui filhas
-                    foreach (var child in childs.Where(x => x.ContaFinanceiraRepeticaoPaiId == null))
-                    {
-                        Delete(child);
-                        await unitOfWork.Save();
-                        if (MustProduceMessageServiceBus)
-                            Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
-                                RabbitConfig.enHTTPVerb.DELETE);
-                    }
-
-                    // Exclui pai
-                    var parent = childs.First(x => x.ContaFinanceiraRepeticaoPaiId != null);
-                    if (parent == null) return StatusCode(HttpStatusCode.NoContent);
-                    Delete(parent);
-                    await unitOfWork.Save();
-                    if (MustProduceMessageServiceBus)
-                        Producer<ContaPagar>.Send(parent.GetType().Name, AppUser, PlataformaUrl, parent,
-                            RabbitConfig.enHTTPVerb.DELETE);
                 }
                 else
                 {
-                    Delete(entity);
-                    await UnitSave();
+                    recorrencias = unitOfWork
+                        .ContaPagarBL
+                        .All
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                                    && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero)
+                        .ToList();
+                }
+
+                //if (recorrencias == null) return;
+                //{
+                foreach (var child in recorrencias.Where(x => x.Id != entity.Id).OrderByDescending(x => x.Numero))
+                {
+                    Delete(child);
+                    await unitOfWork.Save();
                     if (MustProduceMessageServiceBus)
-                        Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity,
+                        Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
                             RabbitConfig.enHTTPVerb.DELETE);
                 }
+
+                // Exclui pai
+                //var parent = recorrencias.First(x => x.ContaFinanceiraRepeticaoPaiId == null);
+                //if (parent == null) return; //StatusCode(HttpStatusCode.NoContent);
+                //Delete(parent);
+                //await unitOfWork.Save();
+                //if (MustProduceMessageServiceBus)
+                //    Producer<ContaPagar>.Send(parent.GetType().Name, AppUser, PlataformaUrl, parent,
+                //        RabbitConfig.enHTTPVerb.DELETE);
+                //}
+                //else
+                //{
+                //    Delete(entity);
+                //    await UnitSave();
+                //    if (MustProduceMessageServiceBus)
+                //        Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity,
+                //            RabbitConfig.enHTTPVerb.DELETE);
+                //}
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            //return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

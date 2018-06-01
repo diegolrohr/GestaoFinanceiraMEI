@@ -707,8 +707,8 @@ namespace Fly01.Financeiro.Controllers
                     { "excluirRecorrencias", "true" }
                 };
 
-                RestHelper.ExecuteDeleteRequest($"{ResourceName}/{id}/",
-                                                ResourceName,
+                RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlApiGateway}",
+                                                $"{ResourceName}/{id}/",
                                                 null,
                                                 queryString);
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);

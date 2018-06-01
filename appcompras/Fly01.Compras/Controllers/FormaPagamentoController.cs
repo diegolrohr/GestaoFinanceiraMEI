@@ -114,8 +114,6 @@ namespace Fly01.Compras.Controllers
             ModalUIForm config = new ModalUIForm()
             {
                 Title = "Adicionar Forma de Pagamento",
-                UrlFunctions = @Url.Action("Functions", "PedidoItem", null, Request.Url.Scheme) + "?fns=",
-
                 ConfirmAction = new ModalUIAction() { Label = "Salvar" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
@@ -127,7 +125,11 @@ namespace Fly01.Compras.Controllers
                 Id = "fly01mdlfrmFormaPagamento",
             };
             config.Elements.Add(new InputHiddenUI { Id = "id"});
-			config.Elements.Add(new SelectUI { Id = "tipoFormaPagamento", Class = "col s4", Label = "Tipo", Required = true,
+			config.Elements.Add(new SelectUI {
+                Id = "tipoFormaPagamento",
+                Class = "col s4",
+                Label = "Tipo",
+                Required = true,
 				Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFormaPagamento)))
 			});
 			config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s8 l8", Label = "Descrição", Required = true});

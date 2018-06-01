@@ -50,7 +50,15 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("tipoPresencaComprador")]
         [APIEnum("TipoPresencaComprador")]
         public string TipoPresencaComprador { get; set; }
-        
+
+        [JsonProperty("horarioVerao")]
+        [APIEnum("HorarioVerao")]
+        public string HorarioVerao { get; set; }
+
+        [JsonProperty("tipoHorario")]
+        [APIEnum("TipoHorario")]
+        public string TipoHorario { get; set; }
+
         #region NFS
         //[JsonProperty("incentivoCultura")]
         //public bool IncentivoCultura { get; set; }

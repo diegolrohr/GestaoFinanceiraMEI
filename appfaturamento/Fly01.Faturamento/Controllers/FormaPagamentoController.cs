@@ -122,7 +122,6 @@ namespace Fly01.Faturamento.Controllers
             ModalUIForm config = new ModalUIForm()
             {
                 Title = "Adicionar Forma de Pagamento",
-                UrlFunctions = @Url.Action("Functions", "PedidoItem", null, Request.Url.Scheme) + "?fns=",
                 ConfirmAction = new ModalUIAction() { Label = "Salvar" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction

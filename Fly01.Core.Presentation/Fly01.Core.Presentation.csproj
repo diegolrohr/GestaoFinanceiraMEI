@@ -136,6 +136,7 @@
     <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
     <Compile Include="Controllers\FornecedorBaseController.cs" />
+    <Compile Include="Controllers\GrupoProdutoBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\GenericAppController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

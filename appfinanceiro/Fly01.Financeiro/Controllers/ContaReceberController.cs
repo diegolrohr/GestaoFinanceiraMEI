@@ -252,7 +252,7 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirBoletoContaReceber", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
+            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirBoletoContaReceber", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
 
             config.Columns.Add(new DataTableUIColumn
             {

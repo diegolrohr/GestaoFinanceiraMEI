@@ -16,21 +16,21 @@ namespace Fly01.Financeiro.Controllers
         {
             filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCP(string term)
         {
             var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCR(string term)
         {
             var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CondicaoParcelamentoAVista(string term)

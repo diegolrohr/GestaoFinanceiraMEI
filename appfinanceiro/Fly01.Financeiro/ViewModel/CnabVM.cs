@@ -19,7 +19,7 @@ namespace Fly01.Financeiro.ViewModel
         public DateTime DataVencimento { get; set; }
 
         [JsonProperty("nossoNumero")]
-        public string NossoNumero { get; set; }
+        public int NossoNumero { get; set; }
 
         [JsonProperty("dataDesconto")]
         public DateTime DataDesconto { get; set; }

@@ -18,7 +18,7 @@ namespace Fly01.Core.ViewModels
         public string Carteira { get; set; } = string.Empty;
 
         public string RegistroArquivoRetorno { get; set; } 
-        public string NossoNumero { get; set; }
+        public int NossoNumero { get; set; }
         public string EspecieMoeda { get; set; }
         public string NumeroDocumento { get; set; }
         public string InstrucoesCaixa { get; set; }

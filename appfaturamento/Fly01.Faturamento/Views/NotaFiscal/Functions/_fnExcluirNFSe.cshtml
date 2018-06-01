@@ -1,0 +1,30 @@
+﻿<script>
+function fnExcluirNFSe(idRecord) {
+    fly01.confirm("Confirmar Exclusão", "Ao excluir a nota fiscal o pedido de origem continua finalizado, não sendo mais possivel gerar uma nova nota fiscal apartir do mesmo. Deseja realmente excluir este registro?", "fnExcluirNFSeConfirmed(\"" + idRecord + "\")");
+}
+function fnExcluirNFSeConfirmed(idRecord) {
+    $('body').removeClass('loaded');
+    if (idRecord) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Delete", "NFSe")",
+            data: { id: idRecord },
+            success: function (data) {
+                $('body').addClass('loaded');
+                if (data.success) {
+                    fly01.toast("Excluído com sucesso.", "success");
+                    var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
+                    fly01._[dtId].refresh();
+                }
+                else {
+                    fly01.fn.submitErrorHandler(null, data.message);
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $('body').addClass('loaded');
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+}
+</script>

@@ -54,7 +54,9 @@ namespace Fly01.Faturamento.Controllers
                     tipoAmbiente = "Producao",
                     tipoModalidade = "Normal",
                     aliquotaFCP = "0",
-                    tipoPresencaComprador = "Presencial"
+                    tipoPresencaComprador = "Presencial",
+                    horarioVerao = "Nao",
+                    tipoHorario = "Brasilia"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -70,7 +72,9 @@ namespace Fly01.Faturamento.Controllers
                 mensagemPadraoNota = parametroTributario.MensagemPadraoNota,
                 tipoAmbiente = parametroTributario.TipoAmbiente,
                 aliquotaFCP = parametroTributario.AliquotaFCP,
-                tipoPresencaComprador = parametroTributario.TipoPresencaComprador
+                tipoPresencaComprador = parametroTributario.TipoPresencaComprador,
+                horarioVerao = parametroTributario.HorarioVerao,
+                tipoHorario = parametroTributario.TipoHorario
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -195,7 +199,7 @@ namespace Fly01.Faturamento.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoPresencaComprador",
-                Class = "col s12 m4",
+                Class = "col s12 m6",
                 Label = "Presença do Comprador",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPresencaComprador)))
             });
@@ -203,15 +207,31 @@ namespace Fly01.Faturamento.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
-                Class = "col s12 m5",
+                Class = "col s12 m6",
                 Label = "Modalidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });
-            
+
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "horarioVerao",
+                Class = "col s12 m6 l3",
+                Label = "Horário de Verão",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(HorarioVerao)))
+            });
+
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "tipoHorario",
+                Class = "col s12 m6 l3",
+                Label = "Tipo Horário TSS",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoHorarioTSS)))
+            });
+
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoVersaoNFe",
-                Class = "col s6 m1",
+                Class = "col s6 m6 l3",
                 Label = "Versão NFe ",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
@@ -219,7 +239,7 @@ namespace Fly01.Faturamento.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoAmbiente",
-                Class = "col s6 m2",
+                Class = "col s6 m6 l3",
                 Label = "Ambiente",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
@@ -303,7 +323,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador)
+        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try
             {
@@ -321,7 +341,9 @@ namespace Fly01.Faturamento.Controllers
                     tipoVersaoNFe = versao,
                     mensagemPadraoNota = mensagem,
                     tipoAmbiente = ambiente,
-                    tipoPresencaComprador = tipoPresencaComprador
+                    tipoPresencaComprador = tipoPresencaComprador,
+                    horarioVerao = horarioVerao,
+                    tipoHorario = tipoHorario
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 200)

@@ -52,5 +52,25 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
             get { return ((int)RegimeTributario).ToString(); }
             set { RegimeTributario = (TipoRegimeTributario)Enum.Parse(typeof(TipoRegimeTributario), value); }
         }
+
+        [JsonIgnore]
+        public HorarioVerao HorarioVerao { get; set; }
+
+        [JsonProperty("HorarioVerao")]
+        public string HorarioVeraoRest
+        {
+            get { return ((int)HorarioVerao).ToString(); }
+            set { HorarioVerao = (HorarioVerao)Enum.Parse(typeof(HorarioVerao), value); }
+        }
+
+        [JsonIgnore]
+        public TipoHorarioTSS TipoHorario { get; set; }
+
+        [JsonProperty("TipoHorario")]
+        public string TipoHorarioRest
+        {
+            get { return ((int)TipoHorario).ToString(); }
+            set { TipoHorario = (TipoHorarioTSS)Enum.Parse(typeof(TipoHorarioTSS), value); }
+        }
     }
 }

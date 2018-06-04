@@ -69,6 +69,10 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoPresencaComprador TipoPresencaComprador { get; set; }
 
+        public HorarioVerao HorarioVerao { get; set; }
+
+        public TipoHorarioTSS TipoHorario { get; set; }
+
         #region NFS
         //public bool IncentivoCultura { get; set; }
 

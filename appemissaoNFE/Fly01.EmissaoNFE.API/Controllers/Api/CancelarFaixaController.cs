@@ -53,7 +53,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public List<CancelarFaixaRetornoVM> Producao(CancelarFaixaVM entity)
         {
             var response = new List<CancelarFaixaRetornoVM>();
-            var nota = new CancelarFaixaRetornoVM();
 
             var monitor = new NFESBRAProd.NFESBRA().CANCELAFAIXA(
                 AppDefault.Token,
@@ -67,6 +66,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 for (int x = 0; x < monitor.ID.Length; x++)
                 {
+                    var nota = new CancelarFaixaRetornoVM();
                     nota.Notas = monitor.ID[x];
 
                     response.Add(nota);

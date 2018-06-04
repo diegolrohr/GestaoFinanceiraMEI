@@ -68,7 +68,9 @@ namespace Fly01.Faturamento.BL
                         TipoModalidade = parametroTributario.TipoModalidadeRest,
                         NumeroRetornoNF = string.IsNullOrEmpty(parametroTributario.NumeroRetornoNF) ? string.Empty : parametroTributario.NumeroRetornoNF,
                         EnviaDanfe = false,
-                        UsaEPEC = false                        
+                        UsaEPEC = false,
+                        HorarioVerao = parametroTributario.HorarioVerao,
+                        TipoHorario = parametroTributario.TipoHorario
                     };
 
                     var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,

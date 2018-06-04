@@ -571,7 +571,16 @@ namespace Fly01.Faturamento.BL
 
         public override void Delete(NFe entityToDelete)
         {
-            entityToDelete.Fail(true, new Error("Não é possível deletar"));
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
         }
 
         public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFreteCIF = 0)

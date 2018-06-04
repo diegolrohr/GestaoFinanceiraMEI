@@ -68,15 +68,15 @@ namespace Fly01.Faturamento.Controllers
         protected override List<TooltipUI> GetHelpers()
         {
             return new List<TooltipUI> {
-                new TooltipUI
-                {
-                    Id = "estadoId",
-                    Tooltip = new HelperUITooltip()
-                    {
-                        Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
-                    }
-                }
-            };
+               new TooltipUI
+               {
+                   Id = "estadoId",
+                   Tooltip = new HelperUITooltip()
+                   {
+                       Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
+                   }
+               }
+           };
         }
     }
 }

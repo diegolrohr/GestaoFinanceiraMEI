@@ -248,7 +248,8 @@ namespace Fly01.Financeiro.Controllers
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto')" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });

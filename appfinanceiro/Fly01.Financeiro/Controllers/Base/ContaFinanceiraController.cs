@@ -67,7 +67,9 @@ namespace Fly01.Financeiro.Controllers.Base
                 valorPago = x.ValorPago,
                 //FormaPagamentoObject = x.FormaPagamento,
                 Pessoa = x.Pessoa,
-                dataVencimentoObject = x.DataVencimento
+                dataVencimentoObject = x.DataVencimento,
+                repeticaoPai = x.ContaFinanceiraRepeticaoPaiId == null && x.Repetir,
+                repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir,
             };
         }
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()

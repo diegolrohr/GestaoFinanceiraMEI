@@ -64,22 +64,23 @@ namespace Fly01.Financeiro.BL
 
             if (string.IsNullOrEmpty(entity.DescricaoParcela))
             {
-            var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
-            Guid contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
-                for (int iParcela = 0; iParcela < condicoesParcelamento.Count(); iParcela++)
+                var condicoesParcelamento = condicaoParcelamentoBL
+                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
+                                                               entity.DataVencimento,
+                                                               entity.ValorPrevisto);
+                var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
+                for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
                 {
                     var parcela = condicoesParcelamento[iParcela];
-
                     var itemContaReceber = new ContaReceber();
                     entity.CopyProperties<ContaReceber>(itemContaReceber);
-
-                    // CopyProperties não copia as notificações
-                    itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors);
-
+                    itemContaReceber.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
                     itemContaReceber.DataVencimento = parcela.DataVencimento;
                     itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaReceber.ValorPrevisto = parcela.Valor;
-                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
+                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
+                                                        ? parcela.Valor
+                                                        : entity.ValorPago;
 
                     if (iParcela == default(int))
                     {
@@ -93,46 +94,43 @@ namespace Fly01.Financeiro.BL
                     }
 
                     itemContaReceber.Numero = ++max;
-
                     base.Insert(itemContaReceber);
+
 
                     //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber.DataVencimento, itemContaReceber.Id, itemContaReceber.ValorPrevisto, TipoContaFinanceira.ContaReceber, entity.Descricao);
-                }
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber.DataVencimento,
+                                                                        itemContaReceber.Id,
+                                                                        itemContaReceber.ValorPrevisto,
+                                                                        TipoContaFinanceira.ContaReceber,
+                                                                        entity.Descricao);
 
-                var itemContaReceberEntity = new ContaReceber();
-                entity.CopyProperties<ContaReceber>(itemContaReceberEntity);
-
-                if (repetir)
-                {
-                    for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
+                    if (repetir)
                     {
-                        var itemContaReceberRepeticao = new ContaReceber();
-                        itemContaReceberEntity.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
-
-                        // CopyProperties não copia as notificações
-                        itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceberEntity.Notification.Errors);
-
-                        itemContaReceberRepeticao.Id = default(Guid);
-                        itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
-
-                        switch (entity.TipoPeriodicidade)
+                        for (int iRepeticao = 1; iRepeticao <= entity.NumeroRepeticoes; iRepeticao++)
                         {
-                            case TipoPeriodicidade.Semanal:
-                                itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddDays(iRepeticao * 7);
-                                break;
-                            case TipoPeriodicidade.Mensal:
-                                itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddMonths(iRepeticao);
-                                break;
-                            case TipoPeriodicidade.Anual:
-                                itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
-                                break;
+                            var itemContaReceberRepeticao = new ContaReceber();
+                            itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                            itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors); // CopyProperties não copia as notificações
+                            itemContaReceberRepeticao.Id = default(Guid);
+                            itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+
+                            switch (entity.TipoPeriodicidade)
+                            {
+                                case TipoPeriodicidade.Semanal:
+                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddDays(iRepeticao * 7);
+                                    break;
+                                case TipoPeriodicidade.Mensal:
+                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddMonths(iRepeticao);
+                                    break;
+                                case TipoPeriodicidade.Anual:
+                                    itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
+                                    break;
+                            }
+
+                            itemContaReceberRepeticao.Numero = ++max;
+                            base.Insert(itemContaReceberRepeticao);
                         }
-
-                        itemContaReceberRepeticao.Numero = ++max;
-
-                        base.Insert(itemContaReceberRepeticao);
                     }
                 }
             }

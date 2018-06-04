@@ -190,7 +190,7 @@ namespace Fly01.Financeiro.Controllers
                         new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla" },
                         new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
                         new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
-                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick }
+                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -249,10 +249,12 @@ namespace Fly01.Financeiro.Controllers
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto')" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
+
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -694,6 +696,25 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new TextAreaUI { Id = "Observacao", Class = "col s12 l12", Label = "Observação", MaxLength = 200 });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public override JsonResult Delete(Guid id)
+        {
+            if (Request.QueryString["excluirRecorrencias"] == "true")
+            {
+                var queryString = new Dictionary<string, string>
+                {
+                    { "excluirRecorrencias", "true" }
+                };
+
+                RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlApiGateway}",
+                                                $"{ResourceName}/{id}/",
+                                                null,
+                                                queryString);
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
+            }
+
+            return base.Delete(id);
         }
 
         #region OnDemmand

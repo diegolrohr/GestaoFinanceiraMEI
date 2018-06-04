@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.BL;
@@ -35,9 +36,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
             bool excluirRecorrencias;
             bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "excluirrecorrencias").Value, out excluirRecorrencias);
 
-            return excluirRecorrencias
-                ? DeleteAll(key)
-                : base.Delete(key);
+            if (excluirRecorrencias)
+                return DeleteAll(key);
+
+            return base.Delete(key);
         }
 
         public async Task<IHttpActionResult> DeleteAll(Guid key)
@@ -55,56 +57,34 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
-                var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
+                var isParent = entity.ContaFinanceiraRepeticaoPaiId == null && entity.Repetir;
+                List<ContaPagar> recorrencias;
 
-                List<ContaPagar> childs = null;
-
-                if (isChild)
+                if (isParent)
                 {
-                    childs = unitOfWork
+                    recorrencias = unitOfWork
                         .ContaPagarBL
                         .All
-                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId ||
-                                    x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) &&
+                                    x.StatusContaBancaria == StatusContaBancaria.EmAberto)
                         .ToList();
-                }
-                else if (isParent)
-                {
-                    childs = unitOfWork
-                        .ContaPagarBL
-                        .All
-                        .Where(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id)
-                        .ToList();
-                }
-
-                if (childs != null)
-                {
-                    // Exclui filhas
-                    foreach (var child in childs.Where(x => x.ContaFinanceiraRepeticaoPaiId == null))
-                    {
-                        Delete(child);
-                        await unitOfWork.Save();
-                        if (MustProduceMessageServiceBus)
-                            Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
-                                RabbitConfig.enHTTPVerb.DELETE);
-                    }
-
-                    // Exclui pai
-                    var parent = childs.First(x => x.ContaFinanceiraRepeticaoPaiId != null);
-                    if (parent == null) return StatusCode(HttpStatusCode.NoContent);
-                    Delete(parent);
-                    await unitOfWork.Save();
-                    if (MustProduceMessageServiceBus)
-                        Producer<ContaPagar>.Send(parent.GetType().Name, AppUser, PlataformaUrl, parent,
-                            RabbitConfig.enHTTPVerb.DELETE);
                 }
                 else
                 {
-                    Delete(entity);
-                    await UnitSave();
+                    recorrencias = unitOfWork
+                        .ContaPagarBL
+                        .All
+                        .Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId || x.Id == entity.ContaFinanceiraRepeticaoPaiId)
+                                    && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero)
+                        .ToList();
+                }
+
+                foreach (var child in recorrencias.OrderByDescending(x => x.Numero))
+                {
+                    Delete(child);
+                    await unitOfWork.Save();
                     if (MustProduceMessageServiceBus)
-                        Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity,
+                        Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
                             RabbitConfig.enHTTPVerb.DELETE);
                 }
             }

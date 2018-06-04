@@ -18,7 +18,8 @@
             var that = $(myForm)
 
             if (!that.valid())
-                return;
+                return false;
+
             e.preventDefault();
             fly01.loading.start();
             var formData = that.serializeObject();

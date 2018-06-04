@@ -692,6 +692,25 @@ namespace Fly01.Financeiro.Controllers
 
         }
 
+        public override JsonResult Delete(Guid id)
+        {
+            if (Request.QueryString["excluirRecorrencias"] == "true")
+            {
+                var queryString = new Dictionary<string, string>
+                {
+                    { "excluirRecorrencias", "true" }
+                };
+
+                RestHelper.ExecuteDeleteRequest($"{AppDefaults.UrlApiGateway}",
+                    $"{ResourceName}/{id}/",
+                    null,
+                    queryString);
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
+            }
+
+            return base.Delete(id);
+        }
+
         #region OnDemmand
 
         [HttpPost]

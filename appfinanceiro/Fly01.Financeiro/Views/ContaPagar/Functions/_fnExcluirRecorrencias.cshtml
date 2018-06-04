@@ -42,18 +42,15 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        debugger;
                         fly01.toast("Excluído com sucesso.", "success");
                         var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
                         fly01._[dtId].refresh();
                     }
                     else {
-                        debugger;
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
-                    debugger;
                     $('body').addClass('loaded');
                     fly01.toast(textStatus, "error");
                 }

@@ -1,6 +1,5 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Helpers;
-using Fly01.Financeiro.ViewModel;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;

@@ -6,6 +6,7 @@ using Fly01.Financeiro.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -36,15 +37,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
             bool.TryParse(allUrlKeyValues.LastOrDefault(x => x.Key.ToLower() == "excluirrecorrencias").Value, out excluirRecorrencias);
 
             if (excluirRecorrencias)
-                DeleteAll(key);
+                return DeleteAll(key);
 
             return base.Delete(key);
         }
 
-        public async void DeleteAll(Guid key)
+        public async Task<IHttpActionResult> DeleteAll(Guid key)
         {
             if (key == default(Guid))
-                return;
+                return BadRequest();
 
             var entity = Find(key);
 
@@ -56,8 +57,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                //var isChild = entity.ContaFinanceiraRepeticaoPaiId != null;
-                //var isParent = unitOfWork.ContaPagarBL.All.Any(x => x.ContaFinanceiraRepeticaoPaiId == entity.Id);
                 var isParent = entity.ContaFinanceiraRepeticaoPaiId == null && entity.Repetir;
                 //TODO: Replicar para contas a receber
                 List<ContaPagar> recorrencias;
@@ -81,9 +80,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         .ToList();
                 }
 
-                //if (recorrencias == null) return;
-                //{
-                foreach (var child in recorrencias.Where(x => x.Id != entity.Id).OrderByDescending(x => x.Numero))
+                foreach (var child in recorrencias.OrderByDescending(x => x.Numero))
                 {
                     Delete(child);
                     await unitOfWork.Save();
@@ -91,27 +88,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
                             RabbitConfig.enHTTPVerb.DELETE);
                 }
-
-                // Exclui pai
-                //var parent = recorrencias.First(x => x.ContaFinanceiraRepeticaoPaiId == null);
-                //if (parent == null) return; //StatusCode(HttpStatusCode.NoContent);
-                //Delete(parent);
-                //await unitOfWork.Save();
-                //if (MustProduceMessageServiceBus)
-                //    Producer<ContaPagar>.Send(parent.GetType().Name, AppUser, PlataformaUrl, parent,
-                //        RabbitConfig.enHTTPVerb.DELETE);
-                //}
-                //else
-                //{
-                //    Delete(entity);
-                //    await UnitSave();
-                //    if (MustProduceMessageServiceBus)
-                //        Producer<ContaPagar>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity,
-                //            RabbitConfig.enHTTPVerb.DELETE);
-                //}
             }
 
-            //return StatusCode(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

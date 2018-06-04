@@ -58,7 +58,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var isParent = entity.ContaFinanceiraRepeticaoPaiId == null && entity.Repetir;
-                //TODO: Replicar para contas a receber
                 List<ContaPagar> recorrencias;
 
                 if (isParent)

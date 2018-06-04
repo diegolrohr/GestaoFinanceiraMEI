@@ -48,11 +48,10 @@
 
             if (!that.valid())
                 return false;
-            debugger;
+
             e.preventDefault();
             fly01.loading.start();
             var formData = that.serializeObject();
-            debugger;
             $.ajax({
                 type: that.attr("method"),
                 contentType: 'application/json',

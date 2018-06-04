@@ -171,7 +171,7 @@ namespace Fly01.Compras.Controllers
                 Disabled = true,
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)).
-                ToList().FindAll(x => "T00,T01,T02,T03,T04,T05".Contains(x.Value)))
+                ToList().FindAll(x => "EntradaComRecuperacaoDeCredito,EntradaTributavelComAliquotaZero,EntradaIsenta,EntradaNaoTributada,EntradaImune,EntradaComSuspensao,OutrasEntradas".Contains(x.Value)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });

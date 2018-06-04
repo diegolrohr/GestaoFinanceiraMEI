@@ -16,6 +16,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation;
+using System.Dynamic;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -112,8 +113,7 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 var boletoBancario = GetBoletoBancario(contaReceberId, contaBancariaId);
-                ValidaBoletoJaGeradoParaOutroBanco(contaReceberId, boletoBancario, reimprimeBoleto);
-
+             
                 var boletoImpresso = GeraBoleto(boletoBancario);
                
                 var html = new StringBuilder();
@@ -188,13 +188,16 @@ namespace Fly01.Financeiro.Controllers.Base
                 ValorDesconto = (double)boletoImpresso.Boleto.ValorDesconto,
                 ContaBancariaCedenteId = contaBancariaId,
                 ContaReceberId = contaReceberId,
-                ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo
-            };
-
+                ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo, 
+            };            
             if (!reimprimeBoleto)
                 RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
-            else
-                RestHelper.ExecutePutRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Edit));
+            else {
+                var cnabToEdit = GetCnab($"contaReceberId eq {contaReceberId}");
+                var resourceNamePut = $"cnab/{cnabToEdit.FirstOrDefault().Id}";
+                cnab.Id = cnabToEdit.FirstOrDefault().Id;
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Edit));
+            }
         }
 
         private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
@@ -280,15 +283,27 @@ namespace Fly01.Financeiro.Controllers.Base
             }, JsonRequestBehavior.AllowGet);
         }
 
-        private void ValidaBoletoJaGeradoParaOutroBanco(Guid contaReceberId, BoletoVM boleto, bool reimprimeBoleto)
-        {
-            if (!reimprimeBoleto)
-            {
-                var cnab = GetCnab($"contaReceberId eq {contaReceberId}");
 
-                if (cnab.Count > 0 && cnab.Any(x => !x.ContaBancariaCedente.Banco.Codigo.Equals(boleto.Cedente.ContaBancariaCedente.CodigoBanco.ToString("000"))))
-                    throw new Exception("erro_validacao_boleto");
-            }
+        [HttpGet]
+        public JsonResult ValidaBoletoJaGeradoParaOutroBanco(Guid contaReceberId, Guid contaBancariaId)
+        {
+            bool boletoGerado = false; 
+
+            var cnab = GetCnab($"contaReceberId eq {contaReceberId}");
+            var bancoId = GetIdBanco($"id eq {contaBancariaId}");
+
+            if (cnab.Count > 0 && cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
+                boletoGerado = true;
+
+            return Json(new { success = boletoGerado }, JsonRequestBehavior.AllowGet);
+        }
+
+        private Guid? GetIdBanco(string filter)
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", filter);
+           
+            return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
         }
 
         public string FormataNossoNumero(CedenteVM cedente, int nossoNumero)

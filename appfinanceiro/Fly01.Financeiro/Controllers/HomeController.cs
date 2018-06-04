@@ -269,16 +269,16 @@ namespace Fly01.Financeiro.Controllers
             }
             });
 
-            //config.MenuItems.Add(new SidebarMenuUI()
-            //{
-            //    Label = "Cobrança",
-            //    Items = new List<LinkUI>
-            //{
-            //    new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
-            //    new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
-            //    new LinkUI() { Label = "Importar A. retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
-            //}
-            //});
+            config.MenuItems.Add(new SidebarMenuUI()
+            {
+                Label = "Cobrança",
+                Items = new List<LinkUI>
+            {
+                new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
+                new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
+                new LinkUI() { Label = "Importar A. retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
+            }
+            });
 
             config.MenuItems.Add(new SidebarMenuUI()
             {

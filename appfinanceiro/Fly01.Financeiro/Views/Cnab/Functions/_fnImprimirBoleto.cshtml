@@ -1,4 +1,5 @@
 ﻿<script>
+    var reemprime = false;
     function inputHiddenId(id, value) {
         var attr = { "type": "hidden", "id": id, "name": id, "value": value };
 
@@ -27,9 +28,16 @@
     };
 
     function fnImprimirBoleto(data, type, row, meta) {
-        return createForm(row).outerHTML;
+         return createForm(row).outerHTML;
     };
-    
+
+
+    function fnConfirmedOrCancel(idRecord, contaBancariaId) {
+        debugger;
+        reemprime = true;
+        fnSaveCnab(idRecord, contaBancariaId, reemprime);
+    }
+
     $(document).off("submit", "form.cnabForm");
     $(document).on("submit", "form.cnabForm", function (e) {
         var that = $(this);
@@ -45,65 +53,64 @@
             return false;
         }
         else {
+            debugger;
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: '@Url.Action("ImprimeBoleto", "Cnab")',
+                url: '@Url.Action("ValidaBoletoJaGeradoParaOutroBanco", "Cnab")',
                 contentType: "application/json",
-                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: contaBancariaId, reimprimeBoleto: false },
+                data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: contaBancariaId},
                 success: function success(data) {
-                    if (data.success) {
-                        fly01.toast("Boleto emitido com sucesso.", "success");
-                        that.loading("stop");
+                    if (data.success) 
+                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
+                    else
+                        fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, reemprime);
 
-                        if (data.message !== "" && data.message !== undefined) {
-                            var win = window.open("", "_blank");
-                            win.document.write(data.message);
-                            win.print();
-                            win.close();
-                        }
-                    } else {
-                        that.loading("stop");
-
-                        try
-                        {
-                            if (data.message.indexOf("erro_validacao_boleto"))
-                            {
-                                fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco, gostaria que este boleto seja remetido novamente?", "alert(\"" + 'idRecord' + "\")");
-                                /*
-                                SIM, NÃO
-                                REEMITIR BANCO X, REEMITIR BANCO Y, CANCELAR
-                                */
-                            } else {
-                                var jsonMessage = JSON.parse(data.message);
-                                var validator = that.validate();
-                                var errors = {};
-
-                                jsonMessage.innerMessage.filter(x => ((x.dataField || "") != "")).forEach(element => {
-                                    if ($("#" + element.dataField).length > 0) {
-                                        errors[element.dataField] = element.message;
-                                    }
-                                    else {
-                                        fly01.toast(element.message, "error", 8000);
-                                    }
-                                });
-                                validator.showErrors(errors);
-                                jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
-                                    fly01.toast(element.message, "error", 8000);
-                                });
-                            }
-                        } catch (e) {
-
-                                fly01.toast(data.message, "error");
-                        }
-                    }
                     that.loading("stop");
                 },
-                error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    that.loading("stop");
-                }
             });
-            }
+        }
     });
+
+    function fnSaveCnab(idRecord, contaBancariaId, reemprime) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("ImprimeBoleto", "Cnab")',
+            contentType: "application/json",
+            data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reemprime},
+            success: function success(data) {
+                if (data.success) {
+                    fly01.toast("Boleto emitido com sucesso.", "success");
+                    if (data.message !== "" && data.message !== undefined) {
+                        var win = window.open("", "_blank");
+                        win.document.write(data.message);
+                        win.print();
+                        win.close();
+                    }
+                } else {
+                    fly01.loading.stop();
+                    try {
+                        var jsonMessage = JSON.parse(data.message);
+                        var errors = {};
+                        jsonMessage.innerMessage.filter(x => ((x.dataField || "") != "")).forEach(element => {
+                            if ($("#" + element.dataField).length > 0) {
+                                errors[element.dataField] = element.message;
+                            }
+                            else {
+                                fly01.toast(element.message, "error", 8000);
+                            }
+                        });
+                        jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
+                            fly01.toast(element.message, "error", 8000);
+                        });
+                    } catch (e) {
+                        fly01.toast(data.message, "error");
+                    }
+                }
+
+                fly01.loading.stop();
+            },
+        });
+    }
 </script>

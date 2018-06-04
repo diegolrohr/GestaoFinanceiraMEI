@@ -1,5 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Financeiro.ViewModel;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -12,25 +13,25 @@ namespace Fly01.Financeiro.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public JsonResult Categoria(string term)
+        public override JsonResult Categoria(string term, string filterTipoCarteira)
         {
-            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
+            filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCP(string term)
         {
             var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CategoriaCR(string term)
         {
             var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
 
-            return Categoria(term, filterTipoCarteira);
+            return base.Categoria(term, filterTipoCarteira);
         }
 
         public JsonResult CondicaoParcelamentoAVista(string term)

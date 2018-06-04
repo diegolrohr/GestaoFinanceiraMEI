@@ -1,32 +1,30 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Fly01.Core;
-using System.Collections.Generic;
-using Fly01.Core.Rest;
-using Fly01.Core.Helpers;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Compras.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public JsonResult Categoria(string term)
+        public override JsonResult Categoria(string term, string filterTipoCarteira)
         {
-            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
+            filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
 
             return base.Categoria(term, filterTipoCarteira);
         }
 
-        public JsonResult GrupoTributario(string term)
+        public override JsonResult GrupoTributario(string term, string filterTipoCfop)
         {
-            return base.GrupoTributario(term, $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'");
+            filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
+
+            return base.GrupoTributario(term, filterTipoCfop);
         }
 
-        public JsonResult Cfop(string term)
+        public override JsonResult Cfop(string term, string filterTipoCfop)
         {
-            return base.Cfop(term, $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'");
+            filterTipoCfop = $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
+
+            return base.Cfop(term, filterTipoCfop);
         }
     }
 }

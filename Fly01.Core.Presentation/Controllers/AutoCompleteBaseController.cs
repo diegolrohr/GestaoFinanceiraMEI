@@ -277,7 +277,7 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult Categoria(string term, string filterTipoCarteira)
+        public virtual JsonResult Categoria(string term, string filterTipoCarteira)
         {
             var queryString = AppDefaults.GetQueryStringDefault();
             var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
@@ -291,7 +291,7 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult Cfop(string term, string filterTipoCfop)
+        public virtual JsonResult Cfop(string term, string filterTipoCfop)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(CfopVM));
             int codigo = 0;
@@ -308,7 +308,7 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult GrupoTributario(string term, string filterTipoCfop)
+        public virtual JsonResult GrupoTributario(string term, string filterTipoCfop)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();

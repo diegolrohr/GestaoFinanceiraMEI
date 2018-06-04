@@ -1,8 +1,11 @@
 ﻿<script>
     function fnExcluirRecorrencias(idRecord) {
+        var modalId = `modalExcluirRecorrencias`;
+        if ($(`#${modalId}`).length > 0)
+            $(`#${modalId}`).remove();
         var customConfirm = (title, message, confirmedFunction) => {
-            const modalId = `modal${Math.random().toString(36).substr(2, 7)}`;
-            const modal = createElem("div", { "id": modalId, "class": "modal" }, [
+            var modal;
+            modal = createElem("div", { "id": modalId, "class": "modal" }, [
                 createElem("div", { "class": "modal-header" }, [
                     createElem("h5", null, title),
                     createElem("a", { "class": "modal-action modal-close" }, [
@@ -13,7 +16,7 @@
                     createElem("h6", null, message),
                     createElem("div", { "class": "input-field col s12 l12" }, [
                         createElem("input", { "id": "excluirRecorrencias", "type": "checkbox", "name": "excluirRecorrencias" }, message),
-                        createElem("label", { "for": "excluirRecorrencias", "class": "truncate" }, "Excluir todas as outras recorrências seguintes.")
+                        createElem("label", { "for": "excluirRecorrencias" }, "Excluir todas as outras recorrências seguintes.")
                     ])
                 ]),
                 createElem("div", { "class": "modal-footer" }, [
@@ -29,7 +32,7 @@
         customConfirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirRecorrenciasConfirmed(\"" + idRecord + "\")");
     }
 
-    function fnExcluirRecorrenciasConfirmed(idRecord, excluirRecorrencias) {
+    function fnExcluirRecorrenciasConfirmed(idRecord) {
         $('body').removeClass('loaded');
         if (idRecord) {
             $.ajax({
@@ -40,10 +43,8 @@
                     $('body').addClass('loaded');
                     if (data.success) {
                         fly01.toast("Excluído com sucesso.", "success");
-                        //var idRec = JSON.parse("{\"" + this.data.replace(/ /g, "\", \"").replace(/=/g, "\": \"") + "\"}").id;
                         var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
                         fly01._[dtId].refresh();
-
                     }
                     else {
                         fly01.fn.submitErrorHandler(null, data.message);
@@ -55,59 +56,6 @@
                 }
             });
         }
+        fly01.fn.updateTextFields();
     }
-
-
-
-    //function fnExcluirTodasRecorrencias(idRecord) {
-    //    showPopUpExcluirTodasRecorrencias(idRecord);
-    //}
-
-    @*function showPopUpExcluirTodasRecorrencias(idRecord) {
-        debugger;
-        bootbox.confirm({
-            buttons: {
-                confirm: {
-                    label: "Excluir",
-                    className: "button btn btn-primary"
-                },
-                cancel: {
-                    label: "Cancelar",
-                    className: "button btn btn-default"
-                }
-            },
-            animate: true,
-            title: "Confirmar Exclusão",
-            message: "<b>Você está prestes a excluir todas as recorrências e parcelas relacionadas à esta conta.</b><br>Deseja realmente excluir todas as contas?",
-            callback: function (result) {
-                if (result) {
-                    if (idRecord != null && idRecord.length > 0) {
-                        $.ajax({
-                            type: "POST",
-                            url: "@Url.Action("Delete")?excluirRecorrencias=true",
-                            data: { id: idRecord },
-                            success: function (data) {
-                                if (data.success) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: '@Url.Action("List", "ContaPagar")',
-                                        success: function (dados) {
-                                            $('#content').html(dados);
-                                            ShowSuccess(data.message);
-                                        }
-                                    });
-                                }
-                                else {
-                                    ShowError(data.message);
-                                }
-                            },
-                            error: function (jXHR, textStatus, errorThrown) {
-                                alert(errorThrown);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }*@
 </script>

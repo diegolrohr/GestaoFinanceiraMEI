@@ -45,8 +45,8 @@ namespace Fly01.Financeiro.BL
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
             max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
-            //na nova Transação já é informado o id e o status (se .Pago, id deve ser informado)
-            if (entity.Id == default(Guid) && entity.StatusContaBancaria != StatusContaBancaria.Pago)
+            //na nova Transação e quando status nao definido
+            if (entity.StatusContaBancaria == default(StatusContaBancaria))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
             //Se Cliente não informado, busca pelo nome ou Insere

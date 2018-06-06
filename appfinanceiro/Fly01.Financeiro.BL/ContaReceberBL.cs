@@ -31,16 +31,6 @@ namespace Fly01.Financeiro.BL
             entity.Fail(entity.Numero < 1, NumeroContaInvalido);
             entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
 
-            //Validacao Plataforma
-            entity.Fail(entity.CategoriaId == default(Guid), CategoriaNaoInformada);
-            entity.Fail(entity.CondicaoParcelamentoId == default(Guid), CondicaoParcelamentoNaoInformada);
-            entity.Fail(entity.PessoaId == default(Guid) && string.IsNullOrEmpty(entity.NomePessoa), PessoaNaoInformada);
-            entity.Fail(entity.DataEmissao == default(DateTime) || entity.DataEmissao.GetType() != typeof(DateTime), DataEmissaoInvalida);
-            entity.Fail(entity.DataVencimento == default(DateTime) || entity.DataVencimento.GetType() != typeof(DateTime), DataVencimentoInvalida);
-            entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoInvalida);
-            entity.Fail(entity.FormaPagamentoId == default(Guid), FormaPagamentoNaoInformada);
-            entity.Fail(entity.TipoContaFinanceira != TipoContaFinanceira.ContaReceber, TipoContaFinanceiraInvalida);
-
             base.ValidaModel(entity);
         }
 
@@ -197,14 +187,5 @@ namespace Fly01.Financeiro.BL
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
         public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
         public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
-
-        public static Error CategoriaNaoInformada = new Error("Categoria Financeira não Informada", "categoriaId");
-        public static Error CondicaoParcelamentoNaoInformada = new Error("Condição Parcelamento não Informada", "condicaoParcelamentoId");
-        public static Error PessoaNaoInformada = new Error("Pessoa não Informada", "pessoaId");
-        public static Error DataEmissaoInvalida = new Error("Data de Emissão não informada ou inválida", "dataEmissao");
-        public static Error DataVencimentoInvalida = new Error("Data de Vencimento não informada ou inválida", "dataVencimento");
-        public static Error DescricaoInvalida = new Error("Descrição não informada", "descricao");
-        public static Error FormaPagamentoNaoInformada = new Error("Forma de Pagamento não Informada", "formaPagamentoId");
-        public static Error TipoContaFinanceiraInvalida = new Error("Tipo Conta Financeira deve ser Conta a Receber", "tipoContaFinanceira");
     }
 }

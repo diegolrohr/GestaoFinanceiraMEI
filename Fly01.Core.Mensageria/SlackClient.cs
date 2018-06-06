@@ -34,24 +34,26 @@ namespace Fly01.Core.Mensageria
             if (exception is DbUpdateException)
             {
                 var inner = exception.InnerException;
-
                 while (inner != null)
                 {
                     sb.AppendFormat("{0}. ", inner.Message);
                     inner = inner.InnerException;
                 }
 
-                response = sb.ToString();
+                if(sb.Length > 0)
+                    response = sb.ToString();
             }
             else if (exception is DbEntityValidationException)
             {
                 foreach (var entityValidationErrors in ((DbEntityValidationException)exception).EntityValidationErrors)
                 {
+                    var entityName = entityValidationErrors.Entry.Entity.GetType().Name;
                     foreach (var itemValidationError in entityValidationErrors.ValidationErrors)
-                        sb.AppendFormat("{0} : {1}", itemValidationError.PropertyName, itemValidationError.ErrorMessage);
+                        sb.AppendFormat("Entity '{0}' : {1} ({2})", entityName, itemValidationError.ErrorMessage, itemValidationError.PropertyName);
                 }
 
-                response = sb.ToString();
+                if (sb.Length > 0)
+                    response = sb.ToString();
             }
 
             return response;

@@ -137,7 +137,7 @@ namespace Fly01.Compras.Controllers
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartStatusValor",
-                Class = "col s6 m6 l6",
+                Class = "col s12 m12 l6",
                 Options = new
                 {
                     title = new
@@ -189,6 +189,7 @@ namespace Fly01.Compras.Controllers
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartStatusQtd",
+                Class = "col s12 m12 l6",
                 Options = new
                 {
                     title = new
@@ -229,7 +230,6 @@ namespace Fly01.Compras.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartStatusQuantidade", "Dashboard"),
-                Class = "col s6 m6 l6",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },

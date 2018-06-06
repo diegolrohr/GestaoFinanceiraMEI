@@ -1,6 +1,5 @@
 ﻿<script>
-    function __configsChart() {
-        debugger;
+    function __configsChart() {        
         var simboloMonetario = " R$ ";
 
         fly01._.chartStatusValor.options.tooltips.callbacks.label = function (tooltipItems, data) {
@@ -8,6 +7,13 @@
 
             return simboloMonetario + formatedValue;
         }
+
+        fly01._.chartStatusValor.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
+            var formatedValue = __formatMoney(value);
+
+            return simboloMonetario + formatedValue;
+        }
+
         fly01._.chartStatusValor.update();
     }
 

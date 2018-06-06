@@ -6,6 +6,8 @@ using Fly01.Core.Notifications;
 using System.Configuration;
 using System;
 using Fly01.Core.Mensageria.Slack;
+using System.Data.Entity.Infrastructure;
+using System.Text;
 
 namespace Fly01.Core.Mensageria
 {
@@ -24,11 +26,32 @@ namespace Fly01.Core.Mensageria
             }
         }
 
+        private static string GetCustomMessage(Exception exception)
+        {
+            var response = exception.Message;
+            if (exception is DbUpdateException)
+            {
+                var sb = new StringBuilder();
+                var inner = exception.InnerException;
+
+                while (inner != null)
+                {
+                    sb.AppendFormat("{0}. ", inner.Message);
+                    inner = inner.InnerException;
+                }
+
+                response = sb.ToString();
+            }
+
+            return response;
+        }
+
         public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl)
         {
             var slackChannel = string.Empty;
             var isProd = (hostName == "prod");
             var isHomolog = (hostName == "homolog");
+            var errorMessage = GetCustomMessage(exception);
 
             slackChannel = isProd
                 ? "https://hooks.slack.com/services/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"
@@ -46,7 +69,7 @@ namespace Fly01.Core.Mensageria
                         Fields = new List<SlackField>()
                         {
                             new SlackField("Dados", data),
-                            new SlackField("Erro", exception.Message),
+                            new SlackField("Erro", errorMessage),
                             new SlackField("Host", hostName),
                             new SlackField("Fila", queueName),
                         }
@@ -58,7 +81,7 @@ namespace Fly01.Core.Mensageria
             {
                 var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
                 var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
-                await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = exception.Message, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
+                await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
             }
 
             Post(slackChannel, message);

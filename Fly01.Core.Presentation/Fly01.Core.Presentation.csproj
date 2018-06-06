@@ -147,6 +147,7 @@
     <Compile Include="Commons\HintHelper.cs" />
     <Compile Include="Commons\JsonResponseStatus.cs" />
     <Compile Include="Commons\SystemValueHelper.cs" />
+    <Compile Include="Controllers\SubstituicaoTributariaBaseController.cs" />
     <Compile Include="HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
     <Compile Include="JQueryDataTable\JQueryDataTableColumn.cs" />

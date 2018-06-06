@@ -25,6 +25,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("cestId")]
         public Guid? CestId { get; set; }
 
+        [JsonProperty("fcp")]
+        public double Fcp { get; set; }
+
         [JsonProperty("ncm")]
         public virtual NcmVM Ncm { get; set; }
 

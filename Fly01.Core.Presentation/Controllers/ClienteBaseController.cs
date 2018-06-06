@@ -1,5 +1,4 @@
-﻿using System;
-using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -8,6 +7,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -217,7 +217,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });
 
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 500 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });
             config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });

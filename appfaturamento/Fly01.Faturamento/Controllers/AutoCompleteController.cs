@@ -5,7 +5,6 @@ using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
 
@@ -13,16 +12,24 @@ namespace Fly01.Faturamento.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public JsonResult Categoria(string term)
+        public override JsonResult Categoria(string term, string filterTipoCarteira)
         {
-            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
+            filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
 
             return base.Categoria(term, filterTipoCarteira);
         }
 
-        public JsonResult Cfop(string term)
+        public override JsonResult Cfop(string term, string filterTipoCfop)
         {
-            return base.Cfop(term, $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
+            filterTipoCfop = $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'";
+            return base.Cfop(term, filterTipoCfop);
+        }
+
+        public override JsonResult GrupoTributario(string term, string filterTipoCfop)
+        {
+            filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'";
+
+            return base.GrupoTributario(term, filterTipoCfop);
         }
 
         public JsonResult Nbs(string term)
@@ -43,11 +50,6 @@ namespace Fly01.Faturamento.Controllers
                                 };
 
             return GetJson(filterObjects);
-        }
-
-        public JsonResult GrupoTributario(string term)
-        {
-            return base.GrupoTributario(term, $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'");
         }
 
         public JsonResult Servico(string term)

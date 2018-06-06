@@ -21,6 +21,10 @@
                 $('select#tipoAmbiente').material_select();
                 $('select#tipoPresencaComprador').val(data.tipoPresencaComprador);
                 $('select#tipoPresencaComprador').material_select();
+                $('select#horarioVerao').val(data.horarioVerao);
+                $('select#horarioVerao').material_select();
+                $('select#tipoHorario').val(data.tipoHorario);
+                $('select#tipoHorario').material_select();
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

@@ -117,7 +117,11 @@ namespace Fly01.Core.API
             if (entity.RegistroFixo)
                 throw new BusinessException("Registro não pode ser excluído (RegistroFixo)");
 
+            ModelState.Clear();
             Delete(entity);
+
+            if (!ModelState.IsValid)
+                AddErrorModelState(ModelState);
 
             await UnitSave();
 

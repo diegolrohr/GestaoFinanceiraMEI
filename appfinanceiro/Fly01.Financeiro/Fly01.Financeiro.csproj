@@ -358,6 +358,8 @@
     <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnExcluirRecorrencias.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnExcluirRecorrencias.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -8,6 +8,7 @@ using System;
 using Fly01.Core.Mensageria.Slack;
 using System.Data.Entity.Infrastructure;
 using System.Text;
+using System.Data.Entity.Validation;
 
 namespace Fly01.Core.Mensageria
 {
@@ -29,15 +30,25 @@ namespace Fly01.Core.Mensageria
         private static string GetCustomMessage(Exception exception)
         {
             var response = exception.Message;
+            var sb = new StringBuilder();
             if (exception is DbUpdateException)
             {
-                var sb = new StringBuilder();
                 var inner = exception.InnerException;
 
                 while (inner != null)
                 {
                     sb.AppendFormat("{0}. ", inner.Message);
                     inner = inner.InnerException;
+                }
+
+                response = sb.ToString();
+            }
+            else if (exception is DbEntityValidationException)
+            {
+                foreach (var entityValidationErrors in ((DbEntityValidationException)exception).EntityValidationErrors)
+                {
+                    foreach (var itemValidationError in entityValidationErrors.ValidationErrors)
+                        sb.AppendFormat("{0} : {1}", itemValidationError.PropertyName, itemValidationError.ErrorMessage);
                 }
 
                 response = sb.ToString();

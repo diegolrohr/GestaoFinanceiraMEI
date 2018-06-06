@@ -135,6 +135,7 @@
     <Compile Include="Controllers\ClienteBaseController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
+    <Compile Include="Controllers\ProdutoBaseController.cs" />
     <Compile Include="Controllers\FornecedorBaseController.cs" />
     <Compile Include="Controllers\GrupoProdutoBaseController.cs" />
     <Compile Include="Controllers\GrupoTributarioBaseController.cs" />

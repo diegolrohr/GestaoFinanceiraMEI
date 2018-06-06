@@ -36,7 +36,8 @@ namespace Fly01.Core.Mensageria
                 var inner = exception.InnerException;
                 while (inner != null)
                 {
-                    sb.AppendFormat("{0}. ", inner.Message);
+                    sb.Append($"{inner.Message} .");
+
                     inner = inner.InnerException;
                 }
 
@@ -49,7 +50,7 @@ namespace Fly01.Core.Mensageria
                 {
                     var entityName = entityValidationErrors.Entry.Entity.GetType().Name;
                     foreach (var itemValidationError in entityValidationErrors.ValidationErrors)
-                        sb.AppendFormat("Entity '{0}' : {1} ({2})", entityName, itemValidationError.ErrorMessage, itemValidationError.PropertyName);
+                        sb.Append($"Entity {entityName} : {itemValidationError.ErrorMessage} ({itemValidationError.PropertyName})");
                 }
 
                 if (sb.Length > 0)

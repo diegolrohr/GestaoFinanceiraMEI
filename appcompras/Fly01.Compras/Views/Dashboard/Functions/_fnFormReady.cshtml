@@ -3,19 +3,12 @@
         debugger;
         var simboloMonetario = " R$ ";
 
-        //fly01._.chartStatus.options.tooltips.callbacks.label = function (tooltipItems, data) {
-        //    var formatedValue = __formatMoney(tooltipItems.yLabel);
+        fly01._.chartStatusValor.options.tooltips.callbacks.label = function (tooltipItems, data) {
+            var formatedValue = __formatMoney(tooltipItems.yLabel);
 
-        //    return simboloMonetario + formatedValue;
-        //}
-
-        //fly01._.chartStatus.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
-        //    var formatedValue = __formatMoney(value);
-
-        //    return simboloMonetario + formatedValue;
-        //}
-
-        fly01._.chartStatus.update();
+            return simboloMonetario + formatedValue;
+        }
+        fly01._.chartStatusValor.update();
     }
 
     function fnFormReady() {

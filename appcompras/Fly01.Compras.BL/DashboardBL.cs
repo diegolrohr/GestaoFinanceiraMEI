@@ -223,7 +223,7 @@ namespace Fly01.Compras.BL
                     foreach (var item in lista)
                     {
                         ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                        itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : item.TipoFormaPagamento.GetDescription();
+                        itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : EnumHelper.GetDescription(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
                         itemCompras.Total = item.Total;
                         itemCompras.Quantidade = item.Quantidade;
                         dashComprasFormas.Add(itemCompras);
@@ -261,7 +261,7 @@ namespace Fly01.Compras.BL
             foreach (var item in lista)
             {
                 ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : item.TipoFormaPagamento.GetDescription();
+                itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : EnumHelper.GetDescription(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
                 itemCompras.Quantidade = item.Quantidade;
                 itemCompras.Total = item.Total;
                 listaComprasPagamento.Add(itemCompras);

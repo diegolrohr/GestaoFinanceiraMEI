@@ -160,6 +160,10 @@
     <Compile Include="Migrations\201805301323512_CreateCnabArquivoRemessa.Designer.cs">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs" />
+    <Compile Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
+      <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -263,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805301323512_CreateCnabArquivoRemessa.resx">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.resx">
+      <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

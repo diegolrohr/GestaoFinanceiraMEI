@@ -37,9 +37,17 @@ namespace Fly01.Financeiro.BL
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
-            var max = Everything.Any() ? Everything.Max(x => x.NossoNumero) : 0;
-            max = (max == 1 && !Everything.Any(x => x.Ativo && x.NossoNumero == 1)) ? 0 : max;
-            var nossoNumero = ++max;
+            var nossoNumero = 0;
+            var cnabReemprime = base.All.FirstOrDefault(x => x.ContaBancariaCedenteId == contaBancariaId && x.ContaReceberId == contaReceberId);
+
+            if (cnabReemprime != null)
+                nossoNumero = cnabReemprime.NossoNumero;
+            else
+            {
+                var max = Everything.Any() ? Everything.Max(x => x.NossoNumero) : 0;
+                max = (max == 1 && !Everything.Any(x => x.Ativo && x.NossoNumero == 1)) ? 0 : max;
+                nossoNumero = ++max;
+            };
 
             var contaReceber = contaReceberBL.Find(contaReceberId);
             var contaBancariaCedente = contaBancariaBL.AllIncluding(r => r.Banco).FirstOrDefault(x => x.Id == contaBancariaId);

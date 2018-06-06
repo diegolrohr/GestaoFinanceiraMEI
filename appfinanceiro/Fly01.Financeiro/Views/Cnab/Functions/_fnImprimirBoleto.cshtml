@@ -31,9 +31,7 @@
          return createForm(row).outerHTML;
     };
 
-
-    function fnConfirmedOrCancel(idRecord, contaBancariaId) {
-        debugger;
+    function fnConfirmedOrCancel(idRecord, contaBancariaId) {        
         reemprime = true;
         fnSaveCnab(idRecord, contaBancariaId, reemprime);
     }
@@ -53,18 +51,21 @@
             return false;
         }
         else {
-            debugger;
             $.ajax({
                 type: "GET",
                 dataType: "json",
                 url: '@Url.Action("ValidaBoletoJaGeradoParaOutroBanco", "Cnab")',
                 contentType: "application/json",
                 data: { contaReceberId: that.serializeObject().contaReceberId, contaBancariaId: contaBancariaId},
-                success: function success(data) {
-                    if (data.success) 
-                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
+                success: function success(result) {
+                    if (result.success) {
+                        if (result.data != null)
+                            fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
+                        else
+                            fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, true);
+                    } 
                     else
-                        fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, reemprime);
+                        fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, false);
 
                     that.loading("stop");
                 },

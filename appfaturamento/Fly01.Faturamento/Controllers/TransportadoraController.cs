@@ -207,7 +207,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 20 });
             config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l2", Label = "Complemento", MaxLength = 20 });
 
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 500 });
 
             config.Elements.Add(new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" });
             config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });

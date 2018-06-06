@@ -1,7 +1,7 @@
-﻿using System;
-using Fly01.Core.Entities.Domains.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Newtonsoft.Json;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -45,7 +45,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(45, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Contato { get; set; }
 
-        [StringLength(100, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(500, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Observacao { get; set; }
 
         [StringLength(70, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]

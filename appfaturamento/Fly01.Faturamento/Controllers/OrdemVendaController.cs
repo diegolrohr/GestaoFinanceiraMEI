@@ -302,16 +302,13 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult List()
-        {
-            return ListOrdemVenda();
-        }
+        public override ContentResult List() { return ListOrdemVenda(); }
 
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as vendas";
             var buttonOnClick = "fnRemoveFilter";
-            
+
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
@@ -335,7 +332,7 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            if(gridLoad == "GridLoad")
+            if (gridLoad == "GridLoad")
             {
                 var cfgForm = new FormUI
                 {
@@ -422,10 +419,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
@@ -438,10 +432,7 @@ namespace Fly01.Faturamento.Controllers
             return base.GridLoad(filters);
         }
 
-        public JsonResult GridLoadNoFilter()
-        {
-            return base.GridLoad();
-        }
+        public JsonResult GridLoadNoFilter() { return base.GridLoad(); }
 
         [HttpPost]
         public override JsonResult Create(OrdemVendaVM entityVM)

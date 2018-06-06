@@ -253,7 +253,5 @@ namespace Fly01.Faturamento.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }
-
-
     }
 }

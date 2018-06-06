@@ -25,10 +25,7 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
         }
 
-        public override Func<NFSeVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult Form()
         {
@@ -150,10 +147,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult ModalTransmitir()
         {

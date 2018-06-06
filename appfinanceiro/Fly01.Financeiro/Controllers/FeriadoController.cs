@@ -11,15 +11,7 @@ namespace Fly01.Financeiro.Controllers
 {
     public class FeriadoController : BaseController<FeriadoVM>
     {
-        public FeriadoController()
-        {
-            //ResourceName = "DayOff";
-        }
-
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override Func<FeriadoVM, object> GetDisplayData()
         {

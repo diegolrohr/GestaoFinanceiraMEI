@@ -41,14 +41,19 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpGet]
-        public ActionResult DownloadArquivoRemessa(string fileName)
+        public ActionResult DownloadArquivoRemessa(List<string> fileName)
         {
-            if (Session[fileName] != null)
-            {
-                var arquivoDownload = File((byte[])Session[fileName], MediaTypeNames.Application.Octet, fileName + ".REM");
-                Session[fileName] = null;
 
-                return arquivoDownload;
+            var ListName = fileName[0].Split(',');
+            foreach (var item in ListName)
+            {
+                if (Session[item.ToString()] != null)
+                {
+                    var arquivoDownload = File((byte[])Session[item], MediaTypeNames.Application.Octet, fileName + ".REM");
+                    Session[item.ToString()] = null;
+
+                    return arquivoDownload;
+                }
             }
 
             return null;

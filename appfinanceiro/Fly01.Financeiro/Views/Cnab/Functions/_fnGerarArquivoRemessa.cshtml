@@ -10,12 +10,16 @@
             success: function (retorno) {
                 if (retorno.success)
                 {
-                    retorno.FileGuid.forEach(function(filename) {
+                    var fileName = retorno.FileGuid;
+                    window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?fileName=' + fileName;
+
+                    @*retorno.FileGuid.forEach(function (filename) {
+                        debugger;
                         if (filename != null)
                             window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?fileName=' + filename;
                         else
                             fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
-                    });
+                    });*@
                 } else {
                     fly01.toast(retorno.message, 'error');
                 }

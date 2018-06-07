@@ -79,13 +79,13 @@ namespace Fly01.Core.Mensageria
                     {
                         Fallback = "Required plain-text summary of the attachment.",
                         Color = "danger",
-                        Title = "Erro Rabbit MQ",
+                        Title = $"Erro ao processar mensagem no {queueName}",
                         Fields = new List<SlackField>()
                         {
-                            new SlackField("Dados", data),
-                            new SlackField("Erro", errorMessage),
-                            new SlackField("Host", hostName),
-                            new SlackField("Fila", queueName),
+                            new SlackField("Data", data),
+                            new SlackField("Error", errorMessage),
+                            new SlackField("Host", hostName, true),
+                            new SlackField("Fila", queueName, true),
                         }
                     }
                 }

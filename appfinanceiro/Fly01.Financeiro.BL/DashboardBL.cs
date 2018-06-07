@@ -40,7 +40,7 @@ namespace Fly01.Financeiro.BL
             foreach (var item in contaFinanceira)
             {
                 DashboardFinanceiroVM dashFinanceiro = new DashboardFinanceiroVM();
-                dashFinanceiro.Tipo = EnumHelper.GetDescription(typeof(StatusContaBancaria), item.Tipo.ToString());
+                dashFinanceiro.Tipo = EnumHelper.GetValue(typeof(StatusContaBancaria), item.Tipo.ToString());
                 dashFinanceiro.Quantidade = item.Quantidade;
                 dashFinanceiro.Total = item.Total;
                 DashboardFinanceiroLista.Add(dashFinanceiro);

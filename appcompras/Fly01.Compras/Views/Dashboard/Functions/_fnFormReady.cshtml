@@ -15,6 +15,21 @@
         }
 
         fly01._.chartStatusValor.update();
+
+
+        fly01._.chartPagamentoValor.options.tooltips.callbacks.label = function (tooltipItems, data) {
+            var formatedValue = __formatMoney(tooltipItems.yLabel);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartPagamentoValor.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
+            var formatedValue = __formatMoney(value);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartPagamentoValor.update();
     }
 
     function fnFormReady() {

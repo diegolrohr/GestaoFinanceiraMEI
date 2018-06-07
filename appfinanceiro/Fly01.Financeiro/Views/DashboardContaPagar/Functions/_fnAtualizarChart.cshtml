@@ -2,17 +2,20 @@
     function fnAtualizarChart(value) {
 
         if (value === "1") {
-            $('#chartStatus').show();
+            $('#chartStatusVlr').show();
+            $('#chartStatusQtd').show();
             $('#chartPagamento').hide();
             $('#chartCategoria').hide();            
         }
-        if (value === "2") {
-            $('#chartStatus').hide();
+        if (value === "2") {            
+            $('#chartStatusVlr').hide();
+            $('#chartStatusQtd').hide();
             $('#chartPagamento').show();
             $('#chartCategoria').hide();    
         }
         if (value === "3") {
-            $('#chartStatus').hide();
+            $('#chartStatusVlr').hide();
+            $('#chartStatusQtd').hide();
             $('#chartPagamento').hide();
             $('#chartCategoria').show();    
         }

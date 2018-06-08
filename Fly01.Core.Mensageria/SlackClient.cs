@@ -117,7 +117,7 @@ namespace Fly01.Core.Mensageria
             Post(slackChannel, message);
         }
 
-        public static void PostNotificacaoAvaliacaoApp(Guid mensagemId, string mensagem, string plataforma)
+        public static void PostNotificacaoAvaliacaoApp(Guid mensagemId, string hostName, string mensagem, string plataforma)
         {
             var slackChannel = "https://hooks.slack.com/services/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";
             var message = new SlackMessage()
@@ -136,7 +136,7 @@ namespace Fly01.Core.Mensageria
                         },
                         Actions = new List<SlackAction>()
                         {
-                            new SlackAction("Ver mensagem no Fly", "button", GetFlyEnvironmentUrl(mensagemId, "LogAvaliacaoApp", "prod"))
+                            new SlackAction("Ver mensagem no Fly", "button", $"http://gestao.{hostName}.com.br/LogAvaliacaoApp/Edit/{mensagemId}")
                         }
                     }
                 }

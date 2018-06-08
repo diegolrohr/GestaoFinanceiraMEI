@@ -15,7 +15,7 @@ namespace Fly01.Estoque.API.Controllers.Api
 
         public override Task<IHttpActionResult> Post(AvaliacaoApp entity)
         {
-            SlackClient.PostNotificacaoAvaliacaoApp(entity.Id, entity.Descricao, PlataformaUrl);
+            SlackClient.PostNotificacaoAvaliacaoApp(entity.Id, Request.RequestUri.AbsoluteUri.Split('.')[1], entity.Descricao, PlataformaUrl);
 
             return base.Post(entity);
         }

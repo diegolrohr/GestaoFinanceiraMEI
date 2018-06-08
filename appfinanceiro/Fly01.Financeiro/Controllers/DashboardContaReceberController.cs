@@ -14,14 +14,9 @@ namespace Fly01.Financeiro.Controllers
 {
     public class DashboardContaReceberController : BaseController<DashboardContaReceberVM>
     {
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
-        public override Func<DashboardContaReceberVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
+
+        public override Func<DashboardContaReceberVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult List()
         {
@@ -30,7 +25,6 @@ namespace Fly01.Financeiro.Controllers
 
         protected internal static ContentUI DashboardContaReceberJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "DashboardContaReceber") },
@@ -206,8 +200,8 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-            
-            
+
+
             // CHART Categoria
             cfg.Content.Add(new ChartUI
             {
@@ -258,7 +252,7 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-            
+
             // CHART Dia/Dia
             cfg.Content.Add(new ChartUI
             {
@@ -309,7 +303,7 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-            return cfg;           
+            return cfg;
         }
 
         [HttpGet]
@@ -358,7 +352,7 @@ namespace Fly01.Financeiro.Controllers
             return response;
 
         }
-        
+
         // Load Pagamento
         public JsonResult LoadChartPagamento(DateTime dataInicial)
         {
@@ -403,7 +397,7 @@ namespace Fly01.Financeiro.Controllers
 
             return response;
         }
-        
+
         // Load Categoria
         public JsonResult LoadChartCategoria(DateTime dataInicial)
         {
@@ -483,9 +477,8 @@ namespace Fly01.Financeiro.Controllers
             var response = RestHelper.ExecuteGetRequest<List<DashboardContaReceberSaldoDiaVM>>("dashboardsaldodia", queryString);
             if (response == null)
                 return new List<DashboardContaReceberSaldoDiaVM>();
-            
+
             return response;
         }
-
     }
 }

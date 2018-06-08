@@ -28,15 +28,9 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public JsonResult GetNFSeServicos(string id)
         {

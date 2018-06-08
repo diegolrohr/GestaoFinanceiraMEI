@@ -13,20 +13,11 @@ namespace Fly01.Financeiro.Controllers
 {
     public class ContaFinanceiraBaixaMultiplaController : BaseController<ContaFinanceiraBaixaMultiplaVM>
     {
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
-        public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         protected ContentResult FormBaixaMultipla(string tipoConta)
         {

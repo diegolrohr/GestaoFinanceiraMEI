@@ -49,10 +49,7 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override ContentResult List()
         {
@@ -235,6 +232,5 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
     }
 }

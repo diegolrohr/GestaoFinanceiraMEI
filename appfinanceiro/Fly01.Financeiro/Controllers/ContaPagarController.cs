@@ -35,7 +35,6 @@ namespace Fly01.Financeiro.Controllers
 
         [JsonProperty("data")]
         public List<JObject> data { get; set; }
-
     }
 
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
@@ -113,10 +112,7 @@ namespace Fly01.Financeiro.Controllers
             return base.PrintList(contas, "Lista de Contas a Pagar");
         }
 
-        public override string GetResourceDeleteTituloBordero(string id)
-        {
-            throw new NotImplementedException();
-        }
+        public override string GetResourceDeleteTituloBordero(string id) { throw new NotImplementedException(); }
 
         public override JsonResult GridLoadTitulosARenegociar(string renegociacaoPessoaId)
         {

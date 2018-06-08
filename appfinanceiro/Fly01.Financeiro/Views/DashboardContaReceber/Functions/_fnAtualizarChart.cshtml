@@ -2,19 +2,28 @@
     function fnAtualizarChart(value) {
 
         if (value === "1") {
-            $('#chartStatus').show();
-            $('#chartPagamento').hide();
-            $('#chartCategoria').hide();            
+            $('#chartStatusVlr').show();
+            $('#chartPagamentoVlr').hide();
+            $('#chartCategoriaVlr').hide();            
+            $('#chartStatusQtd').show();
+            $('#chartPagamentoQtd').hide();
+            $('#chartCategoriaQtd').hide();            
         }
         if (value === "2") {
-            $('#chartStatus').hide();
-            $('#chartPagamento').show();
-            $('#chartCategoria').hide();    
+            $('#chartStatusVlr').hide();
+            $('#chartPagamentoVlr').show();
+            $('#chartCategoriaVlr').hide();    
+            $('#chartStatusQtd').hide();
+            $('#chartPagamentoQtd').show();
+            $('#chartCategoriaQtd').hide(); 
         }
         if (value === "3") {
-            $('#chartStatus').hide();
-            $('#chartPagamento').hide();
-            $('#chartCategoria').show();    
+            $('#chartStatusVlr').hide();
+            $('#chartPagamentoVlr').hide();
+            $('#chartCategoriaVlr').show();    
+            $('#chartStatusQtd').hide();
+            $('#chartPagamentoQtd').hide();
+            $('#chartCategoriaQtd').show();    
         }
     }
 </script>

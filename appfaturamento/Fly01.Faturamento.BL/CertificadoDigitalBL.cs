@@ -8,8 +8,8 @@ using System.Linq;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using Fly01.Core.Notifications;
-using Fly01.Core.Reports;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels;
 using System;
 
 namespace Fly01.Faturamento.BL
@@ -34,7 +34,7 @@ namespace Fly01.Faturamento.BL
         {
             EstadoBL = estadoBL;
             ParametroTributarioBL = parametroTributarioBL;
-            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
 
@@ -177,7 +177,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade(string plataformaId)
         {
-            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa :  RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{plataformaId}");
+            var empresa = String.IsNullOrEmpty(plataformaId) ? this.empresa : ApiEmpresaManager.GetEmpresa(plataformaId);
             var certificado = Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
             var ambiente = ParametroTributarioBL.Everything.Where(x => x.PlataformaId == plataformaId && x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 

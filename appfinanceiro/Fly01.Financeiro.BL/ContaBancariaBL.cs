@@ -16,6 +16,7 @@ namespace Fly01.Financeiro.BL
         {
             this.saldoHistoricoBL = saldoHistoricoBL;
             this.bancoBL = bancoBL;
+            MustConsumeMessageServiceBus = true;
         }
 
         public override void ValidaModel(ContaBancaria entity)

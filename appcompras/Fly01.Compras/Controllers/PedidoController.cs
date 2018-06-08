@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
+﻿using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -18,6 +17,7 @@ using Fly01.Core.Config;
 using Fly01.Compras.Models.Reports;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
@@ -133,7 +133,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Home")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",

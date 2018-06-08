@@ -1,0 +1,61 @@
+﻿<script>
+    function fnExcluirRecorrencias(idRecord) {
+        var modalId = `modalExcluirRecorrencias`;
+        if ($(`#${modalId}`).length > 0)
+            $(`#${modalId}`).remove();
+        var customConfirm = (title, message, confirmedFunction) => {
+            var modal;
+            modal = createElem("div", { "id": modalId, "class": "modal" }, [
+                createElem("div", { "class": "modal-header" }, [
+                    createElem("h5", null, title),
+                    createElem("a", { "class": "modal-action modal-close" }, [
+                        createElem("i", { "class": "material-icons" }, "close")
+                    ])
+                ]),
+                createElem("div", { "class": "modal-content", "id" : "deleteMessage" }, [
+                    createElem("h6", null, message),
+                    createElem("div", { "class": "input-field col s12 l12" }, [
+                        createElem("input", { "id": "excluirRecorrencias", "type": "checkbox", "name": "excluirRecorrencias" }, message),
+                        createElem("label", { "for": "excluirRecorrencias" }, "Excluir todas as outras recorrências seguintes.")
+                    ])
+                ]),
+                createElem("div", { "class": "modal-footer" }, [
+                    createElem("a", { "class": "modal-action modal-close btn" }, "CANCELAR"),
+                    createElem("a", { "class": "modal-action modal-close modal-action-default btn", "onclick": confirmedFunction }, "CONTINUAR")
+                ])
+            ]);
+
+            $("main").append(modal);
+            $(".modal").modal();
+            $(`#${modalId}`).modal("open");
+        }
+        customConfirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirRecorrenciasConfirmed(\"" + idRecord + "\")");
+    }
+
+    function fnExcluirRecorrenciasConfirmed(idRecord) {
+        $('body').removeClass('loaded');
+        if (idRecord) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Delete")?excluirRecorrencias=" + ($("#excluirRecorrencias:checked").length === 1),
+                data: { id: idRecord },
+                success: function (data) {
+                    $('body').addClass('loaded');
+                    if (data.success) {
+                        fly01.toast("Excluído com sucesso.", "success");
+                        var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
+                        fly01._[dtId].refresh();
+                    }
+                    else {
+                        fly01.fn.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    $('body').addClass('loaded');
+                    fly01.toast(textStatus, "error");
+                }
+            });
+        }
+        fly01.fn.updateTextFields();
+    }
+</script>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Faturamento.Controllers.Base;
 using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -113,10 +113,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public JsonResult GetOrdemVendaServicos(string id)
         {

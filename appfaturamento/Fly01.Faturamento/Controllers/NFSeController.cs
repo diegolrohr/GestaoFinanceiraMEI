@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -14,6 +13,7 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -25,10 +25,7 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
         }
 
-        public override Func<NFSeVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult Form()
         {
@@ -150,10 +147,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult ModalTransmitir()
         {

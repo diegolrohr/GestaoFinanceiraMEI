@@ -27,7 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -67,7 +67,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\NFeController.cs" />
@@ -313,6 +312,9 @@
     <Content Include="Views\OrdemVenda\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemVenda\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFe.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFSe.cshtml" />
     <None Include="Web.Homologacao.config">
@@ -510,13 +512,10 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>61954</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Fly01.Faturamento</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/Fly01.Faturamento</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

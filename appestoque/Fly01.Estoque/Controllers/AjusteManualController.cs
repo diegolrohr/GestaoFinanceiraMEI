@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -12,21 +11,16 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
 
-        public override Func<AjusteManualVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() { return Form(); }
 
         public override ContentResult Form()
         {

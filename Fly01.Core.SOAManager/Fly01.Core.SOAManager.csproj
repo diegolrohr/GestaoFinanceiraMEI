@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -110,6 +111,9 @@
     <None Include="Web References\SOAManager\SOAManager.disco" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
@@ -120,6 +124,10 @@
     <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
+      <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
+      <Name>Fly01.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

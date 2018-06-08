@@ -1,6 +1,12 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
+    function fnConfirmGeracaoArquivo(files, ids) {
+        window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?files=' + files + "&ids=" + ids;
+        fly01._.dtBoletos.refresh();
+        $("#dtBoletos").loading("stop");
+    };
+
     function fnGerarArquivoRemessa() {
         $("#dtBoletos").loading("start");
         $.ajax({
@@ -8,24 +14,19 @@
             url: '@Url.Action("GeraArquivoRemessa","Cnab")',
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
+                debugger;
                 if (retorno.success)
                 {
-                    var fileName = retorno.FileGuid;
-                    window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?fileName=' + fileName;
-
-                    @*retorno.FileGuid.forEach(function (filename) {
-                        debugger;
-                        if (filename != null)
-                            window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?fileName=' + filename;
-                        else
-                            fly01.toast("Não foi possível baixar o arquivo, tente novamente mais tarde.", 'error');
-                    });*@
-                } else {
+                    var files = retorno.FileGuid;
+                    if (files.length > 1)
+                        fly01.confirm("Confirmar Geração de arquivo", "Existem diferentes bancos selecionados para geração do arquivo! Isto acarretará na geração de varios arquivos de remessa de acordo com os bancos selecionados. Deseja Continuar?", "fnConfirmGeracaoArquivo('" + files + "','" + fly01._.dtBoletos.selected + "')");
+                    else {
+                        window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?files=' + files + "&ids=" + fly01._.dtBoletos.selected;
+                        fly01._.dtBoletos.refresh();
+                        $("#dtBoletos").loading("stop");
+                    };
+                } else 
                     fly01.toast(retorno.message, 'error');
-                }
-
-                fly01._.dtBoletos.refresh();
-                $("#dtBoletos").loading("stop");
             }
         });
     };

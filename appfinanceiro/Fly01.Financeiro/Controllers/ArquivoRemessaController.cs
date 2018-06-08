@@ -11,7 +11,12 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using System.IO;
+using System.IO.Compression;
 using System.Net.Mime;
+using System.Linq;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Rest;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -41,22 +46,88 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpGet]
-        public ActionResult DownloadArquivoRemessa(List<string> fileName)
+        public ActionResult DownloadArquivoRemessa(List<string> files, List<string> ids)
         {
+            var ListName = files[0].Split(',');
+            var idsCnabToSave = ids[0].Split(',');
+            SaveArquivoRemessa(idsCnabToSave);
 
-            var ListName = fileName[0].Split(',');
-            foreach (var item in ListName)
+            if (ListName.Length > 1)
             {
-                if (Session[item.ToString()] != null)
+                using (var memoryStream = new MemoryStream())
                 {
-                    var arquivoDownload = File((byte[])Session[item], MediaTypeNames.Application.Octet, fileName + ".REM");
-                    Session[item.ToString()] = null;
-
+                    using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var item in ListName)
+                        {
+                            AddToArchive(ziparchive, item.ToString() + ".REM", (byte[])Session[item]);
+                        }
+                    }
+                    return File(memoryStream.ToArray(), "application/zip", "Attachments.zip");
+                }
+            }
+            else 
+            {
+                if (Session[ListName[0].ToString()] != null)
+                {
+                    var arquivoDownload = File((byte[])Session[ListName[0]], MediaTypeNames.Application.Octet, ListName[0].ToString() + ".REM");
+                    Session[ListName[0].ToString()] = null;
                     return arquivoDownload;
                 }
             }
 
             return null;
+        }
+
+        private void SaveArquivoRemessa(string[] idsCnabToSave)
+        {
+            var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
+            foreach (var item in GetCnab(idsCnabToSave.Select(Guid.Parse).ToList()))
+            {
+                dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
+                    item.ContaBancariaCedenteId,
+                    GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
+            }
+
+            foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
+            {
+                var queryString = AppDefaults.GetQueryStringDefault();
+                queryString.AddParam("$filter", $"emiteBoleto eq true");
+                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
+                var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
+                var banco = lstBoletos.FirstOrDefault().Banco;
+                var codigoBanco = banco.Codigo.ToString("000");
+                var total = (double)lstBoletos.Sum(x => x.ValorTitulo);
+                var boletos = new Boleto2Net.Boletos()
+                {
+                    Banco = banco
+                };
+                boletos.AddRange(lstBoletos);
+
+                var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, ValidaDadosBancoVM.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                var nomeArquivo = $"{banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
+                Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
+
+                if (Session[nomeArquivo] != null)
+                {
+                    var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
+                    if (dadosBanco != null)
+                    {
+                        var ListCnab = GetCnab(idsCnabToSave.Select(Guid.Parse).ToList());
+                        SalvaArquivoRemessa(ListCnab.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), dadosBanco.Id, nomeArquivo, lstBoletos.Count(), total);
+                    }
+                }
+            }
+        }
+
+        private void AddToArchive(ZipArchive ziparchive, string fileName, byte[] attach)
+        {
+            var zipEntry = ziparchive.CreateEntry(fileName, CompressionLevel.Optimal);
+            using (var zipStream = zipEntry.Open())
+            using (var streamIn = new MemoryStream(attach))
+            {
+                streamIn.CopyTo(zipStream);
+            }
         }
 
         public override ContentResult Form()

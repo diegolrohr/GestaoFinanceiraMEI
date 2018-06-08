@@ -23,7 +23,7 @@ namespace Fly01.Financeiro.Controllers.Base
 {
     public abstract class BoletoController<TEntity> : BaseController<TEntity> where TEntity : DomainBaseVM
     {
-        private List<CnabVM> GetCnab(List<Guid> idsBoletos)
+        public List<CnabVM> GetCnab(List<Guid> idsBoletos)
         {
             var listaCnab = new List<CnabVM>();
 
@@ -43,7 +43,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return listaCnab;
         }
 
-        private List<CnabVM> GetCnab(string filter)
+        public List<CnabVM> GetCnab(string filter)
         {
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", filter);
@@ -94,14 +94,11 @@ namespace Fly01.Financeiro.Controllers.Base
                         var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
                         if (dadosBanco != null)
                         {
-                            var ListCnab = GetCnab(ids);
-                            SalvaArquivoRemessa(ListCnab.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), dadosBanco.Id, nomeArquivo, lstBoletos.Count(), total);
                             listaArquivosGerados.Add(nomeArquivo);
                         }
                     }
                 }
-
-                return Json(new { success = true, FileGuid = listaArquivosGerados });
+                return Json(new { success = true, FileGuid = listaArquivosGerados});
             }
             catch (Exception e)
             {
@@ -143,7 +140,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        private Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
+        public Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
         {
             var mensagemBoleto = "";
             var proxy = new Boleto2Net.Boleto2NetProxy();
@@ -219,7 +216,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        public void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -244,7 +241,7 @@ namespace Fly01.Financeiro.Controllers.Base
             });
         }
 
-        private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
+        public BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
         {
             var queryString = new Dictionary<string, string>
             {

@@ -14,7 +14,7 @@ namespace Fly01.Core.Mensageria
 {
     public static class SlackClient
     {
-        public static void Post(string slackUrl, SlackMessage message)
+        private static void Post(string slackUrl, SlackMessage message)
         {
             using (var client = new WebClient())
             {
@@ -41,7 +41,7 @@ namespace Fly01.Core.Mensageria
                     inner = inner.InnerException;
                 }
 
-                if(sb.Length > 0)
+                if (sb.Length > 0)
                     response = sb.ToString();
             }
             else if (exception is DbEntityValidationException)
@@ -60,6 +60,17 @@ namespace Fly01.Core.Mensageria
             return response;
         }
 
+        private static string GetFlyEnvironmentUrl(Guid messageId, string routeName, string hostName)
+        {
+            var host = hostName == "prod" ? ""
+                : hostName == "homolog" ? "dev"
+                : "local";
+
+            var url = $"http://gestao.fly01{host}.com.br/{routeName}/Edit/{messageId}";
+
+            return url;
+        }
+
         public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl)
         {
             var slackChannel = string.Empty;
@@ -71,6 +82,7 @@ namespace Fly01.Core.Mensageria
                 ? "https://hooks.slack.com/services/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"
                 : "https://hooks.slack.com/services/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";
 
+            var logData = new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformId = plataformaUrl };
             var message = new SlackMessage()
             {
                 Attachments = new List<SlackAttachment>()
@@ -85,7 +97,11 @@ namespace Fly01.Core.Mensageria
                             new SlackField("Data", data),
                             new SlackField("Error", errorMessage),
                             new SlackField("Host", hostName, true),
-                            new SlackField("Fila", queueName, true),
+                            new SlackField("Fila", queueName, true)
+                        },
+                        Actions = new List<SlackAction>()
+                        {
+                            new SlackAction("Ver mensagem no Fly", "button", GetFlyEnvironmentUrl(logData.Id, "LogRabbitMQ", hostName))
                         }
                     }
                 }
@@ -95,8 +111,36 @@ namespace Fly01.Core.Mensageria
             {
                 var mongoHelper = new LogMongoHelper<LogServiceBusEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
                 var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameServiceBusLog"]);
-                await collection.InsertOneAsync(new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformUrl = plataformaUrl });
+                await collection.InsertOneAsync(logData);
             }
+
+            Post(slackChannel, message);
+        }
+
+        public static void PostNotificacaoAvaliacaoApp(Guid mensagemId, string hostName, string mensagem, string plataforma)
+        {
+            var slackChannel = "https://hooks.slack.com/services/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";
+            var message = new SlackMessage()
+            {
+                Attachments = new List<SlackAttachment>()
+                {
+                    new SlackAttachment()
+                    {
+                        Fallback = "Required plain-text summary of the attachment.",
+                        Color = "info",
+                        Title = "Mensagem recebida via avaliação de apps",
+                        Fields = new List<SlackField>()
+                        {
+                            new SlackField("Mensagem", mensagem),
+                            new SlackField("Plataforma", plataforma),
+                        },
+                        Actions = new List<SlackAction>()
+                        {
+                            new SlackAction("Ver mensagem no Fly", "button", $"http://gestao.{hostName}.com.br/LogAvaliacaoApp/Edit/{mensagemId}")
+                        }
+                    }
+                }
+            };
 
             Post(slackChannel, message);
         }

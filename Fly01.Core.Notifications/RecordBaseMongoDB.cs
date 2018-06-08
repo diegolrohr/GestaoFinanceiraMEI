@@ -12,6 +12,9 @@ namespace Fly01.Core.Notifications
         [BsonElement("EventDate")]
         public DateTime EventDate { get; set; }
 
+        [BsonElement("PlatformId")]
+        public string PlatformId { get; set; }
+
         public RecordBaseMongoDB()
         {
             Id = Guid.NewGuid();

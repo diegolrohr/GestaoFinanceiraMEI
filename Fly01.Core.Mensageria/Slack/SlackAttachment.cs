@@ -18,6 +18,9 @@ namespace Fly01.Core.Mensageria.Slack
         [JsonProperty("fields")]
         public List<SlackField> Fields { get; set; }
 
+        [JsonProperty("actions")]
+        public List<SlackAction> Actions { get; set; }
+
         [JsonProperty("footer")]
         public string Footer { get; set; }
 

@@ -54,7 +54,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 pessoaId = x.PessoaId,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
-                descricao = x.Descricao,
+                descricao = x.Descricao.Substring(0, x.Descricao.Length > 35 ? 35 : x.Descricao.Length),
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 formaPagamento_descricao = x.FormaPagamento.Descricao,
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,

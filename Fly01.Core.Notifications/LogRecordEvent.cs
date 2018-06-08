@@ -4,9 +4,6 @@ namespace Fly01.Core.Notifications
 {
     public class LogRecordEvent : RecordBaseMongoDB
     {
-        [BsonElement("PlatformId")]
-        public string PlatformId { get; set; }
-
         [BsonElement("Username")]
         public string Username { get; set; }
 

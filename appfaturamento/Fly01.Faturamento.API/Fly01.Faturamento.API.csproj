@@ -169,6 +169,10 @@
       <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
+      <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
+      <Name>Fly01.Core.Mensageria</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>

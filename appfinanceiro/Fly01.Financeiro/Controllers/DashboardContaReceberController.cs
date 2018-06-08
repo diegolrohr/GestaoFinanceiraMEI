@@ -14,14 +14,9 @@ namespace Fly01.Financeiro.Controllers
 {
     public class DashboardContaReceberController : BaseController<DashboardContaReceberVM>
     {
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
-        public override Func<DashboardContaReceberVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
+
+        public override Func<DashboardContaReceberVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult List()
         {
@@ -30,7 +25,6 @@ namespace Fly01.Financeiro.Controllers
 
         protected internal static ContentUI DashboardContaReceberJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "DashboardContaReceber") },
@@ -725,6 +719,5 @@ namespace Fly01.Financeiro.Controllers
 
             return response;
         }
-
     }
 }

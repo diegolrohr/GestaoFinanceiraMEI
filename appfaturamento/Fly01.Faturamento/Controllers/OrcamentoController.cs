@@ -23,20 +23,11 @@ namespace Fly01.Faturamento.Controllers
         //pedido e orçamento são ordem de venda, apenas a propriedade TipoOrdemVenda que muda
         //porém foi feito os controllers distintos para efeito front ao usuário
 
-        public override Func<OrdemVendaVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<OrdemVendaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult FormOrcamento(bool isEdit = false)
         {
@@ -459,5 +450,4 @@ namespace Fly01.Faturamento.Controllers
 
         #endregion
     }
-
 }

@@ -65,35 +65,17 @@ namespace Fly01.Estoque.Controllers
 
         #region NotImplementedMethods
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId)
-        {
-            throw new NotImplementedException();
-        }
+        public override JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId) { throw new NotImplementedException(); }
 
-        public override JsonResult GridLoadTitulosARenegociar(string renegociaoPessoaId)
-        {
-            throw new NotImplementedException();
-        }
+        public override JsonResult GridLoadTitulosARenegociar(string renegociaoPessoaId) { throw new NotImplementedException(); }
 
-        public override string GetResourceDeleteTituloBordero(string id)
-        {
-            throw new NotImplementedException();
-        }
+        public override string GetResourceDeleteTituloBordero(string id) { throw new NotImplementedException(); }
 
-        public override ActionResult ImprimirRecibo(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public override ActionResult ImprimirRecibo(Guid id) { throw new NotImplementedException(); }
 
         #endregion
     }

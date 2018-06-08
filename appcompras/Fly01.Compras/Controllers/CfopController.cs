@@ -7,19 +7,10 @@ namespace Fly01.Compras.Controllers
 {
     public class CfopController : BaseController<CfopVM>
     {
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override Func<CfopVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<CfopVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Rest;
+﻿using Fly01.Core.Presentation;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -79,6 +79,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "btnOpcoes",
                 ReadyFn = "fnFormReady",
+                Functions = new List<string> { "__format" },
                 UrlFunctions = url.Action("Functions", "DashboardContaReceber", null) + "?fns=",
                 Class = "col s12 m8 offset-m2",
                 Elements = new List<BaseUI>
@@ -101,13 +102,13 @@ namespace Fly01.Financeiro.Controllers
             // CHART Status
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartStatus",
+                Id = "chartStatusVlr",
                 Options = new
                 {
                     title = new
                     {
                         display = true,
-                        text = "Quantidade / Valor - Total",
+                        text = "Valor - Total",
                         fontSize = 15,
                         fontFamily = "Roboto",
                         fontColor = "#555"
@@ -141,25 +142,74 @@ namespace Fly01.Financeiro.Controllers
                             }
                     }
                 },
-                UrlData = @url.Action("LoadChartStatus", "DashboardContaReceber"),
-                Class = "col s12",
+                UrlData = @url.Action("LoadChartStatusVlr", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
 
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartStatusQtd",
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Quantidade - Total",
+                        fontSize = 15,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @url.Action("LoadChartStatusQtd", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" }
+                    }
+            });
 
             // CHART Pagamento            
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartPagamento",
+                Id = "chartPagamentoVlr",
                 Options = new
                 {
                     title = new
                     {
                         display = true,
-                        text = "Quantidade / Valor - Total",
+                        text = "Valor - Total",
                         fontSize = 15,
                         fontFamily = "Roboto",
                         fontColor = "#555"
@@ -193,25 +243,23 @@ namespace Fly01.Financeiro.Controllers
                             }
                     }
                 },
-                UrlData = @url.Action("LoadChartPagamento", "DashboardContaReceber"),
-                Class = "col s12",
+                UrlData = @url.Action("LoadChartPagamentoVlr", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
 
-
-            // CHART Categoria
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartCategoria",
+                Id = "chartPagamentoQtd",
                 Options = new
                 {
                     title = new
                     {
                         display = true,
-                        text = "Quantidade / Valor - Total",
+                        text = "Quantidade - Total",
                         fontSize = 15,
                         fontFamily = "Roboto",
                         fontColor = "#555"
@@ -245,8 +293,109 @@ namespace Fly01.Financeiro.Controllers
                             }
                     }
                 },
-                UrlData = @url.Action("LoadChartCategoria", "DashboardContaReceber"),
-                Class = "col s12",
+                UrlData = @url.Action("LoadChartPagamentoQtd", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" }
+                    }
+            });
+
+            // CHART Categoria
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartCategoriaVlr",
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Valor - Total",
+                        fontSize = 15,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @url.Action("LoadChartCategoriaVlr", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" }
+                    }
+            });
+
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartCategoriaQtd",
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Quantidade - Total",
+                        fontSize = 15,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @url.Action("LoadChartCategoriaQtd", "DashboardContaReceber"),
+                Class = "col s12 m6 l6",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -308,7 +457,7 @@ namespace Fly01.Financeiro.Controllers
 
         [HttpGet]
         // Load Status
-        public JsonResult LoadChartStatus(DateTime dataInicial)
+        public JsonResult LoadChartStatusVlr(DateTime dataInicial)
         {
             var response = GetProjecaoStatus(dataInicial);
 
@@ -323,7 +472,37 @@ namespace Fly01.Financeiro.Controllers
                             backgroundColor = "rgb(75, 192, 192)",
                             borderColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    },
+                    }
+                    //,
+                    //new {
+                    //        label = "Quantidade",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(255, 99, 132)",
+                    //        borderColor = "rgb(255, 99, 132)",
+                    //        data = response.Select(x => (x.Quantidade)).ToArray()
+                    //    }
+                }
+            };
+
+            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadChartStatusQtd(DateTime dataInicial)
+        {
+            var response = GetProjecaoStatus(dataInicial);
+
+            var dataChartToView = new
+            {
+                success = true,
+                labels = response.Select(x => x.Tipo).ToArray(),
+                datasets = new object[] {
+                    //new {
+                    //        label = "Valor",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(75, 192, 192)",
+                    //        borderColor = "rgb(75, 192, 192)",
+                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
+                    //},
                     new {
                             label = "Quantidade",
                             fill = false,
@@ -354,7 +533,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         // Load Pagamento
-        public JsonResult LoadChartPagamento(DateTime dataInicial)
+        public JsonResult LoadChartPagamentoVlr(DateTime dataInicial)
         {
             var response = GetProjecaoPagamento(dataInicial);
 
@@ -369,7 +548,37 @@ namespace Fly01.Financeiro.Controllers
                             backgroundColor = "rgb(75, 192, 192)",
                             borderColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    },
+                    }
+                    //,
+                    //new {
+                    //        label = "Quantidade",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(255, 99, 132)",
+                    //        borderColor = "rgb(255, 99, 132)",
+                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
+                    //    }
+                }
+            };
+
+            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadChartPagamentoQtd(DateTime dataInicial)
+        {
+            var response = GetProjecaoPagamento(dataInicial);
+
+            var dataChartToView = new
+            {
+                success = true,
+                labels = response.Select(x => x.Tipo).ToArray(),
+                datasets = new object[] {
+                    //new {
+                    //        label = "Valor",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(75, 192, 192)",
+                    //        borderColor = "rgb(75, 192, 192)",
+                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
+                    //},
                     new {
                             label = "Quantidade",
                             fill = false,
@@ -399,7 +608,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         // Load Categoria
-        public JsonResult LoadChartCategoria(DateTime dataInicial)
+        public JsonResult LoadChartCategoriaVlr(DateTime dataInicial)
         {
             var response = GetProjecaoCategoria(dataInicial);
 
@@ -414,7 +623,37 @@ namespace Fly01.Financeiro.Controllers
                             backgroundColor = "rgb(75, 192, 192)",
                             borderColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    },
+                    }
+                    //,
+                    //new {
+                    //        label = "Quantidade",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(255, 99, 132)",
+                    //        borderColor = "rgb(255, 99, 132)",
+                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
+                    //    }
+                }
+            };
+
+            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadChartCategoriaQtd(DateTime dataInicial)
+        {
+            var response = GetProjecaoCategoria(dataInicial);
+
+            var dataChartToView = new
+            {
+                success = true,
+                labels = response.Select(x => x.Tipo).ToArray(),
+                datasets = new object[] {
+                    //new {
+                    //        label = "Valor",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(75, 192, 192)",
+                    //        borderColor = "rgb(75, 192, 192)",
+                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
+                    //},
                     new {
                             label = "Quantidade",
                             fill = false,

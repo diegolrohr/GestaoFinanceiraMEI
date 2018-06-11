@@ -90,19 +90,29 @@ namespace Fly01.Compras.Controllers
                 Id = "btnOpcoes",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = url.Action("Functions", "Dashboard", null) + "?fns=",
-                Class = "col s12 m6 l6",
+                Functions = new List<string> { "__format" },
+                Class = "col s12",
                 Elements = new List<BaseUI>
                 {
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m12 l12",
+                        Class = "col s12 m6 l6",
                         OnClickFn = "fnAtualizarChart",
                         Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnStatus", Value = "1", Label = "Status", Class="col s4"},
-                            new ButtonGroupOptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento", Class="col s8"}
+                            new ButtonGroupOptionUI {Id = "btnStatus", Value = "1", Label = "Status", Class="col s6"},
+                            new ButtonGroupOptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento", Class="col s6"}
                         }
+                    },
+                    new SelectUI
+                    {
+                        Id = "tpOrdemCompra",
+                        Class = "col s12 m6 l6",
+                        Disabled = false,
+                        //ConstrainWidth = true,
+                        Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
+                        DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
                     }
                 }
             });
@@ -110,7 +120,7 @@ namespace Fly01.Compras.Controllers
             //COMBOBOX
             var config = new FormUI
             {
-                Class = "col s12 m6 l6 ",
+
                 Action = new FormUIAction
                 {
                     Create = @url.Action("Create"),
@@ -121,27 +131,28 @@ namespace Fly01.Compras.Controllers
                 UrlFunctions = url.Action("Functions", "Dashboard") + "?fns="
             };
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tpOrdemCompra",
-                Class = "col s12",
-                Disabled = false,
-                ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
-                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
-            });
-            cfg.Content.Add(config);
+            //config.Elements.Add(new SelectUI
+            //{
+            //    Id = "tpOrdemCompra",
+            //    Class = "col s12 m6 l6",
+            //    Disabled = false,
+            //    //ConstrainWidth = true,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
+            //    DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
+            //});
+            //cfg.Content.Add(config);
 
-            // CHART Status
+            // CHART Status Valor
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartStatus",
+                Id = "chartStatusValor",
+                Class = "col s12 m12 l6",
                 Options = new
                 {
                     title = new
                     {
                         display = true,
-                        text = "Quantidade / Valor - Total",
+                        text = "Valor - Total",
                         fontSize = 15,
                         fontFamily = "Roboto",
                         fontColor = "#555"
@@ -175,8 +186,59 @@ namespace Fly01.Compras.Controllers
                             }
                     }
                 },
-                UrlData = @url.Action("LoadChartStatus", "Dashboard"),
-                Class = "col s12",
+                UrlData = @url.Action("LoadChartStatusValor", "Dashboard"),
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" },
+                        new ChartUIParameter { Id = "tpOrdemCompra" }
+                    }
+            });
+
+            // CHART Status Quantidade
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartStatusQtd",
+                Class = "col s12 m12 l6",
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Quantidade - Total",
+                        fontSize = 15,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @url.Action("LoadChartStatusQuantidade", "Dashboard"),
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },
@@ -187,13 +249,13 @@ namespace Fly01.Compras.Controllers
             // CHART Forma de Pagamento
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartPagamento",
+                Id = "chartPagamentoValor",
                 Options = new
                 {
                     title = new
                     {
                         display = true,
-                        text = "Forma de Pagamento",
+                        text = "Forma de Pagamento - Valor",
                         fontSize = 15,
                         fontFamily = "Roboto",
                         fontColor = "#555"
@@ -227,8 +289,60 @@ namespace Fly01.Compras.Controllers
                             }
                     }
                 },
-                UrlData = @url.Action("LoadChartFormaPagamento", "Dashboard"),
-                Class = "col s12",
+                UrlData = @url.Action("LoadChartFormaPagamentoValor", "Dashboard"),
+                Class = "col s12 m6 l6",
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" },
+                        new ChartUIParameter { Id = "tpOrdemCompra" }
+                    }
+            });
+
+            // CHART Forma de Pagamento
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartPagamentoQtd",
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Forma de Pagamento - Quantidade",
+                        fontSize = 15,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @url.Action("LoadChartFormaPagamentoQtd", "Dashboard"),
+                Class = "col s12 m6 l6",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },
@@ -337,7 +451,34 @@ namespace Fly01.Compras.Controllers
             }
         }
 
-        public JsonResult LoadChartStatus(DateTime dataInicial, String tpOrdemCompra)
+        public JsonResult LoadChartStatusQuantidade(DateTime dataInicial, String tpOrdemCompra)
+        {
+            var response = GetProjecaoStatus(dataInicial, tpOrdemCompra);
+
+            var dataChartToView = new
+            {
+                success = true,
+                labels = response.Select(x => x.Status).ToArray(),
+                datasets = new object[] {
+                    //new {
+                    //        label = "Valor",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(75, 192, 192)",
+                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
+                    //},
+                    new {
+                            label = "Quantidade",
+                            fill = false,
+                            backgroundColor = "rgb(255, 99, 132)",
+                            data = response.Select(x => (x.Quantidade)).ToArray()
+                        }
+                }
+            };
+
+            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadChartStatusValor(DateTime dataInicial, String tpOrdemCompra)
         {
             var response = GetProjecaoStatus(dataInicial, tpOrdemCompra);
 
@@ -349,21 +490,23 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "#26be8d",
+                            backgroundColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    },
-                    new {
-                            label = "Quantidade",
-                            fill = false,
-                            backgroundColor = "#f58542",
-                            data = response.Select(x => (x.Quantidade)).ToArray()
-                        }
+                    }
+                    //,
+                    //new {
+                    //        label = "Quantidade",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(255, 99, 132)",
+                    //        data = response.Select(x => (x.Quantidade)).ToArray()
+                    //    }
                 }
             };
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult LoadChartFormaPagamento(DateTime dataInicial, String tpOrdemCompra)
+
+        public JsonResult LoadChartFormaPagamentoValor(DateTime dataInicial, String tpOrdemCompra)
         {
             var response = GetProjecaoFormaPagamento(dataInicial, tpOrdemCompra);
 
@@ -375,13 +518,42 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "#26be8d",
+                            backgroundColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    },
+                    }
+                    //,
+                    //new {
+                    //        label = "Quantidade",
+                    //        fill = false,
+                    //        backgroundColor = "#f58542",
+                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
+                    //    }
+                }
+            };
+
+            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadChartFormaPagamentoQtd(DateTime dataInicial, String tpOrdemCompra)
+        {
+            var response = GetProjecaoFormaPagamento(dataInicial, tpOrdemCompra);
+
+            var dataChartToView = new
+            {
+                success = true,
+                labels = response.Select(x => x.TipoFormaPagamento).ToArray(),
+                datasets = new object[] {
+                    //new {
+                    //        label = "Valor",
+                    //        fill = false,
+                    //        backgroundColor = "rgb(75, 192, 192)",
+                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
+                    //}
+                    ////,
                     new {
                             label = "Quantidade",
                             fill = false,
-                            backgroundColor = "#f58542",
+                            backgroundColor =  "rgb(255, 99, 132)",
                             data = response.Select(x => (x.Quantidade)).ToArray(),
                         }
                 }

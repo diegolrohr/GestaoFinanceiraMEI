@@ -1,5 +1,4 @@
-﻿using System;
-using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
@@ -8,6 +7,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -16,46 +16,47 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public class ClienteBaseController<T> : BaseController<T> where T : PessoaVM
     {
-        public override ContentResult List()
-        {
-            var cfg = new ContentUI
-            {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Clientes",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "import", Label = "Importar clientes", OnClickFn = "fnImportarCadastro" }
-                    }
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = "Cliente", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
-
-            cfg.Content.Add(config);
-
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
+        protected virtual string ResourceTitle { get; set; }
+        protected virtual string LabelTitle { get; set; }
+        protected virtual string Filter { get; set; }
 
         public ClienteBaseController()
         {
             ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
         }
 
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        {
+            var tempExpand = ExpandProperties;
+            ExpandProperties = string.Empty;
+
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            ExpandProperties = tempExpand;
+
+            customFilters.AddParam("$filter", Filter);
+            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
+
+            return customFilters;
+        }
+
+        public override Func<T, object> GetDisplayData()
+        {
+            return x => new
+            {
+                id = x.Id,
+                nome = x.Nome,
+                cpfcnpj = FormatterUtils.FormatDocument(x.CPFCNPJ),
+                email = x.Email,
+                telefone = string.IsNullOrEmpty(x.Telefone)
+                            ? ""
+                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
+                registroFixo = x.RegistroFixo
+            };
+        }
+
         public override JsonResult Create(T entityVM)
         {
             NormarlizarEntidade(ref entityVM);
-
             return base.Create(entityVM);
         }
 
@@ -67,11 +68,10 @@ namespace Fly01.Core.Presentation.Controllers
             return base.Edit(entityVM);
         }
 
-        protected void NormarlizarEntidade(ref T entityVM)
+        protected virtual void NormarlizarEntidade(ref T entityVM)
         {
             const string regexSomenteDigitos = @"[^\d]";
 
-            entityVM.Cliente = true;
             entityVM.CPFCNPJ = Regex.Replace(entityVM.CPFCNPJ ?? "", regexSomenteDigitos, "");
             entityVM.TipoDocumento = GetTipoDocumento(entityVM.CPFCNPJ ?? "");
             entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
@@ -93,33 +93,35 @@ namespace Fly01.Core.Presentation.Controllers
             return null;
         }
 
-        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
+        public override ContentResult List()
         {
-            var tempExpand = ExpandProperties;
-            ExpandProperties = string.Empty;
-
-            var customFilters = base.GetQueryStringDefaultGridLoad();
-            ExpandProperties = tempExpand;
-
-            customFilters.AddParam("$filter", "cliente eq true");
-            customFilters.AddParam("$select", "id,nome,cpfcnpj,email,telefone,dataInclusao,registroFixo");
-
-            return customFilters;
-        }
-
-        public override Func<T, object> GetDisplayData()
-        {
-            return x => new
+            var cfg = new ContentUI
             {
-                id = x.Id,
-                nome = x.Nome,
-                cpfcnpj = FormatterUtils.FormatDocument(x.CPFCNPJ),
-                email = x.Email,
-                telefone = string.IsNullOrEmpty(x.Telefone)
-                            ? ""
-                            : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
-                registroFixo = x.RegistroFixo
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                Header = new HtmlUIHeader
+                {
+                    Title = LabelTitle,
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "import", Label = $"Importar {LabelTitle}", OnClickFn = "fnImportarCadastro" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = ResourceTitle, Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
         public override ContentResult Form()
@@ -133,7 +135,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Dados do cliente",
+                    Title = ResourceTitle,
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
@@ -217,15 +219,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });
 
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 500 });
 
-            config.Elements.Add(new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" });
-            config.Elements.Add(new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" });
-            config.Elements.Add(new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" });
-            config.Elements.Add(new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" });
+
+            List<InputCheckboxUI> checkboxes = GetCheckBboxes();
+            if (checkboxes != null)
+                config.Elements.AddRange(checkboxes);
 
             List<TooltipUI> tooltips = GetHelpers();
-
             if (tooltips != null)
                 config.Helpers.AddRange(tooltips);
 
@@ -249,7 +250,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 Header = new HtmlUIHeader()
                 {
-                    Title = "Importar clientes",
+                    Title = $"Importar {ResourceTitle}",
                     Buttons = new List<HtmlUIButton>()
                     {
                         new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" },
@@ -265,7 +266,7 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     Create = Url.Action("ImportaCadastro"),
                     Edit = Url.Action("ImportaCadastro"),
-                    Get = Url.Action("Json", "Cliente") + "/ImportarCadastro",
+                    Get = Url.Action("Json") + "/ImportarCadastro",
                     List = @Url.Action("List")
                 },
                 ReadyFn = "fnImportaCadastroFormReady",
@@ -274,7 +275,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
 
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true, MaxLength = 100 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true });
 
             cfg.Content.Add(config);
 
@@ -297,11 +298,16 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo("Cadastro de Clientes", pConteudo);
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", pConteudo);
             return JsonResponseStatus.GetJson(arquivoVM);
         }
 
         protected virtual List<TooltipUI> GetHelpers()
+        {
+            return null;
+        }
+
+        protected virtual List<InputCheckboxUI> GetCheckBboxes()
         {
             return null;
         }

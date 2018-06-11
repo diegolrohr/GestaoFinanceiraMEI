@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 pessoaId = x.PessoaId,
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
-                descricao = x.Descricao.Substring(0, x.Descricao.Length > 40 ? 40 : x.Descricao.Length),
+                descricao = x.Descricao.Substring(0, x.Descricao.Length > 35 ? 35 : x.Descricao.Length),
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 formaPagamento_descricao = x.FormaPagamento.Descricao,
                 formaPagamento = x.FormaPagamento.TipoFormaPagamento,
@@ -67,7 +67,9 @@ namespace Fly01.Financeiro.Controllers.Base
                 valorPago = x.ValorPago,
                 //FormaPagamentoObject = x.FormaPagamento,
                 Pessoa = x.Pessoa,
-                dataVencimentoObject = x.DataVencimento
+                dataVencimentoObject = x.DataVencimento,
+                repeticaoPai = x.ContaFinanceiraRepeticaoPaiId == null && x.Repetir,
+                repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir,
             };
         }
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()

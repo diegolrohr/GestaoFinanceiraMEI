@@ -40,7 +40,7 @@ namespace Fly01.Financeiro.BL
             foreach (var item in contaFinanceira)
             {
                 DashboardFinanceiroVM dashFinanceiro = new DashboardFinanceiroVM();
-                dashFinanceiro.Tipo = EnumHelper.GetDescription(typeof(StatusContaBancaria), item.Tipo.ToString());
+                dashFinanceiro.Tipo = EnumHelper.GetValue(typeof(StatusContaBancaria), item.Tipo.ToString());
                 dashFinanceiro.Quantidade = item.Quantidade;
                 dashFinanceiro.Total = item.Total;
                 DashboardFinanceiroLista.Add(dashFinanceiro);
@@ -89,7 +89,7 @@ namespace Fly01.Financeiro.BL
             foreach (var item in contaFinanceira)
             {
                 DashboardFinanceiroVM dashFinanceiro = new DashboardFinanceiroVM();
-                dashFinanceiro.Tipo = EnumHelper.GetDescription(typeof(StatusContaBancaria), item.Tipo.ToString());
+                dashFinanceiro.Tipo = EnumHelper.GetValue(typeof(TipoFormaPagamento), item.Tipo.ToString());
                 dashFinanceiro.Quantidade = item.Quantidade;
                 dashFinanceiro.Total = item.Total;
                 DashboardFinanceiroLista.Add(dashFinanceiro);
@@ -146,7 +146,7 @@ namespace Fly01.Financeiro.BL
             foreach (var item in contaFinanceira)
             {
                 ContasPagarDoDiaVM dashContaPagarDia = new ContasPagarDoDiaVM();
-                dashContaPagarDia.Status = EnumHelper.GetDescription(typeof(StatusContaBancaria), item.StatusContaBancaria.ToString());
+                dashContaPagarDia.Status = EnumHelper.GetValue(typeof(StatusContaBancaria), item.StatusContaBancaria.ToString());
                 dashContaPagarDia.Valor = item.ValorPrevisto;
                 dashContaPagarDia.Vencimento = item.DataVencimento.ToShortDateString().ToString();
                 dashContaPagarDia.Descrição = item.Descricao;

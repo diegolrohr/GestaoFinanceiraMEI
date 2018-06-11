@@ -160,13 +160,13 @@
     <Compile Include="Migrations\201805301323512_CreateCnabArquivoRemessa.Designer.cs">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.cs" />
-    <Compile Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.Designer.cs">
-      <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
+    <Compile Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs" />
+    <Compile Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
+      <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.cs" />
-    <Compile Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.Designer.cs">
-      <DependentUpon>201805301932055_AddColumnCodigoDVContaBancaria.cs</DependentUpon>
+    <Compile Include="Migrations\201806111824567_AlterTableContaBancaria.cs" />
+    <Compile Include="Migrations\201806111824567_AlterTableContaBancaria.Designer.cs">
+      <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -272,11 +272,11 @@
     <EmbeddedResource Include="Migrations\201805301323512_CreateCnabArquivoRemessa.resx">
       <DependentUpon>201805301323512_CreateCnabArquivoRemessa.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805301808442_AddColumnCodigoCedenteContaFinanceira.resx">
-      <DependentUpon>201805301808442_AddColumnCodigoCedenteContaFinanceira.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.resx">
+      <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805301932055_AddColumnCodigoDVContaBancaria.resx">
-      <DependentUpon>201805301932055_AddColumnCodigoDVContaBancaria.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806111824567_AlterTableContaBancaria.resx">
+      <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

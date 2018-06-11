@@ -3,7 +3,5 @@ using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class CategoriaController : CategoriaBaseController<CategoriaVM>
-    {
-    }
+    public class CategoriaController : CategoriaBaseController<CategoriaVM> { }
 }

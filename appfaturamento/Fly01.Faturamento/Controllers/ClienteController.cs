@@ -12,6 +12,17 @@ namespace Fly01.Faturamento.Controllers
 {
     public class ClienteController : ClienteBaseController<PessoaVM>
     {
+        protected override string ResourceTitle => "Cliente";
+        protected override string LabelTitle => "Clientes";
+        protected override string Filter => "cliente eq true";
+
+        protected override void NormarlizarEntidade(ref PessoaVM entityVM)
+        {
+            entityVM.Cliente = true;
+
+            base.NormarlizarEntidade(ref entityVM);
+        }
+
         public ContentResult FormModal()
         {
             ModalUIForm config = new ModalUIForm()
@@ -76,6 +87,16 @@ namespace Fly01.Faturamento.Controllers
                        Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
                    }
                }
+           };
+        }
+
+        protected override List<InputCheckboxUI> GetCheckBboxes()
+        {
+            return new List<InputCheckboxUI> {
+               new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
+               new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
+               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },
+               new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" }
            };
         }
     }

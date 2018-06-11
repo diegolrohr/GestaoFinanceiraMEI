@@ -1,5 +1,6 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Collections.Generic;
@@ -43,29 +44,31 @@ namespace Fly01.Compras.BL
 
                 quantidadeLista = getQuantidadeStatus(TipoOrdemCompra.Orcamento);
 
-                retornos = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
-                   .Join(_orcamentoBL.All, v =>
-                   v.Id, p => p.Id, (ordemcompra, orcamento) =>
-                   new { OrdemCompra = ordemcompra, Orcamento = orcamento })
-                   .Join(_orcamentoItemBL.All, v =>
-                   v.Orcamento.Id, p => p.OrcamentoId, (orcamento, orcamentoitem) =>
-                   new { Orcamento = orcamento, OrcamentoItem = orcamentoitem })
-                   .Join(_ordemCompraItemBL.All, v =>
-                   v.OrcamentoItem.Id, p => p.Id, (orcamentoitem, ordemcompraitem) =>
-                   new { Orcamentoitem = orcamentoitem, OrdemCompraItem = ordemcompraitem })
-                   .Select(x => new
-                   {
-                       Total = ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto),
-                       x.OrdemCompraItem.Quantidade,
-                       x.Orcamentoitem.Orcamento.OrdemCompra.Status
-                   })
-                   .GroupBy(x => new { x.Status })
-                   .Select(x => new ComprasStatusVM
-                   {
-                       Status = x.Key.Status.ToString(),
-                       Total = Math.Round(x.Sum(u => u.Total), 2),
-                       Quantidade = x.Count()
-                   }).ToList();
+                var groupJoin = (from orcamento in _orcamentoBL.All
+                                 join ordemcompra in _ordemCompraBL.All on orcamento.Id equals ordemcompra.Id
+                                 join orcamentoitem in _orcamentoItemBL.All on ordemcompra.Id equals orcamentoitem.OrcamentoId into ps
+                                 from p in ps.DefaultIfEmpty()
+                                 join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
+                                 from x in xs.DefaultIfEmpty()
+                                 where orcamento.DataInclusao.Month.Equals(filtro.Month) && orcamento.DataInclusao.Year.Equals(filtro.Year)
+                                 select new
+                                 {
+                                     OrdemCompra = ordemcompra,
+                                     OrdemCompraItem = x
+                                 }).ToList();
+
+                retornos = groupJoin.Select(x => new
+                {
+                    Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                    Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
+                    x.OrdemCompra.Status
+                }).GroupBy(x => new { x.Status })
+                    .Select(x => new ComprasStatusVM
+                    {
+                        Status = x.Key.Status.ToString(),
+                        Total = Math.Round(x.Sum(u => u.Total), 2),
+                        Quantidade = x.Count()
+                    }).ToList();
             }
             else
             {
@@ -74,22 +77,26 @@ namespace Fly01.Compras.BL
                 {
                     quantidadeLista = getQuantidadeStatus(TipoOrdemCompra.Pedido);
 
-                    retornos = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
-                        .Join(_pedidoBL.All, v =>
-                        v.Id, p => p.Id, (ordemcompra, pedido) =>
-                        new { OrdemCompra = ordemcompra, Pedido = pedido })
-                        .Join(_pedidoItemBL.All, v =>
-                        v.Pedido.Id, p => p.PedidoId, (pedido, pedidoitem) =>
-                        new { Pedido = pedido, PedidoItem = pedidoitem })
-                        .Join(_ordemCompraItemBL.All, v =>
-                        v.PedidoItem.Id, p => p.Id, (pedidoitem, ordemcompraitem) =>
-                        new { PedidoItem = pedidoitem, OrdemCompraItem = ordemcompraitem })
-                        .Select(x => new
-                        {
-                            Total = ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto),
-                            x.OrdemCompraItem.Quantidade,
-                            x.PedidoItem.Pedido.OrdemCompra.Status
-                        })
+
+                    var groupJoin = (from pedido in _pedidoBL.All
+                                     join ordemcompra in _ordemCompraBL.All on pedido.Id equals ordemcompra.Id
+                                     join pedidoitem in _pedidoItemBL.All on ordemcompra.Id equals pedidoitem.PedidoId into ps
+                                     from p in ps.DefaultIfEmpty()
+                                     join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
+                                     from x in xs.DefaultIfEmpty()
+                                     where pedido.DataInclusao.Month.Equals(filtro.Month) && pedido.DataInclusao.Year.Equals(filtro.Year)
+                                     select new
+                                     {
+                                         OrdemCompra = ordemcompra,
+                                         OrdemCompraItem = x
+                                     }).ToList();
+
+                    retornos = groupJoin.Select(x => new
+                    {
+                        Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
+                        x.OrdemCompra.Status
+                    })
                     .GroupBy(x => new { x.Status })
                     .Select(x => new ComprasStatusVM
                     {
@@ -97,6 +104,7 @@ namespace Fly01.Compras.BL
                         Total = Math.Round(x.Sum(u => u.Total), 2),
                         Quantidade = x.Count()
                     }).ToList();
+
                 }
             }
 
@@ -144,37 +152,48 @@ namespace Fly01.Compras.BL
             {
                 List<ComprasFormasPagamentoVM> quantidadeLista = getQuantidadeComprasPagamento(TipoOrdemCompra.Orcamento);
 
-                //Select realizado para mostrar o valores de orçamentos com Itens
-                List<ComprasFormasPagamentoVM> orcamentos = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
-                  .GroupJoin(_formaPagamentoBL.All, v =>
-                  v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
-                  new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
-                  .Join(_orcamentoBL.All, v =>
-                  v.OrdemCompra.Id, p => p.Id, (ordemcompra, orcamento) =>
-                  new { OrdemCompra = ordemcompra, Orcamento = orcamento })
-                 .Join(_orcamentoItemBL.All, v =>
-                  v.Orcamento.Id, p => p.OrcamentoId, (orcamento, orcamentoitem) =>
-                  new { Orcamento = orcamento, OrcamentoItem = orcamentoitem })
-                  .Join(_ordemCompraItemBL.All, v =>
-                  v.OrcamentoItem.Id, p => p.Id, (orcamentoitem, ordemcompraitem) =>
-                  new { Orcamentoitem = orcamentoitem, OrdemCompraItem = ordemcompraitem })
-                .SelectMany(
-                temp => temp.Orcamentoitem.Orcamento.OrdemCompra.FormaPagamento.DefaultIfEmpty(),
-                (temp, x) =>
-                new
+                var groupJoin = (from orcamento in _orcamentoBL.All
+                                 join ordemcompra in _ordemCompraBL.All on orcamento.Id equals ordemcompra.Id
+                                 join formapagamento in _formaPagamentoBL.All on ordemcompra.FormaPagamentoId equals formapagamento.Id into fs
+                                 from f in fs.DefaultIfEmpty()
+                                 join orcamentoitem in _orcamentoItemBL.All on ordemcompra.Id equals orcamentoitem.OrcamentoId into ps
+                                 from p in ps.DefaultIfEmpty()
+                                 join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
+                                 from x in xs.DefaultIfEmpty()
+                                 where orcamento.DataInclusao.Month.Equals(filtro.Month) && orcamento.DataInclusao.Year.Equals(filtro.Year)
+                                 select new
+                                 {
+                                     OrdemCompra = ordemcompra,
+                                     FormaPagamento = f,
+                                     OrdemCompraItem = x
+                                 }).ToList();
+
+                List<ComprasFormasPagamentoVM> orcamentos = groupJoin.Select(x => new
                 {
-                    Total = ((temp.OrdemCompraItem.Quantidade * temp.OrdemCompraItem.Valor) - temp.OrdemCompraItem.Desconto),
-                    Quantidade = temp.OrdemCompraItem.Quantidade,
-                    TipoFormaPagamento = x.TipoFormaPagamento.ToString()
+                    Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                    Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
+                    TipoFormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.TipoFormaPagamento.ToString() : ""
                 })
                 .GroupBy(x => new { x.TipoFormaPagamento })
                 .Select(x => new ComprasFormasPagamentoVM
                 {
-                    TipoFormaPagamento = x.Key.TipoFormaPagamento == "" ? "Não Definido" : x.Key.TipoFormaPagamento,
-                    Total = Math.Round(x.Sum(u => u.Total), 2)
+                    TipoFormaPagamento = x.Key.TipoFormaPagamento,
+                    Total = Math.Round(x.Sum(u => u.Total), 2),
+                    Quantidade = x.Count()
                 }).ToList();
 
-                return (from x in orcamentos
+                List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
+
+                foreach (var item in orcamentos)
+                {
+                    ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
+                    itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
+                    itemCompras.Quantidade = item.Quantidade;
+                    itemCompras.Total = item.Total;
+                    listaComprasPagamento.Add(itemCompras);
+                }
+
+                return (from x in listaComprasPagamento
                         join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
                         select new ComprasFormasPagamentoVM
                         { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
@@ -184,39 +203,51 @@ namespace Fly01.Compras.BL
                 //Retorna somente os dados de pedidos de compras
                 if (tipo == TipoOrdemCompra.Pedido.ToString())
                 {
-
                     List<ComprasFormasPagamentoVM> quantidadeLista = getQuantidadeComprasPagamento(TipoOrdemCompra.Pedido);
-                    List<ComprasFormasPagamentoVM> pedidos = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == TipoOrdemCompra.Pedido)
-                    .GroupJoin(_formaPagamentoBL.All, v =>
-                    v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
-                    new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
-                    .Join(_pedidoBL.All, v =>
-                    v.OrdemCompra.Id, p => p.Id, (ordemcompra, pedido) =>
-                    new { OrdemCompra = ordemcompra, Pedido = pedido })
-                   .Join(_pedidoItemBL.All, v =>
-                    v.Pedido.Id, p => p.PedidoId, (pedido, pedidoItem) =>
-                    new { Pedido = pedido, PedidoItem = pedidoItem })
-                    .Join(_ordemCompraItemBL.All, v =>
-                    v.PedidoItem.Id, p => p.Id, (pedidoItem, ordemcompraitem) =>
-                    new { PedidoItem = pedidoItem, OrdemCompraItem = ordemcompraitem })
-                    .SelectMany(
-                    temp => temp.PedidoItem.Pedido.OrdemCompra.FormaPagamento.DefaultIfEmpty(),
-                    (temp, x) =>
-                    new
+
+                    var groupJoin = (from pedido in _pedidoBL.All
+                                     join ordemcompra in _ordemCompraBL.All on pedido.Id equals ordemcompra.Id
+                                     join formapagamento in _formaPagamentoBL.All on ordemcompra.FormaPagamentoId equals formapagamento.Id into fs
+                                     from f in fs.DefaultIfEmpty()
+                                     join pedidoitem in _pedidoItemBL.All on ordemcompra.Id equals pedidoitem.PedidoId into ps
+                                     from p in ps.DefaultIfEmpty()
+                                     join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
+                                     from x in xs.DefaultIfEmpty()
+                                     where pedido.DataInclusao.Month.Equals(filtro.Month) && pedido.DataInclusao.Year.Equals(filtro.Year)
+                                     select new
+                                     {
+                                         OrdemCompra = ordemcompra,
+                                         FormaPagamento = f,
+                                         OrdemCompraItem = x
+                                     }).ToList();
+
+                    List<ComprasFormasPagamentoVM> pedidos = groupJoin.Select(x => new
                     {
-                        Total = ((temp.OrdemCompraItem.Quantidade * temp.OrdemCompraItem.Valor) - temp.OrdemCompraItem.Desconto),
-                        temp.OrdemCompraItem.Quantidade,
-                        TipoFormaPagamento = x.TipoFormaPagamento
+                        Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
+                        TipoFormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.TipoFormaPagamento.ToString() : ""
                     })
                     .GroupBy(x => new { x.TipoFormaPagamento })
                     .Select(x => new ComprasFormasPagamentoVM
                     {
-                        TipoFormaPagamento = x.Key.TipoFormaPagamento.ToString() == "" ? "Não Definido" : x.Key.TipoFormaPagamento.ToString(),
+                        TipoFormaPagamento = x.Key.TipoFormaPagamento,
                         Total = Math.Round(x.Sum(u => u.Total), 2),
                         Quantidade = x.Count()
                     }).ToList();
 
-                    return (from x in pedidos
+                    List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
+
+                    foreach (var item in pedidos)
+                    {
+                        ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
+                        itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
+                        itemCompras.Quantidade = item.Quantidade;
+                        itemCompras.Total = item.Total;
+                        listaComprasPagamento.Add(itemCompras);
+                    }
+
+
+                    return (from x in listaComprasPagamento
                             join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
                             select new ComprasFormasPagamentoVM
                             { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
@@ -230,7 +261,7 @@ namespace Fly01.Compras.BL
         public List<ComprasFormasPagamentoVM> getQuantidadeComprasPagamento(TipoOrdemCompra tipoOrdemCompra)
         {
             //Select realizado para mostrar a quantidade de orçamentos mesmo sem Itens
-            return _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
+            var lista = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
              .GroupJoin(_formaPagamentoBL.All, v =>
              v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
              new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
@@ -238,10 +269,23 @@ namespace Fly01.Compras.BL
              temp => temp.FormaPagamento.DefaultIfEmpty(),
              (temp, x) => new
              {
-                 TipoFormaPagamento = x.TipoFormaPagamento.ToString()
+                 TipoFormaPagamento = x.TipoFormaPagamento
              })
             .GroupBy(x => new { x.TipoFormaPagamento })
-            .Select(x => new ComprasFormasPagamentoVM { TipoFormaPagamento = x.Key.TipoFormaPagamento.ToString() == "" ? "Não Definido" : x.Key.TipoFormaPagamento.ToString(), Quantidade = x.Count() }).ToList();
+            .Select(x => new ComprasPagamentosVM { TipoFormaPagamento = x.Key.TipoFormaPagamento, Quantidade = x.Count() }).ToList();
+
+            List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
+
+            foreach (var item in lista)
+            {
+                ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
+                itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.Value.ToString());
+                itemCompras.Quantidade = item.Quantidade;
+                itemCompras.Total = item.Total;
+                listaComprasPagamento.Add(itemCompras);
+            }
+
+            return listaComprasPagamento;
         }
 
         public List<ComprasStatusVM> getQuantidadeStatus(TipoOrdemCompra tipoOrdemCompra)
@@ -253,7 +297,7 @@ namespace Fly01.Compras.BL
                 .Select(x => new ComprasStatusVM
                 {
                     Quantidade = x.Count(),
-                    Status = x.Key.Status.ToString()
+                    Status = x.Key.Status.ToString(),
                 }).ToList();
         }
     }

@@ -67,12 +67,14 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
+            entity.Fail((entity.Status == StatusNotaFiscal.Transmitida && (!entity.SerieNotaFiscalId.HasValue || !entity.NumNotaFiscal.HasValue)), new Error("Para transmitir, informe série e número da nota fiscal"));
 
             var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().FirstOrDefault(x => x.Id == entity.SerieNotaFiscalId);
             if (entity.SerieNotaFiscalId.HasValue)
             {
                 entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NF-e ou tipo ambas"));
             }
+            
 
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue)
             {
@@ -136,8 +138,7 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
                     }
 
-                    //var versao = EnumHelper.GetDescription(parametros.TipoVersaoNFe);
-                    var versao = EnumHelper.GetDescription(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
+                    var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
@@ -379,9 +380,14 @@ namespace Fly01.Faturamento.BL
 
                         if (itemTributacao.CalculaPIS)
                         {
-                            detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
-                            detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
-                            detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase, 2);
+                            //adValorem =  01|02, AliqEspecifica = 03
+                            var tributaveis = "01|02|03";
+                            if (tributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
+                            {
+                                detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
+                                detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
+                                detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase, 2);
+                            }
 
                             if (CST == "05")
                             {
@@ -401,9 +407,14 @@ namespace Fly01.Faturamento.BL
 
                         if (itemTributacao.CalculaCOFINS)
                         {
-                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
-                            detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
-                            detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
+                            //adValorem =  01|02, AliqEspecifica = 03
+                            var tributaveis = "01|02|03";
+                            if (tributaveis.Contains(((int)detalhe.Imposto.COFINS.CodigoSituacaoTributaria).ToString()))
+                            {
+                                detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
+                                detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
+                                detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
+                            }
                         }
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +

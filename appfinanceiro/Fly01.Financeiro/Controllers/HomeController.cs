@@ -20,7 +20,6 @@ namespace Fly01.Financeiro.Controllers
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },

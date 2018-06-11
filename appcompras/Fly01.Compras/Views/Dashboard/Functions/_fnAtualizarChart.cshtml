@@ -2,12 +2,16 @@
     function fnAtualizarChart(value) {
 
         if (value === "1") {
-            $('#chartPagamento').hide();
-            $('#chartStatus').show();
+            $('#chartPagamentoValor').hide();
+            $('#chartPagamentoQtd').hide();
+            $('#chartStatusQtd').show();
+            $('#chartStatusValor').show();
         }
         if (value === "2") {
-            $('#chartStatus').hide();
-            $('#chartPagamento').show();
+            $('#chartStatusQtd').hide();
+            $('#chartStatusValor').hide();
+            $('#chartPagamentoValor').show();
+            $('#chartPagamentoQtd').show();
         }
     }
 </script>

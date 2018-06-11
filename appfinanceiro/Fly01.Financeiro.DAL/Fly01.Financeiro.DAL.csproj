@@ -164,6 +164,10 @@
     <Compile Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
       <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806111824567_AlterTableContaBancaria.cs" />
+    <Compile Include="Migrations\201806111824567_AlterTableContaBancaria.Designer.cs">
+      <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -270,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806061250391_AlterPessoaAlterObservacaoMaxLength500.resx">
       <DependentUpon>201806061250391_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806111824567_AlterTableContaBancaria.resx">
+      <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

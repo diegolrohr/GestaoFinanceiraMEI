@@ -49,7 +49,7 @@
     <Compile Include="ValueObjects\CNPJ.cs" />
     <Compile Include="ValueObjects\CPF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CarteiraVM.cs" />
+    <Compile Include="ViewModels\ValidaDadosBancoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DashboardFinanceiroVM.cs" />
     <Compile Include="ViewModels\BoletoVM.cs" />
     <Compile Include="ViewModels\BuscaCepVM.cs" />

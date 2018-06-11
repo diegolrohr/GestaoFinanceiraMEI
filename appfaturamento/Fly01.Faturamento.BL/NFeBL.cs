@@ -381,9 +381,14 @@ namespace Fly01.Faturamento.BL
 
                         if (itemTributacao.CalculaPIS)
                         {
-                            detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
-                            detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
-                            detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase, 2);
+                            //adValorem =  01|02, AliqEspecifica = 03
+                            var tributaveis = "01|02|03";
+                            if (tributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
+                            {
+                                detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
+                                detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
+                                detalhe.Imposto.PIS.ValorBCDoPIS = Math.Round(itemTributacao.PISBase, 2);
+                            }
 
                             if (CST == "05")
                             {
@@ -403,9 +408,14 @@ namespace Fly01.Faturamento.BL
 
                         if (itemTributacao.CalculaCOFINS)
                         {
-                            detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
-                            detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
-                            detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
+                            //adValorem =  01|02, AliqEspecifica = 03
+                            var tributaveis = "01|02|03";
+                            if (tributaveis.Contains(((int)detalhe.Imposto.COFINS.CodigoSituacaoTributaria).ToString()))
+                            {
+                                detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
+                                detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);
+                                detalhe.Imposto.COFINS.AliquotaPercentual = Math.Round(itemTributacao.COFINSAliquota, 2);
+                            }
                         }
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +

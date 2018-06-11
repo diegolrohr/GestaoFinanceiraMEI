@@ -13,7 +13,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public StatusCnab Status { get; set; }
 
         [NotMapped]
-        [JsonProperty("Status")]
+        [JsonProperty("status")]
         public string StatusRest
         {
             get { return Status.ToString(); }

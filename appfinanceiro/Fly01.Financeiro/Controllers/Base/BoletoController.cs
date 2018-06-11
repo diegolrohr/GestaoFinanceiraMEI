@@ -61,17 +61,9 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
                 var listaArquivosGerados = new List<string>();
-                var queryString = AppDefaults.GetQueryStringDefault();
-                queryString.AddParam("$filter", $"emiteBoleto eq true");
 
-                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
-
-                foreach (var item in GetCnab(ids))
-                {
-                    dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
-                        item.ContaBancariaCedenteId,
-                        GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
-                }
+                var listaBancos = GetListBancos();
+                dictBoletos = MontarBoletos(ids);
 
                 foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
                 {
@@ -216,7 +208,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        public void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        public void SaveArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -228,6 +220,11 @@ namespace Fly01.Financeiro.Controllers.Base
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
+            UpdateCnab(ids, result);
+        }
+
+        private static void UpdateCnab(List<Guid> ids, ArquivoRemessaVM result)
+        {
             var status = ((int)StatusCnab.AguardandoRetorno).ToString();
 
             ids.ForEach(x =>
@@ -325,5 +322,29 @@ namespace Fly01.Financeiro.Controllers.Base
             return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
         }
 
+        public List<KeyValuePair<Guid?, Boleto2Net.Boleto>> MontarBoletos(List<Guid> idsCnabToSave)
+        {
+            var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
+            foreach (var item in GetCnab(idsCnabToSave))
+            {
+                dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
+                    item.ContaBancariaCedenteId,
+                    GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
+            }
+
+            return dictBoletos;
+        }
+
+        public static Dictionary<string, string> GetQueryStringEmiteBoleto()
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"emiteBoleto eq true");
+            return queryString;
+        }
+
+        public static List<BancoVM> GetListBancos()
+        {
+            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
+        }
     }
 }

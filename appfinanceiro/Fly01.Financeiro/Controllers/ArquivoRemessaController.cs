@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var ListName = files[0].Split(',');
             var idsCnabToSave = ids[0].Split(',');
-            SaveArquivoRemessa(idsCnabToSave);
+            SalvarArquivoRemessa(idsCnabToSave);
 
             if (ListName.Length > 1)
             {
@@ -79,21 +79,13 @@ namespace Fly01.Financeiro.Controllers
             return null;
         }
 
-        private void SaveArquivoRemessa(string[] idsCnabToSave)
+        private void SalvarArquivoRemessa(string[] idsCnabToSave)
         {
-            var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
-            foreach (var item in GetCnab(idsCnabToSave.Select(Guid.Parse).ToList()))
-            {
-                dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
-                    item.ContaBancariaCedenteId,
-                    GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
-            }
+            List<BancoVM> listaBancos = GetListBancos();
+            List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictBoletos = MontarBoletos(idsCnabToSave.Select(Guid.Parse).ToList());
 
             foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
             {
-                var queryString = AppDefaults.GetQueryStringDefault();
-                queryString.AddParam("$filter", $"emiteBoleto eq true");
-                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
                 var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
                 var banco = lstBoletos.FirstOrDefault().Banco;
                 var codigoBanco = banco.Codigo.ToString("000");
@@ -110,15 +102,16 @@ namespace Fly01.Financeiro.Controllers
 
                 if (Session[nomeArquivo] != null)
                 {
-                    var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
-                    if (dadosBanco != null)
+                    var bancoId = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
+                    if (bancoId != null)
                     {
                         var ListCnab = GetCnab(idsCnabToSave.Select(Guid.Parse).ToList());
-                        SalvaArquivoRemessa(ListCnab.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), dadosBanco.Id, nomeArquivo, lstBoletos.Count(), total);
+                        SaveArquivoRemessa(ListCnab.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), bancoId.Id, nomeArquivo, lstBoletos.Count(), total);
                     }
                 }
             }
         }
+
 
         private void AddToArchive(ZipArchive ziparchive, string fileName, byte[] attach)
         {

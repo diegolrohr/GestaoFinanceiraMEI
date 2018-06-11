@@ -3,8 +3,6 @@
 
     function fnConfirmGeracaoArquivo(files, ids) {
         window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?files=' + files + "&ids=" + ids;
-        fly01._.dtBoletos.refresh();
-        $("#dtBoletos").loading("stop");
     };
 
     function fnGerarArquivoRemessa() {
@@ -14,7 +12,6 @@
             url: '@Url.Action("GeraArquivoRemessa","Cnab")',
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
-                debugger;
                 if (retorno.success)
                 {
                     var files = retorno.FileGuid;
@@ -22,11 +19,15 @@
                         fly01.confirm("Confirmar Geração de arquivo", "Existem diferentes bancos selecionados para geração do arquivo! Isto acarretará na geração de varios arquivos de remessa de acordo com os bancos selecionados. Deseja Continuar?", "fnConfirmGeracaoArquivo('" + files + "','" + fly01._.dtBoletos.selected + "')");
                     else {
                         window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?files=' + files + "&ids=" + fly01._.dtBoletos.selected;
-                        fly01._.dtBoletos.refresh();
-                        $("#dtBoletos").loading("stop");
-                    };
-                } else 
+                    }
+                }
+                else
                     fly01.toast(retorno.message, 'error');
+
+                setTimeout(function () {
+                    fly01._.dtBoletos.refresh();
+                    $("#dtBoletos").loading("stop");
+                }, 5000);
             }
         });
     };

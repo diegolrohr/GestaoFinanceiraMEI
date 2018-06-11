@@ -42,6 +42,7 @@
     <Compile Include="Config\SessionManager.cs" />
     <Compile Include="Config\TokenDataVM.cs" />
     <Compile Include="Config\UserDataVM.cs" />
+    <Compile Include="Defaults\JsonSerializerSetting.cs" />
     <Compile Include="ValueObjects\InscricaoEstadualHelper.cs" />
     <Compile Include="ValueObjects\Interfaces\IDocumento.cs" />
     <Compile Include="ResultBase.cs" />

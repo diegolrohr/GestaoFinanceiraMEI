@@ -157,7 +157,7 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(item.Identificador.FinalidadeEmissaoNFe != TipoFinalidadeEmissaoNFe.Devolucao,
                             new Error("A chave da nota fiscal referenciada só deve ser informada com finalidade de devolução.", "Item.Identificador.NFReferenciada"));
                         entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
-                            new Error("Chave vázia, informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
+                            new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                         entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,
                             new Error("Tamanho da chave da nota fiscal referenciada inválido.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                     }

@@ -159,7 +159,7 @@ namespace Fly01.EmissaoNFE.BL
                         entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
                             new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                         entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,
-                            new Error("Tamanho da chave da nota fiscal referenciada inválido.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
+                            new Error("Tamanho da chave da nota fiscal referenciada deve conter 44 caracteres.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                     }
                 }
 

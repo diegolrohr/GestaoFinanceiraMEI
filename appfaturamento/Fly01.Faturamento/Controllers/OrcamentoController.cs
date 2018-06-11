@@ -118,7 +118,7 @@ namespace Fly01.Faturamento.Controllers
                 Value = "Normal",
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
-                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
+                ToList().FindAll(x => "Normal".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
 

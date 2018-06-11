@@ -1,5 +1,56 @@
 ﻿<script>
+    function __configsChart() {
+        var simboloMonetario = " R$ ";
+
+
+        fly01._.chartStatusVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
+            var formatedValue = __formatMoney(tooltipItems.yLabel);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartStatusVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
+            var formatedValue = __formatMoney(value);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartStatusVlr.update();
+
+        fly01._.chartPagamentoVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
+            var formatedValue = __formatMoney(tooltipItems.yLabel);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartPagamentoVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
+            var formatedValue = __formatMoney(value);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartPagamentoVlr.update();
+        
+        fly01._.chartCategoriaVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
+            var formatedValue = __formatMoney(tooltipItems.yLabel);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartCategoriaVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
+            var formatedValue = __formatMoney(value);
+
+            return simboloMonetario + formatedValue;
+        }
+
+        fly01._.chartCategoriaVlr.update();
+
+  
+
+    }
+
     function fnFormReady() {
         $("#btnStatus").click();
+        __configsChart();
     }
 </script>

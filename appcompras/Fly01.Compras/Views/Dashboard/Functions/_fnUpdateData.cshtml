@@ -6,9 +6,7 @@
         let lastDay = new Date(date.year, date.month + 1, 0);
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
         $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
-        fly01._.fly01dt.refresh();
-        fly01._.chartStatus.refresh();
-        fly01._.chartPagamento.refresh();
+        fly01.refresh();
 
     }
 </script>

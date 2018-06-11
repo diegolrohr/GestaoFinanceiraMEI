@@ -255,6 +255,7 @@
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\Dashboard\Functions\_fnChangeTipoOrdemCompra.cshtml" />
     <Content Include="Views\Dashboard\Functions\_fnUpdateData.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

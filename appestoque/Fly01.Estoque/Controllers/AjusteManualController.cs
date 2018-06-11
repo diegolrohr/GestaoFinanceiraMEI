@@ -18,15 +18,9 @@ namespace Fly01.Estoque.Controllers
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
 
-        public override Func<AjusteManualVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() { return Form(); }
 
         public override ContentResult Form()
         {

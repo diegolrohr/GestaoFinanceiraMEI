@@ -8,6 +8,5 @@ namespace Fly01.Financeiro.Controllers
         {
             return FormBaixaMultipla("Receber");
         }
-
     }
 }

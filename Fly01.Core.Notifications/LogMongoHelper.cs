@@ -16,7 +16,10 @@ namespace Fly01.Core.Notifications
         private string DataBaseName { get; set; }
 
         public LogMongoHelper(string dbName)
-            : this(ConfigurationManager.AppSettings["MongoHost"], ConfigurationManager.AppSettings["MongoUserName"], ConfigurationManager.AppSettings["MongoPassword"], dbName) { }
+            : this(ConfigurationManager.AppSettings["MongoHost"], 
+                  ConfigurationManager.AppSettings["MongoUserName"], 
+                  ConfigurationManager.AppSettings["MongoPassword"], dbName)
+        { }
 
         public LogMongoHelper(string host, string userName, string password, string databaseName)
         {
@@ -62,12 +65,12 @@ namespace Fly01.Core.Notifications
             return collection.Count(new BsonDocument());
         }
 
-        public List<T> GetAll(string collectionName)
+        public List<T> GetAll(string collectionName, FilterDefinition<T> filter)
         {
             try
             {
                 var collection = GetCollection(collectionName);
-                return collection.Find<T>(new BsonDocument()).ToList();
+                return collection.Find(filter).ToList();
             }
             catch (MongoConnectionException)
             {
@@ -80,6 +83,17 @@ namespace Fly01.Core.Notifications
             var database = MongoClient.GetDatabase(DataBaseName);
             var collection = database.GetCollection<T>(collectionName);
             return collection;
+        }
+
+        public void CreateIndex(string collectionName, string fieldName)
+        {
+            var collection = this.GetCollection(collectionName);
+            var indexOptions = new CreateIndexOptions
+            {
+                Collation = new Collation("pt", strength: CollationStrength.Secondary)
+            };
+
+            collection.Indexes.CreateOne(fieldName, indexOptions);
         }
     }
 }

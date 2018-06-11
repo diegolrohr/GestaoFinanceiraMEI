@@ -7,11 +7,24 @@ using Fly01.Core;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using System.Collections.Generic;
+using Fly01.uiJS.Classes.Elements;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class ClienteController : ClienteBaseController<PessoaVM>
     {
+        protected override string ResourceTitle => "Cliente";
+        protected override string LabelTitle => "Clientes";
+        protected override string Filter => "cliente eq true";
+
+        protected override void NormarlizarEntidade(ref PessoaVM entityVM)
+        {
+            entityVM.Cliente = true;
+
+            base.NormarlizarEntidade(ref entityVM);
+        }
+
         public JsonResult PostCliente(string term)
         {
             var entity = new PessoaVM
@@ -35,6 +48,16 @@ namespace Fly01.Financeiro.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override List<InputCheckboxUI> GetCheckBboxes()
+        {
+            return new List<InputCheckboxUI> {
+               new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
+               new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
+               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },
+               new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" }
+           };
         }
     }
 }

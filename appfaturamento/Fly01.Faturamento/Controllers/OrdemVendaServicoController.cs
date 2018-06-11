@@ -113,10 +113,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public JsonResult GetOrdemVendaServicos(string id)
         {

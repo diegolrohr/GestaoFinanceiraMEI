@@ -8,16 +8,12 @@ namespace Fly01.Estoque.Controllers
 {
     public class InventarioItemController : BaseController<InventarioItemVM>
     {
-
         public InventarioItemController()
         {
             ExpandProperties = "produto($select=descricao,codigoProduto,valorCusto,saldoProduto,unidadeMedidaId),produto($expand=unidadeMedida)";
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override Func<InventarioItemVM, object> GetDisplayData()
         {
@@ -35,10 +31,7 @@ namespace Fly01.Estoque.Controllers
             };
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public virtual JsonResult GridLoadInventarioItem(string id)
         {

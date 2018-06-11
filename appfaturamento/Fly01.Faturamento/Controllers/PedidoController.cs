@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
             DataTableUI dtProdutosEstoqueNegativoCfg = new DataTableUI
             {
                 Parent = "produtosEstoqueNegativoField",
-                Id = "dtProdutosEstoqueNegativo",                
+                Id = "dtProdutosEstoqueNegativo",
                 UrlGridLoad = Url.Action("VerificaEstoqueNegativo"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
@@ -51,20 +51,11 @@ namespace Fly01.Faturamento.Controllers
             return dtProdutosEstoqueNegativoCfg;
         }
 
-        public override Func<OrdemVendaVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<OrdemVendaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult FormPedido(bool isEdit = false)
         {
@@ -183,7 +174,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "clienteNome",
                 DataUrlPost = Url.Action("PostCliente")
             });
-            
+
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
@@ -338,7 +329,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60});
+            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });

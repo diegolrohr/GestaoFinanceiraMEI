@@ -264,6 +264,10 @@
     <Compile Include="Migrations\201806061249585_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
       <DependentUpon>201806061249585_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs" />
+    <Compile Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.Designer.cs">
+      <DependentUpon>201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -455,6 +459,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806061249585_AlterPessoaAlterObservacaoMaxLength500.resx">
       <DependentUpon>201806061249585_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.resx">
+      <DependentUpon>201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     Homologacao(entity);
 
-                    Producao(entity);
+                    //Producao(entity);
 
                     return Ok(new { success = true });
                 }

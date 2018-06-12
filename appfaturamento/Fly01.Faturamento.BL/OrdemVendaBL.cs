@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Faturamento.BL
 {
@@ -47,6 +48,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
+            entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {
@@ -58,11 +60,7 @@ namespace Fly01.Faturamento.BL
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
-                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
-                    {
-                        entity.Fail(string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
-                        entity.Fail(!string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
-                    }
+                    entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
@@ -93,6 +91,7 @@ namespace Fly01.Faturamento.BL
             }
 
             notaFiscal.Id = Guid.NewGuid();
+            notaFiscal.ChaveNFeReferenciada = tipo == TipoNotaFiscal.NFe ? entity.ChaveNFeReferenciada : null;
             notaFiscal.OrdemVendaOrigemId = entity.Id;
             notaFiscal.TipoVenda = entity.TipoVenda;
             notaFiscal.Status = StatusNotaFiscal.NaoTransmitida;
@@ -227,6 +226,46 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        protected void CopiaDadosNFeReferenciadaDevolucao(OrdemVenda entity)
+        {
+            Guid idPedidoReferenciado = default(Guid);
+            var NFe = NFeBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
+
+            if (NFe != null)
+            {
+                idPedidoReferenciado = NFe.OrdemVendaOrigemId;
+
+                var pedidoReferenciado = All.AsNoTracking().Where(x => x.Id == idPedidoReferenciado).FirstOrDefault();
+                if(pedidoReferenciado != null)
+                {
+                    var previousData = entity.Data;
+                    var previousNumero = entity.Numero;
+                    var previousId = entity.Id;
+
+                    #region Copia os dados do pedido de origem da nota fiscal referenciada
+
+                    pedidoReferenciado.CopyProperties<OrdemVenda>(entity);
+                    entity.Id = previousId;
+                    entity.Numero = previousNumero;
+                    entity.Data = previousData;
+
+                    var produtos = OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
+
+                    if (produtos != null & produtos.Any())
+                    {
+                        foreach (var produto in produtos)
+                        {
+                            var produtoClonado = new OrdemVendaProduto();
+                            produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
+                            produtoClonado.OrdemVendaId = entity.Id;
+                            OrdemVendaProdutoBL.Insert(produtoClonado);
+                        }
+                    }
+                    #endregion
+                }
+            }            
+        }
+
         public override void Insert(OrdemVenda entity)
         {
             if (entity.Id == default(Guid))
@@ -237,10 +276,16 @@ namespace Fly01.Faturamento.BL
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
             entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+            entity.NaturezaOperacao = "diego teste";
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemVenda.Finalizado & entity.TipoOrdemVenda == TipoOrdemVenda.Pedido & entity.GeraNotaFiscal & entity.IsValid())
+            //if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && ! string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            //{
+            //    CopiaDadosNFeReferenciadaDevolucao(entity);
+            //}
+
+            if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
@@ -255,7 +300,7 @@ namespace Fly01.Faturamento.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemVenda.Finalizado & entity.TipoOrdemVenda == TipoOrdemVenda.Pedido & entity.GeraNotaFiscal & entity.IsValid())
+            if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }

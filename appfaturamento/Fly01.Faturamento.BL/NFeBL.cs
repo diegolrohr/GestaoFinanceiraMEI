@@ -477,7 +477,12 @@ namespace Fly01.Faturamento.BL
                     var tipoFormaPagamento = TipoFormaPagamento.Outros;
                     if(formaPagamento != null)
                     {
+                        //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
+                    }
+                    if(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    {
+                        tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
 
                     #region Pagamento

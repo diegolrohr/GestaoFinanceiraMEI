@@ -27,14 +27,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         Convert.FromBase64String(entity.Senha)
                     );
 
-                    var prod = new SPEDCFGNFEProd.SPEDCFGNFE().CFGCERTIFICATEPFX(
-                        AppDefault.Token,
-                        entity.Producao,
-                        Convert.FromBase64String(entity.Certificado),
-                        Convert.FromBase64String(entity.Senha)
-                    );
+                    //var prod = new SPEDCFGNFEProd.SPEDCFGNFE().CFGCERTIFICATEPFX(
+                    //    AppDefault.Token,
+                    //    entity.Producao,
+                    //    Convert.FromBase64String(entity.Certificado),
+                    //    Convert.FromBase64String(entity.Senha)
+                    //);
 
-                    var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
+                    //var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
+                    var dados = new SPEDCFGNFE.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Homologacao, "");
 
                     var response = new CertificadoRetornoVM
                     {

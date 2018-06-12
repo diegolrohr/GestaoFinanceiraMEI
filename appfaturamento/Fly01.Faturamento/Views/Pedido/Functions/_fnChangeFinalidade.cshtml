@@ -1,0 +1,14 @@
+﻿<script>
+    function fnChangeFinalidade() {
+        if ($('select#tipoVenda').val() == "Devolucao") {
+            $('input#chaveNFeReferenciada').rules("add", { required: true });
+            $('input#chaveNFeReferenciada').removeAttr("disabled");
+        }
+        else {
+            $('input#chaveNFeReferenciada').rules("remove", "required");
+            $('input#chaveNFeReferenciada').removeClass("invalid")
+            $('input#chaveNFeReferenciada').attr("disabled", "disabled");
+            $('input#chaveNFeReferenciada').val("");
+        }
+    }
+</script>

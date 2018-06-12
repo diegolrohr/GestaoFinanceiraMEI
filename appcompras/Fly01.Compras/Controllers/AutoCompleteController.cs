@@ -15,7 +15,8 @@ namespace Fly01.Compras.Controllers
 
         public override JsonResult GrupoTributario(string term, string filterTipoCfop)
         {
-            filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
+            //filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
+            filterTipoCfop = $"";
 
             return base.GrupoTributario(term, filterTipoCfop);
         }

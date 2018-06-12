@@ -95,7 +95,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 10,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -142,20 +142,25 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "Tipo Venda",
                 ConstrainWidth = true,
                 Required = true,
                 Value = "Normal",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
-                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value))),
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChangeFinalidade" }
+                }
             });
+            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m7", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44, Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m2", Label = "Data", Required = true });
 
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
-                Class = "col s12 m6",
+                Class = "col s12 m10",
                 Label = "Grupo Tributário Padrão",
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioPadraoDescricao",
@@ -337,6 +342,14 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "chaveNFeReferenciada",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar para Faturar este pedido e for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido."
+                }
+            });
             config.Helpers.Add(new TooltipUI
             {
                 Id = "finalizarPedido",

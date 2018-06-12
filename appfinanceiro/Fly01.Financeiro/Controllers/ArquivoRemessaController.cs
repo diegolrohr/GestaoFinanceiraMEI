@@ -91,7 +91,8 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(ids);
+                var dictContasEBoletos = GetListaBoletos(ids);
+
                 return Json(new { success = true, FileGuid = dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().Count() });
             }
             catch (Exception e)

@@ -156,16 +156,15 @@ namespace Fly01.Financeiro.Controllers.Base
 
         public void GerarArquivoPorBanco(List<Boleto2Net.Boleto> lstBoletos, out string nomeArquivo)
         {
-            var boletos = new Boleto2Net.Boletos()
+            var boletos = new Boletos()
             {
                 Banco = lstBoletos.FirstOrDefault().Banco
             };
             boletos.AddRange(lstBoletos);
 
-            var arquivoRemessa = new Boleto2Net.ArquivoRemessa(lstBoletos.FirstOrDefault().Banco, ValidaDadosBancoVM.GetTipoCnab(lstBoletos.FirstOrDefault().Banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+            var arquivoRemessa = new ArquivoRemessa(lstBoletos.FirstOrDefault().Banco, ValidaDadosBancoVM.GetTipoCnab(lstBoletos.FirstOrDefault().Banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
             nomeArquivo = $"{lstBoletos.FirstOrDefault().Banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
             Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
         }
-
     }
 }

@@ -42,12 +42,32 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     var cnabBL = unitOfWork.CnabBL;
                     var data = cnabBL.GetCnab(id);
                     var boletoVM = cnabBL.GetDadosBoleto(data.ContaReceberId.Value, data.ContaBancariaCedenteId.Value);
-                    //var banco = Banco.Instancia(codigoBancConvert.ToInt32(data.ContaBancariaCedente.Banco.Codigo));
-                    //cedente
-                    //banco.Cedente = boletoVM.Cedente;
-                    //var boletoBancario = new Boleto(banco);
 
                     var boletoBancario = cnabBL.GeraBoleto(boletoVM);
+
+                    foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
+                    {
+                        var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
+                        var banco = lstBoletos.FirstOrDefault().Banco;
+                        var codigoBanco = banco.Codigo.ToString("000");
+                        var total = (double)lstBoletos.Sum(x => x.Boleto.ValorTitulo);
+                        var boletos = new Boletos() { Banco = banco };
+                        boletos.AddRange(lstBoletos.Select(x => x.Boleto));
+
+                        var arquivoRemessa = new ArquivoRemessa(banco, ValidaDadosBancoVM.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                        var nomeArquivo = $"{banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
+                        Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
+
+                        if (Session[nomeArquivo] != null)
+                        {
+                            var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
+                            if (dadosBanco != null)
+                            {
+                                listaArquivosGerados.Add(nomeArquivo);
+                            }
+                        }
+                    }
+
 
                     dictBoletos.Add(new KeyValuePair<Guid?, BoletoBancario>(data.ContaBancariaCedenteId, boletoBancario));
                 }

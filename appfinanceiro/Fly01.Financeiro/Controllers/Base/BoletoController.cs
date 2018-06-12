@@ -55,42 +55,12 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         [HttpPost]
-        public ActionResult GeraArquivoRemessa(List<Guid> ids)
+        public ActionResult GetQtdArquivos(List<Guid> ids)
         {
             try
             {
-                var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
-                var listaArquivosGerados = new List<string>();
-
-                var listaBancos = GetListBancos();
-                dictBoletos = MontarBoletos(ids);
-
-                foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
-                {
-                    var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
-                    var banco = lstBoletos.FirstOrDefault().Banco;
-                    var codigoBanco = banco.Codigo.ToString("000");
-                    var total = (double)lstBoletos.Sum(x => x.ValorTitulo);
-                    var boletos = new Boleto2Net.Boletos()
-                    {
-                        Banco = banco
-                    };
-                    boletos.AddRange(lstBoletos);
-
-                    var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, ValidaDadosBancoVM.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-                    var nomeArquivo = $"{banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
-                    Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
-
-                    if (Session[nomeArquivo] != null)
-                    {
-                        var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
-                        if (dadosBanco != null)
-                        {
-                            listaArquivosGerados.Add(nomeArquivo);
-                        }
-                    }
-                }
-                return Json(new { success = true, FileGuid = listaArquivosGerados});
+                List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(ids);
+                return Json(new { success = true, FileGuid = dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().Count() });
             }
             catch (Exception e)
             {
@@ -342,9 +312,23 @@ namespace Fly01.Financeiro.Controllers.Base
             return queryString;
         }
 
-        public static List<BancoVM> GetListBancos()
+        public static List<BancoVM> GetBancosEmiteBoletos()
         {
             return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
         }
+
+        public void GerarArquivoPorBanco(List<Boleto2Net.Boleto> lstBoletos, out string nomeArquivo)
+        {
+            var boletos = new Boleto2Net.Boletos()
+            {
+                Banco = lstBoletos.FirstOrDefault().Banco
+            };
+            boletos.AddRange(lstBoletos);
+
+            var arquivoRemessa = new Boleto2Net.ArquivoRemessa(lstBoletos.FirstOrDefault().Banco, ValidaDadosBancoVM.GetTipoCnab(lstBoletos.FirstOrDefault().Banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+            nomeArquivo = $"{lstBoletos.FirstOrDefault().Banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
+            Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
+        }
+
     }
 }

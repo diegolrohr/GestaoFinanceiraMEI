@@ -361,6 +361,7 @@
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnEnviarPorEmail.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

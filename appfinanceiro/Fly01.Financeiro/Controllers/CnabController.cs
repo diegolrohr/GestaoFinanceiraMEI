@@ -123,19 +123,20 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
                 }
             };
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1, Width = "30%" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 3, Type = "date" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 5 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 3, Type = "currency" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7});
             dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusContaBancaria",
                 DisplayName = "Status",
-                Priority = 5,
+                Priority = 6,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto", Width = "25%" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto"});
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnEnviarPorEmail" });
             #endregion
 
             cfg.Content.Add(dtConfig);
@@ -193,5 +194,7 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
+
+
     }
 }

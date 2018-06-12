@@ -9,7 +9,7 @@
         $("#dtBoletos").loading("start");
         $.ajax({
             type: "POST",
-            url: '@Url.Action("GeraArquivoRemessa","Cnab")',
+            url: '@Url.Action("GeraArquivoRemessa", "ArquivoRemessa")',
             data: { ids: fly01._.dtBoletos.selected },
             success: function (retorno) {
                 if (retorno.success)

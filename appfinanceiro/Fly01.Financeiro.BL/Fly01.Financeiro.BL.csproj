@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="ArquivoBL.cs" />
     <Compile Include="ArquivoRemessaBL.cs" />
+    <Compile Include="BoletoBL.cs" />
     <Compile Include="CnabBL.cs" />
     <Compile Include="ConfiguracaoNotificacaoBL.cs" />
     <Compile Include="CategoriaBL.cs" />
@@ -110,6 +111,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">

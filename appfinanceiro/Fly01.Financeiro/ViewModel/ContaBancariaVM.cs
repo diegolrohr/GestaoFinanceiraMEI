@@ -11,7 +11,6 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("codigoBanco")]
         public string CodigoBanco { get; set; }
 
-        
         [JsonProperty("codigoCedente")]
         [Display(Name = "Código cedente")]
         [StringLength(10, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]

@@ -15,7 +15,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoNotaFiscal TipoNotaFiscal { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoFinalidadeEmissaoNFe TipoVenda { get; set; }
 
         [Required]
         public StatusNotaFiscal Status { get; set; }
@@ -87,9 +87,12 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
-        [StringLength(50)]
+        [StringLength(44)]
         public string SefazId { get; set; }
-        
+
+        [StringLength(44)]
+        public string ChaveNFeReferenciada { get; set; }
+
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Transportadora { get; set; }

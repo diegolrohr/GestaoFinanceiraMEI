@@ -40,9 +40,9 @@ namespace Fly01.Faturamento.Controllers
                 cliente_nome = x.Cliente.Nome,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""

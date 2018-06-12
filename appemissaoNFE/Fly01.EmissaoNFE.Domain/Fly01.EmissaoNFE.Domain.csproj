@@ -44,6 +44,7 @@
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Autorizados.cs" />
     <Compile Include="Entities\NFe\DetalhePagamento.cs" />
+    <Compile Include="Entities\NFe\NFReferenciada.cs" />
     <Compile Include="Entities\NFe\Pagamento.cs" />
     <Compile Include="Entities\NFe\Cobranca.cs" />
     <Compile Include="Entities\NFe\COFINS\COFINS.cs" />
@@ -109,7 +110,6 @@
     <Compile Include="Enums\OrigemProcesso.cs" />
     <Compile Include="Enums\TipoAliquota.cs" />
     <Compile Include="Enums\TipoContaFinanceiraVM.cs" />
-    <Compile Include="Enums\TipoFinalidadeEmissaoNFe.cs" />
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />
     <Compile Include="Enums\TipoDestinoOperacao.cs" />
     <Compile Include="Enums\TipoNota.cs" />

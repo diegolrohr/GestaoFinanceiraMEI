@@ -35,7 +35,6 @@ namespace Fly01.Faturamento.Controllers
             return response.Data.FirstOrDefault();
         }
 
-
         public JsonResult CarregaParametro()
         {
             var parametroTributario = GetParametro();
@@ -237,7 +236,7 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });
+            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 1000 });
 
             #region NFS
             ////Paramentro NFS

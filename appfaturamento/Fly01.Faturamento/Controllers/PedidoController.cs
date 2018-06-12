@@ -136,20 +136,21 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
 
             #region step Cadastro
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m3", Label = "Número", Disabled = true });
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoVenda",
-            //    Class = "col s12 m4",
-            //    Label = "Tipo Venda",
-            //    Value = "Normal",
-            //    Required = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
-            //});
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoVenda",
+                Class = "col s12 m2",
+                Label = "Tipo Venda",
+                ConstrainWidth = true,
+                Required = true,
+                Value = "Normal",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
+            });
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m2", Label = "Data", Required = true });
 
             config.Elements.Add(new AutoCompleteUI
             {

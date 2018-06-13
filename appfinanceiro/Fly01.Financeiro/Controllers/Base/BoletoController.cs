@@ -49,8 +49,8 @@ namespace Fly01.Financeiro.Controllers.Base
 
             if (cnab.Count > 0)
             {
-                //if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
-                //    boletoTemVinculo = true;
+                if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
+                    boletoTemVinculo = true;
             }
 
             return Json(new { success = boletoTemVinculo, data = arquivoRemessaId }, JsonRequestBehavior.AllowGet);
@@ -100,18 +100,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return RestHelper.ExecuteGetRequest<List<DadosArquivoRemessaVM>>("boleto/getListaBoletos", queryString);
         }
 
-        protected static Dictionary<string, string> GetQueryStringEmiteBoleto()
-        {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"emiteBoleto eq true");
-            return queryString;
-        }
-
-        protected static List<BancoVM> GetListBancos()
-        {
-            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
-        }
-
         protected static void UpdateCnab(List<Guid> ids, ArquivoRemessaVM result)
         {
             var status = ((int)StatusCnab.AguardandoRetorno).ToString();
@@ -127,20 +115,6 @@ namespace Fly01.Financeiro.Controllers.Base
             });
         }
 
-        private List<CnabVM> GetContasReceber(Guid? idArquivo, int pageNo)
-        {
-            var queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            var boletos = RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab", queryString);
-
-            return boletos.Data.Where(x => x.ArquivoRemessaId == idArquivo).ToList();
-        }
-
         private Guid? GetIdBanco(string filter)
         {
             var queryString = AppDefaults.GetQueryStringDefault();
@@ -148,10 +122,13 @@ namespace Fly01.Financeiro.Controllers.Base
 
             return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
         }
-        
+
         public static List<BancoVM> GetBancosEmiteBoletos()
         {
-            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"emiteBoleto eq true");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
         }
     }
 }

@@ -1,5 +1,27 @@
 ﻿<script>
     function fnEnviarEmail(data, type, row, meta) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("ValidaBoletoJaGeradoParaOutroBanco", "Cnab")',
+            contentType: "application/json",
+            data: { contaReceberId: $('#contaReceberId').val(), contaBancariaId: $('#bancoId').val()},
+            success: function success(result) {
+                if (result.success) {
+                    if (result.data != null)
+                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
+                    else
+                        fnSaveCnab($('#contaReceberId').val(), $('#bancoId').val(), true, true, $('#email').val());
+                        //fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, true, true, $('#email').val());
+                }
+                else
+                    fnSaveCnab($('#contaReceberId').val(), $('#bancoId').val(), true, true, $('#email').val());
+                    //fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, false, true, $('#email').val());
+
+                that.loading("stop");
+            },
+        });
         return createElement(row).outerHTML;
     }
 </script>

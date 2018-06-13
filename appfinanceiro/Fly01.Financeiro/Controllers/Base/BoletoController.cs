@@ -19,7 +19,7 @@ namespace Fly01.Financeiro.Controllers.Base
     public abstract class BoletoController<TEntity> : BaseController<TEntity> where TEntity : DomainBaseVM
     {
         [HttpGet]
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, bool enviaEmail = false, string email = "")
         {
             try
             {
@@ -30,12 +30,20 @@ namespace Fly01.Financeiro.Controllers.Base
 
                 if (boletoBancario == null) throw new Exception("Não foi possível gerar boleto.");
 
+                if (enviaEmail)
+                    SendBoletoByEmail(email);
+                
                 return Json(new { success = true, message = boletoBancario }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"Ocorreu um erro ao gerar boleto: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private void SendBoletoByEmail(string email)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]

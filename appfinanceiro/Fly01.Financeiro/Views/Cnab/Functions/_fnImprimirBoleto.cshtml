@@ -73,13 +73,13 @@
         }
     });
 
-    function fnSaveCnab(idRecord, contaBancariaId, reemprime) {
+    function fnSaveCnab(idRecord, contaBancariaId, reemprime, enviaPorEmail, email) {
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '@Url.Action("ImprimeBoleto", "Cnab")',
             contentType: "application/json",
-            data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reemprime},
+            data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reemprime, enviaEmail: enviaPorEmail, email: email},
             success: function success(data) {
                 if (data.success) {
                     fly01.toast("Boleto emitido com sucesso.", "success");

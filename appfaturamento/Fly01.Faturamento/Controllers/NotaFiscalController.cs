@@ -168,10 +168,18 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNotaFiscal))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoNotaFiscalCssClass, full.tipoNotaFiscalDescription); }"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 7 });//numero int e pesquisa string
-            config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 8 });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoVenda",
+                DisplayName = "Finalidade",
+                Priority = 5,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription); }"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 6 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 7, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });//numero int e pesquisa string
+            config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 9 });
 
             cfg.Content.Add(config);
 

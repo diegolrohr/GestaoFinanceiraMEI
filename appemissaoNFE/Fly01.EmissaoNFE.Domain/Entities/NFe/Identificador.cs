@@ -221,7 +221,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeNFReferenciada()
         {
-            return FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && NFReferenciada != null && !String.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
+            return FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Fly01.EmissaoNFE.BL
                                     item.Identificador.ModeloDocumentoFiscal.ToString(),
                                     item.Identificador.Serie.ToString(),
                                     item.Identificador.NumeroDocumentoFiscal.ToString(),
-                                    ((int)item.Identificador.TipoDocumentoFiscal).ToString(),
+                                    ((int)item.Identificador.FormaEmissao).ToString(),
                                     item.Identificador.CodigoNF.ToString()
                                 );
 

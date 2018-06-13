@@ -183,20 +183,27 @@ namespace Fly01.Faturamento.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = DateTime.Now,
                         EntradaSaida = DateTime.Now,
-                        TipoDocumentoFiscal = TipoNota.Saida,
+                        TipoDocumentoFiscal = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
                         ChaveAcessoDV = 0,
                         CodigoNF = entity.NumNotaFiscal.Value.ToString(),
                         Ambiente = parametros.TipoAmbiente,
-                        FinalidadeEmissaoNFe = TipoFinalidadeEmissaoNFe.Normal,
+                        FinalidadeEmissaoNFe = entity.TipoVenda,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
                         PresencaComprador = parametros.TipoPresencaComprador,
                         Versao = "2.78",//versao do TSS
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
+                    if(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    {
+                        itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
+                        {
+                            ChaveNFeReferenciada = entity.ChaveNFeReferenciada
+                        };
+                    }
                     #endregion
 
                     #region Emitente

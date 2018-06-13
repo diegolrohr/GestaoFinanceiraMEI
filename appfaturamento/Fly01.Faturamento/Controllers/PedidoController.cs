@@ -34,7 +34,8 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter { Id = "id", Required = true }
+                    new DataTableUIParameter { Id = "id", Required = true },
+                    new DataTableUIParameter { Id = "tipoVenda", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
                 {
@@ -347,7 +348,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "chaveNFeReferenciada",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar para Faturar este pedido e for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido."
+                    Text = "Se marcar para Faturar este pedido e for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Necessário alterar os grupos tributários correspondentes a operação."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -476,12 +477,13 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public JsonResult VerificaEstoqueNegativo(string id)
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
+                queryString.AddParam("tipoVenda", tipoVenda);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);
 

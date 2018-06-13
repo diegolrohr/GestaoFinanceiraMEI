@@ -331,10 +331,6 @@ namespace Fly01.EmissaoNFE.BL
                             }
                         }
                     }
-                    else
-                    {
-                        entity.Fail(true, new Error("IE Transportadora - Este dado é obrigatório"));
-                    }
                 }
 
                 if (item.Transporte.Veiculo != null)

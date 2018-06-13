@@ -28,7 +28,7 @@ namespace Fly01.Compras.Controllers
                 Items = new List<LinkUI>
             {
                 new LinkUI() { Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
-                new LinkUI() { Label = "Orçamento/Pedido", OnClick = @Url.Action("List", "OrdemCompra")},
+                new LinkUI() { Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
             }
             });
 

@@ -100,21 +100,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return RestHelper.ExecuteGetRequest<List<DadosArquivoRemessaVM>>("boleto/getListaBoletos", queryString);
         }
 
-        protected static void UpdateCnab(List<Guid> ids, ArquivoRemessaVM result)
-        {
-            var status = ((int)StatusCnab.AguardandoRetorno).ToString();
-
-            ids.ForEach(x =>
-            {
-                var resource = $"cnab/{x}";
-                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
-                {
-                    arquivoRemessaId = result.Id,
-                    status = status
-                }));
-            });
-        }
-
         private Guid? GetIdBanco(string filter)
         {
             var queryString = AppDefaults.GetQueryStringDefault();

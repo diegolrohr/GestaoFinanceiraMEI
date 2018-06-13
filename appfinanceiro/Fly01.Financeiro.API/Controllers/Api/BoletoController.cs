@@ -39,24 +39,24 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                foreach (var id in listIdCnab.Split(',').Select(x => Guid.Parse(x)))
-                {
-                    var cnabBL = unitOfWork.CnabBL;
-                    var data = cnabBL.GetCnab(id);
-                    var boletoVM = cnabBL.GetDadosBoleto(data.ContaReceberId.Value, data.ContaBancariaCedenteId.Value);
+                var cnabBL = unitOfWork.CnabBL;
 
+                listIdCnab.Split(',').Select(x => Guid.Parse(x)).ToList().ForEach(id =>
+                {
+                    var dadosCnab = cnabBL.GetCnab(id);
+                    var boletoVM = cnabBL.GetDadosBoleto(dadosCnab.ContaReceberId.Value, dadosCnab.ContaBancariaCedenteId.Value);
                     var boletoBancario = cnabBL.GeraBoleto(boletoVM);
 
-                    dictBoletos.Add(new KeyValuePair<Guid?, BoletoBancario>(data.ContaBancariaCedenteId, boletoBancario));
-                }
+                    dictBoletos.Add(new KeyValuePair<Guid?, BoletoBancario>(dadosCnab.ContaBancariaCedenteId, boletoBancario));
+                });
 
-                foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
+                dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().ForEach(item =>
                 {
-                    var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
-                    var banco = lstBoletos.FirstOrDefault().Boleto.Banco;
-                    var total = (double)lstBoletos.Sum(x => x.Boleto.ValorTitulo);
+                    var lstBoletoBancario = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value);
+                    var banco = lstBoletoBancario.FirstOrDefault().Boleto.Banco;
                     var boletos = new Boletos() { Banco = banco };
-                    boletos.AddRange(lstBoletos.Select(x => x.Boleto));
+
+                    boletos.AddRange(lstBoletoBancario.Select(x => x.Boleto));
 
                     var arquivoRemessa = new ArquivoRemessa(banco, BoletoBL.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
                     dadosArquivoRemessa.Add(new DadosArquivoRemessaVM
@@ -64,10 +64,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
                         ContaBancariaCedenteId = item.Key.Value,
                         CodigoBanco = banco.Codigo,
                         TotalBoletosGerados = boletos.Count(),
-                        ValorTotalArquivoRemessa = total,
+                        ValorTotalArquivoRemessa = (double)lstBoletoBancario.Sum(x => x.Boleto.ValorTitulo),
                         ConteudoArquivoRemessa = arquivoRemessa.GerarArquivoRemessa(boletos)
                     });
-                }
+                });
             }
 
             return Ok(dadosArquivoRemessa);

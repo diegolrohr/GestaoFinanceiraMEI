@@ -28,11 +28,10 @@
     };
 
     function fnImprimirBoleto(data, type, row, meta) {
-        debugger;
-         return createForm(row).outerHTML;
+        return createForm(row).outerHTML;
     };
 
-    function fnConfirmedOrCancel(idRecord, contaBancariaId) {        
+    function fnConfirmedOrCancel(idRecord, contaBancariaId) {
         reemprime = true;
         fnSaveCnab(idRecord, contaBancariaId, reemprime);
     }
@@ -64,7 +63,7 @@
                             fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
                         else
                             fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, true);
-                    } 
+                    }
                     else
                         fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, false);
 

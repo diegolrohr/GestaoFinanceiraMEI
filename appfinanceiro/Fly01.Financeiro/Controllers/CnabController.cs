@@ -194,7 +194,5 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
-
-
     }
 }

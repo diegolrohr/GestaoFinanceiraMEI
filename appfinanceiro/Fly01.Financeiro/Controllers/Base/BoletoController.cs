@@ -87,7 +87,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return boletos.Data;
         }
 
-        protected List<KeyValuePair<Guid?, BoletoBancario>> GetListaBoletos(List<Guid> idsCnabToSave)
+        protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave)
         {
             var queryString = new Dictionary<string, string>()
             {
@@ -97,7 +97,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 }
             };
 
-            return RestHelper.ExecuteGetRequest<List<KeyValuePair<Guid?, BoletoBancario>>>("boleto/getListaBoletos", queryString);
+            return RestHelper.ExecuteGetRequest<List<DadosArquivoRemessaVM>>("boleto/getListaBoletos", queryString);
         }
 
         protected static Dictionary<string, string> GetQueryStringEmiteBoleto()
@@ -152,19 +152,6 @@ namespace Fly01.Financeiro.Controllers.Base
         public static List<BancoVM> GetBancosEmiteBoletos()
         {
             return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
-        }
-
-        public void GerarArquivoPorBanco(List<Boleto2Net.Boleto> lstBoletos, out string nomeArquivo)
-        {
-            var boletos = new Boletos()
-            {
-                Banco = lstBoletos.FirstOrDefault().Banco
-            };
-            boletos.AddRange(lstBoletos);
-
-            var arquivoRemessa = new ArquivoRemessa(lstBoletos.FirstOrDefault().Banco, ValidaDadosBancoVM.GetTipoCnab(lstBoletos.FirstOrDefault().Banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-            nomeArquivo = $"{lstBoletos.FirstOrDefault().Banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
-            Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
         }
     }
 }

@@ -12,20 +12,5 @@ namespace Fly01.Compras.Controllers
 
             return base.Categoria(term, filterTipoCarteira);
         }
-
-        public override JsonResult GrupoTributario(string term, string filterTipoCfop)
-        {
-            //filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
-            filterTipoCfop = $"";
-
-            return base.GrupoTributario(term, filterTipoCfop);
-        }
-
-        public override JsonResult Cfop(string term, string filterTipoCfop)
-        {
-            filterTipoCfop = $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
-
-            return base.Cfop(term, filterTipoCfop);
-        }
     }
 }

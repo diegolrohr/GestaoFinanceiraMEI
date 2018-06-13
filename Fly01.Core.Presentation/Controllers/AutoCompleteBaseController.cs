@@ -291,14 +291,14 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public virtual JsonResult Cfop(string term, string filterTipoCfop)
+        public virtual JsonResult Cfop(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(CfopVM));
             int codigo = 0;
             int.TryParse(term, out codigo);
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo}) {filterTipoCfop}");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or codigo eq {codigo})");
             queryString.AddParam("$select", "id,descricao,codigo");
             queryString.AddParam("$orderby", "descricao");
 
@@ -308,12 +308,12 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public virtual JsonResult GrupoTributario(string term, string filterTipoCfop)
+        public virtual JsonResult GrupoTributario(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(GrupoTributarioVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') {filterTipoCfop}");
+            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
             queryString.AddParam("$select", "id,descricao,tipoTributacaoICMS");
             queryString.AddParam("$orderby", "descricao");
 

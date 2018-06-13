@@ -19,19 +19,6 @@ namespace Fly01.Faturamento.Controllers
             return base.Categoria(term, filterTipoCarteira);
         }
 
-        public override JsonResult Cfop(string term, string filterTipoCfop)
-        {
-            filterTipoCfop = $"and tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'";
-            return base.Cfop(term, filterTipoCfop);
-        }
-
-        public override JsonResult GrupoTributario(string term, string filterTipoCfop)
-        {
-            filterTipoCfop = $"and cfop/tipo eq {AppDefaults.APIEnumResourceName}TipoCfop'Saida'";
-
-            return base.GrupoTributario(term, filterTipoCfop);
-        }
-
         public JsonResult Nbs(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(NBSVM));

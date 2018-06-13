@@ -56,7 +56,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFrete={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
                  (OrdemVenda.TipoFrete == "Remetente" || OrdemVenda.TipoFrete == "CIF") ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
@@ -95,7 +95,7 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total
                 });
 
@@ -132,7 +132,7 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total
                 });
 
@@ -321,7 +321,7 @@ namespace Fly01.Faturamento.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Orçamento / Pedido",
+                    Title = "Vendas",
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" },
@@ -627,11 +627,11 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, double? valorFreteCIF = 0)
+        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id, clienteId, geraNotaFiscal.ToString(), valorFreteCIF.ToString().Replace(",", "."), false);
+                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFrete={3}&onList={4}", id, clienteId, geraNotaFiscal.ToString(), valorFrete.ToString().Replace(",", "."), false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
                 return Json(

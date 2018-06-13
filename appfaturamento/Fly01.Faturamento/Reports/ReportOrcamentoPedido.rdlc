@@ -1670,14 +1670,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Valor do Frete CIF R$: </Value>
+                              <Value>Valor do Frete R$: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value>=Fields!ValorFreteCIF.Value</Value>
+                              <Value>=Fields!ValorFreteTotal.Value</Value>
                               <Style>
                                 <Format>#,0.00</Format>
                               </Style>
@@ -2018,11 +2018,11 @@
         </Field>
         <Field Name="PesoBruto">
           <DataField>PesoBruto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="PesoLiquido">
           <DataField>PesoLiquido</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Status">
           <DataField>Status</DataField>
@@ -2050,7 +2050,7 @@
         </Field>
         <Field Name="ValorFrete">
           <DataField>ValorFrete</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Observacao">
           <DataField>Observacao</DataField>
@@ -2066,7 +2066,7 @@
         </Field>
         <Field Name="ItemQtd">
           <DataField>ItemQtd</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemNome">
           <DataField>ItemNome</DataField>
@@ -2074,44 +2074,44 @@
         </Field>
         <Field Name="ItemDesconto">
           <DataField>ItemDesconto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemTotal">
           <DataField>ItemTotal</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemValor">
           <DataField>ItemValor</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalProdutos">
           <DataField>TotalProdutos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalImpostosProdutos">
           <DataField>TotalImpostosProdutos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalServicos">
           <DataField>TotalServicos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalImpostosServicos">
           <DataField>TotalImpostosServicos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="ValorFreteCIF">
-          <DataField>ValorFreteCIF</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="ValorFreteTotal">
+          <DataField>ValorFreteTotal</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Total">
           <DataField>Total</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\SaaS\Fly01.Apps\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>OrcamentoPedido</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

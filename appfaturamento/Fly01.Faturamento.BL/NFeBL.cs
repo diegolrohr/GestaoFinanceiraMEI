@@ -607,7 +607,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFreteCIF = 0)
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFrete = 0)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
@@ -619,7 +619,7 @@ namespace Fly01.Faturamento.BL
             var result = new TotalNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-                ValorFreteCIF = valorFreteCIF.HasValue ? Math.Round(valorFreteCIF.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                ValorFrete = valorFrete.HasValue ? Math.Round(valorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };

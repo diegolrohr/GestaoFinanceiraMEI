@@ -117,7 +117,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId, double? valorFreteCIF = 0)
+        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId, double? valorFrete = 0)
         {
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
@@ -128,7 +128,7 @@ namespace Fly01.Faturamento.BL
             var result = new TotalNotaFiscal()
             {
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
-                ValorFreteCIF = 0,
+                ValorFrete = 0,
                 TotalImpostosServicos = Math.Round(totalImpostosServicos, 2, MidpointRounding.AwayFromZero),
             };
 

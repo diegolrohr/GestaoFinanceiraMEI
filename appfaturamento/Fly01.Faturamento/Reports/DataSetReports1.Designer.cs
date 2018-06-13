@@ -1085,7 +1085,7 @@ namespace Fly01.Faturamento.Reports {
             
             private global::System.Data.DataColumn columnTotalImpostosServicos;
             
-            private global::System.Data.DataColumn columnValorFreteCIF;
+            private global::System.Data.DataColumn columnValorFreteTotal;
             
             private global::System.Data.DataColumn columnTotal;
             
@@ -1356,9 +1356,9 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ValorFreteCIFColumn {
+            public global::System.Data.DataColumn ValorFreteTotalColumn {
                 get {
-                    return this.columnValorFreteCIF;
+                    return this.columnValorFreteTotal;
                 }
             }
             
@@ -1437,7 +1437,7 @@ namespace Fly01.Faturamento.Reports {
                         double TotalImpostosProdutos, 
                         double TotalServicos, 
                         double TotalImpostosServicos, 
-                        double ValorFreteCIF, 
+                        double ValorFreteTotal, 
                         double Total) {
                 OrcamentoPedidoRow rowOrcamentoPedidoRow = ((OrcamentoPedidoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -1470,7 +1470,7 @@ namespace Fly01.Faturamento.Reports {
                         TotalImpostosProdutos,
                         TotalServicos,
                         TotalImpostosServicos,
-                        ValorFreteCIF,
+                        ValorFreteTotal,
                         Total};
                 rowOrcamentoPedidoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrcamentoPedidoRow);
@@ -1523,7 +1523,7 @@ namespace Fly01.Faturamento.Reports {
                 this.columnTotalImpostosProdutos = base.Columns["TotalImpostosProdutos"];
                 this.columnTotalServicos = base.Columns["TotalServicos"];
                 this.columnTotalImpostosServicos = base.Columns["TotalImpostosServicos"];
-                this.columnValorFreteCIF = base.Columns["ValorFreteCIF"];
+                this.columnValorFreteTotal = base.Columns["ValorFreteTotal"];
                 this.columnTotal = base.Columns["Total"];
             }
             
@@ -1588,8 +1588,8 @@ namespace Fly01.Faturamento.Reports {
                 base.Columns.Add(this.columnTotalServicos);
                 this.columnTotalImpostosServicos = new global::System.Data.DataColumn("TotalImpostosServicos", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalImpostosServicos);
-                this.columnValorFreteCIF = new global::System.Data.DataColumn("ValorFreteCIF", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnValorFreteCIF);
+                this.columnValorFreteTotal = new global::System.Data.DataColumn("ValorFreteTotal", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnValorFreteTotal);
                 this.columnTotal = new global::System.Data.DataColumn("Total", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotal);
                 this.columnPesoBruto.DefaultValue = ((double)(0D));
@@ -1602,7 +1602,7 @@ namespace Fly01.Faturamento.Reports {
                 this.columnTotalImpostosProdutos.DefaultValue = ((double)(0D));
                 this.columnTotalServicos.DefaultValue = ((double)(0D));
                 this.columnTotalImpostosServicos.DefaultValue = ((double)(0D));
-                this.columnValorFreteCIF.DefaultValue = ((double)(0D));
+                this.columnValorFreteTotal.DefaultValue = ((double)(0D));
                 this.columnTotal.DefaultValue = ((double)(0D));
             }
             
@@ -3126,17 +3126,17 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double ValorFreteCIF {
+            public double ValorFreteTotal {
                 get {
                     try {
-                        return ((double)(this[this.tableOrcamentoPedido.ValorFreteCIFColumn]));
+                        return ((double)(this[this.tableOrcamentoPedido.ValorFreteTotalColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ValorFreteCIF\' in table \'OrcamentoPedido\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ValorFreteTotal\' in table \'OrcamentoPedido\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableOrcamentoPedido.ValorFreteCIFColumn] = value;
+                    this[this.tableOrcamentoPedido.ValorFreteTotalColumn] = value;
                 }
             }
             
@@ -3506,14 +3506,14 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsValorFreteCIFNull() {
-                return this.IsNull(this.tableOrcamentoPedido.ValorFreteCIFColumn);
+            public bool IsValorFreteTotalNull() {
+                return this.IsNull(this.tableOrcamentoPedido.ValorFreteTotalColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetValorFreteCIFNull() {
-                this[this.tableOrcamentoPedido.ValorFreteCIFColumn] = global::System.Convert.DBNull;
+            public void SetValorFreteTotalNull() {
+                this[this.tableOrcamentoPedido.ValorFreteTotalColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

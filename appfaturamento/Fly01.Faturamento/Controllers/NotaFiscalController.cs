@@ -203,11 +203,11 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalNotaFiscal(string id, double? valorFreteCIF = 0)
+        public JsonResult TotalNotaFiscal(string id, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalNotaFiscal?&notaFiscalId={0}&valorFreteCIF={1}", id, valorFreteCIF.ToString().Replace(",", "."));
+                var resource = string.Format("CalculaTotalNotaFiscal?&notaFiscalId={0}&valorFrete={1}", id, valorFrete.ToString().Replace(",", "."));
                 var response = RestHelper.ExecuteGetRequest<TotalNotaFiscalVM>(resource, queryString: null);
 
                 return Json(

@@ -94,7 +94,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -103,7 +103,7 @@
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
             }

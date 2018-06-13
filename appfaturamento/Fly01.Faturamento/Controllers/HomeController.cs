@@ -67,7 +67,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Faturamento",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI() {Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemVenda")},
+                    new LinkUI() {Label = "Vendas", OnClick = @Url.Action("List", "OrdemVenda")},
                     new LinkUI() {Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscal")},
                 }
             });

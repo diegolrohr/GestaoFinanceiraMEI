@@ -17,13 +17,13 @@
         $.ajax({
             url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
             type: "GET",
-            data: { id: idNFe, valorFreteCIF: valorFrete }
+            data: { id: idNFe, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
-                $('form#fly01mdlfrmVisualizarNFe input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmVisualizarNFe input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmVisualizarNFe input#totalNotaFiscal').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
             }

@@ -101,6 +101,9 @@ namespace Fly01.Financeiro.BL
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero)) boleto.Sacado.EnderecoNumero = "0";
 
+            if (string.IsNullOrEmpty(boleto.Cedente.CodigoCedente)) throw new Exception("É necessário informar o código do cedente");
+            if (string.IsNullOrEmpty(boleto.Cedente.CodigoDV)) boleto.Cedente.CodigoDV = "0";
+
             return true;
         }
 

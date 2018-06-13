@@ -58,6 +58,5 @@ namespace Fly01.Financeiro.BL
             }
             return TipoArquivo.CNAB240;
         }
-
     }
 }

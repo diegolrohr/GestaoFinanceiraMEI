@@ -49,8 +49,8 @@ namespace Fly01.Financeiro.Controllers.Base
 
             if (cnab.Count > 0)
             {
-                //if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
-                //    boletoTemVinculo = true;
+                if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
+                    boletoTemVinculo = true;
             }
 
             return Json(new { success = boletoTemVinculo, data = arquivoRemessaId }, JsonRequestBehavior.AllowGet);
@@ -87,7 +87,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return boletos.Data;
         }
 
-        protected List<KeyValuePair<Guid?, BoletoBancario>> GetListaBoletos(List<Guid> idsCnabToSave)
+        protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave)
         {
             var queryString = new Dictionary<string, string>()
             {
@@ -97,48 +97,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 }
             };
 
-            return RestHelper.ExecuteGetRequest<List<KeyValuePair<Guid?, BoletoBancario>>>("boleto/getListaBoletos", queryString);
-        }
-
-        protected static Dictionary<string, string> GetQueryStringEmiteBoleto()
-        {
-            var queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"emiteBoleto eq true");
-            return queryString;
-        }
-
-        protected static List<BancoVM> GetListBancos()
-        {
-            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
-        }
-
-        protected static void UpdateCnab(List<Guid> ids, ArquivoRemessaVM result)
-        {
-            var status = ((int)StatusCnab.AguardandoRetorno).ToString();
-
-            ids.ForEach(x =>
-            {
-                var resource = $"cnab/{x}";
-                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
-                {
-                    arquivoRemessaId = result.Id,
-                    status = status
-                }));
-            });
-        }
-
-        private List<CnabVM> GetContasReceber(Guid? idArquivo, int pageNo)
-        {
-            var queryString = new Dictionary<string, string>
-            {
-                { "arquivoRemessaId", idArquivo.ToString()},
-                { "pageNo", pageNo.ToString() },
-                { "pageSize", "10"}
-            };
-
-            var boletos = RestHelper.ExecuteGetRequest<PagedResult<CnabVM>>("cnab", queryString);
-
-            return boletos.Data.Where(x => x.ArquivoRemessaId == idArquivo).ToList();
+            return RestHelper.ExecuteGetRequest<List<DadosArquivoRemessaVM>>("boleto/getListaBoletos", queryString);
         }
 
         private Guid? GetIdBanco(string filter)
@@ -148,24 +107,13 @@ namespace Fly01.Financeiro.Controllers.Base
 
             return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
         }
-        
+
         public static List<BancoVM> GetBancosEmiteBoletos()
         {
-            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"emiteBoleto eq true");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
         }
-
-        public void GerarArquivoPorBanco(List<Boleto2Net.Boleto> lstBoletos, out string nomeArquivo)
-        {
-            var boletos = new Boleto2Net.Boletos()
-            {
-                Banco = lstBoletos.FirstOrDefault().Banco
-            };
-            boletos.AddRange(lstBoletos);
-
-            var arquivoRemessa = new Boleto2Net.ArquivoRemessa(lstBoletos.FirstOrDefault().Banco, ValidaDadosBancoVM.GetTipoCnab(lstBoletos.FirstOrDefault().Banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
-            nomeArquivo = $"{lstBoletos.FirstOrDefault().Banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
-            Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
-        }
-
     }
 }

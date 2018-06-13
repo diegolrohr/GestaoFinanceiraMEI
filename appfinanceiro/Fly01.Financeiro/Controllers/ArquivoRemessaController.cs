@@ -91,8 +91,9 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(ids);
-                return Json(new { success = true, FileGuid = dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().Count() });
+                //List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(ids);
+                //return Json(new { success = true, FileGuid = dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList().Count() });
+                return null;
             }
             catch (Exception e)
             {
@@ -135,31 +136,32 @@ namespace Fly01.Financeiro.Controllers
 
         private List<String> SalvarArquivoRemessa(string[] idsCnabToSave)
         {
-            List<string> ArquivosGeradosPorBanco = new List<string>();
-            List<BancoVM> Bancos = GetBancosEmiteBoletos();
-            List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(idsCnabToSave.Select(Guid.Parse).ToList());
+            //List<string> ArquivosGeradosPorBanco = new List<string>();
+            //List<BancoVM> Bancos = GetBancosEmiteBoletos();
+            //List<KeyValuePair<Guid?, Boleto2Net.Boleto>> dictContasEBoletos = MontarBoletos(idsCnabToSave.Select(Guid.Parse).ToList());
 
-            foreach (var item in dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
-            {
-                var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
-                var banco = lstBoletos.FirstOrDefault().Banco;
-                var codigoBanco = banco.Codigo.ToString("000");
-                var total = (double)lstBoletos.Sum(x => x.ValorTitulo);
-                var boletos = new Boleto2Net.Boletos()
-                {
-                    Banco = banco
-                };
-                boletos.AddRange(lstBoletos);
+            //foreach (var item in dictContasEBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
+            //{
+            //    var lstBoletos = dictBoletos.Where(x => x.Key == item.Key).Select(x => x.Value).ToList();
+            //    var banco = lstBoletos.FirstOrDefault().Banco;
+            //    var codigoBanco = banco.Codigo.ToString("000");
+            //    var total = (double)lstBoletos.Sum(x => x.ValorTitulo);
+            //    var boletos = new Boleto2Net.Boletos()
+            //    {
+            //        Banco = banco
+            //    };
+            //    boletos.AddRange(lstBoletos);
 
-                string nomeArquivo;
-                GerarArquivoPorBanco(Boletos, out nomeArquivo);
+            //    string nomeArquivo;
+            //    GerarArquivoPorBanco(Boletos, out nomeArquivo);
 
-                var bancoId = Bancos.FirstOrDefault(x => x.Codigo.Contains(Boletos.FirstOrDefault().Banco.Codigo.ToString("000")));
-                var Cnabs = GetCnab(idsCnabToSave.Select(Guid.Parse).ToList());
-                Save(Cnabs.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), bancoId.Id, nomeArquivo, Boletos.Count(), total);
-                ArquivosGeradosPorBanco.Add(nomeArquivo);
-            }
-            return ArquivosGeradosPorBanco;
+            //    var bancoId = Bancos.FirstOrDefault(x => x.Codigo.Contains(Boletos.FirstOrDefault().Banco.Codigo.ToString("000")));
+            //    var Cnabs = GetCnab(idsCnabToSave.Select(Guid.Parse).ToList());
+            //    Save(Cnabs.Where(x => x.ContaBancariaCedenteId == item.Key).Select(x => x.Id).ToList(), bancoId.Id, nomeArquivo, Boletos.Count(), total);
+            //    ArquivosGeradosPorBanco.Add(nomeArquivo);
+            //}
+            //return ArquivosGeradosPorBanco;
+            return null;
         }
 
         private void Save(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)

@@ -18,7 +18,7 @@ namespace Fly01.Financeiro.Controllers
     {
         public CnabController()
         {
-            ExpandProperties = "contaReceber($select=id),contaReceber($expand=pessoa($select=nome)),contaBancariaCedente($expand=banco($select=nome))";
+            ExpandProperties = "contaReceber($select=id),contaReceber($expand=pessoa($select=nome,email)),contaBancariaCedente($expand=banco($select=nome))";
         }
 
         public override Func<CnabVM, object> GetDisplayData()
@@ -123,6 +123,7 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
                 }
             };
+
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 3, Type = "currency" });
@@ -136,7 +137,7 @@ namespace Fly01.Financeiro.Controllers
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto"});
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnEnviarPorEmail" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
             #endregion
 
             cfg.Content.Add(dtConfig);
@@ -195,6 +196,28 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
+        public ContentResult ModalConfigEmail(string email)
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Configuração para o envio de e-mail",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnEnviarEmail" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = "",
+                    Edit = "",
+                    List = ""
+                },
+                Id = "fly01mdlfrmModalConfigEmail"
+            };
+
+            config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12 l12", Label = "Assunto", Readonly = false });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
 
     }
 }

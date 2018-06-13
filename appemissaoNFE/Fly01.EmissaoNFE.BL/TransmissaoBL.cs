@@ -77,7 +77,7 @@ namespace Fly01.EmissaoNFE.BL
             nota.InfoNFe.Pagamento = item.Pagamento;
             nota.InfoNFe.InformacoesAdicionais = item.InformacoesAdicionais;
 
-            if(item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || !nota.InfoNFe.Autorizados.Any()))
+            if (item.Emitente.Endereco.UF == "BA" && (nota.InfoNFe.Autorizados == null || !nota.InfoNFe.Autorizados.Any()))
             {
                 nota.InfoNFe.Autorizados = new List<Autorizados>();
                 nota.InfoNFe.Autorizados.Add(new Autorizados() { CNPJ = "13937073000156" });
@@ -152,7 +152,7 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Informação de consumidor final inválida.", "Item.Identificador.ConsumidorFinal"));
                     entity.Fail((item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && item.Identificador.NFReferenciada == null),
                         new Error("Finalidade de devolução é necessário informar a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada"));
-                    if(item.Identificador.NFReferenciada != null)
+                    if (item.Identificador.NFReferenciada != null)
                     {
                         entity.Fail(item.Identificador.FinalidadeEmissaoNFe != TipoFinalidadeEmissaoNFe.Devolucao,
                             new Error("A chave da nota fiscal referenciada só deve ser informada com finalidade de devolução.", "Item.Identificador.NFReferenciada"));
@@ -191,7 +191,7 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Código de município do emitente difere do informado na identificação.", "Item.Emitente.Endereco.CodigoMunicipio"));
                     entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Municipio),
                         new Error("Município do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Municipio"));
-                    if (item.Emitente.InscricaoEstadual != null)
+                    if (!string.IsNullOrEmpty(item.Emitente.InscricaoEstadual))
                     {
                         if (!EmpresaBL.ValidaIE(item.Emitente.Endereco.UF, item.Emitente.InscricaoEstadual, out msgError))
                         {
@@ -252,7 +252,7 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Código de município do destinatário inválido.", "Item.Destinatario.Endereco.CodigoMunicipio"));
                     entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio),
                         new Error("Município do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Municipio"));
-                    if (item.Destinatario.InscricaoEstadual != null && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
+                    if (!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual) && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
                     {
                         if (!EmpresaBL.ValidaIE(item.Destinatario.Endereco.UF, item.Destinatario.InscricaoEstadual, out msgError))
                         {
@@ -305,7 +305,7 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Municipio),
                         new Error("Município da transportadora é um dado obrigatório", "Item.Transporte.Transportadora.Municipio"));
 
-                    if (item.Transporte.Transportadora.IE != null)
+                    if (!string.IsNullOrEmpty(item.Transporte.Transportadora.IE))
                     {
                         if (!EmpresaBL.ValidaIE(item.Transporte.Transportadora.UF, item.Transporte.Transportadora.IE, out msgError))
                         {
@@ -1180,7 +1180,7 @@ namespace Fly01.EmissaoNFE.BL
                         var troco = item.Pagamento.ValorTroco.HasValue ? item.Pagamento.ValorTroco : 0;
 
                         entity.Fail(somaPagamentos < valorTotalNF, new Error("O somatório do valor dos detalhes dos pagamentos não pode ser menor ao total da nota. Item[" + nItem + "].Pagamento.DetalhesPagamentos.ValorPagamento."));
-                        entity.Fail((somaPagamentos > valorTotalNF) && ((somaPagamentos - troco) != valorTotalNF) , new Error("Valor do troco inválido ou não informado. Troco = (total pagamentos - total nota). Item[" + nItem + "].Pagamento.ValorTroco."));
+                        entity.Fail((somaPagamentos > valorTotalNF) && ((somaPagamentos - troco) != valorTotalNF), new Error("Valor do troco inválido ou não informado. Troco = (total pagamentos - total nota). Item[" + nItem + "].Pagamento.ValorTroco."));
 
                         if (valorTotalNF.Equals(somaPagamentos))
                         {

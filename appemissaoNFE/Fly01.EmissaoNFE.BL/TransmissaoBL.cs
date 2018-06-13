@@ -180,7 +180,7 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Código de município do emitente difere do informado na identificação.", "Item.Emitente.Endereco.CodigoMunicipio"));
                     entity.Fail(string.IsNullOrEmpty(item.Emitente.Endereco.Municipio),
                         new Error("Município do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Municipio"));
-                    if (item.Emitente.InscricaoEstadual != null)
+                    if (!string.IsNullOrEmpty(item.Emitente.InscricaoEstadual))
                     {
                         if (!EmpresaBL.ValidaIE(item.Emitente.Endereco.UF, item.Emitente.InscricaoEstadual, out msgError))
                         {
@@ -241,7 +241,7 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Código de município do destinatário inválido.", "Item.Destinatario.Endereco.CodigoMunicipio"));
                     entity.Fail(string.IsNullOrEmpty(item.Destinatario.Endereco.Municipio),
                         new Error("Município do destinatário é um dado obrigatório.", "Item.Destinatario.Endereco.Municipio"));
-                    if (item.Destinatario.InscricaoEstadual != null && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
+                    if (!string.IsNullOrEmpty(item.Destinatario.InscricaoEstadual) && item.Destinatario.IndInscricaoEstadual == IndInscricaoEstadual.ContribuinteICMS)
                     {
                         if (!EmpresaBL.ValidaIE(item.Destinatario.Endereco.UF, item.Destinatario.InscricaoEstadual, out msgError))
                         {
@@ -294,7 +294,7 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail(string.IsNullOrEmpty(item.Transporte.Transportadora.Municipio),
                         new Error("Município da transportadora é um dado obrigatório", "Item.Transporte.Transportadora.Municipio"));
 
-                    if (item.Transporte.Transportadora.IE != null)
+                    if (!string.IsNullOrEmpty(item.Transporte.Transportadora.IE))
                     {
                         if (!EmpresaBL.ValidaIE(item.Transporte.Transportadora.UF, item.Transporte.Transportadora.IE, out msgError))
                         {

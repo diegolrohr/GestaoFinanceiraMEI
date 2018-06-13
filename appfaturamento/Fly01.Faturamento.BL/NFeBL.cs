@@ -255,7 +255,7 @@ namespace Fly01.Faturamento.BL
                             CNPJ = transportadora != null && transportadora.TipoDocumento == "J" ? transportadora.CPFCNPJ : null,
                             CPF = transportadora != null && transportadora.TipoDocumento == "F" ? transportadora.CPFCNPJ : null,
                             Endereco = transportadora != null ? transportadora.Endereco : null,
-                            IE = transportadora != null ? transportadora.InscricaoEstadual : null,
+                            IE = transportadora != null ? (transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? transportadora.InscricaoEstadual : null) : null,
                             Municipio = transportadora != null && transportadora.Cidade != null ? transportadora.Cidade.Nome : null,
                             RazaoSocial = transportadora != null ? transportadora.Nome : null,
                             UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null

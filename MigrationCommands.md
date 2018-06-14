@@ -1,3 +1,9 @@
+# Rodar UpdateDatabase em Todos os Bancos
+
+```PowerShell
+.\RunUpdateDatabase.ps1
+```
+
 # Compras
 
 ```PowerShell

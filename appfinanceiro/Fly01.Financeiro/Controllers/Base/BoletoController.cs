@@ -3,41 +3,61 @@ using Fly01.Core;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
-using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Financeiro.ViewModel;
 using System.Collections.Generic;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Boleto2Net;
 using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.Mensageria;
+using System.IO;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
     public abstract class BoletoController<TEntity> : BaseController<TEntity> where TEntity : DomainBaseVM
     {
+        private string GetBoletoAsString(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
+        {
+            var boletoBancario = RestHelper.ExecuteGetRequest<string>("boleto/imprimeBoleto", new Dictionary<string, string>
+            {
+                { "contaReceberId", contaReceberId.ToString() }, { "contaBancariaId", contaBancariaId.ToString() }
+            });
+
+            if (boletoBancario == null) throw new Exception("Não foi possível gerar boleto.");
+
+            return boletoBancario;
+        }
+
         [HttpGet]
-        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, bool enviaEmail = false, string email = "")
+        public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
         {
             try
             {
-                var boletoBancario = RestHelper.ExecuteGetRequest<string>("boleto/imprimeBoleto", new Dictionary<string, string>
-                {
-                    { "contaReceberId", contaReceberId.ToString() }, { "contaBancariaId", contaBancariaId.ToString() }
-                });
+                var boleto = GetBoletoAsString(contaReceberId, contaBancariaId, reimprimeBoleto);
 
-                if (boletoBancario == null) throw new Exception("Não foi possível gerar boleto.");
-
-                if (enviaEmail)
-                    SendBoletoByEmail(email);
-                
-                return Json(new { success = true, message = boletoBancario }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, message = boleto }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"Ocorreu um erro ao gerar boleto: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GerarBoletoEnviaEmail(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, string email = "", string assunto = "")
+        {
+            try
+            {
+                var boleto = GetBoletoAsString(contaReceberId, contaBancariaId, reimprimeBoleto);
+                var stream = new MemoryStream(ConvertHTMLToPDF.Convert(boleto));
+
+                Mail.Send("Honatel", email, "TesteBoleto", "AAAA", stream);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
         }
 

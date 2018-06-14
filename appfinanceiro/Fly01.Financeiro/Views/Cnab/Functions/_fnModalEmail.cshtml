@@ -8,17 +8,18 @@
         var formAttr = {
             "class": "cnabFormMail valign-wrapper left col s6 btn btn-narrow valid",
             "id": "btnEmail",
-            "onclick": "return fnAbreModalEnviaPorEmail()"
+            "onclick": "return fnAbreModalEnviaPorEmail('" + row.contaReceberId + "')"
         };
-        return createElem("button", formAttr, [inputHiddenId("emailId", row.email) ,createElem("i", { "class": "material-icons" }, "email")]);
+
+        return createElem("button", formAttr, [inputHiddenId("emailId", row.email), createElem("i", { "class": "material-icons" }, "email")]);
     }
 
     function fnModalEmail(data, type, row, meta) {
         return createElement(row).outerHTML;
     }
 
-    function fnAbreModalEnviaPorEmail(){
-        var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + $('#emailId').val();
+    function fnAbreModalEnviaPorEmail(contaReceberId){
+        var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + $('#emailId').val() + "&contaReceberId=" + contaReceberId;
         fly01.modal(url);
     }
 </script>

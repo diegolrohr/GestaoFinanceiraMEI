@@ -12,16 +12,38 @@
                     if (result.data != null)
                         fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
                     else
-                        fnSaveCnab($('#contaReceberId').val(), $('#bancoId').val(), true, true, $('#email').val());
-                        //fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, true, true, $('#email').val());
+                        fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), "");
                 }
                 else
-                    fnSaveCnab($('#contaReceberId').val(), $('#bancoId').val(), true, true, $('#email').val());
-                    //fnSaveCnab(that.serializeObject().contaReceberId, contaBancariaId, false, true, $('#email').val());
-
-                that.loading("stop");
+                    fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), "");
             },
         });
         return createElement(row).outerHTML;
+    }
+
+    function fnGerarCnabEnviaEmail(idRecord, contaBancariaId, reimprime, pEmail, pAssunto) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("GerarBoletoEnviaEmail", "Cnab")',
+            contentType: "application/json",
+            data: { contaReceberId:idRecord, contaBancariaId:contaBancariaId, reimprimeBoleto:reimprime, email:pEmail, assunto:pAssunto},
+            success: function success(data) {
+                if (data.success) {
+                    fly01.toast("Boleto emitido com sucesso.", "success");
+                    if (data.message !== "" && data.message !== undefined) {
+                        var win = window.open("", "_blank");
+                        win.document.write(data.message);
+                        win.print();
+                        win.close();
+                    }
+                } else {
+                    fly01.loading.stop();
+                    fly01.toast(data.message, "error");
+                }
+
+                fly01.loading.stop();
+            },
+        });
     }
 </script>

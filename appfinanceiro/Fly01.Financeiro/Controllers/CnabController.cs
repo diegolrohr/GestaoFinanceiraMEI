@@ -196,7 +196,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email)
+        public ContentResult ModalConfigEmail(string email, string contaReceberId)
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -210,14 +210,15 @@ namespace Fly01.Financeiro.Controllers
                     Edit = "",
                     List = ""
                 },
-                Id = "fly01mdlfrmModalConfigEmail"
+                Id = "fly01mdlfrmModalConfigEmail",
+                
             };
 
+            config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12 l12", Label = "Assunto", Readonly = false });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
     }
 }

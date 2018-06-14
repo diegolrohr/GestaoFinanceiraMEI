@@ -42,6 +42,7 @@ Update-Database -ProjectName Fly01.Financeiro.DAL -StartUpProjectName Fly01.Fina
 
 ```PowerShell
 Add-Migration -ProjectName Fly01.Financeiro.DAL -StartUpProjectName Fly01.Financeiro.API -ConfigurationTypeName Fly01.Financeiro.DAL.Migrations.Configuration -Name MigrationName
+```
 
 # EmissaoNFE
 

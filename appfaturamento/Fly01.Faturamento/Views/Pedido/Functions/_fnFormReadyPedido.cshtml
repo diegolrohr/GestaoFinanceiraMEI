@@ -15,9 +15,14 @@
 
     function calculaTotalPedido() {
         var valorFrete = 0;
-        if (($('select#tipoVenda').val() == "Devolucao" && ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente"))
-            ||
-            ($('select#tipoVenda').val() == "Normal" && ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario"))){
+        var tipoFrete = $('select#tipoFrete').val();
+        var tipoVenda = $('select#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+
+        if (calculaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 
@@ -39,7 +44,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFrete: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {

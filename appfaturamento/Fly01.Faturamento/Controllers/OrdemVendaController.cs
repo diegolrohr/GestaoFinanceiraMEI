@@ -56,8 +56,12 @@ namespace Fly01.Faturamento.Controllers
         {
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFrete={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
-                 (OrdemVenda.TipoFrete == "Remetente" || OrdemVenda.TipoFrete == "CIF") ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
+            bool calculaFrete = (
+                ((OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && OrdemVenda.TipoVenda == "Normal") ||
+                ((OrdemVenda.TipoFrete == "FOB" || OrdemVenda.TipoFrete == "Destinatario") && OrdemVenda.TipoVenda == "Devolucao")
+            );
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
+                 OrdemVenda.TipoVenda, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
@@ -627,11 +631,11 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, double? valorFrete = 0)
+        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFrete={3}&onList={4}", id, clienteId, geraNotaFiscal.ToString(), valorFrete.ToString().Replace(",", "."), false);
+                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
                 return Json(

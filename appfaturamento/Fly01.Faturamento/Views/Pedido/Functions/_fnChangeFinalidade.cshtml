@@ -1,14 +1,21 @@
 ﻿<script>
-    function fnChangeFinalidade() {
-        if ($('select#tipoVenda').val() == "Devolucao") {
-            $('input#chaveNFeReferenciada').rules("add", { required: true });
-            $('input#chaveNFeReferenciada').removeAttr("disabled");
+    function fnShowHideNFeReferenciada(tipoVenda) {
+        if (tipoVenda == "Devolucao") {
+            $("#chaveNFeReferenciada").rules("add", { required: true });
+            $("#chaveNFeReferenciadaField").show();
+            $("input#tipoCarteira").val("Despesa");
         }
         else {
-            $('input#chaveNFeReferenciada').rules("remove", "required");
-            $('input#chaveNFeReferenciada').removeClass("invalid")
-            $('input#chaveNFeReferenciada').attr("disabled", "disabled");
-            $('input#chaveNFeReferenciada').val("");
+            $("input#chaveNFeReferenciada").rules("remove", "required");
+            $("input#chaveNFeReferenciada").removeClass("invalid")
+            $("#chaveNFeReferenciadaField").hide();
+            $("input#chaveNFeReferenciada").val("");
+            $("input#tipoCarteira").val("Receita");
         }
+    }
+
+    function fnChangeFinalidade(tipoVenda) {
+        $("input#tipoVenda").val(tipoVenda);
+        fnShowHideNFeReferenciada(tipoVenda);
     }
 </script>

@@ -329,8 +329,10 @@ namespace Fly01.Faturamento.BL
 
             if (entity.GeraFinanceiro)
             {
-                bool isSaida = ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal);
-                bool isEntrada = ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao);
+                bool pagaFrete = (
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                );
                 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -342,7 +344,7 @@ namespace Fly01.Faturamento.BL
                     + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
 
                 //frete se não tiver transportadora gerar para o cliente?
-                (calculaFrete && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0) // ver questões do frete
+                //(pagaFrete && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0) // ver questões do frete
 
                 //TODO: Ver questões das contas e estoque
                 ContaReceber contaReceber = new ContaReceber()

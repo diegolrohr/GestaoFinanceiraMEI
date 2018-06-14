@@ -12,9 +12,9 @@ namespace Fly01.Faturamento.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public override JsonResult Categoria(string term, string filterTipoCarteira)
+        public override JsonResult Categoria(string term, string prefilter)
         {
-            filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Receita'";
+            var filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'{prefilter}'";
 
             return base.Categoria(term, filterTipoCarteira);
         }

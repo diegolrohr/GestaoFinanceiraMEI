@@ -286,7 +286,7 @@ namespace Fly01.Core.Presentation.Controllers
             queryString.AddParam("$select", "id,descricao,categoriaPaiId,tipoCarteira");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CategoriaVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, categoriaPaiId = item.CategoriaPaiId, level = item.Level };
+                                select new { id = item.Id, label = item.Descricao, detail = item.TipoCarteira.ToString(), categoriaPaiId = item.CategoriaPaiId, level = item.Level };
 
             return GetJson(filterObjects);
         }

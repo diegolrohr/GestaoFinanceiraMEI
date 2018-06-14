@@ -414,9 +414,16 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription); }"
             });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoVenda",
+                DisplayName = "Finalidade",
+                Priority = 4,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription); }"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
 
             cfg.Content.Add(config);
 

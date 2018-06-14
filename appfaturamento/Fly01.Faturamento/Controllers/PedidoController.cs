@@ -94,6 +94,12 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new FormWizardUIStep()
                     {
+                        Title = "Finalidade",
+                        Id = "stepFinalidade",
+                        Quantity = 2,
+                    },
+                    new FormWizardUIStep()
+                    {
                         Title = "Cadastro",
                         Id = "stepCadastro",
                         Quantity = 11,
@@ -133,35 +139,38 @@ namespace Fly01.Faturamento.Controllers
                 ShowStepNumbers = true
             };
 
+            #region step Finalidade
+            config.Elements.Add(new ButtonGroupUI()
+            {
+                Id = "fly01btngrpFinalidade",
+                Class = "col s12 m6 offset-m3",
+                OnClickFn = "fnChangeFinalidade",
+                Label = "Tipo do pedido",
+                Options = new List<ButtonGroupOptionUI>
+                {
+                    new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal", Class = "col s6 btn-secondary active" },
+                    new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução", Class = "col s6 btn-secondary" },
+                }
+            });
+            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+            #endregion
+
+            #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
-
-            #region step Cadastro
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoVenda",
-                Class = "col s12 m3",
-                Label = "Tipo Venda",
-                ConstrainWidth = true,
-                Required = true,
-                Value = "Normal",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
-                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value))),
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "fnChangeFinalidade" }
-                }
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m7", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44, Disabled = true });
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m2", Label = "Data", Required = true });
+            
+            
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
-                Class = "col s12 m10",
+                Class = "col s12 m7",
                 Label = "Grupo Tributário Padrão",
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioPadraoDescricao",
@@ -253,6 +262,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "categoriaId",
                 Class = "col s12 m6",
                 Label = "Categoria",
+                PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
@@ -348,7 +358,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "chaveNFeReferenciada",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar para Faturar este pedido e for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Necessário alterar os grupos tributários correspondentes a operação."
+                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Necessário alterar os grupos tributários correspondentes a operação."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -445,6 +455,7 @@ namespace Fly01.Faturamento.Controllers
             cfg.Content.Add(GetDtOrdemVendaProdutosCfg());
             cfg.Content.Add(GetDtOrdemVendaServicosCfg());
             cfg.Content.Add(GetDtProdutosEstoqueNegativoCfg());
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
 
         }

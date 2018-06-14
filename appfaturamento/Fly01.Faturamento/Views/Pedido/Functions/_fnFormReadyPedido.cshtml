@@ -16,7 +16,7 @@
     function calculaTotalPedido() {
         var valorFrete = 0;
         var tipoFrete = $('select#tipoFrete').val();
-        var tipoVenda = $('select#tipoVenda').val();
+        var tipoVenda = $('#tipoVenda').val();
         var calculaFrete = (
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
@@ -76,6 +76,16 @@
         });
     }
 
+    function disableStepFinalidade() {
+        //para não ficar trocando o chaveSefaz
+        $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
+        $('#fly01btngrpFinalidade input:not(.active)').attr('disabled', 'disabled');
+
+        if ($('#tipoVenda').val() == "Devolucao") {
+            $('#stepServicos').hide();
+        }
+    }
+
     function fnBindStepsWizard() {
         function savePedido() {
             if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
@@ -88,6 +98,15 @@
         });
         $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             savePedido();
+        });
+
+        $('li#stepCadastro div.step-title').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
+        });
+        $('#stepFinalidade > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
         });
     }
 
@@ -178,19 +197,29 @@
     }
 
     function fnFormReadyPedido() {
-
+        $("#naturezaOperacaoField").hide();
         if (isCreate()) {
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
-            $("input#geraFinanceiro").prop("checked", true);
-            $("#naturezaOperacaoField").hide();
+            $("input#geraNotaFiscal").prop("checked", true);
+            $("#chaveNFeReferenciadaField").hide();
             fly01._.data.set(today);
             fly01._.dataVencimento.set(today);
             fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
+            //setar o agrupamento com a opção escolhida
+            if ($('input#tipoVenda') == "Normal") {
+                $('input#btnNormal').addClass('active');
+                $('input#btnDevolucao').removeClass('active');
+            }
+            else {
+                $('input#btnNormal').removeClass('active');
+                $('input#btnDevolucao').addClass('active');
+            }
+            disableStepFinalidade();
             fly01._.dtOrdemVendaProdutos.refresh();
             fly01._.dtOrdemVendaServicos.refresh();
         }
@@ -201,12 +230,12 @@
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
-            if (!isCreate()) {
+            if (!isCreate() && $("form#fly01frm").isValid()) {
                 EstoqueNegativoETotal();
             }
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate()) {
+            if (!isCreate() && $("form#fly01frm").isValid()) {
                 EstoqueNegativoETotal();
             }
         });

@@ -25,6 +25,7 @@ namespace Fly01.Faturamento.BL
         private readonly string descricaoVenda = @"Venda nº: {0}";
         private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Faturamento: {1}";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
+        private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
 
         public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
@@ -328,11 +329,9 @@ namespace Fly01.Faturamento.BL
 
             if (entity.GeraFinanceiro)
             {
-                bool calculaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
-                );
-
+                bool isSaida = ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal);
+                bool isEntrada = ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao);
+                
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
                 double totalServicos = servicos != null ? servicos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -340,8 +339,10 @@ namespace Fly01.Faturamento.BL
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
                 double valorPrevisto = totalProdutos
                     + totalServicos
-                    + (calculaFrete && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0)
                     + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
+
+                //frete se não tiver transportadora gerar para o cliente?
+                (calculaFrete && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0) // ver questões do frete
 
                 //TODO: Ver questões das contas e estoque
                 ContaReceber contaReceber = new ContaReceber()
@@ -373,15 +374,16 @@ namespace Fly01.Faturamento.BL
                                   })
                     .Select(x => new MovimentoOrdemVenda
                     {
-                        QuantidadeBaixa = (x.Total),
+                        Quantidade = (x.Total),
                         PedidoNumero = entity.Numero,
                         ProdutoId = x.ProdutoId,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
+                        TipoVenda = entity.TipoVenda,
                         PlataformaId = PlataformaUrl
                     }).ToList();
 
-                foreach (var movimentoBaixa in movimentos)
-                    Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimentoBaixa, RabbitConfig.enHTTPVerb.POST);
+                foreach (var movimento in movimentos)
+                    Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimento, RabbitConfig.enHTTPVerb.POST);
             }
         }
 

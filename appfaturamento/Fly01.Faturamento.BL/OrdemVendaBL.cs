@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.BL
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
 
         private readonly string descricaoVenda = @"Venda nº: {0}";
-        private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Compras: {1}";
+        private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Faturamento: {1}";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
         
@@ -57,13 +57,18 @@ namespace Fly01.Faturamento.BL
                 if (entity.GeraNotaFiscal)
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
+                    entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
+                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    {
+                        entity.Fail(string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                        entity.Fail(!string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+                    }
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
-                entity.Fail(entity.GeraNotaFiscal && entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")

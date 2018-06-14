@@ -294,9 +294,9 @@ namespace Fly01.Faturamento.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemVenda), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusOrdemVenda), x.Status),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
                 cliente_nome = x.Cliente.Nome,
                 geraNotaFiscal = x.GeraNotaFiscal
             };
@@ -479,7 +479,8 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
             config.Elements.Add(new AutoCompleteUI

@@ -37,7 +37,7 @@ namespace Fly01.Financeiro.BL
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
-            var nossoNumero = 0;
+            int nossoNumero = 0;
             var cnabReemprime = base.All.FirstOrDefault(x => x.ContaBancariaCedenteId == contaBancariaId && x.ContaReceberId == contaReceberId);
 
             if (cnabReemprime != null)
@@ -60,6 +60,7 @@ namespace Fly01.Financeiro.BL
             var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
             var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
+            var dataCedente = GetDadosCedente(contaBancariaId);
 
             var boletoVM = new BoletoVM()
             {
@@ -71,10 +72,11 @@ namespace Fly01.Financeiro.BL
                 DataDesconto = contaReceber.DataDesconto ?? null,
                 DataVencimento = contaReceber.DataVencimento,
                 NossoNumero = nossoNumero,
+                NossoNumeroFormatado = FormataNossoNumero(dataCedente.CodigoCedente, dataCedente.ContaBancariaCedente.CodigoBanco, nossoNumero),
                 EspecieMoeda = "R$",
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
                 InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber),
-                Cedente = GetDadosCedente(contaBancariaId),
+                Cedente = dataCedente,
                 Sacado = GetDadosSacado(contaReceber.PessoaId)
             };
 
@@ -199,7 +201,7 @@ namespace Fly01.Financeiro.BL
             if (!proxy.DefinirSacado(cedente.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
                 sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, FormataNossoNumero(cedente, boleto.NossoNumero), boleto.DataEmissao,
+            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, FormataNossoNumero(cedente.CodigoCedente, cedente.ContaBancariaCedente.CodigoBanco, boleto.NossoNumero), boleto.DataEmissao,
                 DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
@@ -226,13 +228,23 @@ namespace Fly01.Financeiro.BL
             return result;
         }
 
-        protected string FormataNossoNumero(CedenteVM cedente, int nossoNumero)
+        protected string FormataNossoNumero(string codigoCedente, int codigoBanco, int nossoNumero)
         {
-            var tipo = (TipoCodigoBanco)Enum.ToObject(typeof(TipoCodigoBanco), cedente.ContaBancariaCedente.CodigoBanco);
+            var tipo = (TipoCodigoBanco)Enum.ToObject(typeof(TipoCodigoBanco), codigoBanco);
             switch (tipo)
             {
                 case TipoCodigoBanco.BancoBrasil:
-                    return $"{cedente.CodigoCedente}{nossoNumero.ToString().PadLeft(10, '0')}";
+                    return $"{codigoCedente}{nossoNumero.ToString().PadLeft(10, '0')}";
+                case TipoCodigoBanco.Itau:
+                    return nossoNumero.ToString().PadLeft(8, '0');
+                case TipoCodigoBanco.Banrisul:
+                    return nossoNumero.ToString().PadLeft(8, '0');
+                case TipoCodigoBanco.Bradesco:
+                    return nossoNumero.ToString().PadLeft(11, '0');
+                case TipoCodigoBanco.Caixa:
+                    return $"{14}{nossoNumero.ToString().PadLeft(15, '0')}";
+                case TipoCodigoBanco.Santander:
+                    return nossoNumero.ToString().PadLeft(12, '0');
             }
             return nossoNumero.ToString();
         }
@@ -247,6 +259,7 @@ namespace Fly01.Financeiro.BL
                 DataEmissao = boleto.Boleto.DataEmissao,
                 DataVencimento = boleto.Boleto.DataVencimento,
                 NossoNumero = Convert.ToInt32(boleto.Boleto.NossoNumero),
+                NossoNumeroFormatado = FormataNossoNumero(boleto.Boleto.Banco.Cedente.Codigo, boleto.Boleto.Banco.Codigo, Convert.ToInt32(boleto.Boleto.NossoNumero)),
                 DataDesconto = boleto.Boleto.DataDesconto,
                 ValorDesconto = (double)boleto.Boleto.ValorDesconto,
                 ContaBancariaCedenteId = contaBancariaId,

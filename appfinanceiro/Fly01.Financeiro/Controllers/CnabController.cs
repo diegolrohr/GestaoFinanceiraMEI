@@ -211,12 +211,13 @@ namespace Fly01.Financeiro.Controllers
                     List = ""
                 },
                 Id = "fly01mdlfrmModalConfigEmail",
-                
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12 l12", Label = "Assunto", Readonly = false });
+            config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });
+            
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

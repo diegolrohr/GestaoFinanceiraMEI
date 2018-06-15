@@ -10,7 +10,6 @@
             "id": "btnEmail",
             "onclick": "return fnAbreModalEnviaPorEmail('" + row.contaReceberId + "')"
         };
-
         return createElem("button", formAttr, [inputHiddenId("emailId", row.email), createElem("i", { "class": "material-icons" }, "email")]);
     }
 

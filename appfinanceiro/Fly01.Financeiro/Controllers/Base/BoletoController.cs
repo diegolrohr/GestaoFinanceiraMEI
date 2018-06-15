@@ -44,14 +44,13 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         [HttpGet]
-        public JsonResult GerarBoletoEnviaEmail(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, string email = "", string assunto = "")
+        public JsonResult GerarBoletoEnviaEmail(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, string email = "", string assunto = "", string mensagem = "")
         {
             try
             {
                 var boleto = GetBoletoAsString(contaReceberId, contaBancariaId, reimprimeBoleto);
                 var stream = new MemoryStream(ConvertHTMLToPDF.Convert(boleto));
-
-                Mail.Send("Honatel", email, "TesteBoleto", "AAAA", stream);
+                Mail.Send(GetDadosEmpresa().NomeFantasia, email, assunto, mensagem, stream);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
@@ -59,11 +58,6 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
-        }
-
-        private void SendBoletoByEmail(string email)
-        {
-            throw new NotImplementedException();
         }
 
         [HttpGet]

@@ -1,6 +1,5 @@
 ﻿<script>
     function fnEnviarEmail(data, type, row, meta) {
-        debugger;
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -12,25 +11,26 @@
                     if (result.data != null)
                         fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
                     else
-                        fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), "");
+                        fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
                 }
                 else
-                    fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), "");
+                    fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
             },
         });
         return createElement(row).outerHTML;
     }
 
-    function fnGerarCnabEnviaEmail(idRecord, contaBancariaId, reimprime, pEmail, pAssunto) {
+    function fnGerarCnabEnviaEmail(idRecord, contaBancariaId, reimprime, pEmail, pAssunto, pMensagem) {
+        fly01.loading.start();
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '@Url.Action("GerarBoletoEnviaEmail", "Cnab")',
             contentType: "application/json",
-            data: { contaReceberId:idRecord, contaBancariaId:contaBancariaId, reimprimeBoleto:reimprime, email:pEmail, assunto:pAssunto},
+            data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reimprime, email: pEmail, assunto: pAssunto, mensagem: pMensagem},
             success: function success(data) {
                 if (data.success) {
-                    fly01.toast("Boleto emitido com sucesso.", "success");
+                    fly01.toast("Boleto gerado e e-mail enviado com sucesso.", "success");
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
@@ -41,7 +41,7 @@
                     fly01.loading.stop();
                     fly01.toast(data.message, "error");
                 }
-
+                fly01._.fly01mdlfrmModalConfigEmail.close()
                 fly01.loading.stop();
             },
         });

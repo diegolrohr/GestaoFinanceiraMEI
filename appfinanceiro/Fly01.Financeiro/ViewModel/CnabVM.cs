@@ -20,6 +20,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("nossoNumero")]
         public int NossoNumero { get; set; }
 
+        [JsonProperty("nossoNumeroFormatado")]
+        public string NossoNumeroFormatado { get; set; }
+
         [JsonProperty("dataDesconto")]
         public DateTime DataDesconto { get; set; }
 

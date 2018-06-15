@@ -117,7 +117,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId, double? valorFrete = 0)
+        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId)
         {
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 

@@ -153,8 +153,6 @@ namespace Fly01.Faturamento.BL
                         x => x.Produto.UnidadeMedida,
                         x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalId == entity.Id);
 
-                    var totalNFe = CalculaTotalNFe(entity.Id, entity.ValorFrete);
-
                     var destinoOperacao = TipoDestinoOperacao.Interna;
                     if (cliente.Estado != null && cliente.Estado.Sigla.ToUpper() == "EX" || (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla.ToUpper() : "") == "EX")
                     {
@@ -607,7 +605,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFrete = 0)
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
@@ -615,11 +613,15 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
+            bool calculaFrete = (
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+            );
 
             var result = new TotalNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-                ValorFrete = valorFrete.HasValue ? Math.Round(valorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };

@@ -6,18 +6,13 @@
     }
 
     function calculaTotalNFeVisualizar() {
-        var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
-            valorFrete = parseFloat(noComma($('form#fly01mdlfrmVisualizarNFe input#valorFrete').val()));
-        }
-
         var idNFe = $("form#fly01mdlfrmVisualizarNFe input#id").val();
         fly01.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
             type: "GET",
-            data: { id: idNFe, valorFrete: valorFrete }
+            data: { id: idNFe }
         })
         .done(function (data) {
             if (data.success) {

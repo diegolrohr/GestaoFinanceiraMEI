@@ -265,8 +265,7 @@ namespace Fly01.Faturamento.Controllers
                 PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = @Url.Action("NovaCategoria"),
-                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoCategoria" } }
+                DataUrlPost = @Url.Action("NovaCategoria")
 
             });
             #endregion

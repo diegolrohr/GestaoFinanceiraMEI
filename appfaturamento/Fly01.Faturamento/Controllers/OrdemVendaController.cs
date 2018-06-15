@@ -100,7 +100,8 @@ namespace Fly01.Faturamento.Controllers
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
-                    Total = response.Total
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             foreach (OrdemVendaServicoVM OrdemServico in servicos)
@@ -137,7 +138,8 @@ namespace Fly01.Faturamento.Controllers
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
-                    Total = response.Total
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -162,7 +164,8 @@ namespace Fly01.Faturamento.Controllers
                     TransportadoraNome = OrdemVenda.Transportadora != null ? OrdemVenda.Transportadora.Nome : string.Empty,
                     ValorFrete = OrdemVenda.ValorFrete.HasValue ? OrdemVenda.ValorFrete.Value : 0,
                     Observacao = OrdemVenda.Observacao,
-                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0
+                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
             }
 

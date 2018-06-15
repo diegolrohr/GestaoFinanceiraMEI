@@ -163,8 +163,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-            
-            
+
+
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
             config.Elements.Add(new AutoCompleteUI
@@ -265,7 +265,9 @@ namespace Fly01.Faturamento.Controllers
                 PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = Url.Action("NovaCategoriaReceita")
+                DataUrlPost = @Url.Action("NovaCategoria"),
+                DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnChangeTipoCategoria" } }
+
             });
             #endregion
 
@@ -540,15 +542,24 @@ namespace Fly01.Faturamento.Controllers
         #region OnDemmand
 
         [HttpPost]
-        public JsonResult NovaCategoriaReceita(string term)
-        {
-            return NovaCategoria(new CategoriaVM { Descricao = term, TipoCarteira = "1" });
-        }
-
-        private JsonResult NovaCategoria(CategoriaVM entity)
+        public JsonResult NovaCategoria(string term)
         {
             try
             {
+                var tipoCategoria = "";
+                var tipoCarteira = Request.QueryString["tipo"];
+
+                if (tipoCarteira == "Receita")
+                    tipoCategoria = "1";
+                else
+                    tipoCategoria = "2";
+
+                var entity = new CategoriaVM
+                {
+                    Descricao = term,
+                    TipoCarteira = tipoCategoria
+                };
+
                 var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
                 var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
 

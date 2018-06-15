@@ -90,6 +90,7 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -361,6 +362,10 @@
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

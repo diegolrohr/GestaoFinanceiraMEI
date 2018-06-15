@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
-    public class ClienteController : ClienteBaseController<PessoaVM>
+    public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";
         protected override string LabelTitle => "Clientes";

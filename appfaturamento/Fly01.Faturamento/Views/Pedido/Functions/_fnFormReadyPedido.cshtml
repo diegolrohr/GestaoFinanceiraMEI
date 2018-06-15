@@ -78,9 +78,11 @@
 
     function disableStepFinalidade() {
         //para não ficar trocando o chaveSefaz
+
         if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
         $('#fly01btngrpFinalidade input:not(.active)').attr('disabled', 'disabled');
+        $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         if ($('#tipoVenda').val() == "Devolucao") {
             $('#stepServicos').hide();

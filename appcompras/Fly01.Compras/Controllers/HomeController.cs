@@ -39,6 +39,7 @@ namespace Fly01.Compras.Controllers
             {
                 new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
                 new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
                 new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
                 new LinkUI() { Label = "Forma de Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
                 new LinkUI() { Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},

@@ -286,6 +286,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new LinkUI() { Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
                     new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                    new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
                     new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
                     new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                     new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},

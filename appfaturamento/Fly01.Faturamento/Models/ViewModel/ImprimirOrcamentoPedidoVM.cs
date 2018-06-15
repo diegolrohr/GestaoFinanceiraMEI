@@ -35,5 +35,6 @@ namespace Fly01.Faturamento.Models.ViewModel
         public double TotalServicos { get; set; }
         public double TotalImpostosProdutos { get; set; }
         public double TotalProdutos { get; set; }
+        public string Finalidade { get; internal set; }
     }
 }

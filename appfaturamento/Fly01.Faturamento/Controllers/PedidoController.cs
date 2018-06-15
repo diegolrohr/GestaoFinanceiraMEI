@@ -357,7 +357,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "chaveNFeReferenciada",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz, da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Necessário alterar os grupos tributários correspondentes a operação."
+                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -373,7 +373,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal)/Pagar(Devolução) ao cliente, do valor total do pedido, e conta a Pagar do valor frete por sua conta, configurado a transportadora."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -453,7 +453,15 @@ namespace Fly01.Faturamento.Controllers
                 Id = "transportadoraId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a transportadora, quando configurar frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa, se for tipo pedido Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioPadraoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será setado a para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
                 }
             });
             #endregion

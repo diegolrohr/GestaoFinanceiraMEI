@@ -84,6 +84,7 @@
 
         if ($('#tipoVenda').val() == "Devolucao") {
             $('#stepServicos').hide();
+            $("#chaveNFeReferenciadaField").show();
         }
     }
 
@@ -120,6 +121,7 @@
             fly01.loading.start();
 
             $('input#numero').removeAttr('disabled');
+            $('input#chaveNFeReferenciada').removeAttr('disabled');
 
             var jsonData = $(this).serializeObject();
             if ($('input#finalizarPedido:checked').val() == "true") {
@@ -156,14 +158,18 @@
                             onCancelMustDeletePedido = true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
-                            if (jsonData.tipoVenda == "Devolucao") {
-                                //preencher os campos
-                            }
+
                             fly01._.dtOrdemVendaProdutos.refresh();
                             fly01._.dtOrdemVendaServicos.refresh();
-
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
+                            $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
+
+                            if (jsonData.tipoVenda == "Devolucao") {
+                                //preencher os campos
+                                fly01._.fly01frm.refresh(data.id);
+                                $('li#stepProdutos div.step-title').click();
+                            }
 
                             return true;
                         }
@@ -222,6 +228,7 @@
                 $('input#btnDevolucao').addClass('active');
             }
             disableStepFinalidade();
+            if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
             fly01._.dtOrdemVendaProdutos.refresh();
             fly01._.dtOrdemVendaServicos.refresh();
         }
@@ -232,12 +239,12 @@
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
-            if (!isCreate() && $("form#fly01frm").Valid()) {
+            if (!isCreate() && $("form#fly01frm").valid()) {
                 EstoqueNegativoETotal();
             }
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").Valid()) {
+            if (!isCreate() && $("form#fly01frm").valid()) {
                 EstoqueNegativoETotal();
             }
         });

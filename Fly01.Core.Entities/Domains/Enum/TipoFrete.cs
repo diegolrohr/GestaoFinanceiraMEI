@@ -4,10 +4,10 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoFrete
     {
-        [Subtitle("CIF", "Por conta Remetente (CIF)")]
+        [Subtitle("CIF", "Contratação pelo Remetente (CIF)")]
         CIF = 0,
 
-        [Subtitle("FOB", "Por conta Destinatário (FOB)")]
+        [Subtitle("FOB", "Contratação pelo Destinatário (FOB)")]
         FOB = 1,
 
         [Subtitle("Terceiro", "Terceiro")]

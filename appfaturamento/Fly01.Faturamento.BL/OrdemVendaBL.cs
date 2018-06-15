@@ -249,15 +249,27 @@ namespace Fly01.Faturamento.BL
                     var previousData = entity.Data;
                     var previousNumero = entity.Numero;
                     var previousId = entity.Id;
+                    var previousClienteId = entity.ClienteId;
+                    var previousGrupoTributarioPadraoId = entity.GrupoTributarioPadraoId;
+                    var previousChaveNFeReferenciada = entity.ChaveNFeReferenciada;
+                    var previousTipoVenda = entity.TipoVenda;
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
+                    var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
 
                     pedidoReferenciado.CopyProperties<OrdemVenda>(entity);
                     entity.Id = previousId;
                     entity.Numero = previousNumero;
                     entity.Data = previousData;
+                    entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
+                    entity.NaturezaOperacao = null;
+                    entity.ClienteId = clienteReferenciado.Ativo == false ? previousClienteId : pedidoReferenciado.ClienteId;
+                    entity.Status = StatusOrdemVenda.Aberto;
+                    entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
+                    entity.TipoVenda = previousTipoVenda;
+                    entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
 
-                    var produtos = OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
+                    var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
 
                     if (produtos != null & produtos.Any())
                     {
@@ -265,7 +277,10 @@ namespace Fly01.Faturamento.BL
                         {
                             var produtoClonado = new OrdemVendaProduto();
                             produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
+                            produtoClonado.Id = default(Guid);
                             produtoClonado.OrdemVendaId = entity.Id;
+                            //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
+                            produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                             OrdemVendaProdutoBL.Insert(produtoClonado);
                         }
                     }
@@ -284,14 +299,13 @@ namespace Fly01.Faturamento.BL
             var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
             entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
-            entity.NaturezaOperacao = "diego teste";
 
             ValidaModel(entity);
 
-            //if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && ! string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
-            //{
-            //    CopiaDadosNFeReferenciadaDevolucao(entity);
-            //}
+            if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.TipoVenda ==  TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            {
+                CopiaDadosNFeReferenciadaDevolucao(entity);
+            }
 
             if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {

@@ -266,7 +266,6 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
-
             });
             #endregion
 
@@ -374,7 +373,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a receber do valor total do pedido."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal)/Pagar(Devolução) ao cliente, do valor total do pedido, e conta a Pagar do valor frete por sua conta, configurado a transportadora."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -447,6 +446,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "transportadoraId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a transportadora, quando configurar frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
                 }
             });
             #endregion

@@ -78,6 +78,7 @@
 
     function disableStepFinalidade() {
         //para não ficar trocando o chaveSefaz
+        if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
         $('#fly01btngrpFinalidade input:not(.active)').attr('disabled', 'disabled');
 
@@ -198,12 +199,13 @@
 
     function fnFormReadyPedido() {
         $("#naturezaOperacaoField").hide();
+        $("#chaveNFeReferenciadaField").hide();
+
         if (isCreate()) {
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
             $("input#geraNotaFiscal").prop("checked", true);
-            $("#chaveNFeReferenciadaField").hide();
             fly01._.data.set(today);
             fly01._.dataVencimento.set(today);
             fly01.fn.updateTextFields();
@@ -211,7 +213,7 @@
         }
         else {
             //setar o agrupamento com a opção escolhida
-            if ($('input#tipoVenda') == "Normal") {
+            if ($('input#tipoVenda').val() == "Normal") {
                 $('input#btnNormal').addClass('active');
                 $('input#btnDevolucao').removeClass('active');
             }
@@ -230,12 +232,12 @@
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
-            if (!isCreate() && $("form#fly01frm").isValid()) {
+            if (!isCreate() && $("form#fly01frm").Valid()) {
                 EstoqueNegativoETotal();
             }
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").isValid()) {
+            if (!isCreate() && $("form#fly01frm").Valid()) {
                 EstoqueNegativoETotal();
             }
         });

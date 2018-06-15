@@ -24,9 +24,9 @@ namespace Fly01.Faturamento.BL
 
         private readonly string descricaoVenda = @"Venda nº: {0}";
         private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Faturamento: {1}";
-        private readonly string routePrefixNameContaReceber = @"ContaReceber";
-        private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
+        private readonly string routePrefixNameContaPagar = @"ContaPagar";
+        private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
         public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
@@ -56,6 +56,12 @@ namespace Fly01.Faturamento.BL
                 var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
+
+                bool pagaFrete = (
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                );
+                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por sua conta, informe a transportadora"));
 
                 if (entity.GeraNotaFiscal)
                 {
@@ -343,26 +349,61 @@ namespace Fly01.Faturamento.BL
                     + totalServicos
                     + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
 
-                //frete se não tiver transportadora gerar para o cliente?
-                //(pagaFrete && entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0) // ver questões do frete
-
-                //TODO: Ver questões das contas e estoque
-                ContaReceber contaReceber = new ContaReceber()
+                if (pagaFrete)
                 {
-                    ValorPrevisto = valorPrevisto,
-                    CategoriaId = entity.CategoriaId.Value,
-                    CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                    PessoaId = entity.ClienteId,
-                    DataEmissao = entity.Data,
-                    DataVencimento = entity.DataVencimento.Value,
-                    Descricao = string.Format(descricaoVenda, entity.Numero),
-                    Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
-                    FormaPagamentoId = entity.FormaPagamentoId.Value,
-                    PlataformaId = PlataformaUrl,
-                    UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
-                };
+                    var contaPagarTransp = new ContaPagar()
+                    {
+                        ValorPrevisto = entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0,
+                        CategoriaId = entity.CategoriaId.Value,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                        PessoaId = entity.TransportadoraId.Value,
+                        DataEmissao = entity.Data,
+                        DataVencimento = entity.DataVencimento.Value,
+                        Descricao = string.Format(descricaoVenda, entity.Numero),
+                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        PlataformaId = PlataformaUrl,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+                    };
+                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.enHTTPVerb.POST);
+                }
 
-                Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.enHTTPVerb.POST);
+                if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal)
+                {
+                    var contaReceber = new ContaReceber()
+                    {
+                        ValorPrevisto = valorPrevisto,
+                        CategoriaId = entity.CategoriaId.Value,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                        PessoaId = entity.ClienteId,
+                        DataEmissao = entity.Data,
+                        DataVencimento = entity.DataVencimento.Value,
+                        Descricao = string.Format(descricaoVenda, entity.Numero),
+                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        PlataformaId = PlataformaUrl,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+                    };
+                    Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.enHTTPVerb.POST);
+                }
+                else if(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                {
+                    var contaPagar = new ContaPagar()
+                    {
+                        ValorPrevisto = valorPrevisto,
+                        CategoriaId = entity.CategoriaId.Value,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                        PessoaId = entity.ClienteId,
+                        DataEmissao = entity.Data,
+                        DataVencimento = entity.DataVencimento.Value,
+                        Descricao = string.Format(descricaoVenda, entity.Numero),
+                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        PlataformaId = PlataformaUrl,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+                    };
+                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.enHTTPVerb.POST);
+                }
             }
 
             if (entity.MovimentaEstoque)

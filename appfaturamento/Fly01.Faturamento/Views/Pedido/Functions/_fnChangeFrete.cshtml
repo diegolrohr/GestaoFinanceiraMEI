@@ -11,7 +11,7 @@
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
             );
-
+        debugger;
         if (calculaFrete) {
             $('#transportadoraNome').rules("add", { required: true });
         }

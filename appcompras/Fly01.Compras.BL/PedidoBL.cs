@@ -6,6 +6,7 @@ using Fly01.Core.ServiceBus;
 using System.Data.Entity;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
+using System;
 
 namespace Fly01.Compras.BL
 {
@@ -13,7 +14,7 @@ namespace Fly01.Compras.BL
     {
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected OrdemCompraBL OrdemCompraBL { get; set; }
-        private readonly string descricaoPedido = @"Pedido nº: {0}";
+        private readonly string descricaoPedido = @"Pedido Compra nº: {0}";
         private readonly string observacaoPedido = @"Observação gerada pelo Pedido nº {0} applicativo Fly01 Compras: {1}";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameMovimento = @"Movimento";
@@ -37,6 +38,8 @@ namespace Fly01.Compras.BL
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
+                bool pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
+                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
                 entity.Fail(!PedidoItemBL.All.Any(x => x.PedidoId == entity.Id), new Error("Para finalizar o pedido é necessário ao menos ter adicionado um produto"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
@@ -84,15 +87,13 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status != StatusOrdemCompra.Finalizado)
                 return;
-            else if (previousStatus != StatusOrdemCompra.Aberto)
-                return;
-
+           
             var pedidoItens = PedidoItemBL.All.Where(e => e.PedidoId == entity.Id && e.Ativo);
 
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
-                double valorPrevisto = total + ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? entity.ValorFrete.Value : 0);
+                double valorPrevisto = total;
 
                 ContaPagar contaPagar = new ContaPagar()
                 {
@@ -108,8 +109,26 @@ namespace Fly01.Compras.BL
                     PlataformaId = PlataformaUrl,
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
-
                 Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.enHTTPVerb.POST);
+
+                bool pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
+                if (pagaFrete) {
+                    ContaPagar contaPagarTransp = new ContaPagar()
+                    {
+                        ValorPrevisto = entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0,
+                        CategoriaId = entity.CategoriaId.Value,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                        PessoaId = entity.TransportadoraId.Value,
+                        DataEmissao = entity.Data,
+                        DataVencimento = entity.DataVencimento.Value,
+                        Descricao = string.Format(descricaoPedido, entity.Numero),
+                        Observacao = string.Format(observacaoPedido, entity.Numero, entity.Observacao),
+                        FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        PlataformaId = PlataformaUrl,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+                    };
+                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.enHTTPVerb.POST);
+                }
             }
 
             if (entity.MovimentaEstoque)

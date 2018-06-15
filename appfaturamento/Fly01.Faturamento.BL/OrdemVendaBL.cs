@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.BL
                     ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
                     ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
                 );
-                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por sua conta, informe a transportadora"));
+                entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
                 if (entity.GeraNotaFiscal)
                 {

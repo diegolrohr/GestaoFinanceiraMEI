@@ -390,7 +390,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de saída da quantidade total dos produtos."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -398,7 +398,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF ou Remetente) e da soma dos impostos."
+                    Text = "Total da soma dos produtos, serviços, frete (se for por conta da empresa) e da soma dos impostos."
                 }
             });
             config.Helpers.Add(new TooltipUI

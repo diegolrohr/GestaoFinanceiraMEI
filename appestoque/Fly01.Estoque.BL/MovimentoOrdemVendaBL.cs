@@ -2,6 +2,7 @@
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Estoque.BL
 {
@@ -28,26 +29,30 @@ namespace Fly01.Estoque.BL
             }
             else
             {
-                var diferenca = produto.SaldoProduto - entity.QuantidadeBaixa;
-                //se vai ficar negativo, dar entrada automática da diferenca antes
-                if (diferenca < 0)
+                if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal)
                 {
-                    MovimentoEstoque movimentoEntrada = new MovimentoEstoque()
+                    var diferenca = produto.SaldoProduto - entity.Quantidade;
+                    //se vai ficar negativo, dar entrada automática da diferenca antes
+                    if (diferenca < 0)
                     {
-                        QuantidadeMovimento = -diferenca,
-                        ProdutoId = entity.ProdutoId,
-                        Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido de venda nº "+ entity.PedidoNumero.ToString() +", aplicativo Fly01 Faturamento",
-                        UsuarioInclusao = entity.UsuarioInclusao,
-                        PlataformaId = entity.PlataformaId
-                    };
-                    MovimentoBL.Movimenta(movimentoEntrada);
+                        MovimentoEstoque movimentoEntrada = new MovimentoEstoque()
+                        {
+                            QuantidadeMovimento = -diferenca,
+                            ProdutoId = entity.ProdutoId,
+                            Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Fly01 Faturamento",
+                            UsuarioInclusao = entity.UsuarioInclusao,
+                            PlataformaId = entity.PlataformaId
+                        };
+                        MovimentoBL.Movimenta(movimentoEntrada);
+                    }
                 }
 
+                //venda normal é saída, devolução é entrada
                 MovimentoEstoque movimentoBaixa = new MovimentoEstoque()
                 {
-                    QuantidadeMovimento = -entity.QuantidadeBaixa,
+                    QuantidadeMovimento = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal ? -entity.Quantidade : entity.Quantidade,
                     ProdutoId = entity.ProdutoId,
-                    Observacao = @"Observação gerada pela saída do estoque, referente ao pedido de venda nº " + entity.PedidoNumero.ToString() + ", aplicativo Fly01 Faturamento",
+                    Observacao = @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Fly01 Faturamento",
                     UsuarioInclusao = entity.UsuarioInclusao,
                     PlataformaId = entity.PlataformaId
                 };

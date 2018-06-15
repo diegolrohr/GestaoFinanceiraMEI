@@ -81,8 +81,15 @@
 
     function calculaTotalOrdemVenda() {
         var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
-            valorFrete = parseFloat(noComma($('input#valorFrete').val()));
+        var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoFrete').val();
+        var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+
+        if (calculaFrete) {
+            valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 
         var idPedido = $("form#fly01mdlfrmVisualizarOrdemVenda input#id").val();
@@ -94,7 +101,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -103,7 +110,7 @@
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
             }

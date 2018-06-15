@@ -132,7 +132,7 @@
     <Compile Include="Controllers\AutoCompleteBaseController.cs" />
     <Compile Include="Controllers\AvaliacaoAppBaseController.cs" />
     <Compile Include="Controllers\CategoriaBaseController.cs" />
-    <Compile Include="Controllers\ClienteBaseController.cs" />
+    <Compile Include="Controllers\PessoaBaseController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
     <Compile Include="Controllers\ProdutoBaseController.cs" />

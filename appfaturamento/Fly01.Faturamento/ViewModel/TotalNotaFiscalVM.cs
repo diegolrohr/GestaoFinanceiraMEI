@@ -21,8 +21,8 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("totalImpostosServicos")]
         public double? TotalImpostosServicos { get; set; }
 
-        [JsonProperty("valorFreteCIF")]
-        public double? ValorFreteCIF { get; set; }
+        [JsonProperty("valorFrete")]
+        public double? ValorFrete { get; set; }
 
         [JsonProperty("total")]
         public double Total { get; set; }

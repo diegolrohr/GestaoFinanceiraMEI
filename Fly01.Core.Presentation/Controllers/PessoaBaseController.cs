@@ -14,13 +14,13 @@ using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public class ClienteBaseController<T> : BaseController<T> where T : PessoaVM
+    public class PessoaBaseController<T> : BaseController<T> where T : PessoaVM
     {
         protected virtual string ResourceTitle { get; set; }
         protected virtual string LabelTitle { get; set; }
         protected virtual string Filter { get; set; }
 
-        public ClienteBaseController()
+        public PessoaBaseController()
         {
             ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
         }

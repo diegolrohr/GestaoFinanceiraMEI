@@ -56,8 +56,12 @@ namespace Fly01.Faturamento.Controllers
         {
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
-                 (OrdemVenda.TipoFrete == "Remetente" || OrdemVenda.TipoFrete == "CIF") ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
+            bool calculaFrete = (
+                ((OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && OrdemVenda.TipoVenda == "Normal") ||
+                ((OrdemVenda.TipoFrete == "FOB" || OrdemVenda.TipoFrete == "Destinatario") && OrdemVenda.TipoVenda == "Devolucao")
+            );
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
+                 OrdemVenda.TipoVenda, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
@@ -95,8 +99,9 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
-                    Total = response.Total
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             foreach (OrdemVendaServicoVM OrdemServico in servicos)
@@ -132,8 +137,9 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
-                    Total = response.Total
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -158,7 +164,8 @@ namespace Fly01.Faturamento.Controllers
                     TransportadoraNome = OrdemVenda.Transportadora != null ? OrdemVenda.Transportadora.Nome : string.Empty,
                     ValorFrete = OrdemVenda.ValorFrete.HasValue ? OrdemVenda.ValorFrete.Value : 0,
                     Observacao = OrdemVenda.Observacao,
-                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0
+                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
             }
 
@@ -410,9 +417,16 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription); }"
             });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoVenda",
+                DisplayName = "Finalidade",
+                Priority = 4,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription); }"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
 
             cfg.Content.Add(config);
 
@@ -581,7 +595,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
@@ -627,11 +641,11 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, double? valorFreteCIF = 0)
+        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id, clienteId, geraNotaFiscal.ToString(), valorFreteCIF.ToString().Replace(",", "."), false);
+                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
                 return Json(

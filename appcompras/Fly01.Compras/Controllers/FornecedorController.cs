@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Fly01.Compras.Controllers
 {
-    public class FornecedorController : ClienteBaseController<PessoaVM>
+    public class FornecedorController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Fornecedor";
         protected override string LabelTitle => "Fornecedores";

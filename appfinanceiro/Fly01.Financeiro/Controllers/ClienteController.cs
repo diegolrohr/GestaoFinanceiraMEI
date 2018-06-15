@@ -12,7 +12,7 @@ using Fly01.uiJS.Classes.Elements;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class ClienteController : ClienteBaseController<PessoaVM>
+    public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";
         protected override string LabelTitle => "Clientes";

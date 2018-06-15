@@ -72,8 +72,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     return Ok(new EntidadeRetornoVM
                     {
                         Homologacao = new SPEDADM.SPEDADM().ADMEMPRESAS(AppDefault.Token, homolog, new SPEDADM.SPED_ENTIDADEREFERENCIAL()),
-                        Producao = "123456"
-                        //Producao = new SPEDADMProd.SPEDADM().ADMEMPRESAS(AppDefault.Token, prod, new SPEDADMProd.SPED_ENTIDADEREFERENCIAL())
+                        //TODO Diego ver tss prod local Producao = "123456"
+                        Producao = new SPEDADMProd.SPEDADM().ADMEMPRESAS(AppDefault.Token, prod, new SPEDADMProd.SPED_ENTIDADEREFERENCIAL())
                     });
 
                 }

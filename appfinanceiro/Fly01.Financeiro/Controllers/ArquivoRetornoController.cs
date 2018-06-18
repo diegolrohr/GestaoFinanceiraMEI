@@ -15,6 +15,8 @@ using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Config;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -64,8 +66,6 @@ namespace Fly01.Financeiro.Controllers
             });
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6 l6", Label = "Arquivo de retorno do tipo (.ret)", Required = true, Accept = ".ret" });
 
-            cfg.Content.Add(config);
-
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
@@ -79,6 +79,24 @@ namespace Fly01.Financeiro.Controllers
                     OnClick = ""
                 }
             });
+
+            #region CnabItem
+            config.Elements.Add(new TableUI
+            {
+                Id = "dtRetornoCnabItem",
+                Class = "col s12",
+                Label = "Retorno Cnab",
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Banco", Value = "0"},
+                    new OptionUI { Label = "Cliente", Value = "1"},
+                    new OptionUI { Label = "Valor", Value = "2"},
+                    new OptionUI { Label = "Data Vencimento", Value = "3"},
+                }
+            });
+            #endregion
+
+            cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
@@ -95,63 +113,43 @@ namespace Fly01.Financeiro.Controllers
 
         public JsonResult ImportaArquivoRetorno(string valueArquivo, Guid contaBancariaId)
         {
-            var entityContaBancaria = GetContaBancaria(contaBancariaId);
-            var formatoArquivo = 1;
-            var boletos = new Boleto2Net.Boletos()
+            var arquivoRetorno = new ArquivoRetornoCnabVM()
             {
-                Banco = Boleto2Net.Banco.Instancia(Convert.ToInt32(entityContaBancaria.Data.FirstOrDefault().Banco.Codigo))
+                ValueArquivo = valueArquivo,
+                ContaBancariaId = contaBancariaId,
             };
 
-            boletos.Banco.Cedente = GetCedente(entityContaBancaria);
+            var result = RestHelper.ExecutePostRequest<List<CnabVM>>("arquivoRetorno", JsonConvert.SerializeObject(arquivoRetorno, JsonSerializerSetting.Default));
 
-            byte[] byteArray = Encoding.ASCII.GetBytes(valueArquivo);
-            MemoryStream pConteudo = new MemoryStream(byteArray);
+            if (result == null) throw new Exception("Não foi possível gerar boleto.");
 
-            var arquivoRetorno = new Boleto2Net.ArquivoRetorno(boletos.Banco, (Boleto2Net.TipoArquivo)formatoArquivo);
-            var boletosRetorno = arquivoRetorno.LerArquivoRetorno(pConteudo);
-
-            return null;
-        }
-
-        private Boleto2Net.Cedente GetCedente(ResultBase<ContaBancariaVM> entityContaBancaria)
-        {
-            var contaBancaria = entityContaBancaria.Data.FirstOrDefault();
-            var dadosCedente = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-
-            return new Boleto2Net.Cedente
+            return Json(new
             {
-                CPFCNPJ = dadosCedente.CNPJ,
-                Nome = dadosCedente.NomeFantasia,
-                Observacoes = "",
-                ContaBancaria = new Boleto2Net.ContaBancaria
-                {
-                    Agencia = contaBancaria.Agencia,
-                    DigitoAgencia = contaBancaria.DigitoAgencia,
-                    OperacaoConta = "",
-                    Conta = contaBancaria.Conta,
-                    DigitoConta = contaBancaria.DigitoConta,
-                    CarteiraPadrao = "11",
-                    VariacaoCarteiraPadrao = "019",
-                    TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                    TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,
-                    TipoImpressaoBoleto = Boleto2Net.TipoImpressaoBoleto.Empresa,
-                    TipoDocumento = Boleto2Net.TipoDocumento.Tradicional
-                },
-                Codigo = "",
-                CodigoDV = "",
-                CodigoTransmissao = ""
-            };
+                success = true,
+                data = result.Select(GetDisplayCnab()),
+                recordsFiltered = result.Count,
+                recordsTotal = result.Count
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        private ResultBase<ContaBancariaVM> GetContaBancaria(Guid contaBancariaId)
+        private Func<CnabVM, object> GetDisplayCnab()
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
-
-            var queryString = new Dictionary<string, string>();
-            queryString.AddParam("$expand", "banco($select=codigo)");
-            queryString.AddParam("$filter", $"id eq {contaBancariaId}");
-                      
-            return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString);
+            return x => new
+            {
+                id = x.Id,
+                contaReceberId = x.ContaReceberId,
+                contaBancariaId = x.ContaBancariaCedenteId,
+                banco_nome = x.ContaBancariaCedente?.Banco?.Nome,
+                pessoa_nome = x.ContaReceber?.Pessoa?.Nome,
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
+                valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                valorDesconto = x.ValorDesconto,
+                status = x.Status,
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
+                statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
+                statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
+            };
         }
     }
 }

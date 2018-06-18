@@ -120,6 +120,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\ArquivoRetornoCnabVM.cs" />
     <Compile Include="ViewModel\ArquivoRemessaVM.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
     <Compile Include="ViewModel\CnabVM.cs" />

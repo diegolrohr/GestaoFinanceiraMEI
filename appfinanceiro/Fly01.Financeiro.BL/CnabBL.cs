@@ -128,7 +128,7 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        private CedenteVM GetDadosCedente(Guid contaBancariaId)
+        public CedenteVM GetDadosCedente(Guid contaBancariaId)
         {
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
 

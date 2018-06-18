@@ -1,18 +1,16 @@
 ﻿<script>
     function fnImportarArquivo(input) {
-        debugger;
-        if (!window.FileReader) return; // Browser is not compatible
+        if (!window.FileReader) return;
 
         var reader = new FileReader();
-        // Read file into memory as UTF-8
         reader.readAsText($("#arquivo")[0].files[0]);
-        // Handle errors load
+        
         reader.onload = processData;
         reader.onerror = errorHandler;
     }
 
     function processData(event) {
-        $('body').removeClass('loaded');
+        fly01.loading.start();
         var ret = event.target.result;
 
         $.ajax({
@@ -20,14 +18,31 @@
             url: "@Url.Action("ImportaArquivoRetorno")",
             data: { valueArquivo: ret, contaBancariaId: $('#contaBancariaId').val()},
             success: function (response) {
-                //$("#observacao").closest("div").css("display", "block");
-                //$("#observacao").val(response.Retorno);
-                //$("#observacao").trigger("autoresize");
-                //fly01.fn.updateTextFields();
-                //$('body').addClass('loaded');
+                if (response.success) {
+                    $("#dtRetornoCnabItem").DataTable().destroy();
+
+                    var table = $("#dtRetornoCnabItem").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Banco", data: "banco_nome" },
+                            { title: "Cliente", data: "pessoa_nome" },
+                            { title: "Valor", data: "valorBoleto" },
+                            { title: "Data Vencimento", data: "dataVencimento" }]
+                    });
+                    $('#dtRetornoCnabItem').show();
+                } else {
+                    fly01.toast(response.message, 'error');
+                };
+                fly01.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
-                $('body').addClass('loaded');
+                fly01.loading.stop();
                 fly01.toast(errorThrown, 'error');
             }
         });

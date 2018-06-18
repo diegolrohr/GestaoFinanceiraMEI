@@ -23,7 +23,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(50, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Endereco { get; set; }
 
-        [StringLength(20, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Numero { get; set; }
 
         [StringLength(20, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]

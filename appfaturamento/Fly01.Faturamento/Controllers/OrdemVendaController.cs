@@ -19,6 +19,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -659,5 +660,38 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        #region OnDemmand
+        [HttpPost]
+        public JsonResult NovaCategoria(string term)
+        {
+            try
+            {
+                var tipoCategoria = "";
+                var tipoCarteira = Request.QueryString["tipo"];
+
+                if (tipoCarteira == "Receita")
+                    tipoCategoria = "1";
+                else
+                    tipoCategoria = "2";
+
+                var entity = new CategoriaVM
+                {
+                    Descricao = term,
+                    TipoCarteira = tipoCategoria
+                };
+
+                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+        #endregion
     }
 }

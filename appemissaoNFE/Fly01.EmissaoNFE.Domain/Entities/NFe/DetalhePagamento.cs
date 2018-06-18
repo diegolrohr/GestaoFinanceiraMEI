@@ -20,10 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 15=Boleto Bancário
         /// 90=Sem Pagamento;
         /// 99=Outros.
-        /// </summary>
-        /// //TODO: gerar migration formaPagamento em cada app
-        /// 5 trans para 6
-        /// 6 boleto para 15
+        /// </summary>        
         [XmlElement(ElementName = "tPag")]
         public TipoFormaPagamento TipoFormaPagamento { get; set; }
 

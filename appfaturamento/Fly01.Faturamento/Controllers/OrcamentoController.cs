@@ -67,7 +67,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 9,
+                        Quantity = 10,
                     },
                     new FormWizardUIStep()
                     {
@@ -109,6 +109,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Orcamento" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
 
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
@@ -191,9 +192,10 @@ namespace Fly01.Faturamento.Controllers
                 Id = "categoriaId",
                 Class = "col s12 m6",
                 Label = "Categoria",
+                PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = Url.Action("NovaCategoriaReceita")
+                DataUrlPost = @Url.Action("NovaCategoria")
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
             #endregion
@@ -311,7 +313,31 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF ou Remetente) e da soma dos impostos."
+                    Text = "Total da soma dos produtos, serviços, frete (se for por conta da empresa) e da soma dos impostos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioPadraoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "transportadoraId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa Normal(CIF/Remetente)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalFrete",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
                 }
             });
             #endregion

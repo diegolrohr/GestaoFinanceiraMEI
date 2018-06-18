@@ -266,7 +266,6 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoria")
-
             });
             #endregion
 
@@ -462,7 +461,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioPadraoId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Será setado a para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
+                    Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
                 }
             });
             #endregion
@@ -539,37 +538,6 @@ namespace Fly01.Faturamento.Controllers
         }
 
         #region OnDemmand
-
-        [HttpPost]
-        public JsonResult NovaCategoria(string term)
-        {
-            try
-            {
-                var tipoCategoria = "";
-                var tipoCarteira = Request.QueryString["tipo"];
-
-                if (tipoCarteira == "Receita")
-                    tipoCategoria = "1";
-                else
-                    tipoCategoria = "2";
-
-                var entity = new CategoriaVM
-                {
-                    Descricao = term,
-                    TipoCarteira = tipoCategoria
-                };
-
-                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
-                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
 
         public JsonResult PostCliente(string term)
         {

@@ -22,8 +22,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonProperty("totalImpostosServicos")]
         public double? TotalImpostosServicos { get; set; }
 
-        [JsonProperty("valorFreteCIF")]
-        public double? ValorFreteCIF { get; set; }
+        [JsonProperty("valorFrete")]
+        public double? ValorFrete { get; set; }
 
         [JsonProperty("total")]
         public double Total
@@ -35,7 +35,7 @@ namespace Fly01.Core.Entities.Domains.Commons
                     (TotalServicos.HasValue ? TotalServicos.Value : 0) +
                     (TotalImpostosProdutos.HasValue ? TotalImpostosProdutos.Value : 0) +
                     (TotalImpostosServicos.HasValue ? TotalImpostosServicos.Value : 0) +
-                    (ValorFreteCIF.HasValue ? ValorFreteCIF.Value : 0)), 2, MidpointRounding.AwayFromZero)
+                    (ValorFrete.HasValue ? ValorFrete.Value : 0)), 2, MidpointRounding.AwayFromZero)
                 );
             }
         }

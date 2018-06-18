@@ -5,11 +5,24 @@
 
     function fnChangeFrete() {
         $('input#valorFrete').removeAttr('disabled');
-
-        if ($('select#tipoFrete').val() == "SemFrete") {
-            $('input#valorFrete').val(0);
-            $('input#valorFrete').attr('disabled', 'disabled');
+        var tipoFrete = $('select#tipoFrete').val();
+        var tipoVenda = $('#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+        if (calculaFrete) {
+            $('#transportadoraNome').rules("add", { required: true });
         }
-        fly01.fn.updateTextFields();
+        else {
+            $('#transportadoraNome').rules("remove", "required");
+            $('#transportadoraNome').removeClass("invalid");
+
+            if (tipoFrete == "SemFrete") {
+                $('input#valorFrete').val(0);
+                $('input#valorFrete').attr('disabled', 'disabled');
+            }
+            fly01.fn.updateTextFields();
+        }
     }
 </script>

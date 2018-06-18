@@ -15,6 +15,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Linq;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -66,7 +67,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 9,
+                        Quantity = 10,
                     },
                     new FormWizardUIStep()
                     {
@@ -103,42 +104,34 @@ namespace Fly01.Faturamento.Controllers
                 ShowStepNumbers = true
             };
 
+            #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Orcamento" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
 
-            #region step Cadastro
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoVenda",
-                Class = "col s12 m4",
-                Label = "Tipo Venda",
-                Value = "Normal",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
-            });
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "clienteId",
-                Class = "col s12 m6",
-                Label = "Cliente",
-                Required = true,
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
-                LabelId = "clienteNome",
-                DataUrlPost = Url.Action("PostCliente")
-            });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
-                Class = "col s12 m6",
+                Class = "col s12 m7",
                 Label = "Grupo Tributário Padrão",
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioPadraoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao"
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "clienteId",
+                Class = "col s12",
+                Label = "Cliente",
+                Required = true,
+                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome",
+                DataUrlPost = Url.Action("PostCliente")
             });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
@@ -199,9 +192,10 @@ namespace Fly01.Faturamento.Controllers
                 Id = "categoriaId",
                 Class = "col s12 m6",
                 Label = "Categoria",
+                PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = Url.Action("NovaCategoriaReceita")
+                DataUrlPost = @Url.Action("NovaCategoria")
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
             #endregion
@@ -276,7 +270,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido(produtos + serviços + impostos + frete)", Readonly = true });
 
             #endregion
@@ -319,7 +313,31 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF ou Remetente) e da soma dos impostos."
+                    Text = "Total da soma dos produtos, serviços, frete (se for por conta da empresa) e da soma dos impostos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioPadraoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "transportadoraId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa Normal(CIF/Remetente)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalFrete",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
                 }
             });
             #endregion

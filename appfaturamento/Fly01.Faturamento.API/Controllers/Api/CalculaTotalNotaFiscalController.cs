@@ -9,11 +9,11 @@ namespace Fly01.Faturamento.API.Controllers.Api
     public class CalculaTotalNotaFiscalController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(Guid notaFiscalId, double? valorFreteCIF = 0)
+        public IHttpActionResult Get(Guid notaFiscalId)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.NotaFiscalBL.CalculaTotalNotaFiscal(notaFiscalId, valorFreteCIF));
+                return Ok(unitOfWork.NotaFiscalBL.CalculaTotalNotaFiscal(notaFiscalId));
             }
         }
     }

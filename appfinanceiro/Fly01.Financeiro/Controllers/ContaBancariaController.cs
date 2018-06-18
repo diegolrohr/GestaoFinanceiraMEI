@@ -8,6 +8,8 @@ using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -41,7 +43,9 @@ namespace Fly01.Financeiro.Controllers
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
-                registroFixo = x.RegistroFixo
+                registroFixo = x.RegistroFixo,
+                codigoCedente = x.CodigoCedente,
+                codigoDV = x.CodigoDV
             };
         }
 
@@ -131,7 +135,30 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-            
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "checkCedente",
+                Class = "col s12 l10",
+                Label = "Informe o código do cedente",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "checkCedente",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Esta conta bancária emite boletos bancários? Marque para informar o código do cedente para este banco.",
+                    Position = TooltopUIPosition.Top
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s6 m6 l6", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col s6 m6 l6", Label = "CódigoDV", Required = false, MaxLength = 150 });
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

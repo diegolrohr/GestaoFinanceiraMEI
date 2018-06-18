@@ -1,24 +1,24 @@
 ﻿using Fly01.Core.Helpers.Attribute;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Enums
+namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoFinalidadeEmissaoNFe
     {
         [XmlEnum(Name = "1")]
-        [Subtitle("Normal", "1", "NF-e normal")]
+        [Subtitle("Normal", "Normal", "Normal", "brow")]
         Normal = 1,
 
         [XmlEnum(Name = "2")]
-        [Subtitle("Complementar", "2", "NF-e complementar")]
+        [Subtitle("Complementar", "Complementar", "Complementar")]
         Complementar = 2,
 
         [XmlEnum(Name = "3")]
-        [Subtitle("Ajuste", "3", "NF-e de ajuste")]
+        [Subtitle("Ajuste", "Ajuste", "Ajuste")]
         Ajuste = 3,
 
         [XmlEnum(Name = "4")]
-        [Subtitle("Devolucao", "4", "Devolução")]
+        [Subtitle("Devolucao", "Devolução", "Devolução", "gray")]
         Devolucao = 4
     }
 }

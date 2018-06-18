@@ -157,6 +157,7 @@
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
     <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
     <Compile Include="Domains\Enum\TipoEntradaSaida.cs" />
+    <Compile Include="Domains\Enum\TipoFinalidadeEmissaoNFe.cs" />
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />
@@ -183,7 +184,6 @@
     <Compile Include="Domains\Enum\TipoTributacaoIPI.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoISS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoPISCOFINS.cs" />
-    <Compile Include="Domains\Enum\TipoVenda.cs" />
     <Compile Include="Domains\Enum\TipoVersaoNFe.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

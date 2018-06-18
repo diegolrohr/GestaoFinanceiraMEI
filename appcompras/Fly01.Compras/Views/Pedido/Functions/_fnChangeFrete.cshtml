@@ -10,9 +10,13 @@
         
         $('input#totalFrete').val(0);
         $('input#valorFrete').removeAttr('disabled');
+        $('#transportadoraNome').rules("remove", "required");
+        $('#transportadoraNome').removeClass("invalid");
+
         if ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario") {
             $('input#totalFrete').val(valorFrete);
             valorTotal += valorFrete;
+            $('#transportadoraNome').rules("add", { required: true });
         }
         else if ($('select#tipoFrete').val() == "SemFrete") {
             $('input#valorFrete').val(0);

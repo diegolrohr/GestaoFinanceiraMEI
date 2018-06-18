@@ -9,11 +9,11 @@ namespace Fly01.Faturamento.API.Controllers.Api
     public class PedidoEstoqueNegativoController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(Guid pedidoId)
+        public IHttpActionResult Get(Guid pedidoId, string tipoVenda)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.OrdemVendaBL.VerificaEstoqueNegativo(pedidoId));
+                return Ok(unitOfWork.OrdemVendaBL.VerificaEstoqueNegativo(pedidoId, tipoVenda));
             }
         }
     }

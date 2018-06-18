@@ -6,6 +6,7 @@ using Fly01.Core.ViewModels;
 using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -36,19 +37,30 @@ namespace Fly01.Financeiro.BL
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
+            var nossoNumero = 0;
+            var cnabReemprime = base.All.FirstOrDefault(x => x.ContaBancariaCedenteId == contaBancariaId && x.ContaReceberId == contaReceberId);
+
+            if (cnabReemprime != null)
+                nossoNumero = cnabReemprime.NossoNumero;
+            else
+            {
+                var max = Everything.Any() ? Everything.Max(x => x.NossoNumero) : 0;
+                max = (max == 1 && !Everything.Any(x => x.Ativo && x.NossoNumero == 1)) ? 0 : max;
+                nossoNumero = ++max;
+            };
+
             var contaReceber = contaReceberBL.Find(contaReceberId);
             var contaBancariaCedente = contaBancariaBL.AllIncluding(r => r.Banco).FirstOrDefault(x => x.Id == contaBancariaId);
             var cedente = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var sacado = contaReceberBL.AllIncluding(r => r.Pessoa, r => r.Pessoa.Cidade, r => r.Pessoa.Cidade.Estado).Where(x => x.PessoaId == contaReceber.PessoaId).FirstOrDefault()?.Pessoa;
-            //codigoCedente = "1234657";
-            codigoCedente = "123465";
+
+            codigoCedente = contaBancariaCedente.CodigoCedente;
 
             var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
             var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
             var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
-            var nossoNumero = $"{codigoCedente}{numerosGuidContaReceber.Substring(0, Math.Min(10, numerosGuidContaReceber.Length)).PadLeft(10, '0')}"; //cnab.nossonumero + 1
-
+            
             var boletoVM = new BoletoVM()
             {
                 ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
@@ -75,7 +87,9 @@ namespace Fly01.Financeiro.BL
         private bool ValidaDadosBoleto(BoletoVM boleto)
         {
             if (string.IsNullOrEmpty(boleto.Cedente.EnderecoComplemento)) boleto.Cedente.EnderecoComplemento = "---";
+            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoNumero)) boleto.Cedente.EnderecoNumero = "0";
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
+            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero)) boleto.Sacado.EnderecoNumero = "0";
             
             return true;
         }
@@ -146,5 +160,14 @@ namespace Fly01.Financeiro.BL
 
             return msgCaixa.ToString();
         }
+
+        public virtual IQueryable<Cnab> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+
+        public override void Insert(Cnab entity)
+        {
+            if (!All.Any(x => x.ContaReceberId == entity.ContaReceberId))
+                base.Insert(entity);
+        }
+
     }
 }

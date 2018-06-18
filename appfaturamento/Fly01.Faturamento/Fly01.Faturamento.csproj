@@ -317,6 +317,7 @@
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFe.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFSe.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -512,10 +513,15 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>61954</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>
+          </IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

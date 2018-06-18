@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
@@ -54,7 +55,8 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Label = "Tipo Venda",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
             {
@@ -177,7 +179,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12", Label = "Total (produtos + impostos incidentes + frete)", Readonly = true });
@@ -240,7 +242,8 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Disabled = true,
                 Name = "tipoVenda",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });
             config.Elements.Add(new AutoCompleteUI
@@ -257,7 +260,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoFreteNFe", Name = "tipoFrete" });
             config.Elements.Add(new InputHiddenUI { Id = "valorFreteNFe", Name = "valorFrete" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFreteNFe", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true, Name = "totalFrete" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFreteNFe", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true, Name = "totalFrete" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFe", Class = "col s12", Label = "Total (produtos + impostos incidentes + frete)", Readonly = true, Name = "totalNotaFiscal" });

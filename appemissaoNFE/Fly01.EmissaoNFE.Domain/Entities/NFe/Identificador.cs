@@ -212,5 +212,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlElement(ElementName = "verProc")]
         public string Versao { get; set; }
+
+        /// <summary>
+        /// Informar quando a legislação exigir a referência de uma NF-e, como é o caso de uma NF-e complementar, NF-e de devolução, NF-e de retorno, etc.
+        /// </summary>
+        [XmlElement(ElementName = "NFref")]
+        public NFReferenciada NFReferenciada { get; set; }
+
+        public bool ShouldSerializeNFReferenciada()
+        {
+            return FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
+        }
     }
 }

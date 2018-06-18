@@ -7,5 +7,9 @@ namespace Fly01.Compras.API.Controllers.Api
     [ODataRoutePrefix("grupotributario")]
     public class GrupoTributarioController : ApiPlataformaController<GrupoTributario, GrupoTributarioBL>
     {
+        public GrupoTributarioController()
+        {
+            MustProduceMessageServiceBus = true;
+        }
     }
 }

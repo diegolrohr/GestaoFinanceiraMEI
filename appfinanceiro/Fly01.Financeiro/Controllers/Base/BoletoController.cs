@@ -16,12 +16,14 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation;
+using System.Dynamic;
+using Boleto2Net;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
     public abstract class BoletoController<TEntity> : BaseController<TEntity> where TEntity : DomainBaseVM
     {
-        private List<CnabVM> GetCnab(List<Guid> idsBoletos)
+        public List<CnabVM> GetCnab(List<Guid> idsBoletos)
         {
             var listaCnab = new List<CnabVM>();
 
@@ -41,7 +43,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return listaCnab;
         }
 
-        private List<CnabVM> GetCnab(string filter)
+        public List<CnabVM> GetCnab(string filter)
         {
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", filter);
@@ -51,7 +53,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
             return boletos.Data;
         }
-        
+
         [HttpPost]
         public ActionResult GeraArquivoRemessa(List<Guid> ids)
         {
@@ -59,17 +61,9 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
                 var listaArquivosGerados = new List<string>();
-                var queryString = AppDefaults.GetQueryStringDefault();
-                queryString.AddParam("$filter", $"emiteBoleto eq true");
 
-                var listaBancos = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), queryString).Data;
-
-                foreach (var item in GetCnab(ids))
-                {
-                    dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
-                        item.ContaBancariaCedenteId,
-                        GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
-                }
+                var listaBancos = GetListBancos();
+                dictBoletos = MontarBoletos(ids);
 
                 foreach (var item in dictBoletos.GroupBy(x => x.Key).OrderByDescending(x => x.Key).ToList())
                 {
@@ -83,7 +77,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     };
                     boletos.AddRange(lstBoletos);
 
-                    var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, Boleto2Net.TipoArquivo.CNAB240, 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
+                    var arquivoRemessa = new Boleto2Net.ArquivoRemessa(banco, ValidaDadosBancoVM.GetTipoCnab(banco.Codigo), 1); // tem que avaliar os dados passados(tipoArquivo, NumeroArquivo)
                     var nomeArquivo = $"{banco.Codigo}-{DateTime.Now.ToString("ddMMyyyyHHmmss")}";
                     Session[nomeArquivo] = arquivoRemessa.GerarArquivoRemessa(boletos);
 
@@ -92,18 +86,27 @@ namespace Fly01.Financeiro.Controllers.Base
                         var dadosBanco = listaBancos.FirstOrDefault(x => x.Codigo.Contains(codigoBanco));
                         if (dadosBanco != null)
                         {
-                            SalvaArquivoRemessa(ids, dadosBanco.Id, nomeArquivo, lstBoletos.Count(), total);
                             listaArquivosGerados.Add(nomeArquivo);
                         }
                     }
                 }
-
-                return Json(new { FileGuid = listaArquivosGerados });
+                return Json(new { success = true, FileGuid = listaArquivosGerados});
             }
             catch (Exception e)
             {
                 return JsonResponseStatus.GetFailure($"Ocorreu um erro: {e.Message}");
             }
+        }
+
+        public string FormataNossoNumero(CedenteVM cedente, int nossoNumero)
+        {
+            TipoCodigoBanco tipo = (TipoCodigoBanco)Enum.ToObject(typeof(TipoCodigoBanco), cedente.ContaBancariaCedente.CodigoBanco);
+            switch (tipo)
+            {
+                case TipoCodigoBanco.BancoBrasil:
+                    return $"{cedente.CodigoCedente}{nossoNumero.ToString().PadLeft(10, '0')}";
+            }
+            return nossoNumero.ToString();
         }
 
         [HttpGet]
@@ -112,20 +115,13 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 var boletoBancario = GetBoletoBancario(contaReceberId, contaBancariaId);
-                if (boletoBancario == null)
-                    throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
-
-                if (!reimprimeBoleto)
-                    if (BoletoJaGeradoParaOutroBanco(contaReceberId, boletoBancario.Cedente.ContaBancariaCedente.CodigoBanco))
-                        throw new Exception("erro_validacao_boleto");
-
+             
                 var boletoImpresso = GeraBoleto(boletoBancario);
-                if (boletoImpresso == null)
-                    throw new Exception("O boleto não pôde ser gerado.");
-
+               
                 var html = new StringBuilder();
                 html.Append($"<div style=\"margin: 15px;\">{boletoImpresso.MontaHtml()}</div>");
 
+                boletoImpresso.Boleto.NossoNumero = boletoBancario.NossoNumero.ToString();
                 SalvaBoleto(boletoImpresso, contaReceberId, contaBancariaId, reimprimeBoleto);
 
                 return Json(new { success = true, message = html.ToString() }, JsonRequestBehavior.AllowGet);
@@ -136,18 +132,18 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        private Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
+        public Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
         {
             var mensagemBoleto = "";
             var proxy = new Boleto2Net.Boleto2NetProxy();
             var cedente = boleto.Cedente;
             var contaCedente = cedente.ContaBancariaCedente;
             var sacado = boleto.Sacado;
-            var carteira =  new CarteiraVM(boleto.Cedente.ContaBancariaCedente.CodigoBanco);
+            var carteira =  ValidaDadosBancoVM.GetTipoCarteira(boleto.Cedente.ContaBancariaCedente.CodigoBanco);
 
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
-                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, cedente.CodigoDV, "", carteira.CarteiraPadrao, carteira.VariacaoCarteira, 
+                "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, cedente.CodigoDV, "", carteira.CarteiraPadrao , carteira.VariacaoCarteira,
                 (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
@@ -155,7 +151,7 @@ namespace Fly01.Financeiro.Controllers.Base
             if (!proxy.DefinirSacado(cedente.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
                 sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
-            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, boleto.NossoNumero, boleto.DataEmissao,
+            if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, FormataNossoNumero( cedente,boleto.NossoNumero), boleto.DataEmissao,
                 DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
 
             if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
@@ -168,37 +164,51 @@ namespace Fly01.Financeiro.Controllers.Base
 
             proxy.FecharBoleto(ref mensagemBoleto);
 
-            return new Boleto2Net.BoletoBancario
+            var result = new Boleto2Net.BoletoBancario
             {
                 Boleto = proxy.boleto,
                 OcultarInstrucoes = false,
                 MostrarComprovanteEntrega = true,
                 MostrarEnderecoCedente = true
             };
+
+            if (result == null)
+                throw new Exception("O boleto não pôde ser gerado.");
+
+            return result;
         }
 
         private void SalvaBoleto(Boleto2Net.BoletoBancario boletoImpresso, Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto)
         {
+            var cnabToEdit = GetCnab($"contaReceberId eq {contaReceberId}");
+
             var cnab = new CnabVM()
             {
                 Status = StatusCnab.BoletoGerado.ToString(),
                 DataEmissao = boletoImpresso.Boleto.DataEmissao,
                 DataVencimento = boletoImpresso.Boleto.DataVencimento,
-                NossoNumero = boletoImpresso.Boleto.NossoNumero,
+                NossoNumero = Convert.ToInt32(boletoImpresso.Boleto.NossoNumero),
                 DataDesconto = boletoImpresso.Boleto.DataDesconto,
                 ValorDesconto = (double)boletoImpresso.Boleto.ValorDesconto,
                 ContaBancariaCedenteId = contaBancariaId,
                 ContaReceberId = contaReceberId,
-                ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo
+                ValorBoleto = (double)boletoImpresso.Boleto.ValorTitulo, 
             };
 
             if (!reimprimeBoleto)
-                RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
-            else
-                RestHelper.ExecutePutRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Edit));
+            {
+                if (cnabToEdit.Count <= 0)
+                    RestHelper.ExecutePostRequest("cnab", JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Default));
+            }
+            else if (reimprimeBoleto && contaBancariaId != cnabToEdit.FirstOrDefault().ContaBancariaCedenteId)
+            {
+                var resourceNamePut = $"cnab/{cnabToEdit.FirstOrDefault().Id}";
+                cnab.Id = cnabToEdit.FirstOrDefault().Id;
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(cnab, JsonSerializerSetting.Edit));
+            }
         }
 
-        private void SalvaArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
+        public void SaveArquivoRemessa(List<Guid> ids, Guid bancoId, string nomeArquivo, int qtdBoletos, double valorBoletos)
         {
             var arquivoRemessa = new ArquivoRemessaVM()
             {
@@ -210,6 +220,11 @@ namespace Fly01.Financeiro.Controllers.Base
             };
 
             var result = RestHelper.ExecutePostRequest<ArquivoRemessaVM>("arquivoremessa", JsonConvert.SerializeObject(arquivoRemessa, JsonSerializerSetting.Default));
+            UpdateCnab(ids, result);
+        }
+
+        private static void UpdateCnab(List<Guid> ids, ArquivoRemessaVM result)
+        {
             var status = ((int)StatusCnab.AguardandoRetorno).ToString();
 
             ids.ForEach(x =>
@@ -223,7 +238,7 @@ namespace Fly01.Financeiro.Controllers.Base
             });
         }
 
-        private BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
+        public BoletoVM GetBoletoBancario(Guid? contaReceberId, Guid? contaBancariaId)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -231,7 +246,12 @@ namespace Fly01.Financeiro.Controllers.Base
                 , { "contaBancariaId", contaBancariaId.ToString() }
             };
 
-            return RestHelper.ExecuteGetRequest<BoletoVM>("boleto/imprimeBoleto", queryString);
+            var result = RestHelper.ExecuteGetRequest<BoletoVM>("boleto/imprimeBoleto", queryString);
+
+            if (result == null)
+                throw new Exception("Uma ou mais informações obrigatórias não foram preenchidas.");
+
+            return result;
         }
 
         private List<CnabVM> GetContasReceber(Guid? idArquivo, int pageNo)
@@ -276,11 +296,55 @@ namespace Fly01.Financeiro.Controllers.Base
             }, JsonRequestBehavior.AllowGet);
         }
 
-        private bool BoletoJaGeradoParaOutroBanco(Guid contaReceberId, int codigoBanco)
+        [HttpGet]
+        public JsonResult ValidaBoletoJaGeradoParaOutroBanco(Guid contaReceberId, Guid contaBancariaId)
         {
-            if (GetCnab($"contaReceberId eq {contaReceberId}").Any(x => !x.ContaBancariaCedente.Banco.Codigo.Equals(codigoBanco.ToString("000")))) return true;
+            bool boletoTemVinculo = false; 
 
-            return false;
+            var cnab = GetCnab($"contaReceberId eq {contaReceberId}");
+            var bancoId = GetIdBanco($"id eq {contaBancariaId}");
+            var arquivoRemessaId = cnab.Count > 0  ? cnab.FirstOrDefault().ArquivoRemessaId : null;
+
+            if (cnab.Count > 0)
+            {
+                if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
+                    boletoTemVinculo = true;
+            }
+
+            return Json(new { success = boletoTemVinculo, data = arquivoRemessaId }, JsonRequestBehavior.AllowGet);
+        }
+
+        private Guid? GetIdBanco(string filter)
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", filter);
+           
+            return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
+        }
+
+        public List<KeyValuePair<Guid?, Boleto2Net.Boleto>> MontarBoletos(List<Guid> idsCnabToSave)
+        {
+            var dictBoletos = new List<KeyValuePair<Guid?, Boleto2Net.Boleto>>();
+            foreach (var item in GetCnab(idsCnabToSave))
+            {
+                dictBoletos.Add(new KeyValuePair<Guid?, Boleto2Net.Boleto>(
+                    item.ContaBancariaCedenteId,
+                    GeraBoleto(GetBoletoBancario(item.ContaReceberId, item.ContaBancariaCedenteId)).Boleto));
+            }
+
+            return dictBoletos;
+        }
+
+        public static Dictionary<string, string> GetQueryStringEmiteBoleto()
+        {
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"emiteBoleto eq true");
+            return queryString;
+        }
+
+        public static List<BancoVM> GetListBancos()
+        {
+            return RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>(AppDefaults.GetResourceName(typeof(BancoVM)), GetQueryStringEmiteBoleto()).Data;
         }
     }
 }

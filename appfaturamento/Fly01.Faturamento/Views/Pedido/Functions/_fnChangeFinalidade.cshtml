@@ -1,0 +1,28 @@
+﻿<script>
+    function fnShowHideNFeReferenciada(tipoVenda) {
+        if (tipoVenda == "Devolucao") {
+            $("#chaveNFeReferenciada").rules("add", { required: true });
+            $("#chaveNFeReferenciadaField").show();
+
+            $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
+
+            $("input#tipoCarteira").val("Despesa");
+        }
+        else {
+            $("input#chaveNFeReferenciada").rules("remove", "required");
+            $("input#chaveNFeReferenciada").removeClass("invalid")
+            $("#chaveNFeReferenciadaField").hide();
+            $("input#chaveNFeReferenciada").val("");
+
+            $("#grupoTributarioPadraoDescricao").rules("remove", "required");
+            $("#grupoTributarioPadraoDescricao").removeClass("invalid")
+
+            $("input#tipoCarteira").val("Receita");
+        }
+    }
+
+    function fnChangeFinalidade(tipoVenda) {
+        $("input#tipoVenda").val(tipoVenda);
+        fnShowHideNFeReferenciada(tipoVenda);
+    }
+</script>

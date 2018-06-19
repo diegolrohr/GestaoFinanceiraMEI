@@ -182,14 +182,7 @@ namespace Fly01.Core.Presentation
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
-
-        public K GetBranchInformation<K>()
-        {
-            //ver rota v1 e v2 branch
-            var resourceById = string.Format("{0}/{1}", AppDefaults.GetResourceName(typeof(K)), "01");
-            return RestHelper.ExecuteGetRequest<K>(AppDefaults.UrlApiGateway.Replace("/v2/", "/v1/"), resourceById, RestHelper.DefaultHeader, null);
-        }
-
+        
         public virtual ContentResult Functions(string fns)
         {
             string content = fns.Split(',')

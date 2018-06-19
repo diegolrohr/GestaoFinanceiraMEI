@@ -14,8 +14,9 @@ namespace Fly01.Core.Helpers
             if (destination == null)
                 return;
 
-            var destinationProperties = destination.GetType().GetProperties()
-                    .Where(x => !exceptions.Contains(x.Name));
+            var destinationProperties = destination.GetType().GetProperties();
+            destinationProperties = exceptions != null ? destinationProperties.Where(x => !exceptions.Contains(x.Name)).ToArray() : destinationProperties;
+
             foreach (PropertyInfo destinationPi in destinationProperties)
             {
                 PropertyInfo sourcePi = source.GetType().GetProperty(destinationPi.Name);

@@ -364,6 +364,7 @@
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnModalEmail.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

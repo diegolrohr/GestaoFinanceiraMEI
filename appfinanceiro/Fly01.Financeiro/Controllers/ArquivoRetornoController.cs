@@ -35,7 +35,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Importar arquivo de retorno",
                     Buttons = new List<HtmlUIButton>()
                     {
-                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" }
+                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" },
+                        new HtmlUIButton() { Id = "baixar", Label = "Baixar contas", OnClickFn = "fnBaixarContas", Type = "submit" }
                     }
                 },
                 Functions = new List<string> { "fnFormReady" },
@@ -64,6 +65,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
+
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6 l6", Label = "Arquivo de retorno do tipo (.ret)", Required = true, Accept = ".ret" });
 
             cfg.Content.Add(new CardUI
@@ -88,10 +90,11 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Retorno Cnab",
                 Options = new List<OptionUI>
                 {
-                    new OptionUI { Label = "Banco", Value = "0"},
-                    new OptionUI { Label = "Cliente", Value = "1"},
-                    new OptionUI { Label = "Valor", Value = "2"},
-                    new OptionUI { Label = "Data Vencimento", Value = "3"},
+                    new OptionUI { Label = "Id" },
+                    new OptionUI { Label = "Banco", Value = "0" },
+                    new OptionUI { Label = "Cliente", Value = "1" },
+                    new OptionUI { Label = "Valor", Value = "2" },
+                    new OptionUI { Label = "Data Vencimento", Value = "3" },
                 }
             });
             #endregion

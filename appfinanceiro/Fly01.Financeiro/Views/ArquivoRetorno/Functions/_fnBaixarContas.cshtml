@@ -1,0 +1,24 @@
+﻿<script>
+    function fnBaixarContas() {
+        debugger;
+        var cnabsBaixados = [];
+        table = $('#dtRetornoCnabItem').DataTable();
+        table.rows({ selected: true }).data().each(function (row)
+        {
+            cnabsBaixados.push(row.id);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("BaixarContasReceber","Cnab")",
+            data: { IdToBaixa: cnabsBaixados},
+            success: function (response) {
+
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+    }
+</script>

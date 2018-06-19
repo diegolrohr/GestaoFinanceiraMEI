@@ -1,12 +1,32 @@
 ﻿<script>
+    var table;
+
     function fnImportarArquivo(input) {
         if (!window.FileReader) return;
 
         var reader = new FileReader();
         reader.readAsText($("#arquivo")[0].files[0]);
-        
+
         reader.onload = processData;
         reader.onerror = errorHandler;
+        setupGridSelect();
+    }
+
+    function setupGridSelect() {
+        table = $('#dtRetornoCnabItem').DataTable({ "bPaginate": false });
+        table.on("select", function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                indexes.forEach(function (element, index, array) {
+                    //    fnAtualizaCountSelecionados(1);
+                });
+            }
+        }).on('deselect', function (e, dt, type, indexes) {
+            if (type !== undefined) {
+                indexes.forEach(function (element, index, array) {
+                    //  fnAtualizaCountSelecionados(-1);
+                });
+            }
+        });
     }
 
     function processData(event) {
@@ -20,7 +40,6 @@
             success: function (response) {
                 if (response.success) {
                     $("#dtRetornoCnabItem").DataTable().destroy();
-
                     var table = $("#dtRetornoCnabItem").DataTable({
                         bSort: false,
                         paging: false,
@@ -28,8 +47,12 @@
                         searching: false,
                         ordering: false,
                         info: false,
+                        select: {
+                            style: 'multi'
+                        },
                         data: response.data,
                         columns: [
+                            { title: "Id", data: "id", visible: false },
                             { title: "Banco", data: "banco_nome" },
                             { title: "Cliente", data: "pessoa_nome" },
                             { title: "Valor", data: "valorBoleto" },

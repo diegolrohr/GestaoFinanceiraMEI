@@ -221,5 +221,11 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+        [HttpPost]
+        public JsonResult BaixarContasReceber(List<string> IdToBaixa)
+        {
+            return null;
+        }
     }
 }

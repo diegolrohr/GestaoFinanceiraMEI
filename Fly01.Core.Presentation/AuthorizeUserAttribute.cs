@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace Fly01.Core.Presentation
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class AuthorizeUserAttribute : AuthorizeAttribute
     {
         public string ResourceKey { get; set; }

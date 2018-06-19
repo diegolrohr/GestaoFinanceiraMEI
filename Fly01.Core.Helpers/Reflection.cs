@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Fly01.Core.Helpers
 {
     public static class Reflection
     {
-        public static void CopyProperties<TFrom, TTo>(this TFrom source, TTo destination)
+        public static void CopyProperties<TFrom, TTo>(this TFrom source, TTo destination, params string[] exceptions)
         {
             if (source == null)
                 return;
@@ -13,7 +14,8 @@ namespace Fly01.Core.Helpers
             if (destination == null)
                 return;
 
-            PropertyInfo[] destinationProperties = destination.GetType().GetProperties();
+            var destinationProperties = destination.GetType().GetProperties()
+                    .Where(x => !exceptions.Contains(x.Name));
             foreach (PropertyInfo destinationPi in destinationProperties)
             {
                 PropertyInfo sourcePi = source.GetType().GetProperty(destinationPi.Name);
@@ -34,9 +36,9 @@ namespace Fly01.Core.Helpers
                 info.SetValue(instance, convertedValue, null);
         }
 
-        public static void CopyProperties<T>(this T source, T destination)
+        public static void CopyProperties<T>(this T source, T destination, params string[] exceptions)
         {
-            CopyProperties<T, T>(source, destination);
+            CopyProperties<T, T>(source, destination, exceptions);
         }
 
         public static bool IsNullableType(this Type type)

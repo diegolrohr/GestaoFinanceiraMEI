@@ -13,6 +13,7 @@ namespace Fly01.Core.BL
 {
     public class PlataformaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : PlataformaBase
     {
+        private static readonly string[] _exceptions = new [] { "DataInclusao", "UsuarioInclusao" };
         private Expression<Func<TEntity, bool>> PredicatePlatform { get; set; }
         private string _plataformaUrl;
         public string PlataformaUrl
@@ -31,6 +32,7 @@ namespace Fly01.Core.BL
         }
 
         private string _appUser;
+
         public string AppUser
         {
             get
@@ -100,7 +102,7 @@ namespace Fly01.Core.BL
 
             if (objectDB == null) return;
 
-            entity.CopyProperties<TEntity>(objectDB);
+            entity.CopyProperties<TEntity>(objectDB, _exceptions);
         }
 
         public virtual new void Delete(TEntity entityToDelete)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Fly01.uiJS.Classes;

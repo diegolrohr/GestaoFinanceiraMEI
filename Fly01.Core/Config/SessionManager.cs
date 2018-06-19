@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Fly01.Core.ViewModels;
+using System;
+using System.Linq;
 using System.Web;
 
 namespace Fly01.Core.Config
@@ -6,9 +8,6 @@ namespace Fly01.Core.Config
     [Serializable]
     public class SessionManager
     {
-        //private const string SessionKey = "_SESSION_MANAGER_FLY01_APP_S1_FINANCEIRO_";
-        //public static string sessionKey;
-
         public SessionManager()
         {
             userData = new UserDataVM();
@@ -22,9 +21,7 @@ namespace Fly01.Core.Config
                     return new SessionManager();
 
                 if (HttpContext.Current.Session[AppDefaults.SessionKey] == null)
-                {
                     HttpContext.Current.Session[AppDefaults.SessionKey] = new SessionManager();
-                }
 
                 return (SessionManager)HttpContext.Current.Session[AppDefaults.SessionKey];
             }
@@ -45,12 +42,20 @@ namespace Fly01.Core.Config
 
     public static class UserDataVMExtension
     {
-        public static bool IsValidUserData(this UserDataVM userDataVM)
+        public static bool IsValidUserData(this UserDataVM userDataVM) 
+            => (userDataVM != null)
+            && (userDataVM.TokenData != null)
+            && (!string.IsNullOrWhiteSpace(userDataVM.TokenData.AccessToken));
+
+        public static bool UserCanPerformOperation(this UserDataVM userDataVM, string resourceHash, EPermissionValue operation = EPermissionValue.Read)
         {
-            return (
-                (userDataVM.TokenData != null) &&
-                (!string.IsNullOrWhiteSpace(userDataVM.TokenData.AccessToken))
-            );
+            if (!IsValidUserData(userDataVM))
+                return false;
+            
+            var permission = userDataVM.Permissions.FirstOrDefault(x => x.ResourceHash == resourceHash);
+            var canOperation = permission != null && (int)permission.PermissionValue >= (int)operation;
+
+            return canOperation;
         }
     }
 }

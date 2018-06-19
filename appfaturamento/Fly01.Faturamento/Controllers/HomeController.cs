@@ -147,13 +147,15 @@ namespace Fly01.Faturamento.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
-            config.Widgets = new WidgetsUI();
-            config.Widgets.Conpass = new ConpassUI();
-            config.Widgets.Droz = new DrozUI();
-            config.Widgets.Zendesk = new ZendeskUI()
+            config.Widgets = new WidgetsUI
             {
-                AppName = "Fly01 Faturamento",
-                AppTag = "fly01_manufatura",
+                Conpass = new ConpassUI(),
+                Droz = new DrozUI(),
+                Zendesk = new ZendeskUI()
+                {
+                    AppName = "Fly01 Faturamento",
+                    AppTag = "fly01_manufatura",
+                }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };

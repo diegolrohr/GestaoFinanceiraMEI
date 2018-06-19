@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Principal;
 using System.Web;
@@ -10,7 +11,9 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Microsoft.ApplicationInsights.Extensibility;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Presentation.Application
 {
@@ -18,9 +21,22 @@ namespace Fly01.Core.Presentation.Application
     {
         protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;
 
+        private static List<PermissionResponseVM> GetPermissionsByUser(string platformUrl, string platformUser)
+        {
+            try
+            {
+                var requestObject = JsonConvert.SerializeObject(new { platformUrl, platformUser, resouceRoot = AppDefaults.AppId });
+                return RestHelper.ExecutePostRequest<List<PermissionResponseVM>>($"{AppDefaults.UrlGateway}v2/Permission", requestObject);
+            }
+            catch
+            {
+                return new List<PermissionResponseVM>();
+            }
+        }
+
         private static string ReadCookieAndSetSession(string token)
         {
-            string platformUser = "";
+            string platformUser = string.Empty;
             var formsAuthenticationTicket = FormsAuthentication.Decrypt(token);
 
             if ((formsAuthenticationTicket != null) && (formsAuthenticationTicket.UserData != null))
@@ -38,12 +54,14 @@ namespace Fly01.Core.Presentation.Application
                 {
                     TokenData = tokenData,
                     PlatformUser = platformUser,
-                    PlatformUrl = platformUrl
+                    PlatformUrl = platformUrl,
+                    Permissions = GetPermissionsByUser(platformUrl, platformUser)
                 };
 
                 userData.TokenData.Username = cookieUserData.Name;
                 SessionManager.Current.UserData = userData;
             }
+
             return platformUser;
         }
 
@@ -151,6 +169,7 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        protected void Session_End(object sender, EventArgs e) => FormsAuthentication.SignOut();
+        protected void Session_End(object sender, EventArgs e) 
+            => FormsAuthentication.SignOut();
     }
 }

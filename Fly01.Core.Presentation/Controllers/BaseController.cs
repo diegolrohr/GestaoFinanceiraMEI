@@ -26,12 +26,16 @@ namespace Fly01.Core.Presentation
 {
     public abstract class BaseController<T> : Controller where T : DomainBaseVM
     {
-        protected string ResourceName => AppDefaults.GetResourceName(typeof(T));
         protected string ExpandProperties { get; set; }
-        protected string AppEntitiesResourceName => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
-        protected string AppViewModelResourceName => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
 
-        #region BUSCA DE DADOS MASHUP
+        protected string ResourceName 
+            => AppDefaults.GetResourceName(typeof(T));
+
+        protected string AppEntitiesResourceName 
+            => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
+
+        protected string AppViewModelResourceName 
+            => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
 
         public JsonResult BuscaCEP(string cep)
         {
@@ -143,13 +147,9 @@ namespace Fly01.Core.Presentation
 
             return Json(response.Data, JsonRequestBehavior.AllowGet);
         }
-
-        #endregion
-
-        public ManagerEmpresaVM GetDadosEmpresa()
-        {
-            return ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-        }
+        
+        public ManagerEmpresaVM GetDadosEmpresa() 
+            => ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
         public ContentResult EmConstrucao(string history)
         {
@@ -279,11 +279,6 @@ namespace Fly01.Core.Presentation
             return items;
         }
 
-        /// <summary>
-        /// Função responsável por carregar as depencias do entidade
-        /// Isso é necessário quando a entidade em questão possui combos,
-        /// para isso utiliza-se do ViewBag.
-        /// </summary>
         protected virtual void LoadDependence() { }
 
         #region Views Methods
@@ -292,11 +287,6 @@ namespace Fly01.Core.Presentation
         {
             return View();
         }
-
-        //public virtual ActionResult List()
-        //{
-        //    return PartialView("_List");
-        //}
 
         public virtual ActionResult Create()
         {
@@ -401,11 +391,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        /// <summary>
-        /// Função para identificar quais as colunas serão apresentadas na listagem
-        /// Esta função é abstract, visto que somente será implementada no Controller que herda de BaseController
-        /// </summary>
-        /// <returns></returns>
         public abstract Func<T, object> GetDisplayData();
 
         public virtual Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -565,8 +550,6 @@ namespace Fly01.Core.Presentation
             }
         }
 
-        #region SYSTEM VALUES
-
         private Dictionary<string, List<SystemValueVM>> _systemValues = null;
 
         public Dictionary<string, List<SystemValueVM>> SystemValues
@@ -635,10 +618,6 @@ namespace Fly01.Core.Presentation
         {
             return RestHelper.ExecuteGetRequest<List<TReturn>>(string.Format("systemvalue/{0}", systemEntity));
         }
-
-        #endregion
-
-        #region Importação
 
         [HttpPost]
         public JsonResult ImportCsv(string entity, string defaultFields = null)
@@ -737,9 +716,7 @@ namespace Fly01.Core.Presentation
             var text = Encoding.UTF8.GetString(data);
             return text;
         }
-
-        #endregion
-
+        
         public abstract ContentResult List();
 
         public abstract ContentResult Form();

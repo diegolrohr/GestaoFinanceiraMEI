@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Fly01.uiJS.Classes;
@@ -10,26 +10,19 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public abstract class HomeController : GenericAppController
     {
-        public override ActionResult Index()
-        {
-            return Request.IsAjaxRequest() ? Go() : base.Index();
-        }
+        public override ActionResult Index() 
+            => Request.IsAjaxRequest() ? Go() : base.Index();
 
-        public ContentResult Go()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
-        }
+        public ContentResult Go() 
+            => Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
 
-        public ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
-        }
-       
+        public ContentResult List() 
+            => Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
+
         public List<AppUI> AppsList()
         {
-            List<AppUI> appsList = RestHelper.ExecuteGetRequest<List<AppUI>>($"{AppDefaults.UrlGateway}v1/", $"sidebarApps/{SessionManager.Current.UserData.PlatformUrl}", null);
-            appsList.RemoveAll(x => x.Id == AppDefaults.AppId);
-            return appsList;
+            var requestObject = new { platformUrl = SessionManager.Current.UserData.PlatformUrl, platformUser = SessionManager.Current.UserData.PlatformUser, originApp = AppDefaults.AppId };
+            return RestHelper.ExecutePostRequest<List<AppUI>>($"{AppDefaults.UrlGateway}v1/sidebarApps", requestObject);
         }
 
         protected abstract ContentUI HomeJson(bool withSidebarUrl = false);

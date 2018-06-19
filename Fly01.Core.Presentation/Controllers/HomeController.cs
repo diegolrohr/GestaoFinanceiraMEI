@@ -22,7 +22,7 @@ namespace Fly01.Core.Presentation.Controllers
         public List<AppUI> AppsList()
         {
             var requestObject = new { platformUrl = SessionManager.Current.UserData.PlatformUrl, platformUser = SessionManager.Current.UserData.PlatformUser, originApp = AppDefaults.AppId };
-            return RestHelper.ExecutePostRequest<List<AppUI>>($"{AppDefaults.UrlGateway}v1/sidebarApps", requestObject);
+            return RestHelper.ExecutePostRequest<List<AppUI>>(AppDefaults.UrlGateway, "v1/sidebarApps", requestObject);
         }
 
         protected abstract ContentUI HomeJson(bool withSidebarUrl = false);

@@ -109,7 +109,7 @@ namespace Fly01.Compras.BL
                     PlataformaId = PlataformaUrl,
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                 };
-                Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.enHTTPVerb.POST);
+                Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
 
                 bool pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
                 if (pagaFrete) {
@@ -127,7 +127,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
-                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.enHTTPVerb.POST);
+                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl
                     };
 
-                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, AppUser, PlataformaUrl, movimento, RabbitConfig.enHTTPVerb.POST);
+                    Producer<MovimentoEstoque>.Send(routePrefixNameMovimento, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
                 }
             }
         }

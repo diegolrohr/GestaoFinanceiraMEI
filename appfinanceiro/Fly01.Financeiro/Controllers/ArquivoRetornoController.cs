@@ -90,7 +90,8 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Retorno Cnab",
                 Options = new List<OptionUI>
                 {
-                    new OptionUI { Label = "Id" },
+                    new OptionUI { Label = "Conta ReceberID" },
+                    new OptionUI { Label = "IdContaBancaria" },
                     new OptionUI { Label = "Banco", Value = "0" },
                     new OptionUI { Label = "Cliente", Value = "1" },
                     new OptionUI { Label = "Valor", Value = "2" },
@@ -152,6 +153,35 @@ namespace Fly01.Financeiro.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
+            };
+        }
+
+        [HttpPost]
+        public JsonResult BaixarContasReceber(List<string> IdToBaixa, Guid contaBancariaId)
+        {
+            try
+            {
+                var contaFinanceiraBaixaMultipla = MontarContaFinanceiraBaixaMultipla(IdToBaixa, contaBancariaId);
+
+                RestHelper.ExecutePostRequest<ContaFinanceiraBaixaMultiplaVM>("contafinanceirabaixamultipla", JsonConvert.SerializeObject(contaFinanceiraBaixaMultipla, JsonSerializerSetting.Default));
+                return null;//JsonResponseStatus.GetSuccess(string.Format("{0} realizado com sucesso."));
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private ContaFinanceiraBaixaMultiplaVM MontarContaFinanceiraBaixaMultipla(List<string> IdToBaixa, Guid contaBancariaId)
+        {
+            return new ContaFinanceiraBaixaMultiplaVM()
+            {
+                Data = DateTime.Now,
+                ContasFinanceirasGuids = string.Join(",", IdToBaixa),
+                ContaBancariaId = contaBancariaId,
+                Observacao = "",
+                TipoContaFinanceira = TipoContaFinanceira.ContaReceber.ToString()
             };
         }
     }

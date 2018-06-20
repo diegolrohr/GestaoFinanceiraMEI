@@ -1,6 +1,4 @@
 ﻿<script>
-    var table;
-
     function fnImportarArquivo(input) {
         if (!window.FileReader) return;
 
@@ -9,24 +7,8 @@
 
         reader.onload = processData;
         reader.onerror = errorHandler;
-        setupGridSelect();
-    }
 
-    function setupGridSelect() {
-        table = $('#dtRetornoCnabItem').DataTable({ "bPaginate": false });
-        table.on("select", function (e, dt, type, indexes) {
-            if (type !== undefined) {
-                indexes.forEach(function (element, index, array) {
-                    //    fnAtualizaCountSelecionados(1);
-                });
-            }
-        }).on('deselect', function (e, dt, type, indexes) {
-            if (type !== undefined) {
-                indexes.forEach(function (element, index, array) {
-                    //  fnAtualizaCountSelecionados(-1);
-                });
-            }
-        });
+        $("#dtRetornoCnabItem").show();
     }
 
     function processData(event) {
@@ -39,8 +21,7 @@
             data: { valueArquivo: ret, contaBancariaId: $('#contaBancariaId').val()},
             success: function (response) {
                 if (response.success) {
-                    $("#dtRetornoCnabItem").DataTable().destroy();
-                    var table = $("#dtRetornoCnabItem").DataTable({
+                    $("#dtRetornoCnabItem").DataTable({
                         bSort: false,
                         paging: false,
                         bLengthChange: false,
@@ -52,16 +33,19 @@
                         },
                         data: response.data,
                         columns: [
-                            { title: "Id", data: "id", visible: false },
+                            { title: "Conta ReceberID", data: "contaReceberId", visible: false },
+                            { title: "IdContaBancaria", data: $('#contaBancariaId').val(), visible: false },
                             { title: "Banco", data: "banco_nome" },
                             { title: "Cliente", data: "pessoa_nome" },
                             { title: "Valor", data: "valorBoleto" },
                             { title: "Data Vencimento", data: "dataVencimento" }]
                     });
-                    $('#dtRetornoCnabItem').show();
+
+                    $("#dtRetornoCnabItem_wrapper").addClass("dataTables_wrapper");
                 } else {
                     fly01.toast(response.message, 'error');
-                };
+                }
+
                 fly01.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {

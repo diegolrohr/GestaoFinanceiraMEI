@@ -1,17 +1,16 @@
 ﻿<script>
     function fnBaixarContas() {
-        debugger;
-        var cnabsBaixados = [];
+        var contasTObaixa = [];
         table = $('#dtRetornoCnabItem').DataTable();
         table.rows({ selected: true }).data().each(function (row)
         {
-            cnabsBaixados.push(row.id);
+            contasTObaixa.push(row.contaReceberId);
         });
 
         $.ajax({
             type: "POST",
-            url: "@Url.Action("BaixarContasReceber","Cnab")",
-            data: { IdToBaixa: cnabsBaixados},
+            url: "@Url.Action("BaixarContasReceber","ArquivoRetorno")",
+            data: { IdToBaixa: contasTObaixa, contaBancariaId: table.rows().data()[0].contaBancariaId},
             success: function (response) {
 
             },

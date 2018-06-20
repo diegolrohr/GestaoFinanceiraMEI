@@ -198,7 +198,7 @@ namespace Fly01.Estoque.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Estoque",
                 Items = new List<LinkUI>
@@ -210,7 +210,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
@@ -221,7 +221,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -230,7 +230,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
+            config.MenuItems.Add(new SidebarUIMenu { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

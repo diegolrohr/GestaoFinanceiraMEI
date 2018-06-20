@@ -245,7 +245,7 @@ namespace Fly01.Financeiro.Controllers
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
 
             #region MenuItems
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Dashboard",
                 Items = new List<LinkUI>
@@ -254,7 +254,8 @@ namespace Fly01.Financeiro.Controllers
                 new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
             }
             });
-            config.MenuItems.Add(new SidebarMenuUI()
+            
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Financeiro",
                 Items = new List<LinkUI>
@@ -268,7 +269,7 @@ namespace Fly01.Financeiro.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Cobrança",
                 Items = new List<LinkUI>
@@ -279,7 +280,7 @@ namespace Fly01.Financeiro.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
@@ -293,7 +294,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Configurações",
                 Items = new List<LinkUI>
@@ -302,7 +303,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -311,7 +312,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")});
+            config.MenuItems.Add(new SidebarUIMenu { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")});
             #endregion
 
             #region User Menu Items

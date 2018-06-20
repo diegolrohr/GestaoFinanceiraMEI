@@ -1,0 +1,19 @@
+﻿<script>
+function habilitaCamposBaixaTitulo() {
+    $('#contaBancariaIdField').show();
+}
+
+function desabilitaCamposBaixaTitulo() {
+    $('#contaBancariaIdField').hide();
+    $('input#contaBancariaIdField').val(null);
+}
+
+function fnChkBaixar() {
+    if ($('#baixarTitulo:checked').val() == "true") {
+        habilitaCamposBaixaTitulo();
+    }
+    else {
+        desabilitaCamposBaixaTitulo();
+    }
+}
+</script>

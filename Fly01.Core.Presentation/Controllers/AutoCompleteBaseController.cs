@@ -3,17 +3,14 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System.Collections.Generic;
 using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public class AutoCompleteBaseController : Controller
+    public class AutoCompleteBaseController : PrimitiveBaseController
     {
-        protected JsonResult GetJson(object data)
-        {
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
+        protected JsonResult GetJson(object data) 
+            => Json(data, JsonRequestBehavior.AllowGet);
 
         public JsonResult Estado(string term)
         {

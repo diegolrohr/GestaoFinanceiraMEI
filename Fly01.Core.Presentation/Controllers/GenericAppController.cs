@@ -8,7 +8,7 @@ using Fly01.Core.Rest;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public abstract class GenericAppController : Controller
+    public abstract class GenericAppController : PrimitiveBaseController
     {
         protected string ResourceName { get; set; }
         protected string ExpandProperties { get; set; }
@@ -25,6 +25,7 @@ namespace Fly01.Core.Presentation.Controllers
             content = content.Replace("<script>", "").Replace("</script>", "");
             return Content(content, "text/javascript");
         }
+
         protected string RenderRazorViewToString(string viewName)
         {
             using (var sw = new StringWriter())
@@ -38,17 +39,7 @@ namespace Fly01.Core.Presentation.Controllers
                 return sw.GetStringBuilder().ToString();
             }
         }
-        protected override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            bool skipAuthorization =
-                filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
-                filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
-            if (!skipAuthorization)
-            {
-                base.OnAuthorization(filterContext);
-            }
-        }
         public List<K> GetAll<K>(string order = "", string filterField = "", string filterValue = "")
         {
             Dictionary<string, string> queryStringRequest = AppDefaults.GetQueryStringDefault(filterField, filterValue, AppDefaults.MaxRecordsPerPageAPI);
@@ -101,10 +92,8 @@ namespace Fly01.Core.Presentation.Controllers
             return items;
         }
         protected virtual void LoadDependence() { }
-       
+
         public virtual ActionResult Index()
-        {
-            return View();
-        }
+            => View();
     }
 }

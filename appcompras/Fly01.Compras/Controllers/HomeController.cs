@@ -11,11 +11,9 @@ namespace Fly01.Compras.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
-        {
-            //return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
-            return DashboardController.DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
-        }
+        protected override ContentUI HomeJson(bool withSidebarUrl = false) 
+            => DashboardController.DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };

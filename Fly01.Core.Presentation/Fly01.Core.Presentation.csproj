@@ -136,6 +136,7 @@
     <Compile Include="Controllers\PessoaBaseController.cs" />
     <Compile Include="Controllers\CondicaoParcelamentoBaseController.cs" />
     <Compile Include="Controllers\FormaPagamentoBaseController.cs" />
+    <Compile Include="Controllers\PrimitiveBaseController.cs" />
     <Compile Include="Controllers\ProdutoBaseController.cs" />
     <Compile Include="Controllers\GrupoProdutoBaseController.cs" />
     <Compile Include="Controllers\GrupoTributarioBaseController.cs" />

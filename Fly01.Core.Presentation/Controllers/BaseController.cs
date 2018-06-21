@@ -21,10 +21,11 @@ using Fly01.Core.Config;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using System.Web.Configuration;
+using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Core.Presentation
 {
-    public abstract class BaseController<T> : Controller where T : DomainBaseVM
+    public abstract class BaseController<T> : PrimitiveBaseController where T : DomainBaseVM
     {
         protected string ExpandProperties { get; set; }
 
@@ -206,19 +207,7 @@ namespace Fly01.Core.Presentation
                 return sw.GetStringBuilder().ToString();
             }
         }
-
-        //protected override void OnAuthorization(AuthorizationContext filterContext)
-        //{
-        //    bool skipAuthorization =
-        //        filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
-        //        filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
-
-        //    if (!skipAuthorization)
-        //    {
-        //        base.OnAuthorization(filterContext);
-        //    }
-        //}
-
+        
         public List<T> GetAll(string order = "", string filterField = "", string filterValue = "")
         {
             Dictionary<string, string> queryStringRequest = AppDefaults.GetQueryStringDefault(filterField, filterValue, AppDefaults.MaxRecordsPerPageAPI);
@@ -275,10 +264,8 @@ namespace Fly01.Core.Presentation
         protected virtual void LoadDependence() { }
 
         #region Views Methods
-        public virtual ActionResult Index()
-        {
-            return View();
-        }
+        public virtual ActionResult Index() 
+            => View();
 
         public virtual ActionResult Create()
         {

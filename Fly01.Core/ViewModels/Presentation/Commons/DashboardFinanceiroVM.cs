@@ -21,7 +21,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string Dia { get; set; }
 
         [JsonProperty("total")]
-        public double Total { get; set; }
+        public double? Total { get; set; }
     }
 
     public class ContasPagarDoDiaVM

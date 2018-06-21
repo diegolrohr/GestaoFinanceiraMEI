@@ -85,7 +85,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     await unitOfWork.Save();
                     if (MustProduceMessageServiceBus)
                         Producer<ContaPagar>.Send(child.GetType().Name, AppUser, PlataformaUrl, child,
-                            RabbitConfig.enHTTPVerb.DELETE);
+                            RabbitConfig.EnHttpVerb.DELETE);
                 }
             }
 

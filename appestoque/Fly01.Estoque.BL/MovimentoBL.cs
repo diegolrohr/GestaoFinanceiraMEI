@@ -99,7 +99,7 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(string message, RabbitConfig.enHTTPVerb httpMethod)
+        public override void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
         {
             foreach (var item in ResolveTypeOfMessage(message))
                 Movimenta(item);

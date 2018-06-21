@@ -18,5 +18,8 @@ namespace Fly01.Core.Notifications
 
         [BsonElement("Queue")]
         public string Queue { get; set; }
+
+        [BsonElement("RoutingKey")]
+        public string RoutingKey { get; set; }
     }
 }

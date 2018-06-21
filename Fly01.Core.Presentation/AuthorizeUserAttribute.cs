@@ -16,8 +16,13 @@ namespace Fly01.Core.Presentation
         //private string ActionName { get; set; }
 
         public AuthorizeUserAttribute(string resourceKey, EPermissionValue permissionValue = EPermissionValue.Read)
+            : this(permissionValue)
         {
             ResourceKey = resourceKey;
+        }
+
+        public AuthorizeUserAttribute(EPermissionValue permissionValue = EPermissionValue.Read)
+        {
             PermissionValue = permissionValue;
         }
 
@@ -25,7 +30,6 @@ namespace Fly01.Core.Presentation
         {
             //ControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             //ActionName = filterContext.ActionDescriptor.ActionName;
-
             bool skipAuthorization = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any()
                 || filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any();
 
@@ -37,7 +41,7 @@ namespace Fly01.Core.Presentation
 
         private bool UserCanPerformOperation() 
             => SessionManager.Current.UserData.UserCanPerformOperation(ResourceKey, PermissionValue);
-
+        
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)

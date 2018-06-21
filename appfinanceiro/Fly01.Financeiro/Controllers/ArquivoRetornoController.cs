@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
                 Color = "blue",
                 Id = "cardDuvidas",
                 Title = "Dicas",
-                Placeholder = "Selecione o banco de origem do arquivo, e localize o arquivo que deseja importar",
+                Placeholder = "Selecione o banco de origem do arquivo e localize o arquivo que deseja importar",
                 Action = new LinkUI()
                 {
                     Label = "",
@@ -90,6 +90,7 @@ namespace Fly01.Financeiro.Controllers
                 Label = "Retorno Cnab",
                 Options = new List<OptionUI>
                 {
+                    new OptionUI { Label = "Id" },
                     new OptionUI { Label = "Conta ReceberID" },
                     new OptionUI { Label = "IdContaBancaria" },
                     new OptionUI { Label = "Banco", Value = "0" },
@@ -157,20 +158,35 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpPost]
-        public JsonResult BaixarContasReceber(List<string> IdToBaixa, Guid contaBancariaId)
+        public JsonResult BaixarContasReceber(List<Guid> IdBoletos, List<string> IdToBaixa, Guid contaBancariaId)
         {
             try
             {
                 var contaFinanceiraBaixaMultipla = MontarContaFinanceiraBaixaMultipla(IdToBaixa, contaBancariaId);
-
+                UpdateStausCnabToBaixado(IdBoletos);
                 RestHelper.ExecutePostRequest<ContaFinanceiraBaixaMultiplaVM>("contafinanceirabaixamultipla", JsonConvert.SerializeObject(contaFinanceiraBaixaMultipla, JsonSerializerSetting.Default));
-                return null;//JsonResponseStatus.GetSuccess(string.Format("{0} realizado com sucesso."));
+
+                return JsonResponseStatus.GetSuccess("Baixas realizadas com sucesso!");
             }
             catch (Exception ex)
             {
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        private void UpdateStausCnabToBaixado(List<Guid> ids)
+        {
+            var status = ((int)StatusCnab.Baixado).ToString();
+
+            ids.ForEach(x =>
+            {
+                var resource = $"cnab/{x}";
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
+                {
+                    status = status
+                }));
+            });
         }
 
         private ContaFinanceiraBaixaMultiplaVM MontarContaFinanceiraBaixaMultipla(List<string> IdToBaixa, Guid contaBancariaId)

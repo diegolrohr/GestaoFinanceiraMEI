@@ -31,8 +31,12 @@ namespace Fly01.Financeiro.BL
 
             foreach (var item in boletosRetorno)
             {
-                var cnab = cnabBL.AllIncluding(x => x.ContaReceber, x => x.ContaReceber.Pessoa).FirstOrDefault(x => x.NossoNumeroFormatado.Contains(item.NossoNumero));
-                cnabs.Add(cnab);
+                var cnab = cnabBL.AllIncluding(x => x.ContaReceber, x => x.ContaReceber.Pessoa)
+                                .FirstOrDefault(x => 
+                                    x.NossoNumeroFormatado.Contains(item.NossoNumero)
+                                    && x.Status != StatusCnab.Baixado);
+                if (cnab != null)
+                    cnabs.Add(cnab);
             }
 
             return cnabs;

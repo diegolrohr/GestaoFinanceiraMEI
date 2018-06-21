@@ -353,7 +353,7 @@
     <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Cnab\Functions\_fnImprimirBoleto.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnImprimirBoleto.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
@@ -365,6 +365,7 @@
     <Content Include="Views\Cnab\Functions\_fnModalEmail.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

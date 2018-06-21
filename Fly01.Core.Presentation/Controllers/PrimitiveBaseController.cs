@@ -14,16 +14,19 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
+            var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            var actionName = filterContext.ActionDescriptor.ActionName;
+
             base.OnAuthorization(filterContext);
 
             bool skipAuthorization =
                 filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
                 filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
-            var resourceKey = "";
+            var resourceKey = ResourceHashPermissao;
             var permissionValue = EPermissionValue.Read;
 
-            if (skipAuthorization || UserCanPerformOperation(resourceKey, permissionValue))
+            if (skipAuthorization || string.IsNullOrWhiteSpace(resourceKey) || UserCanPerformOperation(resourceKey, permissionValue))
                 return;
             else
                 HandleUnauthorizedRequest(filterContext);
@@ -48,7 +51,6 @@ namespace Fly01.Core.Presentation.Controllers
                     { "Message", "You do not have sufficient privileges for this operation." }
                 };
                 filterContext.Result = new ViewResult { MasterName = "Home", ViewName = "Index", ViewData = viewData };
-
             }
         }
     }

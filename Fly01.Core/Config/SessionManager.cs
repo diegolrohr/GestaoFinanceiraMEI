@@ -52,7 +52,7 @@ namespace Fly01.Core.Config
             if (!IsValidUserData(userDataVM))
                 return false;
             
-            var permission = userDataVM.Permissions.FirstOrDefault(x => x.ResourceHash == resourceHash);
+            var permission = userDataVM.Permissions.FirstOrDefault(x => x.ResourceHash.Equals(resourceHash, StringComparison.InvariantCultureIgnoreCase));
             var canOperation = permission != null && (int)permission.PermissionValue >= (int)operation;
 
             return canOperation;

@@ -59,7 +59,7 @@ namespace Fly01.Core.API
             await UnitSave();
 
             if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.POST);
+                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
 
             return Created(entity);
         }
@@ -91,7 +91,7 @@ namespace Fly01.Core.API
                 await UnitSave();
 
                 if (MustProduceMessageServiceBus)
-                    Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.PUT);
+                    Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -126,7 +126,7 @@ namespace Fly01.Core.API
             await UnitSave();
 
             if (MustProduceMessageServiceBus)
-                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.DELETE);
+                Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

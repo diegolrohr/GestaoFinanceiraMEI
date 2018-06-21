@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
 
             if (MustProduceMessageServiceBus)
-                Producer<ContaFinanceiraBaixaMultipla>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.enHTTPVerb.POST);
+                Producer<ContaFinanceiraBaixaMultipla>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
 
             return Created(entity);
         }

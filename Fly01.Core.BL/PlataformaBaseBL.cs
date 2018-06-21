@@ -128,7 +128,7 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(string message, RabbitConfig.enHTTPVerb httpMethod)
+        public virtual void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
@@ -137,14 +137,14 @@ namespace Fly01.Core.BL
             {
                 switch (httpMethod)
                 {
-                    case RabbitConfig.enHTTPVerb.POST:
+                    case RabbitConfig.EnHttpVerb.POST:
                         Insert(item);
                         break;
-                    case RabbitConfig.enHTTPVerb.PUT:
+                    case RabbitConfig.EnHttpVerb.PUT:
                         Update(item);
                         AttachForUpdate(item);
                         break;
-                    case RabbitConfig.enHTTPVerb.DELETE:
+                    case RabbitConfig.EnHttpVerb.DELETE:
                         var itemToDelete = Find(item.Id);
                         if(itemToDelete != null)
                         {

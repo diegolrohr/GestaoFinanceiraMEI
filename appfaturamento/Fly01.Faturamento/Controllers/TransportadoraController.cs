@@ -1,22 +1,15 @@
 ﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation;
-using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Faturamento.Controllers
 {
-    public class TransportadoraController : ClienteBaseController<PessoaVM>
+    public class TransportadoraController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Transportadora";
         protected override string LabelTitle => "Transportadoras";

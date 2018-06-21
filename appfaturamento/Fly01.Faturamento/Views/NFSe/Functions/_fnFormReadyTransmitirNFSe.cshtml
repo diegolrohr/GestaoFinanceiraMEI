@@ -6,24 +6,19 @@
     }
 
     function calculaTotalNFSeTransmitir() {
-        var valorFrete = 0;
-        if ($('input#tipoFreteNFSe').val() == "CIF" || $('input#tipoFreteNFSe').val() == "Remetente") {
-            valorFrete = parseFloat(noComma($('form#fly01mdlfrmTransmitirNFSe input#valorFreteNFSe').val()));
-        }
-
         var idNFSe = $("form#fly01mdlfrmTransmitirNFSe input#idNFSe").val();
         fly01.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalNotaFiscal", "NotaFiscal")',
             type: "GET",
-            data: { id: idNFSe, valorFreteCIF: valorFrete }
+            data: { id: idNFSe }
         })
         .done(function (data) {
             if (data.success) {
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
-                $('form#fly01mdlfrmTransmitirNFSe input#totalFreteNFSe').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('form#fly01mdlfrmTransmitirNFSe input#totalFreteNFSe').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmTransmitirNFSe input#totalNotaFiscalNFSe').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
             }

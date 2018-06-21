@@ -317,6 +317,7 @@
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFe.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFSe.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

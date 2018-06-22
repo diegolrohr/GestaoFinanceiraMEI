@@ -12,25 +12,37 @@ namespace Fly01.Core.Presentation.Controllers
         private bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue)
             => SessionManager.Current.UserData.UserCanPerformOperation(resourceKey, permissionValue);
 
-        protected override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            var actionName = filterContext.ActionDescriptor.ActionName;
+        //protected override void OnAuthorization(AuthorizationContext filterContext)
+        //{
+        //    var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+        //    var actionName = filterContext.ActionDescriptor.ActionName;
 
-            base.OnAuthorization(filterContext);
+        //    //base.OnAuthorization(filterContext);
 
-            bool skipAuthorization =
-                filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
-                filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+        //    bool skipAuthorization =
+        //        filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
+        //        filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
-            var resourceKey = ResourceHashPermissao;
-            var permissionValue = EPermissionValue.Read;
+        //    var resourceKey = ResourceHashPermissao;
+        //    var permissionValue = EPermissionValue.Read;
 
-            if (skipAuthorization || string.IsNullOrWhiteSpace(resourceKey) || UserCanPerformOperation(resourceKey, permissionValue))
-                return;
-            else
-                HandleUnauthorizedRequest(filterContext);
-        }
+        //    if (skipAuthorization || string.IsNullOrWhiteSpace(resourceKey) || UserCanPerformOperation(resourceKey, permissionValue))
+        //        return;
+        //    else
+        //        HandleUnauthorizedRequest(filterContext);
+        //}
+
+        //protected override void OnAuthorization(AuthorizationContext filterContext)
+        //{
+        //    bool skipAuthorization =
+        //        filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
+        //        filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+
+        //    if (!skipAuthorization)
+        //    {
+        //        base.OnAuthorization(filterContext);
+        //    }
+        //}
 
         protected void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {

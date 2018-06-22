@@ -357,7 +357,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "chaveNFeReferenciada",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a estapa da finalidade, não é mais possível voltar e editar estes dados."
+                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a etapa da finalidade, não é mais possível voltar e editar estes dados."
                 }
             });
             config.Helpers.Add(new TooltipUI

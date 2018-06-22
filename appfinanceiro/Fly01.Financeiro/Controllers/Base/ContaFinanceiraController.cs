@@ -125,23 +125,26 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 entityVM.StatusContaBancaria = "EmAberto";
 
+                if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
+                    entityVM.StatusContaBancaria = "Pago";
+
                 var conta = RestHelper.ExecutePostRequest<TEntity>(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
-                if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
-                {
-                    var contaBancariaId = Guid.Parse(Request.Form["ContaBancariaId"]);
-                    var baixa = new ContaFinanceiraBaixaVM
-                    {
-                        ContaBancariaId = contaBancariaId,
-                        Data = DateTime.Now,
-                        Observacao = "Título baixado automaticamente",
-                        Valor = entityVM.ValorPrevisto,
-                        ContaFinanceiraId = conta.Id
-                    };
+                //if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
+                //{
+                //    var contaBancariaId = Guid.Parse(Request.Form["ContaBancariaId"]);
+                //    var baixa = new ContaFinanceiraBaixaVM
+                //    {
+                //        ContaBancariaId = contaBancariaId,
+                //        Data = DateTime.Now,
+                //        Observacao = "Título baixado automaticamente",
+                //        Valor = entityVM.ValorPrevisto,
+                //        ContaFinanceiraId = conta.Id
+                //    };
 
-                    BaixaTitulo((TEntityBaixa)baixa);
-                }
-                
+                //    BaixaTitulo((TEntityBaixa)baixa);
+                //}
+
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
             }
             catch (Exception ex)
@@ -155,7 +158,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
 
-            foreach (TEntity  ListContas in contas)
+            foreach (TEntity ListContas in contas)
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = ListContas.Id,
@@ -165,7 +168,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Vencimento = ListContas.DataVencimento,
-                    Titulo = titulo, 
+                    Titulo = titulo,
                     Numero = ListContas.Numero
                 });
 
@@ -287,36 +290,6 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
-        //public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)
-        //{
-        //    dynamic dataToView;
-        //    int dataTotal;
-        //    var queryString = new Dictionary<string, string>();
-
-        //    if (subtitleCode == "2" || subtitleCode == "3")
-        //    {
-        //        var account = AppDefaults.GetResourceName(typeof(TEntity))
-        //                        .Replace("Accounts", "Account");
-        //        queryString.AddParam(account + "Id", contaId);
-
-        //        var response = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(
-        //                        AppDefaults.GetResourceName(typeof(BankTransacVM)), queryString);
-        //        dataToView = response.Data.Select(GetDisplayDataBankTransac());
-        //        dataTotal = response.Total;
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentOutOfRangeException("Somente SubtitleCode 2 e 3");
-        //    }
-
-        //    return Json(new
-        //    {
-        //        recordsTotal = dataTotal,
-        //        recordsFiltered = dataTotal,
-        //        data = dataToView
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
-
         #endregion
 
         #region Renegociação
@@ -377,7 +350,7 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #endregion
-        
+
         #region Bordero/CNAB
         /// <summary>
         /// Retorna Títulos que podem ser inclusos em um bordero
@@ -681,6 +654,5 @@ namespace Fly01.Financeiro.Controllers.Base
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
         #endregion
-
     }
 }

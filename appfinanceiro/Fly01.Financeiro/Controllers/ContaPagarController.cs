@@ -25,18 +25,6 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class GridLoad
-    {
-        [JsonProperty("recordsTotal")]
-        public int recordsTotal { get; set; }
-
-        [JsonProperty("recordsFiltered")]
-        public int recordsFiltered { get; set; }
-
-        [JsonProperty("data")]
-        public List<JObject> data { get; set; }
-    }
-
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
         public ContaPagarController()
@@ -250,7 +238,6 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
 
-
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusContaBancaria",
@@ -265,7 +252,6 @@ namespace Fly01.Financeiro.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 5, Orderable = false, Searchable = false });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 6, Orderable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
             config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 8 });
 
@@ -418,7 +404,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "baixarTitulo",
                 Class = "col s6",
-                Label = "Marcar como título já baixado?",
+                Label = "Marcar título como pago?",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChkBaixar" }
@@ -736,6 +722,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         #region OnDemmand
+
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)
         {

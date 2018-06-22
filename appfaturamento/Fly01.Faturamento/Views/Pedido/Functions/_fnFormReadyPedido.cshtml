@@ -169,6 +169,7 @@
 
                             if (jsonData.tipoVenda == "Devolucao") {
                                 //preencher os campos
+                                $("div#clienteIdField").show();
                                 fly01._.fly01frm.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
@@ -184,6 +185,7 @@
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         fly01.loading.stop();
+                        $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },

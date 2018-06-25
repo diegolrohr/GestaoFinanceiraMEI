@@ -187,9 +187,22 @@ namespace Fly01.Financeiro.DAL.Migrations.DataInitializer
                 context.SaveChanges();
             }
 
-            if(!context.Bancos.Any(x => x.Codigo == "999"))
+            if (!context.Bancos.Any(x => x.Codigo == "999"))
             {
                 context.Bancos.AddOrUpdate(new Banco() { Id = Guid.NewGuid(), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "999", Nome = "Outros" });
+                context.SaveChanges();
+            }
+
+            if (!context.Bancos.Any(x => x.Codigo == "001" && x.EmiteBoleto == true))
+            {
+                context.Bancos.AddOrUpdate(x => x.Codigo,
+                  new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "001", EmiteBoleto = true, Nome = "BANCO DO BRASIL S.A." }
+                , new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "033", EmiteBoleto = true, Nome = "BANCO SANTANDER (BRASIL) S.A." }
+                , new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "237", EmiteBoleto = true, Nome = "BANCO BRADESCO S.A." }
+                , new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "104", EmiteBoleto = true, Nome = "CAIXA ECONOMICA FEDERAL" }
+                , new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "341", EmiteBoleto = true, Nome = "ITAU UNIBANCO S.A." }
+                , new Banco() { DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "041", EmiteBoleto = true, Nome = "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A" });
+
                 context.SaveChanges();
             }
         }

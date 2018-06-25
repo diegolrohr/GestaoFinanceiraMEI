@@ -68,7 +68,7 @@ namespace Fly01.Core.Presentation.Application
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) &&
-                SessionManager.Current.UserData.IsValidUserData() &&
+                //SessionManager.Current.UserData.IsValidUserData() &&
                 ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
             {
                 HttpContext.Current.Session.Clear();
@@ -76,16 +76,19 @@ namespace Fly01.Core.Presentation.Application
                 HttpContext.Current.Session.RemoveAll();
                 FormsAuthentication.SignOut();
 
-                if (Request.Headers["X-Requested-With"] != null &&
-                    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                    FormsAuthentication.RedirectToLoginPage();
-                else
-                {
-                    Response.Write(
-                        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
-                            FormsAuthentication.LoginUrl));
-                    Response.End();
-                }
+                //Response.Redirect(AppDefaults.UrlLogoutSSO, true);
+                Response.RedirectPermanent(AppDefaults.UrlLoginSSO, true);
+
+                //if (Request.Headers["X-Requested-With"] != null &&
+                //    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+                //    FormsAuthentication.RedirectToLoginPage();
+                //else
+                //{
+                //    Response.Write(
+                //        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
+                //            FormsAuthentication.LoginUrl));
+                //    Response.End();
+                //}
             }
             else
             {

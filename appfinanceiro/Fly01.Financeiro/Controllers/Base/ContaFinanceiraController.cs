@@ -273,9 +273,10 @@ namespace Fly01.Financeiro.Controllers.Base
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contaFinanceiraId eq {id}");
             queryString.AddParam("$select", "id");
-
             try
             {
+                CancelarBaixaNoCnab(id);
+
                 ResultBase<TEntityBaixa> allBaixas = RestHelper.ExecuteGetRequest<ResultBase<TEntityBaixa>>(resourceAllBaixas, queryString);
                 foreach (var item in allBaixas.Data)
                 {
@@ -289,6 +290,58 @@ namespace Fly01.Financeiro.Controllers.Base
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        private void CancelarBaixaNoCnab(string id)
+        {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"contaReceberId eq {id}");
+
+            ResultBase<CnabVM> response = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
+
+            if (response != null)
+                UpdateStausCnab(response.Data.FirstOrDefault().Id);
+        }
+
+        private void UpdateStausCnab(Guid id)
+        {
+            var status = ((int)StatusCnab.AguardandoRetorno).ToString();
+
+            var resource = $"cnab/{id}";
+            RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
+            {
+                status = status
+            }));
+        }
+
+        //public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)
+        //{
+        //    dynamic dataToView;
+        //    int dataTotal;
+        //    var queryString = new Dictionary<string, string>();
+
+        //    if (subtitleCode == "2" || subtitleCode == "3")
+        //    {
+        //        var account = AppDefaults.GetResourceName(typeof(TEntity))
+        //                        .Replace("Accounts", "Account");
+        //        queryString.AddParam(account + "Id", contaId);
+
+        //        var response = RestHelper.ExecuteGetRequest<ResultBase<BankTransacVM>>(
+        //                        AppDefaults.GetResourceName(typeof(BankTransacVM)), queryString);
+        //        dataToView = response.Data.Select(GetDisplayDataBankTransac());
+        //        dataTotal = response.Total;
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentOutOfRangeException("Somente SubtitleCode 2 e 3");
+        //    }
+
+        //    return Json(new
+        //    {
+        //        recordsTotal = dataTotal,
+        //        recordsFiltered = dataTotal,
+        //        data = dataToView
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
 
         #endregion
 

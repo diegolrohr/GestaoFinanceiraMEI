@@ -4,6 +4,8 @@
             $("#chaveNFeReferenciada").rules("add", { required: true });
             $("#chaveNFeReferenciadaField").show();
 
+            $("div#clienteIdField").hide();
+
             $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
 
             $("input#tipoCarteira").val("Despesa");
@@ -13,6 +15,8 @@
             $("input#chaveNFeReferenciada").removeClass("invalid")
             $("#chaveNFeReferenciadaField").hide();
             $("input#chaveNFeReferenciada").val("");
+
+            $("div#clienteIdField").show();
 
             $("#grupoTributarioPadraoDescricao").rules("remove", "required");
             $("#grupoTributarioPadraoDescricao").removeClass("invalid")

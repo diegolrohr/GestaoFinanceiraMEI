@@ -20,7 +20,7 @@ namespace Fly01.Compras.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Compras",
                 Items = new List<LinkUI>
@@ -30,7 +30,7 @@ namespace Fly01.Compras.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
@@ -47,7 +47,7 @@ namespace Fly01.Compras.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -56,7 +56,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
+            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

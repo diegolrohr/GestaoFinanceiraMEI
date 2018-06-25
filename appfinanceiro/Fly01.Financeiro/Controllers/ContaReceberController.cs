@@ -243,18 +243,17 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" , "fnImprimirBoleto" } ,
             };
-            //new HtmlUIButton { Id = "gerararBoletosBtn", Label = "Gerar boleto"/*, OnClickFn = "fnModalContaBancaria" */},
+
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
-          //  config.Actions.Add(new DataTableUIAction { OnClickFn = "", Label = "Gerar boleto" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirBoletoContaReceber", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -670,7 +669,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Title = "Selecionar Conta Bancária",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Imprimir" },
+                ConfirmAction = new ModalUIAction() { Label = "Imprimir", OnClickFn = "fnImprimirBoletoDeContasReceber" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
@@ -679,6 +678,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "fly01mdlfrmSelecionaContaBancaria"
             };
             config.Elements.Add(new InputHiddenUI { Id = "contaReceberId", Value = contaReceberId });
+           
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",

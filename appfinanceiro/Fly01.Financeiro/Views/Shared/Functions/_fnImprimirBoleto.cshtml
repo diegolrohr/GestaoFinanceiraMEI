@@ -28,6 +28,7 @@
     };
 
     function fnImprimirBoleto(data, type, row, meta) {
+        debugger;
         return createForm(row).outerHTML;
     };
 
@@ -38,6 +39,7 @@
 
     $(document).off("submit", "form.cnabForm");
     $(document).on("submit", "form.cnabForm", function (e) {
+        debugger;
         var that = $(this);
         that.loading("start");
         e.preventDefault();

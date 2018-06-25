@@ -1,5 +1,5 @@
 ﻿<script>
-    function fnImprimirBoletoContaReceber(contaReceberId) {
+    function fnModalImprimeBoleto(contaReceberId, row) {
         var url = "@Url.Action("FormImprimeBoleto", "ContaReceber")?contaReceberId=" + contaReceberId;
         fly01.modal(url);
     }

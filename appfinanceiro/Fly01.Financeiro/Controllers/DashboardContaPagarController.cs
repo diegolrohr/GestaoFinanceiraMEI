@@ -48,7 +48,7 @@ namespace Fly01.Financeiro.Controllers
                 cfg.SidebarUrl = url.Action("Sidebar", "DashboardContaPagar", null, scheme);
 
 
-            var cfgForm = new FormUI
+            cfg.Content.Add(new FormUI
             {
                 ReadyFn = "fnUpdateDataFinal",
                 UrlFunctions = url.Action("Functions", "DashboardContaPagar") + "?fns=",
@@ -80,9 +80,7 @@ namespace Fly01.Financeiro.Controllers
                         Name = "dataFinal"
                     },
                 }
-            };
-
-            cfg.Content.Add(cfgForm);
+            });
 
             //OPÇÕES
             cfg.Content.Add(new FormUI
@@ -421,23 +419,20 @@ namespace Fly01.Financeiro.Controllers
 
             // Grid
 
-            var cfgTable = new FormUI
+            cfg.Content.Add(new DivUI
             {
-                Action = new FormUIAction
-                {
-                    Create = @url.Action("Create"),
-                    Edit = @url.Action("Edit"),
-                    Get = @url.Action("Json") + "/",
-                    List = url.Action("List", "DashboardContaPagar")
+                Id = "divLabel",
+                Elements = new List<BaseUI> {
+                    new LabelSetUI {
+                        Id = "titleLabel",
+                        Class = "col s12",
+                        Label = "Contas a Pagar - Dia"
+                    }
                 }
-            };
+            });
 
-            cfgTable.Elements.Add(new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "Contas a Pagar - Dia" });
-            cfg.Content.Add(cfgTable);
-
-            var configTable = new DataTableUI
+            cfg.Content.Add(new DataTableUI
             {
-                //Id = "GridLoadDashboard",
                 UrlGridLoad = url.Action("DashboardGridLoad"),
                 Parameters = new List<DataTableUIParameter>
                     {
@@ -448,43 +443,43 @@ namespace Fly01.Financeiro.Controllers
                     PageLength = 10,
                     WithoutRowMenu = true
                 },
-                UrlFunctions = url.Action("Functions", "DashboardContaPagar", null) + "?fns="
-
-            };
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "descricao",
-                DisplayName = "Descrição",
-                Priority = 1,
-                Orderable = false,
-                Searchable = false
+                UrlFunctions = url.Action("Functions", "DashboardContaPagar", null) + "?fns=",
+                Columns = new List<DataTableUIColumn> {
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 1,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "vencimento",
+                        DisplayName = "Vencimento",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "status",
+                        DisplayName = "Status",
+                        Priority = 3,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valor",
+                        DisplayName = "Valor",
+                        Priority = 4,
+                        Type = "valor",
+                        Orderable = false,
+                        Searchable = false
+                    }
+                }
             });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "vencimento",
-                DisplayName = "Vencimento",
-                Priority = 2,
-                Orderable = false,
-                Searchable = false
-            });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "status",
-                DisplayName = "Status",
-                Priority = 3,
-                Orderable = false,
-                Searchable = false
-            });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "valor",
-                DisplayName = "Valor",
-                Priority = 4,
-                Type = "valor",
-                Orderable = false,
-                Searchable = false
-            });
-            cfg.Content.Add(configTable);
             return cfg;
         }
 

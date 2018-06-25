@@ -15,6 +15,8 @@ using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Config;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -33,7 +35,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Importar arquivo de retorno",
                     Buttons = new List<HtmlUIButton>()
                     {
-                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" }
+                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" },
+                        new HtmlUIButton() { Id = "baixar", Label = "Baixar contas", OnClickFn = "fnBaixarContas", Type = "submit" }
                     }
                 },
                 Functions = new List<string> { "fnFormReady" },
@@ -62,9 +65,8 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
-            config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6 l6", Label = "Arquivo de retorno do tipo (.ret)", Required = true, Accept = ".ret" });
 
-            cfg.Content.Add(config);
+            config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6 l6", Label = "Arquivo de retorno do tipo (.ret)", Required = true, Accept = ".ret" });
 
             cfg.Content.Add(new CardUI
             {
@@ -72,13 +74,34 @@ namespace Fly01.Financeiro.Controllers
                 Color = "blue",
                 Id = "cardDuvidas",
                 Title = "Dicas",
-                Placeholder = "Selecione o banco de origem do arquivo, e localize o arquivo que deseja importar",
+                Placeholder = "Selecione o banco de origem do arquivo e localize o arquivo que deseja importar",
                 Action = new LinkUI()
                 {
                     Label = "",
                     OnClick = ""
                 }
             });
+
+            #region CnabItem
+            config.Elements.Add(new TableUI
+            {
+                Id = "dtRetornoCnabItem",
+                Class = "col s12",
+                Label = "Retorno Cnab",
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Id" },
+                    new OptionUI { Label = "Conta ReceberID" },
+                    new OptionUI { Label = "IdContaBancaria" },
+                    new OptionUI { Label = "Banco", Value = "0" },
+                    new OptionUI { Label = "Cliente", Value = "1" },
+                    new OptionUI { Label = "Valor", Value = "2" },
+                    new OptionUI { Label = "Data Vencimento", Value = "3" },
+                }
+            });
+            #endregion
+
+            cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
@@ -95,63 +118,87 @@ namespace Fly01.Financeiro.Controllers
 
         public JsonResult ImportaArquivoRetorno(string valueArquivo, Guid contaBancariaId)
         {
-            var entityContaBancaria = GetContaBancaria(contaBancariaId);
-            var formatoArquivo = 1;
-            var boletos = new Boleto2Net.Boletos()
+            var arquivoRetorno = new ArquivoRetornoCnabVM()
             {
-                Banco = Boleto2Net.Banco.Instancia(Convert.ToInt32(entityContaBancaria.Data.FirstOrDefault().Banco.Codigo))
+                ValueArquivo = valueArquivo,
+                ContaBancariaId = contaBancariaId,
             };
 
-            boletos.Banco.Cedente = GetCedente(entityContaBancaria);
+            var result = RestHelper.ExecutePostRequest<List<CnabVM>>("arquivoRetorno", JsonConvert.SerializeObject(arquivoRetorno, JsonSerializerSetting.Default));
 
-            byte[] byteArray = Encoding.ASCII.GetBytes(valueArquivo);
-            MemoryStream pConteudo = new MemoryStream(byteArray);
+            if (result == null) throw new Exception("Não foi possível gerar boleto.");
 
-            var arquivoRetorno = new Boleto2Net.ArquivoRetorno(boletos.Banco, (Boleto2Net.TipoArquivo)formatoArquivo);
-            var boletosRetorno = arquivoRetorno.LerArquivoRetorno(pConteudo);
-
-            return null;
+            return Json(new
+            {
+                success = true,
+                data = result.Select(GetDisplayCnab()),
+                recordsFiltered = result.Count,
+                recordsTotal = result.Count
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        private Boleto2Net.Cedente GetCedente(ResultBase<ContaBancariaVM> entityContaBancaria)
+        private Func<CnabVM, object> GetDisplayCnab()
         {
-            var contaBancaria = entityContaBancaria.Data.FirstOrDefault();
-            var dadosCedente = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-
-            return new Boleto2Net.Cedente
+            return x => new
             {
-                CPFCNPJ = dadosCedente.CNPJ,
-                Nome = dadosCedente.NomeFantasia,
-                Observacoes = "",
-                ContaBancaria = new Boleto2Net.ContaBancaria
+                id = x.Id,
+                contaReceberId = x.ContaReceberId,
+                contaBancariaId = x.ContaBancariaCedenteId,
+                banco_nome = x.ContaBancariaCedente?.Banco?.Nome,
+                pessoa_nome = x.ContaReceber?.Pessoa?.Nome,
+                dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
+                valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                valorDesconto = x.ValorDesconto,
+                status = x.Status,
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
+                statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
+                statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
+            };
+        }
+
+        [HttpPost]
+        public JsonResult BaixarContasReceber(List<Guid> IdBoletos, List<string> IdToBaixa, Guid contaBancariaId)
+        {
+            try
+            {
+                var contaFinanceiraBaixaMultipla = MontarContaFinanceiraBaixaMultipla(IdToBaixa, contaBancariaId);
+                UpdateStausCnabToBaixado(IdBoletos);
+                RestHelper.ExecutePostRequest<ContaFinanceiraBaixaMultiplaVM>("contafinanceirabaixamultipla", JsonConvert.SerializeObject(contaFinanceiraBaixaMultipla, JsonSerializerSetting.Default));
+
+                return JsonResponseStatus.GetSuccess("Baixas realizadas com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private void UpdateStausCnabToBaixado(List<Guid> ids)
+        {
+            var status = ((int)StatusCnab.Baixado).ToString();
+
+            ids.ForEach(x =>
+            {
+                var resource = $"cnab/{x}";
+                RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
                 {
-                    Agencia = contaBancaria.Agencia,
-                    DigitoAgencia = contaBancaria.DigitoAgencia,
-                    OperacaoConta = "",
-                    Conta = contaBancaria.Conta,
-                    DigitoConta = contaBancaria.DigitoConta,
-                    CarteiraPadrao = "11",
-                    VariacaoCarteiraPadrao = "019",
-                    TipoCarteiraPadrao = Boleto2Net.TipoCarteira.CarteiraCobrancaSimples,
-                    TipoFormaCadastramento = Boleto2Net.TipoFormaCadastramento.ComRegistro,
-                    TipoImpressaoBoleto = Boleto2Net.TipoImpressaoBoleto.Empresa,
-                    TipoDocumento = Boleto2Net.TipoDocumento.Tradicional
-                },
-                Codigo = "",
-                CodigoDV = "",
-                CodigoTransmissao = ""
-            };
+                    status = status
+                }));
+            });
         }
 
-        private ResultBase<ContaBancariaVM> GetContaBancaria(Guid contaBancariaId)
+        private ContaFinanceiraBaixaMultiplaVM MontarContaFinanceiraBaixaMultipla(List<string> IdToBaixa, Guid contaBancariaId)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
-
-            var queryString = new Dictionary<string, string>();
-            queryString.AddParam("$expand", "banco($select=codigo)");
-            queryString.AddParam("$filter", $"id eq {contaBancariaId}");
-                      
-            return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString);
+            return new ContaFinanceiraBaixaMultiplaVM()
+            {
+                Data = DateTime.Now,
+                ContasFinanceirasGuids = string.Join(",", IdToBaixa),
+                ContaBancariaId = contaBancariaId,
+                Observacao = "",
+                TipoContaFinanceira = TipoContaFinanceira.ContaReceber.ToString()
+            };
         }
     }
 }

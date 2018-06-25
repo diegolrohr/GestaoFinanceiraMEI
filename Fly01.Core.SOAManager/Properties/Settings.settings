@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Fly01_Utils_SOAManager_SOAManager_SOAManager" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://localhost:8055/TotvsSOA.Host/SOAManager.svc</Value>
+      <Value Profile="(Default)">http://mashups.totvs.com.br/TOTVSSoa.Host/SOAManager.svc</Value>
     </Setting>
   </Settings>
 </SettingsFile>

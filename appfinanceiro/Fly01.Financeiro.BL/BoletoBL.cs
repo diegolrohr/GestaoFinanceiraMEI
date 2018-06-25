@@ -1,21 +1,17 @@
 ﻿using Boleto2Net;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Fly01.Core.ViewModels.Presentation
+namespace Fly01.Financeiro.BL
 {
-    public class ValidaDadosBancoVM
+    public class BoletoBL
     {
         public string CarteiraPadrao { get; set; }
         public string VariacaoCarteira { get; set; }
 
-        public static ValidaDadosBancoVM GetTipoCarteira(int codigoBanco)
+        public static BoletoBL GetTipoCarteira(int codigoBanco)
         {
-            var carteira = new ValidaDadosBancoVM();
+            var carteira = new BoletoBL();
             var tipo = (TipoCodigoBanco)Enum.ToObject(typeof(TipoCodigoBanco), codigoBanco);
 
             switch (tipo)

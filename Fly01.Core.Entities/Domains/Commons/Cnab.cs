@@ -31,6 +31,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int NossoNumero { get; set; }
 
+        [Required]
+        public string NossoNumeroFormatado { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime DataDesconto { get; set; }
 

@@ -92,7 +92,8 @@ namespace Fly01.Core.Presentation.Application
             }
             else
             {
-                if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null && SessionManager.Current.UserData == null)
+                if ((FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null) 
+                    && (SessionManager.Current.UserData == null || SessionManager.Current.UserData.PlatformUrl == null))
                 {
                     HttpContext.Current.User =
                         new GenericPrincipal(

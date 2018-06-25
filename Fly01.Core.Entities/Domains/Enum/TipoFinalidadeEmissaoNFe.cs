@@ -6,19 +6,19 @@ namespace Fly01.Core.Entities.Domains.Enum
     public enum TipoFinalidadeEmissaoNFe
     {
         [XmlEnum(Name = "1")]
-        [Subtitle("Normal", "Normal", "NF-e normal")]
+        [Subtitle("Normal", "Normal", "Normal", "brow")]
         Normal = 1,
 
         [XmlEnum(Name = "2")]
-        [Subtitle("Complementar", "Complementar", "NF-e complementar")]
+        [Subtitle("Complementar", "Complementar", "Complementar")]
         Complementar = 2,
 
         [XmlEnum(Name = "3")]
-        [Subtitle("Ajuste", "Ajuste", "NF-e de ajuste")]
+        [Subtitle("Ajuste", "Ajuste", "Ajuste")]
         Ajuste = 3,
 
         [XmlEnum(Name = "4")]
-        [Subtitle("Devolucao", "Devolução", "Devolução")]
+        [Subtitle("Devolucao", "Devolução", "Devolução", "gray")]
         Devolucao = 4
     }
 }

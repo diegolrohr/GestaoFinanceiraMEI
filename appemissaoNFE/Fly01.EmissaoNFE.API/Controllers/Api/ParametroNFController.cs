@@ -20,7 +20,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 try
                 {
                     Homologacao(entity);
-
+                    
+                    //TODO Diego ver tss prod local 
                     Producao(entity);
 
                     return Ok(new { success = true });

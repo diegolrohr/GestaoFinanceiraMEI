@@ -168,9 +168,9 @@
     <Compile Include="Migrations\201806111824567_AlterTableContaBancaria.Designer.cs">
       <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201806151944144_AlterTableCnabAddColumn.cs" />
-    <Compile Include="Migrations\201806151944144_AlterTableCnabAddColumn.Designer.cs">
-      <DependentUpon>201806151944144_AlterTableCnabAddColumn.cs</DependentUpon>
+    <Compile Include="Migrations\201806181726165_AlterPessoa_TamanhoString.cs" />
+    <Compile Include="Migrations\201806181726165_AlterPessoa_TamanhoString.Designer.cs">
+      <DependentUpon>201806181726165_AlterPessoa_TamanhoString.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -282,8 +282,8 @@
     <EmbeddedResource Include="Migrations\201806111824567_AlterTableContaBancaria.resx">
       <DependentUpon>201806111824567_AlterTableContaBancaria.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806151944144_AlterTableCnabAddColumn.resx">
-      <DependentUpon>201806151944144_AlterTableCnabAddColumn.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806181726165_AlterPessoa_TamanhoString.resx">
+      <DependentUpon>201806181726165_AlterPessoa_TamanhoString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

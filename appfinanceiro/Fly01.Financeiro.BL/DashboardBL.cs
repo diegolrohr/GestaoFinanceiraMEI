@@ -52,14 +52,14 @@ namespace Fly01.Financeiro.BL
 
         public List<ContasReceberPagoPorDiaVM> GetDashContasReceberPagoPorDia(DateTime filtro)
         {
-            var mesAtual = filtro.Month.ToString();
-            return _contaFinanceiraBaixaBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year)
-                    && x.ContaFinanceira.TipoContaFinanceira == TipoContaFinanceira.ContaReceber)
+            var mesAtual = CarregaMes(filtro.Month);
+            return _contaFinanceiraBL.All.Where(x => x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year)
+                    && x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber && x.ValorPago.HasValue)
                 .Select(x => new
                 {
-                    x.Data.Day,
-                    x.Data.Month,
-                    x.Valor
+                    x.DataVencimento.Day,
+                    x.DataVencimento.Month,
+                    Valor = x.ValorPago == null ? 0 : x.ValorPago
                 }).GroupBy(x => new { x.Day, x.Month })
                 .Select(x => new ContasReceberPagoPorDiaVM
                 {
@@ -67,6 +67,52 @@ namespace Fly01.Financeiro.BL
                     Total = x.Sum(v => v.Valor)
                 }).ToList();
 
+        }
+
+        public String CarregaMes(int mes)
+        {
+            switch (mes)
+            {
+                case 1:
+                    return "Jan";
+                    break;
+                case 2:
+                    return "Fev";
+                    break;
+                case 3:
+                    return "Mar";
+                    break;
+                case 4:
+                    return "Abr";
+                    break;
+                case 5:
+                    return "Mai";
+                    break;
+                case 6:
+                    return "Jun";
+                    break;
+                case 7:
+                    return "Jul";
+                    break;
+                case 8:
+                    return "Ago";
+                    break;
+                case 9:
+                    return "Set";
+                    break;
+                case 10:
+                    return "Out";
+                    break;
+                case 11:
+                    return "Nov";
+                    break;
+                case 12:
+                    return "Dez";
+                    break;
+                default:
+                    return "";
+                    break;
+            }
         }
 
         public List<DashboardFinanceiroVM> GetDashFinanceiroFormasPagamento(DateTime filtro, string tipo)

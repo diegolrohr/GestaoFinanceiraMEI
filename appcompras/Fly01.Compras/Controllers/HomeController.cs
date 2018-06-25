@@ -22,23 +22,24 @@ namespace Fly01.Compras.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Compras",
                 Items = new List<LinkUI>
             {
                 new LinkUI() { Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
-                new LinkUI() { Label = "Orçamento/Pedido", OnClick = @Url.Action("List", "OrdemCompra")},
+                new LinkUI() { Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
             {
                 new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
                 new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
                 new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
                 new LinkUI() { Label = "Forma de Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
                 new LinkUI() { Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},
@@ -48,7 +49,7 @@ namespace Fly01.Compras.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -57,7 +58,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
+            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

@@ -50,7 +50,7 @@ namespace Fly01.Compras.BL
                                  from p in ps.DefaultIfEmpty()
                                  join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
                                  from x in xs.DefaultIfEmpty()
-                                 where orcamento.DataInclusao.Month.Equals(filtro.Month) && orcamento.DataInclusao.Year.Equals(filtro.Year)
+                                 where ordemcompra.Data.Month.Equals(filtro.Month) && ordemcompra.Data.Year.Equals(filtro.Year)
                                  select new
                                  {
                                      OrdemCompra = ordemcompra,
@@ -84,16 +84,18 @@ namespace Fly01.Compras.BL
                                      from p in ps.DefaultIfEmpty()
                                      join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
                                      from x in xs.DefaultIfEmpty()
-                                     where pedido.DataInclusao.Month.Equals(filtro.Month) && pedido.DataInclusao.Year.Equals(filtro.Year)
+                                     where ordemcompra.Data.Month.Equals(filtro.Month) && ordemcompra.Data.Year.Equals(filtro.Year)
                                      select new
                                      {
                                          OrdemCompra = ordemcompra,
+                                         Pedido = pedido,
                                          OrdemCompraItem = x
                                      }).ToList();
 
                     retornos = groupJoin.Select(x => new
                     {
-                        Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        //Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        Total = x.OrdemCompraItem != null ? x.Pedido.Total.GetValueOrDefault(0) : 0,
                         Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
                         x.OrdemCompra.Status
                     })
@@ -101,7 +103,8 @@ namespace Fly01.Compras.BL
                     .Select(x => new ComprasStatusVM
                     {
                         Status = x.Key.Status.ToString(),
-                        Total = Math.Round(x.Sum(u => u.Total), 2),
+                        //Total = Math.Round(x.Sum(u => u.Total), 2),
+                        Total = x.Sum(u => u.Total),
                         Quantidade = x.Count()
                     }).ToList();
 
@@ -160,7 +163,7 @@ namespace Fly01.Compras.BL
                                  from p in ps.DefaultIfEmpty()
                                  join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
                                  from x in xs.DefaultIfEmpty()
-                                 where orcamento.DataInclusao.Month.Equals(filtro.Month) && orcamento.DataInclusao.Year.Equals(filtro.Year)
+                                 where orcamento.Data.Month.Equals(filtro.Month) && orcamento.Data.Year.Equals(filtro.Year)
                                  select new
                                  {
                                      OrdemCompra = ordemcompra,
@@ -213,17 +216,19 @@ namespace Fly01.Compras.BL
                                      from p in ps.DefaultIfEmpty()
                                      join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
                                      from x in xs.DefaultIfEmpty()
-                                     where pedido.DataInclusao.Month.Equals(filtro.Month) && pedido.DataInclusao.Year.Equals(filtro.Year)
+                                     where pedido.Data.Month.Equals(filtro.Month) && pedido.Data.Year.Equals(filtro.Year)
                                      select new
                                      {
                                          OrdemCompra = ordemcompra,
                                          FormaPagamento = f,
+                                         Pedido = pedido,
                                          OrdemCompraItem = x
                                      }).ToList();
 
                     List<ComprasFormasPagamentoVM> pedidos = groupJoin.Select(x => new
                     {
-                        Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        //Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
+                        Total = x.OrdemCompraItem != null ? x.Pedido.Total.GetValueOrDefault(0) : 0,
                         Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
                         TipoFormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.TipoFormaPagamento.ToString() : ""
                     })
@@ -231,7 +236,8 @@ namespace Fly01.Compras.BL
                     .Select(x => new ComprasFormasPagamentoVM
                     {
                         TipoFormaPagamento = x.Key.TipoFormaPagamento,
-                        Total = Math.Round(x.Sum(u => u.Total), 2),
+                        //Total = Math.Round(x.Sum(u => u.Total), 2),
+                        Total = x.Sum(u => u.Total),
                         Quantidade = x.Count()
                     }).ToList();
 

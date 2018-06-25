@@ -4,36 +4,19 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     public class GrupoTributarioBaseController<T> : BaseController<T> where T : GrupoTributarioVM
     {
-        private string labelIcms = "";
-        private string filtroTipoTributacaoIPI = "";
-        private string filtroCfop = "";
-
         public GrupoTributarioBaseController()
         {
             ExpandProperties = "cfop";
-
-            if (AppEntitiesResourceName.IndexOf("Faturamento") > -1)
-            {
-                labelIcms = "Situação da Operação no Simples Nacional";
-                filtroTipoTributacaoIPI = "SaidaTributada,SaidaTributadaComAliquotaZero,SaidaIsenta,SaidaNaoTributada,SaidaImune,SaidaComSuspensao,OutrasSaidas";
-                filtroCfop = $"{AppDefaults.APIEnumResourceName}TipoCfop'Saida'";
-            }
-            else
-            {
-                labelIcms = "Situação Tributária";
-                filtroTipoTributacaoIPI = "EntradaComRecuperacaoDeCredito,EntradaTributavelComAliquotaZero,EntradaIsenta,EntradaNaoTributada,EntradaImune,EntradaComSuspensao,OutrasEntradas";
-                filtroCfop = $"{AppDefaults.APIEnumResourceName}TipoCfop'Entrada'";
-            }
         }
 
         public override Func<T, object> GetDisplayData()
@@ -90,8 +73,9 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Cadastro de Grupo Tributário",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -104,7 +88,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -156,7 +141,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
-                Label = labelIcms,
+                Label = "Situação da Operação no Simples Nacional",
                 Disabled = true,
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
@@ -185,8 +170,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Label = "Situação Tributária",
                 Disabled = true,
                 ConstrainWidth = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)).
-                ToList().FindAll(x => filtroTipoTributacaoIPI.Contains(x.Value)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoIPI)))
             });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIpi", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIpi", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
@@ -280,16 +264,6 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
-        }
-
-        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
-        {
-            if (filters == null)
-                filters = new Dictionary<string, string>();
-
-            filters.Add("cfop/tipo eq ", filtroCfop);
-
-            return base.GridLoad(filters);
         }
     }
 }

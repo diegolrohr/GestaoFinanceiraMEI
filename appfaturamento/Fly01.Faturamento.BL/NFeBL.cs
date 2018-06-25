@@ -153,8 +153,6 @@ namespace Fly01.Faturamento.BL
                         x => x.Produto.UnidadeMedida,
                         x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalId == entity.Id);
 
-                    var totalNFe = CalculaTotalNFe(entity.Id, entity.ValorFrete);
-
                     var destinoOperacao = TipoDestinoOperacao.Interna;
                     if (cliente.Estado != null && cliente.Estado.Sigla.ToUpper() == "EX" || (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla.ToUpper() : "") == "EX")
                     {
@@ -183,20 +181,27 @@ namespace Fly01.Faturamento.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = DateTime.Now,
                         EntradaSaida = DateTime.Now,
-                        TipoDocumentoFiscal = TipoNota.Saida,
+                        TipoDocumentoFiscal = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
                         ChaveAcessoDV = 0,
                         CodigoNF = entity.NumNotaFiscal.Value.ToString(),
                         Ambiente = parametros.TipoAmbiente,
-                        FinalidadeEmissaoNFe = TipoFinalidadeEmissaoNFe.Normal,
+                        FinalidadeEmissaoNFe = entity.TipoVenda,
                         ConsumidorFinal = cliente.ConsumidorFinal ? 1 : 0,
                         PresencaComprador = parametros.TipoPresencaComprador,
                         Versao = "2.78",//versao do TSS
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
+                    if(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    {
+                        itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
+                        {
+                            ChaveNFeReferenciada = entity.ChaveNFeReferenciada
+                        };
+                    }
                     #endregion
 
                     #region Emitente
@@ -256,7 +261,7 @@ namespace Fly01.Faturamento.BL
                             CNPJ = transportadora != null && transportadora.TipoDocumento == "J" ? transportadora.CPFCNPJ : null,
                             CPF = transportadora != null && transportadora.TipoDocumento == "F" ? transportadora.CPFCNPJ : null,
                             Endereco = transportadora != null ? transportadora.Endereco : null,
-                            IE = transportadora != null ? transportadora.InscricaoEstadual : null,
+                            IE = transportadora != null ? (transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? transportadora.InscricaoEstadual : null) : null,
                             Municipio = transportadora != null && transportadora.Cidade != null ? transportadora.Cidade.Nome : null,
                             RazaoSocial = transportadora != null ? transportadora.Nome : null,
                             UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null
@@ -477,7 +482,12 @@ namespace Fly01.Faturamento.BL
                     var tipoFormaPagamento = TipoFormaPagamento.Outros;
                     if(formaPagamento != null)
                     {
+                        //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
+                    }
+                    if(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    {
+                        tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
 
                     #region Pagamento
@@ -595,7 +605,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId, double? valorFreteCIF = 0)
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
@@ -603,11 +613,15 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
+            bool calculaFrete = (
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+            );
 
             var result = new TotalNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-                ValorFreteCIF = valorFreteCIF.HasValue ? Math.Round(valorFreteCIF.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };

@@ -6,6 +6,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -85,8 +86,9 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Cadastro de Grupo de Produto",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -99,7 +101,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
                 },
                 //ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="

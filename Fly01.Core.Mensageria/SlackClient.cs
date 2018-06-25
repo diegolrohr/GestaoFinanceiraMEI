@@ -71,7 +71,7 @@ namespace Fly01.Core.Mensageria
             return url;
         }
 
-        public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl)
+        public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl, string routingKey)
         {
             var slackChannel = string.Empty;
             var isProd = (hostName == "prod");
@@ -82,7 +82,7 @@ namespace Fly01.Core.Mensageria
                 ? "https://hooks.slack.com/services/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"
                 : "https://hooks.slack.com/services/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";
 
-            var logData = new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformId = plataformaUrl };
+            var logData = new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformId = plataformaUrl, RoutingKey = routingKey };
             var message = new SlackMessage()
             {
                 Attachments = new List<SlackAttachment>()

@@ -86,6 +86,7 @@
     <Compile Include="Controllers\OrdemCompraController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\SubstituicaoTributariaController.cs" />
+    <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -256,6 +257,10 @@
     <Content Include="Views\Dashboard\Functions\_fnChangeTipoOrdemCompra.cshtml" />
     <Content Include="Views\Dashboard\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -270,7 +275,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.4\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

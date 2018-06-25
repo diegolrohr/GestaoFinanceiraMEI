@@ -54,33 +54,29 @@ namespace Fly01.Financeiro.BL
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, false, true);
 
             //post bemacash ignorando condicao parcelamento
-            if (entity.DescricaoParcela != null)
+            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 entity.Id = Guid.NewGuid();
                 entity.Numero = ++max;
 
                 base.Insert(entity);
             }
-
-            if (string.IsNullOrEmpty(entity.DescricaoParcela))
+            else
             {
-                var condicoesParcelamento = condicaoParcelamentoBL
-                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
-                                                               entity.DataVencimento,
-                                                               entity.ValorPrevisto);
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
+
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
                 {
                     var parcela = condicoesParcelamento[iParcela];
                     var itemContaPagar = new ContaPagar();
+
                     entity.CopyProperties<ContaPagar>(itemContaPagar);
                     itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
                     itemContaPagar.DataVencimento = parcela.DataVencimento;
                     itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaPagar.ValorPrevisto = parcela.Valor;
-                    itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
-                                                    ? parcela.Valor
-                                                    : entity.ValorPago;
+                    itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                     {

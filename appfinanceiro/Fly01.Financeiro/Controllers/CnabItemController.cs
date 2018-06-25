@@ -11,7 +11,10 @@ namespace Fly01.Estoque.Controllers
 {
     public class CnabItemController : ContaFinanceiraController<ContaReceberVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
-        public CnabItemController() { }
+        public CnabItemController()
+        {
+            ExpandProperties = "pessoa($select=nome,email)";
+        }
 
         public override Func<ContaReceberVM, object> GetDisplayData()
         {
@@ -27,7 +30,8 @@ namespace Fly01.Estoque.Controllers
                 valorPrevisto = x.ValorPrevisto.ToString("C", AppDefaults.CultureInfoDefault),
                 descricaoParcela = string.IsNullOrEmpty(x.DescricaoParcela) ? "" : x.DescricaoParcela,
                 nossoNumero = x.Numero,
-                valorPago = x.ValorPago
+                valorPago = x.ValorPago,
+                email = x.Pessoa?.Email
             };
         }
 

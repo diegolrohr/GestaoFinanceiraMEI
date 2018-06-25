@@ -254,9 +254,10 @@ namespace Fly01.Financeiro.Controllers.Base
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contaFinanceiraId eq {id}");
             queryString.AddParam("$select", "id");
-
             try
             {
+                CancelarBaixaNoCnab(id);
+
                 ResultBase<TEntityBaixa> allBaixas = RestHelper.ExecuteGetRequest<ResultBase<TEntityBaixa>>(resourceAllBaixas, queryString);
                 foreach (var item in allBaixas.Data)
                 {
@@ -269,6 +270,28 @@ namespace Fly01.Financeiro.Controllers.Base
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        private void CancelarBaixaNoCnab(string id)
+        {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"contaReceberId eq {id}");
+
+            ResultBase<CnabVM> response = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
+
+            if (response != null)
+                UpdateStausCnab(response.Data.FirstOrDefault().Id);
+        }
+
+        private void UpdateStausCnab(Guid id)
+        {
+            var status = ((int)StatusCnab.AguardandoRetorno).ToString();
+
+            var resource = $"cnab/{id}";
+            RestHelper.ExecutePutRequest(resource, JsonConvert.SerializeObject(new
+            {
+                status = status
+            }));
         }
 
         //public JsonResult ListRelacionamentoBaixas(string contaId, string subtitleCode)

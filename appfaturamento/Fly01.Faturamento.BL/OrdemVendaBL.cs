@@ -256,36 +256,45 @@ namespace Fly01.Faturamento.BL
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
+                    entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
 
-                    pedidoReferenciado.CopyProperties<OrdemVenda>(entity);
-                    entity.Id = previousId;
-                    entity.Numero = previousNumero;
-                    entity.Data = previousData;
-                    entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
-                    entity.NaturezaOperacao = null;
-                    entity.ClienteId = clienteReferenciado.Ativo == false ? previousClienteId : pedidoReferenciado.ClienteId;
-                    entity.Status = StatusOrdemVenda.Aberto;
-                    entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
-                    entity.TipoVenda = previousTipoVenda;
-                    entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
-
-                    var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
-
-                    if (produtos != null & produtos.Any())
+                    if (entity.IsValid())
                     {
-                        foreach (var produto in produtos)
+                        pedidoReferenciado.CopyProperties<OrdemVenda>(entity);
+                        entity.Id = previousId;
+                        entity.Numero = previousNumero;
+                        entity.Data = previousData;
+                        entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
+                        entity.NaturezaOperacao = null;
+                        entity.ClienteId = (clienteReferenciado != null && clienteReferenciado.Ativo == true) ? pedidoReferenciado.ClienteId : previousClienteId;
+                        entity.Status = StatusOrdemVenda.Aberto;
+                        entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
+                        entity.TipoVenda = previousTipoVenda;
+                        entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
+
+                        var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
+
+                        if (produtos != null & produtos.Any())
                         {
-                            var produtoClonado = new OrdemVendaProduto();
-                            produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
-                            produtoClonado.Id = default(Guid);
-                            produtoClonado.OrdemVendaId = entity.Id;
-                            //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
-                            produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
-                            OrdemVendaProdutoBL.Insert(produtoClonado);
+                            foreach (var produto in produtos)
+                            {
+                                var produtoClonado = new OrdemVendaProduto();
+                                produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
+                                produtoClonado.Id = default(Guid);
+                                produtoClonado.OrdemVendaId = entity.Id;
+                                //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
+                                produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                OrdemVendaProdutoBL.Insert(produtoClonado);
+                            }
                         }
                     }
                     #endregion
                 }
+            }
+            else
+            {
+                var clienteReferenciado = TotalTributacaoBL.GetPessoa(entity.ClienteId);
+                entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
             }
         }
 

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Helpers.Attribute;
-using System.Collections.Generic;
 
 namespace Fly01.Financeiro.ViewModel
 {
@@ -20,6 +19,9 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("nossoNumero")]
         public int NossoNumero { get; set; }
+
+        [JsonProperty("nossoNumeroFormatado")]
+        public string NossoNumeroFormatado { get; set; }
 
         [JsonProperty("dataDesconto")]
         public DateTime DataDesconto { get; set; }

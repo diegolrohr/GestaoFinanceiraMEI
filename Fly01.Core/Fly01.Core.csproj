@@ -52,7 +52,6 @@
     <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
-    <Compile Include="ViewModels\ValidaDadosBancoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DashboardFinanceiroVM.cs" />
     <Compile Include="ViewModels\BoletoVM.cs" />
     <Compile Include="ViewModels\BuscaCepVM.cs" />

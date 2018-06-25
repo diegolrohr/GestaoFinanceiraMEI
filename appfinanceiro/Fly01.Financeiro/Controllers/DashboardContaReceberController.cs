@@ -87,7 +87,7 @@ namespace Fly01.Financeiro.Controllers
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m12 l12",
+                        Class = "col s12",
                         OnClickFn = "fnAtualizarChart",
                         Options = new List<ButtonGroupOptionUI>
                         {
@@ -345,7 +345,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaVlr", "DashboardContaReceber"),
-                Class = "col s12 m12 l12",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -395,7 +395,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaQtd", "DashboardContaReceber"),
-                Class = "col s12 m12 l12",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }

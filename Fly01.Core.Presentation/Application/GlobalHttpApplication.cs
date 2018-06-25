@@ -76,19 +76,16 @@ namespace Fly01.Core.Presentation.Application
                 HttpContext.Current.Session.RemoveAll();
                 FormsAuthentication.SignOut();
 
-                //Response.Redirect(AppDefaults.UrlLogoutSSO, true);
-                Response.RedirectPermanent(AppDefaults.UrlLoginSSO, true);
-
-                //if (Request.Headers["X-Requested-With"] != null &&
-                //    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                //    FormsAuthentication.RedirectToLoginPage();
-                //else
-                //{
-                //    Response.Write(
-                //        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
-                //            FormsAuthentication.LoginUrl));
-                //    Response.End();
-                //}
+                if (Request.Headers["X-Requested-With"] != null &&
+                    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+                    FormsAuthentication.RedirectToLoginPage();
+                else
+                {
+                    Response.Write(
+                        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
+                            FormsAuthentication.LoginUrl));
+                    Response.End();
+                }
             }
             else
             {

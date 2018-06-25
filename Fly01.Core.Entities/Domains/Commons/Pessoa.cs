@@ -20,16 +20,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(8, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string CEP { get; set; }
 
-        [StringLength(50, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(80, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Endereco { get; set; }
 
         [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Numero { get; set; }
 
-        [StringLength(20, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Complemento { get; set; }
 
-        [StringLength(30, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Bairro { get; set; }
 
         public Guid? CidadeId { get; set; }

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
+    <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />

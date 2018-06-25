@@ -176,6 +176,10 @@
     <Compile Include="Migrations\201806251330106_AlterPessoaDadosEndereco.Designer.cs">
       <DependentUpon>201806251330106_AlterPessoaDadosEndereco.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806251359337_AddColumnCnab.cs" />
+    <Compile Include="Migrations\201806251359337_AddColumnCnab.Designer.cs">
+      <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -291,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806251330106_AlterPessoaDadosEndereco.resx">
       <DependentUpon>201806251330106_AlterPessoaDadosEndereco.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806251359337_AddColumnCnab.resx">
+      <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

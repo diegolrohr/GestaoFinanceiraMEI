@@ -48,7 +48,10 @@ namespace Fly01.Core.Config
         public static bool IsValidUserData(this UserDataVM userDataVM)
         {
             return (
+                (userDataVM != null) &&
                 (userDataVM.TokenData != null) &&
+                (userDataVM.PlatformUrl != null) &&
+                (userDataVM.PlatformUser != null) &&
                 (!string.IsNullOrWhiteSpace(userDataVM.TokenData.AccessToken))
             );
         }

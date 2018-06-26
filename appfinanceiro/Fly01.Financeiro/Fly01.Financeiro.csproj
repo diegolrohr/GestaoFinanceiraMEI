@@ -361,7 +361,7 @@
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
@@ -371,6 +371,8 @@
     <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

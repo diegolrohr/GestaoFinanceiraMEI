@@ -469,7 +469,8 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Quantidade",
                             fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => (x.Quantidade)).ToArray()
                         }
                 }
@@ -490,7 +491,8 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     }
                     //,

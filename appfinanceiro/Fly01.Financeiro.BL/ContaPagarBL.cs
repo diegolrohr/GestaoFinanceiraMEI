@@ -53,9 +53,9 @@ namespace Fly01.Financeiro.BL
             if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, false, true);
 
-            //post bemacash ignorando condicao parcelamento
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
+                //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
                 entity.Numero = ++max;
 
@@ -93,13 +93,8 @@ namespace Fly01.Financeiro.BL
 
                     base.Insert(itemContaPagar);
 
-                    //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar.DataVencimento,
-                                                                        itemContaPagar.Id,
-                                                                        itemContaPagar.ValorPrevisto,
-                                                                        TipoContaFinanceira.ContaPagar,
-                                                                        entity.Descricao);
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
 
                     if (repetir)
                     {

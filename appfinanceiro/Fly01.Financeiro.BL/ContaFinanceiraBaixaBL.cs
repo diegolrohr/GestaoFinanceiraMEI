@@ -33,8 +33,7 @@ namespace Fly01.Financeiro.BL
 
             entity.ContaFinanceira = null;
 
-            if (contaFinanceira == null)
-                throw new BusinessException("Conta inválida.");
+            if (contaFinanceira == null) throw new BusinessException("Conta inválida.");
 
             entity.ContaFinanceiraId = contaFinanceira.Id;
 
@@ -46,17 +45,14 @@ namespace Fly01.Financeiro.BL
 
             valorPagoConta += entity.Valor;
 
-            //Atualiza Conta Financeira
             contaFinanceira.ValorPago = valorPagoConta;
             if (contaFinanceira.ValorPago < contaFinanceira.ValorPrevisto)
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.BaixadoParcialmente;
             else
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.Pago;
-            
-            //Atualiza Saldo Histórico
+
             saldoHistoricoBL.AtualizaSaldoHistorico(entity.Data, entity.Valor, entity.ContaBancariaId, contaFinanceira.TipoContaFinanceira);
 
-            //Atualiza movimentações
             movimentacaoBL.CriaMovimentacao(entity.Data, entity.Valor, entity.ContaBancariaId, contaFinanceira.TipoContaFinanceira, entity.ContaFinanceiraId);
         }
 
@@ -71,15 +67,15 @@ namespace Fly01.Financeiro.BL
             var valorPagoConta = contaFinanceira.ValorPago.HasValue ? (double)contaFinanceira.ValorPago : default(double);
 
             var valorBaixa = (entity.Valor * -1);
-            valorPagoConta += valorBaixa;            
+            valorPagoConta += valorBaixa;
 
             //Atualiza Conta Financeira
             contaFinanceira.ValorPago = valorPagoConta;
-            if(contaFinanceira.ValorPago > default(double))
+            if (contaFinanceira.ValorPago > default(double))
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.BaixadoParcialmente;
             else
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.EmAberto;
-            
+
             //Atualiza Saldo Histórico
             saldoHistoricoBL.AtualizaSaldoHistorico(entity.Data, valorBaixa, entity.ContaBancariaId, contaFinanceira.TipoContaFinanceira);
 
@@ -90,34 +86,33 @@ namespace Fly01.Financeiro.BL
             base.Delete(entity);
         }
 
-        //Se status pago, gera uma baixa(contaFinanceiraBaixa)
-        internal void GeraContaFinanceiraBaixa(DateTime dataVencimento, Guid contaFinanceiraId, double valorPrevisto, TipoContaFinanceira tipoContaFinanceira, string descricao)
+        public void GeraContaFinanceiraBaixa(ContaFinanceira contaFinanceira)
         {
-            if (contaFinanceiraId == default(Guid))
-                throw new BusinessException("Conta Financeira inválida.");
+            if (contaFinanceira.Id == default(Guid)) throw new BusinessException("Conta Financeira inválida.");
 
-            var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
-            var ContaBancariaPadrao = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true);//Banco Default
-
-            if (ContaBancariaPadrao.Id == default(Guid))
-                throw new BusinessException("Conta bancária inválida.");
-
-            var baixa = new ContaFinanceiraBaixa()
+            if (contaFinanceira.ContaBancaria.BancoId != default(Guid))
             {
-                Data = dataVencimento,
-                ContaFinanceiraId = contaFinanceiraId,
-                ContaBancariaId = ContaBancariaPadrao.Id,
-                Valor = valorPrevisto,
-                Observacao = descricao
-            };
-            base.Insert(baixa);
+                var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
 
-            //Atualiza Saldo Histórico
-            saldoHistoricoBL.AtualizaSaldoHistorico(dataVencimento, valorPrevisto, ContaBancariaPadrao.Id, tipoContaFinanceira);
+                if (bancoOutros == null) throw new BusinessException("Nenhuma conta bancária encontrada.");
 
-            //Atualiza movimentações
-            movimentacaoBL.CriaMovimentacao(dataVencimento, valorPrevisto, ContaBancariaPadrao.Id, tipoContaFinanceira, contaFinanceiraId);
+                contaFinanceira.ContaBancaria.BancoId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true).Id;
+            }
 
+            if (contaFinanceira.ContaBancaria.BancoId == default(Guid)) throw new BusinessException("Conta bancária inválida.");
+
+            base.Insert(new ContaFinanceiraBaixa()
+            {
+                Data = contaFinanceira.DataVencimento,
+                ContaFinanceiraId = contaFinanceira.Id,
+                ContaBancariaId = contaFinanceira.ContaBancaria.BancoId,
+                Valor = contaFinanceira.ValorPrevisto,
+                Observacao = contaFinanceira.Descricao
+            });
+
+            saldoHistoricoBL.AtualizaSaldoHistorico(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancaria.BancoId, contaFinanceira.TipoContaFinanceira);
+
+            movimentacaoBL.CriaMovimentacao(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancaria.BancoId, contaFinanceira.TipoContaFinanceira, contaFinanceira.Id);
         }
 
         public static Error ContaInvalida = new Error("Conta Bancária inválida.");

@@ -1,0 +1,14 @@
+﻿<script>
+    function fnModalImprimeBoleto(contaReceberId) {
+        var url = "@Url.Action("FormImprimeBoleto", "ContaReceber")?contaReceberId=" + contaReceberId;
+        fly01.modal(url);
+    }
+
+    function fnEditImprimeBoleto(contaReceberId) {
+        fly01.confirm("Geração de boleto", "Esta conta não é do tipo boleto, você deve editar a forma de pagamento desta conta. Deseja prosseguir?", "fnRedirectToEdit(\"" + contaReceberId + "\")");
+    }
+
+    function fnRedirectToEdit(id) {
+        fly01.go("@Url.Action("Form", "" + ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)", id);
+    }
+</script>

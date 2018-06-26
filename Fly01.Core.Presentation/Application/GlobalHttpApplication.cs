@@ -58,42 +58,29 @@ namespace Fly01.Core.Presentation.Application
                 HttpContext.Current.Session.RemoveAll();
                 FormsAuthentication.SignOut();
 
-                //var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                //if(!Request.Url.AbsolutePath.Contains("LogOff"))
-                //    Response.Redirect(urlHelper.Action("LogOff", "Account"));
-
-                //Response.RedirectPermanent(AppDefaults.UrlLoginSSO, true);
-                //Response.RedirectToRoute(new { controller = "Account", action = "Logoff" });
-
-                if(Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+                if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
                 {
-                    var obj = new { urlToRedirect = "http://gestao.fly01local.com.br" };
-                    throw new UnauthorizedAccessException(JsonConvert.SerializeObject(obj));
+                    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
+                    Response.End();
                 }
-
-                if (Request.Headers["X-Requested-With"] != null &&
+                else if (Request.Headers["X-Requested-With"] != null &&
                     Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
                     FormsAuthentication.RedirectToLoginPage();
                 else
                 {
-                    Response.Write(
-                        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
-                            FormsAuthentication.LoginUrl));
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
                     Response.End();
                 }
             }
-            else
-            {
-                if ((FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null) &&
+            else if ((FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null) &&
                     (!SessionManager.Current.UserData.IsValidUserData()))
-                {
-                    HttpContext.Current.User =
-                        new GenericPrincipal(
-                            new GenericIdentity(
-                                ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value),
-                                "Forms"),
-                            string.Empty.Split(';'));
-                }
+            {
+                HttpContext.Current.User =
+                    new GenericPrincipal(
+                        new GenericIdentity(
+                            ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value),
+                            "Forms"),
+                        string.Empty.Split(';'));
             }
         }
 

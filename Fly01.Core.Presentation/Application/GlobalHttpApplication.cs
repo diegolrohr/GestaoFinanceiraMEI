@@ -11,6 +11,7 @@ using System.Web.SessionState;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
 using Microsoft.ApplicationInsights.Extensibility;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Presentation.Application
 {
@@ -57,18 +58,29 @@ namespace Fly01.Core.Presentation.Application
                 HttpContext.Current.Session.RemoveAll();
                 FormsAuthentication.SignOut();
 
-                //Response.RedirectPermanent(AppDefaults.UrlLoginSSO, true);
+                //var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                //if(!Request.Url.AbsolutePath.Contains("LogOff"))
+                //    Response.Redirect(urlHelper.Action("LogOff", "Account"));
 
-                //if (Request.Headers["X-Requested-With"] != null &&
-                //    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                //    FormsAuthentication.RedirectToLoginPage();
-                //else
-                //{
-                //    Response.Write(
-                //        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
-                //            FormsAuthentication.LoginUrl));
-                //    Response.End();
-                //}
+                //Response.RedirectPermanent(AppDefaults.UrlLoginSSO, true);
+                //Response.RedirectToRoute(new { controller = "Account", action = "Logoff" });
+
+                if(Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+                {
+                    var obj = new { urlToRedirect = "http://gestao.fly01local.com.br" };
+                    throw new UnauthorizedAccessException(JsonConvert.SerializeObject(obj));
+                }
+
+                if (Request.Headers["X-Requested-With"] != null &&
+                    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+                    FormsAuthentication.RedirectToLoginPage();
+                else
+                {
+                    Response.Write(
+                        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
+                            FormsAuthentication.LoginUrl));
+                    Response.End();
+                }
             }
             else
             {

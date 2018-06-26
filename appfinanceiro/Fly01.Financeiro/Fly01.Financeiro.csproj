@@ -372,6 +372,7 @@
     <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

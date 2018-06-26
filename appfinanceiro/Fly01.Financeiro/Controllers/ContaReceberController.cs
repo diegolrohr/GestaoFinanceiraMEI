@@ -243,7 +243,7 @@ namespace Fly01.Financeiro.Controllers
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" , "fnImprimirBoleto" } ,
+                Functions = new List<string>() { "fnRenderEnum", "fnImprimirBoleto" },
             };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
@@ -253,7 +253,8 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago'" });
+            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" });
+          //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" });
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -263,13 +264,11 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
-
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 5, Orderable = false, Searchable = false });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 6, Orderable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
             config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 8 });
 
@@ -663,7 +662,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public ContentResult FormImprimeBoleto(string contaReceberId)
+        public ContentResult FormImprimeBoleto(string contaReceberId, string formaPagamentoDescricao)
         {
             var config = new ModalUIForm()
             {
@@ -678,7 +677,8 @@ namespace Fly01.Financeiro.Controllers
                 Id = "fly01mdlfrmSelecionaContaBancaria"
             };
             config.Elements.Add(new InputHiddenUI { Id = "contaReceberId", Value = contaReceberId });
-           
+            config.Elements.Add(new InputHiddenUI { Id = "descricaoFormaPagamento", Value = formaPagamentoDescricao });
+
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
@@ -690,7 +690,6 @@ namespace Fly01.Financeiro.Controllers
             });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-
         }
 
         public override JsonResult Delete(Guid id)

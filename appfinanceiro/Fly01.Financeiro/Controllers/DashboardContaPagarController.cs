@@ -95,7 +95,7 @@ namespace Fly01.Financeiro.Controllers
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m12 l12",
+                        Class = "col s12",
                         OnClickFn = "fnAtualizarChart",
                         Options = new List<ButtonGroupOptionUI>
                         {
@@ -128,7 +128,10 @@ namespace Fly01.Financeiro.Controllers
                         cornerRadius = 0,
                         titleMarginBottom = 15
                     },
-                    legend = new { position = "bottom" },
+                    legend = new
+                    {
+                        position = "bottom"
+                    },
                     global = new
                     {
                         responsive = false,
@@ -355,7 +358,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaVlr", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -406,7 +409,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaQtd", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -494,18 +497,10 @@ namespace Fly01.Financeiro.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     }
-                    //,
-                    //new {
-                    //        label = "Quantidade",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(255, 99, 132)",
-                    //        borderColor = "rgb(255, 99, 132)",
-                    //        data = response.Select(x => (x.Quantidade)).ToArray()
-                    //    }
                 }
             };
 
@@ -521,19 +516,11 @@ namespace Fly01.Financeiro.Controllers
                 success = true,
                 labels = response.Select(x => x.Tipo).ToArray(),
                 datasets = new object[] {
-                    //new {
-                    //        label = "Valor",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(75, 192, 192)",
-                    //        borderColor = "rgb(75, 192, 192)",
-                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    //}
-                    ////,
                     new {
                             label = "Quantidade",
-                            fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
+                            fill = true,
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => (x.Quantidade)).ToArray()
                         }
                 }
@@ -575,14 +562,6 @@ namespace Fly01.Financeiro.Controllers
                             borderColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
                     }
-                    //,
-                    //new {
-                    //        label = "Quantidade",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(255, 99, 132)",
-                    //        borderColor = "rgb(255, 99, 132)",
-                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
-                    //    }
                 }
             };
 
@@ -607,6 +586,7 @@ namespace Fly01.Financeiro.Controllers
                     //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
                     //},
                     new {
+
                             label = "Quantidade",
                             fill = false,
                             backgroundColor = "rgb(255, 99, 132)",

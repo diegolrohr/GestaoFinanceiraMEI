@@ -1,15 +1,14 @@
 ﻿<script>
-function fnFormReady() {
+    function fnFormReady() {
+        debugger
+        if ($('#id').val() != "") {
+            $('#repetirField').hide();
+            $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
+        }
 
-    if ($('#id').val() != "") {
-        $('#repetirField').hide();
-        $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
+        $('#tipoPeriodicidadeField').hide();
+        $('#tipoRepeticaoField').hide();
+        $('#numeroRepeticoesField').hide();
+        $('#periodoFimField').hide();
     }
-
-    $('#tipoPeriodicidadeField').hide();
-    $('#tipoRepeticaoField').hide();
-    $('#numeroRepeticoesField').hide();
-    $('#periodoFimField').hide();
-
-}
 </script>

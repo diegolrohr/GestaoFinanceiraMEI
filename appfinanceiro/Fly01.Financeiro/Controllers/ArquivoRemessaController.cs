@@ -18,6 +18,7 @@ using System.Linq;
 using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Rest;
 using Boleto2Net;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -255,7 +256,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Arquivos remessa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" },
+                        new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -292,6 +294,31 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public JsonResult LoadGridBoletos()
+        {
+            var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());
+
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetCnab($"arquivoRemessaId eq {Id}");
+            return Json(new
+            {
+                recordsTotal = response.Count,
+                recordsFiltered = response.Count,
+                data = response.Select(item => new
+                {
+                    nossoNumero = item.NossoNumero,
+                    pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
+                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status
+                })
+
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

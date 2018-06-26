@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-              //  Functions = new List<string>() {"fnImprimirBoleto" },
+                Functions = new List<string>() {"fnImprimirBoleto" },
                 ReadyFn = "fnFormReady"
             };
 
@@ -83,7 +83,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "bancoId",
                 Class = "col s12 m6 l6",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
@@ -161,7 +161,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnFormReadyCnab" }
+                Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto"}
             };
 
             var dtConfig = new DataTableUI()
@@ -190,7 +190,7 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", Priority = 3, DisplayName = "Banco" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
 
             cfg.Content.Add(dtConfig);
 

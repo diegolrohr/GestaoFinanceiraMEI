@@ -53,12 +53,18 @@ namespace Fly01.Financeiro.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$expand", "banco($select=nome)");
             queryString.AddParam("$filter", string.Format("contains(nomeConta, '{0}')", term));
             queryString.AddParam("$select", "id, nomeConta");//ver para add info banco
             queryString.AddParam("$orderby", "nomeConta");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.NomeConta };
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.NomeConta,
+                                    detail = $"Banco: {item.Banco.Nome} Agencia: {item.Agencia}-{item.DigitoAgencia} Conta: {item.Conta}-{item.DigitoConta}"
+                                };
 
             return GetJson(filterObjects);
         }
@@ -69,13 +75,14 @@ namespace Fly01.Financeiro.Controllers
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$expand", "banco($select=nome)");
-            queryString.AddParam("$filter", $"contains(banco/nome, '{term}') and banco/emiteBoleto eq true");
+            queryString.AddParam("$filter", $"contains(nomeConta, '{term}') and banco/emiteBoleto eq true");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,
-                                    label = item.Banco.Nome
+                                    label = item.NomeConta,
+                                    detail = $"Banco: {item.Banco.Nome} Agencia: {item.Agencia}-{item.DigitoAgencia} Conta: {item.Conta}-{item.DigitoConta}"
                                 };
 
             return GetJson(filterObjects);
@@ -96,7 +103,7 @@ namespace Fly01.Financeiro.Controllers
                                 {
                                     id = item.Id,
                                     label = item.NomeConta,
-                                    detail = $"Ag: {item.Agencia} Conta: {item.Conta} Banco : {item.Banco.Codigo} {item.Banco.Nome}"
+                                    detail = $"Banco: {item.Banco.Nome} Agencia: {item.Agencia}-{item.DigitoAgencia} Conta: {item.Conta}-{item.DigitoConta}"
                                 };
 
             return GetJson(filterObjects);

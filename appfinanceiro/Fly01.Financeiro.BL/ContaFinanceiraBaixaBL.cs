@@ -90,7 +90,9 @@ namespace Fly01.Financeiro.BL
         {
             if (contaFinanceira.Id == default(Guid)) throw new BusinessException("Conta Financeira inválida.");
 
-            if (contaFinanceira.ContaBancaria.BancoId != default(Guid))
+            if (contaFinanceira.ContaBancariaId != default(Guid))
+                contaFinanceira.ContaBancaria = contaBancariaBL.Find(contaFinanceira.ContaBancariaId);
+            else
             {
                 var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
 
@@ -99,20 +101,20 @@ namespace Fly01.Financeiro.BL
                 contaFinanceira.ContaBancaria.BancoId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true).Id;
             }
 
-            if (contaFinanceira.ContaBancaria.BancoId == default(Guid)) throw new BusinessException("Conta bancária inválida.");
+            if (contaFinanceira.ContaBancaria == null) throw new BusinessException("Conta bancária inválida.");
+
+            saldoHistoricoBL.AtualizaSaldoHistorico(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancariaId, contaFinanceira.TipoContaFinanceira);
+
+            movimentacaoBL.CriaMovimentacao(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancariaId, contaFinanceira.TipoContaFinanceira, contaFinanceira.Id);
 
             base.Insert(new ContaFinanceiraBaixa()
             {
                 Data = contaFinanceira.DataVencimento,
                 ContaFinanceiraId = contaFinanceira.Id,
-                ContaBancariaId = contaFinanceira.ContaBancaria.BancoId,
+                ContaBancariaId = contaFinanceira.ContaBancariaId,
                 Valor = contaFinanceira.ValorPrevisto,
                 Observacao = contaFinanceira.Descricao
             });
-
-            saldoHistoricoBL.AtualizaSaldoHistorico(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancaria.BancoId, contaFinanceira.TipoContaFinanceira);
-
-            movimentacaoBL.CriaMovimentacao(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancaria.BancoId, contaFinanceira.TipoContaFinanceira, contaFinanceira.Id);
         }
 
         public static Error ContaInvalida = new Error("Conta Bancária inválida.");

@@ -130,21 +130,6 @@ namespace Fly01.Financeiro.Controllers.Base
 
                 var conta = RestHelper.ExecutePostRequest<TEntity>(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
-                //if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
-                //{
-                //    var contaBancariaId = Guid.Parse(Request.Form["ContaBancariaId"]);
-                //    var baixa = new ContaFinanceiraBaixaVM
-                //    {
-                //        ContaBancariaId = contaBancariaId,
-                //        Data = DateTime.Now,
-                //        Observacao = "Título baixado automaticamente",
-                //        Valor = entityVM.ValorPrevisto,
-                //        ContaFinanceiraId = conta.Id
-                //    };
-
-                //    BaixaTitulo((TEntityBaixa)baixa);
-                //}
-
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
             }
             catch (Exception ex)

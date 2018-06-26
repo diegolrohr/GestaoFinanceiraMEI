@@ -94,7 +94,9 @@ namespace Fly01.Financeiro.BL
                     base.Insert(itemContaPagar);
 
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                    {
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
+                    }
 
                     if (repetir)
                     {

@@ -361,7 +361,7 @@
     <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
     <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoContaReceber.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
@@ -371,6 +371,8 @@
     <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -421,7 +423,7 @@
       <HintPath>..\..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.4\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

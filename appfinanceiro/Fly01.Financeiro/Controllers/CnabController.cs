@@ -74,6 +74,7 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+              //  Functions = new List<string>() {"fnImprimirBoleto" },
                 ReadyFn = "fnFormReady"
             };
 
@@ -117,7 +118,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtCnabItem",
                 UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" },
+                Functions = new List<string>() { "fnRenderEnum"},
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
@@ -136,7 +137,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
             });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto"});
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir boleto", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab" });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
             #endregion
 
@@ -189,7 +190,7 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", Priority = 3, DisplayName = "Banco" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoleto" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab" });
 
             cfg.Content.Add(dtConfig);
 

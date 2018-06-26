@@ -87,7 +87,7 @@ namespace Fly01.Financeiro.Controllers
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12 m12 l12",
+                        Class = "col s12",
                         OnClickFn = "fnAtualizarChart",
                         Options = new List<ButtonGroupOptionUI>
                         {
@@ -345,7 +345,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaVlr", "DashboardContaReceber"),
-                Class = "col s12 m6 l6",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -395,7 +395,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlData = @url.Action("LoadChartCategoriaQtd", "DashboardContaReceber"),
-                Class = "col s12 m6 l6",
+                Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -469,8 +469,8 @@ namespace Fly01.Financeiro.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     }
                     //,
@@ -506,8 +506,8 @@ namespace Fly01.Financeiro.Controllers
                     new {
                             label = "Quantidade",
                             fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => (x.Quantidade)).ToArray()
                         }
                 }

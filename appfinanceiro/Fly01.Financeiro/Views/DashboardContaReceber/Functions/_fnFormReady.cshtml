@@ -1,56 +1,52 @@
 ﻿<script>
     function __configsChart() {
         var simboloMonetario = " R$ ";
-
-
         fly01._.chartStatusVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
             var formatedValue = __formatMoney(tooltipItems.yLabel);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartStatusVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
             var formatedValue = __formatMoney(value);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartStatusVlr.update();
 
         fly01._.chartPagamentoVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
             var formatedValue = __formatMoney(tooltipItems.yLabel);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartPagamentoVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
             var formatedValue = __formatMoney(value);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartPagamentoVlr.update();
         
         fly01._.chartCategoriaVlr.options.tooltips.callbacks.label = function (tooltipItems, data) {
             var formatedValue = __formatMoney(tooltipItems.yLabel);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartCategoriaVlr.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
             var formatedValue = __formatMoney(value);
-
             return simboloMonetario + formatedValue;
         }
-
         fly01._.chartCategoriaVlr.update();
-
-  
-
     }
-
+    function refreshDash() {
+        fly01._.chartCategoriaQtd.refresh();
+        fly01._.chartCategoriaVlr.refresh();
+        fly01._.chartPagamentoQtd.refresh();
+        fly01._.chartPagamentoVlr.refresh();
+        fly01._.chartStatusQtd.refresh();
+        fly01._.chartStatusVlr.refresh();
+        fly01._.chartSaldoDiaDia.refresh();
+    }
     function fnFormReady() {
+        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);
+        $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
         $("#btnStatus").click();
-        __configsChart();
+        __configsChart();        
     }
 </script>

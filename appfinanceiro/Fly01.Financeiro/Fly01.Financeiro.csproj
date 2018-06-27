@@ -346,11 +346,9 @@
     <Content Include="Views\DashboardContaReceber\Functions\_fnAtualizarChart.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
-    <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnAtualizarChart.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
-    <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />

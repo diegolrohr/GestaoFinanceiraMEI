@@ -45,7 +45,9 @@ namespace Fly01.Financeiro.Controllers
                 digitoConta = x.DigitoConta,
                 registroFixo = x.RegistroFixo,
                 codigoCedente = x.CodigoCedente,
-                codigoDV = x.CodigoDV
+                codigoDV = x.CodigoDV, 
+                taxaJuros = x.TaxaJuros, 
+                percentualMulta = x.PercentualMulta
             };
         }
 
@@ -153,13 +155,46 @@ namespace Fly01.Financeiro.Controllers
                 Id = "checkCedente",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Esta conta bancária emite boletos bancários? Marque para informar o código do cedente para este banco.",
+                    Text = "Esta conta bancária emite boletos bancários? Marque para informar os dados referente a emissão de boletos.",
+                    Position = TooltopUIPosition.Left
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col m12 l3", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col m12 l3", Label = "CódigoDV", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "taxaJuros",
+                Class = "col m12 l3",
+                Label = "Taxa de juros",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "taxaJuros",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a taxa de juros que será cobrado por dia após o vencimento do boleto, do contrario, será utilizado a taxa de juros padão de 0.33% ao dia.",
+                    Position = TooltopUIPosition.Top
+                }
+            });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "percentualMulta",
+                Class = "col m12 l3",
+                Label = "Percentual Multa",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "percentualMulta",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o percentual da multa que será cobrado por atraso após o vencimento do boleto, do contrario, será utilizado o percentual padão de 2.00%.",
                     Position = TooltopUIPosition.Top
                 }
             });
 
-            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s6 m6 l6", Label = "Código cedente", Required = false, MaxLength = 150 });
-            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col s6 m6 l6", Label = "CódigoDV", Required = false, MaxLength = 150 });
 
             cfg.Content.Add(config);
 

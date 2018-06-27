@@ -249,7 +249,6 @@
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <Content Include="Views\Dashboard\Functions\_fnAtualizarChart.cshtml" />
     <Content Include="Views\Dashboard\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Dashboard\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />

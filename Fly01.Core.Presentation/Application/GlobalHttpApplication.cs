@@ -34,41 +34,42 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        private static string ReadCookieAndSetSession(string token)
+        private static bool ReadCookieAndSetSession(string token)
         {
-            string platformUser = string.Empty;
             var formsAuthenticationTicket = FormsAuthentication.Decrypt(token);
-
             if ((formsAuthenticationTicket != null) && (formsAuthenticationTicket.UserData != null))
             {
                 dynamic cookieUserData = Json.Decode(formsAuthenticationTicket.UserData);
 
-                platformUser = cookieUserData.UserName;
+                string platformUser = cookieUserData.UserName;
                 string platformUrl = cookieUserData.Fly01Url;
-
-                TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
-                    AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
-                    AppDefaults.GatewayPassword, platformUrl, platformUser);
 
                 var userData = new UserDataVM
                 {
-                    TokenData = tokenData,
                     PlatformUser = platformUser,
                     PlatformUrl = platformUrl,
                     Permissions = GetPermissionsByUser(platformUrl, platformUser)
                 };
+                HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(platformUser, "Forms"), string.Empty.Split(';'));
 
-                userData.TokenData.Username = cookieUserData.Name;
-                SessionManager.Current.UserData = userData;
+                if (!SessionManager.Current.UserData.IsValidUserData(userData))
+                {
+                    TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
+                        AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
+                        AppDefaults.GatewayPassword, platformUrl, platformUser);
+
+                    userData.TokenData = tokenData;
+                    userData.TokenData.Username = cookieUserData.Name;
+                    SessionManager.Current.UserData = userData;
+                    return true;
+                }
             }
-
-            return platformUser;
+            return false;
         }
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) &&
-                //SessionManager.Current.UserData.IsValidUserData() &&
                 ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
             {
                 HttpContext.Current.Session.Clear();
@@ -76,28 +77,27 @@ namespace Fly01.Core.Presentation.Application
                 HttpContext.Current.Session.RemoveAll();
                 FormsAuthentication.SignOut();
 
-                if (Request.Headers["X-Requested-With"] != null &&
-                    Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+                if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+                {
+                    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
+                    Response.End();
+                }
+                else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+                {
                     FormsAuthentication.RedirectToLoginPage();
+                }
                 else
                 {
-                    Response.Write(
-                        String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>",
-                            FormsAuthentication.LoginUrl));
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
                     Response.End();
                 }
             }
-            else
+            else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                if ((FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null) 
-                    && (SessionManager.Current.UserData == null || SessionManager.Current.UserData.PlatformUrl == null))
+                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    HttpContext.Current.User =
-                        new GenericPrincipal(
-                            new GenericIdentity(
-                                ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value),
-                                "Forms"),
-                            string.Empty.Split(';'));
+                    Response.Cookies.Add(new HttpCookie("UserEmail", SessionManager.Current.UserData.PlatformUser) { Expires = DateTime.UtcNow.AddDays(2) });
+                    Response.Cookies.Add(new HttpCookie("UserName", SessionManager.Current.UserData.TokenData.Username) { Expires = DateTime.UtcNow.AddDays(2) });
                 }
             }
         }
@@ -139,11 +139,11 @@ namespace Fly01.Core.Presentation.Application
             if (FormsAuthentication.CookiesSupported &&
                 Request.Cookies[FormsAuthentication.FormsCookieName] != null)
             {
-                HttpContext.Current.User =
-                    new GenericPrincipal(
-                        new GenericIdentity(
-                            ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value), "Forms"),
-                        string.Empty.Split(';'));
+                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+                {
+                    Response.Cookies.Add(new HttpCookie("UserEmail", SessionManager.Current.UserData.PlatformUser) { Expires = DateTime.UtcNow.AddDays(2) });
+                    Response.Cookies.Add(new HttpCookie("UserName", SessionManager.Current.UserData.TokenData.Username) { Expires = DateTime.UtcNow.AddDays(2) });
+                }
             }
             else
             {

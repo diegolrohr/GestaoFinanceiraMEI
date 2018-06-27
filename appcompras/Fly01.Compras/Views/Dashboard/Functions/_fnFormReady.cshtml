@@ -31,9 +31,22 @@
 
         fly01._.chartPagamentoValor.update();
     }
+    function refreshDash() {
+        fly01._.chartPagamentoQtd.refresh();
+        fly01._.chartPagamentoValor.refresh();
+        fly01._.chartStatusQtd.refresh();
+        fly01._.chartStatusValor.refresh();
+        fly01._.fly01dt.refresh();
+    }
 
     function fnFormReady() {
+        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);
+        $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
         $("#btnStatus").click();
         __configsChart();
+        fly01._.fly01dt.refresh();
     }
 </script>

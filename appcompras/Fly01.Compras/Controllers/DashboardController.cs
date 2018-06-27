@@ -34,7 +34,6 @@ namespace Fly01.Compras.Controllers
 
         protected internal static ContentUI DashboardJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "Dashboard") },
@@ -46,12 +45,13 @@ namespace Fly01.Compras.Controllers
             };
             if (withSidebarUrl)
                 cfg.SidebarUrl = url.Action("Sidebar", "Dashboard", null, scheme);
-
-
-            var cfgForm = new FormUI
+            cfg.Content.Add(new FormUI
             {
-                ReadyFn = "fnUpdateDataFinal",
+                Id = "filterForm",
+                ReadyFn = "fnFormReady",
                 UrlFunctions = url.Action("Functions", "Dashboard") + "?fns=",
+                Functions = new List<string> { "__format" },
+                Class = "col s12",
                 Elements = new List<BaseUI>()
                 {
                     new PeriodPickerUI()
@@ -79,21 +79,6 @@ namespace Fly01.Compras.Controllers
                         Id = "dataFinal",
                         Name = "dataFinal"
                     },
-                }
-            };
-
-            cfg.Content.Add(cfgForm);
-
-            //OPÇÕES
-            cfg.Content.Add(new FormUI
-            {
-                Id = "btnOpcoes",
-                ReadyFn = "fnFormReady",
-                UrlFunctions = url.Action("Functions", "Dashboard", null) + "?fns=",
-                Functions = new List<string> { "__format" },
-                Class = "col s12",
-                Elements = new List<BaseUI>
-                {
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
@@ -115,33 +100,7 @@ namespace Fly01.Compras.Controllers
                         DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
                     }
                 }
-            });
-
-            //COMBOBOX
-            var config = new FormUI
-            {
-
-                Action = new FormUIAction
-                {
-                    Create = @url.Action("Create"),
-                    Edit = @url.Action("Edit"),
-                    Get = @url.Action("Json") + "/",
-                    List = url.Action("List", "Dashboard")
-                },
-                UrlFunctions = url.Action("Functions", "Dashboard") + "?fns="
-            };
-
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tpOrdemCompra",
-            //    Class = "col s12 m6 l6",
-            //    Disabled = false,
-            //    //ConstrainWidth = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
-            //    DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
-            //});
-            //cfg.Content.Add(config);
-
+            });            
             // CHART Status Valor
             cfg.Content.Add(new ChartUI
             {
@@ -193,7 +152,6 @@ namespace Fly01.Compras.Controllers
                         new ChartUIParameter { Id = "tpOrdemCompra" }
                     }
             });
-
             // CHART Status Quantidade
             cfg.Content.Add(new ChartUI
             {
@@ -245,7 +203,6 @@ namespace Fly01.Compras.Controllers
                         new ChartUIParameter { Id = "tpOrdemCompra" }
                     }
             });
-
             // CHART Forma de Pagamento
             cfg.Content.Add(new ChartUI
             {
@@ -297,7 +254,6 @@ namespace Fly01.Compras.Controllers
                         new ChartUIParameter { Id = "tpOrdemCompra" }
                     }
             });
-
             // CHART Forma de Pagamento
             cfg.Content.Add(new ChartUI
             {
@@ -349,24 +305,14 @@ namespace Fly01.Compras.Controllers
                         new ChartUIParameter { Id = "tpOrdemCompra" }
                     }
             });
-
-            var cfgTable = new FormUI
+            cfg.Content.Add(new DivUI
             {
-                Action = new FormUIAction
-                {
-                    Create = @url.Action("Create"),
-                    Edit = @url.Action("Edit"),
-                    Get = @url.Action("Json") + "/",
-                    List = url.Action("List", "Dashboard")
+                Elements = new List<BaseUI>{
+                    new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "TOP 10 - PRODUTOS MAIS COMPRADOS" }
                 }
-            };
-
-            cfgTable.Elements.Add(new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "TOP 10 - PRODUTOS MAIS COMPRADOS" });
-            cfg.Content.Add(cfgTable);
-
-            var configTable = new DataTableUI
+            });
+            cfg.Content.Add(new DataTableUI
             {
-
                 UrlGridLoad = url.Action("DashboardGridLoad", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
@@ -376,44 +322,44 @@ namespace Fly01.Compras.Controllers
                 {
                     PageLength = 10,
                     WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "unidadeMedida",
+                        DisplayName = "Unidade de Medida",
+                        Priority = 1,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valor",
+                        DisplayName = "Valor",
+                        Priority = 3,
+                        Type = "valor",
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Priority = 4,
+                        Type = "valor",
+                        Orderable = false,
+                        Searchable = false
+                    }
                 }
-            };
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "descricao",
-                DisplayName = "Descrição",
-                Priority = 2,
-                Orderable = false,
-                Searchable = false
-            });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "unidadeMedida",
-                DisplayName = "Unidade de Medida",
-                Priority = 1,
-                Orderable = false,
-                Searchable = false
-            });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "valor",
-                DisplayName = "Valor",
-                Priority = 3,
-                Type = "valor",
-                Orderable = false,
-                Searchable = false
-            });
-            configTable.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "quantidade",
-                DisplayName = "Quantidade",
-                Priority = 4,
-                Type = "valor",
-                Orderable = false,
-                Searchable = false
-            });
-
-            cfg.Content.Add(configTable);
+            });            
             return cfg;
         }
 
@@ -469,7 +415,8 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Quantidade",
                             fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => (x.Quantidade)).ToArray()
                         }
                 }
@@ -490,7 +437,8 @@ namespace Fly01.Compras.Controllers
                     new {
                             label = "Valor",
                             fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
+                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
+                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     }
                     //,

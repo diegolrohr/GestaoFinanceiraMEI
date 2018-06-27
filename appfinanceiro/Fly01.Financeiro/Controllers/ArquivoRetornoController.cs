@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
                 Color = "blue",
                 Id = "cardDuvidas",
                 Title = "Dicas",
-                Placeholder = "Selecione o banco de origem do arquivo e localize o arquivo que deseja importar",
+                Placeholder = "Selecione o banco de origem e localize o arquivo que deseja importar",
                 Action = new LinkUI()
                 {
                     Label = "",

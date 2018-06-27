@@ -50,7 +50,9 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new FormUI
             {
-                ReadyFn = "fnUpdateDataFinal",
+                ReadyFn = "fnFormReady",
+                Functions = new List<string> { "__format" },
+                Class = "col s12",
                 UrlFunctions = url.Action("Functions", "DashboardContaPagar") + "?fns=",
                 Elements = new List<BaseUI>()
                 {
@@ -79,23 +81,10 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataFinal",
                         Name = "dataFinal"
                     },
-                }
-            });
-
-            //OPÇÕES
-            cfg.Content.Add(new FormUI
-            {
-                Id = "btnOpcoes",
-                ReadyFn = "fnFormReady",
-                Functions = new List<string> { "__format" },
-                UrlFunctions = url.Action("Functions", "DashboardContaPagar", null) + "?fns=",
-                Class = "col s12 m8 offset-m2",
-                Elements = new List<BaseUI>
-                {
                     new ButtonGroupUI
                     {
                         Id = "fly01btngrp",
-                        Class = "col s12",
+                        Class = "col s12 m8 offset-m2",
                         OnClickFn = "fnAtualizarChart",
                         Options = new List<ButtonGroupOptionUI>
                         {
@@ -107,7 +96,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            // CHART Status Valor
+            // CHART Status
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartStatusVlr",
@@ -160,8 +149,6 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-
-            // CHART Status
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartStatusQtd",
@@ -212,7 +199,7 @@ namespace Fly01.Financeiro.Controllers
                     }
             });
 
-            // CHART Pagamento Valor           
+            // CHART Pagamento
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartPagamentoVlr",
@@ -262,8 +249,6 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-
-            // CHART Pagamento Quantidade           
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartPagamentoQtd",
@@ -364,8 +349,6 @@ namespace Fly01.Financeiro.Controllers
                         new ChartUIParameter { Id = "dataInicial" }
                     }
             });
-
-            // CHART Categoria Quantidade
             cfg.Content.Add(new ChartUI
             {
                 Id = "chartCategoriaQtd",
@@ -416,9 +399,7 @@ namespace Fly01.Financeiro.Controllers
                     }
             });
 
-
             // Grid
-
             cfg.Content.Add(new DivUI
             {
                 Id = "divLabel",
@@ -430,13 +411,13 @@ namespace Fly01.Financeiro.Controllers
                     }
                 }
             });
-
             cfg.Content.Add(new DataTableUI
             {
+                Id = "dtDashCP",
                 UrlGridLoad = url.Action("DashboardGridLoad"),
                 Parameters = new List<DataTableUIParameter>
                     {
-                        new DataTableUIParameter { Id = "dataInicial" }
+                        new DataTableUIParameter { Id = "dataInicial", Required = true }
                     },
                 Options = new DataTableUIConfig()
                 {
@@ -480,10 +461,10 @@ namespace Fly01.Financeiro.Controllers
                     }
                 }
             });
+
             return cfg;
         }
 
-        [HttpGet]
         // Load Status
         public JsonResult LoadChartStatusVlr(DateTime dataInicial)
         {
@@ -506,7 +487,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult LoadChartStatusQtd(DateTime dataInicial)
         {
             var response = GetProjecaoStatus(dataInicial);
@@ -528,24 +508,7 @@ namespace Fly01.Financeiro.Controllers
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-
-        private List<DashboardContaPagarStatusVM> GetProjecaoStatus(DateTime dataInicial)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", "ContaPagar" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarStatusVM>>("dashboardstatus", queryString);
-            if (response == null)
-                return new List<DashboardContaPagarStatusVM>();
-
-            return response;
-
-        }
-
-        // Load PagamentoValor
+        // Load Pagamento
         public JsonResult LoadChartPagamentoVlr(DateTime dataInicial)
         {
             var response = GetProjecaoPagamento(dataInicial);
@@ -567,8 +530,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-
-        // Load Pagamento
         public JsonResult LoadChartPagamentoQtd(DateTime dataInicial)
         {
             var response = GetProjecaoPagamento(dataInicial);
@@ -598,22 +559,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-
-        private List<DashboardContaPagarFormaPagamentoVM> GetProjecaoPagamento(DateTime dataInicial)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", "ContaPagar" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarFormaPagamentoVM>>("dashboardformapagamento", queryString);
-            if (response == null)
-                return new List<DashboardContaPagarFormaPagamentoVM>();
-
-            return response;
-        }
-
         // Load Categoria
         public JsonResult LoadChartCategoriaVlr(DateTime dataInicial)
         {
@@ -644,7 +589,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Json(dataChartToView, JsonRequestBehavior.AllowGet);
         }
-        // Load Categoria
         public JsonResult LoadChartCategoriaQtd(DateTime dataInicial)
         {
             var response = GetProjecaoCategoria(dataInicial);
@@ -685,6 +629,35 @@ namespace Fly01.Financeiro.Controllers
             var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarCategoriaVM>>("dashboardcategoria", queryString);
             if (response == null)
                 return new List<DashboardContaPagarCategoriaVM>();
+
+            return response;
+        }
+        private List<DashboardContaPagarStatusVM> GetProjecaoStatus(DateTime dataInicial)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
+                { "tipo", "ContaPagar" }
+            };
+
+            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarStatusVM>>("dashboardstatus", queryString);
+            if (response == null)
+                return new List<DashboardContaPagarStatusVM>();
+
+            return response;
+
+        }
+        private List<DashboardContaPagarFormaPagamentoVM> GetProjecaoPagamento(DateTime dataInicial)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
+                { "tipo", "ContaPagar" }
+            };
+
+            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarFormaPagamentoVM>>("dashboardformapagamento", queryString);
+            if (response == null)
+                return new List<DashboardContaPagarFormaPagamentoVM>();
 
             return response;
         }

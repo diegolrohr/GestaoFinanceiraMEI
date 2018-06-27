@@ -1,29 +1,20 @@
 ﻿<script>
     function fnAtualizarChart(value) {
-
+        $('#dchartStatusVlr').hide();
+        $('#dchartStatusQtd').hide();
+        $('#dchartPagamentoVlr').hide();
+        $('#dchartPagamentoQtd').hide();
+        $('#dchartCategoriaVlr').hide();
+        $('#dchartCategoriaQtd').hide();
         if (value === "1") {
-            $('#chartStatusVlr').show();
-            $('#chartPagamentoVlr').hide();
-            $('#chartCategoriaVlr').hide();            
-            $('#chartStatusQtd').show();
-            $('#chartPagamentoQtd').hide();
-            $('#chartCategoriaQtd').hide();            
-        }
-        if (value === "2") {
-            $('#chartStatusVlr').hide();
-            $('#chartPagamentoVlr').show();
-            $('#chartCategoriaVlr').hide();    
-            $('#chartStatusQtd').hide();
-            $('#chartPagamentoQtd').show();
-            $('#chartCategoriaQtd').hide(); 
-        }
-        if (value === "3") {
-            $('#chartStatusVlr').hide();
-            $('#chartPagamentoVlr').hide();
-            $('#chartCategoriaVlr').show();    
-            $('#chartStatusQtd').hide();
-            $('#chartPagamentoQtd').hide();
-            $('#chartCategoriaQtd').show();    
+            $('#dchartStatusVlr').show();
+            $('#dchartStatusQtd').show();
+        } else if (value === "2") {
+            $('#dchartPagamentoVlr').show();
+            $('#dchartPagamentoQtd').show();
+        } else if (value === "3") {
+            $('#dchartCategoriaVlr').show();
+            $('#dchartCategoriaQtd').show();
         }
     }
 </script>

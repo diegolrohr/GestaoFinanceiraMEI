@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Fly01.Core;
 using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.BL
 {
     public class ServiceBusBL : Consumer
     {
+        const string domainAssemblyName = "Fly01.Core.Entities";
+
         public ServiceBusBL()
         {
             SetupEnvironment.Create();
@@ -21,12 +22,12 @@ namespace Fly01.Financeiro.BL
 
         protected override async Task PersistMessage()
         {
-            RabbitConfig.RoutingKey = "ContaPagar";
+            RabbitConfig.RoutingKey = "ContaPagar"; //hardcode para testes
             var unitOfWorkAssembly = Type.GetType(Assembly.GetExecutingAssembly().GetName().Name + ".UnitOfWork");
-            var domainAssembly = Assembly.Load("Fly01.Core.Entities").GetType("Fly01.Core.Entities.Domains.Commons." + RabbitConfig.RoutingKey);
+            var domainAssembly = Assembly.Load(domainAssemblyName).GetType($"{domainAssemblyName}.Domains.Commons.{RabbitConfig.RoutingKey}");
             dynamic entidade = unitOfWorkAssembly.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false);
 
-            exceptions = new Dictionary<string, Exception>();
+            exceptions = new List<KeyValuePair<string, object>>();
 
             using (var unitOfWork = new UnitOfWork(new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl }))
             {
@@ -41,7 +42,7 @@ namespace Fly01.Financeiro.BL
                     }
                     catch (Exception ex)
                     {
-                        exceptions.Add(item, ex);
+                        exceptions.Add(new KeyValuePair<string, object>(item.ToString(), ex));
                         continue;
                     }
                 }

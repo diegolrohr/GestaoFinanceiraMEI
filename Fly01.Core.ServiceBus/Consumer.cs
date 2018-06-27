@@ -5,6 +5,7 @@ using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
 using Fly01.Core.Mensageria;
 using System.Collections.Generic;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -16,8 +17,8 @@ namespace Fly01.Core.ServiceBus
         protected string Message;
         protected RabbitConfig.EnHttpVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
+        protected List<KeyValuePair<string, object>> exceptions;
         protected abstract Task PersistMessage();
-        protected Dictionary<string, Exception> exceptions;
 
         private IConnection Connection
         {
@@ -85,7 +86,9 @@ namespace Fly01.Core.ServiceBus
                     {
                         foreach (var item in exceptions)
                         {
-                            SlackClient.PostErrorRabbitMQ(item.Key, item.Value, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                            var erro = (BusinessException)item.Value ?? (Exception)item.Value;
+
+                            SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
                             Channel.BasicNack(args.DeliveryTag, false, true);
                         }
                     }

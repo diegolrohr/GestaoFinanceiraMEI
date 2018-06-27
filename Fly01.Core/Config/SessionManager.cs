@@ -55,5 +55,13 @@ namespace Fly01.Core.Config
                 (!string.IsNullOrWhiteSpace(userDataVM.TokenData.AccessToken))
             );
         }
+        public static bool IsValidUserData(this UserDataVM userDataVM, UserDataVM testUserData)
+        {
+            return (
+                (userDataVM != null) && (testUserData != null) &&
+                (userDataVM.PlatformUrl != null) && (userDataVM.PlatformUrl == testUserData.PlatformUrl) &&
+                (userDataVM.PlatformUser != null) && (userDataVM.PlatformUser == testUserData.PlatformUser)                
+            );
+        }
     }
 }

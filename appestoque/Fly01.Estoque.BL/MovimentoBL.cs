@@ -99,11 +99,11 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
-        {
-            foreach (var item in ResolveTypeOfMessage(message))
-                Movimenta(item);
-        }
+        //public override void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
+        //{
+        //    foreach (var item in ResolveTypeOfMessage(message))
+        //        Movimenta(item);
+        //}
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
         public static Error ProdutoNaoInformado = new Error("O produto não foi informado ou o Id é inválido.", "produtoId");

@@ -15,6 +15,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Config;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -210,16 +211,16 @@ namespace Fly01.Financeiro.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
         public override Func<MovimentacaoVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
-
         public override ContentResult List()
         {
             var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
+            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var dataFinalFiltroDefault = DateTime.Now;
 
             var cfg = new ContentUI
             {
@@ -229,16 +230,15 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Extrato",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
-                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirExtrato" }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main},
+                        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirExtrato", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "pgto", Label = "Novo Pagamento", OnClickFn = "fnNovoPagamento", Position = HtmlUIButtonPosition.In },
+                        new HtmlUIButton { Id = "rcto", Label = "Novo Recebimento", OnClickFn = "fnNovoRecebimento", Position = HtmlUIButtonPosition.In },
+                        new HtmlUIButton { Id = "trnf", Label = "Nova Transferência", OnClickFn = "fnNovaTransferencia", Position = HtmlUIButtonPosition.In }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Extrato", null, Request.Url.Scheme) + "?fns="
             };
-
-            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var dataFinalFiltroDefault = DateTime.Now;
-
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m8 offset-m2 printinfo",
@@ -254,7 +254,6 @@ namespace Fly01.Financeiro.Controllers
                     OnClick = ""
                 }
             });
-
             cfg.Content.Add(new FormUI
             {
                 ReadyFn = "fnFormReady",
@@ -298,9 +297,7 @@ namespace Fly01.Financeiro.Controllers
                         }
                     }
                 }
-
             });
-
             cfg.Content.Add(new DataTableUI
             {
                 Id = "contasBancariasList",
@@ -377,47 +374,14 @@ namespace Fly01.Financeiro.Controllers
                     }
 
             });
-
-            cfg.Content.Add(new FormUI
+            cfg.Content.Add(new DivUI
             {
-                UrlFunctions = Url.Action("Functions", "Extrato", null, Request.Url.Scheme) + "?fns=",
-                Class = "col s12 hide-on-print",
+                Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new ButtonUI
-                    {
-                        Id = "btnNovoPagamento",
-                        Class = "col s12 m4 l4",
-                        Value = "Novo pagamento",
-                        DomEvents = new List<DomEventUI>
-                        {
-                            new DomEventUI {DomEvent = "click", Function = "fnNovoPagamento"}
+                    new LabelSetUI { Id =  "lab", Class = "col s12", Label = "Detalhes do Extrato"}
                         }
-                    },
-                    new ButtonUI
-                    {
-                        Id = "btnNovoRecebimento",
-                        Class = "col s12 m4 l4",
-                        Value = "Novo recebimento",
-                        DomEvents = new List<DomEventUI>
-                        {
-                            new DomEventUI {DomEvent = "click", Function = "fnNovoRecebimento"}
-                        }
-                    },
-                    new ButtonUI
-                    {
-                        Id = "btnNovaTransferencia",
-                        Class = "col s12 m4 l4",
-                        Value = "Nova transferência",
-                        DomEvents = new List<DomEventUI>
-                        {
-                            new DomEventUI {DomEvent = "click", Function = "fnNovaTransferencia"}
-                        }
-                    }
-                }
-
             });
-
             cfg.Content.Add(new DataTableUI
             {
                 Id = "dtExtratoDetalhe",
@@ -444,15 +408,12 @@ namespace Fly01.Financeiro.Controllers
                     }
 
             });
-
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
-
         public override ContentResult Form()
         {
             throw new NotImplementedException();
         }
-
         public ContentResult ModalExtratoNovaTransferencia()
         {
             var config = new ModalUIForm()
@@ -549,7 +510,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
         public ContentResult ModalExtratoNovoRecebimento()
         {
             var config = new ModalUIForm()
@@ -613,7 +573,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
         public ContentResult ModalExtratoNovoPagamento()
         {
             var config = new ModalUIForm()

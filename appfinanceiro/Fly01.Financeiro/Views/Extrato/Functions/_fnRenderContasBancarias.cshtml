@@ -1,13 +1,11 @@
 ﻿<script>
     function fnRenderContasBancarias(data, type, full, meta) {
-        var render = createElem("div", { "class": "tooltipped", "data-position": "top", "data-tooltip": "Representação: " + full.progressSaldo + "%", "data-conta-id": full.contaBancariaId }, [
+         return createElem("div", { "class": "tooltipped", "data-position": "bottom", "data-tooltip": "Representação: " + full.progressSaldo + "%", "data-conta-id": full.contaBancariaId }, [
             createElem("span", { "class": "left" }, full.contaBancariaDescricao),
             createElem("strong", { "class": "right green-text" }, full.contaSaldo),
             createElem("div", { "class": "progress" }, [
                 createElem("div", { "class": "determinate", "style": "width: " + full.progressSaldo + "%" })
             ])
-        ]);
-        $("#contasBancariasList_paginate").hide();
-        return render.outerHTML;
+        ]).outerHTML;
     }
 </script>

@@ -269,7 +269,7 @@ namespace Fly01.Financeiro.Controllers
                         Class = "col s6 m3 l4",
                         Label = "Data Inicial",
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
-                        DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
+                        DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "change", Function = "fnAtualizar"}},
                         Max = true,
                         Min = -60
                     },
@@ -279,7 +279,7 @@ namespace Fly01.Financeiro.Controllers
                         Class = "col s6 m3 l4",
                         Label = "Data Final",
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
-                        DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
+                        DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "change", Function = "fnAtualizar"}},
                         Max = true,
                         Min = -60
                     },
@@ -302,7 +302,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contasBancariasList",
                 Class = "col s12 m12 l4",
-                UrlGridLoad = @Url.Action("LoadContasBancarias"),               
+                UrlGridLoad = @Url.Action("LoadContasBancarias"),
                 Columns = new List<DataTableUIColumn>
                     {
                         new DataTableUIColumn
@@ -317,12 +317,16 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig
                 {
                     ScrollLength = 300,
-                    WithoutRowMenu = true                 
+                    WithoutRowMenu = true
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                Callbacks = new DataTableUICallbacks
+                {
+                    DrawCallback = "fnContaBancariaDrawCB"
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnContaBancariaDrawCB" }
 
             });
-
             cfg.Content.Add(new ChartUI
             {
                 Options = new
@@ -380,7 +384,7 @@ namespace Fly01.Financeiro.Controllers
                 Elements = new List<BaseUI>
                 {
                     new LabelSetUI { Id =  "lab", Class = "col s12", Label = "Detalhes do Extrato"}
-                        }
+                }
             });
             cfg.Content.Add(new DataTableUI
             {

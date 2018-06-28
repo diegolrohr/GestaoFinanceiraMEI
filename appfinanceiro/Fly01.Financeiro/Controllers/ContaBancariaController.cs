@@ -144,19 +144,24 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "checkCedente",
                 Class = "col s12 l10",
-                Label = "Informe o código do cedente",
+                Label = "Esta conta emite boletos",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
                 }
             });
-            config.Helpers.Add(new TooltipUI
+
+            config.Elements.Add(new StaticTextUI
             {
-                Id = "checkCedente",
-                Tooltip = new HelperUITooltip()
+                Id = "textInfoBoletos",
+                Class = "col s12",
+                Lines = new List<LineUI>
                 {
-                    Text = "Esta conta bancária emite boletos bancários? Marque para informar os dados referente a emissão de boletos.",
-                    Position = TooltopUIPosition.Left
+                    new LineUI()
+                    {
+                        Tag = "h6",
+                        Text = "Se esta conta emite boletos bacários é necessários prencher os dados abaixo.",
+                    }
                 }
             });
 
@@ -174,7 +179,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "taxaJuros",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a taxa de juros que será cobrado por dia após o vencimento do boleto, do contrario, será utilizado a taxa de juros padão de 0.33% ao dia.",
+                    Text = "Informe a taxa de juros que será cobrado por dia após o vencimento do boleto, caso contrario, será utilizado a taxa de juros padão de 0.33% ao dia.",
                     Position = TooltopUIPosition.Top
                 }
             });
@@ -190,7 +195,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "percentualMulta",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe o percentual da multa que será cobrado por atraso após o vencimento do boleto, do contrario, será utilizado o percentual padão de 2.00%.",
+                    Text = "Informe o percentual da multa que será cobrado por atraso após o vencimento do boleto, caso contrario, será utilizado o percentual padão de 2.00%.",
                     Position = TooltopUIPosition.Top
                 }
             });

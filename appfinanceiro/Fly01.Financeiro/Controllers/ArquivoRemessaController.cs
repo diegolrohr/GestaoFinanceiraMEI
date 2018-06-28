@@ -236,7 +236,7 @@ namespace Fly01.Financeiro.Controllers
                 Columns = new List<DataTableUIColumn>
                 {
                     new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"},
-                    new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso numero", Priority = 6 },
+                    new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nosso numero", Priority = 6 },
                     new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
                     new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
@@ -311,11 +311,15 @@ namespace Fly01.Financeiro.Controllers
                 data = response.Select(item => new
                 {
                     nossoNumero = item.NossoNumero,
+                    nossoNumeroFormatado = item.NossoNumeroFormatado,
                     pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
                     valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
                     dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
                     dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
-                    statusArquivoRemessa = item.Status
+                    statusArquivoRemessa = item.Status,
+                    statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), item.Status),
+                    statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), item.Status),
+                    statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), item.Status),
                 })
 
             }, JsonRequestBehavior.AllowGet);

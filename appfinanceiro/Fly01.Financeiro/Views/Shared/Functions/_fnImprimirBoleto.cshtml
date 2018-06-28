@@ -38,8 +38,11 @@
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
-                        win.print();
-                        win.close();
+
+                        setTimeout(function () {
+                            win.print();
+                            win.close();
+                        }, 10);
                     }
                 } else {
                     fly01.loading.stop();

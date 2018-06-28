@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Base;
 
 namespace Fly01.Financeiro.BL
 {
@@ -58,9 +57,10 @@ namespace Fly01.Financeiro.BL
 
             var juros = contaBancariaCedente.TaxaJuros ?? jurosDiaPadrao;
             var percentMulta = contaBancariaCedente.PercentualMulta ?? percentMultaPadrao;
+            var valorParcial = contaReceber.ValorPrevisto  - contaReceber.ValorPago ?? 0;
 
-            var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
-            var valorJuros = (decimal)(contaReceber.ValorPrevisto * (juros / 100));
+            var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
+            var valorJuros = (decimal)(valorParcial * (juros / 100));
             var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
             var dataCedente = GetDadosCedente(contaBancariaId);
@@ -171,8 +171,9 @@ namespace Fly01.Financeiro.BL
             var juros = contaBancaria.TaxaJuros ?? jurosDiaPadrao;
             var percentMulta = contaBancaria.PercentualMulta ?? percentMultaPadrao;
 
-            var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
-            var valorJuros = (decimal)(conta.ValorPrevisto * (juros / 100));
+            var valorParcial = conta.ValorPrevisto - conta.ValorPago ?? 0;
+            var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
+            var valorJuros = (decimal)(valorParcial * (juros / 100));
             var msgCaixa = new StringBuilder();
 
             if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
@@ -224,7 +225,7 @@ namespace Fly01.Financeiro.BL
             {
                 Boleto = proxy.boleto,
                 OcultarInstrucoes = false,
-                MostrarComprovanteEntrega = true,
+                MostrarComprovanteEntrega = false,
                 MostrarEnderecoCedente = true
             };
 

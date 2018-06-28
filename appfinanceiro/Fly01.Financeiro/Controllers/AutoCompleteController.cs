@@ -48,14 +48,14 @@ namespace Fly01.Financeiro.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult ContaBancaria(string term)
+        public JsonResult ContaBancariaBanco(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$expand", "banco($select=nome)");
-            queryString.AddParam("$filter", string.Format("contains(nomeConta, '{0}')", term));
-            queryString.AddParam("$select", "id, nomeConta");//ver para add info banco
+            queryString.AddParam("$expand", "banco($select=nome,codigo)");
+            queryString.AddParam("$filter", string.Format("contains(nomeConta, '{0}') or contains(conta, '{0}')", term));
+            queryString.AddParam("$select", "id, nomeConta, agencia, conta");
             queryString.AddParam("$orderby", "nomeConta");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
@@ -76,27 +76,6 @@ namespace Fly01.Financeiro.Controllers
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$expand", "banco($select=nome)");
             queryString.AddParam("$filter", $"contains(nomeConta, '{term}') and banco/emiteBoleto eq true");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
-                                select new
-                                {
-                                    id = item.Id,
-                                    label = item.NomeConta,
-                                    detail = $"Banco: {item.Banco.Nome} Agencia: {item.Agencia}-{item.DigitoAgencia} Conta: {item.Conta}-{item.DigitoConta}"
-                                };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult ContaBancariaBanco(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(ContaBancariaVM));
-
-            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", string.Format("contains(nomeConta, '{0}') or contains(conta, '{0}')", term));
-            queryString.AddParam("$select", "id, nomeConta, agencia, conta");
-            queryString.AddParam("$expand", "banco($select=nome,codigo)");
-            queryString.AddParam("$orderby", "nomeConta");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
                                 select new

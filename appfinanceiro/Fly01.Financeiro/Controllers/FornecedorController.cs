@@ -43,6 +43,13 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        protected override void NormarlizarEntidade(ref PessoaVM entityVM)
+        {
+            entityVM.Fornecedor = true;
+
+            base.NormarlizarEntidade(ref entityVM);
+        }
+
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
             return new List<InputCheckboxUI> {

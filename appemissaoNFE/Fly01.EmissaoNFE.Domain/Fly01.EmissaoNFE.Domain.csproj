@@ -44,6 +44,7 @@
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Autorizados.cs" />
     <Compile Include="Entities\NFe\DetalhePagamento.cs" />
+    <Compile Include="Entities\NFe\IBPT\IbptNcm.cs" />
     <Compile Include="Entities\NFe\NFReferenciada.cs" />
     <Compile Include="Entities\NFe\Pagamento.cs" />
     <Compile Include="Entities\NFe\Cobranca.cs" />

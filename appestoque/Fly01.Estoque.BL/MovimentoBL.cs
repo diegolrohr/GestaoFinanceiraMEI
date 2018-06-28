@@ -5,6 +5,8 @@ using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core;
+using Newtonsoft.Json;
 
 namespace Fly01.Estoque.BL
 {
@@ -99,9 +101,11 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
+        public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
         {
-            foreach (var item in ResolveTypeOfMessage(message))
+            var data = JsonConvert.SerializeObject(message);
+
+            foreach (var item in MessageType.Resolve<dynamic>(data))
                 Movimenta(item);
         }
 

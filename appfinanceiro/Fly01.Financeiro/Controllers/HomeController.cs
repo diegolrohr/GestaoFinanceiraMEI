@@ -10,6 +10,7 @@ using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -28,8 +29,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Fluxo de Caixa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
-                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa" }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
+                        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",

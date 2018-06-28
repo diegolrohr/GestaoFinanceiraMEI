@@ -77,12 +77,12 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new ButtonGroupUI
             {
                 Id = "selectAllBtnGrp",
-                Class = "col s12 m10",
+                Class = "col s12 m6 offset-m3",
                 OnClickFn = "fnSelectsAllClick",
                 Options = new List<ButtonGroupOptionUI>
                         {
-                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar página", Class = "col s6 m5 l4"},
-                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar página", Class = "col s6 m5 l4"},
+                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar página"},
+                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar página"},
                         }
             });
 

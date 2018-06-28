@@ -10,6 +10,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            CommandTimeout = 600; //10 minutes timeout
         }
 
         protected override void Seed(AppDataContext context)

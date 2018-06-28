@@ -81,12 +81,16 @@
 
         if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
-        $('#fly01btngrpFinalidade input:not(.active)').attr('disabled', 'disabled');
+
         $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         if ($('#tipoVenda').val() == "Devolucao") {
+            $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
             $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
+        }
+        else {
+            $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
         }
     }
 
@@ -212,6 +216,7 @@
         $("#chaveNFeReferenciadaField").hide();
 
         if (isCreate()) {
+            $('#btnNormal').click();
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
@@ -224,12 +229,10 @@
         else {
             //setar o agrupamento com a opção escolhida
             if ($('input#tipoVenda').val() == "Normal") {
-                $('input#btnNormal').addClass('active');
-                $('input#btnDevolucao').removeClass('active');
+                $('#btnNormal').click();
             }
             else {
-                $('input#btnNormal').removeClass('active');
-                $('input#btnDevolucao').addClass('active');
+                $('#btnDevolucao').click();
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }

@@ -1,0 +1,8 @@
+﻿<script>
+    function fnContaBancariaDrawCB(oSettings) {
+        this.hideEmptyColumns(this);
+        $(oSettings.nTableWrapper).find(".dataTables_paginate").hide();
+        $("div.tooltipped").tooltip();
+        $(`#${config.id}`).loading("stop");
+    };
+</script>

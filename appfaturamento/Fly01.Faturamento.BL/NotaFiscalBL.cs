@@ -223,12 +223,16 @@ namespace Fly01.Faturamento.BL
                     if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
                     {
                         var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        NFe.Mensagem = null;
+                        NFe.Recomendacao = null;
                         NFe.Status = StatusNotaFiscal.EmCancelamento;
                         NFeBL.Update(NFe);
                     }
                     else
                     {
                         var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        NFSe.Mensagem = null;
+                        NFSe.Recomendacao = null;
                         NFSe.Status = StatusNotaFiscal.EmCancelamento;
                         NFSeBL.Update(NFSe);
                     }
@@ -274,19 +278,19 @@ namespace Fly01.Faturamento.BL
                             EmpresaCodigoUF = 00,  
                         };
 
-                        RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
-                        if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
-                        {
-                            var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                            NFe.Status = StatusNotaFiscal.EmCancelamento;
-                            NFeBL.Update(NFe);
-                        }
-                        else
-                        {
-                            var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                            NFSe.Status = StatusNotaFiscal.EmCancelamento;
-                            NFSeBL.Update(NFSe);
-                        }
+                        //RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
+                        //if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
+                        //{
+                        //    var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        //    NFe.Status = StatusNotaFiscal.EmCancelamento;
+                        //    NFeBL.Update(NFe);
+                        //}
+                        //else
+                        //{
+                        //    var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        //    NFSe.Status = StatusNotaFiscal.EmCancelamento;
+                        //    NFSeBL.Update(NFSe);
+                        //}
                     }
                     catch (Exception ex)
                     {

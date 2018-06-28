@@ -62,7 +62,6 @@
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
-    <Compile Include="Controllers\Api\Producer.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController.cs" />
     <Compile Include="Controllers\Api\TipoModalidadeController.cs" />
     <Compile Include="Controllers\Api\TipoAmbienteController.cs" />

@@ -19,7 +19,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
         }
 
-        public virtual async Task<IHttpActionResult> Post(SerieNotaFiscal entity)
+        public override async Task<IHttpActionResult> Post(SerieNotaFiscal entity)
         {
             if (entity == null)
                 return BadRequest(ModelState);
@@ -28,14 +28,15 @@ namespace Fly01.Faturamento.API.Controllers.Api
             {
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    var previous = unitOfWork.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id != entity.Id &&
+                    var previous = unitOfWork.SerieNotaFiscalBL.All.Where(x => x.Id != entity.Id &&
                     x.Serie.ToUpper() == entity.Serie.ToUpper() &&
                     x.NumNotaFiscal == entity.NumNotaFiscal &&
                     (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) &&
-                    x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada).FirstOrDefault();
+                    x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Habilitada).FirstOrDefault();
 
                     if (previous != null)
                     {
+                        previous.NumNotaFiscal++;
                         unitOfWork.NotaFiscalBL.SerieNotaFiscalInutilizar(previous.Id);
                         await UnitSave();
                         return Ok();

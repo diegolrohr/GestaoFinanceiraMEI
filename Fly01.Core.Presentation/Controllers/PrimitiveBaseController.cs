@@ -12,35 +12,48 @@ namespace Fly01.Core.Presentation.Controllers
         private bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue)
             => SessionManager.Current.UserData.UserCanPerformOperation(resourceKey, permissionValue);
 
-        private AuthorizeUserAttribute GetOperationRoles(ActionDescriptor action)
+        private OperationRoleAttribute GetOperationRole(ActionDescriptor action)
         {
             var findAnnotationInherit = true;
 
             var annotationInAction = action.GetCustomAttributes(findAnnotationInherit)
-                .OfType<AuthorizeUserAttribute>()
+                .OfType<OperationRoleAttribute>()
                 .FirstOrDefault();
 
             var annotationInController = action.ControllerDescriptor.GetCustomAttributes(findAnnotationInherit)
-                .OfType<AuthorizeUserAttribute>()
+                .OfType<OperationRoleAttribute>()
                 .FirstOrDefault();
 
-            //var resourceKey = string.Empty;
-            //var permissionValue = EPermissionValue.Read;
+            var resourceKey = string.Empty;
+            var permissionValue = EPermissionValue.Read;
             
-            if (annotationInAction == null && annotationInController == null)
-                throw new Exception("annotationInAction == null and annotationInController == null");
-            //else
-            //{
+            if (annotationInAction != null && annotationInController != null)
+            {
+                if (annotationInController != null)
+                {
+                    resourceKey = annotationInController.ResourceKey;
+                    permissionValue = annotationInController.PermissionValue;
+                }
+                //else : Sem else para garantir que o 'annotationInAction' sobreescreva o comportamento do controller 
+                if (annotationInAction != null)
+                {
+                    resourceKey = !string.IsNullOrEmpty(annotationInAction.ResourceKey) ? annotationInAction.ResourceKey : resourceKey;
+                    permissionValue = annotationInAction.PermissionValue;
+                }
+            }                
+            else
+                throw new Exception("'annotationInAction' == null and 'annotationInController' == null in 'PrimitiveBaseController'");
+            
+            if(string.IsNullOrEmpty(resourceKey))
+                throw new Exception("Inválid 'resourceKey' in 'PrimitiveBaseController'");
 
-            //}
-            
-            return annotationInAction ?? annotationInController;
+            return new OperationRoleAttribute(resourceKey, permissionValue);
         }
 
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
-            var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            var actionName = filterContext.ActionDescriptor.ActionName;
+            //var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            //var actionName = filterContext.ActionDescriptor.ActionName;
 
             //base.OnAuthorization(filterContext);
 
@@ -48,7 +61,7 @@ namespace Fly01.Core.Presentation.Controllers
                 filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
                 filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
 
-            var operationRoles = GetOperationRoles(filterContext.ActionDescriptor);
+            var operationRoles = GetOperationRole(filterContext.ActionDescriptor);
 
             if (skipAuthorization || UserCanPerformOperation(operationRoles.ResourceKey, operationRoles.PermissionValue))
                 return;

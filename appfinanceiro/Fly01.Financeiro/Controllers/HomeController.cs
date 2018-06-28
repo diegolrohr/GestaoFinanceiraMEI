@@ -48,7 +48,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m8 offset-m2 printinfo",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardCabecalho",
                 Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
                               " | Endereço: " + response.Endereco + ", "+ response.Numero +
@@ -113,7 +113,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardSA",
                 Title = "Saldo atual",
                 Placeholder = "R$ 0,00",

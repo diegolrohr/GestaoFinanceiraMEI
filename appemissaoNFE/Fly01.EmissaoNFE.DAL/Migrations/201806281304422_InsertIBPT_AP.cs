@@ -7,7 +7,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
     {
         public override void Up()
         {
-            string diretorio = (AppDomain.CurrentDomain.BaseDirectory).Replace("Debug", "").Replace("bin", "");
+            string diretorio = (AppDomain.CurrentDomain.BaseDirectory).Replace("Debug", "").Replace("bin", "").Replace("API", "DAL");
 
             SqlFile(diretorio + @"Migrations\SQLScripts\Insert_IBPT_Amapa.sql");
         }

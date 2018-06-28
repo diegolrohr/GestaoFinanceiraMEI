@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Faturamento.BL
 {
@@ -18,18 +19,23 @@ namespace Fly01.Faturamento.BL
         public override void Insert(SerieNotaFiscal entity)
         {
             entity.StatusSerieNotaFiscal = StatusSerieNotaFiscal.Inutilizada;//Inutilizada
+
             base.Insert(entity);
         }
 
         public override void ValidaModel(SerieNotaFiscal entity)
         {
-            entity.Fail(All.Any(x => x.Serie.ToUpper() == entity.Serie.ToUpper() && (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) && x.NumNotaFiscal == entity.NumNotaFiscal && x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada), NumNotaFiscalRepetida);
-            //entity.Fail(NotaFiscalBL.All.Any(x => x.NumNotaFiscal == entity.NumNotaFiscal), NumNotaFiscalEmitida);
+            entity.Fail(All.Any(x => 
+                x.Id != entity.Id &&
+                x.Serie.ToUpper() == entity.Serie.ToUpper() &&
+                x.NumNotaFiscal == entity.NumNotaFiscal &&
+                (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) &&
+                x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada
+            ), NumNotaFiscalRepetida);
 
             base.ValidaModel(entity);
         }
 
         public static Error NumNotaFiscalRepetida = new Error("Nota Fiscal já inutilizada.", "numNotaFiscal");
-        //public static Error NumNotaFiscalEmitida = new Error("Nota Fiscal já emitida, não é possível inutilizar.", "numNotaFiscal");
     }
 }

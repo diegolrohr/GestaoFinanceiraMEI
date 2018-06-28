@@ -20,13 +20,15 @@ namespace Fly01.Faturamento.BL
         protected NFSeBL NFSeBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
+        protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
 
-        public NotaFiscalBL(AppDataContext context, NFeBL nfeBL, NFSeBL nfseBL, CertificadoDigitalBL certificadoDigitalBL, TotalTributacaoBL totalTributacaoBL) : base(context)
+        public NotaFiscalBL(AppDataContext context, NFeBL nfeBL, NFSeBL nfseBL, CertificadoDigitalBL certificadoDigitalBL, TotalTributacaoBL totalTributacaoBL, SerieNotaFiscalBL serieNotaFiscalBL) : base(context)
         {
             NFeBL = nfeBL;
             NFSeBL = nfseBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             TotalTributacaoBL = totalTributacaoBL;
+            SerieNotaFiscalBL = serieNotaFiscalBL;
         }
 
         public IQueryable<NotaFiscal> Everything => repository.All.Where(x => x.Ativo);
@@ -235,6 +237,66 @@ namespace Fly01.Faturamento.BL
                 {
                     throw new BusinessException("Erro ao cancelar a nota fiscal: " + ex.Message);
                 }
+            }
+        }
+
+        public void SerieNotaFiscalInutilizar(Guid id)
+        {
+            //fazer validações aqui, por causa da referência circular
+            var serieNotaFiscal = SerieNotaFiscalBL.All.Where(x => x.Id == id).FirstOrDefault();
+            if (serieNotaFiscal != null)
+            {
+                if (!TotalTributacaoBL.ConfiguracaoTSSOK())
+                {
+                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                }
+                else
+                {
+                    try
+                    {
+                        var header = new Dictionary<string, string>()
+                    {
+                        { "AppUser", AppUser },
+                        { "PlataformaUrl", PlataformaUrl }
+                    };
+
+                        var entidade = CertificadoDigitalBL.GetEntidade();
+
+                        var cancelar = new InutilizarNFVM()
+                        {
+                            Homologacao = entidade.Homologacao,
+                            Producao = entidade.Producao,
+                            EntidadeAmbiente = entidade.EntidadeAmbiente,
+                            Serie = int.Parse(serieNotaFiscal.Serie),
+                            Numero = serieNotaFiscal.NumNotaFiscal,
+                            EmpresaCnpj = "",
+                            ModeloDocumentoFiscal = 55,
+                            EmpresaCodigoUF = 00,  
+                        };
+
+                        RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
+                        if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
+                        {
+                            var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                            NFe.Status = StatusNotaFiscal.EmCancelamento;
+                            NFeBL.Update(NFe);
+                        }
+                        else
+                        {
+                            var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                            NFSe.Status = StatusNotaFiscal.EmCancelamento;
+                            NFSeBL.Update(NFSe);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new BusinessException("Erro ao cancelar a nota fiscal: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                throw new BusinessException("Série da nota fiscal inexistente ou excluída");
             }
         }
     }

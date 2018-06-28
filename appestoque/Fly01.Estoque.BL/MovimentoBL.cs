@@ -5,6 +5,8 @@ using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core;
+using Newtonsoft.Json;
 
 namespace Fly01.Estoque.BL
 {
@@ -99,11 +101,13 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        //public override void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
-        //{
-        //    foreach (var item in ResolveTypeOfMessage(message))
-        //        Movimenta(item);
-        //}
+        public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
+        {
+            var data = JsonConvert.SerializeObject(message);
+
+            foreach (var item in MessageType.Resolve<dynamic>(data))
+                Movimenta(item);
+        }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
         public static Error ProdutoNaoInformado = new Error("O produto não foi informado ou o Id é inválido.", "produtoId");

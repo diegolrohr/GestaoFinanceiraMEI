@@ -2,10 +2,7 @@
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -13,7 +10,7 @@ namespace Fly01.Core.BL
 {
     public class PlataformaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : PlataformaBase
     {
-        private static readonly string[] _exceptions = new [] { "DataInclusao", "UsuarioInclusao" };
+        private static readonly string[] _exceptions = new[] { "DataInclusao", "UsuarioInclusao" };
         private Expression<Func<TEntity, bool>> PredicatePlatform { get; set; }
         private string _plataformaUrl;
         public string PlataformaUrl
@@ -128,42 +125,29 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
+        public virtual void PersistMessage(TEntity item, RabbitConfig.EnHttpVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
 
-            foreach (var item in ResolveTypeOfMessage(message))
+            switch (httpMethod)
             {
-                switch (httpMethod)
-                {
-                    case RabbitConfig.EnHttpVerb.POST:
-                        Insert(item);
-                        break;
-                    case RabbitConfig.EnHttpVerb.PUT:
-                        Update(item);
-                        AttachForUpdate(item);
-                        break;
-                    case RabbitConfig.EnHttpVerb.DELETE:
-                        var itemToDelete = Find(item.Id);
-                        if(itemToDelete != null)
-                        {
-                            Delete(itemToDelete);
-                            AttachForUpdate(itemToDelete);
-                        }
-                        break;
-                }
+                case RabbitConfig.EnHttpVerb.POST:
+                    Insert(item);
+                    break;
+                case RabbitConfig.EnHttpVerb.PUT:
+                    Update(item);
+                    AttachForUpdate(item);
+                    break;
+                case RabbitConfig.EnHttpVerb.DELETE:
+                    var itemToDelete = Find(item.Id);
+                    if (itemToDelete != null)
+                    {
+                        Delete(itemToDelete);
+                        AttachForUpdate(itemToDelete);
+                    }
+                    break;
             }
-        }
-
-        protected List<TEntity> ResolveTypeOfMessage(string message)
-        {
-            var verifyModelType = JsonConvert.DeserializeObject<dynamic>(message);
-
-            if (verifyModelType.Type == JTokenType.Array)
-                return JsonConvert.DeserializeObject<List<TEntity>>(message);
-
-            return new List<TEntity>() { JsonConvert.DeserializeObject<TEntity>(message) };
         }
 
         public virtual void AfterSave(TEntity entity)

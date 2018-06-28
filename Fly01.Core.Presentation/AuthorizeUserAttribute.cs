@@ -3,7 +3,7 @@ using System;
 
 namespace Fly01.Core.Presentation
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class AuthorizeUserAttribute : Attribute
     {
         public string ResourceKey { get; set; }

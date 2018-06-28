@@ -1,5 +1,7 @@
 ﻿using Fly01.Core.Config;
 using Fly01.Core.ViewModels;
+using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -7,30 +9,52 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public abstract class PrimitiveBaseController : Controller
     {
-        public string ResourceHashPermissao { get; set; }
-
         private bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue)
             => SessionManager.Current.UserData.UserCanPerformOperation(resourceKey, permissionValue);
 
-        //protected override void OnAuthorization(AuthorizationContext filterContext)
-        //{
-        //    var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-        //    var actionName = filterContext.ActionDescriptor.ActionName;
+        private AuthorizeUserAttribute GetOperationRoles(ActionDescriptor action)
+        {
+            var findAnnotationInherit = true;
 
-        //    //base.OnAuthorization(filterContext);
+            var annotationInAction = action.GetCustomAttributes(findAnnotationInherit)
+                .OfType<AuthorizeUserAttribute>()
+                .FirstOrDefault();
 
-        //    bool skipAuthorization =
-        //        filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
-        //        filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+            var annotationInController = action.ControllerDescriptor.GetCustomAttributes(findAnnotationInherit)
+                .OfType<AuthorizeUserAttribute>()
+                .FirstOrDefault();
 
-        //    var resourceKey = ResourceHashPermissao;
-        //    var permissionValue = EPermissionValue.Read;
+            //var resourceKey = string.Empty;
+            //var permissionValue = EPermissionValue.Read;
+            
+            if (annotationInAction == null && annotationInController == null)
+                throw new Exception("annotationInAction == null and annotationInController == null");
+            //else
+            //{
 
-        //    if (skipAuthorization || string.IsNullOrWhiteSpace(resourceKey) || UserCanPerformOperation(resourceKey, permissionValue))
-        //        return;
-        //    else
-        //        HandleUnauthorizedRequest(filterContext);
-        //}
+            //}
+            
+            return annotationInAction ?? annotationInController;
+        }
+
+        protected override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            var actionName = filterContext.ActionDescriptor.ActionName;
+
+            //base.OnAuthorization(filterContext);
+
+            bool skipAuthorization =
+                filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
+                filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+
+            var operationRoles = GetOperationRoles(filterContext.ActionDescriptor);
+
+            if (skipAuthorization || UserCanPerformOperation(operationRoles.ResourceKey, operationRoles.PermissionValue))
+                return;
+            else
+                HandleUnauthorizedRequest(filterContext);
+        }
 
         //protected override void OnAuthorization(AuthorizationContext filterContext)
         //{

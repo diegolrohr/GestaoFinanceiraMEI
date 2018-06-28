@@ -42,6 +42,13 @@ namespace Fly01.Compras.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        protected override void NormarlizarEntidade(ref PessoaVM entityVM)
+        {
+            entityVM.Fornecedor = true;
+
+            base.NormarlizarEntidade(ref entityVM);
+        }
+
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
             return new List<InputCheckboxUI> {

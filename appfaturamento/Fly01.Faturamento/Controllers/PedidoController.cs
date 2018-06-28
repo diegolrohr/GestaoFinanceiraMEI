@@ -148,8 +148,8 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo do pedido",
                 Options = new List<ButtonGroupOptionUI>
                 {
-                    new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal", Class = "col s6 btn-secondary active" },
-                    new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução", Class = "col s6 btn-secondary" },
+                    new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
+                    new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
                 }
             });
             config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });

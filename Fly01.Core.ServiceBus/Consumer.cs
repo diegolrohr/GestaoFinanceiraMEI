@@ -5,6 +5,7 @@ using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
 using Fly01.Core.Mensageria;
 using System.Collections.Generic;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -16,6 +17,7 @@ namespace Fly01.Core.ServiceBus
         protected string Message;
         protected RabbitConfig.EnHttpVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
+        protected List<KeyValuePair<string, object>> exceptions;
         protected abstract Task PersistMessage();
 
         private IConnection Connection
@@ -61,36 +63,34 @@ namespace Fly01.Core.ServiceBus
             {
                 if (args.BasicProperties.AppId != RabbitConfig.AppId)
                 {
-                    try
+                    if (args.BasicProperties.Headers == null)
+                        throw new ArgumentException(MsgHeaderInvalid);
+
+                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                    if (!HeaderIsValid())
+                        throw new ArgumentException(MsgHeaderInvalid);
+
+                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                     {
-                        if (args.BasicProperties.Headers == null)
-                            throw new ArgumentException(MsgHeaderInvalid);
+                        Message = Encoding.UTF8.GetString(args.Body);
+                        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
 
-                        Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-                        if (!HeaderIsValid())
-                            throw new ArgumentException(MsgHeaderInvalid);
+                        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
+                        RabbitConfig.AppUser = GetHeaderValue("AppUser");
+                        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                        if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
-                        {
-                            Message = Encoding.UTF8.GetString(args.Body);
-                            HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
-
-                            RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-                            RabbitConfig.AppUser = GetHeaderValue("AppUser");
-                            RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
-
-                            await PersistMessage();
-                        }
+                        await PersistMessage();
                     }
-                    catch (Exception ex)
+
+                    foreach (var item in exceptions)
                     {
-                        SlackClient.PostErrorRabbitMQ(Message, ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                        var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+
+                        SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
                         Channel.BasicNack(args.DeliveryTag, false, true);
                     }
-                    finally
-                    {
-                        Channel.BasicAck(args.DeliveryTag, false);
-                    }
+
+                    Channel.BasicAck(args.DeliveryTag, false);
                 }
             };
 

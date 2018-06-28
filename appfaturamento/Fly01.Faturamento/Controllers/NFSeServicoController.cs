@@ -1,9 +1,9 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -28,15 +28,9 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public JsonResult GetNFSeServicos(string id)
         {

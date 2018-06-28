@@ -12,7 +12,7 @@ namespace Fly01.EmissaoNFE.API.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,7 +26,7 @@ namespace Fly01.EmissaoNFE.API.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://POAD040100155:8080/SPEDADM.apw")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/SPEDADM.apw")]
         public string Fly01_EmissaoNFE_API_SPEDADM_SPEDADM {
             get {
                 return ((string)(this["Fly01_EmissaoNFE_API_SPEDADM_SPEDADM"]));
@@ -36,7 +36,7 @@ namespace Fly01.EmissaoNFE.API.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://POAD040100155:8080/SPEDCFGNFE.apw")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/SPEDCFGNFE.apw")]
         public string Fly01_EmissaoNFE_API_SPEDCFGNFE_SPEDCFGNFE {
             get {
                 return ((string)(this["Fly01_EmissaoNFE_API_SPEDCFGNFE_SPEDCFGNFE"]));
@@ -46,7 +46,7 @@ namespace Fly01.EmissaoNFE.API.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://poad040100155:8080/NFESBRA.apw")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/NFESBRA.apw")]
         public string Fly01_EmissaoNFE_API_NFESBRA_NFESBRA {
             get {
                 return ((string)(this["Fly01_EmissaoNFE_API_NFESBRA_NFESBRA"]));
@@ -56,17 +56,7 @@ namespace Fly01.EmissaoNFE.API.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/NFESBRA.apw")]
-        public string Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA {
-            get {
-                return ((string)(this["Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/SPEDADM.apw")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://tss5-cloud.totvs.com.br/nfe/SPEDADM.apw")]
         public string Fly01_EmissaoNFE_API_SPEDADMProd_SPEDADM {
             get {
                 return ((string)(this["Fly01_EmissaoNFE_API_SPEDADMProd_SPEDADM"]));
@@ -76,10 +66,20 @@ namespace Fly01.EmissaoNFE.API.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/SPEDCFGNFE.apw")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://tss5-cloud.totvs.com.br/nfe/SPEDCFGNFE.apw")]
         public string Fly01_EmissaoNFE_API_SPEDCFGNFEProd_SPEDCFGNFE {
             get {
                 return ((string)(this["Fly01_EmissaoNFE_API_SPEDCFGNFEProd_SPEDCFGNFE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://tss5-cloud.totvs.com.br/nfe/NFESBRA.apw")]
+        public string Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA {
+            get {
+                return ((string)(this["Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA"]));
             }
         }
     }

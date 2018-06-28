@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -13,6 +12,8 @@ using System.Linq;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -35,10 +36,8 @@ namespace Fly01.Faturamento.Controllers
             return response.Data.FirstOrDefault();
         }
 
-
         public JsonResult CarregaParametro()
         {
-
             var parametroTributario = GetParametro();
 
             if (parametroTributario == null)
@@ -78,15 +77,9 @@ namespace Fly01.Faturamento.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public override Func<ParametroTributarioVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<ParametroTributarioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() { return Form(); }
 
         public override ContentResult Form()
         {
@@ -115,7 +108,7 @@ namespace Fly01.Faturamento.Controllers
                     List = Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="                
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -194,7 +187,7 @@ namespace Fly01.Faturamento.Controllers
             //    MaxLength = 20,
             //    Data = new { inputmask = "'regex': '[0-9]*'" }
             //});
-            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF"});
+            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF" });
 
             form3.Elements.Add(new SelectUI
             {
@@ -244,7 +237,7 @@ namespace Fly01.Faturamento.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 1000 });
 
             #region NFS
             ////Paramentro NFS
@@ -318,6 +311,17 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
+
+            #region Helpers 
+            form3.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe | entre as palavras, para exibir quebra de linha(enter) na impressão da DANFE. Exemplo: TextoLinha1 | TextoLinha2 | TextoLinha3."
+                }
+            });
+            #endregion
             cfg.Content.Add(form3);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
@@ -357,9 +361,9 @@ namespace Fly01.Faturamento.Controllers
                 var existeParametro = GetParametro();
 
                 if (existeParametro == null)
-                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro,JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
                 else
-                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro,JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
 
                 return Json(new
                 {
@@ -367,10 +371,8 @@ namespace Fly01.Faturamento.Controllers
                     data = parametroRetorno,
                     recordsFiltered = 1,
                     recordsTotal = 1
-                },JsonRequestBehavior.AllowGet);
-
+                }, JsonRequestBehavior.AllowGet);
             }
-
             catch (Exception ex)
             {
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);

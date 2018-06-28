@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -41,7 +43,9 @@ namespace Fly01.Financeiro.Controllers
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
-                registroFixo = x.RegistroFixo
+                registroFixo = x.RegistroFixo,
+                codigoCedente = x.CodigoCedente,
+                codigoDV = x.CodigoDV
             };
         }
 
@@ -89,8 +93,9 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Dados da conta bancária",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns="
@@ -103,7 +108,8 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
                 },
                 UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=",
                 ReadyFn = "fnFormReady",
@@ -131,7 +137,30 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-            
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "checkCedente",
+                Class = "col s12 l10",
+                Label = "Informe o código do cedente",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "checkCedente",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Esta conta bancária emite boletos bancários? Marque para informar o código do cedente para este banco.",
+                    Position = TooltopUIPosition.Top
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s6 m6 l6", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col s6 m6 l6", Label = "CódigoDV", Required = false, MaxLength = 150 });
+
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

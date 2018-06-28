@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -10,6 +9,8 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -21,7 +22,6 @@ namespace Fly01.Faturamento.Controllers
         public ServicoController()
         {
             ExpandProperties = "nbs($select=id,descricao)";
-            //SelectProperties = "id,codigoServico,descricao,tipoServico";
             SelectProperties = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
@@ -30,9 +30,6 @@ namespace Fly01.Faturamento.Controllers
                 codigoServico = x.CodigoServico,
                 descricao = x.Descricao,
                 registroFixo = x.RegistroFixo
-                //tipoServico = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).Value,
-                //tipoServicoCSS = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).CssClass,
-                //tipoServicoDescricao = EnumHelper.SubtitleDataAnotation("TipoServico", x.TipoServico).Description
             };
         }
 
@@ -72,14 +69,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoServico", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoServico",
-            //    DisplayName = "Tipo",
-            //    Priority = 4,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoServico", true, false)),
-            //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoServicoCSS + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoServicoDescricao + \"</span>\" }"
-            //});
 
             cfg.Content.Add(config);
 
@@ -100,8 +89,9 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Dados do Serviço",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -114,7 +104,8 @@ namespace Fly01.Faturamento.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -124,10 +115,6 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "codigoServico", Class = "col l3 m3 s12", Label = "Código", Required = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
 
-            //config.Elements.Add(new SelectUI { Id = "tipoServico", Class = "col l3 m3 s12", Label = "Tipo",Required = true)
-            //{
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoServico", true, false))
-            //});
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "nbsId",

@@ -260,6 +260,22 @@
     <Compile Include="Migrations\201805302147197_AlterParametroTributarioTipoHorario.Designer.cs">
       <DependentUpon>201805302147197_AlterParametroTributarioTipoHorario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806061249585_AlterPessoaAlterObservacaoMaxLength500.cs" />
+    <Compile Include="Migrations\201806061249585_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
+      <DependentUpon>201806061249585_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs" />
+    <Compile Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.Designer.cs">
+      <DependentUpon>201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806181736415_AlterPessoa_TamanhoString.cs" />
+    <Compile Include="Migrations\201806181736415_AlterPessoa_TamanhoString.Designer.cs">
+      <DependentUpon>201806181736415_AlterPessoa_TamanhoString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806251331308_AlterPessoaDadosEndereco.cs" />
+    <Compile Include="Migrations\201806251331308_AlterPessoaDadosEndereco.Designer.cs">
+      <DependentUpon>201806251331308_AlterPessoaDadosEndereco.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -448,6 +464,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805302147197_AlterParametroTributarioTipoHorario.resx">
       <DependentUpon>201805302147197_AlterParametroTributarioTipoHorario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806061249585_AlterPessoaAlterObservacaoMaxLength500.resx">
+      <DependentUpon>201806061249585_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806111924284_AlterParametroTributarioNotaFiscalDevolucao.resx">
+      <DependentUpon>201806111924284_AlterParametroTributarioNotaFiscalDevolucao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806181736415_AlterPessoa_TamanhoString.resx">
+      <DependentUpon>201806181736415_AlterPessoa_TamanhoString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806251331308_AlterPessoaDadosEndereco.resx">
+      <DependentUpon>201806251331308_AlterPessoaDadosEndereco.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

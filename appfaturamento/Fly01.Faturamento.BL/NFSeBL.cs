@@ -32,6 +32,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
+            entity.Fail((entity.Status == StatusNotaFiscal.Transmitida && (!entity.SerieNotaFiscalId.HasValue || !entity.NumNotaFiscal.HasValue)), new Error("Para transmitir, informe série e número da nota fiscal"));
 
             var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
             if (entity.SerieNotaFiscalId.HasValue)
@@ -116,7 +117,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId, double? valorFreteCIF = 0)
+        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId)
         {
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
@@ -127,7 +128,7 @@ namespace Fly01.Faturamento.BL
             var result = new TotalNotaFiscal()
             {
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
-                ValorFreteCIF = 0,
+                ValorFrete = 0,
                 TotalImpostosServicos = Math.Round(totalImpostosServicos, 2, MidpointRounding.AwayFromZero),
             };
 

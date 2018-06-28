@@ -7,7 +7,10 @@ namespace Fly01.Faturamento.BL
 {
     public class GrupoTributarioBL : PlataformaBaseBL<GrupoTributario>
     {
-        public GrupoTributarioBL(AppDataContextBase context) : base(context) { }
+        public GrupoTributarioBL(AppDataContextBase context) : base(context)
+        {
+            MustConsumeMessageServiceBus = true;
+        }
 
         public override void ValidaModel(GrupoTributario entity)
         {

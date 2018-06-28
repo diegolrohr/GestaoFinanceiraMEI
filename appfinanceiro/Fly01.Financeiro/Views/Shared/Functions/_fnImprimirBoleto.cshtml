@@ -1,0 +1,53 @@
+﻿<script>
+    function fnImprimirBoleto(contaReceberId, contaBancariaId, that) {
+        debugger;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("ValidaBoletoJaGeradoParaOutroBanco", "Cnab")',
+            contentType: "application/json",
+            data: { contaReceberId: contaReceberId, contaBancariaId: contaBancariaId},
+            success: function success(result) {
+                if (result.success) {
+                    if (result.data != null)
+                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + contaReceberId + "', '" + contaBancariaId + "')");
+                    else
+                        fnSaveCnab(contaReceberId, contaBancariaId, true);
+                }
+                else
+                    fnSaveCnab(contaReceberId, contaBancariaId, false);
+                that.loading("stop");
+            },
+        });
+    }
+
+    function fnConfirmedOrCancel(idRecord, contaBancariaId) {
+        reemprime = true;
+        fnSaveCnab(idRecord, contaBancariaId, reemprime);
+    }
+
+    function fnSaveCnab(idRecord, contaBancariaId, reemprime) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("ImprimeBoleto", "Cnab")',
+            contentType: "application/json",
+            data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reemprime},
+            success: function success(data) {
+                if (data.success) {
+                    fly01.toast("Boleto emitido com sucesso.", "success");
+                    if (data.message !== "" && data.message !== undefined) {
+                        var win = window.open("", "_blank");
+                        win.document.write(data.message);
+                        win.print();
+                        win.close();
+                    }
+                } else {
+                    fly01.loading.stop();
+                    fly01.toast(data.message, "error");
+                }
+                fly01.loading.stop();
+            },
+        });
+    }
+</script>

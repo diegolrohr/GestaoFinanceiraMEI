@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core.Notifications;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class AvaliacaoApp : PlataformaBase
+    public class AvaliacaoApp : RecordBaseMongoDB
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }

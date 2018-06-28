@@ -15,6 +15,12 @@
     }
 
     function fnFormReady() {
-
+        if ($('#codigoCedente').val() == "" && $('#codigoDV').val() == "")
+        {
+            $('#codigoCedenteField').hide();
+            $('#codigoDVField').hide();
+        }
+        else
+            $('#checkCedente').prop('checked', true);
     }
 </script>

@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
+﻿using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -18,6 +17,8 @@ using Fly01.Core.Config;
 using Fly01.Compras.Models.Reports;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
@@ -133,7 +134,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Home")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -200,7 +201,7 @@ namespace Fly01.Compras.Controllers
             {
                 Id = "geraFinanceiro",
                 Class = "col s12 m3",
-                Label = "Gera financeiro",
+                Label = "Gerar financeiro",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
@@ -298,9 +299,44 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalPedido", Class = "col s12 m4", Label = "Total pedido(produtos + frete)", Readonly = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimenta estoque" });
-            config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e já finalizar" });
+            config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
+            config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
 
+            #endregion
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "movimentaEstoque",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de entrada da quantidade total dos produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "finalizarPedido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Salvar e Finalizar, serão efetivadas as opções marcadas (Gerar financeiro, Movimentar estoque). Não será mais possível editar ou excluir este pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "transportadoraId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa(FOB/Destinatário)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "geraFinanceiro",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

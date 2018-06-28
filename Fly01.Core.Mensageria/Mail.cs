@@ -13,14 +13,15 @@ namespace Fly01.Core.Mensageria
         {
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);
-            var message = new MailMessage(from, to);
-
-            message.Subject = tituloEmail;
-            message.Body = corpoEmail;
-            message.IsBodyHtml = true;
+            var message = new MailMessage(from, to)
+            {
+                Subject = tituloEmail,
+                Body = corpoEmail,
+                IsBodyHtml = true
+            };
 
             if (anexo.Length > 0)
-                message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}.pdf"));
+                message.Attachments.Add(new Attachment(anexo, $"{tituloEmail}.pdf", System.Net.Mime.MediaTypeNames.Application.Pdf));
 
             try
             {

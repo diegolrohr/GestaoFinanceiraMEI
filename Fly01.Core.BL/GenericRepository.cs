@@ -24,7 +24,7 @@ namespace Fly01.Core.BL
         {
             get
             {
-                return dbSet;
+                return dbSet.Where(x => x.Ativo);
             }
         }
 

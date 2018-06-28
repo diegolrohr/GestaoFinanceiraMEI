@@ -1,16 +1,15 @@
-﻿using Fly01.Core.Helpers.Attribute;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Core.Helpers
 {
     public static class EnumHelper
     {
-        public static APIEnumData SubtitleDataAnotation(Type enumType, string itemValue)
+        private static APIEnumData SubtitleDataAnotation(Type enumType, string itemValue)
         {
-            var items = GetDataEnumValues(enumType).Select(x => new APIEnumData() {Key = x.Key, Value = x.Value, CssClass = x.CssClass, Description = x.Description });
+            var items = GetDataEnumValues(enumType).Select(x => new APIEnumData() { Key = x.Key, Value = x.Value, CssClass = x.CssClass, Description = x.Description, TooltipHint = x.TooltipHint });
 
             return items.SingleOrDefault(x => x.Key.Equals(itemValue, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -35,13 +34,11 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetTitle(this Enum value)
+        public static string GetValue(Type enumType, string value)
         {
             try
             {
-                var result = SubtitleDataAnotation(value);
-
-                return result.Description;
+                return SubtitleDataAnotation(enumType, value)?.Value;
             }
             catch (Exception)
             {
@@ -49,13 +46,11 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetCSS(this Enum value)
+        public static string GetDescription(Type enumType, string value)
         {
             try
             {
-                var result = SubtitleDataAnotation(value);
-
-                return result.CssClass;
+                return SubtitleDataAnotation(enumType, value)?.Description;
             }
             catch (Exception)
             {
@@ -63,13 +58,13 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static string GetDescription(this Enum value)
+        public static string GetTooltipHint(Type enumType, string value)
         {
             try
             {
-                var result = SubtitleDataAnotation(value);
+                var dataValue = SubtitleDataAnotation(enumType, value);
 
-                return result.Value == "" ? result.Description : result.Value;
+                return dataValue.TooltipHint != "" ? dataValue.TooltipHint : dataValue.Value;
             }
             catch (Exception)
             {
@@ -77,28 +72,16 @@ namespace Fly01.Core.Helpers
             }
         }
 
-        public static T ToEnum<T>(this string value)
+        public static string GetCSS(Type enumType, string value)
         {
-            return (T)Enum.Parse(typeof(T), value, true);
-        }
-
-        public static Dictionary<object, object> GetDescriptionEnumValues(Type enumeratorType)
-        {
-            var enumValues = new Dictionary<object, object>();
-
-            for (int i = 0; i < Enum.GetValues(enumeratorType).Length; i++)
+            try
             {
-                var name = Enum.GetName(enumeratorType, Enum.GetValues(enumeratorType).GetValue(i));
-
-                var val = enumeratorType.GetField(name)
-                        .GetCustomAttributes(false)
-                        .OfType<DescriptionAttribute>()
-                        .SingleOrDefault();
-
-                enumValues.Add(name, val.Description);
+                return SubtitleDataAnotation(enumType, value)?.CssClass;
             }
-
-            return enumValues;
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
         public static List<SubtitleAttribute> GetDataEnumValues(Type enumType)

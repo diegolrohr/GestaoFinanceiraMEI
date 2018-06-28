@@ -8,6 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Fly01.Core.Notifications;
+using System.Configuration;
 
 namespace Fly01.Core.BL
 {
@@ -51,7 +52,7 @@ namespace Fly01.Core.BL
             Configuration.ProxyCreationEnabled = false;
         }
 
-        public LogEvent GetAuditRecordsForChange(DbEntityEntry dbEntry)
+        public LogRecordEvent GetAuditRecordsForChange(DbEntityEntry dbEntry)
         {
             TableAttribute tableAttr = dbEntry.Entity.GetType().GetCustomAttributes(typeof(TableAttribute), true).SingleOrDefault() as TableAttribute;
             string tableName = tableAttr != null ? tableAttr.Name : dbEntry.Entity.GetType().Name;
@@ -59,7 +60,7 @@ namespace Fly01.Core.BL
             var keyNames = dbEntry.Entity.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(KeyAttribute), false).Count() > 0).ToList();
             string keyName = keyNames[0].Name;
 
-            LogEvent result = new LogEvent() { PlatformId = PlataformaUrl, Username = AppUser, TableName = tableName, RecordId = dbEntry.CurrentValues.GetValue<object>(keyName).ToString() };
+            LogRecordEvent result = new LogRecordEvent() { PlatformId = PlataformaUrl, Username = AppUser, TableName = tableName, RecordId = dbEntry.CurrentValues.GetValue<object>(keyName).ToString() };
             switch (dbEntry.State)
             {
                 case EntityState.Added:
@@ -118,7 +119,7 @@ namespace Fly01.Core.BL
 
         public async new Task<int> SaveChanges()
         {
-            var logDocuments = new List<LogEvent>();
+            var logDocuments = new List<LogRecordEvent>();
             foreach (var ent in ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Modified))
                 logDocuments.Add(GetAuditRecordsForChange(ent));
 
@@ -127,8 +128,8 @@ namespace Fly01.Core.BL
             {
                 await Task.Factory.StartNew(async () =>
                 {
-                    var mongoHelper = new LogMongoHelper<LogEvent>();
-                    var collection = mongoHelper.GetCollection();
+                    var mongoHelper = new LogMongoHelper<LogRecordEvent>(ConfigurationManager.AppSettings["MongoDBLog"]);
+                    var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameLog"]);
 
                     if (logDocuments.Count > 0)
                         await collection.InsertManyAsync(logDocuments);

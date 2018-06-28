@@ -11,11 +11,14 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int Numero { get; set; }
 
+        [StringLength(44)]
+        public string ChaveNFeReferenciada { get; set; }
+
         [Required]
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoFinalidadeEmissaoNFe TipoVenda { get; set; }
 
         [Required]
         public StatusOrdemVenda Status { get; set; }

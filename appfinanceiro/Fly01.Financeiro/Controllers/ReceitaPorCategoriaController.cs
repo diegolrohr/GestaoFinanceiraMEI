@@ -1,5 +1,4 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.ViewModel;
+﻿using Fly01.Financeiro.ViewModel;
 using Fly01.Core;
 using Fly01.Core.Helpers;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -62,14 +62,8 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
     }
 }

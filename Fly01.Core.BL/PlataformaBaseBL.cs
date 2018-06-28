@@ -13,6 +13,7 @@ namespace Fly01.Core.BL
 {
     public class PlataformaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : PlataformaBase
     {
+        private static readonly string[] _exceptions = new [] { "DataInclusao", "UsuarioInclusao" };
         private Expression<Func<TEntity, bool>> PredicatePlatform { get; set; }
         private string _plataformaUrl;
         public string PlataformaUrl
@@ -31,6 +32,7 @@ namespace Fly01.Core.BL
         }
 
         private string _appUser;
+
         public string AppUser
         {
             get
@@ -100,7 +102,7 @@ namespace Fly01.Core.BL
 
             if (objectDB == null) return;
 
-            entity.CopyProperties<TEntity>(objectDB);
+            entity.CopyProperties<TEntity>(objectDB, _exceptions);
         }
 
         public virtual new void Delete(TEntity entityToDelete)
@@ -126,7 +128,7 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(string message, RabbitConfig.enHTTPVerb httpMethod)
+        public virtual void PersistMessage(string message, RabbitConfig.EnHttpVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
@@ -135,16 +137,20 @@ namespace Fly01.Core.BL
             {
                 switch (httpMethod)
                 {
-                    case RabbitConfig.enHTTPVerb.POST:
+                    case RabbitConfig.EnHttpVerb.POST:
                         Insert(item);
                         break;
-                    case RabbitConfig.enHTTPVerb.PUT:
+                    case RabbitConfig.EnHttpVerb.PUT:
                         Update(item);
                         AttachForUpdate(item);
                         break;
-                    case RabbitConfig.enHTTPVerb.DELETE:
-                        Delete(item);
-                        AttachForUpdate(item);
+                    case RabbitConfig.EnHttpVerb.DELETE:
+                        var itemToDelete = Find(item.Id);
+                        if(itemToDelete != null)
+                        {
+                            Delete(itemToDelete);
+                            AttachForUpdate(itemToDelete);
+                        }
                         break;
                 }
             }

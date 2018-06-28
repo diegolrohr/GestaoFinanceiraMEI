@@ -110,7 +110,7 @@ namespace Fly01.Faturamento.BL
         public override void AfterSave(Arquivo entity)
         {
             foreach (var item in insertedPessoas)
-                Producer<Pessoa>.Send(routingKeyPessoa, AppUser, PlataformaUrl, item, RabbitConfig.enHTTPVerb.POST);
+                Producer<Pessoa>.Send(routingKeyPessoa, AppUser, PlataformaUrl, item, RabbitConfig.EnHttpVerb.POST);
         }
 
         private Pessoa PopulaEntidade(Pessoa pessoa, List<string> cols, string row)

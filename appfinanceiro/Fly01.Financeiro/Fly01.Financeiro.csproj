@@ -54,19 +54,27 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Views\CnabItem\Functions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ArquivoRetornoController.cs" />
+    <Compile Include="Controllers\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
+    <Compile Include="Controllers\DashboardContaPagarController.cs" />
+    <Compile Include="Controllers\DashboardContaReceberController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
+    <Compile Include="Controllers\CnabItemController.cs" />
     <Compile Include="Controllers\ReceitaPorCategoriaController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\DemonstrativoResultadoExercicioController.cs" />
@@ -82,6 +90,7 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -112,7 +121,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\ArquivoRetornoCnabVM.cs" />
+    <Compile Include="ViewModel\ArquivoRemessaVM.cs" />
     <Compile Include="ViewModel\BancoVM.cs" />
+    <Compile Include="ViewModel\CnabVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaItemVM.cs" />
     <Compile Include="ViewModel\ConciliacaoBancariaTransacaoVM.cs" />
@@ -125,6 +137,8 @@
     <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ContaPagarVM.cs" />
     <Compile Include="ViewModel\ContaReceberVM.cs" />
+    <Compile Include="ViewModel\DashboardContaPagarVM.cs" />
+    <Compile Include="ViewModel\DashboardContaReceberVM.cs" />
     <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
     <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />
     <Compile Include="ViewModel\ExtratoContaSaldoVM.cs" />
@@ -146,7 +160,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -319,10 +335,42 @@
     <Content Include="Views\ContaFinanceiraBaixaMultiplaCP\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnBaixaMultipla.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnImprimirExtrato.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReadyRemessa.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnShowListCnab.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnGerarArquivoRemessa.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnChangeBanco.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSelectsAllClick.cshtml" />
+    <Content Include="Views\DashboardContaReceber\Functions\_fnAtualizarChart.cshtml" />
+    <Content Include="Views\DashboardContaReceber\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
+    <Content Include="Views\DashboardContaPagar\Functions\_fnAtualizarChart.cshtml" />
+    <Content Include="Views\DashboardContaPagar\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnImprimirBoleto.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReadyCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnListContasArquivo.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnModalImprimeBoleto.cshtml" />
+    <Content Include="Views\ContaBancaria\Functions\_fnChangeCheckCedende.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnModalEmail.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnEnviarEmail.cshtml" />
+    <Content Include="Views\ArquivoRetorno\Functions\_fnBaixarContas.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -369,8 +417,17 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
+    </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.5\lib\net452\Fly01.uiJS.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -421,6 +478,12 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.2.1.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
       <HintPath>..\..\packages\StackExchange.Redis.StrongName.1.2.1\lib\net46\StackExchange.Redis.StrongName.dll</HintPath>
       <Private>True</Private>
@@ -433,7 +496,10 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.Compression.ZipFile">
       <HintPath>..\..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
@@ -482,6 +548,7 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -550,11 +617,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Fly01.Financeiro</IISUrl>
+          <IISUrl>http://localhost:57633/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/Fly01.Financeiro</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

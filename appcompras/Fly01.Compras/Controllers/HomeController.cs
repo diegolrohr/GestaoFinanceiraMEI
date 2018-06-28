@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Newtonsoft.Json;
+﻿using Fly01.Core.Config;
 using Fly01.uiJS.Classes;
-using Fly01.Core.Config;
-using Fly01.uiJS.Defaults;
-using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
@@ -13,7 +13,8 @@ namespace Fly01.Compras.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl, "GridLoad");
+            //return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
+            return DashboardController.DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
         }
         public override ContentResult Sidebar()
         {
@@ -21,22 +22,24 @@ namespace Fly01.Compras.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Compras",
                 Items = new List<LinkUI>
             {
-                new LinkUI() { Label = "Orçamento/Pedido", OnClick = @Url.Action("List", "Home")},
+                new LinkUI() { Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
+                new LinkUI() { Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
             {
                 new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
                 new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
                 new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
                 new LinkUI() { Label = "Forma de Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
                 new LinkUI() { Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},
@@ -46,7 +49,7 @@ namespace Fly01.Compras.Controllers
             }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -55,7 +58,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
+            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 

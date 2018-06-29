@@ -26,7 +26,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 unitOfWork.CnabBL.SalvaBoleto(boleto, contaReceberId, contaBancariaId, false);
                 await unitOfWork.Save();
 
-                return Ok($"<div style=\"margin: 15px;\">{boleto.MontaHtml()}</div>");
+                return Ok($"<div style=\"margin: 15px;\">{boleto.MontaHtmlEmbedded(true, true)}</div>");
             }
         }
 

@@ -2,7 +2,7 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnShowListCnab() {
-        if ($('#pessoaId').val().length > 0) {
+        if ($('#pessoaId').val().length != "" && $('#bancoNome').val().length != "") {
             $('#dtCnabItem').show();
             fly01._.dtCnabItem.selected = [];
             fly01._.dtCnabItem.refresh();

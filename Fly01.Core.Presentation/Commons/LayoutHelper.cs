@@ -10,7 +10,7 @@ namespace Fly01.Core.Presentation.Commons
         private static string localUrl = "http://poad257.poa01.local:8000";
         private static string cdnUrl = "https://cdnfly01.azureedge.net";
 
-        //private static string serverUrl = $"{cdnUrl}/fly/{cdnVersion}"; /*
+        private static string serverUrl = $"{cdnUrl}/fly/{cdnVersion}"; /*
         private static string serverUrl = $"{localUrl}/{cdnVersion}"; /**/
 
         public static IHtmlString HeadTemplate(this HtmlHelper<dynamic> html, string appName)

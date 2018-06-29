@@ -152,9 +152,9 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "blue",
+                Color = "teal",
                 Id = "fly01cardSC",
-                Title = "Saldo Projetado",
+                Title = "Saldo projetado",
                 Placeholder = "R$ 0,00",
                 Action = new LinkUI
                 {

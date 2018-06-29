@@ -88,5 +88,6 @@ namespace Fly01.Faturamento.DAL
         public DbSet<CertificadoDigital> CertificadosDigitais { get; set; }
         public DbSet<NotaFiscalItemTributacao> NotaFiscalItemTributacoes { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
+        public DbSet<NotaFiscalInutilizada> NotaFiscalInutilizadas{ get; set; }
     }
 }

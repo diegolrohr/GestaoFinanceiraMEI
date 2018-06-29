@@ -24,16 +24,5 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [Required]
         public int NumNotaFiscal { get; set; }
-
-        [JsonIgnore]
-        public StatusSerieNotaFiscal StatusSerieNotaFiscal { get; set; }
-
-        [NotMapped]
-        [JsonProperty("statusSerieNotaFiscal")]
-        public string StatusSerieNotaFiscalRest
-        {
-            get { return ((int)StatusSerieNotaFiscal).ToString(); }
-            set { StatusSerieNotaFiscal = (StatusSerieNotaFiscal)System.Enum.Parse(typeof(StatusSerieNotaFiscal), value); }
-        }
     }
 }

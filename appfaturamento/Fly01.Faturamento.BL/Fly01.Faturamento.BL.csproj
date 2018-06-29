@@ -60,7 +60,7 @@
     <Compile Include="NotaFiscalBL.cs" />
     <Compile Include="EntidadeBL.cs" />
     <Compile Include="TotalTributacaoBL.cs" />
-    <Compile Include="SerieNotaFiscalInutilizadaBL.cs" />
+    <Compile Include="NotaFiscalInutilizadaBL.cs" />
     <Compile Include="SerieNotaFiscalBL.cs" />
     <Compile Include="ParametroTributarioBL.cs" />
     <Compile Include="GrupoTributarioBL.cs" />

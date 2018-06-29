@@ -46,7 +46,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<NFSeServico>("nfseservico");
             builder.EntitySet<NFeProduto>("nfeproduto");
             builder.EntitySet<CertificadoDigital>("certificadodigital");
-            builder.EntitySet<SerieNotaFiscal>("serienotafiscalinutilizada");
+            builder.EntitySet<NotaFiscalInutilizada>("notafiscalinutilizada");
             builder.EntitySet<NotaFiscalItemTributacao>("notafiscalitemtributacao");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
 

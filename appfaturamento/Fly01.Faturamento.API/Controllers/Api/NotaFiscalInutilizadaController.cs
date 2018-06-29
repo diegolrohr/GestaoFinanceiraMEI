@@ -26,44 +26,33 @@ namespace Fly01.Faturamento.API.Controllers.Api
 
             try
             {
-                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                ModelState.Clear();
+
+                UnitOfWork.NotaFiscalInutilizadaBL.ValidaModel(entity);
+
+                if (entity.IsValid())
                 {
-                    var previous = unitOfWork.SerieNotaFiscalBL.All.Where(x => x.Id != entity.Id &&
-                    x.Serie.ToUpper() == entity.Serie.ToUpper() &&
-                    x.NumNotaFiscal == entity.NumNotaFiscal).ToList();
-
-                    if (previous != null && previous.Any())
-                    {
-                        //previous.NumNotaFiscal++;
-
-                        //unitOfWork.NotaFiscalBL.SerieNotaFiscalInutilizar(previous.Id);
-                        await UnitSave();
-                        return Ok();
-                    }
-                    else
-                    {
-                        ModelState.Clear();
-
-                        Insert(entity);
-
-                        Validate(entity);
-
-                        if (!ModelState.IsValid)
-                            AddErrorModelState(ModelState);                        
-
-                        await UnitSave();
-
-                        if (MustProduceMessageServiceBus)
-                            Producer<NotaFiscalInutilizada>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
-
-                        return Created(entity);
-                    }
+                    UnitOfWork.NotaFiscalBL.NotaFiscalInutilizar(entity);
                 }
+
+                Insert(entity);
+
+                Validate(entity);
+
+                if (!ModelState.IsValid)
+                    AddErrorModelState(ModelState);
+
+                await UnitSave();
+
+                if (MustProduceMessageServiceBus)
+                    Producer<NotaFiscalInutilizada>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
+
+                return Created(entity);
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
-            }            
+            }
         }
     }
 }

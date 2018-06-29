@@ -27,7 +27,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         Convert.FromBase64String(entity.Senha)
                     );
 
-                    //TODO Diego ver tss prod local
                     var prod = new SPEDCFGNFEProd.SPEDCFGNFE().CFGCERTIFICATEPFX(
                         AppDefault.Token,
                         entity.Producao,
@@ -36,7 +35,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     );
 
                     var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
-                    //var dados = new SPEDCFGNFE.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Homologacao, "");
 
                     var response = new CertificadoRetornoVM
                     {

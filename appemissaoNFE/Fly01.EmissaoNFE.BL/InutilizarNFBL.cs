@@ -22,7 +22,7 @@ namespace Fly01.EmissaoNFE.BL
         {
             EntidadeBL.ValidaModel(entity);
 
-            entity.Fail(!EstadoBL.All.Any(e => e.CodigoIbge == entity.EmpresaCodigoUF.ToString()), new Error("O código da UF da empresa é inválido.", "EmpresaCodigoUF"));
+            entity.Fail(!EstadoBL.All.Any(e => e.CodigoIbge == entity.EmpresaCodigoUF.ToString()), new Error("O código IBGE da UF da empresa é inválido.", "EmpresaCodigoUF"));
             entity.Fail(string.IsNullOrEmpty(entity.EmpresaCnpj), new Error("Informe o CNPJ da empresa.", "EmpresaCnpj"));
             entity.Fail(!string.IsNullOrEmpty(entity.EmpresaCnpj) && (!EmpresaBL.ValidaCNPJ(entity.EmpresaCnpj) || entity.EmpresaCnpj.Length != 14),
                 new Error("CNPJ da empresa inválido.", "EmpresaCnpj"));

@@ -43,6 +43,14 @@ namespace Fly01.Core.Entities.Domains.Enum
         
         [XmlEnum(Name = "10")]
         [Subtitle("CanceladaForaPrazo", "Cancelada fora do prazo", "Cancelada fora do prazo", "black")]
-        CanceladaForaPrazo = 10
+        CanceladaForaPrazo = 10,
+
+        [XmlEnum(Name = "11")]
+        [Subtitle("InutilizacaoSolicitada", "Inutilização Solicitada", "Inutilização Solicitada", "brown")]
+        InutilizacaoSolicitada = 11,
+
+        [XmlEnum(Name = "12")]
+        [Subtitle("Inutilizada", "Inutilizada", "Inutilizada", "black")]
+        Inutilizada = 12
     }
 }

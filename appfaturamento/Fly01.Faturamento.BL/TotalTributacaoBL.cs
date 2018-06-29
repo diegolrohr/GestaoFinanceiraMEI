@@ -18,8 +18,8 @@ namespace Fly01.Faturamento.BL
 {
     public class TotalTributacaoBL : PlataformaBaseBL<TotalTributacao>
     {
-        private ManagerEmpresaVM empresa;
-        private string empresaUF;
+        public ManagerEmpresaVM empresa;
+        public string empresaUF;
         protected PessoaBL PessoaBL { get; set; }
         protected GrupoTributarioBL GrupoTributarioBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }

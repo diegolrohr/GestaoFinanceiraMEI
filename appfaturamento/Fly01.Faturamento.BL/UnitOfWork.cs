@@ -96,25 +96,25 @@ namespace Fly01.Faturamento.BL
         public ParametroTributarioBL ParametroTributarioBL => parametroTributarioBL ?? (parametroTributarioBL = new ParametroTributarioBL(Context, EntidadeBL));
 
         private NotaFiscalBL notaFiscalBL;
-        public NotaFiscalBL NotaFiscalBL => notaFiscalBL ?? (notaFiscalBL = new NotaFiscalBL(Context, NFeBL, NFSeBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL));
+        public NotaFiscalBL NotaFiscalBL => notaFiscalBL ?? (notaFiscalBL = new NotaFiscalBL(Context, NFeBL, NFSeBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
 
         private NFeBL nfeBL;
-        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL));
+        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
 
         private NFeProdutoBL nfeProdutoBL;
         public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));
 
         private NFSeBL nfseBL;
-        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL));
+        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL));
 
         private NFSeServicoBL nfseServicoBL;
         public NFSeServicoBL NFSeServicoBL => nfseServicoBL ?? (nfseServicoBL = new NFSeServicoBL(Context));
 
         private SerieNotaFiscalBL serieNotaFiscalBL;
-        public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context));
+        public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
 
-        private NotaFiscalInutilizadaBL serieNotaFiscalInutilizadaBL;
-        public NotaFiscalInutilizadaBL SerieNotaFiscalInutilizadaBL => serieNotaFiscalInutilizadaBL ?? (serieNotaFiscalInutilizadaBL = new NotaFiscalInutilizadaBL(Context));
+        private NotaFiscalInutilizadaBL notaFiscalInutilizadaBL;
+        public NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL => notaFiscalInutilizadaBL ?? (notaFiscalInutilizadaBL = new NotaFiscalInutilizadaBL(Context));
 
         private CertificadoDigitalBL certificadoDigitalBL;
         public CertificadoDigitalBL CertificadoDigitalBL => certificadoDigitalBL ?? (certificadoDigitalBL = new CertificadoDigitalBL(Context, EstadoBL, ParametroTributarioBL));

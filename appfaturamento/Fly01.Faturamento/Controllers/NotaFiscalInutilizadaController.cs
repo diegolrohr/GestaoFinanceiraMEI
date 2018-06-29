@@ -37,7 +37,64 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Form()
         {
-            throw new NotImplementedException();
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Create", "NotaFiscalInutilizada"),
+                    WithParams = Url.Action("Edit", "SerieNotaFiscal")
+                },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Nota Fiscal Inutilizada",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormUI
+            {
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = Url.Action("List")
+                },
+                //ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "serie",
+                Class = "col s12 m6",
+                Label = "Série",
+                Required = true,
+                MinLength = 1,
+                MaxLength = 3,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "numNotaFiscal",
+                Class = "col s12 m6",
+                Label = "Número Nota Fiscal",
+                Required = true,
+                MaxLength = 8,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
+            });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
         public override ContentResult List()
@@ -51,7 +108,7 @@ namespace Fly01.Faturamento.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" },
-                        new HtmlUIButton { Id = "new", Label = "Nova Inutilização", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -106,7 +163,12 @@ namespace Fly01.Faturamento.Controllers
             //    Functions = new List<string>() { "fnRenderEnum" }
             //};
 
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+            var config = new DataTableUI
+            {
+                UrlGridLoad = Url.Action("GridLoad"),
+                UrlFunctions = Url.Action("Functions") + "?fns=" ,
+                Functions = new List<string>() { "fnRenderEnum" }
+            };
 
             //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" });
             //TODO: Diego retransmitir

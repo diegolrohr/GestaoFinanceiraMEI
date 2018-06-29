@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
@@ -9,6 +10,12 @@ namespace Fly01.Faturamento.BL
     {
         public NotaFiscalInutilizadaBL(AppDataContextBase context) : base(context)
         {
+        }
+
+        public override void Insert(NotaFiscalInutilizada entity)
+        {
+            entity.Data = DateTime.Now;
+            base.Insert(entity);
         }
 
         public override void ValidaModel(NotaFiscalInutilizada entity)

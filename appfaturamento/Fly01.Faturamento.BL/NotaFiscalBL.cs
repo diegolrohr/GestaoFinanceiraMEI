@@ -248,26 +248,36 @@ namespace Fly01.Faturamento.BL
 
         public void NotaFiscalInutilizar(NotaFiscalInutilizada entity)
         {
-            //TODO: Diego fazer validações aqui, por causa da referência circular
-            //se existe nota com esse numero, e status é transmitida ou autorizada ou cancelada, em cancelamento, cancelada fora do prazo
-            //se pode inutilizar e tem uma nota com essa serie/numero, da pra limpar pra ser obrigado a escolher outra
-            var serieNotaFiscal = SerieNotaFiscalBL.All.Where(x => x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal).FirstOrDefault();
-            if(serieNotaFiscal != null)
+
+            if (!AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Any(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
+                (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.CanceladaForaPrazo || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.FalhaNoCancelamento)))
             {
-                var sugestaoProximoNumNota = serieNotaFiscal.NumNotaFiscal;
-                do
+                var notaFiscal = AllIncluding(x => x.SerieNotaFiscal).Where(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
+                (!(x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.CanceladaForaPrazo || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.FalhaNoCancelamento))).FirstOrDefault();
+
+                if(notaFiscal != null)
                 {
-                    sugestaoProximoNumNota++;
-                }//enquanto sugestão possa estar na lista de inutilizadas
-                while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x => x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() && x.NumNotaFiscal == sugestaoProximoNumNota));
+                    notaFiscal.SerieNotaFiscalId = null;
+                    notaFiscal.NumNotaFiscal = null;
+                    //limpa para ser forçado a escolher um novo número
+                    Update(notaFiscal);
+                }
 
-                serieNotaFiscal.NumNotaFiscal = sugestaoProximoNumNota;
-                SerieNotaFiscalBL.Update(serieNotaFiscal);
-            }
+                //se existe ó próximo número e vai ser inutilizado, seta a nova 
+                var serieNotaFiscal = SerieNotaFiscalBL.All.Where(x => x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal).FirstOrDefault();
+                if (serieNotaFiscal != null)
+                {
+                    var sugestaoProximoNumNota = serieNotaFiscal.NumNotaFiscal;
+                    do
+                    {
+                        sugestaoProximoNumNota++;
+                    }//enquanto sugestão possa estar na lista de inutilizadas
+                    while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x => x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() && x.NumNotaFiscal == sugestaoProximoNumNota));
 
-            if (true)
-            {
-                
+                    serieNotaFiscal.NumNotaFiscal = sugestaoProximoNumNota;
+                    SerieNotaFiscalBL.Update(serieNotaFiscal);
+                }
+
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
                     throw new BusinessException("Configuração inválida para comunicação com TSS");

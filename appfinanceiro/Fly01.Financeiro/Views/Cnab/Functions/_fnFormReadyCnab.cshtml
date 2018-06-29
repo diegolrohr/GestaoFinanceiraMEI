@@ -11,10 +11,17 @@
 
     function setupGridSelectEvents() {
         fly01._.dtBoletos.on("select", function (e, dt, type, indexes) {
-            if (type !== undefined) {
-                indexes.forEach(function (element, index, array) {
-                    fnAtualizaCountSelecionados(1);
-                });
+            let indice = parseInt(indexes.toString());
+
+            if (fly01._.dtBoletos.rows().data()[indice].statusDescription != "BAIXADO") {
+                if (type !== undefined) {
+                    indexes.forEach(function (element, index, array) {
+                        fnAtualizaCountSelecionados(1);
+                    });
+                }
+            }
+            else {
+                $(fly01._.dtBoletos.rows().$("tr")[indice]).removeClass('selected');
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {

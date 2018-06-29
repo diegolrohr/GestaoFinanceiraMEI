@@ -37,7 +37,8 @@ namespace Fly01.Faturamento.BL
             var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
             if (entity.SerieNotaFiscalId.HasValue)
             {
-                entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFSe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NFS-e ou tipo ambas"));
+                //TODO: Diego trocar para notafiscalInutilizada
+                //entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFSe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NFS-e ou tipo ambas"));
             }
 
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue)
@@ -45,7 +46,8 @@ namespace Fly01.Faturamento.BL
                 var serieENumeroJaUsado = All.AsNoTracking().Any(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal));
                 //varios numeros de uma mesma serie/tipo inutilizados
                 var serieENumeroInutilizado = SerieNotaFiscalBL.All.AsNoTracking().Any(x =>
-                    x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
+                //TODO: Diego    
+                //x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
                     x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
                     x.NumNotaFiscal == entity.NumNotaFiscal &&
                     (x.TipoOperacaoSerieNotaFiscal == serieNotaFiscal.TipoOperacaoSerieNotaFiscal || x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas));
@@ -63,7 +65,8 @@ namespace Fly01.Faturamento.BL
                         sugestaoProximoNumNota += 1;
                     }//enquanto sugestão possa estar na lista de inutilizadas
                     while (SerieNotaFiscalBL.All.AsNoTracking().Any(x =>
-                         x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
+                    //TODO: Diego     
+                    //x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
                          x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
                          x.NumNotaFiscal == sugestaoProximoNumNota &&
                          (x.TipoOperacaoSerieNotaFiscal == serieNotaFiscal.TipoOperacaoSerieNotaFiscal || x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas)));

@@ -17,9 +17,5 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("numNotaFiscal")]
         public int NumNotaFiscal { get; set; }
-
-        [JsonProperty("statusSerieNotaFiscal")]
-        [APIEnum("StatusSerieNotaFiscal")]
-        public string StatusSerieNotaFiscal { get; set; }
     }
 }

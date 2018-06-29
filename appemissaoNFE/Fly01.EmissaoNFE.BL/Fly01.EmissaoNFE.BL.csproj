@@ -39,6 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="InutilizarNFBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="ChaveBL.cs" />
     <Compile Include="DanfeBL.cs" />

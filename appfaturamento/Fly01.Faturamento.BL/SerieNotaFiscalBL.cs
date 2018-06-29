@@ -17,23 +17,22 @@ namespace Fly01.Faturamento.BL
 
         public override void Insert(SerieNotaFiscal entity)
         {
-            entity.StatusSerieNotaFiscal = StatusSerieNotaFiscal.Habilitada;//Inutilizada
             base.Insert(entity);
         }
 
         public override void Update(SerieNotaFiscal entity)
         {
-            entity.StatusSerieNotaFiscal = StatusSerieNotaFiscal.Habilitada;//Inutilizada
             base.Update(entity);
         }
 
         public override void ValidaModel(SerieNotaFiscal entity)
         {
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) && x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Habilitada), SerieRepetida);
+            entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal)), SerieRepetida);
             //entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas && x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Habilitada), SerieRepetida);
             //entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal && (entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) && entity.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Habilitada), SerieRepetida);
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal && x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada), NumNotaFiscalInutilizada);
-            //entity.Fail(NotaFiscalBL.All.Any(x => x.SerieNotaFiscalId == entity.Id) && All.Any(y => y.Id == entity.Id && y.Serie.ToUpper() != entity.Serie.ToUpper()), SerieEmitida);
+            
+            //TODO: Diego mudar para notafiscalinutilizada
+            //entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal && x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada), NumNotaFiscalInutilizada);
 
 
             //Testar Edicao, se já há uma nota emitida com a Serie, não permitir

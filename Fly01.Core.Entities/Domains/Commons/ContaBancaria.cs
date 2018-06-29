@@ -27,5 +27,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string CodigoCedente { get; set; }
 
         public string CodigoDV { get; set; }
+        
+        public double? TaxaJuros { get; set; }
+
+        public double? PercentualMulta { get; set; }
     }
 }

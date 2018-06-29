@@ -409,11 +409,22 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "repetir",
-                Class = "col s12",
+                Class = "col s6",
                 Label = "Repetir",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChkRepetir" }
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "baixarTitulo",
+                Class = "col s6",
+                Label = "Marcar título como recebido?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChkBaixar" }
                 }
             });
 
@@ -472,6 +483,18 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangePeriodoFim" }
                 }
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "contaBancariaId",
+                Class = "col s12",
+                Label = "Conta Bancária",
+                Required = true,
+                DataUrl = @Url.Action("ContaBancaria", "AutoComplete"),
+                LabelId = "contaBancariaNomeConta",
+                DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
+                DataPostField = "nomeConta",
             });
 
             cfg.Content.Add(config);

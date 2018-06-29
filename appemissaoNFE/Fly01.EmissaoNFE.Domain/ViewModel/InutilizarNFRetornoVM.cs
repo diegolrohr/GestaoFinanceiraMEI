@@ -2,6 +2,6 @@
 {
     public class InutilizarNFRetornoVM
     {
-        public string NotaId { get; set; }
+        public string SefazChaveAcesso { get; set; }
     }
 }

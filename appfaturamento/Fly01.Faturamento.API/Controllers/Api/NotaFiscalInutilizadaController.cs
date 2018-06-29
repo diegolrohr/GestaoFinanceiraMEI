@@ -12,14 +12,14 @@ using Fly01.Core.Notifications;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
-    [ODataRoutePrefix("serienotafiscalinutilizada")]
-    public class SerieNotaFiscalInutilizadaController : ApiPlataformaController<SerieNotaFiscal, SerieNotaFiscalInutilizadaBL>
+    [ODataRoutePrefix("notafiscalinutilizada")]
+    public class NotaFiscalInutilizadaController : ApiPlataformaController<NotaFiscalInutilizada, NotaFiscalInutilizadaBL>
     {
-        public SerieNotaFiscalInutilizadaController()
+        public NotaFiscalInutilizadaController()
         {
         }
 
-        public override async Task<IHttpActionResult> Post(SerieNotaFiscal entity)
+        public override async Task<IHttpActionResult> Post(NotaFiscalInutilizada entity)
         {
             if (entity == null)
                 return BadRequest(ModelState);
@@ -30,14 +30,13 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 {
                     var previous = unitOfWork.SerieNotaFiscalBL.All.Where(x => x.Id != entity.Id &&
                     x.Serie.ToUpper() == entity.Serie.ToUpper() &&
-                    x.NumNotaFiscal == entity.NumNotaFiscal &&
-                    (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal) &&
-                    x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Habilitada).FirstOrDefault();
+                    x.NumNotaFiscal == entity.NumNotaFiscal).ToList();
 
-                    if (previous != null)
+                    if (previous != null && previous.Any())
                     {
-                        previous.NumNotaFiscal++;
-                        unitOfWork.NotaFiscalBL.SerieNotaFiscalInutilizar(previous.Id);
+                        //previous.NumNotaFiscal++;
+
+                        //unitOfWork.NotaFiscalBL.SerieNotaFiscalInutilizar(previous.Id);
                         await UnitSave();
                         return Ok();
                     }
@@ -50,14 +49,12 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         Validate(entity);
 
                         if (!ModelState.IsValid)
-                            AddErrorModelState(ModelState);
-
-                        unitOfWork.NotaFiscalBL.SerieNotaFiscalInutilizar(entity.Id);
+                            AddErrorModelState(ModelState);                        
 
                         await UnitSave();
 
                         if (MustProduceMessageServiceBus)
-                            Producer<SerieNotaFiscal>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
+                            Producer<NotaFiscalInutilizada>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
 
                         return Created(entity);
                     }

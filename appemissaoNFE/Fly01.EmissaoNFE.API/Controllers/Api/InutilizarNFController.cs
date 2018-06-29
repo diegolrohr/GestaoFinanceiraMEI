@@ -21,7 +21,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    var notaId = unitOfWork.ChaveBL.GeraChave(
+                    var sefazChaveAcesso = unitOfWork.ChaveBL.GeraChave(
                                     entity.EmpresaCodigoUF.ToString(),
                                     DateTime.Now.Year.ToString(),
                                     DateTime.Now.Month.ToString(),
@@ -32,11 +32,11 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     ((int)TipoModalidade.Normal).ToString(),
                                     entity.Numero.ToString()
                                 );
-                    notaId = notaId.Replace("NFe", "");
+                    sefazChaveAcesso = sefazChaveAcesso.Replace("NFe", "");
 
                     var response = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ?
-                            Homologacao(entity.Homologacao, notaId) :
-                            Producao(entity.Producao, notaId);
+                            Homologacao(entity.Homologacao, sefazChaveAcesso) :
+                            Producao(entity.Producao, sefazChaveAcesso);
 
                     return Ok(response);
 
@@ -53,33 +53,33 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }        
 
-        public InutilizarNFRetornoVM Producao(string entidade, string notaId)
+        public InutilizarNFRetornoVM Producao(string entidade, string sefazChaveAcesso)
         {
             var monitor = new NFESBRAProd.NFESBRA().CANCELAFAIXA(
                 AppDefault.Token,
                 entidade,
-                notaId,
-                notaId,
+                sefazChaveAcesso,
+                sefazChaveAcesso,
                 ""
             );
             return new InutilizarNFRetornoVM()
             {
-                NotaId = notaId
+                SefazChaveAcesso = sefazChaveAcesso
             };
         }
 
-        public InutilizarNFRetornoVM Homologacao(string entidade, string notaId)
+        public InutilizarNFRetornoVM Homologacao(string entidade, string sefazChaveAcesso)
         {
             var monitor = new NFESBRA.NFESBRA().CANCELAFAIXA(
                 AppDefault.Token,
                 entidade,
-                notaId,
-                notaId,
+                sefazChaveAcesso,
+                sefazChaveAcesso,
                 ""
             );
             return new InutilizarNFRetornoVM()
             {
-                NotaId = notaId
+                SefazChaveAcesso = sefazChaveAcesso
             };
         }
 

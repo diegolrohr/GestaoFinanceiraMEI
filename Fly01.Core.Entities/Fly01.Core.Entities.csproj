@@ -129,6 +129,7 @@
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
     <Compile Include="Domains\Commons\SaldoHistorico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalInutilizada.cs" />
     <Compile Include="Domains\Commons\SerieNotaFiscal.cs" />
     <Compile Include="Domains\Commons\Servico.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />

@@ -244,11 +244,14 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public void SerieNotaFiscalInutilizar(Guid id)
+        public void NotaFiscalInutilizar(NotaFiscalInutilizada entity)
         {
             //fazer validações aqui, por causa da referência circular
-            var serieNotaFiscal = SerieNotaFiscalBL.All.Where(x => x.Id == id).FirstOrDefault();
-            if (serieNotaFiscal != null)
+            //se existe nota com esse numero, e status é transmitida ou autorizada ou cancelada, em cancelamento, cancelada fora do prazo
+            //se pode inutilizar e tem uma nota com essa serie/numero, da pra limpar pra ser obrigado a escolher outra
+
+
+            if (entity != null)
             {
                 if (!TotalTributacaoBL.ConfiguracaoTSSOK())
                 {
@@ -271,26 +274,17 @@ namespace Fly01.Faturamento.BL
                             Homologacao = entidade.Homologacao,
                             Producao = entidade.Producao,
                             EntidadeAmbiente = entidade.EntidadeAmbiente,
-                            Serie = int.Parse(serieNotaFiscal.Serie),
-                            Numero = serieNotaFiscal.NumNotaFiscal,
+                            Serie = int.Parse(entity.Serie),
+                            Numero = entity.NumNotaFiscal,
                             EmpresaCnpj = "",
                             ModeloDocumentoFiscal = 55,
                             EmpresaCodigoUF = 00,  
                         };
 
-                        //RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
-                        //if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
-                        //{
-                        //    var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                        //    NFe.Status = StatusNotaFiscal.EmCancelamento;
-                        //    NFeBL.Update(NFe);
-                        //}
-                        //else
-                        //{
-                        //    var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                        //    NFSe.Status = StatusNotaFiscal.EmCancelamento;
-                        //    NFSeBL.Update(NFSe);
-                        //}
+                        var response = RestHelper.ExecutePostRequest<InutilizarNFRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "InutilizarNF", JsonConvert.SerializeObject(cancelar), null, header);
+                        
+                        //serieNotaFiscal.NotaId = response.SefazChaveAcesso;
+                        //serieNotaFiscal.Status = StatusNotaFiscal.InutilizacaoEnviada;
                     }
                     catch (Exception ex)
                     {

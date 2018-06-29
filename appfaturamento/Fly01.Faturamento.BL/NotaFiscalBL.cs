@@ -248,7 +248,7 @@ namespace Fly01.Faturamento.BL
 
         public void NotaFiscalInutilizar(NotaFiscalInutilizada entity)
         {
-            //fazer validações aqui, por causa da referência circular
+            //TODO: Diego fazer validações aqui, por causa da referência circular
             //se existe nota com esse numero, e status é transmitida ou autorizada ou cancelada, em cancelamento, cancelada fora do prazo
             //se pode inutilizar e tem uma nota com essa serie/numero, da pra limpar pra ser obrigado a escolher outra
             var serieNotaFiscal = SerieNotaFiscalBL.All.Where(x => x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal).FirstOrDefault();

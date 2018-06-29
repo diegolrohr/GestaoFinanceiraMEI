@@ -2,6 +2,7 @@
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -13,6 +14,10 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [Required]
         public int NumNotaFiscal { get; set; }
+
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime Data { get; set; }
 
         [StringLength(44)]
         public string SefazChaveAcesso { get; set; }

@@ -75,7 +75,6 @@
     <Compile Include="Controllers\NFSeServicoController.cs" />
     <Compile Include="Controllers\NotaFiscalController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
-    <Compile Include="Controllers\SerieNotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Controllers\OrdemVendaServicoController.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
     <Compile Include="ViewModel\ParametroTributarioVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
-    <Compile Include="ViewModel\SerieNotaFiscalInutilizadaVM.cs" />
     <Compile Include="ViewModel\SerieNotaFiscalVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />

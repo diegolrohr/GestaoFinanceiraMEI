@@ -150,7 +150,6 @@
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
-    <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />

@@ -78,7 +78,6 @@
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaController.cs" />
-    <Compile Include="Controllers\Api\StatusSerieNotaFiscalController.cs" />
     <Compile Include="Controllers\Api\NFSeServicoController.cs" />
     <Compile Include="Controllers\Api\NFeProdutoController.cs" />
     <Compile Include="Controllers\Api\NFSeController.cs" />

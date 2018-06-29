@@ -284,6 +284,10 @@
     <Compile Include="Migrations\201806291154479_CreateNotaFiscalInutilizada.Designer.cs">
       <DependentUpon>201806291154479_CreateNotaFiscalInutilizada.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.cs" />
+    <Compile Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.Designer.cs">
+      <DependentUpon>201806291922070_AlterNotaFiscalinutilizadaAddData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -490,6 +494,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806291154479_CreateNotaFiscalInutilizada.resx">
       <DependentUpon>201806291154479_CreateNotaFiscalInutilizada.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.resx">
+      <DependentUpon>201806291922070_AlterNotaFiscalinutilizadaAddData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

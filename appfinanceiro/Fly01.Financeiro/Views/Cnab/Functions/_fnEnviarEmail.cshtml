@@ -1,23 +1,34 @@
 ﻿<script>
     function fnEnviarEmail(data, type, row, meta) {
+        var idBanco = "";
+        if ($('#bancoId').val() != undefined)
+            idBanco = $('#bancoId').val();
+        else
+            idBanco = $('#idContaBancaria').val();
+
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '@Url.Action("ValidaBoletoJaGeradoParaOutroBanco", "Cnab")',
             contentType: "application/json",
-            data: { contaReceberId: $('#contaReceberId').val(), contaBancariaId: $('#bancoId').val()},
+            data: { contaReceberId: $('#idContaReceber').val(), contaBancariaId: idBanco},
             success: function success(result) {
                 if (result.success) {
                     if (result.data != null)
-                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + that.serializeObject().contaReceberId + "', '" + contaBancariaId + "')");
+                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + $('#idContaReceber').val() + "', '" + idBanco + "')");
                     else
-                        fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
+                        fnGerarCnabEnviaEmail($('#idContaReceber').val(), idBanco, true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
                 }
                 else
-                    fnGerarCnabEnviaEmail($('#idContaReceber').val(), $('#bancoId').val(), true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
+                    fnGerarCnabEnviaEmail($('#idContaReceber').val(), idBanco, true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
             },
         });
         return createElement(row).outerHTML;
+    }
+
+    function fnConfirmedOrCancel(idRecord, contaBancariaId) {
+        reemprime = true;
+        fnSaveCnab(idRecord, contaBancariaId, reemprime);
     }
 
     function fnGerarCnabEnviaEmail(idRecord, contaBancariaId, reimprime, pEmail, pAssunto, pMensagem) {
@@ -34,8 +45,11 @@
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
-                        win.print();
-                        win.close();
+
+                        setTimeout(function () {
+                            win.print();
+                            win.close();
+                        }, 10);
                     }
                 } else {
                     fly01.loading.stop();

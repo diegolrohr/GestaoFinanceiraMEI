@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Base;
 
 namespace Fly01.Financeiro.BL
 {
@@ -17,8 +16,8 @@ namespace Fly01.Financeiro.BL
         protected ContaBancariaBL contaBancariaBL;
 
         private string codigoCedente;
-        const double jurosDia = 0.33;
-        const double percentMulta = 2.00;
+        const double jurosDiaPadrao = 0.33;
+        const double percentMultaPadrao = 2.00;
 
         public CnabBL(AppDataContextBase context, ContaReceberBL contaReceberBL, ContaBancariaBL contaBancariaBL) : base(context)
         {
@@ -56,15 +55,19 @@ namespace Fly01.Financeiro.BL
 
             codigoCedente = contaBancariaCedente.CodigoCedente;
 
-            var valorMulta = (decimal)(contaReceber.ValorPrevisto * (percentMulta / 100));
-            var valorJuros = (decimal)(contaReceber.ValorPrevisto * (jurosDia / 100));
+            var juros = contaBancariaCedente.TaxaJuros ?? jurosDiaPadrao;
+            var percentMulta = contaBancariaCedente.PercentualMulta ?? percentMultaPadrao;
+            var valorParcial = contaReceber.ValorPrevisto  - contaReceber.ValorPago ?? 0;
+
+            var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
+            var valorJuros = (decimal)(valorParcial * (juros / 100));
             var numerosGuidContaReceber = Regex.Replace(contaReceber.Id.ToString(), "[^0-9]", "");
             var randomNossoNumero = new Random().Next(0, 9999999);
             var dataCedente = GetDadosCedente(contaBancariaId);
 
             var boletoVM = new BoletoVM()
             {
-                ValorPrevisto = (decimal)contaReceber.ValorPrevisto,
+                ValorPrevisto = (decimal)contaReceber.ValorPrevisto -  Convert.ToDecimal(contaReceber.ValorPago?? 0),
                 ValorDesconto = contaReceber.ValorDesconto.HasValue ? (decimal)contaReceber.ValorDesconto : 0,
                 ValorMulta = valorMulta,
                 ValorJuros = valorJuros,
@@ -75,7 +78,7 @@ namespace Fly01.Financeiro.BL
                 NossoNumeroFormatado = FormataNossoNumero(dataCedente.CodigoCedente, dataCedente.ContaBancariaCedente.CodigoBanco, nossoNumero),
                 EspecieMoeda = "R$",
                 NumeroDocumento = $"BB{randomNossoNumero.ToString("D6")}",
-                InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber),
+                InstrucoesCaixa = GetInstrucoesAoCaixa(contaReceber, contaBancariaCedente),
                 Cedente = dataCedente,
                 Sacado = GetDadosSacado(contaReceber.PessoaId)
             };
@@ -163,15 +166,19 @@ namespace Fly01.Financeiro.BL
             };
         }
 
-        private string GetInstrucoesAoCaixa(ContaReceber conta)
+        private string GetInstrucoesAoCaixa(ContaReceber conta, ContaBancaria contaBancaria)
         {
-            var valorMulta = (decimal)(conta.ValorPrevisto * (percentMulta / 100));
-            var valorJuros = (decimal)(conta.ValorPrevisto * (jurosDia / 100));
+            var juros = contaBancaria.TaxaJuros ?? jurosDiaPadrao;
+            var percentMulta = contaBancaria.PercentualMulta ?? percentMultaPadrao;
+
+            var valorParcial = conta.ValorPrevisto - conta.ValorPago ?? 0;
+            var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
+            var valorJuros = (decimal)(valorParcial * (juros / 100));
             var msgCaixa = new StringBuilder();
 
             if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
-            if (percentMulta > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
-            if (jurosDia > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
+            if (percentMultaPadrao > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
+            if (jurosDiaPadrao > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
 
             return msgCaixa.ToString();
         }
@@ -218,7 +225,7 @@ namespace Fly01.Financeiro.BL
             {
                 Boleto = proxy.boleto,
                 OcultarInstrucoes = false,
-                MostrarComprovanteEntrega = true,
+                MostrarComprovanteEntrega = false,
                 MostrarEnderecoCedente = true
             };
 

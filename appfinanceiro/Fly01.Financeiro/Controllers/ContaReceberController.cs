@@ -253,8 +253,8 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" });
-          //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" });
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -683,7 +683,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
@@ -710,38 +710,6 @@ namespace Fly01.Financeiro.Controllers
 
             return base.Delete(id);
         }
-
-        //public ContentResult ModalContaBancaria()
-        //{
-        //    ModalUIForm config = new ModalUIForm()
-        //    {
-        //        Title = "Selecione a conta bancária para gerar o boleto",
-        //        ConfirmAction = new ModalUIAction() { Label = "Gerar boleto" , OnClickFn = "fnImprimirBoleto" },
-        //        CancelAction = new ModalUIAction() { Label = "Cancelar" },
-        //        Action = new FormUIAction
-        //        {
-        //            Create = "", // @Url.Action("Create"),
-        //            Edit = "", //@Url.Action("Edit"),
-        //            Get = "", //@Url.Action("Json") + "/",
-        //        },
-        //        Id = "fly01mdlfrmModalCliente",
-        //        UrlFunctions = Url.Action("Functions") + "?fns="
-        //    };
-
-
-        //    config.Elements.Add(new InputHiddenUI { Id = "Id" });
-        //    config.Elements.Add(new AutoCompleteUI
-        //    {
-        //        Id = "bancoId",
-        //        Class = "col s12 m6 l6",
-        //        Label = "Banco cedente",
-        //        Required = true,
-        //        DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
-        //        LabelId = "bancoNome"
-        //    });
-
-        //    return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        //}
 
         #region OnDemmand
 

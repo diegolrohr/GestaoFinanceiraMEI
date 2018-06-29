@@ -4,7 +4,7 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum StatusArquivoRemessa
     {
-        [Subtitle("AguardandoRetorno", "Aguardando Retorno", "AGUARD", "orange", "Aguardando arquivo de retorno")]
+        [Subtitle("AguardandoRetorno", "Aguardando Retorno", "AGUARD", "totvs-blue", "Aguardando arquivo de retorno")]
         AguardandoRetorno = 1, 
 
         [Subtitle("RetornoParcial", "Retorno Parcial", "PARCIAL", "black", "Não foram pagos todos os boletos referente a este arquivo")]

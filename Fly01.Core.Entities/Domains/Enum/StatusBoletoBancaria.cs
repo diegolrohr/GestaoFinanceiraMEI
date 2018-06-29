@@ -7,7 +7,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("Aprovado", "Aprovado", "APRO", "green")] 
         Aprovado = 1,
 
-        [Subtitle("AguardandoRertorno", "Aguardando Rertorno", "AGR", "orange")]
+        [Subtitle("AguardandoRertorno", "Aguardando Rertorno", "AGR", "totvs-blue")]
         AguardandoRertorno = 2,
     }
 }

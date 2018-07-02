@@ -18,6 +18,7 @@ using System.Linq;
 using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Rest;
 using Boleto2Net;
+using Fly01.Core.Presentation.JQueryDataTable;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -235,7 +236,7 @@ namespace Fly01.Financeiro.Controllers
                 Columns = new List<DataTableUIColumn>
                 {
                     new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"},
-                    new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso numero", Priority = 6 },
+                    new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nosso numero", Priority = 6 },
                     new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
                     new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
@@ -255,7 +256,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Arquivos remessa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" },
+                        new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -292,6 +294,35 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public JsonResult LoadGridBoletos()
+        {
+            var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());
+
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetCnab($"arquivoRemessaId eq {Id}");
+            return Json(new
+            {
+                recordsTotal = response.Count,
+                recordsFiltered = response.Count,
+                data = response.Select(item => new
+                {
+                    nossoNumero = item.NossoNumero,
+                    nossoNumeroFormatado = item.NossoNumeroFormatado,
+                    pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
+                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status,
+                    statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), item.Status),
+                    statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), item.Status),
+                    statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), item.Status),
+                })
+
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

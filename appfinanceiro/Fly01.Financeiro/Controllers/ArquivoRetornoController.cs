@@ -60,7 +60,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6 l6",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"

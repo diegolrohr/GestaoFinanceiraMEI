@@ -371,6 +371,7 @@
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnGerarArquivo.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnChkBaixar.cshtml" />

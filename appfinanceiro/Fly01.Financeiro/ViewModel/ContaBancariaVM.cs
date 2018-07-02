@@ -21,6 +21,14 @@ namespace Fly01.Financeiro.ViewModel
         [StringLength(10, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string CodigoDV { get; set; }
 
+        [JsonProperty("taxaJuros")]
+        [Display(Name = "Taxa de juros")]
+        public double? TaxaJuros { get; set; }
+
+        [JsonProperty("percentualMulta")]
+        [Display(Name = "Percentual multa")]
+        public double? PercentualMulta { get; set; }
+
         [JsonProperty("bancoId")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [Display(Name = "Banco")]

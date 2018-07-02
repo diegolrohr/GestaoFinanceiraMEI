@@ -39,7 +39,7 @@ namespace Fly01.Faturamento.Controllers
             config.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "cardNotaFiscal",
                 Title = "Nota Fiscal",
                 Placeholder = "Número de Notas Fiscais não transmitidas",

@@ -537,7 +537,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 Class = "col s12",
                 Label = "Conta Bancária",
                 Required = true,
-                DataUrl = @Url.Action("ContaBancaria", "AutoComplete"),
+                DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta",

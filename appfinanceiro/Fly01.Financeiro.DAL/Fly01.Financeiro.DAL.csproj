@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201806251359337_AddColumnCnab.Designer.cs">
       <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.cs" />
+    <Compile Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.Designer.cs">
+      <DependentUpon>201806272040218_AddColumnsTaxasJurosContaBancaria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -298,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806251359337_AddColumnCnab.resx">
       <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.resx">
+      <DependentUpon>201806272040218_AddColumnsTaxasJurosContaBancaria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

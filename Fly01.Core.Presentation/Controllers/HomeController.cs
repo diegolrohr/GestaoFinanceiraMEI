@@ -6,6 +6,8 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
 using Fly01.uiJS.Classes.Elements;
+using System.Linq;
+using System;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -30,6 +32,29 @@ namespace Fly01.Core.Presentation.Controllers
         protected abstract ContentUI HomeJson(bool withSidebarUrl = false);
 
         public abstract ContentResult Sidebar();
+
+        public virtual List<SidebarUIMenu> ProcessMenuRoles(List<SidebarUIMenu> appMenu)
+        {
+            var resourceByUser = SessionManager.Current.UserData.Permissions.Select(x => x.ResourceHash.ToUpper()).ToList();
+            
+            var subMenuItems = appMenu.SelectMany(x => x.Items).Where(x => !resourceByUser.Contains(x.Class.ToUpper())).Select(x => x.Class);
+            var menuItems = appMenu.Where(x => !resourceByUser.Contains(x.Class.ToUpper())).Select(x => x.Class);
+            var itemsToRemove = subMenuItems.Union(menuItems).ToList();
+
+            for (int m = appMenu.Count - 1; m >= 0; m--)
+                appMenu[m].Items.RemoveAll(x => itemsToRemove.Contains(x.Class.ToUpper()));
+
+            appMenu.RemoveAll(x => itemsToRemove.Contains(x.Class.ToUpper()));
+
+            // Clear resourceHash in class items
+            appMenu.ForEach(m => 
+            {
+                m.Class = string.Empty;
+                m.Items.ForEach(s => s.Class = string.Empty);
+            });
+
+            return appMenu;
+        }
 
         [OperationRole(NotApply = true)]
         public ContentResult NotAllow(string routeDescription)

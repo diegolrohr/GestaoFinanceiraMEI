@@ -12,8 +12,6 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
-    //[OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueVisaoGeral)]
-    //[OperationRole(NotApply = true)]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
@@ -195,46 +193,50 @@ namespace Fly01.Estoque.Controllers
 
             return cfg;
         }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Estoque", Parent = "header" };
 
             #region MenuItems
-
-            config.MenuItems.Add(new SidebarUIMenu()
+            var menuItems = new List<SidebarUIMenu>()
             {
-                Label = "Estoque",
-                Items = new List<LinkUI>
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Visão Geral", OnClick = @Url.Action("List")},
-                    new LinkUI() { Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
-                    new LinkUI() { Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
-                    new LinkUI() { Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Cadastros",
-                Items = new List<LinkUI>
+                    Class = ResourceHash.EstoqueEstoque,
+                    Label = "Estoque",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHash.EstoqueEstoqueVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List")},
+                        new LinkUI() { Class = ResourceHash.EstoqueEstoqueAjusteManual, Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
+                        new LinkUI() { Class = ResourceHash.EstoqueEstoquePosicaoAtual, Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
+                        new LinkUI() { Class = ResourceHash.EstoqueEstoqueInventario, Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
-                    new LinkUI() { Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
-                    new LinkUI() { Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Ajuda",
-                Items = new List<LinkUI>
+                    Class = ResourceHash.EstoqueCadastros,
+                    Label = "Cadastros",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHash.EstoqueCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
+                        new LinkUI() { Class = ResourceHash.EstoqueCadastrosGrupoProdutos, Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
+                        new LinkUI() { Class = ResourceHash.EstoqueCadastrosTiposMovimento, Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                }
-            });
+                    Class = ResourceHash.EstoqueAjuda,
+                    Label = "Ajuda",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHash.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                    }
+                },
+                new SidebarUIMenu() { Class = ResourceHash.EstoqueAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+            };
 
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
-
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items

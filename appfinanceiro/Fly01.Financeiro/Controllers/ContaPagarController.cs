@@ -25,21 +25,8 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class GridLoad
-    {
-        [JsonProperty("recordsTotal")]
-        public int recordsTotal { get; set; }
-
-        [JsonProperty("recordsFiltered")]
-        public int recordsFiltered { get; set; }
-
-        [JsonProperty("data")]
-        public List<JObject> data { get; set; }
-    }
-
     public class ContaPagarController : ContaFinanceiraController<ContaPagarVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
-
         public ContaPagarController()
         {
             ExpandProperties = "condicaoParcelamento($select=descricao),pessoa($select=nome),categoria($select=descricao),formaPagamento($select=descricao)";
@@ -182,11 +169,11 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Contas a Pagar",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla" },
-                        new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP" },
-                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
-                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
+                        new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "new", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCP", Position = HtmlUIButtonPosition.In },
+                        new HtmlUIButton { Id = "newPrint", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In },
+                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick, Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -251,7 +238,6 @@ namespace Fly01.Financeiro.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
 
-
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusContaBancaria",
@@ -266,7 +252,6 @@ namespace Fly01.Financeiro.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 4, Type = "currency" });
             config.Columns.Add(new DataTableUIColumn { DataField = "saldo", DisplayName = "Saldo", Priority = 5, Orderable = false, Searchable = false });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "formaPagamento_descricao", DisplayName = "Forma", Priority = 6, Orderable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
             config.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Fornecedor", Priority = 8 });
 
@@ -305,8 +290,9 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Dados do título a pagar",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -319,7 +305,8 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = Url.Action("List")
+                    List = Url.Action("List"),
+                    Form = @Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -405,11 +392,22 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "repetir",
-                Class = "col s12",
+                Class = "col s6",
                 Label = "Repetir",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChkRepetir" }
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "baixarTitulo",
+                Class = "col s6",
+                Label = "Marcar título como pago?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChkBaixar" }
                 }
             });
 
@@ -468,6 +466,17 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChangePeriodoFim" }
                 }
+            });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "contaBancariaId",
+                Class = "col s12",
+                Label = "Conta Bancária",
+                Required = true,
+                DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
+                LabelId = "contaBancariaNomeConta",
+                DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
+                DataPostField = "nomeConta",
             });
 
             cfg.Content.Add(config);
@@ -714,6 +723,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         #region OnDemmand
+
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)
         {

@@ -106,5 +106,11 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("formaPagamento")]
         public virtual FormaPagamentoVM FormaPagamento { get; set; }
+
+        [JsonProperty("contaBancariaId")]
+        public Guid ContaBancariaId { get; set; }
+
+        [JsonProperty("contaBancaria")]
+        public virtual ContaBancariaVM ContaBancaria { get; set; }
     }
 }

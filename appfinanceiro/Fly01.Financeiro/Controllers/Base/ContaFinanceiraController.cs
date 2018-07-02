@@ -124,7 +124,11 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 entityVM.StatusContaBancaria = "EmAberto";
-                RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+
+                if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
+                    entityVM.StatusContaBancaria = "Pago";
+
+                var conta = RestHelper.ExecutePostRequest<TEntity>(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
             }
@@ -139,7 +143,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
 
-            foreach (TEntity  ListContas in contas)
+            foreach (TEntity ListContas in contas)
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = ListContas.Id,
@@ -149,7 +153,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Vencimento = ListContas.DataVencimento,
-                    Titulo = titulo, 
+                    Titulo = titulo,
                     Numero = ListContas.Numero
                 });
 
@@ -332,7 +336,6 @@ namespace Fly01.Financeiro.Controllers.Base
             return View("Renegociacao");
         }
 
-
         public ContentResult IncluirRenegociacao()
         {
             //string contaController
@@ -385,7 +388,7 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #endregion
-        
+
         #region Bordero/CNAB
         /// <summary>
         /// Retorna Títulos que podem ser inclusos em um bordero
@@ -689,6 +692,5 @@ namespace Fly01.Financeiro.Controllers.Base
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
         #endregion
-
     }
 }

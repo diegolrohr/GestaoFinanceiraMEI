@@ -37,7 +37,64 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Form()
         {
-            throw new NotImplementedException();
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Create", "NotaFiscalInutilizada"),
+                    WithParams = Url.Action("Edit", "SerieNotaFiscal")
+                },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Nota Fiscal Inutilizada",
+                    Buttons = new List<HtmlUIButton>
+                    {
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                    }
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormUI
+            {
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = Url.Action("List")
+                },
+                //ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "serie",
+                Class = "col s12 m6",
+                Label = "Série",
+                Required = true,
+                MinLength = 1,
+                MaxLength = 3,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "numNotaFiscal",
+                Class = "col s12 m6",
+                Label = "Número Nota Fiscal",
+                Required = true,
+                MaxLength = 8,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
+            });
+
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
         public override ContentResult List()
@@ -50,66 +107,20 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Notas Fiscais Inutilizadas",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" },
-                        new HtmlUIButton { Id = "new", Label = "Nova Inutilização", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "atualizarStatusInutilizada", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusInutilizada" },
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            //    var cfgForm = new FormUI
-            //    {
-            //        ReadyFn = "fnUpdateDataFinal",
-            //        UrlFunctions = Url.Action("Functions") + "?fns=",
-            //        Elements = new List<BaseUI>()
-            //        {
-            //            new PeriodPickerUI
-            //            {
-            //                Label = "Selecione o período",
-            //                Id = "mesPicker",
-            //                Name = "mesPicker",
-            //                Class = "col s12 m6 offset-m3 l4 offset-l4",
-            //                DomEvents = new List<DomEventUI>()
-            //                {
-            //                    new DomEventUI()
-            //                    {
-            //                        DomEvent = "change",
-            //                        Function = "fnUpdateDataFinal"
-            //                    }
-            //                }
-            //            },
-            //            new InputHiddenUI()
-            //            {
-            //                Id = "dataFinal",
-            //                Name = "dataFinal"
-            //            },
-            //            new InputHiddenUI()
-            //            {
-            //                Id = "dataInicial",
-            //                Name = "dataInicial"
-            //            }
-            //        }
-
-            //    };
-
-            //cfg.Content.Add(cfgForm);
-
-            //var config = new DataTableUI
-            //{
-            //    UrlGridLoad = Url.Action(),
-            //    Parameters = new List<DataTableUIParameter>
-            //    {
-            //        new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
-            //        new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
-            //    },
-            //    UrlFunctions = Url.Action("Functions") + "?fns=",
-            //    Functions = new List<string>() { "fnRenderEnum" }
-            //};
-
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
-
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" });
-            //TODO: Diego retransmitir
+            var config = new DataTableUI
+            {
+                UrlGridLoad = Url.Action("GridLoad"),
+                UrlFunctions = Url.Action("Functions") + "?fns=" ,
+                Functions = new List<string>() { "fnRenderEnum" }
+            };
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
@@ -129,28 +140,12 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        //public override JsonResult GridLoad(Dictionary<string, string> filters = null)
-        //{
-        //    if (filters == null)
-        //        filters = new Dictionary<string, string>();
-
-        //    filters.Add("data le ", Request.QueryString["dataFinal"]);
-        //    filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
-
-        //    return base.GridLoad(filters);
-        //}
-
-        //public JsonResult GridLoadNoFilter()
-        //{
-        //    return base.GridLoad();
-        //}
-
         [HttpGet]
         public JsonResult AtualizaStatus()
         {
             try
             {
-                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalAtualizaStatus", queryString: null);
+                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalInutilizadaAtualizaStatus", queryString: null);
 
                 return Json(
                     new { success = true },
@@ -163,5 +158,30 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        public ContentResult FormRetornoSefaz()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem SEFAZ",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NotaFiscal")
+                },
+                Id = "fly01mdlfrmVisualizarRetornoSefaz"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
     }
 }

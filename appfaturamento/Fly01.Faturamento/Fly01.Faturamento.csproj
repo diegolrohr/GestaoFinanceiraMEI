@@ -319,6 +319,8 @@
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFSe.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

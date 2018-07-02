@@ -60,6 +60,8 @@
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
+    <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalInutilizadaAtualizaStatusController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController.cs" />

@@ -47,8 +47,8 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Série de Notas Fiscais",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Adicionar", OnClickFn = "fnNovo" },
                         new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Notas Fiscais Inutilizadas", OnClickFn = "fnNotaFiscalInutilizadaList" },
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

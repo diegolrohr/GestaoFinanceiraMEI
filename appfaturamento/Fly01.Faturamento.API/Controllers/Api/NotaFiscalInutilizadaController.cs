@@ -4,9 +4,6 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Web.Http;
 using System.Threading.Tasks;
 using Fly01.Core.ServiceBus;
-using System.Data.Entity;
-using System.Linq;
-using Fly01.Core.Entities.Domains.Enum;
 using System;
 using Fly01.Core.Notifications;
 

@@ -1,6 +1,5 @@
 ﻿<script>
     function fnImportarArquivo(input) {
-        debugger;
         if (!window.FileReader) return;
         if (($('#bancoNome').val() == "") || ($('#arquivo').val() == "")) return;
 
@@ -61,13 +60,11 @@
 
     function setupGridSelectEvents(table) {
         table.on("select", function (e, dt, type, indexes) {
-            debugger;
             if (type !== undefined) {
                 if (table.rows({ selected: true }).count() > 0)
                     $("#baixar").removeAttr("disabled"); 
             }
         }).on('deselect', function (e, dt, type, indexes) {
-            debugger;
             if (type !== undefined) {
                 if (table.rows({ selected: true }).count() <= 0)
                     $("#baixar").attr("disabled", "disabled");

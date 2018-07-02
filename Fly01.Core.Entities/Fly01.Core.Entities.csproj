@@ -129,6 +129,7 @@
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
     <Compile Include="Domains\Commons\SaldoHistorico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalInutilizada.cs" />
     <Compile Include="Domains\Commons\SerieNotaFiscal.cs" />
     <Compile Include="Domains\Commons\Servico.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
@@ -149,7 +150,6 @@
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
-    <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />

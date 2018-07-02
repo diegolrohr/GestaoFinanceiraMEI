@@ -61,8 +61,7 @@ namespace Fly01.Faturamento.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam(
                 "$filter", $"contains(serie, '{term}') and (tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'{tipo}'" +
-                $" or tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'Ambas')" +
-                $" and statusSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}StatusSerieNotaFiscal'Habilitada'"
+                $" or tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'Ambas')"
                 );
             queryString.AddParam("$orderby", "serie");
 

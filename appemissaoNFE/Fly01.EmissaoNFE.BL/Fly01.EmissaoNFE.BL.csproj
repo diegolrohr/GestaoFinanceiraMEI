@@ -48,6 +48,7 @@
     <Compile Include="EmpresaBL.cs" />
     <Compile Include="CceBL.cs" />
     <Compile Include="FcpStBL.cs" />
+    <Compile Include="IbptNcmBL.cs" />
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />
     <Compile Include="ParametroNfBL.cs" />

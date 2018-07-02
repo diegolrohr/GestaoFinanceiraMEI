@@ -53,16 +53,15 @@ namespace Fly01.Financeiro.BL
             if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
-            //post bemacash ignorando condicao parcelamento
-            if (entity.DescricaoParcela != null)
+            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
+                //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
                 entity.Numero = ++max;
 
                 base.Insert(entity);
             }
-
-            if (string.IsNullOrEmpty(entity.DescricaoParcela))
+            else
             {
                 var condicoesParcelamento = condicaoParcelamentoBL
                                                 .GetPrestacoes(entity.CondicaoParcelamentoId,
@@ -97,13 +96,8 @@ namespace Fly01.Financeiro.BL
                     base.Insert(itemContaReceber);
 
 
-                    //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber.DataVencimento,
-                                                                        itemContaReceber.Id,
-                                                                        itemContaReceber.ValorPrevisto,
-                                                                        TipoContaFinanceira.ContaReceber,
-                                                                        entity.Descricao);
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
 
                     if (repetir)
                     {

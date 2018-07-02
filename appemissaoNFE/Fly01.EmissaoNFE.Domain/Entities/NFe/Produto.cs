@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
@@ -200,5 +201,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [Required]
         [XmlElement(ElementName = "indTot")]
         public CompoemValorTotal AgregaTotalNota { get; set; }
+
+        [XmlIgnore]
+        public TipoProduto TipoProduto { get; set; }
     }
 }

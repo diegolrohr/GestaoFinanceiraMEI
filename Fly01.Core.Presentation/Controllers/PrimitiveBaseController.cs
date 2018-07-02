@@ -49,10 +49,11 @@ namespace Fly01.Core.Presentation.Controllers
             }
             else
                 notApply = true;
-                //throw new Exception("'annotationInAction' == null and 'annotationInController' == null in 'PrimitiveBaseController'");
-            
-            if(string.IsNullOrEmpty(resourceKey) && !notApply)
-                throw new Exception("Invalid 'resourceKey' in 'PrimitiveBaseController'");
+            //throw new Exception("'annotationInAction' == null and 'annotationInController' == null in 'PrimitiveBaseController'");
+
+            if (string.IsNullOrEmpty(resourceKey) && !notApply)
+                notApply = true;
+                //throw new Exception("Invalid 'resourceKey' in 'PrimitiveBaseController'");
             
             return new OperationRoleAttribute() { ResourceKey = resourceKey, PermissionValue = permissionValue, NotApply = notApply };
         }

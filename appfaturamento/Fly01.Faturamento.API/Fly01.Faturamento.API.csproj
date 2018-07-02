@@ -77,8 +77,7 @@
     <Compile Include="Controllers\Api\CalculaTotalOrdemVendaController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
-    <Compile Include="Controllers\Api\SerieNotaFiscalInutilizadaController.cs" />
-    <Compile Include="Controllers\Api\StatusSerieNotaFiscalController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NFSeServicoController.cs" />
     <Compile Include="Controllers\Api\NFeProdutoController.cs" />
     <Compile Include="Controllers\Api\NFSeController.cs" />
@@ -184,6 +183,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
       <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
       <Name>Fly01.Core.Rest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
+      <Name>Fly01.Core.ServiceBus</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>

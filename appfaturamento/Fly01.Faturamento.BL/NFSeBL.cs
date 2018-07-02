@@ -11,15 +11,17 @@ namespace Fly01.Faturamento.BL
 {
     public class NFSeBL : PlataformaBaseBL<NFSe>
     {
-        protected SerieNotaFiscalBL SerieNotaFiscalBL;
+        protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
+        protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
 
-        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL) : base(context)
+        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL) : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
             NFSeServicoBL = nfseServicoBL;
             TotalTributacaoBL = totalTributacaoBL;
+            NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
         }
 
         public IQueryable<NFSe> Everything => repository.All.Where(x => x.Ativo);
@@ -37,18 +39,16 @@ namespace Fly01.Faturamento.BL
             var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
             if (entity.SerieNotaFiscalId.HasValue)
             {
-                entity.Fail(serieNotaFiscal == null || serieNotaFiscal.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFSe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NFS-e ou tipo ambas"));
+                entity.Fail(serieNotaFiscal == null || (serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.NFSe && serieNotaFiscal.TipoOperacaoSerieNotaFiscal != TipoOperacaoSerieNotaFiscal.Ambas), new Error("Selecione uma série ativa do tipo NFS-e ou tipo ambas"));
             }
 
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue)
             {
                 var serieENumeroJaUsado = All.AsNoTracking().Any(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal));
                 //varios numeros de uma mesma serie/tipo inutilizados
-                var serieENumeroInutilizado = SerieNotaFiscalBL.All.AsNoTracking().Any(x =>
-                    x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
+                var serieENumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
                     x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                    x.NumNotaFiscal == entity.NumNotaFiscal &&
-                    (x.TipoOperacaoSerieNotaFiscal == serieNotaFiscal.TipoOperacaoSerieNotaFiscal || x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas));
+                    x.NumNotaFiscal == entity.NumNotaFiscal);
 
                 if (serieENumeroJaUsado || serieENumeroInutilizado)
                 {
@@ -62,11 +62,9 @@ namespace Fly01.Faturamento.BL
                     {
                         sugestaoProximoNumNota += 1;
                     }//enquanto sugestão possa estar na lista de inutilizadas
-                    while (SerieNotaFiscalBL.All.AsNoTracking().Any(x =>
-                         x.StatusSerieNotaFiscal == StatusSerieNotaFiscal.Inutilizada &&
+                    while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
                          x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                         x.NumNotaFiscal == sugestaoProximoNumNota &&
-                         (x.TipoOperacaoSerieNotaFiscal == serieNotaFiscal.TipoOperacaoSerieNotaFiscal || x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas)));
+                         x.NumNotaFiscal == sugestaoProximoNumNota));
 
                     entity.Fail(true, new Error("Série e número já utilizados ou inutilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
                 }

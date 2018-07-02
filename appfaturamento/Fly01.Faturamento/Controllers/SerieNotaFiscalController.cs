@@ -21,7 +21,6 @@ namespace Fly01.Faturamento.Controllers
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
 
-            customFilters.AddParam("$filter", $"statusSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}StatusSerieNotaFiscal'Habilitada'");
             customFilters.AddParam("$select", "id,serie,tipoOperacaoSerieNotaFiscal,numNotaFiscal,dataInclusao");
 
             return customFilters;
@@ -49,6 +48,7 @@ namespace Fly01.Faturamento.Controllers
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton { Id = "new", Label = "Adicionar", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Notas Fiscais Inutilizadas", OnClickFn = "fnNotaFiscalInutilizadaList" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -111,8 +111,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
-
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "serie",
@@ -164,8 +162,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
-
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "serie",
@@ -216,9 +212,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "fly01mdlfrmModalSerieNotaFiscalNFSe"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
+            config.Elements.Add(new InputHiddenUI { Id = "id" });            
 
             config.Elements.Add(new InputCustommaskUI
             {

@@ -91,23 +91,23 @@ namespace Fly01.Financeiro.Controllers
                         new {
                                 type = "line",
                                 label = "Saldo",
-                                backgroundColor = "rgb(99, 99, 99)",
-                                borderColor = "rgb(99, 99, 99)",
+                                backgroundColor = "rgb(44, 55, 57)",
+                                borderColor = "rgb(44, 55, 57)",
                                 data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
                                 fill = false
                             },
                         new {
                                 label = "Recebimentos",
                                 fill = false,
-                                backgroundColor = "rgb(75, 192, 192)",
-                                borderColor = "rgb(75, 192, 192)",
+                                backgroundColor = "rgb(0, 178, 121)",
+                                borderColor = "rgb(0, 178, 121)",
                                 data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
                             },
                         new {
                                 label = "Pagamentos",
                                 fill = false,
-                                backgroundColor = "rgb(255, 99, 132)",
-                                borderColor = "rgb(255, 99, 132)",
+                                backgroundColor = "rgb(239, 100, 97)",
+                                borderColor = "rgb(239, 100, 97)",
                                 data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
                         }
                     }

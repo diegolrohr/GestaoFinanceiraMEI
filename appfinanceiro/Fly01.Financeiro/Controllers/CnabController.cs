@@ -37,7 +37,8 @@ namespace Fly01.Financeiro.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"), 
+                nossoNumeroFormatado = x.NossoNumeroFormatado
             };
         }
 
@@ -74,7 +75,7 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-              //  Functions = new List<string>() {"fnImprimirBoleto" },
+                Functions = new List<string>() {"fnImprimirBoleto" },
                 ReadyFn = "fnFormReady"
             };
 
@@ -83,7 +84,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "bancoId",
                 Class = "col s12 m6 l6",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
@@ -161,7 +162,7 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnFormReadyCnab" }
+                Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto"}
             };
 
             var dtConfig = new DataTableUI()
@@ -185,19 +186,20 @@ namespace Fly01.Financeiro.Controllers
                 RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
 
             });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nº boleto", Priority = 6 });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nº boleto", Priority = 6 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "pessoa_nome", Priority = 3, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", Priority = 3, DisplayName = "Banco" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
 
             cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email, string contaReceberId)
+        public ContentResult ModalConfigEmail(string email, string contaReceberId, string contaBancariaId)
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -213,8 +215,9 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Id = "fly01mdlfrmModalConfigEmail",
             };
-
+            
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
+            config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });

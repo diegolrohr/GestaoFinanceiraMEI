@@ -120,8 +120,7 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=" ,
                 Functions = new List<string>() { "fnRenderEnum" }
             };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento'))" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
@@ -159,5 +158,30 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        public ContentResult FormRetornoSefaz()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem SEFAZ",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NotaFiscal")
+                },
+                Id = "fly01mdlfrmVisualizarRetornoSefaz"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
     }
 }

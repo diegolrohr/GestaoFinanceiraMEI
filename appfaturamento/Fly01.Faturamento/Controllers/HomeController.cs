@@ -111,11 +111,11 @@ namespace Fly01.Faturamento.Controllers
                         OnClick = @Url.Action("Form", "ParametroTributario")
                     },
                     new LinkUI() {Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
-                    //new LinkUI() //TODO falta api emissao
-                    //{
-                    //    Label = "Notas Fiscais Inutilizadas",
-                    //    OnClick = @Url.Action("List", "SerieNotaFiscalInutilizada")
-                    //}
+                    new LinkUI()
+                    {
+                        Label = "Notas Fiscais Inutilizadas",
+                        OnClick = @Url.Action("List", "NotaFiscalInutilizada")
+                    }
                 }
             });
 

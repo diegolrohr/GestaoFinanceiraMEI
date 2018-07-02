@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSSInutilizada(string plataformaUrl)
         {
-            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada))
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazChaveAcesso), notaFinal = g.Max(x => x.SefazChaveAcesso) });

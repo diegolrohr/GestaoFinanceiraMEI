@@ -14,7 +14,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         Autorizada = 2,
 
         [XmlEnum(Name = "3")]
-        [Subtitle("UsoDenegado", "Uso Denegado", "Uso Denegado", "orange")]
+        [Subtitle("UsoDenegado", "Uso Denegado", "Uso Denegado", "totvs-blue")]
         UsoDenegado = 3,
 
         [XmlEnum(Name = "4")]

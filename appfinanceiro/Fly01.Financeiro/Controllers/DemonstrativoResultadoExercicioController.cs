@@ -88,7 +88,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardReceitas",
                 Title = "Receitas",
                 Placeholder = "R$ 0,00",

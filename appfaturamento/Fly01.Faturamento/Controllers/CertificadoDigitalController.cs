@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.Controllers
                         return Json(new
                         {
                             success = true,
-                            color = "orange",
+                            color = "totvs-blue",
                             mainInfo = "Seu certificado digital irá vencer em " + dtExpStr + ".",
                             subInfo = "Providêncie a atualização do seu certificado digital."
                         }, JsonRequestBehavior.AllowGet);

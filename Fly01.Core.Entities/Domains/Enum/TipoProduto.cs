@@ -4,7 +4,7 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoProduto
     {
-        [Subtitle("Insumo", "INSUMO", "INSUMO", "orange")]
+        [Subtitle("Insumo", "INSUMO", "INSUMO", "totvs-blue")]
         Insumo = 1,
 
         [Subtitle("ProdutoFinal", "PRODUTO FINAL", "PRODUTO FINAL", "green")]

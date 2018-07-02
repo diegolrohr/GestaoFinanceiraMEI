@@ -248,7 +248,6 @@ namespace Fly01.Faturamento.BL
 
         public void NotaFiscalInutilizar(NotaFiscalInutilizada entity)
         {
-
             if (!AllIncluding(x => x.SerieNotaFiscal).AsNoTracking().Any(x => x.SerieNotaFiscal.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal &&
                 (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.Autorizada || x.Status == StatusNotaFiscal.Cancelada || x.Status == StatusNotaFiscal.CanceladaForaPrazo || x.Status == StatusNotaFiscal.EmCancelamento || x.Status == StatusNotaFiscal.FalhaNoCancelamento)))
             {

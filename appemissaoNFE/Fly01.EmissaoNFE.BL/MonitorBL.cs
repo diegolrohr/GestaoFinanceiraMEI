@@ -51,6 +51,8 @@ namespace Fly01.EmissaoNFE.BL
                 statusNFe = StatusNotaFiscal.CanceladaForaPrazo;
             else if (FalhaSchema)
                 statusNFe = StatusNotaFiscal.FalhaTransmissao;
+            else if (inutilizada.Contains(status))
+                statusNFe = StatusNotaFiscal.Inutilizada;
             else if (autorizada.Contains(status) | autorizadaDPEC.Contains(status))
                 statusNFe = StatusNotaFiscal.Autorizada;
             else if (falhaCancelamento.Contains(status))

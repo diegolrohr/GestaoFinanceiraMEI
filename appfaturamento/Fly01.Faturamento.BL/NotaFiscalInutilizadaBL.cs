@@ -12,6 +12,8 @@ namespace Fly01.Faturamento.BL
         {
         }
 
+        public IQueryable<NotaFiscalInutilizada> Everything => repository.All.Where(x => x.Ativo);
+
         public override void Insert(NotaFiscalInutilizada entity)
         {
             entity.Data = DateTime.Now;

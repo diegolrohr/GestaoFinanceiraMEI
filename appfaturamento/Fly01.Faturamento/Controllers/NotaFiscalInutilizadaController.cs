@@ -107,61 +107,12 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Notas Fiscais Inutilizadas",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" },
+                        new HtmlUIButton { Id = "atualizarStatusInutilizada", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusInutilizada" },
                         new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-
-            //    var cfgForm = new FormUI
-            //    {
-            //        ReadyFn = "fnUpdateDataFinal",
-            //        UrlFunctions = Url.Action("Functions") + "?fns=",
-            //        Elements = new List<BaseUI>()
-            //        {
-            //            new PeriodPickerUI
-            //            {
-            //                Label = "Selecione o período",
-            //                Id = "mesPicker",
-            //                Name = "mesPicker",
-            //                Class = "col s12 m6 offset-m3 l4 offset-l4",
-            //                DomEvents = new List<DomEventUI>()
-            //                {
-            //                    new DomEventUI()
-            //                    {
-            //                        DomEvent = "change",
-            //                        Function = "fnUpdateDataFinal"
-            //                    }
-            //                }
-            //            },
-            //            new InputHiddenUI()
-            //            {
-            //                Id = "dataFinal",
-            //                Name = "dataFinal"
-            //            },
-            //            new InputHiddenUI()
-            //            {
-            //                Id = "dataInicial",
-            //                Name = "dataInicial"
-            //            }
-            //        }
-
-            //    };
-
-            //cfg.Content.Add(cfgForm);
-
-            //var config = new DataTableUI
-            //{
-            //    UrlGridLoad = Url.Action(),
-            //    Parameters = new List<DataTableUIParameter>
-            //    {
-            //        new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
-            //        new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
-            //    },
-            //    UrlFunctions = Url.Action("Functions") + "?fns=",
-            //    Functions = new List<string>() { "fnRenderEnum" }
-            //};
 
             var config = new DataTableUI
             {
@@ -170,8 +121,7 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" });
-            //TODO: Diego retransmitir
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento'))" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
@@ -191,28 +141,12 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        //public override JsonResult GridLoad(Dictionary<string, string> filters = null)
-        //{
-        //    if (filters == null)
-        //        filters = new Dictionary<string, string>();
-
-        //    filters.Add("data le ", Request.QueryString["dataFinal"]);
-        //    filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
-
-        //    return base.GridLoad(filters);
-        //}
-
-        //public JsonResult GridLoadNoFilter()
-        //{
-        //    return base.GridLoad();
-        //}
-
         [HttpGet]
         public JsonResult AtualizaStatus()
         {
             try
             {
-                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalAtualizaStatus", queryString: null);
+                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalInutilizadaAtualizaStatus", queryString: null);
 
                 return Json(
                     new { success = true },

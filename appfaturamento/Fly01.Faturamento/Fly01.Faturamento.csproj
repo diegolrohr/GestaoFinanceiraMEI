@@ -27,7 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -319,6 +319,7 @@
     <Content Include="Views\NotaFiscal\Functions\_fnExcluirNFSe.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
+    <Content Include="Views\Shared\NotAllow.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

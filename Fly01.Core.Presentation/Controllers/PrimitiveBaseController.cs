@@ -9,8 +9,8 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public abstract class PrimitiveBaseController : Controller
     {
-        private string controllerName { get; set; }
-        private string actionName { get; set; }
+        private string ControllerName { get; set; }
+        private string ActionName { get; set; }
 
         private bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue)
             => SessionManager.Current.UserData.UserCanPerformOperation(resourceKey, permissionValue);
@@ -53,15 +53,15 @@ namespace Fly01.Core.Presentation.Controllers
 
             if (string.IsNullOrEmpty(resourceKey) && !notApply)
                 notApply = true;
-                //throw new Exception("Invalid 'resourceKey' in 'PrimitiveBaseController'");
-            
+            //throw new Exception("Invalid 'resourceKey' in 'PrimitiveBaseController'");
+
             return new OperationRoleAttribute() { ResourceKey = resourceKey, PermissionValue = permissionValue, NotApply = notApply };
         }
 
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
-            controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            actionName = filterContext.ActionDescriptor.ActionName;
+            ControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+            ActionName = filterContext.ActionDescriptor.ActionName;
 
             //base.OnAuthorization(filterContext);
 
@@ -76,7 +76,7 @@ namespace Fly01.Core.Presentation.Controllers
             else
                 HandleUnauthorizedRequest(filterContext);
         }
-        
+
         protected void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             // auth failed, redirect to login page
@@ -85,9 +85,14 @@ namespace Fly01.Core.Presentation.Controllers
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 var isJson = (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"));
-                var routeValueDictionary = new RouteValueDictionary(new { controller = isJson ? "Home" : controllerName, action = "NotAllow", routeDescription = $"{controllerName}/{actionName}" });
-
-                filterContext.Result = new RedirectToRouteResult(routeValueDictionary);
+                filterContext.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary(new
+                    {
+                        controller = isJson ? "Home" : ControllerName,
+                        action = "NotAllow",
+                        routeDescription = $"{ControllerName}/{ActionName}"
+                    })
+                );
             }
             //else
             //{

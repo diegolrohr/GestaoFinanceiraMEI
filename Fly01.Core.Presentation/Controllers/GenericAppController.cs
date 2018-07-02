@@ -16,6 +16,7 @@ namespace Fly01.Core.Presentation.Controllers
         protected string AppEntitiesResourceName { get; set; }
         protected string AppViewModelResourceName { get; set; }
 
+        [OperationRole(NotApply = true)]
         public virtual ContentResult Functions(string fns)
         {
             string content = fns.Split(',')
@@ -40,6 +41,7 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
+        [OperationRole(NotApply = true)]
         public List<K> GetAll<K>(string order = "", string filterField = "", string filterValue = "")
         {
             Dictionary<string, string> queryStringRequest = AppDefaults.GetQueryStringDefault(filterField, filterValue, AppDefaults.MaxRecordsPerPageAPI);
@@ -63,6 +65,8 @@ namespace Fly01.Core.Presentation.Controllers
 
             return items;
         }
+
+        [OperationRole(NotApply = true)]
         public List<K> GetAll<K>(string resourceName, int maxRecords, string order = "", string filterField = "", string filterValue = "", Dictionary<string, string> querystring = null)
         {
             var queryStringRequest = new List<KeyValuePair<string, string>>();
@@ -91,6 +95,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             return items;
         }
+
         protected virtual void LoadDependence() { }
 
         public virtual ActionResult Index()

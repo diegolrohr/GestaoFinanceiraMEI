@@ -12,14 +12,20 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueAjusteManual)]
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
-        public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
+        public override Func<AjusteManualVM, object> GetDisplayData()
+        {
+            throw new NotImplementedException();
+        }
 
-        public override ContentResult List() { return Form(); }
+        public override ContentResult List() 
+            => Form();
 
         public override ContentResult Form()
         {
@@ -125,6 +131,7 @@ namespace Fly01.Estoque.Controllers
         }
 
         [HttpPost]
+        [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
         public JsonResult NovoTipoMovimento(string term)
         {
             try
@@ -147,7 +154,6 @@ namespace Fly01.Estoque.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
-
         }
     }
 }

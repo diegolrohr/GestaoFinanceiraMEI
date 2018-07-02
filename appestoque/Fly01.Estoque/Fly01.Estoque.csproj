@@ -201,6 +201,7 @@
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\NotAllow.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -27,6 +27,7 @@ namespace Fly01.Estoque.Controllers
             return customFilters;
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult GridLoadProdutosMaisMovimentados(DateTime dataInicial, DateTime dataFinal)
         {
             _dataInicial = dataInicial;

@@ -11,6 +11,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class EstadoController : BaseController<EstadoVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

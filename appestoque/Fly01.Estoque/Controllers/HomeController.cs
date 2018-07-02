@@ -8,9 +8,12 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    //[OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueVisaoGeral)]
+    //[OperationRole(NotApply = true)]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)

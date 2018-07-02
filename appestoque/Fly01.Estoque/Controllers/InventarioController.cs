@@ -20,6 +20,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueInventario)]
     public class InventarioController : BaseController<InventarioVM>
     {
         public InventarioController()

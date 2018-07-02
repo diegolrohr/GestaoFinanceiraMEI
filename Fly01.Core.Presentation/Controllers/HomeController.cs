@@ -5,9 +5,11 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
+using Fly01.uiJS.Classes.Elements;
 
 namespace Fly01.Core.Presentation.Controllers
 {
+    [OperationRole(NotApply = true)]
     public abstract class HomeController : GenericAppController
     {
         public override ActionResult Index() 
@@ -28,5 +30,37 @@ namespace Fly01.Core.Presentation.Controllers
         protected abstract ContentUI HomeJson(bool withSidebarUrl = false);
 
         public abstract ContentResult Sidebar();
+
+        [OperationRole(NotApply = true)]
+        public ContentResult NotAllow(string routeDescription)
+        {
+            var cfg = new ContentUI
+            {
+                //History = new ContentUIHistory() { Default = history },
+                Header = new HtmlUIHeader()
+                {
+                    Title = $"Opção não permitida",
+                    Buttons = new List<HtmlUIButton>()
+                },
+                UrlFunctions = ""
+            };
+
+            cfg.Content.Add(new FormUI()
+            {
+                Elements = new List<BaseUI>()
+                {
+                    new LabelSetUI()
+                    {
+                        Class = "col s12",
+                        Id = "withoutpermission",
+                        Name = "withoutpermission",
+                        Label = $"Você não possui permissão no recurso {routeDescription}."
+                    }
+                },
+                Class = "col s12"
+            });
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
     }
 }

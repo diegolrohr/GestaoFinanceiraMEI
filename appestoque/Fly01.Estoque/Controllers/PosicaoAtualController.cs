@@ -11,6 +11,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHash.EstoqueEstoquePosicaoAtual)]
     public class PosicaoAtualController : BaseController<PosicaoAtualVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

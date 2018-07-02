@@ -16,6 +16,9 @@ namespace Fly01.Estoque.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+            if (!SessionManager.Current.UserData.UserCanPerformOperation(ResourceHash.EstoqueEstoqueVisaoGeral))
+                return new ContentUI();
+
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year,
                                                         DateTime.Now.Month, 1)
                                                         .AddDays(-1);

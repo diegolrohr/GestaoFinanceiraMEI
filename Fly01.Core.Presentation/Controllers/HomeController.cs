@@ -7,7 +7,6 @@ using Fly01.Core.Config;
 using Fly01.Core.Rest;
 using Fly01.uiJS.Classes.Elements;
 using System.Linq;
-using System;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -61,7 +60,6 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var cfg = new ContentUI
             {
-                //History = new ContentUIHistory() { Default = history },
                 Header = new HtmlUIHeader()
                 {
                     Title = $"Opção não permitida",

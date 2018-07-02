@@ -31,7 +31,8 @@ namespace Fly01.EmissaoNFE.BL
 
                     foreach (var detalhe in nota.Detalhes)
                     {
-                        if (detalhe.Produto.NCM != null)
+
+                        if (detalhe.Produto.NCM != null && detalhe.Produto.TipoProduto == TipoProduto.ProdutoFinal)
                         {
                             var codigoFilter = detalhe.Produto.NCM[0] == '0'
                                 ? detalhe.Produto.NCM.Substring(1)

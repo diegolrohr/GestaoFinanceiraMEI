@@ -50,7 +50,7 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Notas Fiscais Inutilizadas",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "atualizarStatus", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatus" },
+                        new HtmlUIButton { Id = "atualizarStatusInutilizada", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusInutilizada" },
                         new HtmlUIButton { Id = "new", Label = "Nova Inutilização", OnClickFn = "fnNovo" },
                     }
                 },

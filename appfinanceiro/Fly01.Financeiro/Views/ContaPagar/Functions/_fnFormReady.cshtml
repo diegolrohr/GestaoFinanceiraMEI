@@ -1,15 +1,15 @@
 ﻿<script>
 function fnFormReady() {
-
     if ($('#id').val() != "") {
+        $('#baixarTituloField').hide();
         $('#repetirField').hide();
         $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
     }
 
+    $('#contaBancariaIdField').hide();
     $('#tipoPeriodicidadeField').hide();
     $('#tipoRepeticaoField').hide();
     $('#numeroRepeticoesField').hide();
     $('#periodoFimField').hide();
-
 }
 </script>

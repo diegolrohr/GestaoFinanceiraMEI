@@ -1,6 +1,6 @@
 ﻿<script>
 function fnFormReady() {
-    if ($('#id').val() != "") {
+    if ($('#id').val() != undefined && $('#id').val() != "") {
         $('#baixarTituloField').hide();
         $('#repetirField').hide();
         $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');

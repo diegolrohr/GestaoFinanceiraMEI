@@ -34,21 +34,11 @@ namespace Fly01.Financeiro.Controllers
         public override ActionResult ImprimirRecibo(Guid id)
         {
             ContaReceberVM itemContaReceber = Get(id);
-            //ver??
-            //BankTransacVM itemBankTransac = GetBankTransac(id);
 
             double discount = 0;
             double interest = 0;
             double total = 0;
             string valorTituloTotalFormatado = string.Empty;
-
-            //if (itemBankTransac != null)
-            //{
-            //    discount = itemBankTransac.Discount.HasValue ? itemBankTransac.Discount.Value : 0;
-            //    interest = itemBankTransac.Interest.HasValue ? itemBankTransac.Interest.Value : 0;
-            //    total = itemBankTransac.Value + discount - interest;
-            //    valorTituloTotalFormatado = itemBankTransac.Value.ToString("C", AppDefaults.CultureInfoDefault);
-            //}
 
             var managerEmpresaVM = GetDadosEmpresa();
             total = itemContaReceber.ValorPago.Value;
@@ -62,7 +52,6 @@ namespace Fly01.Financeiro.Controllers
             ReciboContaFinanceiraVM itemRecibo = new ReciboContaFinanceiraVM
             {
                 Id = itemContaReceber.Id.ToString(),
-                //Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", itemContaReceber.Pessoa, valorTituloTotalFormatado, itemBankTransac.Value.toExtenso()),
                 Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", itemContaReceber.Pessoa.Nome, valorTituloTotalFormatado, itemContaReceber.ValorPago.Value.toExtenso()),
                 DescricaoTitulo = !String.IsNullOrWhiteSpace(itemContaReceber.Descricao) ? itemContaReceber.Descricao : itemContaReceber.Categoria.Descricao,
                 ValorTitulo = valorTituloFormatado,
@@ -79,8 +68,6 @@ namespace Fly01.Financeiro.Controllers
             };
 
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
-            //var report = ReportViewerHelper<ReciboContaFinanceiraVM>.GetReport(ReportRecibo.Instance, itemRecibo, SessionManager.Current.UserData.TokenData.Username, "");
-            //byte[] data = ReportViewerHelper<ReciboContaFinanceiraVM>.PrepareReportToPrint(report);
             return File(reportViewer.Print(itemRecibo, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 

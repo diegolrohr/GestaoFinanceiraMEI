@@ -15,7 +15,9 @@
     }
 
     function fnFormReady() {
-        if ($('#codigoCedente').val() == "" && $('#codigoDV').val() == "" && $('#taxaJuros').val() == "")
+        //contaEmiteBoleto
+        //if ($('#codigoCedente').val() == "" && $('#codigoDV').val() == "" && $('#taxaJuros').val() == "")
+        if ($('#contaEmiteBoleto').prop('checked') == false)
         {
             $('#codigoCedenteField').hide();
             $('#codigoDVField').hide();
@@ -24,7 +26,7 @@
             $('#textInfoBoletosField').hide();
             
         }
-        else
-            $('#checkCedente').prop('checked', true);
+        //else
+        //    $('#contaEmiteBoleto').prop('checked', true);
     }
 </script>

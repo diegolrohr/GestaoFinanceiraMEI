@@ -31,5 +31,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double? TaxaJuros { get; set; }
 
         public double? PercentualMulta { get; set; }
+
+        [Required]
+        [JsonProperty("contaEmiteBoleto")]
+        public bool ContaEmiteBoleto { get; set; }
     }
 }

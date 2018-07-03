@@ -40,9 +40,58 @@ namespace Fly01.Core.Helpers
 
         private void ProcessXElementToLancamentos()
         {
-            //vem formato 1000.15
+            var bankId = GetBancoId();
+            switch (bankId)
+            {
+                //BANCO SANTANDER
+                case "033":
+                    GetLancamentosSantander();
+                    break;
+                //DEMAIS BANCOS
+                default:
+                    {
+                        //vem formato 1000.15
+                        NumberFormatInfo provider = new NumberFormatInfo();
+                        provider.NumberDecimalSeparator = ".";
+                        provider.NumberGroupSeparator = ",";
+                        provider.NumberGroupSizes = new int[] { 3 };
+
+                        var list = _XElement.Descendants("STMTTRN").ToList();
+
+                        _lancamentos = (
+                            from c in _XElement.Descendants("STMTTRN")
+                            select new OFXLancamento()
+                            {
+                                Valor = Convert.ToDouble(c.Element("TRNAMT").Value, provider),
+                                Data = DateTime.ParseExact(c.Element("DTPOSTED").Value.Substring(0, 8), "yyyyMMdd", null),
+                                Descricao = c.Element("MEMO").Value,
+                                MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
+                            }).ToList();
+                        break;
+                    }
+            };
+
+
+
+        }
+
+        public string GetBancoId()
+        {
+            var bankId = _XElement.Element("BANKID");
+            return bankId != null ? bankId.Value : "";
+        }
+
+        public List<OFXLancamento> GetLancamentos()
+        {
+            return _lancamentos;
+        }
+
+
+        public void GetLancamentosSantander()
+        {
+            //vem formato 1000,15
             NumberFormatInfo provider = new NumberFormatInfo();
-            provider.NumberDecimalSeparator = ".";
+            provider.NumberDecimalSeparator = ",";
             provider.NumberGroupSeparator = ",";
             provider.NumberGroupSizes = new int[] { 3 };
 
@@ -57,17 +106,7 @@ namespace Fly01.Core.Helpers
                     Descricao = c.Element("MEMO").Value,
                     MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
                 }).ToList();
-        }
 
-        public string GetBancoId()
-        {
-            var bankId = _XElement.Element("BANKID");
-            return bankId != null ? bankId.Value : "";
-        }
-
-        public List<OFXLancamento> GetLancamentos()
-        {
-            return _lancamentos;
         }
 
         public List<OFXLancamento> GetLancamentosDebito()

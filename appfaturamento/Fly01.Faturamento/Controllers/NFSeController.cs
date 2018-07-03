@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -14,6 +13,7 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -25,10 +25,7 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
         }
 
-        public override Func<NFSeVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult Form()
         {
@@ -56,7 +53,8 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Label = "Tipo Venda",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
             {
@@ -66,7 +64,7 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal)))
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "serieNotaFiscalIdNFSe",
                 Class = "col s12 m6",
@@ -80,7 +78,7 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFSe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal", Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12 m8",
@@ -89,11 +87,11 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("Cliente", "AutoComplete"),
                 LabelId = "clienteNome"
             });
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "sefazId", Class = "col s12", Label = "Sefaz chave de acesso", Disabled = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -102,7 +100,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -111,7 +109,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -122,12 +120,12 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "labelSetServicos", Class = "col s12", Label = "Serviços" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetServicos", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
             {
                 Id = "nfseServicosDataTable",
@@ -143,17 +141,14 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
-            config.Elements.Add(new LabelsetUI { Id = "labelSetTransmissao", Class = "col s12", Label = "Transmissão" });
-            config.Elements.Add(new TextareaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
-            config.Elements.Add(new TextareaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTransmissao", Class = "col s12", Label = "Transmissão" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult ModalTransmitir()
         {
@@ -167,7 +162,7 @@ namespace Fly01.Faturamento.Controllers
                 {
                     Edit = @Url.Action("Transmitir"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "NotaFiscal")
+                    //List = @Url.Action("List", "NotaFiscal")
                 },
                 ReadyFn = "fnFormReadyTransmitirNFSe",
                 Id = "fly01mdlfrmTransmitirNFSe"
@@ -181,10 +176,11 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Disabled = true,
                 Name = "tipoVenda",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFSe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteIdNFSe",
                 Class = "col s12",
@@ -200,7 +196,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true, Name = "totalNotaFiscal" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "serieNotaFiscalIdNFSe",
                 Class = "col s12 m6",

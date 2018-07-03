@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -12,21 +11,16 @@ using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
 
-        public override Func<AjusteManualVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() { return Form(); }
 
         public override ContentResult Form()
         {
@@ -77,7 +71,7 @@ namespace Fly01.Estoque.Controllers
 
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "tipoMovimentoId",
                 Class = "col l6 m6 s12",
@@ -89,7 +83,7 @@ namespace Fly01.Estoque.Controllers
                 PreFilter = "tipoEntradaSaida"
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col l12 m12 s12",
@@ -124,7 +118,7 @@ namespace Fly01.Estoque.Controllers
 
             config.Elements.Add(new InputNumbersUI { Id = "novoEstoque", Class = "col l6 m6 s12", Label = "Novo estoque", Value = "0", Disabled = true });
 
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 
             cfg.Content.Add(config);
 

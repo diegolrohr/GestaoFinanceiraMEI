@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core;
@@ -12,6 +11,7 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -28,6 +28,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>(ResourceName);
 
+
             if (response == null || response.Data == null)
                 return null;
 
@@ -36,17 +37,69 @@ namespace Fly01.Faturamento.Controllers
 
         public JsonResult StatusCard()
         {
-            var certificadoDigital = GetCertificado();
+            var empresa = GetDadosEmpresa();
 
-            if (certificadoDigital == null)
-                return Json(new { }, JsonRequestBehavior.AllowGet);
-
-            return Json(new
+            try
             {
-                dataExpiracaoCertificado = certificadoDigital.DataExpiracao
-            }, JsonRequestBehavior.AllowGet);
-        }
+                var certificadoDigital = GetCertificado();
+                if (certificadoDigital != null)
+                {
+                    string dtExpStr = certificadoDigital.DataExpiracao.Date.ToString("dd/MM/yyyy");
 
+                    if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.Date) < 1)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "red",
+                            mainInfo = "Seu certificado digital venceu em " + dtExpStr + ".",
+                            subInfo = "Atualize o certificado digital."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.AddDays(-30).Date) < 1)
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "totvs-blue",
+                            mainInfo = "Seu certificado digital irá vencer em " + dtExpStr + ".",
+                            subInfo = "Providêncie a atualização do seu certificado digital."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            success = true,
+                            color = "green",
+                            mainInfo = "O certificado digital atual é válido até " + dtExpStr + "."
+                        }, JsonRequestBehavior.AllowGet);
+                        }
+                }
+                
+                return Json(new
+                {
+                    success = true,
+                    color = "blue",
+                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui certificado digital cadastrado.",
+                    subInfo = "Envie o arquivo e informe a senha de um certificado digital válido."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                var result = new
+                {
+                    success = false,
+                    color = "blue",
+                    mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui Certificado digital cadastrado.",
+                    subInfo = "Envie o arquivo e informe a senha de um certificado válido.",
+                    message = error.Message
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet); ;
+            }
+        }
         public override Func<CertificadoDigitalVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
@@ -67,7 +120,7 @@ namespace Fly01.Faturamento.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Certificado Digital",
+                    Title = "Certificado Digital A1",
                     Buttons = new List<HtmlUIButton>
                     {
                         new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit" }
@@ -128,7 +181,7 @@ namespace Fly01.Faturamento.Controllers
 
                 CertificadoDigitalVM arquivoRetorno;
 
-                if(certificadoExistente == null)
+                if (certificadoExistente == null)
                     arquivoRetorno = RestHelper.ExecutePostRequest<CertificadoDigitalVM>(ResourceName, JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
                 else
                     arquivoRetorno = RestHelper.ExecutePutRequest<CertificadoDigitalVM>($"{ResourceName}/{certificadoExistente.Id}", JsonConvert.SerializeObject(arquivoCertificado, JsonSerializerSetting.Default));
@@ -137,6 +190,7 @@ namespace Fly01.Faturamento.Controllers
                 {
                     success = true,
                     data = arquivoRetorno,
+                    message = "Certificado digital cadastrado com sucesso.",
                     recordsFiltered = 1,
                     recordsTotal = 1
                 }, JsonRequestBehavior.AllowGet);

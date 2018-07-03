@@ -1,13 +1,13 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
+﻿using Fly01.Compras.ViewModel;
+using Fly01.Core;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
@@ -44,7 +44,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 Id = "fly01mdlfrmPedidoItem",
                 ReadyFn = "fnFormReadyPedidoItem"
@@ -53,7 +53,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "pedidoId" });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s12",

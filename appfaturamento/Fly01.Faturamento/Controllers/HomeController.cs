@@ -9,6 +9,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Rest;
 using System.Configuration;
+using Fly01.uiJS.Classes.Widgets;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -38,7 +39,7 @@ namespace Fly01.Faturamento.Controllers
             config.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "cardNotaFiscal",
                 Title = "Nota Fiscal",
                 Placeholder = "Número de Notas Fiscais não transmitidas",
@@ -61,7 +62,7 @@ namespace Fly01.Faturamento.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Faturamento",
                 Items = new List<LinkUI>
@@ -71,7 +72,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
@@ -98,7 +99,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Configurações",
                 Items = new List<LinkUI>
@@ -110,27 +111,24 @@ namespace Fly01.Faturamento.Controllers
                         OnClick = @Url.Action("Form", "ParametroTributario")
                     },
                     new LinkUI() {Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
-                    //new LinkUI() //TODO falta api emissao
-                    //{
-                    //    Label = "Notas Fiscais Inutilizadas",
-                    //    OnClick = @Url.Action("List", "SerieNotaFiscalInutilizada")
-                    //}
+                    new LinkUI()
+                    {
+                        Label = "Notas Fiscais Inutilizadas",
+                        OnClick = @Url.Action("List", "NotaFiscalInutilizada")
+                    }
                 }
             });
 
-
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
                 {
-                    new LinkUI()
-                    {
-                        Label = "Assistência Remota",
-                        Link = "https://secure.logmeinrescue.com/customer/code.aspx"
-                    }
+                    new LinkUI() { Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 
@@ -146,17 +144,19 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-            config.Zendesk = new ZendeskWidget()
+            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Email = SessionManager.Current.UserData.PlatformUser;
+
+            config.Widgets = new WidgetsUI();
+            config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Droz = new DrozUI();
+            config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Faturamento",
                 AppTag = "fly01_manufatura",
-                Name = SessionManager.Current.UserData.TokenData.Username,
-                Email = SessionManager.Current.UserData.PlatformUser
             };
-
-            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
-                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
-                : string.Empty;
+            if (Request.Url.ToString().Contains("fly01.com.br"))
+                config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

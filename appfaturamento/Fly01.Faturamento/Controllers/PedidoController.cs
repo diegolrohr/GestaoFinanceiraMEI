@@ -29,12 +29,13 @@ namespace Fly01.Faturamento.Controllers
             DataTableUI dtProdutosEstoqueNegativoCfg = new DataTableUI
             {
                 Parent = "produtosEstoqueNegativoField",
-                Id = "dtProdutosEstoqueNegativo",                
+                Id = "dtProdutosEstoqueNegativo",
                 UrlGridLoad = Url.Action("VerificaEstoqueNegativo"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
-                    new DataTableUIParameter { Id = "id", Required = true }
+                    new DataTableUIParameter { Id = "id", Required = true },
+                    new DataTableUIParameter { Id = "tipoVenda", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
                 {
@@ -51,20 +52,11 @@ namespace Fly01.Faturamento.Controllers
             return dtProdutosEstoqueNegativoCfg;
         }
 
-        public override Func<OrdemVendaVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<OrdemVendaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult List() { throw new NotImplementedException(); }
 
         public ContentResult FormPedido(bool isEdit = false)
         {
@@ -102,9 +94,15 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new FormWizardUIStep()
                     {
+                        Title = "Finalidade",
+                        Id = "stepFinalidade",
+                        Quantity = 2,
+                    },
+                    new FormWizardUIStep()
+                    {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 10,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -141,29 +139,38 @@ namespace Fly01.Faturamento.Controllers
                 ShowStepNumbers = true
             };
 
+            #region step Finalidade
+            config.Elements.Add(new ButtonGroupUI()
+            {
+                Id = "fly01btngrpFinalidade",
+                Class = "col s12 m6 offset-m3",
+                OnClickFn = "fnChangeFinalidade",
+                Label = "Tipo do pedido",
+                Options = new List<ButtonGroupOptionUI>
+                {
+                    new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
+                    new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
+                }
+            });
+            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+            #endregion
+
+            #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
 
-            #region step Cadastro
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m3", Label = "Número", Disabled = true });
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoVenda",
-            //    Class = "col s12 m4",
-            //    Label = "Tipo Venda",
-            //    Value = "Normal",
-            //    Required = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false))
-            //});
+
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
-                Class = "col s12 m6",
+                Class = "col s12 m7",
                 Label = "Grupo Tributário Padrão",
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioPadraoDescricao",
@@ -172,7 +179,7 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12",
@@ -182,8 +189,8 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "clienteNome",
                 DataUrlPost = Url.Action("PostCliente")
             });
-            
-            config.Elements.Add(new TextareaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
             #region step Produtos
@@ -228,7 +235,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -239,7 +246,7 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -250,20 +257,20 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao"
 
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
                 Label = "Categoria",
+                PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = Url.Action("NovaCategoriaReceita")
-
+                DataUrlPost = @Url.Action("NovaCategoria")
             });
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -280,8 +287,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)).ToList()
-                    .FindAll(x => "FOB,CIF,Terceiro,SemFrete".Contains(x.Value))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
@@ -294,7 +300,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Placa Veículo",
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
                 Class = "col s12 m4",
@@ -324,7 +330,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + serviços + impostos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
             config.Elements.Add(new InputCheckboxUI
@@ -338,14 +344,22 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60});
+            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelsetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
+            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });
             config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
             #endregion
 
             #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "chaveNFeReferenciada",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a etapa da finalidade, não é mais possível voltar e editar estes dados."
+                }
+            });
             config.Helpers.Add(new TooltipUI
             {
                 Id = "finalizarPedido",
@@ -359,7 +373,15 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a receber do valor total do pedido."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "formaPagamentoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se o pedido vai ser faturado, informe a forma de pagamento."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -367,7 +389,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de saída da quantidade total dos produtos."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -375,7 +397,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalOrdemVenda",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Total da soma dos produtos, serviços, frete (somente se for do tipo CIF ou Remetente) e da soma dos impostos."
+                    Text = "Total da soma dos produtos, serviços, frete (se for por conta da empresa) e da soma dos impostos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -418,12 +440,37 @@ namespace Fly01.Faturamento.Controllers
                     Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalFrete",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "transportadoraId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa, se for tipo pedido Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioPadraoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtOrdemVendaProdutosCfg());
             cfg.Content.Add(GetDtOrdemVendaServicosCfg());
             cfg.Content.Add(GetDtProdutosEstoqueNegativoCfg());
+
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
 
         }
@@ -464,12 +511,13 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public JsonResult VerificaEstoqueNegativo(string id)
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
+                queryString.AddParam("tipoVenda", tipoVenda);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);
 
@@ -490,28 +538,6 @@ namespace Fly01.Faturamento.Controllers
         }
 
         #region OnDemmand
-
-        [HttpPost]
-        public JsonResult NovaCategoriaReceita(string term)
-        {
-            return NovaCategoria(new CategoriaVM { Descricao = term, TipoCarteira = "1" });
-        }
-
-        private JsonResult NovaCategoria(CategoriaVM entity)
-        {
-            try
-            {
-                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
-                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
-
-                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
 
         public JsonResult PostCliente(string term)
         {

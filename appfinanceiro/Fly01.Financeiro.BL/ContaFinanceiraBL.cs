@@ -23,13 +23,13 @@ namespace Fly01.Financeiro.BL
             return repository.AllIncluding(includeProperties).Where(x => x.PlataformaId == PlataformaUrl);
         }
         
-        public IQueryable<ContaFinanceira> AllWithoutPlataformaId => repository.All.Where(x => x.Ativo);
+        public IQueryable<ContaFinanceira> Everything => repository.All.Where(x => x.Ativo);
 
         public FluxoCaixaProjecao GetAllContasNextDays(DateTime dataInicial, DateTime dataFinal, string plataformaId)
         {
             var saldoInicial = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
 
-            var contasReceber = AllWithoutPlataformaId
+            var contasReceber = Everything
                 .Where(x => x.PlataformaId == plataformaId && 
                             x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber &&
                             (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
@@ -45,7 +45,7 @@ namespace Fly01.Financeiro.BL
                 }).ToList();
 
 
-            var contasAPagar = AllWithoutPlataformaId
+            var contasAPagar = Everything
                 .Where(x => x.PlataformaId == plataformaId && 
                             x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar &&
                             (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)

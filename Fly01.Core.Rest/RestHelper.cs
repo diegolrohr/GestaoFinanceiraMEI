@@ -437,12 +437,37 @@ namespace Fly01.Core.Rest
             DateTime beginRequest = DateTime.Now;
             try
             {
-                returnOK = RestUtils.ExecuteDeleteRequest(url, resource, out statusCode, out statusDescription, header);
+                returnOK = RestUtils.ExecuteDeleteRequest(url, resource, out statusCode, out statusDescription, header ?? DefaultHeader);
                 return returnOK;
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public static bool ExecuteDeleteRequest(string url, string resource, Dictionary<string, string> header, Dictionary<string, string> queryString)
+        {
+            var statusDescription = string.Empty;
+            var beginRequest = DateTime.Now;
+            try
+            {
+                HttpStatusCode statusCode;
+                var returnOk = RestUtils.ExecuteDeleteRequest(url, resource, out statusCode, out statusDescription, header ?? DefaultHeader, queryString);
+                return returnOk;
+            }
+            catch (ApiException ex)
+            {
+                var logLevel = (int)ex.StatusCode >= 500 ? LogLevel.Error : LogLevel.Warn;
+                var logEvent = new LogEventInfo(logLevel, "", "Delete");
+                logEvent.Properties["method"] = "DELETE";
+                logEvent.Properties["resource"] = AppDefaults.UrlApiGateway + resource;
+                logEvent.Properties["requestJson"] = string.Empty;
+                logEvent.Properties["statusCode"] = ex.StatusCode;
+                logEvent.Properties["exception"] = string.Concat(ex.GetType().FullName, " ", ex.Message + " Status description: " + statusDescription + " Begin request: " + beginRequest);
+                logEvent.Properties["platformUrl"] = SessionManager.Current.UserData.PlatformUrl;
+                logger.Log(logEvent);
+                throw;
             }
         }
         #endregion

@@ -1,10 +1,7 @@
 ﻿using Fly01.Compras.BL;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Notifications;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using System.Web.OData.Routing;
 
 namespace Fly01.Compras.API.Controllers.Api
@@ -37,18 +34,6 @@ namespace Fly01.Compras.API.Controllers.Api
                 AfterSave(entity);
 
             return Created(entity);
-        }
-
-        private Notification Notification { get; } = new Notification();
-
-        private void AddErrorModelState(ModelStateDictionary modelState)
-        {
-            modelState.ToList().ForEach(
-                model => model.Value.Errors.ToList().ForEach(
-                    itemErro => Notification.Errors.Add(
-                        new Error(itemErro.ErrorMessage, string.Concat(char.ToLowerInvariant(model.Key[0]), model.Key.Substring(1))))));
-
-            throw new BusinessException(Notification.Get());
         }
     }
 }

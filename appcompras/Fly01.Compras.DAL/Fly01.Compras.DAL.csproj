@@ -144,6 +144,26 @@
     <Compile Include="Migrations\201804191416497_AlterMaxLengthFormaPagamento.Designer.cs">
       <DependentUpon>201804191416497_AlterMaxLengthFormaPagamento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805142124325_AlterPlataformaBaseRegistroFixo.cs" />
+    <Compile Include="Migrations\201805142124325_AlterPlataformaBaseRegistroFixo.Designer.cs">
+      <DependentUpon>201805142124325_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805152116199_AlterNCMInativoFormaPagamento.cs" />
+    <Compile Include="Migrations\201805152116199_AlterNCMInativoFormaPagamento.Designer.cs">
+      <DependentUpon>201805152116199_AlterNCMInativoFormaPagamento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806061248379_AlterPessoaAlterObservacaoMaxLength500.cs" />
+    <Compile Include="Migrations\201806061248379_AlterPessoaAlterObservacaoMaxLength500.Designer.cs">
+      <DependentUpon>201806061248379_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806181734537_AlterPessoa_TamanhoString.cs" />
+    <Compile Include="Migrations\201806181734537_AlterPessoa_TamanhoString.Designer.cs">
+      <DependentUpon>201806181734537_AlterPessoa_TamanhoString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806251331487_AlterPessoaDadosEndereco.cs" />
+    <Compile Include="Migrations\201806251331487_AlterPessoaDadosEndereco.Designer.cs">
+      <DependentUpon>201806251331487_AlterPessoaDadosEndereco.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -259,6 +279,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804191416497_AlterMaxLengthFormaPagamento.resx">
       <DependentUpon>201804191416497_AlterMaxLengthFormaPagamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805142124325_AlterPlataformaBaseRegistroFixo.resx">
+      <DependentUpon>201805142124325_AlterPlataformaBaseRegistroFixo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152116199_AlterNCMInativoFormaPagamento.resx">
+      <DependentUpon>201805152116199_AlterNCMInativoFormaPagamento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806061248379_AlterPessoaAlterObservacaoMaxLength500.resx">
+      <DependentUpon>201806061248379_AlterPessoaAlterObservacaoMaxLength500.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806181734537_AlterPessoa_TamanhoString.resx">
+      <DependentUpon>201806181734537_AlterPessoa_TamanhoString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806251331487_AlterPessoaDadosEndereco.resx">
+      <DependentUpon>201806251331487_AlterPessoaDadosEndereco.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

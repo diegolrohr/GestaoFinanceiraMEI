@@ -3,7 +3,6 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System;
 using System.Linq;
-using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 
@@ -54,7 +53,7 @@ namespace Fly01.EmissaoNFE.BL
             var tipo = EnumHelper.GetDataEnumValues(typeof(TipoAmbiente));
             entity.Fail(entity.Homologacao == null || entity.Homologacao.Length != 6 || entity.Homologacao == "000000", EntidadeInvalida);
             entity.Fail(entity.Producao == null || entity.Producao.Length != 6 || entity.Producao == "000000", EntidadeProdInvalida);
-            entity.Fail(!string.IsNullOrEmpty(entity.EntidadeAmbiente.ToString()) && !tipo.Any(x => x.Value == ((int)entity.EntidadeAmbiente).ToString()), TipoInvalido);
+            entity.Fail(!string.IsNullOrEmpty(entity.EntidadeAmbiente.ToString()) && !tipo.Any(x => x.Key == (entity.EntidadeAmbiente).ToString()), TipoInvalido);
 
             base.ValidaModel(entity);
         }

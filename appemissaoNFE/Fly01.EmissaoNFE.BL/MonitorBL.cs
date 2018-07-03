@@ -31,8 +31,10 @@ namespace Fly01.EmissaoNFE.BL
             var transmitida = "103/104/105";
             var autorizada = "100/150";
             var autorizadaDPEC = "124";
-            var cancelada = "101/151";
+            var cancelada = "101/151/15";
             var denegada = "110/301/302/303/999";
+            var inutilizada = "30/102";
+            var falhaCancelamento = "026";
 
             var FalhaSchema = recomendacao.Substring(0, 3) == "002";
             var NaoAssinada = recomendacao.Substring(0, 3) == "003";
@@ -49,8 +51,12 @@ namespace Fly01.EmissaoNFE.BL
                 statusNFe = StatusNotaFiscal.CanceladaForaPrazo;
             else if (FalhaSchema)
                 statusNFe = StatusNotaFiscal.FalhaTransmissao;
+            else if (inutilizada.Contains(status))
+                statusNFe = StatusNotaFiscal.Inutilizada;
             else if (autorizada.Contains(status) | autorizadaDPEC.Contains(status))
                 statusNFe = StatusNotaFiscal.Autorizada;
+            else if (falhaCancelamento.Contains(status))
+                statusNFe = StatusNotaFiscal.FalhaNoCancelamento;
             else if (cancelada.Contains(status))
                 statusNFe = StatusNotaFiscal.Cancelada;
             else if (denegada.Contains(status))

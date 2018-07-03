@@ -10,55 +10,29 @@ namespace Fly01.Core.Notifications
 {
     public class LogMongoHelper<T> : IDisposable
     {
-        private bool disposed = false;
-        #region IDisposable
-        public void Dispose()
+        private string Host { get; set; }
+        private string UserName { get; set; }
+        private string Password { get; set; }
+        private string DataBaseName { get; set; }
+
+        public LogMongoHelper(string dbName)
+            : this(ConfigurationManager.AppSettings["MongoHost"], 
+                  ConfigurationManager.AppSettings["MongoUserName"], 
+                  ConfigurationManager.AppSettings["MongoPassword"], dbName)
+        { }
+
+        public LogMongoHelper(string host, string userName, string password, string databaseName)
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            Host = host;
+            UserName = userName;
+            Password = password;
+            DataBaseName = databaseName;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                }
-            }
-
-            this.disposed = true;
-        }
-        #endregion
-
-        private string userName
-        {
-            get { return ConfigurationManager.AppSettings["MongoUserName"]; }
-        }
-
-        private string host
-        {
-            get { return ConfigurationManager.AppSettings["MongoHost"]; }
-        }
-
-        private string password
-        {
-            get { return ConfigurationManager.AppSettings["MongoPassword"]; }
-        }
-
-        private string dataBaseName
-        {
-            get { return ConfigurationManager.AppSettings["MongoDataBaseName"]; }
-        }
-
-        private string collectionName
-        {
-            get { return ConfigurationManager.AppSettings["MongoCollectionNameLog"]; }
-        }
+        public void Dispose() => GC.SuppressFinalize(this);
 
         private MongoClient _mongoClient;
-
-        private MongoClient mongoClient
+        private MongoClient MongoClient
         {
             get
             {
@@ -66,7 +40,7 @@ namespace Fly01.Core.Notifications
                 {
                     MongoClientSettings settings = new MongoClientSettings()
                     {
-                        Server = new MongoServerAddress(host, 10255),
+                        Server = new MongoServerAddress(Host, 10255),
                         UseSsl = true,
                         SslSettings = new SslSettings()
                         {
@@ -74,7 +48,7 @@ namespace Fly01.Core.Notifications
                         },
                         Credentials = new List<MongoCredential>()
                         {
-                            new MongoCredential("SCRAM-SHA-1", new MongoInternalIdentity(dataBaseName, userName), new PasswordEvidence(password))
+                            new MongoCredential("SCRAM-SHA-1", new MongoInternalIdentity(DataBaseName, UserName), new PasswordEvidence(Password))
                         }
                     };
 
@@ -85,18 +59,18 @@ namespace Fly01.Core.Notifications
             }
         }
 
-        public long Count()
+        public long Count(string collectionName)
         {
-            var collection = GetCollection();
+            var collection = GetCollection(collectionName);
             return collection.Count(new BsonDocument());
         }
 
-        public List<T> GetAll()
+        public List<T> GetAll(string collectionName, FilterDefinition<T> filter)
         {
             try
             {
-                var collection = GetCollection();
-                return collection.Find<T>(new BsonDocument()).ToList();
+                var collection = GetCollection(collectionName);
+                return collection.Find(filter).ToList();
             }
             catch (MongoConnectionException)
             {
@@ -104,11 +78,22 @@ namespace Fly01.Core.Notifications
             }
         }
 
-        public IMongoCollection<T> GetCollection()
+        public IMongoCollection<T> GetCollection(string collectionName)
         {
-            var database = mongoClient.GetDatabase(dataBaseName);
+            var database = MongoClient.GetDatabase(DataBaseName);
             var collection = database.GetCollection<T>(collectionName);
             return collection;
+        }
+
+        public void CreateIndex(string collectionName, string fieldName)
+        {
+            var collection = this.GetCollection(collectionName);
+            var indexOptions = new CreateIndexOptions
+            {
+                Collation = new Collation("pt", strength: CollationStrength.Secondary)
+            };
+
+            collection.Indexes.CreateOne(fieldName, indexOptions);
         }
     }
 }

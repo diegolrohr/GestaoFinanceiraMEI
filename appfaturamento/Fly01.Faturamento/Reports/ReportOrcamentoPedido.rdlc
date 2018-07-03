@@ -109,7 +109,7 @@
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                                 <TextDecoration>None</TextDecoration>
-                                <Color>#f37021</Color>
+                                <Color>#0c9abe</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -198,7 +198,7 @@
                               <Style>
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>#f37021</Color>
+                                <Color>#0c9abe</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1006,7 +1006,7 @@
                               <Style>
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>#f37021</Color>
+                                <Color>#0c9abe</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1219,7 +1219,7 @@
                               <Style>
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>#f37021</Color>
+                                <Color>#0c9abe</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1459,7 +1459,7 @@
                               <Style>
                                 <FontSize>12pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>#f37021</Color>
+                                <Color>#0c9abe</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1670,14 +1670,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Valor do Frete CIF R$: </Value>
+                              <Value>Valor do Frete R$: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value>=Fields!ValorFreteCIF.Value</Value>
+                              <Value>=Fields!ValorFreteTotal.Value</Value>
                               <Style>
                                 <Format>#,0.00</Format>
                               </Style>
@@ -1901,10 +1901,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox51</rd:DefaultName>
-        <Top>7.5094cm</Top>
-        <Left>0.02645cm</Left>
+        <Top>7.54469cm</Top>
+        <Left>0.09864cm</Left>
         <Height>0.62618cm</Height>
-        <Width>16.15229cm</Width>
+        <Width>16.12242cm</Width>
         <ZIndex>11</ZIndex>
         <Style>
           <Border>
@@ -1952,11 +1952,47 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox53">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Finalidade: </Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!Finalidade.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox51</rd:DefaultName>
+        <Top>7.54469cm</Top>
+        <Left>11.40913cm</Left>
+        <Height>0.62618cm</Height>
+        <Width>4.7696cm</Width>
+        <ZIndex>13</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
     <Height>6.5618in</Height>
     <Style />
   </Body>
-  <Width>6.41636in</Width>
+  <Width>6.45512in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -2018,11 +2054,11 @@
         </Field>
         <Field Name="PesoBruto">
           <DataField>PesoBruto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="PesoLiquido">
           <DataField>PesoLiquido</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Status">
           <DataField>Status</DataField>
@@ -2050,7 +2086,7 @@
         </Field>
         <Field Name="ValorFrete">
           <DataField>ValorFrete</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Observacao">
           <DataField>Observacao</DataField>
@@ -2066,7 +2102,7 @@
         </Field>
         <Field Name="ItemQtd">
           <DataField>ItemQtd</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemNome">
           <DataField>ItemNome</DataField>
@@ -2074,44 +2110,48 @@
         </Field>
         <Field Name="ItemDesconto">
           <DataField>ItemDesconto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemTotal">
           <DataField>ItemTotal</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ItemValor">
           <DataField>ItemValor</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalProdutos">
           <DataField>TotalProdutos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalImpostosProdutos">
           <DataField>TotalImpostosProdutos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalServicos">
           <DataField>TotalServicos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalImpostosServicos">
           <DataField>TotalImpostosServicos</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="ValorFreteCIF">
-          <DataField>ValorFreteCIF</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="ValorFreteTotal">
+          <DataField>ValorFreteTotal</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="Total">
           <DataField>Total</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Finalidade">
+          <DataField>Finalidade</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>C:\git\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Git\Fly01.Apps\appfaturamento\Fly01.Faturamento\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>OrcamentoPedido</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

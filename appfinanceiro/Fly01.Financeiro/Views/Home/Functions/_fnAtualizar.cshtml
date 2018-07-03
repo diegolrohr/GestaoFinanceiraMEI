@@ -16,13 +16,8 @@
         }
         else {
             fly01._.fly01chart.refresh();
-            fly01._.fly01dt.refresh();
-        }
-        
-        if (e != null) {
-            if (e.type == "click" && e.currentTarget.id == "save")
-                getSaldos(dataInicial, dataFinal);
+            fly01._.dtGridFluxoCaixa.refresh();
+            getSaldos(dataFinal);
         }
     }
-
 </script>

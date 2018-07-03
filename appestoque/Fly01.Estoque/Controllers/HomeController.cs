@@ -7,6 +7,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
+using Fly01.uiJS.Classes.Widgets;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -53,17 +54,17 @@ namespace Fly01.Estoque.Controllers
                 {
                     new InputDateUI { Id =  "dataInicial", Class = "col s6 m3 l4", Label = "Data Inicial", Value= dataInicialFiltroDefault.ToString("dd/MM/yyyy")},
                     new InputDateUI { Id =  "dataFinal", Class = "col s6 m3 l4", Label = "Data Final", Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy")},
-                    new ButtongroupUI()
+                    new ButtonGroupUI()
                     {
                         Id = "fly01btngrp",
                         Class = "col s12 m6 l4",
                         Label = "Selecione o período",
                         OnClickFn = "fnAtualizarPeriodo",
-                        Options = new List<OptionUI>
+                        Options = new List<ButtonGroupOptionUI>
                         {
-                            new OptionUI {Id = "btnDia", Value = "dia", Label = "Dia"},
-                            new OptionUI {Id = "btnSemana", Value = "semana", Label = "Semana"},
-                            new OptionUI {Id = "btnMes", Value = "mes", Label = "Mês"}
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "dia", Label = "Dia", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "semana", Label = "Semana", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "mes", Label = "Mês", Class = "col s4"}
                         }
                     }
                 }
@@ -74,7 +75,7 @@ namespace Fly01.Estoque.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Produtos"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Produtos"}
                 }
 
             });
@@ -197,7 +198,7 @@ namespace Fly01.Estoque.Controllers
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Estoque",
                 Items = new List<LinkUI>
@@ -209,7 +210,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Cadastros",
                 Items = new List<LinkUI>
@@ -220,7 +221,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            config.MenuItems.Add(new SidebarMenuUI()
+            config.MenuItems.Add(new SidebarUIMenu()
             {
                 Label = "Ajuda",
                 Items = new List<LinkUI>
@@ -228,6 +229,8 @@ namespace Fly01.Estoque.Controllers
                     new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                 }
             });
+
+            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
 
             #endregion
 
@@ -239,17 +242,19 @@ namespace Fly01.Estoque.Controllers
             config.MenuApps.AddRange(AppsList());
             #endregion
 
-            config.Zendesk = new ZendeskWidget()
+            config.Name = SessionManager.Current.UserData.TokenData.Username;
+            config.Email = SessionManager.Current.UserData.PlatformUser;
+
+            config.Widgets = new WidgetsUI();
+            config.Widgets.Conpass = new ConpassUI();
+            config.Widgets.Droz = new DrozUI();
+            config.Widgets.Zendesk = new ZendeskUI()
             {
                 AppName = "Fly01 Estoque",
                 AppTag = "fly01_manufatura",
-                Name = SessionManager.Current.UserData.TokenData.Username,
-                Email = SessionManager.Current.UserData.PlatformUser
             };
-
-            config.AppInsightsKey = Request.Url.ToString().Contains("fly01.com.br")
-                ? ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"]
-                : string.Empty;
+            if (Request.Url.ToString().Contains("fly01.com.br"))
+                config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }

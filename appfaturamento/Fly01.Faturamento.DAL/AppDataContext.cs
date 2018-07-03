@@ -52,6 +52,7 @@ namespace Fly01.Faturamento.DAL
                 .Map<NFeProduto>(m => m.ToTable("NFeProduto"))
                 .Map<NFSeServico>(m => m.ToTable("NFSeServico"));
 
+            builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
             builder.Entity<OrdemVendaItem>().Ignore(m => m.Total);
             builder.Entity<NotaFiscalItem>().Ignore(m => m.Total);
         }
@@ -87,5 +88,6 @@ namespace Fly01.Faturamento.DAL
         public DbSet<CertificadoDigital> CertificadosDigitais { get; set; }
         public DbSet<NotaFiscalItemTributacao> NotaFiscalItemTributacoes { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
+        public DbSet<NotaFiscalInutilizada> NotaFiscalInutilizadas{ get; set; }
     }
 }

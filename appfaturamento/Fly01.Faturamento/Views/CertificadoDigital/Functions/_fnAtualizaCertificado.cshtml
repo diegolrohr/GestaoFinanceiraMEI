@@ -32,12 +32,13 @@
             },
             success: function (response) {
                 if (response.success) {
-                    fnGetStatusCertificado(true);
-                    fly01.core.updateTextFields();
+                    fnGetStatusCertificado();
+                    fly01.fn.updateTextFields();
+                    fly01.toast(response.message, "success");
                 }
                 else {
-                    fnGetStatusCertificado(false);
-                    fly01.fns.submitErrorHandler(null, response.message);
+                    fnGetStatusCertificado();
+                    fly01.fn.submitErrorHandler(null, response.message);
                 }
             }
         });

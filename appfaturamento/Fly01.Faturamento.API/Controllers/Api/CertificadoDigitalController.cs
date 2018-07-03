@@ -1,12 +1,12 @@
-﻿using Fly01.Faturamento.BL;
-using Fly01.Core.Entities.Domains.Commons;
-using System.Web.OData.Routing;
+﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Notifications;
+using Fly01.Faturamento.BL;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System;
 using System.Web.OData;
-using System.Linq;
-using Fly01.Core.Notifications;
+using System.Web.OData.Routing;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -15,7 +15,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     {
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<CertificadoDigital> model)
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 if (!unitOfWork.CertificadoDigitalBL.All.Any())
                     return BadRequest("Nenhum certificado foi encontrado para esta plataforma.");
@@ -37,10 +37,10 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             try
             {
-                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                using (var unitOfWork = new UnitOfWork(ContextInitialize))
                 {
-                    if (unitOfWork.CertificadoDigitalBL.All.Any())
-                        return BadRequest("Já existe um certificado cadastrado para esta plataforma.");
+                    if (unitOfWork.CertificadoDigitalBL.CertificadoAtualValido().Any())
+                        throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
                     return await base.Post(entity);
@@ -51,5 +51,19 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 throw new BusinessException(ex.Message);
             }
         }
+
+        public override IHttpActionResult Get()
+        {
+            try
+            {
+                return Ok(UnitOfWork.CertificadoDigitalBL.CertificadoAtualValido());
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+
     }
 }

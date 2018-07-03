@@ -20,7 +20,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 try
                 {
                     Homologacao(entity);
-
+                    
                     Producao(entity);
 
                     return Ok(new { success = true });
@@ -75,6 +75,25 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.EnviaDanfe ? "1" : "0",
                 entity.UsaEPEC ? "1" : "0"
             );
+
+            var cc = new SPEDCFGNFEProd.SPEDCFGNFE().CFGCCE(
+                AppDefault.Token,
+                entity.Producao,
+                entity.TipoAmbiente,
+                entity.TipoAmbiente,
+                "1.00",
+                "1.00",
+                "1.00",
+                "1.00",
+                entity.HorarioVeraoRest,
+                entity.TipoHorarioRest,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+            );
         }
 
         public void Homologacao(ParametroVM entity)
@@ -101,6 +120,25 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 true,
                 entity.EnviaDanfe ? "1" : "0",
                 entity.UsaEPEC ? "1" : "0"
+            );
+
+            var cc = new SPEDCFGNFE.SPEDCFGNFE().CFGCCE(
+                AppDefault.Token,
+                entity.Homologacao,
+                entity.TipoAmbiente,
+                entity.TipoAmbiente,
+                "1.00",
+                "1.00",
+                "1.00",
+                "1.00",
+                entity.HorarioVeraoRest,
+                entity.TipoHorarioRest,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
             );
         }
     }

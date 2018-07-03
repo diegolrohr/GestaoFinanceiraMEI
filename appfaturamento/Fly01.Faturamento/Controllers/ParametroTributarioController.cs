@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -13,6 +12,8 @@ using System.Linq;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -35,10 +36,8 @@ namespace Fly01.Faturamento.Controllers
             return response.Data.FirstOrDefault();
         }
 
-
         public JsonResult CarregaParametro()
         {
-
             var parametroTributario = GetParametro();
 
             if (parametroTributario == null)
@@ -50,10 +49,13 @@ namespace Fly01.Faturamento.Controllers
                     aliquotaCOFINS = "2",
                     numeroRetornoNF = "1",
                     mensagemPadraoNota = "Nota Fiscal.",
-                    tipoVersaoNFe = "v3",
+                    tipoVersaoNFe = "v4",
                     tipoAmbiente = "Producao",
                     tipoModalidade = "Normal",
-                    aliquotaFCP = "0"
+                    aliquotaFCP = "0",
+                    tipoPresencaComprador = "Presencial",
+                    horarioVerao = "Nao",
+                    tipoHorario = "Brasilia"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -68,19 +70,16 @@ namespace Fly01.Faturamento.Controllers
                 tipoVersaoNFe = parametroTributario.TipoVersaoNFe,
                 mensagemPadraoNota = parametroTributario.MensagemPadraoNota,
                 tipoAmbiente = parametroTributario.TipoAmbiente,
-                aliquotaFCP = parametroTributario.AliquotaFCP
+                aliquotaFCP = parametroTributario.AliquotaFCP,
+                tipoPresencaComprador = parametroTributario.TipoPresencaComprador,
+                horarioVerao = parametroTributario.HorarioVerao,
+                tipoHorario = parametroTributario.TipoHorario
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public override Func<ParametroTributarioVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<ParametroTributarioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() { return Form(); }
 
         public override ContentResult Form()
         {
@@ -109,7 +108,7 @@ namespace Fly01.Faturamento.Controllers
                     List = Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="                
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -123,7 +122,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
 
             };
@@ -175,20 +174,29 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelsetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
+                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
                 }
 
             };
 
-            form3.Elements.Add(new InputCustommaskUI
+            //form3.Elements.Add(new InputCustommaskUI
+            //{
+            //    Id = "numeroRetornoNF",
+            //    Class = "col s12 m3",
+            //    Label = "Número de Retorno da NF",
+            //    MaxLength = 20,
+            //    Data = new { inputmask = "'regex': '[0-9]*'" }
+            //});
+            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF" });
+
+            form3.Elements.Add(new SelectUI
             {
-                Id = "numeroRetornoNF",
-                Class = "col s12 m3",
-                Label = "Número de Retorno da NF",
-                MaxLength = 20,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
+                Id = "tipoPresencaComprador",
+                Class = "col s12 m6",
+                Label = "Presença do Comprador",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPresencaComprador)))
             });
-            
+
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
@@ -196,11 +204,27 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Modalidade",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });
-            
+
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "horarioVerao",
+                Class = "col s12 m6 l3",
+                Label = "Horário de Verão",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(HorarioVerao)))
+            });
+
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "tipoHorario",
+                Class = "col s12 m6 l3",
+                Label = "Tipo Horário TSS",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoHorarioTSS)))
+            });
+
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoVersaoNFe",
-                Class = "col s6 m1",
+                Class = "col s6 m6 l3",
                 Label = "Versão NFe ",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
@@ -208,16 +232,16 @@ namespace Fly01.Faturamento.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoAmbiente",
-                Class = "col s6 m2",
+                Class = "col s6 m6 l3",
                 Label = "Ambiente",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new TextareaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 1000 });
 
             #region NFS
             ////Paramentro NFS
-            //config.Elements.Add(new LabelsetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
+            //config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
 
             //config.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12", Label = "Incentivo à Cultura" });
 
@@ -287,12 +311,23 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
+
+            #region Helpers 
+            form3.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe | entre as palavras, para exibir quebra de linha(enter) na impressão da DANFE. Exemplo: TextoLinha1 | TextoLinha2 | TextoLinha3."
+                }
+            });
+            #endregion
             cfg.Content.Add(form3);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente)
+        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try
             {
@@ -309,7 +344,10 @@ namespace Fly01.Faturamento.Controllers
                     tipoModalidade = modalidade,
                     tipoVersaoNFe = versao,
                     mensagemPadraoNota = mensagem,
-                    tipoAmbiente = ambiente
+                    tipoAmbiente = ambiente,
+                    tipoPresencaComprador = tipoPresencaComprador,
+                    horarioVerao = horarioVerao,
+                    tipoHorario = tipoHorario
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 200)
@@ -323,9 +361,9 @@ namespace Fly01.Faturamento.Controllers
                 var existeParametro = GetParametro();
 
                 if (existeParametro == null)
-                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro,JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
                 else
-                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro,JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
 
                 return Json(new
                 {
@@ -333,10 +371,8 @@ namespace Fly01.Faturamento.Controllers
                     data = parametroRetorno,
                     recordsFiltered = 1,
                     recordsTotal = 1
-                },JsonRequestBehavior.AllowGet);
-
+                }, JsonRequestBehavior.AllowGet);
             }
-
             catch (Exception ex)
             {
                 ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);

@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System;
 using System.Web.OData;
-using Fly01.Core.Notifications;
-using System.Web.Http.ModelBinding;
 using System.Data.Entity.Infrastructure;
 using System.Net;
-using System.Linq;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
@@ -89,18 +86,6 @@ namespace Fly01.Faturamento.API.Controllers.Api
             await UnitSave();
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        private Notification Notification { get; } = new Notification();
-
-        private void AddErrorModelState(ModelStateDictionary modelState)
-        {
-            modelState.ToList().ForEach(
-                model => model.Value.Errors.ToList().ForEach(
-                    itemErro => Notification.Errors.Add(
-                        new Error(itemErro.ErrorMessage, string.Concat(char.ToLowerInvariant(model.Key[0]), model.Key.Substring(1))))));
-
-            throw new BusinessException(Notification.Get());
         }
     }
 }

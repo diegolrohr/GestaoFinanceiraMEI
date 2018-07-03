@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -87,7 +88,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardReceitas",
                 Title = "Receitas",
                 Placeholder = "R$ 0,00",
@@ -213,14 +214,8 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
-        public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
     }
 }

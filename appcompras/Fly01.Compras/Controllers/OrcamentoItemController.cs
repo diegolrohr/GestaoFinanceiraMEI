@@ -1,13 +1,13 @@
-﻿using Fly01.Compras.Controllers.Base;
-using Fly01.Compras.ViewModel;
+﻿using Fly01.Compras.ViewModel;
+using Fly01.Core;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
@@ -55,14 +55,14 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "orcamentoId" });
             config.Elements.Add(new InputHiddenUI { Id = "fornecedorNome" });
 
-            config.Elements.Add(new AutocompleteUI { Id = "fornecedorId", Class = "col s12 l6", Label = "Fornecedor", Required = true,
+            config.Elements.Add(new AutoCompleteUI { Id = "fornecedorId", Class = "col s12 l6", Label = "Fornecedor", Required = true,
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "itemFornecedorNome",
                 DataUrlPost = Url.Action("PostFornecedor", "Orcamento"),
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNomeFornecedor" } }
             });
 
-            config.Elements.Add(new AutocompleteUI { Id = "produtoId", Class = "col s12 l6", Label = "Produto", Required = true,
+            config.Elements.Add(new AutoCompleteUI { Id = "produtoId", Class = "col s12 l6", Label = "Produto", Required = true,
                 DataUrl = Url.Action("Produto", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
@@ -70,21 +70,36 @@ namespace Fly01.Compras.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
             });
 
-            config.Elements.Add(new InputFloatUI { Id =  "quantidade", Class = "col s12 l6 numeric", Label = "Quantidade", Value = "1", Required = true,
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
-                }
-            });
-            
-            config.Elements.Add(new InputCurrencyUI { Id =  "valor", Class = "col s12 l6 numeric", Label = "Valor", Required = true,
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "quantidade",
+                Class = "col s12 l6 numeric",
+                Label = "Quantidade",
+                Value = "1",
+                Required = true,
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
                 }
             });
 
-            config.Elements.Add(new InputCurrencyUI { Id =  "desconto", Class = "col s12 l6", Label = "Desconto", 
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valor",
+                Class = "col s12 l6 numeric",
+                Label = "Valor",
+                Required = true,
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
+                }
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "desconto",
+                Class = "col s12 l6",
+                Label = "Desconto",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }

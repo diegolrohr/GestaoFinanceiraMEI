@@ -2,9 +2,6 @@
 using System.Web.OData.Routing;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Fly01.Core.Notifications;
-using System.Web.Http.ModelBinding;
-using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Financeiro.API.Controllers.Api
@@ -37,18 +34,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 AfterSave(entity);
 
             return Created(entity);
-        }
-
-        private Notification Notification { get; } = new Notification();
-
-        private void AddErrorModelState(ModelStateDictionary modelState)
-        {
-            modelState.ToList().ForEach(
-                model => model.Value.Errors.ToList().ForEach(
-                    itemErro => Notification.Errors.Add(
-                        new Error(itemErro.ErrorMessage, string.Concat(char.ToLowerInvariant(model.Key[0]), model.Key.Substring(1))))));
-
-            throw new BusinessException(Notification.Get());
         }
     }
 }

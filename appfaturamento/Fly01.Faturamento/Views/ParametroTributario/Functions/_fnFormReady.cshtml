@@ -19,7 +19,13 @@
                 $('select#tipoVersaoNFe').material_select();
                 $('select#tipoAmbiente').val(data.tipoAmbiente);
                 $('select#tipoAmbiente').material_select();
-                fly01.core.updateTextFields();
+                $('select#tipoPresencaComprador').val(data.tipoPresencaComprador);
+                $('select#tipoPresencaComprador').material_select();
+                $('select#horarioVerao').val(data.horarioVerao);
+                $('select#horarioVerao').material_select();
+                $('select#tipoHorario').val(data.tipoHorario);
+                $('select#tipoHorario').material_select();
+                fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {
                 fly01.toast(data.message, 'error');

@@ -49,6 +49,9 @@ namespace Fly01.EmissaoNFE.BL
         private IcmsBL icmsBL;
         public IcmsBL IcmsBL => icmsBL ?? (icmsBL = new IcmsBL(Context));
 
+        private IbptNcmBL ibptNcmBL;
+        public IbptNcmBL IbptNcmBL => ibptNcmBL ?? (ibptNcmBL = new IbptNcmBL(Context, EstadoBL));
+
         private IpiBL ipiBL;
         public IpiBL IpiBL => ipiBL ?? (ipiBL = new IpiBL(Context, NcmBL));
 
@@ -64,6 +67,7 @@ namespace Fly01.EmissaoNFE.BL
         private TributacaoBL tributacaoBL;
         public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL));
 
+
         #endregion
 
         #region BLS da integração com o TSS
@@ -72,6 +76,9 @@ namespace Fly01.EmissaoNFE.BL
 
         private CancelarFaixaBL cancelarFaixaBL;
         public CancelarFaixaBL CancelarFaixaBL => cancelarFaixaBL ?? (cancelarFaixaBL = new CancelarFaixaBL(Context, EntidadeBL));
+
+        private InutilizarNFBL inutilizarNFBL;
+        public InutilizarNFBL InutilizarNFBL => inutilizarNFBL ?? (inutilizarNFBL = new InutilizarNFBL(Context, EntidadeBL, EstadoBL, EmpresaBL));
 
         private CceBL cceBL;
         public CceBL CceBL => cceBL ?? (cceBL = new CceBL(Context, EntidadeBL));

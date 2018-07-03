@@ -49,8 +49,12 @@ namespace Fly01.Financeiro.API.Models.DAL
 
             builder.Entity<ContaFinanceiraRenegociacao>().Ignore(m => m.ContasFinanceirasOrigemIds);
             builder.Entity<ContaFinanceira>().Ignore(m => m.Saldo);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.NomePessoa);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancariaId);
+            builder.Entity<ContaFinanceira>().Ignore(m => m.ContaBancaria);
             builder.Entity<ConciliacaoBancaria>().Ignore(m => m.Arquivo);
-
+            builder.Entity<ContaBancaria>().Ignore(m => m.CodigoBanco);
+            builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
             builder.Entity<SaldoHistorico>().MapToStoredProcedures();
         }
 
@@ -77,5 +81,7 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<RenegociacaoContaFinanceiraOrigem> RenegociacaoContasFinanceirasOrigem { get; set; }
         public DbSet<RenegociacaoContaFinanceiraRenegociada> RenegociacaoContasFinanceirasRenegociadas { get; set; }
         public DbSet<ConfiguracaoNotificacaoFinanceiro> ConfiguracaoNotificacao { get; set; }
+        public DbSet<Cnab> Cnab { get; set; }
+        public DbSet<ArquivoRemessa> ArquivoRemessa { get; set; }
     }
 }

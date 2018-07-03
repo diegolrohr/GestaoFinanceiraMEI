@@ -27,5 +27,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("unidadeMedida")]
         public virtual UnidadeMedidaVM UnidadeMedida { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

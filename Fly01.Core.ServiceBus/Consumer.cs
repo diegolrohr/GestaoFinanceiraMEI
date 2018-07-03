@@ -1,108 +1,100 @@
 ﻿using System;
 using System.Text;
 using RabbitMQ.Client;
-using Newtonsoft.Json.Linq;
 using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
 using Fly01.Core.Mensageria;
+using System.Collections.Generic;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Core.ServiceBus
 {
     public abstract class Consumer
     {
-        private string Username
+        private string MsgHeaderInvalid = "A 'PlataformaUrl' e o 'AppUser' devem ser informados no Header da request";
+
+        private IConnection _connection;
+        protected string Message;
+        protected RabbitConfig.EnHttpVerb HTTPMethod;
+        protected Dictionary<string, object> Headers = new Dictionary<string, object>();
+        protected List<KeyValuePair<string, object>> exceptions;
+        protected abstract Task PersistMessage();
+
+        private IConnection Connection
         {
             get
             {
-                if (string.IsNullOrEmpty(Message))
-                    return "";
+                if (_connection == null)
+                    _connection = RabbitConfig.Factory.CreateConnection("cnsm" + RabbitConfig.QueueName);
 
-                var userName = "";
-
-                userName =
-                    HTTPMethod == RabbitConfig.enHTTPVerb.POST ? JObject.Parse(Message).GetValue("usuarioInclusao")?.ToString()
-                    : HTTPMethod == RabbitConfig.enHTTPVerb.PUT ? JObject.Parse(Message).GetValue("usuarioAlteracao")?.ToString()
-                    : JObject.Parse(Message).GetValue("usuarioExclusao")?.ToString();
-
-                return userName;
+                return _connection;
             }
         }
-        private string Plataforma
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Message))
-                    return JObject.Parse(Message).GetValue("plataformaId")?.ToString(); ;
 
-                return "";
-            }
-        }
-        private IConnection conn;
-        private IConnection Conn
+        private IModel Channel
         {
             get
             {
-                if (conn == null)
-                    conn = RabbitConfig.Factory.CreateConnection("cnsm" + RabbitConfig.QueueName);
-
-                return conn;
-            }
-        }
-        private IModel channel
-        {
-            get
-            {
-                var model = Conn.CreateModel();
+                var model = Connection.CreateModel();
                 return model;
             }
         }
 
-        protected string Message;
-        protected RabbitConfig.enHTTPVerb HTTPMethod;
+        private bool HeaderIsValid()
+        {
+            return !string.IsNullOrWhiteSpace(GetHeaderValue("PlataformaUrl")) &&
+                !string.IsNullOrWhiteSpace(GetHeaderValue("AppUser")) &&
+                !string.IsNullOrWhiteSpace(GetHeaderValue("Hostname"));
+        }
+
+        private string GetHeaderValue(string key)
+        {
+            if (!Headers.ContainsKey(key))
+                return string.Empty;
+
+            return Encoding.UTF8.GetString(Headers[key] as byte[]);
+        }
 
         public void Consume()
         {
-            var consumer = new EventingBasicConsumer(channel);
-            var response = "OK";
+            var consumer = new EventingBasicConsumer(Channel);
 
-            consumer.Received += async (sender, ea) =>
+            consumer.Received += async (sender, args) =>
             {
-                if (ea.BasicProperties.AppId != RabbitConfig.AppId)
+                if (args.BasicProperties.AppId != RabbitConfig.AppId)
                 {
-                    var properties = ea.BasicProperties;
+                    if (args.BasicProperties.Headers == null)
+                        throw new ArgumentException(MsgHeaderInvalid);
 
-                    try
+                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                    if (!HeaderIsValid())
+                        throw new ArgumentException(MsgHeaderInvalid);
+
+                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                     {
-                        Message = Encoding.UTF8.GetString(ea.Body);
-                        HTTPMethod = (RabbitConfig.enHTTPVerb)Enum.Parse(typeof(RabbitConfig.enHTTPVerb), ea.BasicProperties?.Type ?? "PUT");
+                        Message = Encoding.UTF8.GetString(args.Body);
+                        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
 
-                        RabbitConfig.PlataformaUrl = Plataforma;
-                        RabbitConfig.AppUser = Username;
-                        RabbitConfig.RoutingKey = ea.RoutingKey ?? "";
+                        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
+                        RabbitConfig.AppUser = GetHeaderValue("AppUser");
+                        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
                         await PersistMessage();
                     }
-                    catch (Exception ex)
+
+                    foreach (var item in exceptions)
                     {
-                        response = ex.Message;
-                        SlackClient.PostMessageErrorRabbit(Message, 
-                            response, 
-                            ex.StackTrace, 
-                            RabbitConfig.Factory?.VirtualHost,
-                            RabbitConfig.QueueName
-                            );
-                        channel.BasicNack(ea.DeliveryTag, false, true);
+                        var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+
+                        SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                        Channel.BasicNack(args.DeliveryTag, false, true);
                     }
-                    finally
-                    {
-                        channel.BasicAck(ea.DeliveryTag, false);
-                    }
+
+                    Channel.BasicAck(args.DeliveryTag, false);
                 }
             };
 
-            channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
+            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
         }
-
-        protected abstract Task PersistMessage();
     }
 }

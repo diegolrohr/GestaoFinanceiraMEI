@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -20,6 +21,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool RegistroSimplificadoMT { get; set; }
 
+        [MaxLength(1000)]
         public string MensagemPadraoNota { get; set; }
 
         public string NumeroRetornoNF { get; set; }
@@ -56,6 +58,21 @@ namespace Fly01.Core.Entities.Domains.Commons
             get { return ((int)TipoModalidade).ToString(); }
             set { TipoModalidade = (TipoModalidade)System.Enum.Parse(typeof(TipoModalidade), value); }
         }
+
+        [MaxLength(16)]
+        public string Cnpj { get; set; }
+
+        [MaxLength(18)]
+        public string InscricaoEstadual { get; set; }
+
+        [MaxLength(2)]
+        public string UF { get; set; }
+
+        public TipoPresencaComprador TipoPresencaComprador { get; set; }
+
+        public HorarioVerao HorarioVerao { get; set; }
+
+        public TipoHorarioTSS TipoHorario { get; set; }
 
         #region NFS
         //public bool IncentivoCultura { get; set; }

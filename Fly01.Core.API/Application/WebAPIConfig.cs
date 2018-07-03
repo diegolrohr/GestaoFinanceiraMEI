@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using Newtonsoft.Json.Serialization;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
 
@@ -32,6 +33,10 @@ namespace Fly01.Core.API.Application
             
             config.Filters.Add(new CustomExceptionFilter());
             //config.Filters.Add(new AiHandleErrorAttribute());
+
+            //Avaliar
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = 
+                new DefaultContractResolver { IgnoreSerializableAttribute = true };
         }
     }
 }

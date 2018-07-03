@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.Controllers.Base;
-using Fly01.Estoque.ViewModel;
+﻿using Fly01.Estoque.ViewModel;
 using Fly01.Core;
 using Newtonsoft.Json;
 using System;
@@ -8,6 +7,7 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -82,7 +82,7 @@ namespace Fly01.Estoque.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardVendas",
                 Title = "Venda",
                 Placeholder = "R$ 0,00",

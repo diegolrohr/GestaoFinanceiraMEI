@@ -15,7 +15,14 @@
 
     function calculaTotalOrcamento() {
         var valorFrete = 0;
-        if ($('select#tipoFrete').val() == "CIF" || $('select#tipoFrete').val() == "Remetente") {
+        var tipoFrete = $('select#tipoFrete').val();
+        var tipoVenda = $('input#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+
+        if (calculaFrete) {
             valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
         }
 
@@ -28,7 +35,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, valorFreteCIF: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -37,9 +44,9 @@
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalFrete').val(data.total.ValorFreteCIF.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.core.updateTextFields();
+                fly01.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
@@ -49,7 +56,7 @@
                 $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
-                fly01.fns.submitErrorHandler(null, data.message);
+                fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
         })
@@ -87,7 +94,7 @@
             var jsonData = $(this).serializeObject();
             $('input#numero').attr('disabled', 'disabled');
 
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
 
             var url;
             if (isCreate()) {
@@ -132,7 +139,7 @@
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         fly01.loading.stop();
-                        fly01.fns.submitErrorHandler(null, data.message);
+                        fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
@@ -145,12 +152,13 @@
 
     function fnFormReadyOrcamento() {
 
+        $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
         if (isCreate()) {
             var today = new Date();
             $("input#geraNotaFiscal").prop("checked", true);
             fly01._.dataVencimento.set(today);
             fly01._.data.set(today);
-            fly01.core.updateTextFields();
+            fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
@@ -161,12 +169,12 @@
         fnChangeFrete();
 
         $('li#stepFinalizar div.step-title').click(function () {
-            if (!isCreate()) {
+            if (!isCreate() && $("form#fly01frm").valid()) {
                 calculaTotalOrcamento();
             }
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate()) {
+            if (!isCreate() && $("form#fly01frm").valid()) {
                 calculaTotalOrcamento();
             }
         });

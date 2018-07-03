@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Faturamento.Helpers;
 using Fly01.Faturamento.Models.Reports;
 using Fly01.Faturamento.Models.ViewModel;
@@ -15,11 +14,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.API;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -57,8 +57,12 @@ namespace Fly01.Faturamento.Controllers
         {
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
-                 (OrdemVenda.TipoFrete == "Remetente" || OrdemVenda.TipoFrete == "CIF") ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
+            bool calculaFrete = (
+                ((OrdemVenda.TipoFrete == "CIF" || OrdemVenda.TipoFrete == "Remetente") && OrdemVenda.TipoVenda == "Normal") ||
+                ((OrdemVenda.TipoFrete == "FOB" || OrdemVenda.TipoFrete == "Destinatario") && OrdemVenda.TipoVenda == "Devolucao")
+            );
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
+                 OrdemVenda.TipoVenda, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
             var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
@@ -96,8 +100,9 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
-                    Total = response.Total
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             foreach (OrdemVendaServicoVM OrdemServico in servicos)
@@ -133,8 +138,9 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosProdutos = response.TotalImpostosProdutos.HasValue ? response.TotalImpostosProdutos.Value : 0,
                     TotalServicos = response.TotalServicos.HasValue ? response.TotalServicos.Value : 0,
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
-                    ValorFreteCIF = response.ValorFreteCIF.HasValue ? response.ValorFreteCIF.Value : 0,
-                    Total = response.Total
+                    ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
+                    Total = response.Total,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -159,7 +165,8 @@ namespace Fly01.Faturamento.Controllers
                     TransportadoraNome = OrdemVenda.Transportadora != null ? OrdemVenda.Transportadora.Nome : string.Empty,
                     ValorFrete = OrdemVenda.ValorFrete.HasValue ? OrdemVenda.ValorFrete.Value : 0,
                     Observacao = OrdemVenda.Observacao,
-                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0
+                    QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
+                    Finalidade = OrdemVenda.TipoVenda
                 });
             }
 
@@ -286,33 +293,30 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 numero = x.Numero.ToString(),
                 tipoOrdemVenda = x.TipoOrdemVenda,
-                tipoOrdemVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).Description,
-                tipoOrdemVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).CssClass,
-                tipoOrdemVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoOrdemVenda), x.TipoOrdemVenda).Value,
+                tipoOrdemVendaDescription = EnumHelper.GetDescription(typeof(TipoOrdemVenda), x.TipoOrdemVenda),
+                tipoOrdemVendaCssClass = EnumHelper.GetCSS(typeof(TipoOrdemVenda), x.TipoOrdemVenda),
+                tipoOrdemVendaValue = EnumHelper.GetValue(typeof(TipoOrdemVenda), x.TipoOrdemVenda),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 status = x.Status,
-                statusDescription = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).Description,
-                statusCssClass = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).CssClass,
-                statusValue = EnumHelper.SubtitleDataAnotation(typeof(StatusOrdemVenda), x.Status).Value,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemVenda), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemVenda), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusOrdemVenda), x.Status),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Description,
-                tipoVendaCssClass = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).CssClass,
-                tipoVendaValue = EnumHelper.SubtitleDataAnotation(typeof(TipoVenda), x.TipoVenda).Value,
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
                 cliente_nome = x.Cliente.Nome,
                 geraNotaFiscal = x.GeraNotaFiscal
             };
         }
 
-        public override ContentResult List()
-        {
-            return ListOrdemVenda();
-        }
+        public override ContentResult List() { return ListOrdemVenda(); }
 
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as vendas";
             var buttonOnClick = "fnRemoveFilter";
-            
+
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
@@ -336,7 +340,7 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            if(gridLoad == "GridLoad")
+            if (gridLoad == "GridLoad")
             {
                 var cfgForm = new FormUI
                 {
@@ -344,7 +348,7 @@ namespace Fly01.Faturamento.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodpickerUI()
+                        new PeriodPickerUI()
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",
@@ -383,7 +387,8 @@ namespace Fly01.Faturamento.Controllers
                     new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
             };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar", ShowIf = "(row.status != 'Aberto')" });
@@ -403,7 +408,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Status",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemVenda))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.statusCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.statusDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }"
             });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -411,31 +416,25 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Tipo",
                 Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
-                RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoOrdemVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoOrdemVendaDescription + \"</span>\" }"
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription); }"
             });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoVenda",
+                DisplayName = "Finalidade",
+                Priority = 4,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
+                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription); }"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 4 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });
-
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoVenda",
-            //    DisplayName = "Tipo venda",
-            //    Priority = 6,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoVenda", true, false)),
-            //    RenderFn = "function(data, type, full, meta) { return \"<span class=\\\"new badge \" + full.tipoVendaCssClass + \" left\\\" data-badge-caption=\\\" \\\">\" + full.tipoVendaDescription + \"</span>\" }"
-            //});
-
-            
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
@@ -448,10 +447,7 @@ namespace Fly01.Faturamento.Controllers
             return base.GridLoad(filters);
         }
 
-        public JsonResult GridLoadNoFilter()
-        {
-            return base.GridLoad();
-        }
+        public JsonResult GridLoadNoFilter() { return base.GridLoad(); }
 
         [HttpPost]
         public override JsonResult Create(OrdemVendaVM entityVM)
@@ -498,10 +494,11 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12 m6",
@@ -510,7 +507,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("Cliente", "AutoComplete"),
                 LabelId = "clienteNome"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
                 Class = "col s12 m6",
@@ -519,7 +516,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioPadraoDescricao"
             });
-            config.Elements.Add(new TextareaUI
+            config.Elements.Add(new TextAreaUI
             {
                 Id = "observacao",
                 Class = "col s12",
@@ -528,7 +525,7 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true
             });
 
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -537,7 +534,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -546,7 +543,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao"
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -556,7 +553,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "categoriaDescricao",
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -582,7 +579,7 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true,
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
-            config.Elements.Add(new AutocompleteUI
+            config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
                 Class = "col s12 m4",
@@ -597,9 +594,9 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m6", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete fornecedor paga (CIF/Remetente)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
@@ -609,7 +606,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "geraNotaFiscal", Class = "col s12 m4", Label = "Faturar", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "geraFinanceiro", Class = "col s12 m4", Label = "Gera financeiro", Disabled = true });
 
-            config.Elements.Add(new LabelsetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI
             {
                 Id = "ordemVendaProdutosDataTable",
@@ -625,7 +622,7 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
-            config.Elements.Add(new LabelsetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
             {
                 Id = "ordemVendaServicosDataTable",
@@ -645,11 +642,11 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, double? valorFreteCIF = 0)
+        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&valorFreteCIF={3}&onList={4}", id, clienteId, geraNotaFiscal.ToString(), valorFreteCIF.ToString().Replace(",", "."), false);
+                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
 
                 return Json(
@@ -663,5 +660,38 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        #region OnDemmand
+        [HttpPost]
+        public JsonResult NovaCategoria(string term)
+        {
+            try
+            {
+                var tipoCategoria = "";
+                var tipoCarteira = Request.QueryString["tipo"];
+
+                if (tipoCarteira == "Receita")
+                    tipoCategoria = "1";
+                else
+                    tipoCategoria = "2";
+
+                var entity = new CategoriaVM
+                {
+                    Descricao = term,
+                    TipoCarteira = tipoCategoria
+                };
+
+                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+        #endregion
     }
 }

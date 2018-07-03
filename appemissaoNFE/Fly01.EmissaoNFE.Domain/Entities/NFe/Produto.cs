@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
@@ -19,7 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [MaxLength(14)]
         /// <summary>
         /// informar o GTIN (Global Trade Item Number) do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12, GTIN-13 ou GTIN-14 
-        /// (antigos códigos EAN, UPC e DUN-14), não informar o conteúdo da TAG em caso de o produto não possuir este código.
+        /// (antigos códigos EAN, UPC e DUN-14), se não possuem código de barras com GTIN, deve ser informado o literal “SEM GTIN”
         /// </summary>
         [XmlElement(ElementName = "cEAN")]
         public string GTIN { get; set; }
@@ -67,12 +68,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string UnidadeMedida { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [XmlIgnore]
         /// <summary>
         /// informar a quantidade de comercialização do produto já formatado com ponto decimal. A quantidade de casas decimais pode variar de 0 a 4.
         /// </summary>
+        public double Quantidade { get; set; }
+
         [XmlElement(ElementName = "qCom")]
-        public string Quantidade { get; set; }
+        public string QuantidadeString
+        {
+            get { return Quantidade.ToString("0.00").Replace(",", "."); }
+            set { Quantidade = double.Parse(value.Replace(".", ",")); }
+        }
 
         [Required]
         [XmlIgnore]
@@ -106,8 +113,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [Required]
         [MaxLength(14)]
         /// <summary>
-        /// informar o GTIN (Global Trade Item Number) da unidade de tributação do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12,
-        /// GTIN-13 ou GTIN-14 (antigos códigos EAN, UPC e DUN-14), não informar o conteúdo da TAG em caso de o produto não possuir este código.
+        /// informar o GTIN (Global Trade Item Number) do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12, GTIN-13 ou GTIN-14 
+        /// (antigos códigos EAN, UPC e DUN-14), se não possuem código de barras com GTIN, deve ser informado o literal “SEM GTIN”
         /// </summary>
         [XmlElement(ElementName = "cEANTrib")]
         public string GTIN_UnidadeMedidaTributada { get; set; }
@@ -121,12 +128,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string UnidadeMedidaTributada { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [XmlIgnore]
         /// <summary>
         /// informar a quantidade de tributação do produto já formatado com ponto decimal. A quantidade de casas decimais pode variar de 0 a 4.
         /// </summary>
+        public double QuantidadeTributada { get; set; }
+
         [XmlElement(ElementName = "qTrib")]
-        public string QuantidadeTributada { get; set; }
+        public string QuantidadeTributadaString
+        {
+            get { return QuantidadeTributada.ToString("0.00").Replace(",", "."); }
+            set { QuantidadeTributada = double.Parse(value.Replace(".", ",")); }
+        }
 
         [Required]
         [XmlIgnore]
@@ -188,5 +201,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [Required]
         [XmlElement(ElementName = "indTot")]
         public CompoemValorTotal AgregaTotalNota { get; set; }
+
+        [XmlIgnore]
+        public TipoProduto TipoProduto { get; set; }
     }
 }

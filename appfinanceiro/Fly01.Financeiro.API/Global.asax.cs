@@ -1,10 +1,12 @@
-﻿using Fly01.Core.API.Application;
+﻿using System;
+using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
 using Microsoft.OData.Edm;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
+using Fly01.Core;
 
 namespace Fly01.Financeiro.API
 {
@@ -29,6 +31,7 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<Cidade>("cidade");
             builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
             builder.EntitySet<ContaFinanceiraBaixa>("contafinanceirabaixa");
+            builder.EntitySet<ContaFinanceiraBaixaMultipla>("contafinanceirabaixamultipla");
             builder.EntitySet<ConciliacaoBancaria>("conciliacaobancaria");
             builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariaitem");
             builder.EntitySet<ConciliacaoBancariaItemContaFinanceira>("conciliacaobancariaitemcontafinanceira");
@@ -43,6 +46,8 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
             builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
             builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
+            builder.EntitySet<Cnab>("cnab");
+            builder.EntitySet<ArquivoRemessa>("arquivoremessa");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -51,5 +56,12 @@ namespace Fly01.Financeiro.API
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
+
+        protected override void SetAppDefaults()
+        {
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+
+            base.SetAppDefaults();
+        }
     }
 }

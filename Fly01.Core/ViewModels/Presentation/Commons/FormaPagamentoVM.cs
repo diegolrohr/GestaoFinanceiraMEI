@@ -12,5 +12,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [APIEnum("TipoFormaPagamento")]
         public string TipoFormaPagamento { get; set; }
 
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Fly01.Core.ValueObjects;
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.BL
 {
@@ -129,6 +130,7 @@ namespace Fly01.Financeiro.BL
         public static Error NomeCidadeInvalido = new Error("O nome da cidade está incorreto ou a cidade não pertence ao estado selecionado.", "cidadeNome");
         public static Error EmailInvalido = new Error("Informe um e-mail válido.", "email");
         public static Error NomeInvalido = new Error("Informe um nome válido.", "nome");
+        public static Error CidadeInvalida = new Error("Código da cidade inválida.", "cidadeId");
 
         public bool IsValid(Pessoa entity)
         {
@@ -139,6 +141,16 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(Pessoa entity)
         {
+            if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CodigoIBGECidade))
+            {
+                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CodigoIBGECidade);
+                if (dadosCidade != null)
+                {
+                    entity.EstadoId = dadosCidade.EstadoId;
+                    entity.CidadeId = dadosCidade.Id;
+                }
+            }
+
             ValidaModel(entity);
             if (!IsValid(entity))
             {
@@ -184,6 +196,31 @@ namespace Fly01.Financeiro.BL
         public void Persist()
         {
 
+        }
+
+        public Guid BuscaPessoaNome(string nomePessoa, bool cliente, bool fornecedor)
+        {
+            var pessoaPadrao = All.FirstOrDefault(x => x.Nome == nomePessoa && x.Cliente == cliente && x.Fornecedor == fornecedor && x.Ativo == true && x.RegistroFixo == true);
+
+            //Se Pessoa nao existe, insere
+            if (pessoaPadrao == null)
+            {
+                var novaPessoa = new Pessoa
+                {
+                    Id = Guid.NewGuid(),
+                    Nome = nomePessoa,
+                    TipoDocumento = "F",
+                    Cliente = cliente,
+                    Fornecedor = fornecedor,
+                    ConsumidorFinal = cliente,
+                    TipoIndicacaoInscricaoEstadual = TipoIndicacaoInscricaoEstadual.ContribuinteIsento,
+                    CPFCNPJ = string.Empty,
+                    RegistroFixo = true
+                };
+                base.Insert(novaPessoa);
+                return novaPessoa.Id;
+            }
+            return pessoaPadrao.Id;
         }
     }
 }

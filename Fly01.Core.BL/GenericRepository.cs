@@ -24,7 +24,7 @@ namespace Fly01.Core.BL
         {
             get
             {
-                return dbSet;
+                return dbSet.Where(x => x.Ativo);
             }
         }
 
@@ -69,10 +69,10 @@ namespace Fly01.Core.BL
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
-            {
-                dbSet.Attach(entityToDelete);
-            }
+            //if (context.Entry(entityToDelete).State == EntityState.Detached)
+            //{
+            //    dbSet.Attach(entityToDelete);
+            //}
 
             //!dbSet.Remove(entityToDelete);
         }

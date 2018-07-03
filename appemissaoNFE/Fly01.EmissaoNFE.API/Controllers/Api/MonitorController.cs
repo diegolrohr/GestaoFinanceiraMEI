@@ -54,7 +54,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             var retorno = new ListMonitorRetornoVM();
             retorno.Retornos = new List<MonitorRetornoVM>();
-            var nota = new MonitorRetornoVM();
 
             var monitor = new NFESBRAProd.NFESBRA().MONITORFAIXA(
                 AppDefault.Token,
@@ -68,6 +67,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 foreach (NFESBRAProd.MONITORNFE nfe in monitor)
                 {
+                    var nota = new MonitorRetornoVM();
                     nota.NotaId = nfe.ID;
                     nota.Status = unitOfWork.MonitorBL.ValidaStatus(nfe.ERRO[nfe.ERRO.Length - 1].CODRETNFE, nfe.RECOMENDACAO);
                     nota.Modalidade = nfe.MODALIDADE;
@@ -87,7 +87,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             var retorno = new ListMonitorRetornoVM();
             retorno.Retornos = new List<MonitorRetornoVM>();
-            var nota = new MonitorRetornoVM();
+            
 
             var monitor = new NFESBRA.NFESBRA().MONITORFAIXA(
                 AppDefault.Token,
@@ -101,6 +101,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 foreach (NFESBRA.MONITORNFE nfe in monitor)
                 {
+                    var nota = new MonitorRetornoVM();
                     nota.NotaId = nfe.ID;
                     nota.Status = unitOfWork.MonitorBL.ValidaStatus(nfe.ERRO[nfe.ERRO.Length - 1].CODRETNFE, nfe.RECOMENDACAO);
                     nota.Modalidade = nfe.MODALIDADE;

@@ -34,7 +34,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlElement(ElementName = "dest")]
         public Destinatario Destinatario { get; set; }
-
+        
+        /// <summary>
+        /// Autorizados a baixar o XML da NFe
+        /// </summary>
+        [XmlElement(ElementName = "autXML")]
+        public List<Autorizados> Autorizados { get; set; }
+        
         /// <summary>
         /// Detalhes (Produto/Imposto) 
         /// </summary>
@@ -58,6 +64,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlElement(ElementName = "cobr")]
         public Cobranca Cobranca { get; set; }
+
+        /// <summary>
+        /// Pagamento
+        /// </summary>
+        [XmlElement(ElementName = "pag")]
+        public Pagamento Pagamento { get; set; }
 
         /// <summary>
         /// Informações Adicionais

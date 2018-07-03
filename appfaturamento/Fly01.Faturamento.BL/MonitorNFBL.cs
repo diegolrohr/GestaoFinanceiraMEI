@@ -17,8 +17,9 @@ namespace Fly01.Faturamento.BL
         protected NFSeBL NFSeBL { get; set; }
         protected NotaFiscalBL NotaFiscalBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
+        protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
 
-        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL, NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL)
+        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL, NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL)
             : base(context)
         {
             TotalTributacaoBL = totalTributacao;
@@ -26,11 +27,12 @@ namespace Fly01.Faturamento.BL
             NFSeBL = nFSeBL;
             NotaFiscalBL = notaFiscalBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
         }
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.AllWithoutPlataformaId.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
@@ -69,7 +71,7 @@ namespace Fly01.Faturamento.BL
                         foreach (var itemNF in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfe = NFeBL.AllWithoutPlataformaId.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                            var nfe = NFeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
                             if (nfe != null)
                             {
                                 nfe.Mensagem = null;
@@ -81,7 +83,7 @@ namespace Fly01.Faturamento.BL
                             }
                             else
                             {
-                                var nfse = NFSeBL.AllWithoutPlataformaId.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                                var nfse = NFSeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
                                 if (nfse != null)
                                 {
                                     nfse.Mensagem = null;
@@ -91,6 +93,69 @@ namespace Fly01.Faturamento.BL
                                     nfse.Mensagem = itemNF.Mensagem;
                                     nfse.Recomendacao = itemNF.Recomendacao;
                                 }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
+        public void AtualizaStatusTSSInutilizada(string plataformaUrl)
+        {
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
+                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
+                                            group nf by nf.PlataformaId into g
+                                            select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazChaveAcesso), notaFinal = g.Max(x => x.SefazChaveAcesso) });
+
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", AppUser },
+                { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
+            };
+
+            foreach (var dadosPlataforma in notasFiscaisInutilizadasByPlataforma)
+            {
+                try
+                {
+                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+
+                    if (dadosCertificado == null)
+                        continue;
+
+
+                    if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
+                    {
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = dadosCertificado.Homologacao,
+                            Producao = dadosCertificado.Producao,
+                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
+                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                        };
+
+                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
+                        if (responseMonitor == null)
+                            continue;
+
+                        foreach (var itemNF in (from r in responseMonitor.Retornos
+                                                join nfi in NotaFiscalInutilizadaBL.Everything on r.NotaId equals nfi.SefazChaveAcesso
+                                                select r))
+                        {
+                            //Atualiza Status NF inutilizada;
+                            var nfInutilizada = NotaFiscalInutilizadaBL.Everything.Where(x => x.SefazChaveAcesso == itemNF.NotaId).FirstOrDefault();
+                            if (nfInutilizada != null)
+                            {
+                                nfInutilizada.Mensagem = null;
+                                nfInutilizada.Recomendacao = null;
+
+                                nfInutilizada.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                nfInutilizada.Mensagem = itemNF.Mensagem;
+                                nfInutilizada.Recomendacao = itemNF.Recomendacao;
                             }
                         }
                     }

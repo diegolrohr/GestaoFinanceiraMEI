@@ -1,6 +1,6 @@
 ﻿<script>
     function fnFinalizarPedido(idRecord) {
-        fly01.modal.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
     }
     function fnFinalizarPedidoConfirmed(idRecord) {
         fly01.loading.start();

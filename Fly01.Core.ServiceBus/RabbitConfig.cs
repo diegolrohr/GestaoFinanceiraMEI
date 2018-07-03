@@ -14,17 +14,20 @@ namespace Fly01.Core.ServiceBus
         public static string AppId => WebConfigurationManager.AppSettings["RabbitApplicationId"];
         public static string AMQPExchange => WebConfigurationManager.AppSettings["RabbitAMQPExchangeName"];
         public static string QueueName => WebConfigurationManager.AppSettings["RabbitServiceQueueName"];
+        public static string VirtualHostname => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev"
+            ? Environment.MachineName
+            : WebConfigurationManager.AppSettings["RabbitVirtualHostname"];
         public static List<string> ListRoutingKeys => WebConfigurationManager.AppSettings["RabbitListRoutingKeys"].ToString().Split(',').ToList();
 
         public static ConnectionFactory Factory = new ConnectionFactory()
         {
             Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
-            VirtualHost = string.IsNullOrEmpty(WebConfigurationManager.AppSettings["RabbitVirtualHost"]) ? Environment.MachineName : WebConfigurationManager.AppSettings["RabbitVirtualHost"],
-            UserName = string.IsNullOrEmpty(WebConfigurationManager.AppSettings["RabbitUserName"]) ? Environment.MachineName : WebConfigurationManager.AppSettings["RabbitUserName"],
-            Password = string.IsNullOrEmpty(WebConfigurationManager.AppSettings["RabbitPassword"]) ? Environment.MachineName : WebConfigurationManager.AppSettings["RabbitPassword"]
+            VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"],
+            UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
+            Password = WebConfigurationManager.AppSettings["RabbitPassword"]
         };
 
-        public enum enHTTPVerb
+        public enum EnHttpVerb
         {
             POST,
             PUT,

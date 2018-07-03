@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
@@ -12,6 +11,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Rest;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -154,7 +154,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTimeUI { Id = "horaEnvio", Class = "col s12 m6", Label = "Horário de envio", Required = true, });
             config.Elements.Add(new InputTelUI { Id = "contatoDestino", Class = "col s12 m6", Label = "Celular destino", Required = true, MaxLength = 20 });
             config.Elements.Add(new InputEmailUI { Id = "emailDestino", Class = "col s12 m6", Label = "E-mail destino", Required = true, MaxLength = 70 });
-            config.Elements.Add(new StatictextUI
+            config.Elements.Add(new StaticTextUI
             {
                 Id = "textInfo",
                 Class = "col s12",

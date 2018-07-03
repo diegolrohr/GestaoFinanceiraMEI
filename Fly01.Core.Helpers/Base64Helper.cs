@@ -35,5 +35,16 @@ namespace Fly01.Core.Helpers
                 sb.Append(hash[i].ToString("x2"));
             return sb.ToString();
         }
+
+        public static string RemoverAcentos(string texto)
+        {
+            //"ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
+            if (string.IsNullOrEmpty(texto))
+                return String.Empty;
+
+            byte[] bytes = System.Text.Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
+            return System.Text.Encoding.UTF8.GetString(bytes);
+        }
+
     }
 }

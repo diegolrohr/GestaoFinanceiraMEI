@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.EmissaoNFE.Domain.Entities.NFe.IBPT;
 
 namespace Fly01.EmissaoNFE.DAL
 {
@@ -44,5 +45,7 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<TabelaIcms> TabelaIcms { get; set; }
         public DbSet<Ncm> Ncms { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
+        public DbSet<IbptNcm> IbptNcms { get; set; }
+
     }
 }

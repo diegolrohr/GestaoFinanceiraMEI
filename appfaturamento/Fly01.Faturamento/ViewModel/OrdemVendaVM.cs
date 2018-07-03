@@ -11,6 +11,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("numero")]
         public int Numero { get; set; }
 
+        [JsonProperty("chaveNFeReferenciada")]
+        public string ChaveNFeReferenciada { get; set; }
+
         [JsonProperty("tipoOrdemVenda")]
         [APIEnum("TipoOrdemVenda")]
         public string TipoOrdemVenda { get; set; }

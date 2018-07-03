@@ -1,17 +1,56 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using System;
+using Newtonsoft.Json;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Financeiro.ViewModel
 {
     public class CnabVM : DomainBaseVM
     {
-        public int NumeroBoleto { get; set; }
-        public double ValorBoleto { get; set; }
-        public PessoaVM Pessoa { get; set; }
+        [JsonProperty("status")]
+        [APIEnum("StatusCnab")]
         public string Status { get; set; }
-        public BancoVM Banco { get; set; }
+
+        [JsonProperty("dataEmissao")]
         public DateTime DataEmissao { get; set; }
+
+        [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
+
+        [JsonProperty("nossoNumero")]
+        public int NossoNumero { get; set; }
+
+        [JsonProperty("nossoNumeroFormatado")]
+        public string NossoNumeroFormatado { get; set; }
+
+        [JsonProperty("dataDesconto")]
+        public DateTime DataDesconto { get; set; }
+
+        [JsonProperty("valorDesconto")]
+        public double ValorDesconto { get; set; }
+
+        [JsonProperty("contaBancariaCedenteId")]
+        public Guid? ContaBancariaCedenteId { get; set; }
+
+        [JsonProperty("contaReceberId")]
+        public Guid? ContaReceberId { get; set; }
+
+        [JsonProperty("arquivoRemessaId")]
+        public Guid? ArquivoRemessaId { get; set; }
+
+        [JsonProperty("valorBoleto")]
+        public double ValorBoleto { get; set; }
+
+        #region Navigation Property
+
+        [JsonProperty("contaReceber")]
+        public virtual ContaReceberVM ContaReceber { get; set; }
+
+        [JsonProperty("contaBancariaCedente")]
+        public virtual ContaBancariaVM ContaBancariaCedente { get; set; }
+
+        [JsonProperty("arquivoRemessa")]
+        public virtual ArquivoRemessaVM ArquivoRemessa { get; set; }
+        #endregion
     }
 }

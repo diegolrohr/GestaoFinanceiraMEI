@@ -22,5 +22,8 @@ namespace Fly01.Estoque.ViewModel
         [StringLength(1, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         [APIEnum("TipoEntradaSaida")]
         public string TipoEntradaSaida { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

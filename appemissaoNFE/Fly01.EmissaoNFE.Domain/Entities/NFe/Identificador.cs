@@ -31,16 +31,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "natOp")]
         public string NaturezaOperacao { get; set; }
 
-        [Required]
-        /// <summary>
-        /// informar o indicador da forma de pagamento:
-        /// 0 - pagamento à vista;
-        /// 1 - pagamento à prazo;
-        /// 2 - outros.
-        /// </summary>
-        [XmlElement(ElementName = "indPag")]
-        public FormaPagamentoEmissaoNFE FormaPagamento { get; set; }
-
         /// <summary>
         /// informar o código do Modelo do Documento Fiscal, código 55 para a NF-e ou código 65 para NFC-e.
         /// </summary>
@@ -144,7 +134,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o código da forma de emissão:
         /// 1 - Emissão normal(não em contingência);
         /// 2 - Contingência FS-IA, com impressão do DANFE em formulário de segurança;
-        /// 3 - Contingência SCAN(Sistema de Contingência do Ambiente Nacional) Desativação prevista para 30/06/2014;
         /// 4 - Contingência DPEC(Declaração Prévia da Emissão em Contingência);
         /// 5 - Contingência FS-DA, com impressão do DANFE em formulário de segurança;
         /// 6 - Contingência SVC-AN(SEFAZ Virtual de Contingência do AN);
@@ -223,5 +212,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlElement(ElementName = "verProc")]
         public string Versao { get; set; }
+
+        /// <summary>
+        /// Informar quando a legislação exigir a referência de uma NF-e, como é o caso de uma NF-e complementar, NF-e de devolução, NF-e de retorno, etc.
+        /// </summary>
+        [XmlElement(ElementName = "NFref")]
+        public NFReferenciada NFReferenciada { get; set; }
+
+        public bool ShouldSerializeNFReferenciada()
+        {
+            return FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
+        }
     }
 }

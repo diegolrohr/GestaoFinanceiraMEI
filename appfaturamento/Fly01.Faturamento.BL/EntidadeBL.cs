@@ -6,7 +6,7 @@ using System.Linq;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.Core.Reports;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.BL
 {
@@ -22,15 +22,19 @@ namespace Fly01.Faturamento.BL
         }
 
         protected EstadoBL EstadoBL;
+        private ManagerEmpresaVM empresa;
+        private string empresaUF;
 
         public EntidadeBL(AppDataContext context, EstadoBL estadoBL) : base(context)
         {
             EstadoBL = estadoBL;
+            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
 
         public EntidadeVM RetornaEntidade()
         {
-            var empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");            
+            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoNome =  empresa.Cidade != null && empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Nome : string.Empty;
 
             var estado = EstadoBL.All.FirstOrDefault(x => x.Nome == estadoNome);
@@ -65,7 +69,7 @@ namespace Fly01.Faturamento.BL
 
         public EntidadeVM GetEntidade()
         {
-            var certificado = All.FirstOrDefault();
+            var certificado = All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
             
             if (certificado != null && certificado.EntidadeHomologacao != null && certificado.EntidadeProducao != null)
             {

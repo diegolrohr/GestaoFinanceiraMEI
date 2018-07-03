@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.Controllers.Base;
-using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes;
 using Newtonsoft.Json;
@@ -9,10 +8,10 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.API;
 using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -22,7 +21,6 @@ namespace Fly01.Faturamento.Controllers
         {
             var customFilters = base.GetQueryStringDefaultGridLoad();
 
-            customFilters.AddParam("$filter", $"statusSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}StatusSerieNotaFiscal'Habilitada'");
             customFilters.AddParam("$select", "id,serie,tipoOperacaoSerieNotaFiscal,numNotaFiscal,dataInclusao");
 
             return customFilters;
@@ -34,7 +32,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 id = x.Id,
                 serie = x.Serie.PadLeft(3, '0'),
-                tipoOperacaoSerieNotaFiscal = EnumHelper.SubtitleDataAnotation(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal).Value,
+                tipoOperacaoSerieNotaFiscal = EnumHelper.GetValue(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal),
                 numNotaFiscal = x.NumNotaFiscal.ToString().PadLeft(8, '0'),
             };
         }
@@ -49,7 +47,8 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Série de Notas Fiscais",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Adicionar", OnClickFn = "fnNovo" },
+                        new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Notas Fiscais Inutilizadas", OnClickFn = "fnNotaFiscalInutilizadaList" },
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -112,8 +111,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
-
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "serie",
@@ -165,8 +162,6 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
-
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "serie",
@@ -217,9 +212,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "fly01mdlfrmModalSerieNotaFiscalNFSe"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-
-            config.Elements.Add(new InputHiddenUI { Id = "statusSerieNotaFiscal" });
+            config.Elements.Add(new InputHiddenUI { Id = "id" });            
 
             config.Elements.Add(new InputCustommaskUI
             {
@@ -254,7 +247,5 @@ namespace Fly01.Faturamento.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }
-
-
     }
 }

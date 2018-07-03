@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Core.BL;
-using Newtonsoft.Json;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core;
+using Newtonsoft.Json;
 
 namespace Fly01.Estoque.BL
 {
@@ -100,13 +101,12 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(string entity, RabbitConfig.enHTTPVerb httpMethod)
+        public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
         {
-            MovimentoEstoque model = JsonConvert.DeserializeObject<MovimentoEstoque>(entity);
+            var data = JsonConvert.SerializeObject(message);
 
-            if (model == null) return;
-
-                Movimenta(model);
+            foreach (var item in MessageType.Resolve<dynamic>(data))
+                Movimenta(item);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

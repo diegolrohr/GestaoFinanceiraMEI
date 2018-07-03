@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
+using System;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -15,22 +16,14 @@ namespace Fly01.Core.ServiceBus
                     {
                         channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
                         channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
-                        //channel.QueueDeclare(RabbitConfig.QueueName + "_callback", true, false, false, null);
 
                         RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
-                        //channel.QueueBind(RabbitConfig.QueueName + "_callback", RabbitConfig.AMQPExchange, "callback", null);
                     }
                 }
-
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                SlackClient.PostMessageErrorRabbit(
-                    $"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", 
-                    ex.Message, 
-                    ex.StackTrace, 
-                    RabbitConfig.Factory?.VirtualHost,
-                    RabbitConfig.QueueName);
+                SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, "");
             }
         }
     }

@@ -78,7 +78,7 @@
     }
 
     function fnFormReadyRenegociacao() {
-        //fly01.core.updateTextFields();
+        //fly01.fn.updateTextFields();
         $('#selecaoTitulosLabelField').hide();
         $('#datatableSelecaoTitulos_wrapper').hide();
         $('#Field').hide();
@@ -91,6 +91,7 @@
         fly01._.datatableSelecaoTitulos.on('select', function (e, dt, type, indexes) {
             var valorAcumulado = parseFloat($('#valorAcumulado').val().replace("R$ ", "").replace(".", "").replace(",", "."));
             var rowData = fly01._.datatableSelecaoTitulos.rows(indexes).data().toArray();
+
             var index = $.inArray(rowData[0].id, rows_selected);
             if (index == -1) {//se não tem, add
                 rows_selected.push(rowData[0].id);

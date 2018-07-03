@@ -108,5 +108,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("cfop")]
         public virtual CfopVM Cfop { get; set; }
+
+        [JsonProperty("registroFixo")]
+        public bool RegistroFixo { get; set; }
     }
 }

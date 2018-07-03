@@ -68,6 +68,9 @@ namespace Fly01.Compras.BL
         private OrdemCompraBL ordemCompraBL;
         public OrdemCompraBL OrdemCompraBL => ordemCompraBL ?? (ordemCompraBL = new OrdemCompraBL(Context));
 
+        private OrdemCompraItemBL ordemCompraItemBL;
+        public OrdemCompraItemBL OrdemCompraItemBL => ordemCompraItemBL ?? (ordemCompraItemBL = new OrdemCompraItemBL(Context));
+
         private PedidoBL pedidoBL;
         public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL));
 
@@ -91,6 +94,9 @@ namespace Fly01.Compras.BL
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));
+
+        private DashboardBL dashboardBL;
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, FormaPagamentoBL, PedidoBL, PedidoItemBL, OrcamentoBL, OrcamentoItemBL, OrdemCompraBL, OrdemCompraItemBL, ProdutoBL));
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));

@@ -2,7 +2,6 @@
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +10,7 @@ namespace Fly01.Core.BL
 {
     public class PlataformaBaseBL<TEntity> : DomainBaseBL<TEntity> where TEntity : PlataformaBase
     {
+        private static readonly string[] _exceptions = new[] { "DataInclusao", "UsuarioInclusao" };
         private Expression<Func<TEntity, bool>> PredicatePlatform { get; set; }
         private string _plataformaUrl;
         public string PlataformaUrl
@@ -18,7 +18,7 @@ namespace Fly01.Core.BL
             get
             {
                 if (string.IsNullOrWhiteSpace(_plataformaUrl))
-                    throw new ApplicationException("ERRO! PlataformaUrl não informado.");
+                    throw new BusinessException("ERRO!PlataformaUrl não informado.");
 
                 return _plataformaUrl;
             }
@@ -29,12 +29,13 @@ namespace Fly01.Core.BL
         }
 
         private string _appUser;
+
         public string AppUser
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(_appUser))
-                    throw new ApplicationException("ERRO! AppUser não informado.");
+                    throw new BusinessException("ERRO! AppUser não informado.");
 
                 return _appUser;
             }
@@ -53,13 +54,7 @@ namespace Fly01.Core.BL
             PlataformaUrl = context.PlataformaUrl;
         }
 
-        public override IQueryable<TEntity> All
-        {
-            get
-            {
-                return base.All.Where(PredicatePlatform);
-            }
-        }
+        public override IQueryable<TEntity> All => base.All.Where(PredicatePlatform);
 
         public virtual void ValidaModel(TEntity entity)
         {
@@ -104,7 +99,7 @@ namespace Fly01.Core.BL
 
             if (objectDB == null) return;
 
-            entity.CopyProperties<TEntity>(objectDB);
+            entity.CopyProperties<TEntity>(objectDB, _exceptions);
         }
 
         public virtual new void Delete(TEntity entityToDelete)
@@ -116,10 +111,7 @@ namespace Fly01.Core.BL
             repository.Delete(entityToDelete);
         }
 
-        public virtual void Delete(Guid id)
-        {
-            repository.Delete(id);
-        }
+        public virtual void Delete(Guid id) => Delete(Find(id));
 
         public override IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
@@ -131,21 +123,31 @@ namespace Fly01.Core.BL
         /// Caso seja necessário criar regras de negócio específicas para as entidades, este método deve ser sobrescrito.
         /// Este método será chamado sempre que o construtor da BL definir a propriedade 'isServiceBusRoute = true'.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(string entity, RabbitConfig.enHTTPVerb httpMethod)
+        public virtual void PersistMessage(TEntity item, RabbitConfig.EnHttpVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
 
-            var model = JsonConvert.DeserializeObject<TEntity>(entity);
-
-            if (model == null) return;
-
-            if (httpMethod == RabbitConfig.enHTTPVerb.POST)
-                Insert(model);
-            else
-                AttachForUpdate(model);
+            switch (httpMethod)
+            {
+                case RabbitConfig.EnHttpVerb.POST:
+                    Insert(item);
+                    break;
+                case RabbitConfig.EnHttpVerb.PUT:
+                    Update(item);
+                    AttachForUpdate(item);
+                    break;
+                case RabbitConfig.EnHttpVerb.DELETE:
+                    var itemToDelete = Find(item.Id);
+                    if (itemToDelete != null)
+                    {
+                        Delete(itemToDelete);
+                        AttachForUpdate(itemToDelete);
+                    }
+                    break;
+            }
         }
 
         public virtual void AfterSave(TEntity entity)

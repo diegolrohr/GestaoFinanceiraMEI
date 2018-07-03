@@ -6,5 +6,8 @@ namespace Fly01.Core.Entities.Domains
     {
         [Required]
         public string PlataformaId { get; set; }
+
+        [Required]
+        public bool RegistroFixo { get; set; }
     }
 }

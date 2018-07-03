@@ -37,27 +37,21 @@ namespace Fly01.Estoque.BL
         {
             base.Insert(entity);
             if(entity.IsValid() && MustProduceMessageServiceBus)
-            {
-               Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.POST);
-            }
+               Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
         }
 
         public void Update(Produto entity, bool MustProduceMessageServiceBus)
         {
             base.Update(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
-            {
-                Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.PUT);
-            }
+                Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
         }
 
         public void Delete(Produto entity, bool MustProduceMessageServiceBus)
         {
             base.Delete(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
-            {
-                Producer<Produto>.Send(entity.GetType().Name, entity, RabbitConfig.enHTTPVerb.DELETE);
-            }
+                Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

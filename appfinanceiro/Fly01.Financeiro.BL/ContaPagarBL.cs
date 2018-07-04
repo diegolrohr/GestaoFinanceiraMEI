@@ -26,24 +26,12 @@ namespace Fly01.Financeiro.BL
 
         public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
-        public override void ValidaModel(ContaPagar entity)
-        {
-            entity.Fail(entity.Numero < 1, NumeroContaInvalido);
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
-
-            base.ValidaModel(entity);
-        }
-
         public override void Insert(ContaPagar entity)
         {
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
             var repetir = RepeticaoValida(entity);
-
-            //ContaFinanceira.Número
-            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
-            max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
             //na nova Transação e quando status nao definido
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
@@ -57,7 +45,6 @@ namespace Fly01.Financeiro.BL
             {
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
-                entity.Numero = ++max;
 
                 base.Insert(entity);
             }
@@ -89,7 +76,6 @@ namespace Fly01.Financeiro.BL
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    itemContaPagar.Numero = ++max;
 
                     base.Insert(itemContaPagar);
 
@@ -121,7 +107,6 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            itemContaPagarRepeticao.Numero = ++max;
                             base.Insert(itemContaPagarRepeticao);
                         }
                     }
@@ -136,8 +121,6 @@ namespace Fly01.Financeiro.BL
             entity.Fail(contaPagarDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
             entity.Fail((contaPagarDb.Repetir != entity.Repetir) || (contaPagarDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
                 (contaPagarDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
-
-            entity.Numero = contaPagarDb.Numero;
 
             base.Update(entity);
         }
@@ -178,7 +161,5 @@ namespace Fly01.Financeiro.BL
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");
         public static Error TipoPeriodicidadeInvalida = new Error("Periodicidade inválida", "tipoPeriodicidade");
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
-        public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
-        public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
     }
 }

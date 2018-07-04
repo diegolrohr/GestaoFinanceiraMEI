@@ -211,7 +211,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "blue",
+                Color = "green",
                 Id = "cardObs",
                 Title = "Transmissão de arquivo",
                 Functions = new List<string>() { "fnFormReady" },

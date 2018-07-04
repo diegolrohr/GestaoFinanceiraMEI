@@ -71,7 +71,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "blue",
+                Color = "green",
                 Id = "cardDuvidas",
                 Title = "Dicas",
                 Placeholder = "Selecione o banco de origem e localize o arquivo que deseja importar",

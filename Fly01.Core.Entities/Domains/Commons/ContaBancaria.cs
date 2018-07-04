@@ -32,8 +32,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double? PercentualMulta { get; set; }
 
-        [Required]
-        [JsonProperty("contaEmiteBoleto")]
         public bool ContaEmiteBoleto { get; set; }
     }
 }

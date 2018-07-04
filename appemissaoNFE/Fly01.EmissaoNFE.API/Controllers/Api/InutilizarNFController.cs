@@ -3,9 +3,11 @@ using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Http;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -33,10 +35,12 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     entity.Numero.ToString()
                                 );
                     sefazChaveAcesso = sefazChaveAcesso.Replace("NFe", "");
+                    var idBase64 = Base64Helper.CodificaBase64("Id=\"" + sefazChaveAcesso+"\"");
+
 
                     var response = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ?
-                            Homologacao(entity.Homologacao, sefazChaveAcesso) :
-                            Producao(entity.Producao, sefazChaveAcesso);
+                            Homologacao(entity.Homologacao, sefazChaveAcesso, idBase64) :
+                            Producao(entity.Producao, sefazChaveAcesso, idBase64);
 
                     return Ok(response);
 
@@ -53,30 +57,50 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }        
 
-        public InutilizarNFRetornoVM Producao(string entidade, string sefazChaveAcesso)
+        public InutilizarNFRetornoVM Producao(string entidade, string sefazChaveAcesso, string idBase64)
         {
-            var monitor = new NFESBRAProd.NFESBRA().CANCELAFAIXA(
+            var inutilizarNota = new NFESBRAProd.NFE();
+            inutilizarNota.NOTAS = new NFESBRAProd.NFES[]{
+                new NFESBRAProd.NFES
+                {
+                    ID = sefazChaveAcesso,
+                    MAIL = "",
+                    XML = Convert.FromBase64String(idBase64)
+                }
+            };
+
+            var retorno = new NFESBRAProd.NFESBRA().CANCELANOTAS(
                 AppDefault.Token,
                 entidade,
-                sefazChaveAcesso,
-                sefazChaveAcesso,
-                ""
+                inutilizarNota,
+                null
             );
+
             return new InutilizarNFRetornoVM()
             {
                 SefazChaveAcesso = sefazChaveAcesso
             };
         }
 
-        public InutilizarNFRetornoVM Homologacao(string entidade, string sefazChaveAcesso)
+        public InutilizarNFRetornoVM Homologacao(string entidade, string sefazChaveAcesso, string idBase64)
         {
-            var monitor = new NFESBRA.NFESBRA().CANCELAFAIXA(
+            var inutilizarNota = new NFESBRA.NFE();
+            inutilizarNota.NOTAS = new NFESBRA.NFES[]{
+                new NFESBRA.NFES
+                {
+                    ID = sefazChaveAcesso,
+                    MAIL = "",
+                    XML = Convert.FromBase64String(idBase64)
+                }
+            };
+
+            var retorno = new NFESBRA.NFESBRA().CANCELANOTAS(
                 AppDefault.Token,
                 entidade,
-                sefazChaveAcesso,
-                sefazChaveAcesso,
-                ""
+                inutilizarNota,
+                null
             );
+
             return new InutilizarNFRetornoVM()
             {
                 SefazChaveAcesso = sefazChaveAcesso

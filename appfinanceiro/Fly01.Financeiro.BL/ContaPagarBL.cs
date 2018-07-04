@@ -26,24 +26,12 @@ namespace Fly01.Financeiro.BL
 
         public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
-        public override void ValidaModel(ContaPagar entity)
-        {
-            entity.Fail(entity.Numero < 1, NumeroContaInvalido);
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
-
-            base.ValidaModel(entity);
-        }
-
         public override void Insert(ContaPagar entity)
         {
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
             var repetir = RepeticaoValida(entity);
-
-            //ContaFinanceira.Número
-            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
-            max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
             //na nova Transação e quando status nao definido
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
@@ -53,34 +41,29 @@ namespace Fly01.Financeiro.BL
             if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, false, true);
 
-            //post bemacash ignorando condicao parcelamento
-            if (entity.DescricaoParcela != null)
+            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
+                //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
-                entity.Numero = ++max;
 
                 base.Insert(entity);
             }
-
-            if (string.IsNullOrEmpty(entity.DescricaoParcela))
+            else
             {
-                var condicoesParcelamento = condicaoParcelamentoBL
-                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
-                                                               entity.DataVencimento,
-                                                               entity.ValorPrevisto);
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
+
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
                 {
                     var parcela = condicoesParcelamento[iParcela];
                     var itemContaPagar = new ContaPagar();
+
                     entity.CopyProperties<ContaPagar>(itemContaPagar);
                     itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
                     itemContaPagar.DataVencimento = parcela.DataVencimento;
                     itemContaPagar.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaPagar.ValorPrevisto = parcela.Valor;
-                    itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
-                                                    ? parcela.Valor
-                                                    : entity.ValorPago;
+                    itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                     {
@@ -93,17 +76,13 @@ namespace Fly01.Financeiro.BL
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    itemContaPagar.Numero = ++max;
 
                     base.Insert(itemContaPagar);
 
-                    //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar.DataVencimento,
-                                                                        itemContaPagar.Id,
-                                                                        itemContaPagar.ValorPrevisto,
-                                                                        TipoContaFinanceira.ContaPagar,
-                                                                        entity.Descricao);
+                    {
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
+                    }
 
                     if (repetir)
                     {
@@ -128,7 +107,6 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            itemContaPagarRepeticao.Numero = ++max;
                             base.Insert(itemContaPagarRepeticao);
                         }
                     }
@@ -143,8 +121,6 @@ namespace Fly01.Financeiro.BL
             entity.Fail(contaPagarDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
             entity.Fail((contaPagarDb.Repetir != entity.Repetir) || (contaPagarDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
                 (contaPagarDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
-
-            entity.Numero = contaPagarDb.Numero;
 
             base.Update(entity);
         }
@@ -185,7 +161,5 @@ namespace Fly01.Financeiro.BL
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");
         public static Error TipoPeriodicidadeInvalida = new Error("Periodicidade inválida", "tipoPeriodicidade");
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
-        public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
-        public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
     }
 }

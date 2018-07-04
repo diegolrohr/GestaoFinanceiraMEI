@@ -75,7 +75,7 @@ namespace Fly01.Financeiro.Controllers
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$expand", "banco($select=nome)");
-            queryString.AddParam("$filter", $"contains(nomeConta, '{term}') and banco/emiteBoleto eq true");
+            queryString.AddParam("$filter", $"contains(nomeConta, '{term}') and contaEmiteBoleto eq true and banco/emiteBoleto eq true");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>(resourceName, queryString).Data
                                 select new

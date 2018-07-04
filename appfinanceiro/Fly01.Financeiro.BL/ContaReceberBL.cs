@@ -26,24 +26,12 @@ namespace Fly01.Financeiro.BL
 
         public virtual IQueryable<ContaReceber> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
 
-        public override void ValidaModel(ContaReceber entity)
-        {
-            entity.Fail(entity.Numero < 1, NumeroContaInvalido);
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), NumeroContaDuplicada);
-
-            base.ValidaModel(entity);
-        }
-
         public override void Insert(ContaReceber entity)
         {
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
             var repetir = RepeticaoValida(entity);
-
-            //ContaFinanceira.Número
-            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
-            max = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 0 : max;
 
             //na nova Transação e quando status nao definido
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
@@ -53,16 +41,14 @@ namespace Fly01.Financeiro.BL
             if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
-            //post bemacash ignorando condicao parcelamento
-            if (entity.DescricaoParcela != null)
+            if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
+                //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
-                entity.Numero = ++max;
 
                 base.Insert(entity);
             }
-
-            if (string.IsNullOrEmpty(entity.DescricaoParcela))
+            else
             {
                 var condicoesParcelamento = condicaoParcelamentoBL
                                                 .GetPrestacoes(entity.CondicaoParcelamentoId,
@@ -93,17 +79,11 @@ namespace Fly01.Financeiro.BL
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    itemContaReceber.Numero = ++max;
                     base.Insert(itemContaReceber);
 
 
-                    //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber.DataVencimento,
-                                                                        itemContaReceber.Id,
-                                                                        itemContaReceber.ValorPrevisto,
-                                                                        TipoContaFinanceira.ContaReceber,
-                                                                        entity.Descricao);
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
 
                     if (repetir)
                     {
@@ -128,7 +108,6 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            itemContaReceberRepeticao.Numero = ++max;
                             base.Insert(itemContaReceberRepeticao);
                         }
                     }
@@ -143,8 +122,6 @@ namespace Fly01.Financeiro.BL
             entity.Fail(contaReceberDb.CondicaoParcelamentoId != entity.CondicaoParcelamentoId, AlteracaoCondicaoParcelamento);
             entity.Fail((contaReceberDb.Repetir != entity.Repetir) || (contaReceberDb.TipoPeriodicidade != entity.TipoPeriodicidade) ||
                 (contaReceberDb.NumeroRepeticoes != entity.NumeroRepeticoes), AlteracaoConfiguracaoRecorrencia);
-
-            entity.Numero = contaReceberDb.Numero;
 
             base.Update(entity);
         }
@@ -185,7 +162,5 @@ namespace Fly01.Financeiro.BL
         public static Error AlteracaoConfiguracaoRecorrencia = new Error("Não é permitido alterar as configurações de recorrência.");
         public static Error TipoPeriodicidadeInvalida = new Error("Periodicidade inválida", "tipoPeriodicidade");
         public static Error NumeroRepeticoesInvalido = new Error("Número de repetições inválido", "numeroRepeticoes");
-        public static Error NumeroContaInvalido = new Error("Número da conta inválido", "numero");
-        public static Error NumeroContaDuplicada = new Error("Número da conta duplicado", "numero");
     }
 }

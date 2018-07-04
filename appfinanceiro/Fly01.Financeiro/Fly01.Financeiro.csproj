@@ -374,6 +374,8 @@
     <Content Include="Views\ArquivoRemessa\Functions\_fnGerarArquivo.cshtml" />
     <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
     <Content Include="Views\Shared\NotAllow.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnChkBaixar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

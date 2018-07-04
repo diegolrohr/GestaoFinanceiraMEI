@@ -57,7 +57,7 @@ namespace Fly01.Financeiro.BL
 
             var juros = contaBancariaCedente.TaxaJuros ?? jurosDiaPadrao;
             var percentMulta = contaBancariaCedente.PercentualMulta ?? percentMultaPadrao;
-            var valorParcial = contaReceber.ValorPrevisto  - contaReceber.ValorPago ?? 0;
+            var valorParcial = contaReceber.ValorPrevisto - (contaReceber.ValorPago ?? 0);
 
             var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
             var valorJuros = (decimal)(valorParcial * (juros / 100));
@@ -67,7 +67,7 @@ namespace Fly01.Financeiro.BL
 
             var boletoVM = new BoletoVM()
             {
-                ValorPrevisto = (decimal)contaReceber.ValorPrevisto -  Convert.ToDecimal(contaReceber.ValorPago?? 0),
+                ValorPrevisto = (decimal)contaReceber.ValorPrevisto - (Convert.ToDecimal(contaReceber.ValorPago?? 0)),
                 ValorDesconto = contaReceber.ValorDesconto.HasValue ? (decimal)contaReceber.ValorDesconto : 0,
                 ValorMulta = valorMulta,
                 ValorJuros = valorJuros,
@@ -171,7 +171,7 @@ namespace Fly01.Financeiro.BL
             var juros = contaBancaria.TaxaJuros ?? jurosDiaPadrao;
             var percentMulta = contaBancaria.PercentualMulta ?? percentMultaPadrao;
 
-            var valorParcial = conta.ValorPrevisto - conta.ValorPago ?? 0;
+            var valorParcial = conta.ValorPrevisto - (conta.ValorPago ?? 0);
             var valorMulta = (decimal)(valorParcial * (percentMulta / 100));
             var valorJuros = (decimal)(valorParcial * (juros / 100));
             var msgCaixa = new StringBuilder();

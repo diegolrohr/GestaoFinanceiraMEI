@@ -47,7 +47,8 @@ namespace Fly01.Financeiro.Controllers
                 codigoCedente = x.CodigoCedente,
                 codigoDV = x.CodigoDV, 
                 taxaJuros = x.TaxaJuros, 
-                percentualMulta = x.PercentualMulta
+                percentualMulta = x.PercentualMulta,
+                //contaEmiteBoleto = x.ContaEmiteBoleto
             };
         }
 
@@ -142,7 +143,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "checkCedente",
+                Id = "contaEmiteBoleto",
                 Class = "col s12 l10",
                 Label = "Esta conta emite boletos",
                 DomEvents = new List<DomEventUI>()

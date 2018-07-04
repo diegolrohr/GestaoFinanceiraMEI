@@ -15,16 +15,13 @@
     }
 
     function fnFormReady() {
-        if ($('#codigoCedente').val() == "" && $('#codigoDV').val() == "" && $('#taxaJuros').val() == "")
+        if ($('#contaEmiteBoleto').prop('checked') == false)
         {
             $('#codigoCedenteField').hide();
             $('#codigoDVField').hide();
             $('#taxaJurosField').hide();
             $('#percentualMultaField').hide();
-            $('#textInfoBoletosField').hide();
-            
+            $('#textInfoBoletosField').hide();   
         }
-        else
-            $('#checkCedente').prop('checked', true);
     }
 </script>

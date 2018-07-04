@@ -8,6 +8,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -44,7 +45,7 @@ namespace Fly01.Estoque.Controllers
                     Title = "Posição atual",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual" }
+                        new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 Functions = new List<string> { "fnFormReady", "fnAjusteManual", "fnTotais" },

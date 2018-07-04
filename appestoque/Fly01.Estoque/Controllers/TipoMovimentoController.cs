@@ -48,7 +48,7 @@ namespace Fly01.Estoque.Controllers
                     Title = "Tipos de movimento",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",

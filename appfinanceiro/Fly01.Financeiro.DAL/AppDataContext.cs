@@ -56,6 +56,7 @@ namespace Fly01.Financeiro.API.Models.DAL
             builder.Entity<ContaBancaria>().Ignore(m => m.CodigoBanco);
             builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
             builder.Entity<SaldoHistorico>().MapToStoredProcedures();
+            builder.Entity<ContaFinanceira>().MapToStoredProcedures();
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

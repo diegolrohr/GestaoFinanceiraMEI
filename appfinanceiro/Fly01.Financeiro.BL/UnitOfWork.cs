@@ -92,7 +92,7 @@ namespace Fly01.Financeiro.BL
         public ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL => conciliacaoBancariaItemContaFinanceiraBL ?? (conciliacaoBancariaItemContaFinanceiraBL = new ConciliacaoBancariaItemContaFinanceiraBL(Context, ConciliacaoBancariaBL, ConciliacaoBancariaItemBL, ContaFinanceiraBaixaBL, ContaFinanceiraBL));
 
         private ConciliacaoBancariaTransacaoBL conciliacaoBancariaTransacaoBL;
-        public ConciliacaoBancariaTransacaoBL ConciliacaoBancariaTransacaoBL => conciliacaoBancariaTransacaoBL ?? (conciliacaoBancariaTransacaoBL = new ConciliacaoBancariaTransacaoBL(Context, ConciliacaoBancariaItemContaFinanceiraBL, ContaPagarBL, ContaReceberBL, CondicaoParcelamentoBL));
+        public ConciliacaoBancariaTransacaoBL ConciliacaoBancariaTransacaoBL => conciliacaoBancariaTransacaoBL ?? (conciliacaoBancariaTransacaoBL = new ConciliacaoBancariaTransacaoBL(Context, ConciliacaoBancariaItemContaFinanceiraBL, ContaPagarBL, ContaReceberBL, CondicaoParcelamentoBL, ConciliacaoBancariaItemBL, ConciliacaoBancariaBL));
 
         private ConciliacaoBancariaBuscarExistentesBL conciliacaoBancariaBuscarExistentesBL;
         public ConciliacaoBancariaBuscarExistentesBL ConciliacaoBancariaBuscarExistentesBL => conciliacaoBancariaBuscarExistentesBL ?? (conciliacaoBancariaBuscarExistentesBL = new ConciliacaoBancariaBuscarExistentesBL(Context, ConciliacaoBancariaItemContaFinanceiraBL));

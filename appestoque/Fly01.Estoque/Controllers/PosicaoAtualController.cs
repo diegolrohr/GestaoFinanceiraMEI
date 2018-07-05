@@ -8,6 +8,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
+using Fly01.Core.Config;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -19,6 +20,16 @@ namespace Fly01.Estoque.Controllers
             Dictionary<string, string> queryStringDefault = AppDefaults.GetQueryStringDefault();
 
             return queryStringDefault;
+        }
+
+        private List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
+                target.Add(new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual" });
+
+            return target;
         }
 
         public JsonResult Totais()
@@ -43,10 +54,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Posição atual",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 Functions = new List<string> { "fnFormReady", "fnAjusteManual", "fnTotais" },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -63,7 +71,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             cfg.Content.Add(new CardUI
@@ -77,7 +84,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             cfg.Content.Add(new CardUI
@@ -91,7 +97,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             var config = new DataTableUI

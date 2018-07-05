@@ -13,24 +13,30 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
-using Fly01.Core.Config;
 
 namespace Fly01.Estoque.Controllers
 {
     [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueAjusteManual)]
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
-        public override Func<AjusteManualVM, object> GetDisplayData()
-        {
-            throw new NotImplementedException();
-        }
+        public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() 
+        public override ContentResult List()
             => Form();
+
+        private List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+
+            return target;
+        }
 
         public override ContentResult Form()
         {
-            if (!SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
+            if(!UserCanRead)
                 return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
 
             var cfg = new ContentUI
@@ -43,10 +49,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Ajuste manual",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

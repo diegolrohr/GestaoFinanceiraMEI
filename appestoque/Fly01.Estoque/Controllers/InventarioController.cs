@@ -28,6 +28,30 @@ namespace Fly01.Estoque.Controllers
             ExpandProperties = "";
         }
 
+        private List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+                target.Add(new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" });
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+            }
+
+            return target;
+        }
+
+        private List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+
+            return target;
+        }
+
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -40,12 +64,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cadastro de Inventário",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" },
-                        new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" },
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -176,20 +195,20 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Inventários",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "Inventario", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
+            if(UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
+            }
 
             config.Columns.Add(new DataTableUIColumn
             {

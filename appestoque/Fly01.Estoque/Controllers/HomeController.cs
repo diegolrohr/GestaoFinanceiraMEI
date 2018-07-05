@@ -14,14 +14,25 @@ namespace Fly01.Estoque.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
+        private List<HtmlUIButton> GetButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>
+            {
+                new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo" }
+            };
+
+            if (SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoquePosicaoAtual))
+                target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual" });
+
+            return target;
+        }
+
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            if (!SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueVisaoGeral))
+            if (!UserCanRead)
                 return new ContentUI();
 
-            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year,
-                                                        DateTime.Now.Month, 1)
-                                                        .AddDays(-1);
+            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);
             var dataFinalFiltroDefault = DateTime.Now.Date;
 
             var cfg = new ContentUI
@@ -33,15 +44,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Visão Geral",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "atualizar",
-                                           Label = "Atualizar",
-                                           OnClickFn = "fnAtualizarPeriodo" },
-                        new HtmlUIButton { Id = "posicaoatual",
-                                           Label = "Posição Atual",
-                                           OnClickFn = "fnPosicaoAtual" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

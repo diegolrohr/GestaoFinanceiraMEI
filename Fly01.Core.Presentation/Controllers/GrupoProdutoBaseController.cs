@@ -3,7 +3,6 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
-using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -22,6 +21,16 @@ namespace Fly01.Core.Presentation.Controllers
         public GrupoProdutoBaseController()
         {
             ExpandProperties = "unidadeMedida,ncm";
+        }
+        
+        private List<HtmlUIButton> GetButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+
+            return target;
         }
 
         public override Func<T, object> GetDisplayData()
@@ -46,18 +55,18 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Grupo de Produtos",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
+            if(UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn
@@ -106,7 +115,6 @@ namespace Fly01.Core.Presentation.Controllers
                     List = Url.Action("List"),
                     Form = Url.Action("Form")
                 },
-                //ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 

@@ -43,7 +43,7 @@ namespace Fly01.Financeiro.DAL.Migrations
                         Ativo = p.Boolean(),
                     },
                 body:
-                    @"SELECT @Numero = ISNULL(MAX(Numero), 0) + 1 FROM ContaFinanceira WHERE PlataformaId = @PlataformaId AND Ativo = 1;
+                    @"SELECT @Numero = ISNULL(MAX(Numero), 0) + 1 FROM ContaFinanceira WHERE PlataformaId = @PlataformaId AND TipoContafinanceira = 2;
 
                       INSERT [dbo].[ContaFinanceira]([Id], [ContaFinanceiraRepeticaoPaiId], [ValorPrevisto], [ValorPago], [CategoriaId], [CondicaoParcelamentoId], [PessoaId], [DataEmissao], [DataVencimento], [Descricao], [Observacao], [FormaPagamentoId], [TipoContaFinanceira], [StatusContaBancaria], [Repetir], [TipoPeriodicidade], [NumeroRepeticoes], [DescricaoParcela], [Numero], [DataDesconto], [ValorDesconto], [PlataformaId], [RegistroFixo], [DataInclusao], [DataAlteracao], [DataExclusao], [UsuarioInclusao], [UsuarioAlteracao], [UsuarioExclusao], [Ativo])
                       VALUES (@Id, @ContaFinanceiraRepeticaoPaiId, @ValorPrevisto, @ValorPago, @CategoriaId, @CondicaoParcelamentoId, @PessoaId, @DataEmissao, @DataVencimento, @Descricao, @Observacao, @FormaPagamentoId, @TipoContaFinanceira, @StatusContaBancaria, @Repetir, @TipoPeriodicidade, @NumeroRepeticoes, @DescricaoParcela, @Numero, @DataDesconto, @ValorDesconto, @PlataformaId, @RegistroFixo, @DataInclusao, @DataAlteracao, @DataExclusao, @UsuarioInclusao, @UsuarioAlteracao, @UsuarioExclusao, @Ativo)
@@ -144,7 +144,7 @@ namespace Fly01.Financeiro.DAL.Migrations
                         Ativo = p.Boolean(),
                     },
                 body:
-                    @"SELECT @Numero = ISNULL(MAX(Numero), 0) + 1 FROM ContaFinanceira WHERE PlataformaId = @PlataformaId AND Ativo = 1;
+                    @"SELECT @Numero = ISNULL(MAX(Numero), 0) + 1 FROM ContaFinanceira WHERE PlataformaId = @PlataformaId AND TipoContafinanceira = 1;
 
                       INSERT [dbo].[ContaFinanceira]([Id], [ContaFinanceiraRepeticaoPaiId], [ValorPrevisto], [ValorPago], [CategoriaId], [CondicaoParcelamentoId], [PessoaId], [DataEmissao], [DataVencimento], [Descricao], [Observacao], [FormaPagamentoId], [TipoContaFinanceira], [StatusContaBancaria], [Repetir], [TipoPeriodicidade], [NumeroRepeticoes], [DescricaoParcela], [Numero], [DataDesconto], [ValorDesconto], [PlataformaId], [RegistroFixo], [DataInclusao], [DataAlteracao], [DataExclusao], [UsuarioInclusao], [UsuarioAlteracao], [UsuarioExclusao], [Ativo])
                       VALUES (@Id, @ContaFinanceiraRepeticaoPaiId, @ValorPrevisto, @ValorPago, @CategoriaId, @CondicaoParcelamentoId, @PessoaId, @DataEmissao, @DataVencimento, @Descricao, @Observacao, @FormaPagamentoId, @TipoContaFinanceira, @StatusContaBancaria, @Repetir, @TipoPeriodicidade, @NumeroRepeticoes, @DescricaoParcela, @Numero, @DataDesconto, @ValorDesconto, @PlataformaId, @RegistroFixo, @DataInclusao, @DataAlteracao, @DataExclusao, @UsuarioInclusao, @UsuarioAlteracao, @UsuarioExclusao, @Ativo)

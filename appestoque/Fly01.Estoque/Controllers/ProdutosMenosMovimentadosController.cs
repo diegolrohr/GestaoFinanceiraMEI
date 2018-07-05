@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class ProdutosMenosMovimentadosController : BaseController<ProdutosMenosMovimentadosVM>
     {
         private DateTime _dataInicial, _dataFinal;
@@ -27,7 +28,6 @@ namespace Fly01.Estoque.Controllers
             return customFilters;
         }
 
-        [OperationRole(NotApply = true)]
         public JsonResult GridLoadProdutosMenosMovimentados(DateTime dataInicial, DateTime dataFinal)
         {
             _dataInicial = dataInicial;

@@ -6,14 +6,11 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
-using Fly01.Core.Presentation;
-using Fly01.Core.ViewModels;
 
 namespace Fly01.Estoque.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosProdutos, PermissionValue = EPermissionValue.Read)]
         public JsonResult ProdutoDescricao(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
@@ -29,7 +26,6 @@ namespace Fly01.Estoque.Controllers
             return GetJson(filterObjects);
         }
 
-        [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosProdutos, PermissionValue = EPermissionValue.Read)]
         public JsonResult ProdutoCodigo(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
@@ -45,7 +41,6 @@ namespace Fly01.Estoque.Controllers
             return GetJson(filterObjects);
         }
 
-        [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Read)]
         public JsonResult TipoMovimento(string term, string prefilter = "")
         {
             var resourceName = AppDefaults.GetResourceName(typeof(TipoMovimentoVM));

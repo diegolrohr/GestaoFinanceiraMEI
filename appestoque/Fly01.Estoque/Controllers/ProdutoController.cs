@@ -13,6 +13,9 @@ namespace Fly01.Estoque.Controllers
     [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosProdutos)]
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
+        public ProdutoController()
+            : base(ResourceHash.EstoqueCadastrosGrupoProdutos) { }
+
         [OperationRole(NotApply = true)]
         public JsonResult GridLoadPos(Dictionary<string, string> filters = null)
         {

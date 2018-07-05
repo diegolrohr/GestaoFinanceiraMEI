@@ -76,7 +76,7 @@ namespace Fly01.Estoque.Controllers
 
             });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "tipoMovimentoId",
                 Class = "col l6 m6 s12",
@@ -86,9 +86,9 @@ namespace Fly01.Estoque.Controllers
                 DataUrlPost = @Url.Action("NovoTipoMovimento"),
                 LabelId = "tipoMovimentoDescricao",
                 PreFilter = "tipoEntradaSaida"
-            });
+            }, ResourceHash.EstoqueCadastrosTiposMovimento));
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col l12 m12 s12",
@@ -102,7 +102,7 @@ namespace Fly01.Estoque.Controllers
                 {
                     new DomEventUI { DomEvent = "blur", Function = "fnChangeProduto" }
                 }
-            });
+            }, ResourceHash.EstoqueCadastrosProdutos));
 
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l4 m4 s12", Label = "Código", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l4 m4 s12", Label = "Código de barras", Disabled = true });

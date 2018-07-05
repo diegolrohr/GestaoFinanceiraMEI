@@ -2,11 +2,15 @@
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
+        public ProdutoController() 
+            : base(ResourceHash.ComprasCadastrosGrupoProdutos) { }
+
         public override List<TooltipUI> GetHelpers()
         {
             return new List<TooltipUI> {

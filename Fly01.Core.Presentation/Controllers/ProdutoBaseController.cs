@@ -19,10 +19,11 @@ namespace Fly01.Core.Presentation.Controllers
     {
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
         protected string SelectProperties { get; set; }
-        public ProdutoBaseController()
+        private string GrupoProdutoResourceHash { get; set; }
+        public ProdutoBaseController(string grupoProdutoResourceHash)
         {
+            GrupoProdutoResourceHash = grupoProdutoResourceHash;
             ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo),enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)";
-
             SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo";
             GetDisplayDataSelect = x => new
             {
@@ -38,10 +39,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
         }
 
-        public override Func<T, object> GetDisplayData()
-        {
-            return GetDisplayDataSelect;
-        }
+        public override Func<T, object> GetDisplayData() 
+            => GetDisplayDataSelect;
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
@@ -143,8 +142,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
-
-            config.Elements.Add(new AutoCompleteUI
+            
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m3",
@@ -155,7 +154,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "grupoProdutoDescricao",
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
-            });
+            }, GrupoProdutoResourceHash));
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -229,18 +228,8 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public virtual List<TooltipUI> GetHelpers()
-        {
-            return null;
-            //config.Helpers.Add(new TooltipUI
-            //{
-            //    Id = "codigoBarras",
-            //    Tooltip = new HelperUITooltip()
-            //    {
-            //        Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
-            //    }
-            //});
-        }
+        public virtual List<TooltipUI> GetHelpers() 
+            => null;
 
         #region onDemand
 
@@ -304,7 +293,7 @@ namespace Fly01.Core.Presentation.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
@@ -315,7 +304,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "grupoProdutoDescricao",
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
-            });
+            }, GrupoProdutoResourceHash));
 
             config.Elements.Add(new InputNumbersUI
             {
@@ -335,7 +324,6 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
-
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

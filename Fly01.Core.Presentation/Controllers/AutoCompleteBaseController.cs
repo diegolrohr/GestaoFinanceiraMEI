@@ -7,6 +7,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Core.Presentation.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class AutoCompleteBaseController : PrimitiveBaseController
     {
         protected JsonResult GetJson(object data) 

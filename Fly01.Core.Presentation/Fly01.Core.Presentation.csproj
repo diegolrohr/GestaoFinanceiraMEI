@@ -125,6 +125,7 @@
     <Compile Include="Application\GlobalHttpApplication.cs" />
     <Compile Include="Application\RouteConfig.cs" />
     <Compile Include="Application\WebAPIConfig.cs" />
+    <Compile Include="Commons\ElementUIHelper.cs" />
     <Compile Include="OperationRoleAttribute.cs" />
     <Compile Include="Commons\ImportacaoArquivoHelper.cs" />
     <Compile Include="Commons\LayoutHelper.cs" />

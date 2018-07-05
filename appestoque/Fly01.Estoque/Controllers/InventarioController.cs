@@ -87,7 +87,7 @@ namespace Fly01.Estoque.Controllers
 
             formConfigInventarioItem.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
 
-            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
+            formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoCodigoId",
                 Class = "col s5",
@@ -96,9 +96,9 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoCodigo", "AutoComplete"),
                 LabelId = "produtoCodigo",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
-            });
+            }, ResourceHash.EstoqueCadastrosProdutos));
 
-            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
+            formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s5",
@@ -107,7 +107,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoDescricao", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoDesc" } }
-            });
+            }, ResourceHash.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(new ButtonUI
             {

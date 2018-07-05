@@ -158,7 +158,6 @@ namespace Fly01.Financeiro.BL
             //Já existe a contaFinanceiraId informada ou vai associar a conta que esta na navigation
             //mesma transacao, ainda não estava salvo para usar do contafinanceirabl.all.where 
             ValidaModel(entity, conciliacaoBancariaItem);
-            SalvaContaFinanceiraBaixa(entity, conciliacaoBancariaItem);
 
             entity.ContaFinanceira = null;
 

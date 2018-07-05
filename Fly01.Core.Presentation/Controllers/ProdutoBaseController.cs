@@ -20,6 +20,7 @@ namespace Fly01.Core.Presentation.Controllers
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
         protected string SelectProperties { get; set; }
         private string GrupoProdutoResourceHash { get; set; }
+
         public ProdutoBaseController(string grupoProdutoResourceHash)
         {
             GrupoProdutoResourceHash = grupoProdutoResourceHash;

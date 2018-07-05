@@ -9,7 +9,7 @@ namespace Fly01.Faturamento.Controllers
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         public ProdutoController() 
-            : base(ResourceHash.FaturamentoCadastrosGrupoProdutos) { }
+            : base(ResoucerHashConst.FaturamentoCadastrosGrupoProdutos) { }
 
         public override List<TooltipUI> GetHelpers()
         {

@@ -1,6 +1,6 @@
 ﻿namespace Fly01.Core.Presentation
 {
-    public static class ResourceHash
+    public static class ResoucerHashConst
     {
         #region Financeiro Resources
 

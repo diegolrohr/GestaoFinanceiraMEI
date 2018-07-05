@@ -9,7 +9,7 @@ namespace Fly01.Compras.Controllers
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         public ProdutoController() 
-            : base(ResourceHash.ComprasCadastrosGrupoProdutos) { }
+            : base(ResoucerHashConst.ComprasCadastrosGrupoProdutos) { }
 
         public override List<TooltipUI> GetHelpers()
         {

@@ -20,7 +20,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueInventario)]
+    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueInventario)]
     public class InventarioController : BaseController<InventarioVM>
     {
         public InventarioController()
@@ -96,7 +96,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoCodigo", "AutoComplete"),
                 LabelId = "produtoCodigo",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
-            }, ResourceHash.EstoqueCadastrosProdutos));
+            }, ResoucerHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -107,7 +107,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoDescricao", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoDesc" } }
-            }, ResourceHash.EstoqueCadastrosProdutos));
+            }, ResoucerHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(new ButtonUI
             {

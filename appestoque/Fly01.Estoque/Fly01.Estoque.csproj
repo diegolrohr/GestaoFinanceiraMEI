@@ -74,7 +74,6 @@
     <Compile Include="Controllers\ProdutosMaisMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\TipoMovimentoController.cs" />
-    <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Reports\ReportStock.cs" />
     <Compile Include="Models\Reports\ReportMovimentoSimplificado.cs" />

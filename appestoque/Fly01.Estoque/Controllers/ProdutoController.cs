@@ -10,11 +10,11 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosProdutos)]
+    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueCadastrosProdutos)]
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         public ProdutoController()
-            : base(ResourceHash.EstoqueCadastrosGrupoProdutos) { }
+            : base(ResoucerHashConst.EstoqueCadastrosGrupoProdutos) { }
 
         [OperationRole(NotApply = true)]
         public JsonResult GridLoadPos(Dictionary<string, string> filters = null)

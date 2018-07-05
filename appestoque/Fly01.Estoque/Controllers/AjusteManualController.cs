@@ -13,10 +13,11 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Config;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHash.EstoqueEstoqueAjusteManual)]
+    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueAjusteManual)]
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
         public override Func<AjusteManualVM, object> GetDisplayData()
@@ -29,6 +30,9 @@ namespace Fly01.Estoque.Controllers
 
         public override ContentResult Form()
         {
+            if (!SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
+                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -86,7 +90,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrlPost = @Url.Action("NovoTipoMovimento"),
                 LabelId = "tipoMovimentoDescricao",
                 PreFilter = "tipoEntradaSaida"
-            }, ResourceHash.EstoqueCadastrosTiposMovimento));
+            }, ResoucerHashConst.EstoqueCadastrosTiposMovimento));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -102,7 +106,7 @@ namespace Fly01.Estoque.Controllers
                 {
                     new DomEventUI { DomEvent = "blur", Function = "fnChangeProduto" }
                 }
-            }, ResourceHash.EstoqueCadastrosProdutos));
+            }, ResoucerHashConst.EstoqueCadastrosProdutos));
 
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l4 m4 s12", Label = "Código", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l4 m4 s12", Label = "Código de barras", Disabled = true });
@@ -131,7 +135,7 @@ namespace Fly01.Estoque.Controllers
         }
 
         [HttpPost]
-        [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
+        [OperationRole(ResourceKey = ResoucerHashConst.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
         public JsonResult NovoTipoMovimento(string term)
         {
             try

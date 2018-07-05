@@ -14,7 +14,7 @@ using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHash.EstoqueCadastrosTiposMovimento)]
+    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueCadastrosTiposMovimento)]
     public class TipoMovimentoController : BaseController<TipoMovimentoVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()

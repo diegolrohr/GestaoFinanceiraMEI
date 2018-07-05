@@ -99,11 +99,7 @@ namespace Fly01.Financeiro.BL
 
                     //Se status "pago", gerar ContaFinanceiraBaixa
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar.DataVencimento,
-                                                                        itemContaPagar.Id,
-                                                                        itemContaPagar.ValorPrevisto,
-                                                                        TipoContaFinanceira.ContaPagar,
-                                                                        entity.Descricao);
+                        contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
 
                     if (repetir)
                     {

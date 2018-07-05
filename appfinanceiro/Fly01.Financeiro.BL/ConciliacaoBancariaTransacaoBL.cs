@@ -14,15 +14,22 @@ namespace Fly01.Financeiro.BL
         protected ContaPagarBL contaPagarBL { get; set; }
         protected ContaReceberBL contaReceberBL { get; set; }
         protected CondicaoParcelamentoBL condicaoParcelamentoBL { get; set; }
+        protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }
+        protected ConciliacaoBancariaBL conciliacaoBancariaBL { get; set; }
 
-        public ConciliacaoBancariaTransacaoBL(AppDataContext Context, ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL, ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL, CondicaoParcelamentoBL CondicaoParcelamentoBL) : base(Context)
+
+        public ConciliacaoBancariaTransacaoBL(AppDataContext Context, ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL,
+            ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL, CondicaoParcelamentoBL CondicaoParcelamentoBL, ConciliacaoBancariaItemBL ConciliacaoBancariaItemBL, ConciliacaoBancariaBL ConciliacaoBancariaBL) : base(Context)
         {
             conciliacaoBancariaItemContaFinanceiraBL = ConciliacaoBancariaItemContaFinanceiraBL;
             contaPagarBL = ContaPagarBL;
             contaReceberBL = ContaReceberBL;
             condicaoParcelamentoBL = CondicaoParcelamentoBL;
+            conciliacaoBancariaItemBL = ConciliacaoBancariaItemBL;
+            conciliacaoBancariaBL = ConciliacaoBancariaBL;
+
         }
-                
+
         public override void Insert(ConciliacaoBancariaTransacao entity)
         {
             try
@@ -39,11 +46,13 @@ namespace Fly01.Financeiro.BL
 
                 CondicaoParcelamento condicaoAVista = condicaoParcelamentoBL.All.Where(x => x.Id == entity.CondicaoParcelamentoId && (x.QtdParcelas == 1 || x.CondicoesParcelamento.Equals("0"))).FirstOrDefault();
                 if (condicaoAVista == null)
-                    throw new BusinessException("Condição de parcelamento inválida para a transação");
+                    throw new BusinessException("Condição de parcelamento inválida para a transação. Somente a vista.");
 
                 ContaFinanceira contaFinanceira = (entity.TipoContaFinanceira == "ContaPagar") 
                     ? (ContaFinanceira) new ContaPagar()
                     : (ContaFinanceira) new ContaReceber();
+
+                var conciliacaoBancariaId = conciliacaoBancariaItemBL.All.Where(x => x.Id == entity.ConciliacaoBancariaItemId).FirstOrDefault().ConciliacaoBancariaId;
 
                 contaFinanceira.Id = Guid.NewGuid();
                 contaFinanceira.ValorPrevisto = entity.ValorPrevisto;
@@ -54,6 +63,7 @@ namespace Fly01.Financeiro.BL
                 contaFinanceira.DataEmissao = DateTime.Now;
                 contaFinanceira.DataVencimento = entity.DataVencimento;
                 contaFinanceira.Descricao = entity.Descricao;
+                contaFinanceira.ContaBancariaId = conciliacaoBancariaBL.All.FirstOrDefault(x => x.Id == conciliacaoBancariaId).ContaBancariaId;
                 //a baixa não atualiza a conta, pois ela está referenciada pela navigation
                 //a conta não está salva ainda
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.Pago;

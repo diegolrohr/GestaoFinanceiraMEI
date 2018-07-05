@@ -58,7 +58,6 @@ namespace Fly01.Core.ServiceBus
         public void Consume()
         {
             var consumer = new EventingBasicConsumer(Channel);
-            Channel.BasicQos(0, 1, false);
 
             consumer.Received += async (sender, args) =>
             {

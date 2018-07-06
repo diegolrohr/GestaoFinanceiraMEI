@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201807031843513_AddColumnEmiteBoletoContaBnacaria.Designer.cs">
       <DependentUpon>201807031843513_AddColumnEmiteBoletoContaBnacaria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807041635128_ContaFinanceiraCreateSP.cs" />
+    <Compile Include="Migrations\201807041635128_ContaFinanceiraCreateSP.Designer.cs">
+      <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -312,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807031843513_AddColumnEmiteBoletoContaBnacaria.resx">
       <DependentUpon>201807031843513_AddColumnEmiteBoletoContaBnacaria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807041635128_ContaFinanceiraCreateSP.resx">
+      <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

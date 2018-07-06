@@ -52,6 +52,7 @@
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="MonitorNFBL.cs" />
+    <Compile Include="NotaFiscalCartaCorrecaoBL.cs" />
     <Compile Include="NotaFiscalItemTributacaoBL.cs" />
     <Compile Include="NFSeServicoBL.cs" />
     <Compile Include="NFeProdutoBL.cs" />

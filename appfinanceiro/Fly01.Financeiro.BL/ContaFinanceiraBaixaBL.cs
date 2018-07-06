@@ -96,12 +96,10 @@ namespace Fly01.Financeiro.BL
             {
                 var bancoOutros = bancoBL.All.FirstOrDefault(x => x.Codigo == "999");
 
-                if (bancoOutros == null) throw new BusinessException("Nenhuma conta bancária encontrada.");
-
-                contaFinanceira.ContaBancaria.BancoId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true).Id;
+                contaFinanceira.ContaBancariaId = contaBancariaBL.All.FirstOrDefault(x => x.BancoId == bancoOutros.Id && x.RegistroFixo == true).Id;
             }
 
-            if (contaFinanceira.ContaBancaria == null) throw new BusinessException("Conta bancária inválida.");
+            if (contaFinanceira.ContaBancaria == null && contaFinanceira.ContaBancariaId == null) throw new BusinessException("Conta bancária inválida.");
 
             saldoHistoricoBL.AtualizaSaldoHistorico(contaFinanceira.DataVencimento, contaFinanceira.ValorPrevisto, contaFinanceira.ContaBancariaId, contaFinanceira.TipoContaFinanceira);
 

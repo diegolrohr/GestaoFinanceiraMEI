@@ -102,9 +102,9 @@ namespace Fly01.Financeiro.Controllers
                         {
                             new ButtonGroupOptionUI { Id = "btnDia", Value = "1", Label = "Dia", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnMes", Value = "3", Label = "Mês", Class = "col s4 m2" },
-                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnTri", Value = "4", Label = "Trimestre", Class = "col s6 m3" },
                             new ButtonGroupOptionUI { Id = "btnSem", Value = "5", Label = "Semestre", Class = "col s6 m3" },
+                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
                         }
                     }
                 }

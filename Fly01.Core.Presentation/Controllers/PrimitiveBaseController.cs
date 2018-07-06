@@ -19,7 +19,7 @@ namespace Fly01.Core.Presentation.Controllers
         
         public PrimitiveBaseController()
         {
-            var annotationInController = GetType().GetCustomAttributes(false)
+            var annotationInController = GetType().GetCustomAttributes(FindAnnotationInherit)
                .OfType<OperationRoleAttribute>()
                .FirstOrDefault();
 
@@ -33,7 +33,7 @@ namespace Fly01.Core.Presentation.Controllers
             }
         }
 
-        private bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue)
+        public bool UserCanPerformOperation(string resourceKey, EPermissionValue permissionValue = EPermissionValue.Read)
             => SessionManager.Current.UserData.UserCanPerformOperation(resourceKey, permissionValue);
 
         private OperationRoleAttribute GetOperationRole(ActionDescriptor action)

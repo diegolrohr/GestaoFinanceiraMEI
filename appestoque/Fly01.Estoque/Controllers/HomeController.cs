@@ -12,7 +12,6 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueVisaoGeral)]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
         private List<HtmlUIButton> GetButtonsOnHeader()
@@ -22,7 +21,7 @@ namespace Fly01.Estoque.Controllers
                 new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo" }
             };
 
-            if (SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoquePosicaoAtual))
+            if (UserCanPerformOperation(ResoucerHashConst.EstoqueEstoquePosicaoAtual))
                 target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual" });
 
             return target;
@@ -30,7 +29,7 @@ namespace Fly01.Estoque.Controllers
 
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            if (!UserCanRead)
+            if (!UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueVisaoGeral))
                 return new ContentUI();
 
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);

@@ -26,7 +26,7 @@ namespace Fly01.Estoque.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (SessionManager.Current.UserData.UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
+            if (UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
                 target.Add(new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual" });
 
             return target;

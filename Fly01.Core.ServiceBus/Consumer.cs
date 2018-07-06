@@ -17,7 +17,7 @@ namespace Fly01.Core.ServiceBus
         protected string Message;
         protected RabbitConfig.EnHttpVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
-        protected List<KeyValuePair<string, object>> exceptions;
+        protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
         protected abstract Task PersistMessage();
 
         private IConnection Connection
@@ -58,7 +58,6 @@ namespace Fly01.Core.ServiceBus
         public void Consume()
         {
             var consumer = new EventingBasicConsumer(Channel);
-            Channel.BasicQos(0, 1, false);
 
             consumer.Received += async (sender, args) =>
             {
@@ -95,7 +94,7 @@ namespace Fly01.Core.ServiceBus
                 }
             };
 
-            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
+            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
     }
 }

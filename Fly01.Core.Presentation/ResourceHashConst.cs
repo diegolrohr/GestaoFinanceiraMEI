@@ -1,6 +1,6 @@
 ﻿namespace Fly01.Core.Presentation
 {
-    public static class ResoucerHashConst
+    public static class ResourceHashConst
     {
         #region Financeiro Resources
 
@@ -15,7 +15,12 @@
         public const string FinanceiroFinanceiroContasReceber = "4AF5ACA1-8D6F-4CAA-A7FC-4433BEBF33AD";
         public const string FinanceiroFinanceiroRelatorioDRE = "5BAB7260-EFDF-449B-A2B6-874817071751";
         public const string FinanceiroFinanceiroConciliacaoBancaria = "5638CC31-48F4-44ED-A322-F3F05BA41125";
-                               
+
+        public const string FinanceiroCobranca = "85B55038-1BD1-42B7-81C5-12D3CF6E7AD3";
+        public const string FinanceiroCobrancaBoletos = "B4787890-4341-46E7-B19A-BAC6D3E62739";
+        public const string FinanceiroCobrancaArquivosRemessa = "45A31DCC-0C21-4AD7-BFBF-799E13501684";
+        public const string FinanceiroCobrancaArquivoRetorno = "31F5A98D-11AB-4502-A5AE-A0751719F37B";
+
         public const string FinanceiroCadastros = "911D340C-BFCA-46B1-88B1-1E277375F3CE";
         public const string FinanceiroCadastrosClientes = "5BE563F6-034D-497E-B59A-89A128D9A374";
         public const string FinanceiroCadastrosFornecedores = "7076E4FD-AF4F-4172-9904-AC1B6860BC05";
@@ -54,6 +59,7 @@
         public const string FaturamentoConfiguracoesCertificadoDigital = "A4EF868D-E45F-48DB-8483-6EB222CC685B";
         public const string FaturamentoConfiguracoesParametrosTributarios = "72AD1DC1-9D02-4F3B-9FB7-F332F9820102";
         public const string FaturamentoConfiguracoesSerieNotasFiscais = "C45E3A42-BEAA-41A9-9244-2CAA6D8F8914";
+        public const string FaturamentoConfiguracoesNotasFiscaisInutilizadas = "D1AC9AA3-3670-4C03-906C-D8107D97465E";
 
         public const string FaturamentoAjuda = "C0A6DE65-56C0-458F-926B-E72CCDF61C94";
         public const string FaturamentoAjudaAssistenciaRemota = "8105B4AF-27BF-472B-8CD3-D2D37553A60C";

@@ -12,7 +12,7 @@ using Fly01.Core.Config;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoquePosicaoAtual)]
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoquePosicaoAtual)]
     public class PosicaoAtualController : BaseController<PosicaoAtualVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -26,7 +26,7 @@ namespace Fly01.Estoque.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueAjusteManual))
+            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueAjusteManual))
                 target.Add(new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual" });
 
             return target;

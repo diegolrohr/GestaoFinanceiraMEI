@@ -16,7 +16,7 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueAjusteManual)]
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueAjusteManual)]
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
         public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
@@ -83,7 +83,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrlPost = @Url.Action("NovoTipoMovimento"),
                 LabelId = "tipoMovimentoDescricao",
                 PreFilter = "tipoEntradaSaida"
-            }, ResoucerHashConst.EstoqueCadastrosTiposMovimento));
+            }, ResourceHashConst.EstoqueCadastrosTiposMovimento));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -99,7 +99,7 @@ namespace Fly01.Estoque.Controllers
                 {
                     new DomEventUI { DomEvent = "blur", Function = "fnChangeProduto" }
                 }
-            }, ResoucerHashConst.EstoqueCadastrosProdutos));
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l4 m4 s12", Label = "Código", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l4 m4 s12", Label = "Código de barras", Disabled = true });
@@ -128,7 +128,7 @@ namespace Fly01.Estoque.Controllers
         }
 
         [HttpPost]
-        [OperationRole(ResourceKey = ResoucerHashConst.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
+        [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
         public JsonResult NovoTipoMovimento(string term)
         {
             try

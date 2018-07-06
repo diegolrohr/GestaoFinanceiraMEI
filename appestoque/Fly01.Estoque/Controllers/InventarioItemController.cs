@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueInventario)]
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueInventario)]
     public class InventarioItemController : BaseController<InventarioItemVM>
     {
         public InventarioItemController()

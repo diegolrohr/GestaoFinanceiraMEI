@@ -21,7 +21,7 @@ namespace Fly01.Estoque.Controllers
                 new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo" }
             };
 
-            if (UserCanPerformOperation(ResoucerHashConst.EstoqueEstoquePosicaoAtual))
+            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoquePosicaoAtual))
                 target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual" });
 
             return target;
@@ -29,7 +29,7 @@ namespace Fly01.Estoque.Controllers
 
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            if (!UserCanPerformOperation(ResoucerHashConst.EstoqueEstoqueVisaoGeral))
+            if (!UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueVisaoGeral))
                 return new ContentUI();
 
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);
@@ -209,37 +209,37 @@ namespace Fly01.Estoque.Controllers
             {
                 new SidebarUIMenu()
                 {
-                    Class = ResoucerHashConst.EstoqueEstoque,
+                    Class = ResourceHashConst.EstoqueEstoque,
                     Label = "Estoque",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueEstoqueVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List")},
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueEstoqueAjusteManual, Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueEstoquePosicaoAtual, Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueEstoqueInventario, Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueAjusteManual, Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoquePosicaoAtual, Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueInventario, Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
                     }
                 },
                 new SidebarUIMenu()
                 {
-                    Class = ResoucerHashConst.EstoqueCadastros,
+                    Class = ResourceHashConst.EstoqueCadastros,
                     Label = "Cadastros",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueCadastrosGrupoProdutos, Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueCadastrosTiposMovimento, Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosGrupoProdutos, Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosTiposMovimento, Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
                     }
                 },
                 new SidebarUIMenu()
                 {
-                    Class = ResoucerHashConst.EstoqueAjuda,
+                    Class = ResourceHashConst.EstoqueAjuda,
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResoucerHashConst.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                     }
                 },
-                new SidebarUIMenu() { Class = ResoucerHashConst.EstoqueAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+                new SidebarUIMenu() { Class = ResourceHashConst.EstoqueAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));

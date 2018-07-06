@@ -21,7 +21,7 @@ using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
-    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueInventario)]
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueInventario)]
     public class InventarioController : BaseController<InventarioVM>
     {
         public InventarioController()
@@ -106,7 +106,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoCodigo", "AutoComplete"),
                 LabelId = "produtoCodigo",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
-            }, ResoucerHashConst.EstoqueCadastrosProdutos));
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -117,7 +117,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoDescricao", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoDesc" } }
-            }, ResoucerHashConst.EstoqueCadastrosProdutos));
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(new ButtonUI
             {

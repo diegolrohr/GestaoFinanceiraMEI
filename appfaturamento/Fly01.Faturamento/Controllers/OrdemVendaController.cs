@@ -409,7 +409,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Status",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemVenda))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }"
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -417,7 +417,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Tipo",
                 Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemVenda))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription); }"
+                RenderFn = "fnRenderEnum(full.tipoOrdemVendaCssClass, full.tipoOrdemVendaDescription)"
             });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -425,7 +425,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Finalidade",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription); }"
+                RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 6, Type = "date" });

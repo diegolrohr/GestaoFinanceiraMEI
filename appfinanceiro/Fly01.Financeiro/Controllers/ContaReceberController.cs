@@ -249,7 +249,7 @@ namespace Fly01.Financeiro.Controllers
                 DisplayName = "Status",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
+                RenderFn = "fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });

@@ -135,7 +135,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Tipo",
                 Priority = 1,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription); }"
+                RenderFn = "fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription)"
             });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -143,7 +143,7 @@ namespace Fly01.Compras.Controllers
                 DisplayName = "Status",
                 Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemCompra))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }"
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });

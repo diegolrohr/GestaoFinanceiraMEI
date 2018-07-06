@@ -64,7 +64,7 @@ namespace Fly01.EmissaoNFE.BL
                     var percImpostoFederal = "("+ ((impostoFederal * 100) / nota.Total.ICMSTotal.ValorTotalNF) + "%)";
                     var percImpostoEstadual = "(" + ((impostoEstadual * 100) / nota.Total.ICMSTotal.ValorTotalNF) +"%)";
                     var percImpostoMunicipal = "(" + ((impostoMunicipal * 100) / nota.Total.ICMSTotal.ValorTotalNF) +"%)";
-                    var InformacoesIBPT = "|" + "Valor aproximado do(s) Tributo(s): "
+                    var InformacoesIBPT = " | " + "Valor aproximado do(s) Tributo(s): "
                         + impostoFederal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoFederal + " Federal, " 
                         + impostoEstadual.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoEstadual + " Estadual, " 
                         + impostoMunicipal.ToString("C", AppDefaults.CultureInfoDefault) + percImpostoMunicipal

@@ -126,6 +126,8 @@
     <Compile Include="ViewModel\DifalRetornoVM.cs" />
     <Compile Include="ViewModel\ItemTransmissaoRetornoVM.cs" />
     <Compile Include="ViewModel\ItemTransmissaoVM.cs" />
+    <Compile Include="ViewModel\MonitorEventoVM.cs" />
+    <Compile Include="ViewModel\MonitorEventoRetornoVM.cs" />
     <Compile Include="ViewModel\RegimeTributarioVM.cs" />
     <Compile Include="ViewModel\TransmissaoRetornoVM.cs" />
     <Compile Include="ViewModel\TransmissaoVM.cs" />

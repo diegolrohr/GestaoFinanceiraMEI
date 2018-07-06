@@ -37,7 +37,27 @@ namespace Fly01.Core.Presentation
 
         protected string AppViewModelResourceName 
             => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
-        
+
+        public virtual List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+
+            return target;
+        }
+
+        public virtual List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+
+            return target;
+        }
+
         [OperationRole(NotApply = true)]
         public JsonResult BuscaCEP(string cep)
         {

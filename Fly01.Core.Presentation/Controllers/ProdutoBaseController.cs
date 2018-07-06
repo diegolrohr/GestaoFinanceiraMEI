@@ -52,17 +52,7 @@ namespace Fly01.Core.Presentation.Controllers
             return customFilters;
         }
 
-        private List<HtmlUIButton> GetListButtonsOnHeader()
-        {
-            var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
-
-            return target;
-        }
-
-        private List<HtmlUIButton> GetFormButtonsOnHeader()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 

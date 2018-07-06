@@ -24,16 +24,6 @@ namespace Fly01.Estoque.Controllers
         public override ContentResult List()
             => Form();
 
-        private List<HtmlUIButton> GetFormButtonsOnHeader()
-        {
-            var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
-
-            return target;
-        }
-
         public override ContentResult Form()
         {
             if(!UserCanRead)

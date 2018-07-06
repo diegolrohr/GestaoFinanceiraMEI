@@ -28,7 +28,7 @@ namespace Fly01.Estoque.Controllers
             ExpandProperties = "";
         }
 
-        private List<HtmlUIButton> GetFormButtonsOnHeader()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
@@ -38,16 +38,6 @@ namespace Fly01.Estoque.Controllers
                 target.Add(new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" });
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
             }
-
-            return target;
-        }
-
-        private List<HtmlUIButton> GetListButtonsOnHeader()
-        {
-            var target = new List<HtmlUIButton>();
-
-            if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
 
             return target;
         }

@@ -22,7 +22,7 @@ namespace Fly01.Estoque.Controllers
             return queryStringDefault;
         }
 
-        private List<HtmlUIButton> GetListButtonsOnHeader()
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 

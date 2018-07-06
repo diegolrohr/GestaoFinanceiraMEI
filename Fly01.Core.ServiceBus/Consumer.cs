@@ -17,7 +17,7 @@ namespace Fly01.Core.ServiceBus
         protected string Message;
         protected RabbitConfig.EnHttpVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
-        protected List<KeyValuePair<string, object>> exceptions;
+        protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
         protected abstract Task PersistMessage();
 
         private IConnection Connection

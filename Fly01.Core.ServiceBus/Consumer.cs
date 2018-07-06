@@ -82,19 +82,23 @@ namespace Fly01.Core.ServiceBus
                         await PersistMessage();
                     }
 
-                    foreach (var item in exceptions)
+                    if (exceptions.Count > 0)
                     {
-                        var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+                        foreach (var item in exceptions)
+                        {
+                            var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
 
-                        SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                            //SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                        }
+
                         Channel.BasicNack(args.DeliveryTag, false, true);
                     }
 
-                    Channel.BasicAck(args.DeliveryTag, false);
+                    Channel.BasicAck(args.DeliveryTag, true);
                 }
             };
 
-            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
+            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
         }
     }
 }

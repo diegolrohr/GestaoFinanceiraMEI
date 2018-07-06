@@ -121,10 +121,7 @@ namespace Fly01.Estoque.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override Func<PosicaoAtualVM, object> GetDisplayData()
         {

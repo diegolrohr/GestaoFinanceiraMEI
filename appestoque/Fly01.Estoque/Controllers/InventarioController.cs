@@ -17,6 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -34,9 +35,9 @@ namespace Fly01.Estoque.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
-                target.Add(new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" });
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;

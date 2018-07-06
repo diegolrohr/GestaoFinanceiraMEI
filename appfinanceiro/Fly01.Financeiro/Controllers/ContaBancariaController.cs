@@ -145,7 +145,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contaEmiteBoleto",
                 Class = "col s12 l10",
-                Label = "Esta conta emite boletos",
+                Label = " Habilitar emissão de boletos bancários",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },

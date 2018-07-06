@@ -400,7 +400,6 @@ namespace Fly01.Faturamento.Controllers
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" });
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEnviarEmailOrcamentoPedido", Label = "Enviar por email" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn

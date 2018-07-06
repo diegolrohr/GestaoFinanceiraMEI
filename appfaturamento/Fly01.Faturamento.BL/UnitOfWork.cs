@@ -113,6 +113,9 @@ namespace Fly01.Faturamento.BL
         private SerieNotaFiscalBL serieNotaFiscalBL;
         public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
 
+        private NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL;
+        public NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL => notaFiscalCartaCorrecaoBL ?? (notaFiscalCartaCorrecaoBL = new NotaFiscalCartaCorrecaoBL(Context, NotaFiscalBL ));
+
         private NotaFiscalInutilizadaBL notaFiscalInutilizadaBL;
         public NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL => notaFiscalInutilizadaBL ?? (notaFiscalInutilizadaBL = new NotaFiscalInutilizadaBL(Context));
 

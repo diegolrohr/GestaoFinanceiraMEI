@@ -12,6 +12,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResoucerHashConst.EstoqueEstoqueVisaoGeral)]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
         private List<HtmlUIButton> GetButtonsOnHeader()

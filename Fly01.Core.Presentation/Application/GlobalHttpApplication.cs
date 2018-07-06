@@ -25,7 +25,7 @@ namespace Fly01.Core.Presentation.Application
         {
             try
             {
-                var requestObject = JsonConvert.SerializeObject(new { platformUrl, platformUser });
+                var requestObject = JsonConvert.SerializeObject(new { platformUrl, platformUser, resouceRoot = AppDefaults.AppId });
                 return RestHelper.ExecutePostRequest<List<PermissionResponseVM>>(AppDefaults.UrlGateway, "v2/Permission", requestObject);
             }
             catch
@@ -59,7 +59,8 @@ namespace Fly01.Core.Presentation.Application
                         AppDefaults.GatewayPassword, platformUrl, platformUser);
 
                     userData.TokenData = tokenData;
-                    userData.TokenData.Username = cookieUserData.Name;
+                    userData.TokenData.Username = cookieUserData.Name;                    
+
                     SessionManager.Current.UserData = userData;
                     return true;
                 }

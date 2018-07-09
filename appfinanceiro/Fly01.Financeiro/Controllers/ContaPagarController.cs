@@ -347,7 +347,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostFornecedor", "Fornecedor")
-            }, ResourceHashConst.FaturamentoCadastrosFornecedores));
+            }, ResourceHashConst.FinanceiroCadastrosFornecedores));
 
             config.Elements.Add(new InputCurrencyUI
             {

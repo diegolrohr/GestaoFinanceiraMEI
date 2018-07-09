@@ -89,10 +89,7 @@ namespace Fly01.Core.ServiceBus
                             var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
 
                             SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-                            //Channel.BasicNack(args.DeliveryTag, false, true);
                         }
-
-                        //Channel.BasicAck(args.DeliveryTag, false);
                     }
                 };
 

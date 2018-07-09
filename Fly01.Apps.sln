@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD2DFC64-88AB-47EF-B42B-B6D8DC177834}"
 	ProjectSection(SolutionItems) = preProject
@@ -97,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		RunUpdateDatabase.ps1 = RunUpdateDatabase.ps1
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fly01.IntegracaoServiceBus.API", "Fly01.IntegracaoServiceBus.API\Fly01.IntegracaoServiceBus.API.csproj", "{CD99B38C-7843-42FA-8F37-706292D56272}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -297,6 +299,12 @@ Global
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Homologacao|Any CPU.Build.0 = Release|Any CPU
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Homologacao|Any CPU.ActiveCfg = Release|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Homologacao|Any CPU.Build.0 = Release|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD99B38C-7843-42FA-8F37-706292D56272}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,6 +344,7 @@ Global
 		{26E9896F-EDF5-4E59-9E0F-627C70E2E59E} = {FDE266FE-0F92-4245-B8D2-16180837DDDF}
 		{64C3D174-6165-461C-8250-23910AC88208} = {09F00313-F83F-45CC-A2BF-651A6D0B7A9F}
 		{1005E8B8-FC2A-46F7-B359-63EADF639BE9} = {09F00313-F83F-45CC-A2BF-651A6D0B7A9F}
+		{CD99B38C-7843-42FA-8F37-706292D56272} = {EC0B9D55-BF3A-466B-9574-9CA7DB0D9E17}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32572076-935E-4887-B88E-5E0B3DA88A78}

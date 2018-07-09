@@ -21,10 +21,7 @@ namespace Fly01.Financeiro.Controllers
     public class DemonstrativoResultadoExercicioController : BaseController<DemonstrativoResultadoExercicioVM>
     {
         [HttpGet]
-        public ActionResult Imprimir(DateTime dataInicial,
-                                     DateTime dataFinal,
-                                     bool somaRealizados = true,
-                                     bool somaPrevistos = false)
+        public ActionResult Imprimir(DateTime dataInicial, DateTime dataFinal, bool somaRealizados = true, bool somaPrevistos = false)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -86,15 +83,15 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12",
                 Elements = new List<BaseUI>
-                    {
-                        new InputDateUI { Id = "dataInicial", Class = "col s6", Label = "Data Inicial", Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
-                            DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
-                        },
-                        new InputDateUI { Id = "dataFinal", Class = "col s6", Label = "Data Final",
-                            Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
-                            DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
-                        }
+                {
+                    new InputDateUI { Id = "dataInicial", Class = "col s6", Label = "Data Inicial", Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
+                        DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
                     },
+                    new InputDateUI { Id = "dataFinal", Class = "col s6", Label = "Data Final",
+                        Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
+                        DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
+                    }
+                },
                 ReadyFn = "fnFormReady"
             });
 
@@ -148,27 +145,32 @@ namespace Fly01.Financeiro.Controllers
                 UrlGridLoad = Url.Action("LoadReceitasPorCategoria", "ReceitaPorCategoria"),
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url?.Scheme) + "?fns=",
                 Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataInicial" },
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
+                {
+                    new DataTableUIParameter { Id = "dataInicial" },
+                    new DataTableUIParameter { Id = "dataFinal" }
+                },
                 Columns = new List<DataTableUIColumn>
+                {
+                    new DataTableUIColumn
                     {
-                        new DataTableUIColumn { DataField = "categoria",
-                                                DisplayName = "",
-                                                Priority = 1,
-                                                RenderFn = "fnRenderGroup",
-                                                Searchable = false,
-                                                Orderable = false },
-                        new DataTableUIColumn { DataField = "soma",
-                                                DisplayName = "",
-                                                Priority = 3,
-                                                RenderFn = "fnRenderSoma",
-                                                Orderable = false,
-                                                Searchable = false }
+                        DataField = "categoria",
+                        DisplayName = "",
+                        Priority = 1,
+                        RenderFn = "fnRenderGroup",
+                        Searchable = false,
+                        Orderable = false
                     },
+                    new DataTableUIColumn
+                    {
+                        DataField = "soma",
+                        DisplayName = "",
+                        Priority = 3,
+                        RenderFn = "fnRenderSoma",
+                        Orderable = false,
+                        Searchable = false
+                    }
+                },
                 Options = new DataTableUIConfig { PageLength = 30, WithoutRowMenu = true }
-
             });
 
             cfg.Content.Add(new DataTableUI

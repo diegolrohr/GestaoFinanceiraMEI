@@ -292,10 +292,11 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
                         new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvarRecorrencia", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                 Functions = new List<string> { "fnSalvar" }
             };
 
             var config = new FormUI
@@ -315,6 +316,10 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "statusContaBancaria" });
             config.Elements.Add(new InputHiddenUI { Id = "descricaoParcela" });
+            config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
+            config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
+            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });            
+
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 
             config.Elements.Add(new AutoCompleteUI
@@ -720,6 +725,11 @@ namespace Fly01.Financeiro.Controllers
             }
 
             return base.Delete(id);
+        }
+
+        public override JsonResult Edit(ContaPagarVM entityVM)
+        {
+            return base.Edit(entityVM);
         }
 
         #region OnDemmand

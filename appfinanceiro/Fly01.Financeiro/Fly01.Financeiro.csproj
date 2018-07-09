@@ -375,6 +375,8 @@
     <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnChkBaixar.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnExcluirRecorrencias.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvarRecorrencia.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -112,5 +112,19 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("contaBancaria")]
         public virtual ContaBancariaVM ContaBancaria { get; set; }
+
+        [JsonIgnore]
+        [JsonProperty("repeticaoPai")]
+        public string RepeticaoPai
+        {
+            get{ return (ContaFinanceiraRepeticaoPaiId == null && Repetir).ToString(); }
+        }
+
+        [JsonIgnore]
+        [JsonProperty("repeticaoFilha")]
+        public string RepeticaoFilha
+        {
+            get { return (ContaFinanceiraRepeticaoPaiId != null && Repetir).ToString(); }
+        }
     }
 }

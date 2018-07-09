@@ -292,6 +292,10 @@
     <Compile Include="Migrations\201807041441195_CreateCartaCorrecao.Designer.cs">
       <DependentUpon>201807041441195_CreateCartaCorrecao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807062002291_AddStatusCartaCorrecao.cs" />
+    <Compile Include="Migrations\201807062002291_AddStatusCartaCorrecao.Designer.cs">
+      <DependentUpon>201807062002291_AddStatusCartaCorrecao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -504,6 +508,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807041441195_CreateCartaCorrecao.resx">
       <DependentUpon>201807041441195_CreateCartaCorrecao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807062002291_AddStatusCartaCorrecao.resx">
+      <DependentUpon>201807062002291_AddStatusCartaCorrecao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

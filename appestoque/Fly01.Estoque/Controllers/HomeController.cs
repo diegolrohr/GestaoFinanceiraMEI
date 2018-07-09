@@ -8,6 +8,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -31,12 +32,8 @@ namespace Fly01.Estoque.Controllers
                     Title = "Visão Geral",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "atualizar",
-                                           Label = "Atualizar",
-                                           OnClickFn = "fnAtualizarPeriodo" },
-                        new HtmlUIButton { Id = "posicaoatual",
-                                           Label = "Posição Atual",
-                                           OnClickFn = "fnPosicaoAtual" }
+                        new HtmlUIButton { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo", Position = HtmlUIButtonPosition.Main },
+                        new HtmlUIButton { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual", Position = HtmlUIButtonPosition.Out }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

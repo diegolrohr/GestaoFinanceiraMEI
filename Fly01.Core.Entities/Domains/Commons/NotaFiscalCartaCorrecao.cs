@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +11,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string IdRetorno { get; set; }
 
+        public StatusCartaCorrecao Status { get; set; }
+
         public DateTime Data { get; set; }
+
+        public int Numero { get; set; }
 
         [Required]
         [StringLength(1000)]

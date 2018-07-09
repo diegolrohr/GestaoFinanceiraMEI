@@ -1,5 +1,6 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation.JQueryDataTable;
@@ -12,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class FluxoCaixaController : PrimitiveBaseController
     {
         public JsonResult LoadSaldos(string dataFinal)

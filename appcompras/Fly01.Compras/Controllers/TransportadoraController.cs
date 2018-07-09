@@ -51,7 +51,8 @@ namespace Fly01.Compras.Controllers
 
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
-            return new List<InputCheckboxUI> {
+            return new List<InputCheckboxUI>
+            {
                new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" },
                new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
                new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },

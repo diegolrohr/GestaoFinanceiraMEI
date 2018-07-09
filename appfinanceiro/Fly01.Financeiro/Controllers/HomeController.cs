@@ -19,6 +19,9 @@ namespace Fly01.Financeiro.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+            if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
+                return new ContentUI();
+
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
@@ -257,7 +260,7 @@ namespace Fly01.Financeiro.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasReceber, OnClick = @Url.Action("List", "DashboardContaReceber")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
                     }
                 },
                 new SidebarUIMenu()

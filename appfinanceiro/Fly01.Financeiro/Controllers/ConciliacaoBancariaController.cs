@@ -21,6 +21,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria)]
     public class ConciliacaoBancariaController : BaseController<ConciliacaoBancariaVM>
     {
         public ConciliacaoBancariaController()
@@ -355,10 +356,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Conciliação Bancária",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                            new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                        }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
             };
@@ -369,7 +367,10 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
+            if(UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
+            }
 
             config.Columns.Add(new DataTableUIColumn() { DataField = "contaBancaria_nomeConta", DisplayName = "Conta nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn() { DataField = "contaBancaria_banco_codigo", DisplayName = "Banco", Priority = 1 });
@@ -379,6 +380,19 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Importar Extrato", OnClickFn = "fnSalvarConciliacaoBancaria", Type = "submit" });
+            }
+
+            return target;
         }
 
         public override ContentResult Form()
@@ -393,11 +407,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Conciliação Bancária",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Importar Extrato", OnClickFn = "fnSalvarConciliacaoBancaria", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
             };
@@ -417,7 +427,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6",
@@ -427,7 +437,8 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            });
+            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
+
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6", Label = "Arquivo do extrato bancário (.ofx)", Accept = ".ofx" });
 
             cfg.Content.Add(config);
@@ -447,21 +458,22 @@ namespace Fly01.Financeiro.Controllers
                 {
                     PageLength = 20
                 }
-
             };
 
-            dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCP", Label = "Nova conta", ShowIf = "(row.valor < 0.0)" });
-            dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCR", Label = "Nova conta", ShowIf = "(row.valor > 0.0)" });
-            dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCP", Label = "Buscar existentes", ShowIf = "(row.valor < 0.0)" });
-            dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCR", Label = "Buscar existentes", ShowIf = "(row.valor > 0.0)" });
-            dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirCBItem", Label = "Excluir", ShowIf = "(row.conciliadoDescription == 'NAO')" });
+            if(UserCanWrite)
+            {
+                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCP", Label = "Nova conta", ShowIf = "(row.valor < 0.0)" });
+                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCR", Label = "Nova conta", ShowIf = "(row.valor > 0.0)" });
+                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCP", Label = "Buscar existentes", ShowIf = "(row.valor < 0.0)" });
+                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCR", Label = "Buscar existentes", ShowIf = "(row.valor > 0.0)" });
+                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirCBItem", Label = "Excluir", ShowIf = "(row.conciliadoDescription == 'NAO')" });
+            }
 
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Searchable = false, Orderable = false });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date", Searchable = false, Orderable = false });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "valorFormat", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
 
             dtcfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderSugestao", Width = "30%" });
-
 
             cfg.Content.Add(dtcfg);
 

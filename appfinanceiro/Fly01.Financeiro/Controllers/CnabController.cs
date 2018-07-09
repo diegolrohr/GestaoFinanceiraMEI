@@ -11,9 +11,12 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCobrancaBoletos)]
     public class CnabController : BoletoController<CnabVM>
     {
         public CnabController()
@@ -89,7 +92,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
             });
-            configCnab.Elements.Add(new AutoCompleteUI
+            configCnab.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 m6 l6",
@@ -98,7 +101,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosClientes));
 
             configCnab.Elements.Add(new ButtonUI
             {
@@ -147,6 +150,19 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if(UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "GERAR BOLETO", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -155,11 +171,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Boletos",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "btnGerarBoleto", Label = "GERAR BOLETO", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())                   
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto"}

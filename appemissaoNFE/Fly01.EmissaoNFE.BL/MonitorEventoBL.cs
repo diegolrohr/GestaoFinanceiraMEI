@@ -19,7 +19,8 @@ namespace Fly01.EmissaoNFE.BL
 
             entity.Fail(string.IsNullOrEmpty(entity.IdEvento), new Error("Informe o id do evento.", "IdEvento"));
             entity.Fail(string.IsNullOrEmpty(entity.SefazChaveAcesso), new Error("Informe a chave da nota fiscal.", "SefazChaveAcesso"));
-            entity.Fail(!string.IsNullOrEmpty(entity.IdEvento) && entity.IdEvento.Length != 52, new Error("Tamanho id do evento deve conter 52 caracteres.", "IdEvento"));
+            //ID + 110110 + chavenfe + sequencia evento
+            entity.Fail(!string.IsNullOrEmpty(entity.IdEvento) && entity.IdEvento.Length != 54, new Error("Tamanho id do evento deve conter 54 caracteres.", "IdEvento"));
             entity.Fail(!string.IsNullOrEmpty(entity.SefazChaveAcesso) && entity.SefazChaveAcesso.Length != 44, new Error("Tamanho da chave de acesso deve conter 44 caracteres.", "SefazChaveAcesso"));
 
             base.ValidaModel(entity);

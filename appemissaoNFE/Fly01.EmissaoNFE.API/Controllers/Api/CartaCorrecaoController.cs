@@ -43,44 +43,39 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var base64 = unitOfWork.CartaCorrecaoBL.Serialize(entity);
             var retorno = new CartaCorrecaoRetornoVM();
 
-            var cartaCorrecaoEvento = new NFESBRAProd.NFESBRA().NFEREMESSAEVENTO(
-                AppDefault.Token,
-                entity.Producao,
-                Convert.FromBase64String(base64)
-            );
+            //var cartaCorrecaoEvento = new NFESBRAProd.NFESBRA().NFEREMESSAEVENTO(
+            //    AppDefault.Token,
+            //    entity.Producao,
+            //    Convert.FromBase64String(base64)
+            //);
 
-            if(cartaCorrecaoEvento != null)
-            {
-
-            }
+            //if(cartaCorrecaoEvento != null)
+            //{
+            //    retorno.IdEvento = "ID"+
+            //}
 
             return retorno;
         }
 
-        //public InutilizarNFRetornoVM Homologacao(CartaCorrecaoVM entity, UnitOfWork unitOfWork)
-        //{
-        //    var inutilizarNota = new NFESBRA.NFE();
-        //    inutilizarNota.NOTAS = new NFESBRA.NFES[]{
-        //        new NFESBRA.NFES
-        //        {
-        //            ID = sefazChaveAcesso,
-        //            MAIL = "",
-        //            XML = Convert.FromBase64String(idBase64)
-        //        }
-        //    };
+        public CartaCorrecaoRetornoVM Homologacao(CartaCorrecaoVM entity, UnitOfWork unitOfWork)
+        {
+            var base64 = unitOfWork.CartaCorrecaoBL.Serialize(entity);
+            var retorno = new CartaCorrecaoRetornoVM();
 
-        //    var retorno = new NFESBRA.NFESBRA().CANCELANOTAS(
-        //        AppDefault.Token,
-        //        entidade,
-        //        inutilizarNota,
-        //        null
-        //    );
+            //var cartaCorrecaoEvento = new NFESBRA.NFESBRA().NFEREMESSAEVENTO(
+            //    AppDefault.Token,
+            //    entity.Homologacao,
+            //    Convert.FromBase64String(base64)
+            //);
 
-        //    return new InutilizarNFRetornoVM()
-        //    {
-        //        SefazChaveAcesso = sefazChaveAcesso
-        //    };
-        //}
+            //if(cartaCorrecaoEvento != null)
+            //{
+            //    retorno.IdEvento = "ID"+
+            //}
+
+            return retorno;
+        }
+
 
         [HttpGet]
         public IHttpActionResult Get()

@@ -4,6 +4,9 @@ using Fly01.Core.Notifications;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using Fly01.Core.Helpers;
+using System.Collections.Generic;
+using System;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -38,14 +41,27 @@ namespace Fly01.EmissaoNFE.BL
                 SefazChaveAcesso = entity.SefazChaveAcesso 
             };
 
-            return ConvertToBase64(cartaCorrecaoEvento);
+            var evento = new EnvelopeEvento()
+            {
+                Eventos = new Eventos()
+                {
+                    DetalhesEventos = new List<CartaCorrecaoEvento>()
+                    //DetalhesEventos = new List<DetalheEvento>()
+                    {
+                        cartaCorrecaoEvento
+                    }
+                }
+            };
+
+            return ConvertToBase64(evento);
         }
 
-        protected string ConvertToBase64(CartaCorrecaoEvento entity)
+        protected string ConvertToBase64(EnvelopeEvento entity)
         {
             string result = string.Empty;
 
             XmlSerializerNamespaces nameSpaces = new XmlSerializerNamespaces();
+            nameSpaces.Add("", "");
 
             MemoryStream memoryStream = new MemoryStream();
 
@@ -56,7 +72,9 @@ namespace Fly01.EmissaoNFE.BL
 
             XmlWriter writer = XmlWriter.Create(memoryStream, settings);
 
-            XmlSerializer xser = new XmlSerializer(typeof(CartaCorrecaoEvento), OverrideAttributes());
+            XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento));
+            //XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento), OverrideAttributes());
+            //XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento), new[] { typeof(CartaCorrecaoEvento) });
 
             xser.Serialize(writer, entity, nameSpaces);
 
@@ -73,6 +91,18 @@ namespace Fly01.EmissaoNFE.BL
             result = Base64Helper.CodificaBase64(xmlString);
 
             return result;
+        }
+
+        private XmlAttributeOverrides OverrideAttributes()
+        {
+            XmlAttributeOverrides specific_attributes = new XmlAttributeOverrides();
+
+            XmlAttributes attrs = new XmlAttributes();
+            attrs.XmlElements.Add(new XmlElementAttribute(typeof(CartaCorrecaoEvento)));
+
+            specific_attributes.Add(typeof(DetalheEvento), "detEvento", attrs);
+
+            return specific_attributes;
         }
     }
 }

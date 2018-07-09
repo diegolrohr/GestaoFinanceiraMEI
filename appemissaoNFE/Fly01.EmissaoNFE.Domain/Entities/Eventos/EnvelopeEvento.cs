@@ -8,6 +8,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         /// <summary>
         /// Eventos do envelope
         /// </summary>
+        [XmlElement("eventos")]
         public Eventos Eventos { get; set; }
 
     }

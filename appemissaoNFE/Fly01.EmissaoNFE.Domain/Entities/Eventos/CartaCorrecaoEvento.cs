@@ -2,8 +2,15 @@
 
 namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
-    public class CartaCorrecaoEvento : DetalheEvento
+    [XmlRoot("detEvento")]
+    public class CartaCorrecaoEvento// : DetalheEvento
     {
+        /// <summary>
+        /// Tipo evento
+        /// </summary>
+        [XmlElement(ElementName = "tpEvento")]
+        public string TipoEvento { get; set; }
+
         /// <summary>
         /// Sefaz Chave Acesso Nota Fiscal
         /// </summary>

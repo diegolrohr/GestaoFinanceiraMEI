@@ -1,9 +1,8 @@
 ﻿using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModel
-{
-    [XmlRoot("detEvento")]
-    public class DetalheEvento
+{     
+    public abstract class DetalheEvento
     {
         /// <summary>
         /// Tipo evento

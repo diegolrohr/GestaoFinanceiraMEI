@@ -9,7 +9,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         /// <summary>
         /// Detalhe dos eventos
         /// </summary>
-        public List<DetalheEvento> DetalhesEventos { get; set; }
+        //public List<DetalheEvento> DetalhesEventos { get; set; }
+        [XmlElement("detEvento")]
+        public List<CartaCorrecaoEvento> DetalhesEventos { get; set; }
 
     }
 }

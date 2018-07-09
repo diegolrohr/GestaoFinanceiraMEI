@@ -73,7 +73,7 @@
     <Compile Include="Controllers\NFeProdutoController.cs" />
     <Compile Include="Controllers\NFSeController.cs" />
     <Compile Include="Controllers\NFSeServicoController.cs" />
-    <Compile Include="Controllers\NotaFiscalCartaCorrecaoController.cs" />
+    <Compile Include="Controllers\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\NotaFiscalController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
@@ -324,8 +324,11 @@
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnFormCartaCorrecao.cshtml" />
-    <Content Include="Views\NotaFiscalCartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
-    <Content Include="Views\NotaFiscalCartaCorrecao\Functions\_fnVisualizarMensagemSefaz.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarMensagemSefaz.cshtml" />
+    <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnCancelar.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnNovo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

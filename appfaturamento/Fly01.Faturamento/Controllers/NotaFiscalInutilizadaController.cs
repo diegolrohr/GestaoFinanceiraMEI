@@ -130,7 +130,7 @@ namespace Fly01.Faturamento.Controllers
                 DisplayName = "Status",
                 Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription); }"
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "sefazChaveAcesso", DisplayName = "Sefaz Chave Acesso", Priority = 4 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 5, Type = "date" });

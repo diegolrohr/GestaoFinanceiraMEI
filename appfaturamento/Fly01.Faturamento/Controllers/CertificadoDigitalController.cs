@@ -12,6 +12,7 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -123,7 +124,7 @@ namespace Fly01.Faturamento.Controllers
                     Title = "Certificado Digital A1",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit" }
+                        new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

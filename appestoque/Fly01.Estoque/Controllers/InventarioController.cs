@@ -207,7 +207,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Status do Inventário",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(InventarioStatus))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription); }"
+                RenderFn = "fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataUltimaInteracao", DisplayName = "Ultima Interação", Priority = 1, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Type = "string" });

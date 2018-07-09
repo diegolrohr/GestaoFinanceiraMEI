@@ -235,7 +235,7 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Columns = new List<DataTableUIColumn>
                 {
-                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"},
+                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip)"},
                     new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nosso numero", Priority = 6 },
                     new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
@@ -283,7 +283,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa))),
                 Priority = 1,
                 Width = "12%",
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });

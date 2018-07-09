@@ -81,7 +81,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Entrada/Saida",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue); }"
+                RenderFn = "fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue)"
             });
 
             cfg.Content.Add(config);

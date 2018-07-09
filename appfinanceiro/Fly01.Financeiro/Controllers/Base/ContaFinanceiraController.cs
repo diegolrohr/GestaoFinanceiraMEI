@@ -279,7 +279,7 @@ namespace Fly01.Financeiro.Controllers.Base
 
             ResultBase<CnabVM> response = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
 
-            if (response != null)
+            if (response.Data.Count > default(int))
                 UpdateStausCnab(response.Data.FirstOrDefault().Id);
         }
 

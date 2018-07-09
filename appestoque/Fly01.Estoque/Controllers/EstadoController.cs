@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -43,7 +44,7 @@ namespace Fly01.Estoque.Controllers
                     Title = "Categorias Financeiras",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Estado", null, Request.Url?.Scheme) + "?fns="
@@ -74,8 +75,8 @@ namespace Fly01.Estoque.Controllers
                     Title = "Dados da categoria financeira",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Estado", null, Request.Url?.Scheme) + "?fns="

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Compras.Controllers
 {
@@ -84,7 +85,7 @@ namespace Fly01.Compras.Controllers
                     Title = "Orçamento",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrcamento" },
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrcamento", Position = HtmlUIButtonPosition.Main },
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",

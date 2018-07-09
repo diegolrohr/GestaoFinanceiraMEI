@@ -48,7 +48,7 @@ namespace Fly01.Estoque.Controllers
                     Title = "Tipos de movimento",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -66,7 +66,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Entrada/Saida",
                 Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEntradaSaida))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue); }"
+                RenderFn = "fnRenderEnum(full.tipoEntradaSaidaCssClass, full.tipoEntradaSaidaValue)"
             });
 
             cfg.Content.Add(config);

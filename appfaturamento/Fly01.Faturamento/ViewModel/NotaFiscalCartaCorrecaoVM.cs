@@ -18,7 +18,7 @@ namespace Fly01.Faturamento.ViewModel
         public DateTime Data { get; set; }
 
         [JsonProperty("status")]
-        public StatusCartaCorrecao Status { get; set; }
+        public string Status { get; set; }
 
         [JsonProperty("numero")]
         public int Numero { get; set; }

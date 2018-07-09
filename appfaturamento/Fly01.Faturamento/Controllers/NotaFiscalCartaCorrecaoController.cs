@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Faturamento.ViewModel;
@@ -65,6 +66,9 @@ namespace Fly01.Faturamento.Controllers
                 data = x.Data.ToString("dd/MM/yyyy"),
                 notaFiscalId = x.NotaFiscalId,
                 status = x.Status,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusCartaCorrecao), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusCartaCorrecao), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusCartaCorrecao), x.Status),
                 numero = x.Numero
             };
         }
@@ -72,7 +76,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory { Default = Url.Action("Index", "NotaFiscalCartaCorrecao" )  },
+                History = new ContentUIHistory { Default = Url.Action("Index", "NotaFiscalCartaCorrecao") },
                 Header = new HtmlUIHeader
                 {
                     Title = "Cartas de Correção",
@@ -84,20 +88,25 @@ namespace Fly01.Faturamento.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI {UrlGridLoad = Url.Action("GridLoad", "NotaFiscalCartaCorrecao"), UrlFunctions = Url.Action("Functions", "NotaFiscalCartaCorrecao", null, Request.Url.Scheme) + "?fns=" };
+            var config = new DataTableUI
+            {
+                UrlGridLoad = Url.Action("GridLoad", "NotaFiscalCartaCorrecao"),
+                UrlFunctions = Url.Action("Functions", "NotaFiscalCartaCorrecao", null, Request.Url.Scheme) + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
+            };
 
             config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
+            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1});
-
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 2 });
-
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
                 Priority = 3,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCartaCorrecao)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCartaCorrecao))),
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "mensagemCorrecao", DisplayName = "Mensagem de Correção", Priority = 4 });
@@ -126,13 +135,41 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "notafiscalId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4 l4", Label = "Data", Disabled = true });
-            config.Elements.Add(new SelectUI { Id = "status", Class = "col s12 m4 l4", Label = "Status", Disabled = true });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "status",
+                Class = "col s12 m4 l4",
+                Label = "Status",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCartaCorrecao))),
+            });
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s12 m4 l4", Label = "Número", Disabled = true });
             config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-
         }
-        
+
+        public ContentResult FormModalMensagemSEFAZ()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem SEFAZ",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/"
+                },
+                Id = "fly01mdlfrmVisualizarMensagemSEFAZ"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "notafiscalId" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
     }
 }

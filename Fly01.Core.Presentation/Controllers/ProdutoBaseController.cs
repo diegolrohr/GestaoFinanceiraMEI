@@ -82,7 +82,7 @@ namespace Fly01.Core.Presentation.Controllers
                 DisplayName = "Tipo",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao); }"
+                RenderFn = "fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao)"
             });
 
             cfg.Content.Add(config);

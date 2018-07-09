@@ -22,6 +22,7 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using System.Web.Configuration;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Core.Presentation
 {
@@ -43,7 +44,7 @@ namespace Fly01.Core.Presentation
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -53,7 +54,7 @@ namespace Fly01.Core.Presentation
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }

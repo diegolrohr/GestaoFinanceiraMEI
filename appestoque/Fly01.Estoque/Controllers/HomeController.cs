@@ -9,6 +9,7 @@ using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -18,11 +19,11 @@ namespace Fly01.Estoque.Controllers
         {
             var target = new List<HtmlUIButton>
             {
-                new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo" }
+                new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo", Position = HtmlUIButtonPosition.Main }
             };
 
             if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoquePosicaoAtual))
-                target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual" });
+                target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual", Position = HtmlUIButtonPosition.Out });
 
             return target;
         }

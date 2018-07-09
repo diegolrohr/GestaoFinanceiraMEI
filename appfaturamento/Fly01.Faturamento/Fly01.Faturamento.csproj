@@ -324,6 +324,7 @@
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnFormCartaCorrecao.cshtml" />
+    <Content Include="Views\NotaFiscalCartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

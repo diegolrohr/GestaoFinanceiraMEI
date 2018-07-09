@@ -156,8 +156,8 @@ namespace Fly01.Financeiro.Controllers
 
             if(UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "GERAR BOLETO", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "Gerar Boleto", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "Gerar Arq. Remessa", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;

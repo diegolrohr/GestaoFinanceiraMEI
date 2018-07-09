@@ -654,7 +654,7 @@ namespace Fly01.Financeiro.Controllers
             config2.Elements.Add(new InputTextUI { Id = "descricaoRenegociacao", Class = "col s12 m6 l6", Label = "Descrição", Required = true, MaxLength = 200 });
             config2.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3 l3", Label = "Emissão", Required = true });
             config2.Elements.Add(new InputDateUI { Id = "dtVencimento", Class = "col s12 m3 l3", Label = "Vencimento", Required = true });
-            config2.Elements.Add(new AutoCompleteUI
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -664,8 +664,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            });
-            config2.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -675,8 +676,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
-            });
-            config2.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 l6",
@@ -685,7 +687,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCP", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             cfg.Content.Add(config2);
 

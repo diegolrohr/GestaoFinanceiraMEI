@@ -595,7 +595,9 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "dataVencimento", Class = "col s12 l6", Label = "Data Vencimento", Required = true, Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valorPrevisto", Class = "col s12 l6", Label = "Valor", Required = true, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true });
-            config.Elements.Add(new AutoCompleteUI
+
+            var resourceHasCPCR = tipoConta == "ContaPagar" ? ResourceHashConst.FinanceiroCadastrosFornecedores : ResourceHashConst.FinanceiroCadastrosClientes;
+            var elemAutoCompleteConta = new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -604,8 +606,11 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = tipoConta == "ContaPagar" ? @Url.Action("Fornecedor", "AutoComplete") : @Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = tipoConta == "ContaPagar" ? @Url.Action("PostFornecedor", "Fornecedor") : @Url.Action("PostCliente", "Cliente")
-            });
-            config.Elements.Add(new AutoCompleteUI
+            };
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(elemAutoCompleteConta, resourceHasCPCR));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -615,8 +620,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -625,8 +631,9 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CondicaoParcelamentoAVista", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPost = Url.Action("PostCondicaoParcelamento", "CondicaoParcelamento"),
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12",
@@ -635,7 +642,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("Categoria" + actionCreate, "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa"): Url.Action("NovaCategoriaReceita")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

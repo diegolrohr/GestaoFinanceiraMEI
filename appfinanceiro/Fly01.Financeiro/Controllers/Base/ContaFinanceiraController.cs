@@ -546,7 +546,7 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 l6", Label = "Data", Required = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valor", Class = "col s12 l6", Label = "Valor", Required = true });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
@@ -556,7 +556,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta",
-            });
+            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 

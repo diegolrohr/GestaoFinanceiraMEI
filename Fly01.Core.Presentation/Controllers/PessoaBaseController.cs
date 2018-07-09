@@ -164,11 +164,6 @@ namespace Fly01.Core.Presentation.Controllers
                 {
                     Title = ResourceTitle,
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

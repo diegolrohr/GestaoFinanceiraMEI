@@ -128,6 +128,9 @@ namespace Fly01.EmissaoNFE.BL
         private VersaoBL versaoBL;
         public VersaoBL VersaoBL => versaoBL ?? (versaoBL = new VersaoBL(Context, EntidadeBL));
 
+        private MonitorEventoBL monitorEventoBL;
+        public MonitorEventoBL MonitorEventoBL => monitorEventoBL ?? (monitorEventoBL = new MonitorEventoBL(Context, EntidadeBL));
+
         #endregion
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Controllers\Api\ChaveController.cs" />
     <Compile Include="Controllers\Api\DanfeXMLController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
+    <Compile Include="Controllers\Api\MonitorEventoController.cs" />
     <Compile Include="Controllers\Api\NFeController.cs" />
     <Compile Include="Controllers\Api\TransmissaoController.cs" />
     <Compile Include="Controllers\Api\DanfePDFController.cs" />

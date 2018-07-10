@@ -2,8 +2,6 @@
     function fnShowICMS() {
         //Se ha calculo de ICMS (checked), habilite os campos relacionados
         if ($('#calculaIcms:checked').val() == "true") {
-            $('select#tipoTributacaoICMS').removeAttr('disabled');
-            $('select#tipoTributacaoICMS').material_select();
             $('input#calculaIcmsDifal').removeAttr('disabled');
             $('input#aplicaIpiBaseIcms').removeAttr('disabled');
             $('input#aplicaFreteBaseIcms').removeAttr('disabled');
@@ -15,8 +13,6 @@
         }
         else {
             //Se nao ha calculo de ICMS, desabilite os campos relacionados
-            $('select#tipoTributacaoICMS').attr('disabled', 'disabled');
-            $('select#tipoTributacaoICMS').material_select();
             $('input#calculaIcmsDifal').attr('disabled', 'disabled');
             $('input#aplicaIpiBaseIcms').attr('disabled', 'disabled');
             $('input#aplicaFreteBaseIcms').attr('disabled', 'disabled');

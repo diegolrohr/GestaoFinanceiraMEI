@@ -17,6 +17,7 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -41,9 +42,9 @@ namespace Fly01.Estoque.Controllers
                     Title = "Cadastro de Inventário",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" },
-                        new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" },
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" }
+                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main },
+                        new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" , Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -177,7 +178,7 @@ namespace Fly01.Estoque.Controllers
                     Title = "Inventários",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
+                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main }
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -196,7 +197,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Status do Inventário",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(InventarioStatus))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription); }"
+                RenderFn = "fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataUltimaInteracao", DisplayName = "Ultima Interação", Priority = 1, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Type = "string" });

@@ -264,6 +264,19 @@ namespace Fly01.Core.Presentation.Controllers
             return View();
         }
 
+        public List<HtmlUIButton> GetFormImportacaoButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" });
+            }
+
+            return target;
+        }
+
         public ContentResult FormImportacao()
         {
             var cfg = new ContentUI
@@ -275,11 +288,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = $"Importar {ResourceTitle}",
-                    Buttons = new List<HtmlUIButton>()
-                    {
-                        new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormImportacaoButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

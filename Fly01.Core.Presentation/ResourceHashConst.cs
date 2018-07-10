@@ -32,6 +32,7 @@
 
         public const string FinanceiroConfiguracoes = "27C86F80-A8BF-4DD0-B7D2-CEDC39CDD39F";
         public const string FinanceiroConfiguracoesNotificacoes = "1F555A14-2C41-46E1-8AFF-05BE0552F93D";
+
         public const string FinanceiroAjuda = "F6B74801-2955-4973-9F57-3B41C4425D53";
         public const string FinanceiroAjudaAssistenciaRemota = "56F31FD5-E659-4B47-9B1E-CAAF86D8A1AB";
                                
@@ -45,7 +46,7 @@
         public const string FaturamentoFaturamentoVendas = "57B351D1-F340-43F3-8D89-D4B9E8C7F2A1";
         public const string FaturamentoFaturamentoNotasFiscais = "CE79B8D8-ADE2-4F22-ABA3-5B8F7CC9C066";
 
-        public const string FaturamentoCadastros = "981E2668 - DCD3-43A9-8550-219617072F8F";
+        public const string FaturamentoCadastros = "981E2668-DCD3-43A9-8550-219617072F8F";
         public const string FaturamentoCadastrosClientes = "3F8EA82D-12D5-42E0-93A5-BB2AF287825C";
         public const string FaturamentoCadastrosFornecedores = "0F7E662E-85DE-47CF-8402-EB42745524B5";
         public const string FaturamentoCadastrosTransportadoras = "18D5708C-026F-4529-AED3-FF55C694EAC2";

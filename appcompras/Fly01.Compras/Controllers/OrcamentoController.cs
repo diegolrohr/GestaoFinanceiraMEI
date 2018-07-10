@@ -70,6 +70,18 @@ namespace Fly01.Compras.Controllers
         public override ContentResult Form() 
             => FormOrcamento();
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrcamento", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
         public ContentResult FormOrcamento(bool isEdit = false)
         {
             var cfg = new ContentUI
@@ -82,10 +94,7 @@ namespace Fly01.Compras.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Orçamento",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrcamento", Position = HtmlUIButtonPosition.Main },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string> { "fnFormReadyOrcamentoItem" }

@@ -28,7 +28,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
@@ -50,7 +50,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cadastro de Categoria",
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())                                 
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -131,7 +131,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new DataTableUIConfig { PageLength = 50 }
             };
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });

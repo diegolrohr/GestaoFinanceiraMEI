@@ -103,8 +103,20 @@ namespace Fly01.Compras.Controllers
             return dtPedidoItensCfg;
         }
 
-        public override ContentResult Form() 
+        public override ContentResult Form()
             => FormPedido();
+        
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarPedido" });
+            }
+
+            return target;
+        }
 
         public ContentResult FormPedido(bool isEdit = false)
         {
@@ -118,10 +130,7 @@ namespace Fly01.Compras.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Pedido",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarPedido" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };

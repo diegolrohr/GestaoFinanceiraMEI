@@ -14,6 +14,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -136,7 +137,6 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
-
             };
 
             form2.Elements.Add(new InputCustommaskUI
@@ -338,6 +338,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try

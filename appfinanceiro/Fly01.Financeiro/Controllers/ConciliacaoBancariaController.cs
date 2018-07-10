@@ -480,6 +480,19 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        public List<HtmlUIButton> GetFormButtonsBuscaExistenteOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarBuscarExistentes" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Conciliar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
+        }
+
         public ContentResult FormBuscarExistentes(string tipoConta)
         {
             string titulo = (tipoConta == "ContaPagar" ? "pagar" : "receber");
@@ -495,11 +508,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Buscar contas a " + titulo,
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarBuscarExistentes" },
-                        new HtmlUIButton { Id = "save", Label = "Conciliar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsBuscaExistenteOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns=",
                 Functions = { "fnEditar", "fnRowCallbackContasExistentes" }
@@ -512,7 +521,6 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("BuscarExistentes"),
                     Edit = @Url.Action("BuscarExistentes"),
                     Get = @Url.Action("BuscarExistentes", "ConciliacaoBancaria") + "/",
-                    //List = @Url.Action("Edit", "ConciliacaoBancaria") + "/",
                 },
                 ReadyFn = "fnFormReadyBuscarExistentes",
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="

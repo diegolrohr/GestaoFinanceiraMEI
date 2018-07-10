@@ -186,7 +186,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Lista de boletos do arquivo",
-                    Buttons = new List<HtmlUIButton>()
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                     {
                         new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
                     }

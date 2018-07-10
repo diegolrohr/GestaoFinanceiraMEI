@@ -79,6 +79,7 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("saldo")]
         public double Saldo { get; set; }
+
         [JsonIgnore]
         public int DiasVencidos
         {
@@ -113,18 +114,18 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("contaBancaria")]
         public virtual ContaBancariaVM ContaBancaria { get; set; }
 
-        [JsonIgnore]
-        [JsonProperty("repeticaoPai")]
-        public string RepeticaoPai
-        {
-            get{ return (ContaFinanceiraRepeticaoPaiId == null && Repetir).ToString(); }
-        }
+        //[JsonProperty("repeticaoPai")]
+        //public bool RepeticaoPai
+        //{
+        //    get { return ContaFinanceiraRepeticaoPaiId == null && Repetir; }
+        //    //set { this.RepeticaoPai = ContaFinanceiraRepeticaoPaiId == null && Repetir; }
+        //}
 
-        [JsonIgnore]
-        [JsonProperty("repeticaoFilha")]
-        public string RepeticaoFilha
-        {
-            get { return (ContaFinanceiraRepeticaoPaiId != null && Repetir).ToString(); }
-        }
+        //[JsonProperty("repeticaoFilha")]
+        //public bool RepeticaoFilha
+        //{
+        //    get { return ContaFinanceiraRepeticaoPaiId != null && Repetir; }
+        //    //set { this.RepeticaoFilha = ContaFinanceiraRepeticaoPaiId != null && Repetir; }
+        //}
     }
 }

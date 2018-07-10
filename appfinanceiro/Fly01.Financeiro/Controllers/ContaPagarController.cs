@@ -310,7 +310,8 @@ namespace Fly01.Financeiro.Controllers
                     Form = @Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Id = "fly01frmContaPagar",
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
@@ -319,6 +320,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });            
+            config.Elements.Add(new InputHiddenUI { Id = "repetir" });            
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 
@@ -729,6 +731,18 @@ namespace Fly01.Financeiro.Controllers
 
         public override JsonResult Edit(ContaPagarVM entityVM)
         {
+            if (Request.QueryString["editarRecorrencias"] == "true")
+            {
+                var queryString = new Dictionary<string, string>
+                {
+                    { "editarRecorrencias", "true" }
+                };
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Edit), queryString);
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
+            }
             return base.Edit(entityVM);
         }
 

@@ -10,7 +10,6 @@ using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasDashboard)]
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
@@ -26,7 +25,6 @@ namespace Fly01.Compras.Controllers
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
 
             #region MenuItems
-
             var menuItems = new List<SidebarUIMenu>()
             {
                 new SidebarUIMenu()
@@ -69,7 +67,6 @@ namespace Fly01.Compras.Controllers
             };
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
-
             #endregion
 
             #region User Menu Items

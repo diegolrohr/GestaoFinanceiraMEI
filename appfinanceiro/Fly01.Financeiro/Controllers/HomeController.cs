@@ -320,12 +320,11 @@ namespace Fly01.Financeiro.Controllers
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                     }
-                }
+                },
+                new SidebarUIMenu() { Class = ResourceHashConst.FinanceiroAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
-
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
             #endregion
 
             #region User Menu Items

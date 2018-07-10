@@ -22,6 +22,7 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasOrcamentoPedido)]
     public class PedidoController : BaseController<PedidoVM>
     {
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
@@ -71,7 +72,7 @@ namespace Fly01.Compras.Controllers
             throw new NotImplementedException();
         }
 
-        protected DataTableUI getDtPedidoItensCfg()
+        protected DataTableUI GetDtPedidoItensCfg()
         {
             DataTableUI dtPedidoItensCfg = new DataTableUI
             {
@@ -102,10 +103,8 @@ namespace Fly01.Compras.Controllers
             return dtPedidoItensCfg;
         }
 
-        public override ContentResult Form()
-        {
-            return FormPedido();
-        }
+        public override ContentResult Form() 
+            => FormPedido();
 
         public ContentResult FormPedido(bool isEdit = false)
         {
@@ -182,7 +181,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputNumbersUI { Id = "orcamentoOrigemNumero", Class = "col s12 m4", Label = "Orçamento Origem", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "fornecedorId",
                 Class = "col s12",
@@ -191,8 +190,8 @@ namespace Fly01.Compras.Controllers
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "fornecedorNome",
                 DataUrlPost = Url.Action("PostFornecedor")
+            }, ResourceHashConst.ComprasCadastrosFornecedores));
 
-            });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
 
@@ -208,7 +207,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -217,9 +216,9 @@ namespace Fly01.Compras.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
 
-            });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -228,9 +227,9 @@ namespace Fly01.Compras.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
 
-            });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -238,12 +237,13 @@ namespace Fly01.Compras.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaDespesa")
+            }, ResourceHashConst.ComprasCadastrosCategoria));
 
-            });
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutoCompleteUI
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -251,8 +251,8 @@ namespace Fly01.Compras.Controllers
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora")
+            }, ResourceHashConst.ComprasCadastrosTransportadora));
 
-            });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFrete",
@@ -340,7 +340,7 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             cfg.Content.Add(config);
-            cfg.Content.Add(getDtPedidoItensCfg());
+            cfg.Content.Add(GetDtPedidoItensCfg());
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -650,7 +650,6 @@ namespace Fly01.Compras.Controllers
             entityVM.Telefone = Regex.Replace(entityVM.Telefone ?? "", regexSomenteDigitos, "");
             entityVM.CEP = Regex.Replace(entityVM.CEP ?? "", regexSomenteDigitos, "");
         }
-
 
         public JsonResult PostTransportadora(string term)
         {

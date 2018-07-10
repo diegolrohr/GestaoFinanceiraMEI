@@ -8,9 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasOrcamentoPedido)]
     public class OrcamentoItemController : BaseController<OrcamentoItemVM>
     {
         public OrcamentoItemController()
@@ -55,20 +57,28 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "orcamentoId" });
             config.Elements.Add(new InputHiddenUI { Id = "fornecedorNome" });
 
-            config.Elements.Add(new AutoCompleteUI { Id = "fornecedorId", Class = "col s12 l6", Label = "Fornecedor", Required = true,
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI {
+                Id = "fornecedorId",
+                Class = "col s12 l6",
+                Label = "Fornecedor",
+                Required = true,
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "itemFornecedorNome",
                 DataUrlPost = Url.Action("PostFornecedor", "Orcamento"),
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNomeFornecedor" } }
-            });
+            }, ResourceHashConst.ComprasCadastrosFornecedores));
 
-            config.Elements.Add(new AutoCompleteUI { Id = "produtoId", Class = "col s12 l6", Label = "Produto", Required = true,
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI {
+                Id = "produtoId",
+                Class = "col s12 l6",
+                Label = "Produto",
+                Required = true,
                 DataUrl = Url.Action("Produto", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            });
+            }, ResourceHashConst.ComprasCadastrosProdutos));
 
             config.Elements.Add(new InputFloatUI
             {
@@ -108,7 +118,6 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Value = "0", Disabled = true, Required = true });
 
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -117,6 +126,7 @@ namespace Fly01.Compras.Controllers
             throw new NotImplementedException();
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult GetOrcamentoItens(string id)
         {
             Dictionary<string, string> filters = new Dictionary<string, string>

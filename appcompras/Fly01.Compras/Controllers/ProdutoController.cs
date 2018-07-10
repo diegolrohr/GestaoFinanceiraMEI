@@ -6,6 +6,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastrosProdutos)]
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         public ProdutoController() 
@@ -13,7 +14,8 @@ namespace Fly01.Compras.Controllers
 
         public override List<TooltipUI> GetHelpers()
         {
-            return new List<TooltipUI> {
+            return new List<TooltipUI>
+            {
                 new TooltipUI
                 {
                     Id = "codigoBarras",

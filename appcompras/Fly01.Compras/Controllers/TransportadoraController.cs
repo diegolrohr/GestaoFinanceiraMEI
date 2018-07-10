@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastrosTransportadora)]
     public class TransportadoraController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Transportadora";
@@ -42,7 +44,6 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 100 });
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", Required = true, MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l12", Label = "Nome Comercial", Required = true, MaxLength = 100 });
-
             config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s6 l6", Label = "Endereço", Required = true, MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l6", Label = "Número", Required = true, MaxLength = 20 });
 

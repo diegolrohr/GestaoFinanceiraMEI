@@ -41,7 +41,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new DataTableUI() { UrlGridLoad = Url.Action("GridLoad", "FormaPagamento"), UrlFunctions = Url.Action("Functions", "FormaPagamento", null, Request.Url.Scheme) + "?fns=" };
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
@@ -65,7 +65,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });

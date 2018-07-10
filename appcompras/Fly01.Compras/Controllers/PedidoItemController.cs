@@ -8,9 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasOrcamentoPedido)]
     public class PedidoItemController : BaseController<PedidoItemVM>
     {
         public PedidoItemController()
@@ -53,7 +55,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "pedidoId" });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s12",
@@ -64,7 +66,7 @@ namespace Fly01.Compras.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            });
+            }, ResourceHashConst.ComprasCadastrosProdutos));
 
             config.Elements.Add(new InputFloatUI
             {
@@ -113,6 +115,7 @@ namespace Fly01.Compras.Controllers
             throw new NotImplementedException();
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult GetPedidoItens(string id)
         {
             Dictionary<string, string> filters = new Dictionary<string, string>

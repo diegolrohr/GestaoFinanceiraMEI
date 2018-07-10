@@ -94,6 +94,7 @@
         public const string ComprasCadastros = "7802F783-EF74-4FBF-94CD-BE695A5AB5FD";
         public const string ComprasCadastrosProdutos = "ABC9BF43-B4B2-4256-84AD-4CE0CF446B62";
         public const string ComprasCadastrosFornecedores = "1E92ECD5-81E3-476B-A53F-267519899D27";
+        public const string ComprasCadastrosTransportadora = "2BC428ED-06A4-49CB-9900-35FC597ECDA2";
         public const string ComprasCadastrosCondicoesParcelamento = "46F55EA3-22E5-4AF8-B5D8-7D1ACB26E0BB";
         public const string ComprasCadastrosFormaPagamento = "E8EA74DE-18ED-4846-B66F-5FA006F2CFF7";
         public const string ComprasCadastrosGrupoTributario = "D5AC4973-C92E-48A4-B381-21D0F7067BFD";

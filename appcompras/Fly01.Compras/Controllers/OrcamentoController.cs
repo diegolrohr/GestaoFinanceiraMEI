@@ -21,6 +21,7 @@ using Fly01.uiJS.Enums;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasOrcamentoPedido)]
     public class OrcamentoController : BaseController<OrcamentoVM>
     {
         //OrcamentoVM e PedidoVM na mesma controller ordemCompra(gridLoad, form), direcionado para a controller via javaScript
@@ -34,7 +35,7 @@ namespace Fly01.Compras.Controllers
             throw new NotImplementedException();
         }
 
-        protected DataTableUI getDtOrcamentoItensCfg()
+        protected DataTableUI GetDtOrcamentoItensCfg()
         {
             DataTableUI dtOrcamentoItensCfg = new DataTableUI
             {
@@ -66,10 +67,8 @@ namespace Fly01.Compras.Controllers
             return dtOrcamentoItensCfg;
         }
 
-        public override ContentResult Form()
-        {
-            return FormOrcamento();
-        }
+        public override ContentResult Form() 
+            => FormOrcamento();
 
         public ContentResult FormOrcamento(bool isEdit = false)
         {
@@ -144,7 +143,7 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Financeiro
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -153,8 +152,9 @@ namespace Fly01.Compras.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -163,8 +163,9 @@ namespace Fly01.Compras.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -172,7 +173,8 @@ namespace Fly01.Compras.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoria")
-            });
+            }, ResourceHashConst.ComprasCadastrosCategoria));
+
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
             #endregion
 
@@ -197,7 +199,7 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             cfg.Content.Add(config);
-            cfg.Content.Add(getDtOrcamentoItensCfg());
+            cfg.Content.Add(GetDtOrcamentoItensCfg());
             return Content(JsonConvert.SerializeObject(cfg, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
         }
 
@@ -306,9 +308,10 @@ namespace Fly01.Compras.Controllers
             {
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 OrcamentoVM postResult = JsonConvert.DeserializeObject<OrcamentoVM>(postResponse);
-                //return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, postResult.Id);
-                var response = new JsonResult();
-                response.Data = new { success = true, message = AppDefaults.CreateSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() };
+                var response = new JsonResult
+                {
+                    Data = new { success = true, message = AppDefaults.CreateSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() }
+                };
                 return (response);
             }
             catch (Exception ex)
@@ -319,10 +322,8 @@ namespace Fly01.Compras.Controllers
         }
 
         [HttpPost]
-        public override JsonResult Edit(OrcamentoVM entityVM)
-        {
-            return base.Edit(entityVM);
-        }
+        public override JsonResult Edit(OrcamentoVM entityVM) 
+            => base.Edit(entityVM);
 
         [HttpGet]
         public JsonResult TotalOrcamentoItens(string id)
@@ -401,7 +402,6 @@ namespace Fly01.Compras.Controllers
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrcamentoItemVM>>("OrcamentoItem", queryString).Data;
         }
-
 
         #region OnDemmand
 

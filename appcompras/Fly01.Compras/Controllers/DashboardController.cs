@@ -22,17 +22,16 @@ namespace Fly01.Compras.Controllers
         {
             throw new NotImplementedException();
         }
+
         public override Func<DashboardVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
 
         public override ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(DashboardJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
-        }
+            => Content(JsonConvert.SerializeObject(DashboardJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
 
-        protected internal static ContentUI DashboardJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
+        public static ContentUI DashboardJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
             var cfg = new ContentUI
             {
@@ -43,8 +42,10 @@ namespace Fly01.Compras.Controllers
                 },
                 UrlFunctions = url.Action("Functions", "Dashboard") + "?fns="
             };
+
             if (withSidebarUrl)
                 cfg.SidebarUrl = url.Action("Sidebar", "Dashboard", null, scheme);
+
             cfg.Content.Add(new FormUI
             {
                 Id = "filterForm",
@@ -95,12 +96,11 @@ namespace Fly01.Compras.Controllers
                         Id = "tpOrdemCompra",
                         Class = "col s12 m6 l6",
                         Disabled = false,
-                        //ConstrainWidth = true,
                         Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
                         DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
                     }
                 }
-            });            
+            });
             // CHART Status Valor
             cfg.Content.Add(new ChartUI
             {
@@ -359,7 +359,7 @@ namespace Fly01.Compras.Controllers
                         Searchable = false
                     }
                 }
-            });            
+            });
             return cfg;
         }
 
@@ -539,7 +539,6 @@ namespace Fly01.Compras.Controllers
                 return new List<DashboardFormaPagamentoVM>();
 
             return response;
-
         }
     }
 }

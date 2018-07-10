@@ -4,6 +4,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastrosCategoria)]
     public class CategoriaController : CategoriaBaseController<CategoriaVM>
     {
         public CategoriaController() 

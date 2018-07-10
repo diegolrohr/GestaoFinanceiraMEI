@@ -47,8 +47,7 @@ namespace Fly01.Core.Presentation.Application
                 var userData = new UserDataVM
                 {
                     PlatformUser = platformUser,
-                    PlatformUrl = platformUrl,
-                    Permissions = GetPermissionsByUser(platformUrl, platformUser)
+                    PlatformUrl = platformUrl
                 };
                 HttpContext.Current.User = new GenericPrincipal(new GenericIdentity(platformUser, "Forms"), string.Empty.Split(';'));
 
@@ -59,7 +58,8 @@ namespace Fly01.Core.Presentation.Application
                         AppDefaults.GatewayPassword, platformUrl, platformUser);
 
                     userData.TokenData = tokenData;
-                    userData.TokenData.Username = cookieUserData.Name;                    
+                    userData.TokenData.Username = cookieUserData.Name;
+                    userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
 
                     SessionManager.Current.UserData = userData;
                     return true;

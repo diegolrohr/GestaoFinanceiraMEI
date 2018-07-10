@@ -45,7 +45,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             appMenu.RemoveAll(x => itemsToRemove.Contains(x.Class.ToUpper()));
 
-            // Clear resourceHash in class items
+            // Clear ResourceHash in class items
             appMenu.ForEach(m => 
             {
                 m.Class = string.Empty;

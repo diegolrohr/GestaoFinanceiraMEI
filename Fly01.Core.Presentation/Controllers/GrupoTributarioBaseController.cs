@@ -142,7 +142,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
                 Label = "Situação da Operação no Simples Nacional",
-                Disabled = true,
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
             });
@@ -192,7 +191,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoPIS",
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
-                Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });
@@ -216,7 +214,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoCOFINS",
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
-                Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });

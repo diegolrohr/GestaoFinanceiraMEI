@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class ProdutosMenosMovimentadosController : BaseController<ProdutosMenosMovimentadosVM>
     {
         private DateTime _dataInicial, _dataFinal;

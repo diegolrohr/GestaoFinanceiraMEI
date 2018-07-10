@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Principal;
 using System.Web;
@@ -10,6 +11,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using Fly01.Core.Config;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Microsoft.ApplicationInsights.Extensibility;
 using Newtonsoft.Json;
 
@@ -18,6 +20,20 @@ namespace Fly01.Core.Presentation.Application
     public class GlobalHttpApplication : HttpApplication
     {
         protected virtual string GetInstrumentationKeyAppInsights() => string.Empty;
+
+        private static List<PermissionResponseVM> GetPermissionsByUser(string platformUrl, string platformUser)
+        {
+            try
+            {
+                var requestObject = JsonConvert.SerializeObject(new { platformUrl, platformUser/*, resouceRoot = AppDefaults.AppId*/ });
+                var response = RestHelper.ExecutePostRequest<List<PermissionResponseVM>>(AppDefaults.UrlGateway, "v2/Permission", requestObject);
+                return response ?? new List<PermissionResponseVM>();
+            }
+            catch
+            {
+                return new List<PermissionResponseVM>();
+            }
+        }
 
         private static bool ReadCookieAndSetSession(string token)
         {
@@ -44,6 +60,8 @@ namespace Fly01.Core.Presentation.Application
 
                     userData.TokenData = tokenData;
                     userData.TokenData.Username = cookieUserData.Name;
+                    userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
+
                     SessionManager.Current.UserData = userData;
                     return true;
                 }
@@ -154,6 +172,7 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        protected void Session_End(object sender, EventArgs e) => FormsAuthentication.SignOut();
+        protected void Session_End(object sender, EventArgs e) 
+            => FormsAuthentication.SignOut();
     }
 }

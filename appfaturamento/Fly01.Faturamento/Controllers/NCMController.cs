@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class NCMController : BaseController<NcmVM>
     {
         public override ContentResult Form() { throw new NotImplementedException(); }

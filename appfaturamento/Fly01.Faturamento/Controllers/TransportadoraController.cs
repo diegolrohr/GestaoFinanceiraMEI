@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosTransportadoras)]
     public class TransportadoraController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Transportadora";
@@ -51,7 +53,8 @@ namespace Fly01.Faturamento.Controllers
 
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
-            return new List<InputCheckboxUI> {
+            return new List<InputCheckboxUI>
+            {
                new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" },
                new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
                new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },

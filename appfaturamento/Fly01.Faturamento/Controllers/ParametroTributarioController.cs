@@ -14,9 +14,11 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesParametrosTributarios)]
     public class ParametroTributarioController : BaseController<ParametroTributarioVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -79,10 +81,24 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<ParametroTributarioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() { return Form(); }
+        public override ContentResult List() 
+            => Form();
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
+
+            return target;
+        }
 
         public override ContentResult Form()
         {
+            if (!UserCanRead)
+                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -92,10 +108,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Parâmetros Tributários | Nota Fiscal",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -124,7 +137,6 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
-
             };
 
             form2.Elements.Add(new InputCustommaskUI
@@ -311,7 +323,6 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-
             #region Helpers 
             form3.Helpers.Add(new TooltipUI
             {
@@ -327,6 +338,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try
@@ -361,9 +373,9 @@ namespace Fly01.Faturamento.Controllers
                 var existeParametro = GetParametro();
 
                 if (existeParametro == null)
-                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
                 else
-                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
+                    parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
 
                 return Json(new
                 {

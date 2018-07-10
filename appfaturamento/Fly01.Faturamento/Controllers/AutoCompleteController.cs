@@ -71,15 +71,11 @@ namespace Fly01.Faturamento.Controllers
             return GetJson(filterObjects);
         }
 
-        public JsonResult SerieNFe(string term)
-        {
-            return SerieNotaFiscal(term, "NFe");
-        }
+        public JsonResult SerieNFe(string term) 
+            => SerieNotaFiscal(term, "NFe");
 
-        public JsonResult SerieNFSe(string term)
-        {
-            return SerieNotaFiscal(term, "NFSe");
-        }
+        public JsonResult SerieNFSe(string term) 
+            => SerieNotaFiscal(term, "NFSe");
 
         public JsonResult ProdutoOrdem(string term)
         {

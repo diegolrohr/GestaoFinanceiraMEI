@@ -28,6 +28,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return boletoBancario;
         }
 
+        [OperationRole(NotApply = true)]
         [HttpGet]
         public JsonResult ImprimeBoleto(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
         {
@@ -43,6 +44,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
+        [OperationRole(NotApply = true)]
         [HttpGet]
         public JsonResult GerarBoletoEnviaEmail(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false, string email = "", string assunto = "", string mensagem = "")
         {
@@ -60,6 +62,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
+        [OperationRole(NotApply = true)]
         [HttpGet]
         public JsonResult ValidaBoletoJaGeradoParaOutroBanco(Guid contaReceberId, Guid contaBancariaId)
         {
@@ -130,6 +133,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return RestHelper.ExecuteGetRequest<ResultBase<ContaBancariaVM>>("contaBancaria", queryString).Data.FirstOrDefault().BancoId;
         }
 
+        [OperationRole(NotApply = true)]
         public static List<BancoVM> GetBancosEmiteBoletos()
         {
             var queryString = AppDefaults.GetQueryStringDefault();

@@ -15,13 +15,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Mime;
 using System.Linq;
-using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Rest;
-using Boleto2Net;
 using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCobrancaArquivosRemessa)]
     public class ArquivoRemessaController : BoletoController<ArquivoRemessaVM>
     {
         public ArquivoRemessaController()
@@ -47,6 +47,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
+        [OperationRole(NotApply = true)]
         [HttpPost]
         public ActionResult GetQtdArquivos(List<Guid> ids)
         {
@@ -70,6 +71,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        [OperationRole(NotApply = true)]
         [HttpGet]
         public ActionResult DownloadArquivoRemessa(List<string> ids)
         {
@@ -184,7 +186,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Lista de boletos do arquivo",
-                    Buttons = new List<HtmlUIButton>()
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                     {
                         new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
                     }
@@ -246,6 +248,19 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>()
+            {
+                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+            };
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" });
+
+            return target;                    
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -254,11 +269,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Arquivos remessa",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" },
-                        new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnEditar" }
@@ -296,6 +307,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult LoadGridBoletos()
         {
             var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());

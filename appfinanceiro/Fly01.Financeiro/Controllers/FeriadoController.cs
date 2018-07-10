@@ -9,6 +9,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class FeriadoController : BaseController<FeriadoVM>
     {
         public override ContentResult Form() { throw new NotImplementedException(); }

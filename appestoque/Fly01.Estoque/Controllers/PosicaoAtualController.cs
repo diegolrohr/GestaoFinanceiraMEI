@@ -8,10 +8,12 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
+using Fly01.Core.Config;
 using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoquePosicaoAtual)]
     public class PosicaoAtualController : BaseController<PosicaoAtualVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -19,6 +21,16 @@ namespace Fly01.Estoque.Controllers
             Dictionary<string, string> queryStringDefault = AppDefaults.GetQueryStringDefault();
 
             return queryStringDefault;
+        }
+
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueAjusteManual))
+                target.Add(new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual", Position = HtmlUIButtonPosition.Main });
+
+            return target;
         }
 
         public JsonResult Totais()
@@ -43,10 +55,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Posição atual",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 Functions = new List<string> { "fnFormReady", "fnAjusteManual", "fnTotais" },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -63,7 +72,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             cfg.Content.Add(new CardUI
@@ -77,7 +85,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             cfg.Content.Add(new CardUI
@@ -91,7 +98,6 @@ namespace Fly01.Estoque.Controllers
                 {
                     Label = "Total",
                 }
-
             });
 
             var config = new DataTableUI
@@ -116,10 +122,7 @@ namespace Fly01.Estoque.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult Form()
-        {
-            throw new NotImplementedException();
-        }
+        public override ContentResult Form() { throw new NotImplementedException(); }
 
         public override Func<PosicaoAtualVM, object> GetDisplayData()
         {

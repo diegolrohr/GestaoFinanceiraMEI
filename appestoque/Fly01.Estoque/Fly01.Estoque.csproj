@@ -74,7 +74,6 @@
     <Compile Include="Controllers\ProdutosMaisMovimentadosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\TipoMovimentoController.cs" />
-    <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Reports\ReportStock.cs" />
     <Compile Include="Models\Reports\ReportMovimentoSimplificado.cs" />
@@ -201,6 +200,7 @@
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
+    <Content Include="Views\Shared\NotAllow.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

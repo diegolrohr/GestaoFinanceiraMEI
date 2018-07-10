@@ -7,11 +7,14 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento)]
     public class CondicaoParcelamentoController : CondicaoParcelamentoBaseController<CondicaoParcelamentoVM>
     {
+        [OperationRole(NotApply = true)]
         public JsonResult PostCondicaoParcelamento(string term)
         {
             var entity = new CondicaoParcelamentoVM

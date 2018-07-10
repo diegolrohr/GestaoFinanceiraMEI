@@ -4,6 +4,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosCategoria)]
     public class CategoriaController : CategoriaBaseController<CategoriaVM>
     {
         public CategoriaController()

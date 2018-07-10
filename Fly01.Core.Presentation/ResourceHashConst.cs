@@ -39,7 +39,9 @@
         #endregion
 
         #region Faturamento Resources
+
         public const string FaturamentoFaturamento = "44D5D0F2-E544-4090-976E-992B6B6DC30D";
+        public const string FaturamentoFaturamentoVisaoGeral = "5718E4FD-EB9C-460E-812D-00ABBDD00DCE";
         public const string FaturamentoFaturamentoVendas = "57B351D1-F340-43F3-8D89-D4B9E8C7F2A1";
         public const string FaturamentoFaturamentoNotasFiscais = "CE79B8D8-ADE2-4F22-ABA3-5B8F7CC9C066";
 

@@ -2,9 +2,11 @@
 using Fly01.Core.Presentation.Controllers;
 using Fly01.uiJS.Classes.Elements;
 using System.Collections.Generic;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosFornecedores)]
     public class FornecedorController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Fornecedor";

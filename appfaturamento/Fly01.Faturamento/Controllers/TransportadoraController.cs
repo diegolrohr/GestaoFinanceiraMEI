@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosTransportadoras)]
     public class TransportadoraController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Transportadora";

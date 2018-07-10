@@ -17,6 +17,7 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesParametrosTributarios)]
     public class ParametroTributarioController : BaseController<ParametroTributarioVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -79,10 +80,24 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<ParametroTributarioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() { return Form(); }
+        public override ContentResult List() 
+            => Form();
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
+
+            return target;
+        }
 
         public override ContentResult Form()
         {
+            if (!UserCanRead)
+                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -92,10 +107,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Parâmetros Tributários | Nota Fiscal",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -310,7 +322,6 @@ namespace Fly01.Faturamento.Controllers
             //config.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticacao" });
 
             #endregion
-
 
             #region Helpers 
             form3.Helpers.Add(new TooltipUI

@@ -8,16 +8,38 @@ using System.Web.Mvc;
 using Fly01.Financeiro.ViewModel;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
     public class ContaFinanceiraBaixaMultiplaController : BaseController<ContaFinanceiraBaixaMultiplaVM>
     {
+        public string ContaBancariaResourceHash { get; set; }
+
+        public ContaFinanceiraBaixaMultiplaController(string contaBancariaResourceHash)
+        {
+            ContaBancariaResourceHash = contaBancariaResourceHash;
+        }
+
         public override ContentResult List() { throw new NotImplementedException(); }
 
         public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult Form() { throw new NotImplementedException(); }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
 
         protected ContentResult FormBaixaMultipla(string tipoConta)
         {
@@ -31,11 +53,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Baixas múltiplas de contas a " + tipoConta.ToLower(),
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())                   
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -56,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "contasFinanceirasGuids" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoContaFinanceira", Value = "Conta" + tipoConta });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6",
@@ -66,7 +84,7 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "contaBancariaDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta"
-            });
+            }, ContaBancariaResourceHash));
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6", Label = "Data da Baixa", Required = true, Value = DateTime.Now.ToString("dd/MM/yyyy") });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
@@ -80,14 +98,13 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 m6 offset-m3",
                 OnClickFn = "fnSelectsAllClick",
                 Options = new List<ButtonGroupOptionUI>
-                        {
-                            new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar página"},
-                            new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar página"},
-                        }
+                {
+                    new ButtonGroupOptionUI {Id = "btnSelectAll", Value = "selectAll", Label = "Selecionar página"},
+                    new ButtonGroupOptionUI {Id = "btnDeselectAll", Value = "deselectAll", Label = "Deselecionar página"},
+                }
             });
 
             cfg.Content.Add(config);
-
 
             DataTableUI dtcfg = new DataTableUI
             {
@@ -133,6 +150,5 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
-
     }
 }

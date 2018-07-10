@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosProdutos)]
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
+        public ProdutoController() 
+            : base(ResourceHashConst.FaturamentoCadastrosGrupoProdutos) { }
+
         public override List<TooltipUI> GetHelpers()
         {
-            return new List<TooltipUI> {
+            return new List<TooltipUI>
+            {
                 new TooltipUI
                 {
                     Id = "enquadramentoLegalIPIId",

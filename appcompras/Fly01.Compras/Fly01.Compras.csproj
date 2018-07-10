@@ -260,6 +260,7 @@
     <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Transportadora\ImportaCadastro.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
+    <Content Include="Views\Shared\NotAllow.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -20,9 +20,11 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoVendas)]
     public class OrdemVendaController : BaseController<OrdemVendaVM>
     {
         public OrdemVendaController()
@@ -31,10 +33,9 @@ namespace Fly01.Faturamento.Controllers
         }
 
         private JsonResult GetJson(object data)
-        {
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
+            => Json(data, JsonRequestBehavior.AllowGet);
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemVendaProdutoVM> GetProdutos(Guid id)
         {
             var queryString = new Dictionary<string, string>();
@@ -44,6 +45,7 @@ namespace Fly01.Faturamento.Controllers
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemVendaProdutoVM>>("OrdemVendaProduto", queryString).Data;
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemVendaServicoVM> GetServicos(Guid id)
         {
             var queryString = new Dictionary<string, string>();
@@ -179,6 +181,7 @@ namespace Fly01.Faturamento.Controllers
             return reportViewer.Print(GetDadosOrcamentoPedido(ordemVenda.Id.ToString(), ordemVenda), SessionManager.Current.UserData.PlatformUrl);
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual JsonResult ImprimirOrcamentoPedido(string id)
         {
             try
@@ -204,6 +207,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult EnviaEmailOrcamentoPedido(string id)
         {
             try
@@ -246,15 +250,18 @@ namespace Fly01.Faturamento.Controllers
                 }
             };
 
-            dtOrdemVendaProdutosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrdemVendaProduto", Label = "Editar" });
-            dtOrdemVendaProdutosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrdemVendaProduto", Label = "Excluir" });
+            if (UserCanWrite)
+            {
+                dtOrdemVendaProdutosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrdemVendaProduto", Label = "Editar" });
+                dtOrdemVendaProdutosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrdemVendaProduto", Label = "Excluir" });
 
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
+            }
 
             return dtOrdemVendaProdutosCfg;
         }
@@ -273,15 +280,18 @@ namespace Fly01.Faturamento.Controllers
                 }
             };
 
-            dtOrdemVendaServicosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrdemVendaServico", Label = "Editar" });
-            dtOrdemVendaServicosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrdemVendaServico", Label = "Excluir" });
+            if (UserCanWrite)
+            {
+                dtOrdemVendaServicosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrdemVendaServico", Label = "Editar" });
+                dtOrdemVendaServicosCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrdemVendaServico", Label = "Excluir" });
 
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+                dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
+            }
 
             return dtOrdemVendaServicosCfg;
         }
@@ -310,7 +320,23 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult List() { return ListOrdemVenda(); }
+        public override ContentResult List()
+            => ListOrdemVenda();
+
+        public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" });
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
+
+            }
+
+            return target;
+        }
 
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
@@ -330,12 +356,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Vendas",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" },
-                        new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" },
-                        new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -391,15 +412,18 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar", ShowIf = "(row.status != 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnConverterParaPedido", Label = "Converter em pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido' && row.geraNotaFiscal == false)" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEnviarEmailOrcamentoPedido", Label = "Enviar por email" });
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar", ShowIf = "(row.status != 'Aberto')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnConverterParaPedido", Label = "Converter em pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido' && row.geraNotaFiscal == false)" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEnviarEmailOrcamentoPedido", Label = "Enviar por email" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
@@ -447,7 +471,8 @@ namespace Fly01.Faturamento.Controllers
             return base.GridLoad(filters);
         }
 
-        public JsonResult GridLoadNoFilter() { return base.GridLoad(); }
+        public JsonResult GridLoadNoFilter() 
+            => base.GridLoad();
 
         [HttpPost]
         public override JsonResult Create(OrdemVendaVM entityVM)
@@ -456,8 +481,10 @@ namespace Fly01.Faturamento.Controllers
             {
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 OrdemVendaVM postResult = JsonConvert.DeserializeObject<OrdemVendaVM>(postResponse);
-                var response = new JsonResult();
-                response.Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() };
+                var response = new JsonResult
+                {
+                    Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() }
+                };
                 return (response);
             }
             catch (Exception ex)
@@ -641,6 +668,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]
         public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
         {

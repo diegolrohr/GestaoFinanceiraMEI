@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Config;
+using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.uiJS.Defaults;
@@ -13,53 +14,59 @@ namespace Fly01.Compras.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            //return OrdemCompraController.OrdemCompraJson(Url, Request.Url.Scheme, withSidebarUrl);
+            if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
+                return new ContentUI();
+
             return DashboardController.DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
         }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Compras", Parent = "header" };
 
             #region MenuItems
-
-            config.MenuItems.Add(new SidebarUIMenu()
+            var menuItems = new List<SidebarUIMenu>()
             {
-                Label = "Compras",
-                Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
-                new LinkUI() { Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
-            }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Cadastros",
-                Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
-                new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
-                new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
-                new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
-                new LinkUI() { Label = "Forma de Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
-                new LinkUI() { Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},
-                new LinkUI() { Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
-                new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
-                new LinkUI() { Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")}
-            }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Ajuda",
-                Items = new List<LinkUI>
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                }
-            });
+                    Class = ResourceHashConst.ComprasCompras,
+                    Label = "Compras",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.ComprasCadastros,
+                    Label = "Cadastros",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosFornecedores, Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosTransportadora, Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCondicoesParcelamento, Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosFormaPagamento, Label = "Forma de Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosGrupoTributario, Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosGrupoProdutos, Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")}
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.ComprasAjuda,
+                    Label = "Ajuda",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                    }
+                },
+                new SidebarUIMenu() { Class = ResourceHashConst.ComprasAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+            };
 
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
-
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items
@@ -73,13 +80,15 @@ namespace Fly01.Compras.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
-            config.Widgets = new WidgetsUI();
-            config.Widgets.Conpass = new ConpassUI();
-            config.Widgets.Droz = new DrozUI();
-            config.Widgets.Zendesk = new ZendeskUI()
+            config.Widgets = new WidgetsUI
             {
-                AppName = "Fly01 Compras",
-                AppTag = "fly01_manufatura",
+                Conpass = new ConpassUI(),
+                Droz = new DrozUI(),
+                Zendesk = new ZendeskUI()
+                {
+                    AppName = "Fly01 Compras",
+                    AppTag = "fly01_manufatura",
+                }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };

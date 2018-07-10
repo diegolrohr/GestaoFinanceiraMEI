@@ -10,8 +10,22 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NotaFiscalCartaCorrecaoController : BaseController<NotaFiscalCartaCorrecaoVM>
     {
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
+        }
+
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -24,11 +38,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Nova Carta de Correção",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -64,26 +74,39 @@ namespace Fly01.Faturamento.Controllers
                 notaFiscalId = x.NotaFiscalId
             };
         }
+
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Atualizar Status", OnClickFn = "fnNotaFiscalInutilizadaList" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory { Default = Url.Action("Index", "NotaFiscalCartaCorrecao" )  },
+                History = new ContentUIHistory { Default = Url.Action("Index", "NotaFiscalCartaCorrecao") },
                 Header = new HtmlUIHeader
                 {
                     Title = "Cartas de Correção",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Atualizar Status", OnClickFn = "fnNotaFiscalInutilizadaList" },
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI {UrlGridLoad = Url.Action("GridLoad", "NotaFiscalCartaCorrecao"), UrlFunctions = Url.Action("Functions", "NotaFiscalCartaCorrecao", null, Request.Url.Scheme) + "?fns=" };
-
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar" });
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "NotaFiscalCartaCorrecao"), UrlFunctions = Url.Action("Functions", "NotaFiscalCartaCorrecao", null, Request.Url.Scheme) + "?fns=" };
             
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar" });
+            }
+
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 1 });
 
             //config.Columns.Add(new DataTableUIColumn

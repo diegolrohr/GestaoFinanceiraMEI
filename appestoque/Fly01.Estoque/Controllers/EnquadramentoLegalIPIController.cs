@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class EnquadramentoLegalIPIController : BaseController<EnquadramentoLegalIpiVM>
     {
         public override ContentResult Form() { throw new NotImplementedException(); }

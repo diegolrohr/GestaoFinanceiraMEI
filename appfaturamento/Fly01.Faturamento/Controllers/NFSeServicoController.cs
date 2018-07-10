@@ -7,6 +7,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NFSeServicoController : BaseController<NFSeServicoVM>
     {
         public NFSeServicoController()

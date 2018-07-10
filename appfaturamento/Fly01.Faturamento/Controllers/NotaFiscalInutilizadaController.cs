@@ -12,9 +12,11 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesNotasFiscaisInutilizadas)]
     public class NotaFiscalInutilizadaController : BaseController<NotaFiscalInutilizadaVM>
     {
         public override Func<NotaFiscalInutilizadaVM, object> GetDisplayData()
@@ -35,6 +37,19 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
+        }
+
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -47,11 +62,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Nota Fiscal Inutilizada",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -97,6 +108,19 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "atualizarStatusInutilizada", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusInutilizada" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -105,11 +129,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Notas Fiscais Inutilizadas",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "atualizarStatusInutilizada", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusInutilizada" },
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -117,10 +137,14 @@ namespace Fly01.Faturamento.Controllers
             var config = new DataTableUI
             {
                 UrlGridLoad = Url.Action("GridLoad"),
-                UrlFunctions = Url.Action("Functions") + "?fns=" ,
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" });
+
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });
@@ -140,6 +164,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpGet]
         public JsonResult AtualizaStatus()
         {
@@ -159,6 +184,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult FormRetornoSefaz()
         {
             ModalUIForm config = new ModalUIForm()
@@ -182,6 +208,5 @@ namespace Fly01.Faturamento.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
     }
 }

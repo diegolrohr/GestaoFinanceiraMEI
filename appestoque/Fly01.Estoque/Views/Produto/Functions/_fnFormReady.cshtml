@@ -1,6 +1,8 @@
 ﻿<script>
 	function fnFormReady() {
-		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto", "Produto")?tipo=" + $("#tipoProduto").val());
+        if ($("#grupoProdutoDescricao").data("url-post"))
+            $("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto", "Produto")?tipo=" + $("#tipoProduto").val());
+
 		if (isCreate()) {
 			$("#saldoProdutoField").prop('disabled', false);
 		} else {
@@ -11,7 +13,6 @@
 			$('input#cestId').attr('disabled', 'disabled');;
 			$('input#cestDescricao').attr('disabled', 'disabled');
 		}
-
 	}
 
 	function isCreate() {

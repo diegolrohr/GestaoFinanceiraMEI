@@ -126,7 +126,7 @@ namespace Fly01.Faturamento.Controllers
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" });
+            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" , Disabled = true });
 
             cfg.Content.Add(form1);
 

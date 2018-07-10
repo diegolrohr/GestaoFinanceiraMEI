@@ -26,7 +26,8 @@ namespace Fly01.Core.Presentation.Application
             try
             {
                 var requestObject = JsonConvert.SerializeObject(new { platformUrl, platformUser/*, resouceRoot = AppDefaults.AppId*/ });
-                return RestHelper.ExecutePostRequest<List<PermissionResponseVM>>(AppDefaults.UrlGateway, "v2/Permission", requestObject);
+                var response = RestHelper.ExecutePostRequest<List<PermissionResponseVM>>(AppDefaults.UrlGateway, "v2/Permission", requestObject);
+                return response ?? new List<PermissionResponseVM>();
             }
             catch
             {

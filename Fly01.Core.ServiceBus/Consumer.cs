@@ -19,6 +19,7 @@ namespace Fly01.Core.ServiceBus
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
         protected abstract Task PersistMessage();
+        protected abstract Task PersistMessageIntegracao();
 
         private IConnection Connection
         {
@@ -70,6 +71,9 @@ namespace Fly01.Core.ServiceBus
                     if (!HeaderIsValid())
                         throw new ArgumentException(MsgHeaderInvalid);
 
+                    //corrigir nome do host
+                    //validar concorrência
+                    //não criou collection no Mongo
                     if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                     {
                         Message = Encoding.UTF8.GetString(args.Body);
@@ -79,7 +83,11 @@ namespace Fly01.Core.ServiceBus
                         RabbitConfig.AppUser = GetHeaderValue("AppUser");
                         RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                        await PersistMessage();
+                        if (RabbitConfig.RoutingKey.Contains("Integracao"))
+                            await PersistMessageIntegracao();
+                        else
+                            await PersistMessage();
+
                     }
 
                     if (exceptions.Count > 0)
@@ -91,10 +99,12 @@ namespace Fly01.Core.ServiceBus
                             SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
                         }
                     }
-                };
 
-                Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
+                    Channel.BasicAck(args.DeliveryTag, false);
+                };
             };
+
+            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
         }
     }
 }

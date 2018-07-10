@@ -38,6 +38,7 @@
       <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
       <Project>{2a0fd4c0-cded-410f-8f09-ee85154679e3}</Project>

@@ -150,7 +150,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ConsumerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -168,9 +167,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
+      <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>
+      <Name>Fly01.Core.ServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Core\Fly01.Core.csproj">
+      <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>
+      <Name>Fly01.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

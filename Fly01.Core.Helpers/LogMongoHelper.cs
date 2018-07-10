@@ -6,7 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Authentication;
 
-namespace Fly01.Core.Notifications
+namespace Fly01.Core.Helpers
 {
     public class LogMongoHelper<T> : IDisposable
     {
@@ -14,22 +14,6 @@ namespace Fly01.Core.Notifications
         private string UserName { get; set; }
         private string Password { get; set; }
         private string DataBaseName { get; set; }
-
-        public LogMongoHelper(string dbName)
-            : this(ConfigurationManager.AppSettings["MongoHost"], 
-                  ConfigurationManager.AppSettings["MongoUserName"], 
-                  ConfigurationManager.AppSettings["MongoPassword"], dbName)
-        { }
-
-        public LogMongoHelper(string host, string userName, string password, string databaseName)
-        {
-            Host = host;
-            UserName = userName;
-            Password = password;
-            DataBaseName = databaseName;
-        }
-
-        public void Dispose() => GC.SuppressFinalize(this);
 
         private MongoClient _mongoClient;
         private MongoClient MongoClient
@@ -58,6 +42,22 @@ namespace Fly01.Core.Notifications
                 return _mongoClient;
             }
         }
+
+        public LogMongoHelper(string dbName)
+            : this(ConfigurationManager.AppSettings["MongoHost"], 
+                  ConfigurationManager.AppSettings["MongoUserName"], 
+                  ConfigurationManager.AppSettings["MongoPassword"], dbName)
+        { }
+
+        public LogMongoHelper(string host, string userName, string password, string databaseName)
+        {
+            Host = host;
+            UserName = userName;
+            Password = password;
+            DataBaseName = databaseName;
+        }
+
+        public void Dispose() => GC.SuppressFinalize(this);
 
         public long Count(string collectionName)
         {

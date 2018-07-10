@@ -26,18 +26,20 @@ namespace Fly01.Faturamento.BL
             if (All.Any(x => x.NotaFiscalId == entity.NotaFiscalId))
             {
                 max = All.Max(x => x.Numero);
-                var correcao = "";
-                var mensagens = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId).ToList();
 
-                foreach (var item in mensagens)
-                {
-                    correcao += " " + item.MensagemCorrecao;
-                }
-                entity.MensagemCorrecao += " " + correcao;
+                var mensagens = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Numero == max).FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(entity.MensagemCorrecao))
+                    entity.MensagemCorrecao += " " + mensagens.MensagemCorrecao;
+                else
+                    entity.MensagemCorrecao = mensagens.MensagemCorrecao;
             }
 
             entity.Numero = ++max;
 
+            entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
+            entity.Fail(!string.IsNullOrEmpty(entity.MensagemCorrecao) && entity.MensagemCorrecao.Length > 1000,
+                new Error ("SEFAZ permite até 1000 caracteres por carta de correção. A soma da mensagem atual com as anteriores excedeu 1000 caracteres. A soma possui: " + entity.MensagemCorrecao.Length.ToString() +" caracteres."));
             entity.Fail(entity.Numero > 20, new Error("Você pode gerar no máximo 20 cartas de correções para uma nota."));
 
             base.ValidaModel(entity);

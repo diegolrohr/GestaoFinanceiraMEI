@@ -329,6 +329,7 @@
     <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
     <Content Include="Views\CartaCorrecao\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\CartaCorrecao\Functions\_fnNovo.cshtml" />
+    <Content Include="Views\CartaCorrecao\Novo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

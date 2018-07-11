@@ -86,9 +86,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (entity.RegistroFixo)
                 throw new BusinessException("Registro não pode ser editado (RegistroFixo)");
 
+            var numero = entity.Numero;
             ModelState.Clear();
             model.Patch(entity);
             Update(entity);
+            entity.Numero = numero;
 
             Validate(entity);
 
@@ -164,7 +166,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (isParent)
                 return recorrencias = unitOfWork.ContaReceberBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.Id || x.Id == entity.Id) && x.StatusContaBancaria == StatusContaBancaria.EmAberto).ToList();
             else
-                return recorrencias = unitOfWork.ContaReceberBL.All.Where(x => (x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId) && x.StatusContaBancaria == StatusContaBancaria.EmAberto && x.Numero >= entity.Numero).ToList();
+                return recorrencias = unitOfWork.ContaReceberBL.All.Where(x => x.Numero >= entity.Numero && x.ContaFinanceiraRepeticaoPaiId == entity.ContaFinanceiraRepeticaoPaiId  && x.StatusContaBancaria == StatusContaBancaria.EmAberto).ToList();
         }
     }
 }

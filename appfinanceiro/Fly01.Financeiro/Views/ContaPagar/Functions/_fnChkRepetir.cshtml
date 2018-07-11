@@ -159,12 +159,13 @@ function desabilitaCamposRepeticao() {
     $('input#periodoFim').val(null);
 }
 
-function fnChkRepetir() {
-    if ($('#repetir:checked').val() == "true") {
-        habilitaCamposRepeticao();
+    function fnChkRepetir() {
+        debugger;
+        if ($('#repetir:checked').val() == "true") {
+            habilitaCamposRepeticao();
+        }
+        else {
+            desabilitaCamposRepeticao();
+        }
     }
-    else {
-        desabilitaCamposRepeticao();
-    }
-}
 </script>

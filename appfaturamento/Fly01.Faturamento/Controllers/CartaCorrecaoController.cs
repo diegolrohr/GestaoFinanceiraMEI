@@ -171,8 +171,10 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCartaCorrecao))),
             });
-            config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s12 m4 l4", Label = "Número", Disabled = true });
-            config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4 l4", Label = "Número", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem Correção", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "idRetorno", Class = "col s12", Label = "ID Evento Sefaz", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem Sefaz", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

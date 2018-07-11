@@ -81,8 +81,7 @@ namespace Fly01.EmissaoNFE.BL
 
             StreamReader streamReader = new StreamReader(memoryStream);
 
-            string xmlString = streamReader.ReadToEnd();
-            //xmlString = xmlString.Insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            string xmlString = streamReader.ReadToEnd();            
             xmlString = xmlString.Insert(0, "<?xml version=\"1.0\"?>");
 
             xmlString = Base64Helper.RemoverAcentos(xmlString);

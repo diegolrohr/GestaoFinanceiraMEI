@@ -39,17 +39,17 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Grupo Tributário",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "GrupoTributario"), UrlFunctions = Url.Action("Functions", "GrupoTributario", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "cfop_descricao", DisplayName = "CFOP", Priority = 2 });
@@ -57,6 +57,20 @@ namespace Fly01.Core.Presentation.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+        }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
         }
 
         public override ContentResult Form()
@@ -71,12 +85,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cadastro de Grupo Tributário",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
+
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -142,7 +152,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoICMS",
                 Class = "col s12 l12",
                 Label = "Situação da Operação no Simples Nacional",
-                Disabled = true,
                 ConstrainWidth = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoICMS)))
             });
@@ -192,7 +201,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoPIS",
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
-                Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });
@@ -216,7 +224,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoTributacaoCOFINS",
                 Class = "col s12 l12",
                 Label = "Situação Tributária",
-                Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoPISCOFINS))),
                 ConstrainWidth = true
             });

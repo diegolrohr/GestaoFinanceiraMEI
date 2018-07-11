@@ -14,6 +14,7 @@ using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosTiposMovimento)]
     public class TipoMovimentoController : BaseController<TipoMovimentoVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -38,6 +39,20 @@ namespace Fly01.Estoque.Controllers
             };
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if(UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -46,18 +61,18 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Tipos de movimento",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            if(UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn
@@ -86,12 +101,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados do tipo de movimento",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "TipoMovimento", null, Request.Url?.Scheme) + "?fns="
             };

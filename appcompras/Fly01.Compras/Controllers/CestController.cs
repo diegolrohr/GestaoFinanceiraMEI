@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class CestController : BaseController<CestVM>
     {
         public override ContentResult Form() { throw new NotImplementedException(); }

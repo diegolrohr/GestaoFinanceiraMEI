@@ -9,9 +9,12 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
 using System.Collections.Generic;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosClientes)]
     public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";
@@ -25,6 +28,7 @@ namespace Fly01.Financeiro.Controllers
             base.NormarlizarEntidade(ref entityVM);
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult PostCliente(string term)
         {
             var entity = new PessoaVM
@@ -52,7 +56,8 @@ namespace Fly01.Financeiro.Controllers
 
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
-            return new List<InputCheckboxUI> {
+            return new List<InputCheckboxUI>
+            {
                new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
                new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
                new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },

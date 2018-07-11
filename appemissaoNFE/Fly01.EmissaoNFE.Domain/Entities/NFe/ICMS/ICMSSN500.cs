@@ -15,9 +15,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         public ICMSSN500(OrigemMercadoria origemMercadoria, TipoTributacaoICMS codigoSituacaoOperacao) : base(origemMercadoria, codigoSituacaoOperacao)
         {
         }
-        
-        [XmlElement("vBCSTRet")]
+
+        [XmlIgnore]
         public double ValorBCSTRetido { get; set; }
+
+        [XmlElement("vBCSTRet")]
+        public string ValorBCSTRetidoString
+        {
+            get
+            {
+                return ValorBCSTRetido.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorBCSTRetido = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlIgnore]
         public double AliquotaConsumidorFinal { get; set; }

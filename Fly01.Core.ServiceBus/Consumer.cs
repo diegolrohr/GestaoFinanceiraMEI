@@ -71,9 +71,7 @@ namespace Fly01.Core.ServiceBus
                     if (!HeaderIsValid())
                         throw new ArgumentException(MsgHeaderInvalid);
 
-                    //corrigir nome do host
                     //validar concorrência
-                    //não criou collection no Mongo
                     if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                     {
                         Message = Encoding.UTF8.GetString(args.Body);
@@ -83,24 +81,23 @@ namespace Fly01.Core.ServiceBus
                         RabbitConfig.AppUser = GetHeaderValue("AppUser");
                         RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                        if (RabbitConfig.RoutingKey.Contains("Integracao"))
+                        if (!string.IsNullOrEmpty(GetHeaderValue("Integracao")))
                             await PersistMessageIntegracao();
                         else
                             await PersistMessage();
 
-                    }
-
-                    if (exceptions.Count > 0)
-                    {
-                        foreach (var item in exceptions)
+                        if (exceptions.Count > 0)
                         {
-                            var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+                            foreach (var item in exceptions)
+                            {
+                                var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
 
-                            SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                                SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                            }
                         }
-                    }
 
-                    Channel.BasicAck(args.DeliveryTag, false);
+                        Channel.BasicAck(args.DeliveryTag, false);
+                    }
                 };
             };
 

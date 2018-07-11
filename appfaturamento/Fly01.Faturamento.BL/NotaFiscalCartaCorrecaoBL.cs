@@ -22,27 +22,42 @@ namespace Fly01.Faturamento.BL
             entity.Data = DateTime.Now;
             entity.Status = StatusCartaCorrecao.Transmitida;
 
-            var max = 0;
-            if (All.Any(x => x.NotaFiscalId == entity.NotaFiscalId))
-            {
-                max = All.Max(x => x.Numero);
+            entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
 
-                var mensagens = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Numero == max).FirstOrDefault();
+            var max = 0;
+            var cceValidasAnterioes = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.RegistradoEVinculado);
+
+            if (cceValidasAnterioes != null && cceValidasAnterioes.Any())
+            {
+                max = cceValidasAnterioes.Max(x => x.Numero);
+
+                var ultimaMensagem = cceValidasAnterioes.Where(x => x.Numero == max).FirstOrDefault().MensagemCorrecao;
 
                 if (!string.IsNullOrEmpty(entity.MensagemCorrecao))
-                    entity.MensagemCorrecao += " " + mensagens.MensagemCorrecao;
+                    entity.MensagemCorrecao += " " + ultimaMensagem;
                 else
-                    entity.MensagemCorrecao = mensagens.MensagemCorrecao;
+                    entity.MensagemCorrecao = ultimaMensagem;
             }
 
-            entity.Numero = ++max;
-
-            entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
             entity.Fail(!string.IsNullOrEmpty(entity.MensagemCorrecao) && entity.MensagemCorrecao.Length > 1000,
                 new Error ("SEFAZ permite até 1000 caracteres por carta de correção. A soma da mensagem atual com as anteriores excedeu 1000 caracteres. A soma possui: " + entity.MensagemCorrecao.Length.ToString() +" caracteres."));
-            entity.Fail(entity.Numero > 20, new Error("Você pode gerar no máximo 20 cartas de correções para uma nota."));
+            entity.Fail(cceValidasAnterioes != null && cceValidasAnterioes.Count() >= 20, new Error("Você pode ter no máximo 20 cartas de correções registradas por nota fiscal."));
 
             base.ValidaModel(entity);
+        }
+
+        public override void Delete(NotaFiscalCartaCorrecao entityToDelete)
+        {
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado, new Error("Não é possível deletar Carta de Correção com status diferente de Transmitida ou Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
         }
     }
 }

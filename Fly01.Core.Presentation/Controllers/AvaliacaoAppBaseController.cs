@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -25,7 +26,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanPerformOperation(ResourceHashAvalicaoApp, ViewModels.EPermissionValue.Write))
+            if (UserCanPerformOperation(ResourceHashAvalicaoApp, EPermissionValue.Write))
                 target.Add(new HtmlUIButton { Id = "save", Label = "Enviar", OnClickFn = "fnSalvarAvaliacaoApp", Type = "submit" });
 
             return target;

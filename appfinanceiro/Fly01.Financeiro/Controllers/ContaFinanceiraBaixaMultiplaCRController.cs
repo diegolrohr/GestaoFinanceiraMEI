@@ -6,7 +6,7 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroContasReceber)]
     public class ContaFinanceiraBaixaMultiplaCRController : ContaFinanceiraBaixaMultiplaController
     {
-        public ContaFinanceiraBaixaMultiplaCRController(string contaBancariaResourceHash)
+        public ContaFinanceiraBaixaMultiplaCRController()
             : base(ResourceHashConst.FinanceiroCadastrosContasBancarias) { }
 
         public override ContentResult Form() 

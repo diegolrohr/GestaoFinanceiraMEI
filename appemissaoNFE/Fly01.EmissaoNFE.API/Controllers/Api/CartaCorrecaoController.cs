@@ -43,16 +43,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var base64 = unitOfWork.CartaCorrecaoBL.Serialize(entity);
             var retorno = new CartaCorrecaoRetornoVM();
 
-            //var cartaCorrecaoEvento = new NFESBRAProd.NFESBRA().NFEREMESSAEVENTO(
-            //    AppDefault.Token,
-            //    entity.Producao,
-            //    Convert.FromBase64String(base64)
-            //);
+            var cartaCorrecaoEvento = new NFESBRAProd.NFESBRA().REMESSAEVENTO(
+                AppDefault.Token,
+                entity.Producao,
+                Convert.FromBase64String(base64)
+            );
 
-            //if(cartaCorrecaoEvento != null)
-            //{
-            //    retorno.IdEvento = "ID"+
-            //}
+            if (cartaCorrecaoEvento != null)
+            {
+                retorno.IdEvento = cartaCorrecaoEvento[0].ToString();
+            }
 
             return retorno;
         }
@@ -62,16 +62,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var base64 = unitOfWork.CartaCorrecaoBL.Serialize(entity);
             var retorno = new CartaCorrecaoRetornoVM();
 
-            //var cartaCorrecaoEvento = new NFESBRA.NFESBRA().NFEREMESSAEVENTO(
-            //    AppDefault.Token,
-            //    entity.Homologacao,
-            //    Convert.FromBase64String(base64)
-            //);
+            var cartaCorrecaoEvento = new NFESBRA.NFESBRA().REMESSAEVENTO(
+                AppDefault.Token,
+                entity.Homologacao,
+                Convert.FromBase64String(base64)
+            );
 
-            //if(cartaCorrecaoEvento != null)
-            //{
-            //    retorno.IdEvento = "ID"+
-            //}
+            if (cartaCorrecaoEvento != null)
+            {
+                retorno.IdEvento = cartaCorrecaoEvento[0].ToString();
+            }
 
             return retorno;
         }

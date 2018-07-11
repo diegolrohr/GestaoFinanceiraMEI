@@ -38,7 +38,7 @@ namespace Fly01.EmissaoNFE.BL
             {
                 TipoEvento = TipoEvento,
                 Correcao = entity.Correcao,
-                SefazChaveAcesso = entity.SefazChaveAcesso 
+                SefazChaveAcesso = entity.SefazChaveAcesso
             };
 
             var evento = new EnvelopeEvento()
@@ -73,8 +73,6 @@ namespace Fly01.EmissaoNFE.BL
             XmlWriter writer = XmlWriter.Create(memoryStream, settings);
 
             XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento));
-            //XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento), OverrideAttributes());
-            //XmlSerializer xser = new XmlSerializer(typeof(EnvelopeEvento), new[] { typeof(CartaCorrecaoEvento) });
 
             xser.Serialize(writer, entity, nameSpaces);
 
@@ -84,7 +82,8 @@ namespace Fly01.EmissaoNFE.BL
             StreamReader streamReader = new StreamReader(memoryStream);
 
             string xmlString = streamReader.ReadToEnd();
-            xmlString = xmlString.Insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            //xmlString = xmlString.Insert(0, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlString = xmlString.Insert(0, "<?xml version=\"1.0\"?>");
 
             xmlString = Base64Helper.RemoverAcentos(xmlString);
 

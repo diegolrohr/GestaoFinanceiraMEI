@@ -167,13 +167,13 @@ namespace Fly01.Financeiro.Controllers
 
         public ContentResult ListContaPagar(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todas as contas";
+            var buttonLabel = "Todas as contas";
             var buttonOnClick = "fnRemoveFilter";
 
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
-                buttonLabel = "Mostrar contas do mês atual";
+                buttonLabel = "Contas do mês";
                 buttonOnClick = "fnAddFilter";
             }
 
@@ -341,7 +341,6 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });            
-            config.Elements.Add(new InputHiddenUI { Id = "repetir" });            
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 

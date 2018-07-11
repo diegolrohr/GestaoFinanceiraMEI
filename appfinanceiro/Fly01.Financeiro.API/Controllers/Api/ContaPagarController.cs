@@ -58,7 +58,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                List<ContaPagar> recorrencias = GetRecorrencias(entity, unitOfWork);
+                var recorrencias = GetRecorrencias(entity, unitOfWork);
 
                 foreach (var child in recorrencias.OrderByDescending(x => x.Numero))
                 {

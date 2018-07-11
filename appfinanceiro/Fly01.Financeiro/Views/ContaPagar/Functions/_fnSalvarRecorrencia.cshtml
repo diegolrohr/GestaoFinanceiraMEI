@@ -1,15 +1,15 @@
 ﻿<script>
     function fnSalvarRecorrencia() {
         if (($('#repeticaoPai').val() == 'true') || ($('#repeticaoFilha').val() == 'true'))
-            fnModalSalvarRecorrencia();
+            fnModalEditarRecorrencia();
         else {
             if ($("form#fly01frmContaPagar").valid()) {
                 $("form#fly01frmContaPagar").submit();
             }
-        }      
+        }
     };
 
-    function fnModalSalvarRecorrencia() {
+    function fnModalEditarRecorrencia() {
         var modalId = `modalEditarRecorrencias`;
 
         if ($(`#${modalId}`).length > 0)
@@ -24,7 +24,7 @@
                         createElem("i", { "class": "material-icons" }, "close")
                     ])
                 ]),
-                createElem("div", { "class": "modal-content", "id" : "deleteMessage" }, [
+                createElem("div", { "class": "modal-content", "id": "deleteMessage" }, [
                     createElem("h6", null, message),
                     createElem("div", { "class": "input-field col s12 l12" }, [
                         createElem("input", { "id": "editarRecorrencias", "type": "checkbox", "name": "editarRecorrencias" }, message),
@@ -61,7 +61,7 @@
                     if (data.success) {
                         fly01.toast("Editado com sucesso.", "success");
                         var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
-                        fly01._[dtId].refresh();
+                        fly01.go("@Url.Action("List", "ContaPagar")");
                     }
                     else {
                         fly01.fn.submitErrorHandler(null, data.message);

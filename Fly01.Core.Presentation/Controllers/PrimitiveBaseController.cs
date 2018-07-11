@@ -82,8 +82,6 @@ namespace Fly01.Core.Presentation.Controllers
             ControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             ActionName = filterContext.ActionDescriptor.ActionName;
 
-            //base.OnAuthorization(filterContext);
-
             bool skipAuthorization =
                 filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
                 filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
@@ -98,9 +96,6 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            // auth failed, redirect to login page
-            //filterContext.Result = new HttpUnauthorizedResult();
-
             if (filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 var isJson = (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"));
@@ -113,16 +108,6 @@ namespace Fly01.Core.Presentation.Controllers
                     })
                 );
             }
-            //else
-            //{
-            //    //https://stackoverflow.com/questions/977071/redirecting-unauthorized-controller-in-asp-net-mvc
-
-            //    ViewDataDictionary viewData = new ViewDataDictionary
-            //    {
-            //        { "Message", "You do not have sufficient privileges for this operation." }
-            //    };
-            //    filterContext.Result = new ViewResult { MasterName = "Home", ViewName = "NotAllow", ViewData = viewData };
-            //}
         }
     }
 }

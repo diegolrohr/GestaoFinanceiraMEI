@@ -131,6 +131,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 foreach (var item in recorrencias.OrderBy(x => x.Numero))
                 {
+                    if (item.Id == entity.Id)
+                    {
+                        item.DataVencimento = entity.DataVencimento;
+                        item.DataEmissao = entity.DataEmissao;
+                    }
 
                     item.ValorPrevisto = entity.ValorPrevisto;
                     item.Descricao = entity.Descricao;

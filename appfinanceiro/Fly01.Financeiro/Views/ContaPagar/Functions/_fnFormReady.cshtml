@@ -7,13 +7,13 @@ function fnFormReady() {
         $("#repeticaoPai").val($("#contaFinanceiraRepeticaoPaiId").val() == "" && $('#repetir').val() == "true");
         $("#repeticaoFilha").val($("#contaFinanceiraRepeticaoPaiId").val() != "" && $('#repetir').val() == "true");
 
-        debugger;
-        if (($('#repeticaoPai').val() == 'true') || ($('#repeticaoFilha').val() == 'true')) {
-            $("input#dataVencimento").attr("disabled", "disabled");
-            $("#dataVencimentoField .picking").addClass("disabled")
-        }
-        else
-            $("input#dataVencimento").removeAttr("disabled");
+        //debugger;
+        //if (($('#repeticaoPai').val() == 'true') || ($('#repeticaoFilha').val() == 'true')) {
+        //    $("input#dataVencimento").attr("disabled", "disabled");
+        //    $("#dataVencimentoField .picking").addClass("disabled")
+        //}
+        //else
+        //    $("input#dataVencimento").removeAttr("disabled");
     }
 
     $('#contaBancariaIdField, #tipoPeriodicidadeField, #tipoRepeticaoField, #numeroRepeticoesField, #periodoFimField').hide();

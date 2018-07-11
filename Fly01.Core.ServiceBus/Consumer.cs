@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Fly01.Core.Mensageria;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
+using System.Threading;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -60,8 +61,10 @@ namespace Fly01.Core.ServiceBus
         {
             var consumer = new EventingBasicConsumer(Channel);
 
+            var i = 0;
             consumer.Received += async (sender, args) =>
             {
+                i++;
                 if (args.BasicProperties.AppId != RabbitConfig.AppId)
                 {
                     if (args.BasicProperties.Headers == null)
@@ -71,7 +74,6 @@ namespace Fly01.Core.ServiceBus
                     if (!HeaderIsValid())
                         throw new ArgumentException(MsgHeaderInvalid);
 
-                    //validar concorrência
                     if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                     {
                         Message = Encoding.UTF8.GetString(args.Body);
@@ -81,10 +83,10 @@ namespace Fly01.Core.ServiceBus
                         RabbitConfig.AppUser = GetHeaderValue("AppUser");
                         RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                        if (!string.IsNullOrEmpty(GetHeaderValue("Integracao")))
-                            await PersistMessageIntegracao();
-                        else
-                            await PersistMessage();
+                        //if (string.IsNullOrEmpty(GetHeaderValue("Integracao")))
+                        await PersistMessage();
+                        //else
+                        //    await PersistMessageIntegracao();
 
                         if (exceptions.Count > 0)
                         {
@@ -97,11 +99,18 @@ namespace Fly01.Core.ServiceBus
                         }
 
                         Channel.BasicAck(args.DeliveryTag, false);
+
+                        if (i >= 10)
+                        {
+                            Channel.Close();
+                            Thread.Sleep(3000);
+                            await Task.Factory.StartNew(() => Consume());
+                        }
                     }
                 };
             };
 
-            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
+            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
         }
     }
 }

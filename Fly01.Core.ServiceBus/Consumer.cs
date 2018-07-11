@@ -101,7 +101,7 @@ namespace Fly01.Core.ServiceBus
                 };
             };
 
-            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
+            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
     }
 }

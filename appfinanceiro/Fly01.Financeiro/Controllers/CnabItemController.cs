@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCobrancaBoletos)]
     public class CnabItemController : ContaFinanceiraController<ContaReceberVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
         public CnabItemController()

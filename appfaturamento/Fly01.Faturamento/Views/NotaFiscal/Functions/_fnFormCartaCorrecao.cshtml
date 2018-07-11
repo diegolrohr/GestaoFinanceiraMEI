@@ -1,5 +1,5 @@
 ﻿<script>
-    function fnFormCartaCorrecao() {
-        fly01.go("@Url.Action("List", "NotaFiscalCartaCorrecao")");
+    function fnFormCartaCorrecao(idRecord) {
+        fly01.go("@Url.Action("ListCartaCorrecao", "CartaCorrecao")/"+idRecord);
     }
 </script>

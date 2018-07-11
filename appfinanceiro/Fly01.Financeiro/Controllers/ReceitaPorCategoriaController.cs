@@ -10,6 +10,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class ReceitaPorCategoriaController : BaseController<ReceitaPorCategoriaVM>
     {
         private DateTime _dataInicial, _dataFinal;

@@ -6,11 +6,17 @@ using System.Collections.Generic;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosProdutos)]
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
+        public ProdutoController()
+            : base(ResourceHashConst.EstoqueCadastrosGrupoProdutos) { }
+
+        [OperationRole(NotApply = true)]
         public JsonResult GridLoadPos(Dictionary<string, string> filters = null)
         {
             GetDisplayDataSelect = x => new
@@ -31,6 +37,7 @@ namespace Fly01.Estoque.Controllers
             return GridLoad(filters);
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult GridLoadSaldoZerado(Dictionary<string, string> filters = null)
         {
             GetDisplayDataSelect = x => new
@@ -47,6 +54,7 @@ namespace Fly01.Estoque.Controllers
             return GridLoad(filters);
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult GridLoadSaldoAbaixoMinimo(Dictionary<string, string> filters = null)
         {
             GetDisplayDataSelect = x => new

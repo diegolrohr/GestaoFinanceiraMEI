@@ -15,6 +15,7 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesSerieNotasFiscais)]
     public class SerieNotaFiscalController : BaseController<SerieNotaFiscalVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -37,6 +38,19 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Notas Fiscais Inutilizadas", OnClickFn = "fnNotaFiscalInutilizadaList" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -45,18 +59,17 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Série de Notas Fiscais",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Notas Fiscais Inutilizadas", OnClickFn = "fnNotaFiscalInutilizadaList" },
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
 
@@ -75,6 +88,19 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
+        }
+
         public override ContentResult Form()
         {
             var cfg = new ContentUI
@@ -87,11 +113,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados da Série da Nota Fiscal",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -192,7 +214,7 @@ namespace Fly01.Faturamento.Controllers
                 Data = new { inputmask = "'regex': '[0-9]*'" },
                 Value = "1"
             });
-            
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Default), "application/json");
         }
 
@@ -212,7 +234,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "fly01mdlfrmModalSerieNotaFiscalNFSe"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "id" });            
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
 
             config.Elements.Add(new InputCustommaskUI
             {

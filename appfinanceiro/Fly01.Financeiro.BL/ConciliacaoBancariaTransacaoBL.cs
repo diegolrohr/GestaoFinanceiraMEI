@@ -26,7 +26,7 @@ namespace Fly01.Financeiro.BL
             conciliacaoBancariaItemBL = ConciliacaoBancariaItemBL;
             conciliacaoBancariaBL = ConciliacaoBancariaBL;
         }
-                
+
         public override void Insert(ConciliacaoBancariaTransacao entity)
         {
             try

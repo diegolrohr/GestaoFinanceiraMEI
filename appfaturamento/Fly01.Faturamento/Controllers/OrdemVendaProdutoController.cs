@@ -9,9 +9,12 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoVendas)]
     public class OrdemVendaProdutoController : BaseController<OrdemVendaProdutoVM>
     {
         public OrdemVendaProdutoController()
@@ -57,7 +60,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioTipoTributacaoICMS" });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s12 m6",
@@ -68,8 +71,9 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoTributarioIdProduto",
                 Class = "col s12 m6",
@@ -82,7 +86,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribProduto" } }
-            });
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
             config.Elements.Add(new InputFloatUI
             {
@@ -200,6 +204,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult GetOrdemVendaProdutos(string id)
         {
             Dictionary<string, string> filters = new Dictionary<string, string>

@@ -102,7 +102,8 @@ namespace Fly01.Core.ServiceBus
 
                         if (i >= 10)
                         {
-                            Channel.Close();
+                            consumer = null;
+                            //Channel.Close();
                             Thread.Sleep(3000);
                             await Task.Factory.StartNew(() => Consume());
                         }

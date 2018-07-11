@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Fly01.Core.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace Fly01.Core.Config
 {
@@ -10,5 +12,7 @@ namespace Fly01.Core.Config
         public string PlatformUrl { get; set; }
 
         public string PlatformUser { get; set; }
+
+        public List<PermissionResponseVM> Permissions { get; set; }
     }
 }

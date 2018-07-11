@@ -16,9 +16,12 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoVendas)]
     public class PedidoController : OrdemVendaController
     {
         //pedido e orçamento são ordem de venda, apenas a propriedade TipoOrdemVenda que muda
@@ -58,6 +61,19 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarPedido" });
+            }
+
+            return target;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult FormPedido(bool isEdit = false)
         {
             var cfg = new ContentUI
@@ -70,10 +86,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Pedido",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarPedido" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -167,7 +180,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoTributarioPadraoId",
                 Class = "col s12 m7",
@@ -177,9 +190,9 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
-            });
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "clienteId",
                 Class = "col s12",
@@ -188,7 +201,7 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("Cliente", "AutoComplete"),
                 LabelId = "clienteNome",
                 DataUrlPost = Url.Action("PostCliente")
-            });
+            }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion
@@ -235,7 +248,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 m6",
@@ -244,9 +257,9 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosFormasPagamento));
 
-            });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 m6",
@@ -255,9 +268,9 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosCondicoesParcelamento));
 
-            });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 m6",
@@ -266,11 +279,12 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoria")
-            });
+            }, ResourceHashConst.FaturamentoCadastrosCategoria));
+
             #endregion
 
             #region step Transporte
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "transportadoraId",
                 Class = "col s12 m8",
@@ -278,8 +292,8 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora")
+            }, ResourceHashConst.FaturamentoCadastrosTransportadoras));
 
-            });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFrete",
@@ -475,6 +489,7 @@ namespace Fly01.Faturamento.Controllers
 
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult FinalizarPedido(string id, bool faturar = false)
         {
@@ -609,7 +624,6 @@ namespace Fly01.Faturamento.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
 
         #endregion
     }

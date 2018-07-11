@@ -59,10 +59,7 @@ namespace Fly01.Core.Presentation.Controllers
             throw new NotImplementedException();
         }
 
-        public override ContentResult List()
-        {
-            return Form();
-        }
+        public override ContentResult List() => Form();
 
         [HttpPost]
         public override JsonResult Create(T entityVM)
@@ -71,8 +68,10 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 T postResult = JsonConvert.DeserializeObject<T>(postResponse);
-                var response = new JsonResult();
-                response.Data = new { success = true, message = "Avaliação enviada com sucesso." };
+                var response = new JsonResult
+                {
+                    Data = new { success = true, message = "Avaliação enviada com sucesso." }
+                };
                 return (response);
             }
             catch (Exception ex)

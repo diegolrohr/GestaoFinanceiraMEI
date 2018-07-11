@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.ViewModels;
 using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class CartaCorrecaoController : BaseController<NotaFiscalCartaCorrecaoVM>
     {
         public CartaCorrecaoController()
@@ -20,23 +22,47 @@ namespace Fly01.Faturamento.Controllers
             ExpandProperties = "notaFiscal";
         }
 
+        public override ContentResult List()
+        {
+            throw new NotImplementedException();
+        }
+
         public override ContentResult Form()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActionResult Novo(Guid id)
+        {
+            return View(id);
+        }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        public ContentResult NovoForm(Guid id)
         {
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
                 {
-                    Default = Url.Action("Create", "CartaCorrecao"),
-                    WithParams = Url.Action("Edit", "CartaCorrecao")
+                    Default = Url.Action("Novo", "CartaCorrecao") + "/" + id
                 },
                 Header = new HtmlUIHeader
                 {
                     Title = "Nova Carta de Correção",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -46,15 +72,13 @@ namespace Fly01.Faturamento.Controllers
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = $"{Url.Action("NotaFiscal", "CartaCorrecao", new { id = Request.QueryString["idNotaFiscal"] })}"
+                    List = Url.Action("ListCartaCorrecao", "CartaCorrecao") + "/" + id,
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "notaFiscalId", Value = Request.QueryString["idNotaFiscal"] });
+            config.Elements.Add(new InputHiddenUI { Id = "notaFiscalId", Value = id.ToString() });
             config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem Carta de Correção", MaxLength = 1000 });
 
             cfg.Content.Add(config);
@@ -62,23 +86,18 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override Func<NotaFiscalCartaCorrecaoVM, object> GetDisplayData()
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
         {
-            return x => new
-            {
-                id = x.Id,
-                mensagemCorrecao = x.MensagemCorrecao.Substring(0, x.MensagemCorrecao.Length > 35 ? 35 : x.MensagemCorrecao.Length),
-                data = x.Data.ToString("dd/MM/yyyy"),
-                notaFiscalId = x.NotaFiscalId,
-                status = x.Status,
-                statusDescription = EnumHelper.GetDescription(typeof(StatusCartaCorrecao), x.Status),
-                statusCssClass = EnumHelper.GetCSS(typeof(StatusCartaCorrecao), x.Status),
-                statusValue = EnumHelper.GetValue(typeof(StatusCartaCorrecao), x.Status),
-                numero = x.Numero,
-                notaFiscal_numNotaFiscal = x.NotaFiscal.NumNotaFiscal
-            };
-        }
+            var target = new List<HtmlUIButton>();
 
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Atualizar Status", OnClickFn = "fnNotaFiscalInutilizadaList" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+            }
+
+            return target;
+        }
 
         public ContentResult ListCartaCorrecao(string id)
         {
@@ -88,23 +107,23 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cartas de Correção",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Atualizar Status", OnClickFn = "fnNotaFiscalInutilizadaList" },
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Content = new List<HtmlUIFunctionBase> { new DivUI { Elements = new List<BaseUI> { new InputHiddenUI { Id = "idNotaFiscal", Value = id } } } }
             };
             var config = new DataTableUI
             {
-                UrlGridLoad = $"{Url.Action("GridLoad", "CartaCorrecao")}?idNotaFiscal={id}",
+                UrlGridLoad = $"{Url.Action("GridLoad", "CartaCorrecao")}?id={id}",
                 UrlFunctions = Url.Action("Functions", "CartaCorrecao", null, Request.Url.Scheme) + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" });
+            if (UserCanRead)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" });
+            }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Sequencial", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn
@@ -124,16 +143,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult List()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ContentResult List(string id)
-        {
-            return ListCartaCorrecao(id);
-        }
-
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ContentResult FormModal()
         {
             ModalUIForm config = new ModalUIForm()
@@ -167,6 +177,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ContentResult FormModalMensagemSEFAZ()
         {
             ModalUIForm config = new ModalUIForm()
@@ -190,19 +201,36 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        public ActionResult NotaFiscal(Guid id)
+        {
+            return View(id);
+        }
+
+        public override Func<NotaFiscalCartaCorrecaoVM, object> GetDisplayData()
+        {
+            return x => new
+            {
+                id = x.Id,
+                mensagemCorrecao = x.MensagemCorrecao.Substring(0, x.MensagemCorrecao.Length > 35 ? 35 : x.MensagemCorrecao.Length),
+                data = x.Data.ToString("dd/MM/yyyy"),
+                notaFiscalId = x.NotaFiscalId,
+                status = x.Status,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusCartaCorrecao), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusCartaCorrecao), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusCartaCorrecao), x.Status),
+                numero = x.Numero,
+                notaFiscal_numNotaFiscal = x.NotaFiscal.NumNotaFiscal
+            };
+        }
+
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("notaFiscalId eq", Request.QueryString["idNotaFiscal"]);
+            filters.Add("notaFiscalId eq", Request.QueryString["id"]);
 
             return base.GridLoad(filters);
-        }
-
-        public ActionResult NotaFiscal(Guid id)
-        {
-            return View(id);
         }
     }
 }

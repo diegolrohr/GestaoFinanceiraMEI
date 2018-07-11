@@ -12,9 +12,11 @@ using Newtonsoft.Json;
 using Fly01.Core.Rest;
 using Fly01.Core.Mensageria;
 using System.Configuration;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     [AllowAnonymous]
     public class EmailNotificationController
     {

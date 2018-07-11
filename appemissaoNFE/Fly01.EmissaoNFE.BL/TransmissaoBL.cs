@@ -700,17 +700,17 @@ namespace Fly01.EmissaoNFE.BL
                                     entity.Fail(!detalhe.Imposto.ICMS.ValorICMSSTRetido.HasValue,
                                         new Error("Valor do ICMS substituído é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorICMSSTRetido"));
 
-                                    if (item.Versao == "4.00")
-                                    {
-                                        entity.Fail(!detalhe.Imposto.ICMS.BaseFCPSTRetido.HasValue,
-                                            new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPSTRet"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPSTRetido.HasValue,
-                                            new Error("Percentual do FCP retido anteriormente por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPSTRet"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.ValorFCPSTRetido.HasValue,
-                                            new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPSTRet"));
-                                        entity.Fail(!detalhe.Imposto.ICMS.AliquotaConsumidorFinal.HasValue,
-                                            new Error("Alíquota consumidor final é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pST"));
-                                    }
+                                    //if (item.Versao == "4.00")
+                                    //{
+                                    //    entity.Fail(!detalhe.Imposto.ICMS.BaseFCPSTRetido.HasValue,
+                                    //        new Error("Valor da Base de Cálculo do FCP retido anteriormente por ST é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPSTRet"));
+                                    //    entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPSTRetido.HasValue,
+                                    //        new Error("Percentual do FCP retido anteriormente por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPSTRet"));
+                                    //    entity.Fail(!detalhe.Imposto.ICMS.ValorFCPSTRetido.HasValue,
+                                    //        new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPSTRet"));
+                                    //    entity.Fail(!detalhe.Imposto.ICMS.AliquotaConsumidorFinal.HasValue,
+                                    //        new Error("Alíquota consumidor final é obrigatório para CSOSN 500. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pST"));
+                                    //}
                                     break;
 
                                 case "900": //Outros

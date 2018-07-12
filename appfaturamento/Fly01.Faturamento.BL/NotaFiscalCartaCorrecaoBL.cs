@@ -27,6 +27,8 @@ namespace Fly01.Faturamento.BL
             CertificadoDigitalBL = certificadoDigitalBL;
         }
 
+        public IQueryable<NotaFiscalCartaCorrecao> Everything => repository.AllIncluding(y => y.NotaFiscal).Where(x => x.Ativo);
+
         public override void ValidaModel(NotaFiscalCartaCorrecao entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));

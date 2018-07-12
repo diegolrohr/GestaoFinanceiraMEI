@@ -3,11 +3,13 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -92,7 +94,7 @@ namespace Fly01.Faturamento.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "notasFiscaisInutilizadas", Label = "Atualizar Status", OnClickFn = "fnNotaFiscalInutilizadaList" });
+                target.Add(new HtmlUIButton { Id = "atualizaStatusCartaCorrecao", Label = "Atualizar Status", OnClickFn = "fnAtualizarStatusCartaCorrecao" });
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
             }
 
@@ -122,7 +124,10 @@ namespace Fly01.Faturamento.Controllers
             if (UserCanRead)
             {
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" });
+            }
+            if (UserCanWrite)
+            {
+                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "((row.status != 'Transmitida') && (row.status != 'RegistradoENaoVinculado') && (row.status != 'RegistradoEVinculado'))" });
             }
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Sequencial", Priority = 1 });
@@ -179,30 +184,6 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public ContentResult FormModalMensagemSEFAZ()
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Mensagem SEFAZ",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/"
-                },
-                Id = "fly01mdlfrmVisualizarMensagemSEFAZ"
-            };
-
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "notafiscalId" });
-            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
-
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
         public ActionResult NotaFiscal(Guid id)
         {
             return View(id);
@@ -233,6 +214,26 @@ namespace Fly01.Faturamento.Controllers
             filters.Add("notaFiscalId eq", Request.QueryString["id"]);
 
             return base.GridLoad(filters);
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpGet]
+        public JsonResult AtualizaStatus()
+        {
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalCartaCorrecaoAtualizaStatus", queryString: null);
+
+                return Json(
+                    new { success = true },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
     }
 }

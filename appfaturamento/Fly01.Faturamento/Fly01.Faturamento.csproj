@@ -326,11 +326,11 @@
     <Content Include="Views\Shared\NotAllow.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnFormCartaCorrecao.cshtml" />
     <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
-    <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarMensagemSefaz.cshtml" />
     <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
     <Content Include="Views\CartaCorrecao\Functions\_fnCancelar.cshtml" />
     <Content Include="Views\CartaCorrecao\Functions\_fnNovo.cshtml" />
     <Content Include="Views\CartaCorrecao\Novo.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnAtualizarStatusCartaCorrecao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

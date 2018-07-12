@@ -28,41 +28,73 @@ namespace Fly01.Core.ServiceBus
             var uow = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
             dynamic entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(uow, null);
             exceptions = new List<KeyValuePair<string, object>>();
+            var lotSize = 50;
+            var content = MessageType.Resolve<dynamic>(Message);
+            dynamic data;
 
-            foreach (var item in MessageType.Resolve<dynamic>(Message))
+            var i = 0;
+            while (true)
             {
+                data = JsonConvert.DeserializeObject(content[i].ToString(), domainAssembly);
+
                 try
                 {
-                    var data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
-
                     entidade.PersistMessage(data, HTTPMethod);
+
+                    if (content.Count == 1 || lotSize == 1) //insert individual
+                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+                    else if ((i >= lotSize && i % lotSize == 0)) //insert em lote
+                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+                    else if (content.Count - i <= lotSize && i == content.Count - 1) //insert do restante do pacote
+                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+
+                    i++;
                 }
                 catch (Exception ex)
                 {
-                    exceptions.Add(new KeyValuePair<string, object>(item.ToString(), ex));
+                    exceptions.Add(new KeyValuePair<string, object>(content[i].ToString(), ex));
+
                     continue;
                 }
+
+                if (i == content.Count)
+                    return;
             }
 
-            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-        }
+            //for (var i = 0; i < content.Count; i++)
+            //{
+            //    data = JsonConvert.DeserializeObject(content[i].ToString(), domainAssembly);
 
-        protected override async Task PersistMessageIntegracao()
-        {
-            var logData = new LogIntegracaoRabbitMQ()
-            {
-                DataInclusao = DateTime.Now,
-                HostName = RabbitConfig.VirtualHostname,
-                Mensagem = Message,
-                QueueName = RabbitConfig.QueueName,
-                RoutingKey = RabbitConfig.RoutingKey.Replace("Integracao", ""),
-                AppId = RabbitConfig.AppId
-            };
+            //    try
+            //    {
+            //        entidade.PersistMessage(data, HTTPMethod);
 
-            var mongoHelper = new LogMongoHelper<LogIntegracaoRabbitMQ>(ConfigurationManager.AppSettings["MongoDBLog"]);
-            var collection = mongoHelper.GetCollection(ConfigurationManager.AppSettings["MongoCollectionNameIntegracaoRabbitMQ"]);
+            //        if (content.Count == 1 || lotSize == 1) //insert individual
+            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+            //        else if ((i >= lotSize && i % lotSize == 0)) //insert em lote
+            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+            //        else if (content.Count - i <= lotSize && i == content.Count - 1) //insert do restante do pacote
+            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
 
-            await collection.InsertOneAsync(logData);
+            //        erroRegistrado = false;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        if (!erroRegistrado)
+            //        {
+            //            i = i - lotSize > 0 ? i - lotSize : -1;
+            //            lotSize = 1;
+            //            erroRegistrado = true;
+            //            data = string.Empty;
+            //            //entidade = null;
+            //            //entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(uow, null);
+            //        }
+            //        else
+            //            exceptions.Add(new KeyValuePair<string, object>(content[i].ToString(), ex));
+
+            //        continue;
+            //    }
+            //}
         }
     }
 }

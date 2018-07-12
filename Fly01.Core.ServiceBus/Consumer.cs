@@ -20,7 +20,6 @@ namespace Fly01.Core.ServiceBus
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
         protected abstract Task PersistMessage();
-        protected abstract Task PersistMessageIntegracao();
 
         private IConnection Connection
         {
@@ -33,14 +32,14 @@ namespace Fly01.Core.ServiceBus
             }
         }
 
-        private IModel Channel
-        {
-            get
-            {
-                var model = Connection.CreateModel();
-                return model;
-            }
-        }
+        //private IModel Channel
+        //{
+        //    get
+        //    {
+        //        var model = Connection.CreateModel();
+        //        return model;
+        //    }
+        //}
 
         private bool HeaderIsValid()
         {
@@ -57,11 +56,8 @@ namespace Fly01.Core.ServiceBus
             return Encoding.UTF8.GetString(Headers[key] as byte[]);
         }
 
-        public void Consume()
+        public async void Consume()
         {
-            //var consumer = new EventingBasicConsumer(Channel);
-            //consumer.Received += async (sender, args) =>
-            //{
             using (var channel = Connection.CreateModel())
             {
                 var queueingConsumer = new QueueingBasicConsumer(channel);
@@ -90,61 +86,21 @@ namespace Fly01.Core.ServiceBus
                             RabbitConfig.AppUser = GetHeaderValue("AppUser");
                             RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                            PersistMessage();
+                            await PersistMessage();
 
-                            if (exceptions.Count > 0)
-                            {
-                                foreach (var item in exceptions)
-                                {
-                                    var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+                            //if (exceptions.Count > 0)
+                            //{
+                            //    foreach (var item in exceptions)
+                            //    {
+                            //        var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
 
-                                    SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-                                }
-                            }
+                            //        SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                            //    }
+                            //}
                         }
                     }
                 }
             }
-
-            //if (args.BasicProperties.AppId != RabbitConfig.AppId)
-            //{
-            //    if (args.BasicProperties.Headers == null)
-            //        throw new ArgumentException(MsgHeaderInvalid);
-
-            //    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-            //    if (!HeaderIsValid())
-            //        throw new ArgumentException(MsgHeaderInvalid);
-
-            //    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
-            //    {
-            //        Message = Encoding.UTF8.GetString(args.Body);
-            //        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
-
-            //        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-            //        RabbitConfig.AppUser = GetHeaderValue("AppUser");
-            //        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
-
-            //        //if (string.IsNullOrEmpty(GetHeaderValue("Integracao")))
-            //        await PersistMessage();
-            //        //else
-            //        //    await PersistMessageIntegracao();
-
-            //        if (exceptions.Count > 0)
-            //        {
-            //            foreach (var item in exceptions)
-            //            {
-            //                var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
-
-            //                SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-            //            }
-            //        }
-
-            //        Channel.BasicAck(args.DeliveryTag, false);
-            //    }
-            //}
-            //};
-
-            //Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
     }
 }

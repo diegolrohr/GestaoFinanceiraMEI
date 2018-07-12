@@ -144,7 +144,10 @@ namespace Fly01.Estoque.Controllers
                 }
             };
 
-            dtConfig.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 0, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoProduto", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
@@ -193,13 +196,13 @@ namespace Fly01.Estoque.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "Inventario", null, Request.Url?.Scheme) + "?fns=" };
 
-            if(UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-            }
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn
             {

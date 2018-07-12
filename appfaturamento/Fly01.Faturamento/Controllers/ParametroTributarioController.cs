@@ -94,11 +94,9 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public override ContentResult Form()
         {
-            if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory

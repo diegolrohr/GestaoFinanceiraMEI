@@ -24,11 +24,9 @@ namespace Fly01.Estoque.Controllers
         public override ContentResult List()
             => Form();
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public override ContentResult Form()
         {
-            if(!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory

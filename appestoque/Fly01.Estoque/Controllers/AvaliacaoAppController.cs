@@ -8,6 +8,9 @@ namespace Fly01.Estoque.Controllers
 {
     public class AvaliacaoAppController : AvaliacaoAppBaseController<AvaliacaoAppVM>
     {
+        public AvaliacaoAppController()
+            : base(ResourceHashConst.EstoqueAvalieAplicativo) { }
+
         [OperationRole(ResourceKey = ResourceHashConst.EstoqueAvalieAplicativo, PermissionValue = EPermissionValue.Read)]
         public override JsonResult Create(AvaliacaoAppVM entityVM)
         {

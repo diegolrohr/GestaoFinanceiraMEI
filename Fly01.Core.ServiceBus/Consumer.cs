@@ -12,7 +12,7 @@ namespace Fly01.Core.ServiceBus
 {
     public abstract class Consumer
     {
-        private string MsgHeaderInvalid = "A 'PlataformaUrl' e o 'AppUser' devem ser informados no Header da request";
+        private string MsgHeaderInvalid = "A 'PlataformaUrl', o 'Hostname' e o 'AppUser' devem ser informados no Header da request";
 
         private IConnection _connection;
         protected string Message;
@@ -59,59 +59,92 @@ namespace Fly01.Core.ServiceBus
 
         public void Consume()
         {
-            var consumer = new EventingBasicConsumer(Channel);
-
-            var i = 0;
-            consumer.Received += async (sender, args) =>
+            //var consumer = new EventingBasicConsumer(Channel);
+            //consumer.Received += async (sender, args) =>
+            //{
+            using (var channel = Connection.CreateModel())
             {
-                i++;
-                if (args.BasicProperties.AppId != RabbitConfig.AppId)
+                var queueingConsumer = new QueueingBasicConsumer(channel);
+                channel.BasicConsume(RabbitConfig.QueueName, false, "", queueingConsumer);
+
+                while (true)
                 {
-                    if (args.BasicProperties.Headers == null)
-                        throw new ArgumentException(MsgHeaderInvalid);
+                    BasicDeliverEventArgs args = queueingConsumer.Queue.Dequeue() as BasicDeliverEventArgs;
+                    channel.BasicAck(args.DeliveryTag, false);
 
-                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-                    if (!HeaderIsValid())
-                        throw new ArgumentException(MsgHeaderInvalid);
-
-                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
+                    if (args.BasicProperties.AppId != RabbitConfig.AppId)
                     {
-                        Message = Encoding.UTF8.GetString(args.Body);
-                        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
+                        if (args.BasicProperties.Headers == null)
+                            throw new ArgumentException(MsgHeaderInvalid);
 
-                        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-                        RabbitConfig.AppUser = GetHeaderValue("AppUser");
-                        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
+                        Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                        if (!HeaderIsValid())
+                            throw new ArgumentException(MsgHeaderInvalid);
 
-                        //if (string.IsNullOrEmpty(GetHeaderValue("Integracao")))
-                        await PersistMessage();
-                        //else
-                        //    await PersistMessageIntegracao();
-
-                        if (exceptions.Count > 0)
+                        if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                         {
-                            foreach (var item in exceptions)
-                            {
-                                var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+                            Message = Encoding.UTF8.GetString(args.Body);
+                            HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
 
-                                SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                            RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
+                            RabbitConfig.AppUser = GetHeaderValue("AppUser");
+                            RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
+
+                            PersistMessage();
+
+                            if (exceptions.Count > 0)
+                            {
+                                foreach (var item in exceptions)
+                                {
+                                    var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+
+                                    SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                                }
                             }
                         }
-
-                        Channel.BasicAck(args.DeliveryTag, false);
-
-                        if (i >= 10)
-                        {
-                            consumer = null;
-                            //Channel.Close();
-                            Thread.Sleep(3000);
-                            await Task.Factory.StartNew(() => Consume());
-                        }
                     }
-                };
-            };
+                }
+            }
 
-            Channel.BasicConsume(RabbitConfig.QueueName, true, consumer);
+            //if (args.BasicProperties.AppId != RabbitConfig.AppId)
+            //{
+            //    if (args.BasicProperties.Headers == null)
+            //        throw new ArgumentException(MsgHeaderInvalid);
+
+            //    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+            //    if (!HeaderIsValid())
+            //        throw new ArgumentException(MsgHeaderInvalid);
+
+            //    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
+            //    {
+            //        Message = Encoding.UTF8.GetString(args.Body);
+            //        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
+
+            //        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
+            //        RabbitConfig.AppUser = GetHeaderValue("AppUser");
+            //        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
+
+            //        //if (string.IsNullOrEmpty(GetHeaderValue("Integracao")))
+            //        await PersistMessage();
+            //        //else
+            //        //    await PersistMessageIntegracao();
+
+            //        if (exceptions.Count > 0)
+            //        {
+            //            foreach (var item in exceptions)
+            //            {
+            //                var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
+
+            //                SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+            //            }
+            //        }
+
+            //        Channel.BasicAck(args.DeliveryTag, false);
+            //    }
+            //}
+            //};
+
+            //Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
     }
 }

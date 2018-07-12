@@ -65,11 +65,11 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
 
-            if (UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
 

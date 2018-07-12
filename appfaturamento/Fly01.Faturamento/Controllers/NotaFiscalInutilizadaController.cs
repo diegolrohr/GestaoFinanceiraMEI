@@ -141,10 +141,10 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            if (UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" });
-            }
+                new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'InutilizacaoSolicitada')" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "numNotaFiscal", DisplayName = "Número NF", Priority = 2, Type = "numbers" });

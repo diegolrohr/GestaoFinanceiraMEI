@@ -59,6 +59,14 @@ namespace Fly01.Core.Presentation
             return target;
         }
 
+        public List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
+        {
+            if (UserCanWrite)
+                return customWriteActions;
+
+            return new List<DataTableUIAction>();
+        }
+
         [OperationRole(NotApply = true)]
         public JsonResult BuscaCEP(string cep)
         {
@@ -292,7 +300,6 @@ namespace Fly01.Core.Presentation
 
         protected virtual void LoadDependence() { }
 
-        #region Views Methods
         [OperationRole(NotApply = true)]
         public ActionResult NotAllow(string routeDescription)
             => View(viewName: "NotAllow", model: routeDescription);
@@ -363,8 +370,6 @@ namespace Fly01.Core.Presentation
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
-        #endregion
 
         private static List<BatchVM> batchTasks = new List<BatchVM>();
 

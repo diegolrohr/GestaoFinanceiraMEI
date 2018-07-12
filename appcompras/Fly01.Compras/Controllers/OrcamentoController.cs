@@ -54,8 +54,11 @@ namespace Fly01.Compras.Controllers
                 Functions = new List<string>() { "fnFooterCallbackOrcamentoItem" }
             };
 
-            dtOrcamentoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarOrcamentoItem", Label = "Editar" });
-            dtOrcamentoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirOrcamentoItem", Label = "Excluir" });
+            dtOrcamentoItensCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarOrcamentoItem", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrcamentoItem", Label = "Excluir" }
+            }));
 
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 2, Searchable = false, Orderable = false });
@@ -67,7 +70,7 @@ namespace Fly01.Compras.Controllers
             return dtOrcamentoItensCfg;
         }
 
-        public override ContentResult Form() 
+        public override ContentResult Form()
             => FormOrcamento();
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
@@ -331,7 +334,7 @@ namespace Fly01.Compras.Controllers
         }
 
         [HttpPost]
-        public override JsonResult Edit(OrcamentoVM entityVM) 
+        public override JsonResult Edit(OrcamentoVM entityVM)
             => base.Edit(entityVM);
 
         [HttpGet]

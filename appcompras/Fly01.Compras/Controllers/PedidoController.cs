@@ -91,8 +91,11 @@ namespace Fly01.Compras.Controllers
                 Functions = new List<string>() { "fnFooterCallbackPedidoItem" }
             };
 
-            dtPedidoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarPedidoItem", Label = "Editar" });
-            dtPedidoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirPedidoItem", Label = "Excluir" });
+            dtPedidoItensCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarPedidoItem", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirPedidoItem", Label = "Excluir" }
+            }));
 
             dtPedidoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtPedidoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });

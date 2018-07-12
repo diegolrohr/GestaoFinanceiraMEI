@@ -367,10 +367,10 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
             };
 
-            if(UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn() { DataField = "contaBancaria_nomeConta", DisplayName = "Conta nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn() { DataField = "contaBancaria_banco_codigo", DisplayName = "Banco", Priority = 1 });
@@ -460,14 +460,14 @@ namespace Fly01.Financeiro.Controllers
                 }
             };
 
-            if(UserCanWrite)
+            dtcfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCP", Label = "Nova conta", ShowIf = "(row.valor < 0.0)" });
-                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaTransacaoCR", Label = "Nova conta", ShowIf = "(row.valor > 0.0)" });
-                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCP", Label = "Buscar existentes", ShowIf = "(row.valor < 0.0)" });
-                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnBuscarExistentesCR", Label = "Buscar existentes", ShowIf = "(row.valor > 0.0)" });
-                dtcfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirCBItem", Label = "Excluir", ShowIf = "(row.conciliadoDescription == 'NAO')" });
-            }
+                new DataTableUIAction { OnClickFn = "fnNovaTransacaoCP", Label = "Nova conta", ShowIf = "(row.valor < 0.0)" },
+                new DataTableUIAction { OnClickFn = "fnNovaTransacaoCR", Label = "Nova conta", ShowIf = "(row.valor > 0.0)" },
+                new DataTableUIAction { OnClickFn = "fnBuscarExistentesCP", Label = "Buscar existentes", ShowIf = "(row.valor < 0.0)" },
+                new DataTableUIAction { OnClickFn = "fnBuscarExistentesCR", Label = "Buscar existentes", ShowIf = "(row.valor > 0.0)" },
+                new DataTableUIAction { OnClickFn = "fnExcluirCBItem", Label = "Excluir", ShowIf = "(row.conciliadoDescription == 'NAO')" }
+            }));
 
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Searchable = false, Orderable = false });
             dtcfg.Columns.Add(new DataTableUIColumn() { DataField = "data", DisplayName = "Data", Priority = 3, Type = "date", Searchable = false, Orderable = false });

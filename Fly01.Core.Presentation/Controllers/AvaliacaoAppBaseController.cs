@@ -1,11 +1,11 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core.Defaults;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -66,7 +66,8 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new TextAreaUI { Id = "descricao", Class = "col s12 m12 24", Label = "Descrição" });
 
             cfg.Content.Add(config);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+
+            return cfg;
         }
 
         public override Func<T, object> GetDisplayData()

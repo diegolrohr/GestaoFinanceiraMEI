@@ -27,7 +27,7 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }

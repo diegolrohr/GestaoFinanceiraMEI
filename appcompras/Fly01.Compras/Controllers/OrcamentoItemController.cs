@@ -34,7 +34,7 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -134,6 +134,11 @@ namespace Fly01.Compras.Controllers
                 { "orcamentoId eq", string.IsNullOrWhiteSpace(id) ? new Guid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

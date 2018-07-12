@@ -1,5 +1,5 @@
 ﻿using Fly01.Core.Presentation;
-using System.Web.Mvc;
+using Fly01.uiJS.Classes;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -9,7 +9,7 @@ namespace Fly01.Financeiro.Controllers
         public ContaFinanceiraBaixaMultiplaCPController() 
             : base(ResourceHashConst.FinanceiroCadastrosContasBancarias) { }
 
-        public override ContentResult Form() 
+        protected override ContentUI FormJson() 
             => FormBaixaMultipla("Pagar");
     }
 }

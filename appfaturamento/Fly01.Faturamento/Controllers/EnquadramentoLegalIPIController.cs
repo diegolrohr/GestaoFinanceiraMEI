@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes;
 using System;
 using System.Web.Mvc;
 
@@ -8,7 +9,7 @@ namespace Fly01.Faturamento.Controllers
     [OperationRole(NotApply = true)]
     public class EnquadramentoLegalIPIController : BaseController<EnquadramentoLegalIpiVM>
     {
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<EnquadramentoLegalIpiVM, object> GetDisplayData() { throw new NotImplementedException(); }
 

@@ -106,7 +106,7 @@ namespace Fly01.Compras.Controllers
             return dtPedidoItensCfg;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
             => FormPedido();
         
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
@@ -121,7 +121,7 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public ContentResult FormPedido(bool isEdit = false)
+        public ContentUI FormPedido(bool isEdit = false)
         {
             var cfg = new ContentUI
             {
@@ -353,7 +353,7 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtPedidoItensCfg());
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override ContentResult List()

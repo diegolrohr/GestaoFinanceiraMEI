@@ -79,6 +79,7 @@ namespace Fly01.Financeiro.ViewModel
 
         [JsonProperty("saldo")]
         public double Saldo { get; set; }
+
         [JsonIgnore]
         public int DiasVencidos
         {

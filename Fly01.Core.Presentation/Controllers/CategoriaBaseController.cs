@@ -38,7 +38,7 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -95,7 +95,7 @@ namespace Fly01.Core.Presentation.Controllers
             }, CategoriaResourceHash));
 
             cfg.Content.Add(config);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public override Func<T, object> GetDisplayData()
@@ -131,11 +131,11 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new DataTableUIConfig { PageLength = 50 }
             };
 
-            if (UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn
             {

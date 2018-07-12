@@ -95,7 +95,9 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public override ContentResult Form()
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -333,7 +335,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
             cfg.Content.Add(form3);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]

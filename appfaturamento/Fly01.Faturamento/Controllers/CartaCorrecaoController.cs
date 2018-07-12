@@ -27,7 +27,7 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }
@@ -119,11 +119,11 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            if (UserCanRead)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" });
-            }
+                new DataTableUIAction { OnClickFn = "fnVisualizarMensagemSefaz", Label = "Mensagem SEFAZ", ShowIf = "((row.status == 'Rejeitado') || (row.status == 'RegistroENaoVinculado') || (row.status == 'FalhaTransmissao'))" },
+                new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Sequencial", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn

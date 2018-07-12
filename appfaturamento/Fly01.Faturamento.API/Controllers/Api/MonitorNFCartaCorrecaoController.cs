@@ -14,7 +14,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                unitOfWork.MonitorNFBL.AtualizaStatusTSSCartaCorrecao(string.Empty);
+                unitOfWork.MonitorNFBL.AtualizaStatusTSSCartaCorrecao(string.Empty, default(Guid));
                 await unitOfWork.Save();
             }
         }

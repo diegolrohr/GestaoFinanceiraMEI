@@ -2,7 +2,6 @@
 {
     public class MonitorEventoVM : EntidadeVM
     {
-        //TODO: Diego ver campos
         public string IdEvento { get; set; }
         public string SefazChaveAcesso { get; set; }        
     }

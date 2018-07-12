@@ -32,9 +32,10 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(NotaFiscalCartaCorrecao entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
+            entity.Fail(All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.Transmitida).Any(), new Error("Há outra carta de correção em transmissão, atualize o status","status"));
 
             var max = 0;
-            var cceValidasAnterioes = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.RegistradoEVinculado);
+            var cceValidasAnterioes = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.RegistradoEVinculado && x.Status == StatusCartaCorrecao.RegistradoENaoVinculado);
 
             if (cceValidasAnterioes != null && cceValidasAnterioes.Any())
             {
@@ -78,7 +79,7 @@ namespace Fly01.Faturamento.BL
         {
             var status = entityToDelete.Status;
             //TODO Diego ver RegistradoENãoVinculado é valido
-            entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado, new Error("Não é possível deletar Carta de Correção com status Transmitida ou Registrada e Vinculada.", "status"));
+            entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado || status == StatusCartaCorrecao.RegistradoENaoVinculado, new Error("Não é possível deletar Carta de Correção com status Transmitida ou Registrada e Vinculada/Nao Vinculada.", "status"));
             if (entityToDelete.IsValid())
             {
                 base.Delete(entityToDelete);

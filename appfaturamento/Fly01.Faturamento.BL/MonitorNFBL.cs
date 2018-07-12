@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using System;
 
 namespace Fly01.Faturamento.BL
 {
@@ -170,11 +171,12 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl)
+        public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
             //TODO Diego ver falha na transmissao
             var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida || x.Status == StatusCartaCorrecao.FalhaTransmissao || x.Status == StatusCartaCorrecao.Rejeitado))
-                                    where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
+                                    where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
+                                    && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
                                     //select new { plataformaId = g.Key, idRetorno = g.Select(x => x.IdRetorno), SefazChaveAcesso = g.Select(x => x.NotaFiscal.SefazId) });
                                     select new { plataformaId = g.Key });

@@ -88,7 +88,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        public List<HtmlUIButton> GetListButtonsOnHeader(string idNotaFiscal)
         {
             var target = new List<HtmlUIButton>();
 
@@ -109,7 +109,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cartas de Correção",
-                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader(id))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Content = new List<HtmlUIFunctionBase> { new DivUI { Elements = new List<BaseUI> { new InputHiddenUI { Id = "idNotaFiscal", Value = id } } } }
@@ -218,10 +218,14 @@ namespace Fly01.Faturamento.Controllers
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpGet]
-        public JsonResult AtualizaStatus()
+        public JsonResult AtualizaStatus(Guid idNotaFiscal)
         {
             try
             {
+                var param = new Dictionary<String, String>()
+                {
+                    { "IdNotaFiscal", idNotaFiscal.ToString() }
+                };
                 var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalCartaCorrecaoAtualizaStatus", queryString: null);
 
                 return Json(

@@ -11,7 +11,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [RoutePrefix("notaFiscalCartaCorrecaoAtualizaStatus")]
     public class NotaFiscalCartaCorrecaoAtualizaStatusController : ApiBaseController
     {
-        public virtual async Task<IHttpActionResult> Get()
+        public virtual async Task<IHttpActionResult> Get(Guid IdNotaFiscal)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         throw new BusinessException("Cadastre os Parâmetros Tributários em Configurações");
                     }
 
-                    unitOfWork.MonitorNFBL.AtualizaStatusTSSCartaCorrecao(PlataformaUrl);
+                    unitOfWork.MonitorNFBL.AtualizaStatusTSSCartaCorrecao(PlataformaUrl, IdNotaFiscal);
                     await unitOfWork.Save();
                 }
 

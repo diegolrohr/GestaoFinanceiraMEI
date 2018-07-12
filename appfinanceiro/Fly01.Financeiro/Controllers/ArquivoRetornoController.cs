@@ -35,10 +35,12 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public override ContentResult Form()
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+                return new ContentUI();
 
             var cfg = new ContentUI
             {
@@ -115,7 +117,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override Func<DomainBaseVM, object> GetDisplayData()

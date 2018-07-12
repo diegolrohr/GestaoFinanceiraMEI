@@ -70,7 +70,7 @@ namespace Fly01.Compras.Controllers
             return dtOrcamentoItensCfg;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
             => FormOrcamento();
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
@@ -85,7 +85,7 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public ContentResult FormOrcamento(bool isEdit = false)
+        public ContentUI FormOrcamento(bool isEdit = false)
         {
             var cfg = new ContentUI
             {
@@ -212,7 +212,7 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtOrcamentoItensCfg());
-            return Content(JsonConvert.SerializeObject(cfg, uiJS.Defaults.JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override ContentResult List()

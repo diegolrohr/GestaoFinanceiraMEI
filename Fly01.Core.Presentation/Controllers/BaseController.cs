@@ -30,13 +30,13 @@ namespace Fly01.Core.Presentation
     {
         protected string ExpandProperties { get; set; }
 
-        protected string ResourceName 
+        protected string ResourceName
             => AppDefaults.GetResourceName(typeof(T));
 
-        protected string AppEntitiesResourceName 
+        protected string AppEntitiesResourceName
             => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
 
-        protected string AppViewModelResourceName 
+        protected string AppViewModelResourceName
             => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
 
         public virtual List<HtmlUIButton> GetListButtonsOnHeader()
@@ -59,12 +59,12 @@ namespace Fly01.Core.Presentation
             return target;
         }
 
-        public List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
+        public virtual List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
         {
             if (UserCanWrite)
                 return customWriteActions;
 
-            return new List<DataTableUIAction>();
+            return new List<DataTableUIAction> { new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" } };
         }
 
         [OperationRole(NotApply = true)]
@@ -182,7 +182,7 @@ namespace Fly01.Core.Presentation
         }
 
         [OperationRole(NotApply = true)]
-        public ManagerEmpresaVM GetDadosEmpresa() 
+        public ManagerEmpresaVM GetDadosEmpresa()
             => ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
 
         [OperationRole(NotApply = true)]
@@ -305,20 +305,20 @@ namespace Fly01.Core.Presentation
             => View(viewName: "NotAllow", model: routeDescription);
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public virtual ActionResult Index() 
+        public virtual ActionResult Index()
             => View();
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ActionResult Create()
-        {
-            return View("Create");
-        }
+            => View("Create");
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ActionResult Edit(Guid id)
-        {
-            return View("Edit", id);
-        }
+            => View("Edit", id);
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public virtual ActionResult View(Guid id)
+            => View("View", id);
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
@@ -737,6 +737,9 @@ namespace Fly01.Core.Presentation
         }
 
         [OperationRole(NotApply = true)]
+        protected abstract ContentUI FormJson();
+
+        [OperationRole(NotApply = true)]
         [HttpPost]
         public string DecodeBase64(string content)
         {
@@ -744,12 +747,26 @@ namespace Fly01.Core.Presentation
             var text = Encoding.UTF8.GetString(data);
             return text;
         }
-        
+
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public abstract ContentResult List();
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public abstract ContentResult Form();
+        public virtual ContentResult Form()
+            => Content(JsonConvert.SerializeObject(FormJson(), JsonSerializerSetting.Front), "application/json");
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public virtual ContentResult FormView()
+        {
+            var contentUI = FormJson();
+
+            if (contentUI.History.WithParams.Equals(Url.Action("Edit"), StringComparison.InvariantCultureIgnoreCase))
+                contentUI.History.WithParams = Url.Action("View");
+
+            contentUI.Content.Where(x => x is FormUI).ToList().ForEach(item => ((FormUI)item).Readonly = true);
+
+            return Content(JsonConvert.SerializeObject(contentUI, JsonSerializerSetting.Front), "application/json");
+        }
 
         [OperationRole(NotApply = true)]
         [HttpGet]

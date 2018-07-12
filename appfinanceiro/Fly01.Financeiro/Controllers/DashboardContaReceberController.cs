@@ -15,7 +15,7 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasReceber)]
     public class DashboardContaReceberController : BaseController<DashboardContaReceberVM>
     {
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DashboardContaReceberVM, object> GetDisplayData() { throw new NotImplementedException(); }
 

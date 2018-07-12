@@ -337,7 +337,7 @@ namespace Fly01.Faturamento.Controllers
 
             return target;
         }
-
+        
         public ContentResult ListOrdemVenda(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as vendas";
@@ -414,7 +414,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar", ShowIf = "(row.status != 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemVenda == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
@@ -458,7 +458,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {

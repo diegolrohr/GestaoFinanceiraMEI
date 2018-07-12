@@ -97,7 +97,7 @@ namespace Fly01.Financeiro.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -214,7 +214,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public ContentResult FormModal()

@@ -25,7 +25,9 @@ namespace Fly01.Estoque.Controllers
             => Form();
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public override ContentResult Form()
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -122,7 +124,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         [HttpPost]

@@ -36,7 +36,7 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -212,6 +212,11 @@ namespace Fly01.Faturamento.Controllers
                 { "ordemVendaId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

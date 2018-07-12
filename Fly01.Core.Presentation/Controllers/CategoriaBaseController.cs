@@ -38,7 +38,7 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -95,7 +95,7 @@ namespace Fly01.Core.Presentation.Controllers
             }, CategoriaResourceHash));
 
             cfg.Content.Add(config);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public override Func<T, object> GetDisplayData()

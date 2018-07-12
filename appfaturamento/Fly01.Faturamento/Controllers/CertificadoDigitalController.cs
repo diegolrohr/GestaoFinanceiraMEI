@@ -13,6 +13,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -121,11 +122,9 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public override ContentResult Form()
         {
-            if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
-
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory

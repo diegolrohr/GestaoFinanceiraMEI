@@ -60,41 +60,6 @@ namespace Fly01.Core.ServiceBus
                 if (i == content.Count)
                     return;
             }
-
-            //for (var i = 0; i < content.Count; i++)
-            //{
-            //    data = JsonConvert.DeserializeObject(content[i].ToString(), domainAssembly);
-
-            //    try
-            //    {
-            //        entidade.PersistMessage(data, HTTPMethod);
-
-            //        if (content.Count == 1 || lotSize == 1) //insert individual
-            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-            //        else if ((i >= lotSize && i % lotSize == 0)) //insert em lote
-            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-            //        else if (content.Count - i <= lotSize && i == content.Count - 1) //insert do restante do pacote
-            //            await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-
-            //        erroRegistrado = false;
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        if (!erroRegistrado)
-            //        {
-            //            i = i - lotSize > 0 ? i - lotSize : -1;
-            //            lotSize = 1;
-            //            erroRegistrado = true;
-            //            data = string.Empty;
-            //            //entidade = null;
-            //            //entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(uow, null);
-            //        }
-            //        else
-            //            exceptions.Add(new KeyValuePair<string, object>(content[i].ToString(), ex));
-
-            //        continue;
-            //    }
-            //}
         }
     }
 }

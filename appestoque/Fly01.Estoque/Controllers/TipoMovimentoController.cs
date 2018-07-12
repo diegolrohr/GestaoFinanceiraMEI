@@ -89,7 +89,7 @@ namespace Fly01.Estoque.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -131,7 +131,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
     }
 }

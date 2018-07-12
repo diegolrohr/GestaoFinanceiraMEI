@@ -12,7 +12,7 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(NotApply = true)]
     public class FeriadoController : BaseController<FeriadoVM>
     {
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<FeriadoVM, object> GetDisplayData()
         {

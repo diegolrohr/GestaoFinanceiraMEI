@@ -7,6 +7,7 @@ using Fly01.Financeiro.Controllers.Base;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -73,7 +74,7 @@ namespace Fly01.Estoque.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId) { throw new NotImplementedException(); }
 

@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<OrdemVendaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override ContentResult List() { throw new NotImplementedException(); }
 

@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -329,6 +329,11 @@ namespace Fly01.Faturamento.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

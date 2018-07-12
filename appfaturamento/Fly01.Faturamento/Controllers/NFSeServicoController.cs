@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -29,7 +30,7 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override ContentResult List() { throw new NotImplementedException(); }
 

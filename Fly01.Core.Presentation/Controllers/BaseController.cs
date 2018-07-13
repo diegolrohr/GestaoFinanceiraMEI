@@ -54,7 +54,9 @@ namespace Fly01.Core.Presentation
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
+            {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
 
             return target;
         }
@@ -762,6 +764,9 @@ namespace Fly01.Core.Presentation
 
             if (contentUI.History.WithParams.Equals(Url.Action("Edit"), StringComparison.InvariantCultureIgnoreCase))
                 contentUI.History.WithParams = Url.Action("View");
+
+            if (contentUI.Header.Buttons != null && !contentUI.Header.Buttons.Any(x => x.OnClickFn.Equals("fnCancelar", StringComparison.InvariantCultureIgnoreCase)))
+                contentUI.Header.Buttons.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = contentUI.Header.Buttons.Any() ? HtmlUIButtonPosition.Out : HtmlUIButtonPosition.Main });
 
             contentUI.Content.Where(x => x is FormUI).ToList().ForEach(item => ((FormUI)item).Readonly = true);
 

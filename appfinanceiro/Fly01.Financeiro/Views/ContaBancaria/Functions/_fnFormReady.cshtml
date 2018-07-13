@@ -15,8 +15,10 @@
     }
 
     function fnFormReady() {
+        debugger;
         if ($('#contaEmiteBoleto').prop('checked') == false)
         {
+            $('#contaEmiteBoletoField').hide();
             $('#codigoCedenteField').hide();
             $('#codigoDVField').hide();
             $('#taxaJurosField').hide();

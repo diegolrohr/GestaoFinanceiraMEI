@@ -102,6 +102,7 @@
     <Compile Include="ReponseEmailNotification.cs" />
     <Compile Include="RequestBodyBasicAuth.cs" />
     <Compile Include="ResponseAPI.cs" />
+    <Compile Include="TimeZoneHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

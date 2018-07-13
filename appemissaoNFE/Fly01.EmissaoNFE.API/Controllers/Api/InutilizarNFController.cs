@@ -3,8 +3,6 @@ using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Web.Http;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;

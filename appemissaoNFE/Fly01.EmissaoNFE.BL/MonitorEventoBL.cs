@@ -28,6 +28,7 @@ namespace Fly01.EmissaoNFE.BL
 
         public StatusCartaCorrecao ValidaStatus(string status)
         {
+            var Transmitido = "0";
             var RegistradoEVinculado = "135";
             var Rejeitado = "489/490/491/492/493/494/501/572/573/574/575/576/577/578/579/580/587/588/594";
             var RegistradoENaoVinculado = "136";
@@ -37,6 +38,8 @@ namespace Fly01.EmissaoNFE.BL
 
             if (RegistradoEVinculado.Contains(status))
                 statusCCe = StatusCartaCorrecao.RegistradoEVinculado;
+            else if (Transmitido.Contains(status))
+                statusCCe = StatusCartaCorrecao.Transmitida;
             else if (Rejeitado.Contains(status))
                 statusCCe = StatusCartaCorrecao.Rejeitado;
             else if (RegistradoENaoVinculado.Contains(status))

@@ -18,6 +18,7 @@ using System.Linq;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -175,6 +176,19 @@ namespace Fly01.Financeiro.Controllers
             });
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
+            }
+
+            return target;
+        }
+
         protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
@@ -188,7 +202,7 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Lista de boletos do arquivo",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                     {
-                        new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
+                        
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",

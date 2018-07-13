@@ -1,10 +1,4 @@
-﻿using Boleto2Net;
-using Fly01.Core.Entities.Domains.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Fly01.Core.ViewModels.Presentation
 {

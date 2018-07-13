@@ -42,10 +42,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
         }
 
-        public override Func<T, object> GetDisplayData()
-        {
-            return GetDisplayDataSelect;
-        }
+        public override Func<T, object> GetDisplayData() 
+            => GetDisplayDataSelect;
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {

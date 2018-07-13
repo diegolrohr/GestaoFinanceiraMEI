@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;

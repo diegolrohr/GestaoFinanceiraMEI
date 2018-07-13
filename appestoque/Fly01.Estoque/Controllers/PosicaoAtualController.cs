@@ -8,7 +8,6 @@ using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
-using Fly01.Core.Config;
 using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
 

@@ -39,7 +39,7 @@ namespace Fly01.Estoque.BL
                         {
                             QuantidadeMovimento = -diferenca,
                             ProdutoId = entity.ProdutoId,
-                            Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Fly01 Faturamento",
+                            Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Faturamento",
                             UsuarioInclusao = entity.UsuarioInclusao,
                             PlataformaId = entity.PlataformaId
                         };
@@ -52,7 +52,7 @@ namespace Fly01.Estoque.BL
                 {
                     QuantidadeMovimento = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal ? -entity.Quantidade : entity.Quantidade,
                     ProdutoId = entity.ProdutoId,
-                    Observacao = @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Fly01 Faturamento",
+                    Observacao = @"Observação gerada pela movimentação do estoque, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Faturamento",
                     UsuarioInclusao = entity.UsuarioInclusao,
                     PlataformaId = entity.PlataformaId
                 };

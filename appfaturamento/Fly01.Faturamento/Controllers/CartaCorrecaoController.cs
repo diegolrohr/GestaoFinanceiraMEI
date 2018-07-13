@@ -123,8 +123,9 @@ namespace Fly01.Faturamento.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
-            }
+                new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" }
+            }));
+            
             if (UserCanWrite)
             {
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "((row.status != 'Transmitida') && (row.status != 'RegistradoENaoVinculado') && (row.status != 'RegistradoEVinculado'))" });

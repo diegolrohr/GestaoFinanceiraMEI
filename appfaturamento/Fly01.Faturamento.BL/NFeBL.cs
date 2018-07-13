@@ -169,6 +169,12 @@ namespace Fly01.Faturamento.BL
                     var itemTransmissao = new ItemTransmissaoVM();
                     itemTransmissao.Versao = versao;
 
+                    var CalendarTimeZoneDefault = "E. South America Standard Time";
+                    DateTime now = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
+
+                    TimeZoneInfo clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(CalendarTimeZoneDefault);
+                    var data = TimeZoneInfo.ConvertTimeFromUtc(now, clientTimeZone);
+
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
                     {
@@ -177,8 +183,8 @@ namespace Fly01.Faturamento.BL
                         ModeloDocumentoFiscal = 55,
                         Serie = int.Parse(serieNotaFiscal.Serie),
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
-                        Emissao = DateTime.Now,
-                        EntradaSaida = DateTime.Now,
+                        Emissao = data,
+                        EntradaSaida = data,
                         TipoDocumentoFiscal = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,

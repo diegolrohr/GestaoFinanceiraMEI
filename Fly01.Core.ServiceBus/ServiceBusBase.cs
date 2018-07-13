@@ -4,15 +4,18 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Configuration;
-using Fly01.Core.Entities.Domains.NoSQL;
-using Fly01.Core.Helpers;
+using System.Threading;
 
 namespace Fly01.Core.ServiceBus
 {
     public class ServiceBusBase : Consumer
     {
+        private dynamic data;
+        private dynamic entidade;
+        private Object unitOfWork;
+        private static Object thisLock = new Object();
         private Type AssemblyBL { get; set; }
+        private SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
 
         public ServiceBusBase(Type assemblyBL)
         {
@@ -25,40 +28,31 @@ namespace Fly01.Core.ServiceBus
         protected override async Task PersistMessage()
         {
             var domainAssembly = Assembly.Load("Fly01.Core.Entities").GetType($"Fly01.Core.Entities.Domains.Commons.{RabbitConfig.RoutingKey}");
-            var uow = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
-            dynamic entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(uow, null);
-            exceptions = new List<KeyValuePair<string, object>>();
-            var lotSize = 50;
             var content = MessageType.Resolve<dynamic>(Message);
-            dynamic data;
+            exceptions = new List<KeyValuePair<string, object>>();
+            unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
+            entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
 
-            var i = 0;
-            while (true)
+            foreach (var item in content)
             {
-                data = JsonConvert.DeserializeObject(content[i].ToString(), domainAssembly);
-
                 try
                 {
+                    data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
+
                     entidade.PersistMessage(data, HTTPMethod);
 
-                    if (content.Count == 1 || lotSize == 1) //insert individual
-                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-                    else if ((i >= lotSize && i % lotSize == 0)) //insert em lote
-                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-                    else if (content.Count - i <= lotSize && i == content.Count - 1) //insert do restante do pacote
-                        await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
-
-                    i++;
+                    //await semaphoreSlim.WaitAsync();
+                    await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
-                catch (Exception ex)
+                catch (Exception exErr)
                 {
-                    exceptions.Add(new KeyValuePair<string, object>(content[i].ToString(), ex));
-
+                    exceptions.Add(new KeyValuePair<string, object>(data, exErr));
                     continue;
                 }
-
-                if (i == content.Count)
-                    return;
+                //finally
+                //{
+                //    semaphoreSlim.Release();
+                //}
             }
         }
     }

@@ -30,8 +30,6 @@ namespace Fly01.Core.ServiceBus
                         { "Hostname", RabbitConfig.VirtualHostname },
                     };
 
-                    channel.ConfirmSelect();
-                    channel.WaitForConfirms();
                     channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
                 }
             }

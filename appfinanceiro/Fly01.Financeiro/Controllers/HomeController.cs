@@ -344,7 +344,7 @@ namespace Fly01.Financeiro.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Fly01 Financeiro",
+                    AppName = "Bemacash Financeiro",
                     AppTag = "fly01_manufatura",
                 }
             };

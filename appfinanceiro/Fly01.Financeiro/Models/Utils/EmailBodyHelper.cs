@@ -10,7 +10,7 @@ namespace Fly01.Financeiro.Models.Utils
     {
         public static string GetEmailReportContasPagar(string userName, List<ContaPagarVM> accountsPayable)
         {
-            string subject = "Fly01 Financeiro - Resumo Financeiro do dia";
+            string subject = "Bemacash Financeiro - Resumo Financeiro do dia";
 
             StringBuilder body = new StringBuilder();
 

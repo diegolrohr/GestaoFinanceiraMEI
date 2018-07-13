@@ -263,7 +263,7 @@ namespace Fly01.Estoque.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Fly01 Estoque",
+                    AppName = "Bemacash Estoque",
                     AppTag = "fly01_manufatura",
                 }
             };

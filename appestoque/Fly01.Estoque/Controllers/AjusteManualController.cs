@@ -24,11 +24,11 @@ namespace Fly01.Estoque.Controllers
         public override ContentResult List()
             => Form();
 
-        public override ContentResult Form()
-        {
-            if(!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
 
+        protected override ContentUI FormJson()
+        {
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -124,7 +124,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         [HttpPost]

@@ -18,7 +18,7 @@ namespace Fly01.Compras.Controllers
 {
     public class DashboardController : BaseController<DashboardVM>
     {
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }

@@ -19,7 +19,7 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasPagar)]
     public class DashboardContaPagarController : BaseController<DashboardContaPagarVM>
     {
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }

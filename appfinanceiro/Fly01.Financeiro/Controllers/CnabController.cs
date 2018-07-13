@@ -45,7 +45,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             #region Headers
 
@@ -147,7 +147,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(dtConfig);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override List<HtmlUIButton> GetListButtonsOnHeader()

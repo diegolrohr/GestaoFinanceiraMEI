@@ -13,6 +13,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -121,11 +122,11 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
-        public override ContentResult Form()
-        {
-            if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
 
+        protected override ContentUI FormJson()
+        {
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -172,7 +173,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public JsonResult ImportaCertificado(string conteudo, string senha)

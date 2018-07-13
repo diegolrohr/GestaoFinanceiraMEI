@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }
@@ -121,7 +121,7 @@ namespace Fly01.Faturamento.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            if (UserCanRead)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizarCartaCorrecao", Label = "Visualizar" });
             }

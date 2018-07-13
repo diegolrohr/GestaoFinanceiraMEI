@@ -232,7 +232,7 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
     }

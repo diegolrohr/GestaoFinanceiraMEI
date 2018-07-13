@@ -10,6 +10,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
 using Fly01.Core.Config;
 using Fly01.uiJS.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -27,7 +28,7 @@ namespace Fly01.Estoque.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueAjusteManual))
+            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueAjusteManual, EPermissionValue.Write))
                 target.Add(new HtmlUIButton { Id = "alterarEstoque", Label = "Alterar estoque", OnClickFn = "fnAjusteManual", Position = HtmlUIButtonPosition.Main });
 
             return target;
@@ -122,7 +123,7 @@ namespace Fly01.Estoque.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<PosicaoAtualVM, object> GetDisplayData()
         {

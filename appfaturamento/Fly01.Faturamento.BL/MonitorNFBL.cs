@@ -173,12 +173,10 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
-            //TODO Diego ver falha na transmissao
-            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida || x.Status == StatusCartaCorrecao.FalhaTransmissao || x.Status == StatusCartaCorrecao.Rejeitado))
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
                                     where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
                                     && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
-                                    //select new { plataformaId = g.Key, idRetorno = g.Select(x => x.IdRetorno), SefazChaveAcesso = g.Select(x => x.NotaFiscal.SefazId) });
                                     select new { plataformaId = g.Key });
 
             var header = new Dictionary<string, string>()
@@ -200,7 +198,7 @@ namespace Fly01.Faturamento.BL
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
                         var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecao>();
-                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida || x.Status == StatusCartaCorrecao.FalhaTransmissao || x.Status == StatusCartaCorrecao.Rejeitado)).ToList();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {
@@ -215,9 +213,7 @@ namespace Fly01.Faturamento.BL
 
                             var responseMonitor = RestHelper.ExecutePostRequest<MonitorEventoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorevento", JsonConvert.SerializeObject(monitorEventoVM), null, header);
                             if (responseMonitor == null)
-                                continue;
-
-                            cartaCorrecao.Mensagem = null;
+                                continue;                           
                             
                             cartaCorrecao.Mensagem = string.Format("{0} {1}",
                                 (responseMonitor.Motivo != null ? responseMonitor.Motivo : ""),

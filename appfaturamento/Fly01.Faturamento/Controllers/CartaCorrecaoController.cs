@@ -218,16 +218,17 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
+
         [HttpGet]
-        public JsonResult AtualizaStatus(Guid idNotaFiscal)
+        public JsonResult AtualizaStatus(string idNotaFiscal)
         {
             try
             {
-                var param = new Dictionary<String, String>()
+                var queryString = new Dictionary<string, string>()
                 {
                     { "IdNotaFiscal", idNotaFiscal.ToString() }
                 };
-                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalCartaCorrecaoAtualizaStatus", queryString: null);
+                var response = RestHelper.ExecuteGetRequest<JObject>("NotaFiscalCartaCorrecaoAtualizaStatus", queryString: queryString);
 
                 return Json(
                     new { success = true },

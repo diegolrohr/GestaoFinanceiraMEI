@@ -32,10 +32,19 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(NotaFiscalCartaCorrecao entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
-            entity.Fail(All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.Transmitida).Any(), new Error("Há outra carta de correção em transmissão, atualize o status","status"));
+            entity.Fail(All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.Transmitida).Any(), new Error("Já existe um carta de correção em transmissão, aguarde o retorno SEFAZ para emitir um novo evento. Atualize o status.","status"));        
 
+            entity.Fail(!string.IsNullOrEmpty(entity.MensagemCorrecao) && entity.MensagemCorrecao.Length > 1000,
+                new Error("SEFAZ permite até 1000 caracteres por carta de correção. A soma da mensagem atual com a última anterior válida, excedeu 1000 caracteres. A soma possui: " + entity.MensagemCorrecao.Length.ToString() + " caracteres."));
+
+            base.ValidaModel(entity);
+        }
+
+        public override void Insert(NotaFiscalCartaCorrecao entity)
+        {
+            entity.Data = DateTime.Now;
             var max = 0;
-            var cceValidasAnterioes = All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.RegistradoEVinculado && x.Status == StatusCartaCorrecao.RegistradoENaoVinculado);
+            var cceValidasAnterioes = All.AsNoTracking().Where(x => (x.NotaFiscalId == entity.NotaFiscalId) && (x.Id != entity.Id) && (x.Status == StatusCartaCorrecao.RegistradoEVinculado || x.Status == StatusCartaCorrecao.RegistradoENaoVinculado));
 
             if (cceValidasAnterioes != null && cceValidasAnterioes.Any())
             {
@@ -44,21 +53,12 @@ namespace Fly01.Faturamento.BL
                 var ultimaMensagem = cceValidasAnterioes.Where(x => x.Numero == max).FirstOrDefault().MensagemCorrecao;
 
                 if (!string.IsNullOrEmpty(entity.MensagemCorrecao))
-                    entity.MensagemCorrecao += " " + ultimaMensagem;
+                    entity.MensagemCorrecao = entity.MensagemCorrecao + " " + ultimaMensagem;
                 else
                     entity.MensagemCorrecao = ultimaMensagem;
             }
 
-            entity.Fail(!string.IsNullOrEmpty(entity.MensagemCorrecao) && entity.MensagemCorrecao.Length > 1000,
-                new Error("SEFAZ permite até 1000 caracteres por carta de correção. A soma da mensagem atual com as anteriores excedeu 1000 caracteres. A soma possui: " + entity.MensagemCorrecao.Length.ToString() + " caracteres."));
-            entity.Fail(cceValidasAnterioes != null && cceValidasAnterioes.Count() >= 20, new Error("Você pode ter no máximo 20 cartas de correções registradas por nota fiscal."));
-
-            base.ValidaModel(entity);
-        }
-
-        public override void Insert(NotaFiscalCartaCorrecao entity)
-        {
-            entity.Data = DateTime.Now;
+            entity.Fail(cceValidasAnterioes != null && cceValidasAnterioes.Count() >= 20, new Error("Você pode ter no máximo 20 cartas de correções válidas registradas por nota fiscal."));
 
             ValidaModel(entity);
 
@@ -78,8 +78,7 @@ namespace Fly01.Faturamento.BL
         public override void Delete(NotaFiscalCartaCorrecao entityToDelete)
         {
             var status = entityToDelete.Status;
-            //TODO Diego ver RegistradoENãoVinculado é valido
-            entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado || status == StatusCartaCorrecao.RegistradoENaoVinculado, new Error("Não é possível deletar Carta de Correção com status Transmitida ou Registrada e Vinculada/Nao Vinculada.", "status"));
+            entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado || status == StatusCartaCorrecao.RegistradoENaoVinculado, new Error("Não é possível deletar Carta de Correção com status Transmitida ou Registrada e Vinculada/Não Vinculada.", "status"));
             if (entityToDelete.IsValid())
             {
                 base.Delete(entityToDelete);

@@ -1,8 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {

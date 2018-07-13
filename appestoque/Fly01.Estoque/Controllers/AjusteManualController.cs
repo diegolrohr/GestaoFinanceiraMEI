@@ -1,7 +1,6 @@
 ﻿using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
 using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
 using Newtonsoft.Json;

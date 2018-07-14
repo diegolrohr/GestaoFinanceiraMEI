@@ -3,7 +3,6 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
-using Fly01.Core.Mensageria;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
 using System.Threading;
@@ -32,15 +31,6 @@ namespace Fly01.Core.ServiceBus
             }
         }
 
-        //private IModel Channel
-        //{
-        //    get
-        //    {
-        //        var model = Connection.CreateModel();
-        //        return model;
-        //    }
-        //}
-
         private bool HeaderIsValid()
         {
             return !string.IsNullOrWhiteSpace(GetHeaderValue("PlataformaUrl")) &&
@@ -56,7 +46,7 @@ namespace Fly01.Core.ServiceBus
             return Encoding.UTF8.GetString(Headers[key] as byte[]);
         }
 
-        public async void Consume()
+        public async Task Consume()
         {
             using (var channel = Connection.CreateModel())
             {
@@ -65,7 +55,7 @@ namespace Fly01.Core.ServiceBus
 
                 while (true)
                 {
-                    BasicDeliverEventArgs args = queueingConsumer.Queue.Dequeue() as BasicDeliverEventArgs;
+                    var args = queueingConsumer.Queue.Dequeue() as BasicDeliverEventArgs;
                     channel.BasicAck(args.DeliveryTag, false);
 
                     if (args.BasicProperties.AppId != RabbitConfig.AppId)

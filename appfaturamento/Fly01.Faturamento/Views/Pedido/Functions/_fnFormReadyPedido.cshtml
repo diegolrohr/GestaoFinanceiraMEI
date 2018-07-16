@@ -67,7 +67,34 @@
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.submitErrorHandler(null, data.message);
             }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
             fly01.loading.stop();
+        });
+
+        fly01.loading.stop();
+        getInformacoesComplementares()
+    }
+
+    function getInformacoesComplementares() {
+        fly01.loading.start();
+        $.ajax({
+            url: '@Url.Action("GetInformacoesComplementares", "OrdemVenda")',
+            type: "GET",
+            data: {}
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('#mensagemPadraoNota').val(data.infcomp);
+                fly01.fn.updateTextFields("fly01frm");
+                fly01.loading.stop();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+                fly01.loading.stop();
+            }
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;

@@ -91,6 +91,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("naturezaOperacao")]        
         public string NaturezaOperacao { get; set; }
 
+        [JsonProperty("mensagemPadraoNota")]
+        public string MensagemPadraoNota { get; set; }
+
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.ViewModel;
+﻿using Fly01.Financeiro.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -232,7 +231,7 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
     }

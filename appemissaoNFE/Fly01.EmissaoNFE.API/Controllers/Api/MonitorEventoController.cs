@@ -3,7 +3,6 @@ using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
@@ -69,9 +68,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     retorno.Motivo = nfe.XMOTIVO;
                     retorno.MotivoEvento = nfe.XMOTIVOEVEN;
                     retorno.Protocolo = nfe.PROT;
-                    //var xml = string.IsNullOrEmpty(nfe.XML_RET) ? "" : nfe.XML_RET +
-                    //        string.IsNullOrEmpty(nfe.XML_SIG) ? "" : nfe.XML_SIG;
-                    retorno.XML = "";
+                    retorno.XML = nfe.XML_RET == null ? "" : nfe.XML_RET + nfe.XML_SIG == null ? "" : nfe.XML_SIG;
             }
 
             return retorno;
@@ -96,9 +93,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 retorno.Motivo = nfe.XMOTIVO;
                 retorno.MotivoEvento = nfe.XMOTIVOEVEN;
                 retorno.Protocolo = nfe.PROT;
-                //var xml = string.IsNullOrEmpty(nfe.XML_RET) ? "" : nfe.XML_RET +
-                //        string.IsNullOrEmpty(nfe.XML_SIG) ? "" : nfe.XML_SIG;
-                retorno.XML = "";
+                retorno.XML = nfe.XML_RET == null ? "" : nfe.XML_RET + nfe.XML_SIG == null ? "" : nfe.XML_SIG;
             }
 
             return retorno;

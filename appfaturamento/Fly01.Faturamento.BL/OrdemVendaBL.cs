@@ -23,7 +23,7 @@ namespace Fly01.Faturamento.BL
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
 
         private readonly string descricaoVenda = @"Venda nº: {0}";
-        private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Fly01 Faturamento: {1}";
+        private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Bemacash Faturamento: {1}";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";

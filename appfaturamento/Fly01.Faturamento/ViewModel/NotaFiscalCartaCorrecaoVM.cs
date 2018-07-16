@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System;
@@ -14,11 +13,11 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("idRetorno")]
         public string IdRetorno { get; set; }
 
-        [JsonProperty("data")]
-        public DateTime Data { get; set; }
-
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        [JsonProperty("data")]
+        public DateTime Data { get; set; }
 
         [JsonProperty("numero")]
         public int Numero { get; set; }

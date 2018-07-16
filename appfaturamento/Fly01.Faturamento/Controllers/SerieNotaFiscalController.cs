@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
@@ -65,11 +64,11 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
 
-            if (UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 1 });
 
@@ -101,7 +100,7 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -163,7 +162,7 @@ namespace Fly01.Faturamento.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public ContentResult FormModalNFe()

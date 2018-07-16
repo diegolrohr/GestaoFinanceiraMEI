@@ -138,7 +138,7 @@ namespace Fly01.Faturamento.BL
 
         #endregion
 
-        public override void Insert(Pessoa entity)
+        public void GetIdEstadoCidade(Pessoa entity)
         {
             if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CodigoIBGECidade))
             {
@@ -149,6 +149,25 @@ namespace Fly01.Faturamento.BL
                     entity.CidadeId = dadosCidade.Id;
                 }
             }
+        }
+
+        public override void Update(Pessoa entity)
+        {
+            GetIdEstadoCidade(entity);
+
+            ValidaModel(entity);
+            if (!IsValid(entity))
+            {
+                var errors = entity.Notification.Errors.Cast<object>().Aggregate("", (current, item) => current + (item + "\n"));
+                throw new BusinessException(errors);
+            }
+
+            base.Update(entity);
+        }
+
+        public override void Insert(Pessoa entity)
+        {
+            GetIdEstadoCidade(entity);
 
             ValidaModel(entity);
             if (!IsValid(entity))

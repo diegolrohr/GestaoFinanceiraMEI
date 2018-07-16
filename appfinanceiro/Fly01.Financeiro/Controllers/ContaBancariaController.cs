@@ -10,6 +10,9 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Rest;
+using Fly01.Core;
+using System.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -40,14 +43,14 @@ namespace Fly01.Financeiro.Controllers
                 nomeConta = x.NomeConta,
                 agencia = x.Agencia,
                 digitoAgencia = x.DigitoAgencia,
-                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ? 
+                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ?
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
                 registroFixo = x.RegistroFixo,
                 codigoCedente = x.CodigoCedente,
-                codigoDV = x.CodigoDV, 
-                taxaJuros = x.TaxaJuros, 
+                codigoDV = x.CodigoDV,
+                taxaJuros = x.TaxaJuros,
                 percentualMulta = x.PercentualMulta,
                 //contaEmiteBoleto = x.ContaEmiteBoleto
             };
@@ -68,11 +71,11 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=" };
 
-            if(UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nomeConta", DisplayName = "Nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });
@@ -97,7 +100,7 @@ namespace Fly01.Financeiro.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -214,7 +217,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public ContentResult FormModal()
@@ -226,7 +229,7 @@ namespace Fly01.Financeiro.Controllers
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
-                    Create = @Url.Action("Create"),                    
+                    Create = @Url.Action("Create"),
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmContaBancaria",
@@ -254,9 +257,18 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-            
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [HttpGet]
+        public JsonResult GetBancoEmiteBoleto(Guid id)
+        {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"id eq {id}");
+            var emiteBoleto = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>("Banco", queryString).Data.First().EmiteBoleto;
+
+            return Json(new { emiteBoleto }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

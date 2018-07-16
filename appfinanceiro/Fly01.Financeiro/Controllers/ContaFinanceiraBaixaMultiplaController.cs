@@ -1,7 +1,5 @@
 ﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -26,7 +24,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override Func<ContaFinanceiraBaixaMultiplaVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
@@ -41,7 +39,7 @@ namespace Fly01.Financeiro.Controllers
             return target;
         }
 
-        protected ContentResult FormBaixaMultipla(string tipoConta)
+        protected ContentUI FormBaixaMultipla(string tipoConta)
         {
             var cfg = new ContentUI
             {
@@ -148,7 +146,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(dtcfg);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
     }
 }

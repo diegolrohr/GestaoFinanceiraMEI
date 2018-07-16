@@ -9,16 +9,5 @@ namespace Fly01.Core.Presentation
         public string ResourceKey { get; set; }
         public EPermissionValue PermissionValue { get; set; }
         public bool NotApply { get; set; }
-
-        //public OperationRoleAttribute(string resourceKey, EPermissionValue permissionValue = EPermissionValue.Read)
-        //    : this(permissionValue)
-        //{
-        //    ResourceKey = resourceKey;
-        //}
-
-        //public OperationRoleAttribute(EPermissionValue permissionValue = EPermissionValue.Read)
-        //{
-        //    PermissionValue = permissionValue;
-        //}
     }
 }

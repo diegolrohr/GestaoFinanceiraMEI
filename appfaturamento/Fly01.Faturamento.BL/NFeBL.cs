@@ -15,10 +15,10 @@ using Fly01.Faturamento.DAL;
 using Fly01.Core.Entities.Domains.Commons;
 using Newtonsoft.Json;
 using System;
+using Fly01.Core.Helpers;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.Faturamento.BL
@@ -137,6 +137,8 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Permitido somente NF-e versão 4.00. Acesse o menu Configurações > Parâmetros Tributários e altere as configurações");
                     }
 
+                    var isLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br");
+
                     var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
                     var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
@@ -169,6 +171,12 @@ namespace Fly01.Faturamento.BL
                     var itemTransmissao = new ItemTransmissaoVM();
                     itemTransmissao.Versao = versao;
 
+                    var CalendarTimeZoneDefault = "E. South America Standard Time";
+                    DateTime now = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
+
+                    TimeZoneInfo clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(CalendarTimeZoneDefault);
+                    var data = TimeZoneInfo.ConvertTimeFromUtc(now, clientTimeZone);
+
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
                     {
@@ -177,8 +185,8 @@ namespace Fly01.Faturamento.BL
                         ModeloDocumentoFiscal = 55,
                         Serie = int.Parse(serieNotaFiscal.Serie),
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
-                        Emissao = DateTime.Now,
-                        EntradaSaida = DateTime.Now,
+                        Emissao = TimeZoneHelper.GetDateTimeNow(isLocal),
+                        EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal),
                         TipoDocumentoFiscal = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,

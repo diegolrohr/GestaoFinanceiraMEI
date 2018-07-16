@@ -91,8 +91,11 @@ namespace Fly01.Compras.Controllers
                 Functions = new List<string>() { "fnFooterCallbackPedidoItem" }
             };
 
-            dtPedidoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditarPedidoItem", Label = "Editar" });
-            dtPedidoItensCfg.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirPedidoItem", Label = "Excluir" });
+            dtPedidoItensCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarPedidoItem", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirPedidoItem", Label = "Excluir" }
+            }));
 
             dtPedidoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtPedidoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
@@ -103,7 +106,7 @@ namespace Fly01.Compras.Controllers
             return dtPedidoItensCfg;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
             => FormPedido();
         
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
@@ -118,7 +121,7 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public ContentResult FormPedido(bool isEdit = false)
+        public ContentUI FormPedido(bool isEdit = false)
         {
             var cfg = new ContentUI
             {
@@ -350,7 +353,7 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtPedidoItensCfg());
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override ContentResult List()

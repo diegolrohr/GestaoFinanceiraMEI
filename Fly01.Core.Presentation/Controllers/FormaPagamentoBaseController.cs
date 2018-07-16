@@ -41,11 +41,11 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new DataTableUI() { UrlGridLoad = Url.Action("GridLoad", "FormaPagamento"), UrlFunctions = Url.Action("Functions", "FormaPagamento", null, Request.Url.Scheme) + "?fns=" };
 
-            if (UserCanWrite)
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-                config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -75,7 +75,7 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -118,7 +118,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public ContentResult FormModal()

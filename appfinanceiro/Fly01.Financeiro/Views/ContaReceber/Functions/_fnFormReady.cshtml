@@ -4,6 +4,9 @@ function fnFormReady() {
         $('#baixarTituloField').hide();
         $('#repetirField').hide();
         $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
+
+        $("#repeticaoPai").val($("#contaFinanceiraRepeticaoPaiId").val() == "" && $('#repetir').prop('checked'));
+        $("#repeticaoFilha").val($("#contaFinanceiraRepeticaoPaiId").val() != "" && $('#repetir').prop('checked'));        
     }
 
     $('#contaBancariaIdField').hide();

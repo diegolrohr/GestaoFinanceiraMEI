@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Estoque.ViewModel;
+using Fly01.uiJS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -36,6 +37,6 @@ namespace Fly01.Estoque.Controllers
         }
 
         public override ContentResult List() { throw new NotImplementedException(); }
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
     }
 }

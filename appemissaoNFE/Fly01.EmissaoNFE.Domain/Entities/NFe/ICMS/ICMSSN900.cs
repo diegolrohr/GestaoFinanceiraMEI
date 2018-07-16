@@ -209,10 +209,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             set { ValorCreditoICMS = double.Parse(value); }
         }
 
-        [XmlElement(ElementName = "vBCSTRet", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorBCSTRetido { get; set; }
 
-        public bool ShouldSerializeValorBCSTRetido()
+        [XmlElement(ElementName = "vBCSTRet", IsNullable = true)]
+        public string ValorBCSTRetidoString
+        {
+            get
+            {
+                return ValorBCSTRetido.HasValue ? ValorBCSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorBCSTRetido = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorBCSTRetidoString()
         {
             return ValorBCSTRetido.HasValue && ValorBCSTRetido.Value > 0;
         }

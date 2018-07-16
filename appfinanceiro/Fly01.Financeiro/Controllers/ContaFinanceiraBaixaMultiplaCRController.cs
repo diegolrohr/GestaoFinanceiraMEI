@@ -1,15 +1,15 @@
 ﻿using Fly01.Core.Presentation;
-using System.Web.Mvc;
+using Fly01.uiJS.Classes;
 
 namespace Fly01.Financeiro.Controllers
 {
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroContasReceber)]
     public class ContaFinanceiraBaixaMultiplaCRController : ContaFinanceiraBaixaMultiplaController
     {
-        public ContaFinanceiraBaixaMultiplaCRController(string contaBancariaResourceHash)
+        public ContaFinanceiraBaixaMultiplaCRController()
             : base(ResourceHashConst.FinanceiroCadastrosContasBancarias) { }
 
-        public override ContentResult Form() 
+        protected override ContentUI FormJson() 
             => FormBaixaMultipla("Receber");
     }
 }

@@ -8,6 +8,9 @@ namespace Fly01.Financeiro.Controllers
 {
     public class AvaliacaoAppController : AvaliacaoAppBaseController<AvaliacaoAppVM>
     {
+        public AvaliacaoAppController()
+            : base(ResourceHashConst.FinanceiroAvalieAplicativo) { }
+
         [OperationRole(ResourceKey = ResourceHashConst.FinanceiroAvalieAplicativo, PermissionValue = EPermissionValue.Read)]
         public override JsonResult Create(AvaliacaoAppVM entityVM)
         {

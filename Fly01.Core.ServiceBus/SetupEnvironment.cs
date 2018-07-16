@@ -14,6 +14,7 @@ namespace Fly01.Core.ServiceBus
                 {
                     using (var channel = connection.CreateModel())
                     {
+                        channel.QueueDelete(RabbitConfig.QueueName);
                         channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
                         channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
 

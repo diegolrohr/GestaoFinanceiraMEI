@@ -2,13 +2,14 @@
 using Newtonsoft.Json;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using Fly01.Core.Notifications;
 using System.Configuration;
 using System;
 using Fly01.Core.Mensageria.Slack;
 using System.Data.Entity.Infrastructure;
 using System.Text;
 using System.Data.Entity.Validation;
+using Fly01.Core.Entities.Domains.NoSQL;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Core.Mensageria
 {

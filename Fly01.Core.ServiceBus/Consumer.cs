@@ -64,6 +64,7 @@ namespace Fly01.Core.ServiceBus
 
         //    consumer.Received += async (sender, args) =>
         //    {
+        //        Channel.BasicAck(args.DeliveryTag, true);
         //        if (args.BasicProperties.AppId != RabbitConfig.AppId)
         //        {
         //            if (args.BasicProperties.Headers == null)
@@ -91,7 +92,6 @@ namespace Fly01.Core.ServiceBus
         //                    SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
         //                }
 
-        //                Channel.BasicAck(args.DeliveryTag, true);
         //            }
         //        }
         //    };

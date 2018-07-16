@@ -51,7 +51,7 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 var boleto = GetBoletoAsString(contaReceberId, contaBancariaId, reimprimeBoleto);
-                var stream = new MemoryStream(ConvertHTMLToPDF.Convert(boleto));
+                var stream = new MemoryStream(ConvertHTMLToPDF.GerarArquivoPDF(boleto));
                 Mail.Send(GetDadosEmpresa().NomeFantasia, email, assunto, mensagem, stream);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

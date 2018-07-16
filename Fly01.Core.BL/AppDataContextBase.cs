@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Fly01.Core.Notifications;
 using System.Configuration;
+using Fly01.Core.Entities.Domains.NoSQL;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Core.BL
 {

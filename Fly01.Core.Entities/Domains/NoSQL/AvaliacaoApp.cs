@@ -1,7 +1,6 @@
-﻿using Fly01.Core.Notifications;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Fly01.Core.Entities.Domains.Commons
+namespace Fly01.Core.Entities.Domains.NoSQL
 {
     public class AvaliacaoApp : RecordBaseMongoDB
     {

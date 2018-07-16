@@ -1,9 +1,9 @@
-﻿using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.API;
+﻿using Fly01.Core.API;
 using System.Web.Http;
 using System.Configuration;
 using Fly01.Core.Mensageria;
 using System.Threading.Tasks;
+using Fly01.Core.Entities.Domains.NoSQL;
 
 namespace Fly01.Compras.API.Controllers.Api
 {

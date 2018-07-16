@@ -171,6 +171,12 @@ namespace Fly01.Faturamento.BL
                     var itemTransmissao = new ItemTransmissaoVM();
                     itemTransmissao.Versao = versao;
 
+                    var CalendarTimeZoneDefault = "E. South America Standard Time";
+                    DateTime now = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
+
+                    TimeZoneInfo clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(CalendarTimeZoneDefault);
+                    var data = TimeZoneInfo.ConvertTimeFromUtc(now, clientTimeZone);
+
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
                     {

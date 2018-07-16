@@ -131,6 +131,9 @@ namespace Fly01.EmissaoNFE.BL
         private MonitorEventoBL monitorEventoBL;
         public MonitorEventoBL MonitorEventoBL => monitorEventoBL ?? (monitorEventoBL = new MonitorEventoBL(Context, EntidadeBL));
 
+        private CartaCorrecaoBL cartaCorrecaoBL;
+        public CartaCorrecaoBL CartaCorrecaoBL => cartaCorrecaoBL ?? (cartaCorrecaoBL = new CartaCorrecaoBL(Context, EntidadeBL));
+
         #endregion
     }
 }

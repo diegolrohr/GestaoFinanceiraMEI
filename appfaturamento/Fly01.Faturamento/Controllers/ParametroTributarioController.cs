@@ -362,8 +362,8 @@ namespace Fly01.Faturamento.Controllers
                     tipoHorario = tipoHorario
                 };
 
-                if (dadosParametro.mensagemPadraoNota.Length > 1000)
-                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 1000 caracteres.");
+                if (dadosParametro.mensagemPadraoNota.Length > 5000)
+                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 5000 caracteres.");
 
                 if (dadosParametro.numeroRetornoNF.Length > 20)
                     return JsonResponseStatus.GetFailure("Número de caracteres no Número de Retorno da Nota Fiscal não pode ser maior que 20 caracteres.");

@@ -86,7 +86,7 @@ namespace Fly01.Compras.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Fly01 Compras",
+                    AppName = "Bemacash Compras",
                     AppTag = "fly01_manufatura",
                 }
             };

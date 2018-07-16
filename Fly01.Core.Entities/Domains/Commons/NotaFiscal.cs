@@ -93,6 +93,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(44)]
         public string ChaveNFeReferenciada { get; set; }
 
+        [MaxLength(5000)]
+        public string MensagemPadraoNota { get; set; }
+
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Transportadora { get; set; }

@@ -471,7 +471,7 @@ namespace Fly01.Faturamento.Controllers
             return base.GridLoad(filters);
         }
 
-        public JsonResult GridLoadNoFilter() 
+        public JsonResult GridLoadNoFilter()
             => base.GridLoad();
 
         [HttpPost]
@@ -679,6 +679,25 @@ namespace Fly01.Faturamento.Controllers
 
                 return Json(
                     new { success = true, total = response },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpGet]
+        public JsonResult GetInformacoesComplementares()
+        {
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+                return Json(
+                    new { success = true, infcomp = response.Data.FirstOrDefault().MensagemPadraoNota },
                     JsonRequestBehavior.AllowGet
                 );
             }

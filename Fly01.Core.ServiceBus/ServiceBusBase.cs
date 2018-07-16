@@ -20,8 +20,6 @@ namespace Fly01.Core.ServiceBus
 
             if (AssemblyBL == null)
                 AssemblyBL = assemblyBL;
-
-            base.Consume();
         }
 
         protected override async Task PersistMessage()

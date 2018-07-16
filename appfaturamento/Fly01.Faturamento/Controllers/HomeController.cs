@@ -146,8 +146,8 @@ namespace Fly01.Faturamento.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Bemacash Faturamento",
-                    AppTag = "fly01_manufatura",
+                    AppName = "Fly01 Gestão",
+                    AppTag = "chat_fly01_gestao",
                 }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))

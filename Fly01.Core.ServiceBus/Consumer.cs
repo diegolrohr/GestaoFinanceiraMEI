@@ -97,7 +97,7 @@ namespace Fly01.Core.ServiceBus
         //    };
         //}
 
-        public async Task Consume()
+        public async void Consume()
         {
             using (var channel = Connection.CreateModel())
             {
@@ -110,6 +110,8 @@ namespace Fly01.Core.ServiceBus
 
                     try
                     {
+                        channel.BasicAck(args.DeliveryTag, false);
+
                         if (args.BasicProperties.Headers == null)
                             throw new ArgumentException(MsgHeaderInvalid);
 
@@ -119,8 +121,6 @@ namespace Fly01.Core.ServiceBus
 
                         if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                         {
-                            channel.BasicAck(args.DeliveryTag, false);
-
                             if (args.BasicProperties.AppId != RabbitConfig.AppId)
                             {
                                 Message = Encoding.UTF8.GetString(args.Body);
@@ -144,14 +144,10 @@ namespace Fly01.Core.ServiceBus
                                 }
                             }
                         }
-
                     }
                     catch (Exception ex)
                     {
-                        exceptions.Add(new KeyValuePair<string, object>(ex.Message, ex));
-                        SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", (Exception)exceptions[0].Value, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-
-                        channel.BasicAck(args.DeliveryTag, false);
+                        SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
                         continue;
                     }
                 }

@@ -60,7 +60,7 @@ namespace Fly01.Financeiro.API
 
         //    Parallel.ForEach(workers, worker => worker.Consume().Wait());
         //});
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
 
         protected override void SetAppDefaults()
         {

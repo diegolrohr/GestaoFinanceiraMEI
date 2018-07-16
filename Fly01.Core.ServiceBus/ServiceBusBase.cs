@@ -20,6 +20,8 @@ namespace Fly01.Core.ServiceBus
 
             if (AssemblyBL == null)
                 AssemblyBL = assemblyBL;
+
+            base.Consume();
         }
 
         protected override async Task PersistMessage()
@@ -42,7 +44,7 @@ namespace Fly01.Core.ServiceBus
                 }
                 catch (Exception exErr)
                 {
-                    exceptions.Add(new KeyValuePair<string, object>(data, exErr));
+                    exceptions.Add(new KeyValuePair<string, object>(item.ToString(), exErr));
                     continue;
                 }
             }

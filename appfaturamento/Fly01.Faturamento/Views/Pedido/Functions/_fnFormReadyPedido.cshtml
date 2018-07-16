@@ -87,9 +87,8 @@
         })
         .done(function (data) {
             if (data.success) {
-                debugger;
                 $('#mensagemPadraoNota').val(data.infcomp);
-                fly01.fn.updateTextFields();
+                fly01.fn.updateTextFields("fly01frm");
                 fly01.loading.stop();
             }
             else {

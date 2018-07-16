@@ -2,6 +2,7 @@
 using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
 using Microsoft.OData.Edm;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
@@ -45,10 +46,11 @@ namespace Fly01.Compras.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
-        protected override Task RunServiceBus2() => Task.Factory.StartNew(() => new ServiceBusBL());
-        protected override Task RunServiceBus3() => Task.Factory.StartNew(() => new ServiceBusBL());
-        protected override Task RunServiceBus4() => Task.Factory.StartNew(() => new ServiceBusBL());
-        protected override Task RunServiceBus5() => Task.Factory.StartNew(() => new ServiceBusBL());
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        {
+            var workers = new List<ServiceBusBL> { new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL() };
+
+            Parallel.ForEach(workers, worker => worker.Consume().Wait());
+        });
     }
 }

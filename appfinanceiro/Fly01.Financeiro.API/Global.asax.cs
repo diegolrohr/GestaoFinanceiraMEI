@@ -55,26 +55,12 @@ namespace Fly01.Financeiro.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus()
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
         {
-            var workers = new List<ServiceBusBL>
-            {
-                new ServiceBusBL(),
-                new ServiceBusBL(),
-                new ServiceBusBL(),
-                new ServiceBusBL(),
-                new ServiceBusBL(),
-            };
+            var workers = new List<ServiceBusBL> { new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL() };
 
             Parallel.ForEach(workers, worker => worker.Consume().Wait());
-
-            return null;
-        }
-
-        protected override Task RunServiceBus2() => Task.Factory.StartNew(() => { });
-        protected override Task RunServiceBus3() => Task.Factory.StartNew(() => { });
-        protected override Task RunServiceBus4() => Task.Factory.StartNew(() => { });
-        protected override Task RunServiceBus5() => Task.Factory.StartNew(() => { });
+        });
 
         protected override void SetAppDefaults()
         {

@@ -37,7 +37,7 @@ namespace Fly01.Core.ServiceBus
                     data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
 
                     entidade.PersistMessage(data, HTTPMethod);
-
+                   
                     await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
                 catch (Exception exErr)

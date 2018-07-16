@@ -24,7 +24,9 @@ namespace Fly01.Core.ServiceBus
             Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
             VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"],
             UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
-            Password = WebConfigurationManager.AppSettings["RabbitPassword"]
+            Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+            //HostName = WebConfigurationManager.AppSettings["RabbitAMQPUrl"],
+            //Ssl = new SslOption("homolog", "", true)
         };
 
         public enum EnHttpVerb

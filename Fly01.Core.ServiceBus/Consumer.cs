@@ -108,16 +108,16 @@ namespace Fly01.Core.ServiceBus
                 {
                     var args = queueingConsumer.Queue.Dequeue() as BasicDeliverEventArgs;
 
-                    if (args.BasicProperties.Headers == null)
-                        throw new ArgumentException(MsgHeaderInvalid);
-
-                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-                    if (!HeaderIsValid())
-                        throw new ArgumentException(MsgHeaderInvalid);
-
-                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
+                    try
                     {
-                        try
+                        if (args.BasicProperties.Headers == null)
+                            throw new ArgumentException(MsgHeaderInvalid);
+
+                        Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                        if (!HeaderIsValid())
+                            throw new ArgumentException(MsgHeaderInvalid);
+
+                        if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                         {
                             channel.BasicAck(args.DeliveryTag, false);
 
@@ -144,13 +144,15 @@ namespace Fly01.Core.ServiceBus
                                 }
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
 
-                            channel.BasicAck(args.DeliveryTag, false);
-                            continue;
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(new KeyValuePair<string, object>(ex.Message, ex));
+                        SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", (Exception)exceptions[0].Value, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+
+                        channel.BasicAck(args.DeliveryTag, false);
+                        continue;
                     }
                 }
             }

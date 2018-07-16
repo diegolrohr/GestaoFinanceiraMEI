@@ -164,6 +164,18 @@
     <Compile Include="Migrations\201806251331487_AlterPessoaDadosEndereco.Designer.cs">
       <DependentUpon>201806251331487_AlterPessoaDadosEndereco.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807161945175_CreateCertificadoDigital.cs" />
+    <Compile Include="Migrations\201807161945175_CreateCertificadoDigital.Designer.cs">
+      <DependentUpon>201807161945175_CreateCertificadoDigital.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807161949068_CreateParametroTributario.cs" />
+    <Compile Include="Migrations\201807161949068_CreateParametroTributario.Designer.cs">
+      <DependentUpon>201807161949068_CreateParametroTributario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807161952059_CreateSerieNotaFiscal.cs" />
+    <Compile Include="Migrations\201807161952059_CreateSerieNotaFiscal.Designer.cs">
+      <DependentUpon>201807161952059_CreateSerieNotaFiscal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -294,6 +306,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806251331487_AlterPessoaDadosEndereco.resx">
       <DependentUpon>201806251331487_AlterPessoaDadosEndereco.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807161945175_CreateCertificadoDigital.resx">
+      <DependentUpon>201807161945175_CreateCertificadoDigital.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807161949068_CreateParametroTributario.resx">
+      <DependentUpon>201807161949068_CreateParametroTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807161952059_CreateSerieNotaFiscal.resx">
+      <DependentUpon>201807161952059_CreateSerieNotaFiscal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -69,5 +69,8 @@ namespace Fly01.Compras.DAL
         public DbSet<Cest> Cests { get; set; }
         public DbSet<Arquivo> Arquivo { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
+        public DbSet<CertificadoDigital> CertificadoDigitais { get; set; }
+        public DbSet<ParametroTributario> ParametroTributarios { get; set; }
+        public DbSet<SerieNotaFiscal> SerieNotaFiscais { get; set; }
     }
 }

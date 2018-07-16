@@ -21,7 +21,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool RegistroSimplificadoMT { get; set; }
 
-        [MaxLength(1000)]
+        [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }
 
         public string NumeroRetornoNF { get; set; }

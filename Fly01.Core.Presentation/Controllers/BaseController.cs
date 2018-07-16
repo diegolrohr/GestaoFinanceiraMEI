@@ -766,7 +766,15 @@ namespace Fly01.Core.Presentation
                 contentUI.History.WithParams = Url.Action("View");
 
             if (contentUI.Header.Buttons != null && !contentUI.Header.Buttons.Any(x => x.OnClickFn.Equals("fnCancelar", StringComparison.InvariantCultureIgnoreCase)))
-                contentUI.Header.Buttons.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = contentUI.Header.Buttons.Any() ? HtmlUIButtonPosition.Out : HtmlUIButtonPosition.Main });
+                contentUI.Header.Buttons.Add(
+                    new HtmlUIButton
+                    {
+                        Id = "cancel",
+                        Label = "Voltar",
+                        OnClickFn = "fnCancelar",
+                        Position = contentUI.Header.Buttons.Any() ? HtmlUIButtonPosition.Out : HtmlUIButtonPosition.Main
+                    }
+                );
 
             contentUI.Content.Where(x => x is FormUI).ToList().ForEach(item => ((FormUI)item).Readonly = true);
 

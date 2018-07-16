@@ -42,6 +42,7 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(OrdemVenda entity)
         {
+            entity.Fail(entity.MensagemPadraoNota.Length > 5000, new Error("O SEFAZ permite até 5000 caracteres."));
             entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));

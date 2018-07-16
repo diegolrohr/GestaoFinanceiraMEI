@@ -35,7 +35,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.Transmitida).Any(), new Error("Já existe um carta de correção em transmissão, aguarde o retorno SEFAZ para emitir um novo evento. Atualize o status.","status"));        
 
             entity.Fail(!string.IsNullOrEmpty(entity.MensagemCorrecao) && entity.MensagemCorrecao.Length > 1000,
-                new Error("SEFAZ permite até 1000 caracteres por carta de correção. A soma da mensagem atual com a última anterior válida, excedeu 1000 caracteres. A soma possui: " + entity.MensagemCorrecao.Length.ToString() + " caracteres."));
+                new Error("O SEFAZ permite até 1000 caracteres somando todas as cartas de correção. A soma possui: " + entity.MensagemCorrecao.Length.ToString() + " caracteres."));
 
             base.ValidaModel(entity);
         }
@@ -58,7 +58,7 @@ namespace Fly01.Faturamento.BL
                     entity.MensagemCorrecao = ultimaMensagem;
             }
 
-            entity.Fail(cceValidasAnterioes != null && cceValidasAnterioes.Count() >= 20, new Error("Você pode ter no máximo 20 cartas de correções válidas registradas por nota fiscal."));
+            entity.Fail(cceValidasAnterioes != null && cceValidasAnterioes.Count() >= 20, new Error("O SEFAZ permite no máximo 20 cartas de correções válidas e registradas por nota fiscal."));
 
             ValidaModel(entity);
 

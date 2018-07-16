@@ -9,12 +9,17 @@ namespace Fly01.Core.ServiceBus
 {
     public class ServiceBusBase : Consumer
     {
-        public Type AssemblyBL { get; set; }
+        private dynamic data;
+        private dynamic entidade;
+        private Object unitOfWork;
+        private Type AssemblyBL { get; set; }
 
         public ServiceBusBase(Type assemblyBL)
         {
             SetupEnvironment.Create();
-            AssemblyBL = assemblyBL;
+
+            if (AssemblyBL == null)
+                AssemblyBL = assemblyBL;
 
             base.Consume();
         }
@@ -22,23 +27,24 @@ namespace Fly01.Core.ServiceBus
         protected override async Task PersistMessage()
         {
             var domainAssembly = Assembly.Load("Fly01.Core.Entities").GetType($"Fly01.Core.Entities.Domains.Commons.{RabbitConfig.RoutingKey}");
-            var uow = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
-            dynamic entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(uow, null);
+            var content = MessageType.Resolve<dynamic>(Message);
             exceptions = new List<KeyValuePair<string, object>>();
+            unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
+            entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
 
-            foreach (var item in MessageType.Resolve<dynamic>(Message))
+            foreach (var item in content)
             {
                 try
                 {
-                    var data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
+                    data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
 
                     entidade.PersistMessage(data, HTTPMethod);
-
-                    await (Task)AssemblyBL.GetMethod("Save").Invoke(uow, new object[] { });
+                   
+                    await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
-                catch (Exception ex)
+                catch (Exception exErr)
                 {
-                    exceptions.Add(new KeyValuePair<string, object>(item.ToString(), ex));
+                    exceptions.Add(new KeyValuePair<string, object>(data, exErr));
                     continue;
                 }
             }

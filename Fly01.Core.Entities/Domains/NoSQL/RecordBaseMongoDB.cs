@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 
-namespace Fly01.Core.Notifications
+namespace Fly01.Core.Entities.Domains.NoSQL
 {
     public class RecordBaseMongoDB
     {

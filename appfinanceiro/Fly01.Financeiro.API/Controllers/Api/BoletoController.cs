@@ -21,7 +21,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                //Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
                 var boleto = unitOfWork.CnabBL.ImprimeBoleto(contaReceberId, contaBancariaId);
 

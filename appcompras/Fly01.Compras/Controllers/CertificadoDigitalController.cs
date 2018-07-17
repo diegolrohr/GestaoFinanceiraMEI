@@ -1,8 +1,7 @@
-﻿using Fly01.Faturamento.ViewModel;
-using Fly01.Core.Presentation.Controllers;
-using Fly01.Core.Presentation;
+﻿using Fly01.Core.Presentation.Controllers;
+using Fly01.Faturamento.ViewModel;
 
-namespace Fly01.Faturamento.Controllers
+namespace Fly01.Compras.Controllers
 {
     public class CertificadoDigitalController : CertificadoDigitalBaseController<CertificadoDigitalVM>
     {

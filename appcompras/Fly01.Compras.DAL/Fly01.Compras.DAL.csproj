@@ -176,6 +176,10 @@
     <Compile Include="Migrations\201807161952059_CreateSerieNotaFiscal.Designer.cs">
       <DependentUpon>201807161952059_CreateSerieNotaFiscal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807171928442_CreateNFInutilizadas.cs" />
+    <Compile Include="Migrations\201807171928442_CreateNFInutilizadas.Designer.cs">
+      <DependentUpon>201807171928442_CreateNFInutilizadas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -315,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807161952059_CreateSerieNotaFiscal.resx">
       <DependentUpon>201807161952059_CreateSerieNotaFiscal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807171928442_CreateNFInutilizadas.resx">
+      <DependentUpon>201807171928442_CreateNFInutilizadas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

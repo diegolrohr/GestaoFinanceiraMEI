@@ -27,7 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -116,7 +116,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />

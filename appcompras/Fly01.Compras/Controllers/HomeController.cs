@@ -54,6 +54,19 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")}
                     }
                 },
+                //trocar permissoes
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.ComprasCadastros,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
+                    }
+                },
                 new SidebarUIMenu()
                 {
                     Class = ResourceHashConst.ComprasAjuda,
@@ -84,7 +97,7 @@ namespace Fly01.Compras.Controllers
             {
                 Conpass = new ConpassUI(),
                 Droz = new DrozUI(),
-                Zendesk = new ZendeskUI()
+                Zendesk = new ZendeskUI() 
                 {
                     AppName = "Fly01 Gestão",
                     AppTag = "chat_fly01_gestao",

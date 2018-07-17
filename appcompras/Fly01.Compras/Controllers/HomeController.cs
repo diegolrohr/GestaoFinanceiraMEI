@@ -86,8 +86,8 @@ namespace Fly01.Compras.Controllers
                 Droz = new DrozUI(),
                 Zendesk = new ZendeskUI()
                 {
-                    AppName = "Bemacash Compras",
-                    AppTag = "fly01_manufatura",
+                    AppName = "Fly01 Gestão",
+                    AppTag = "chat_fly01_gestao",
                 }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))

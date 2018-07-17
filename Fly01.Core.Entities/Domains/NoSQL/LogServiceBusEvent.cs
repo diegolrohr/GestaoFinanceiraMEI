@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Fly01.Core.Notifications
+namespace Fly01.Core.Entities.Domains.NoSQL
 {
     public class LogServiceBusEvent : RecordBaseMongoDB
     {

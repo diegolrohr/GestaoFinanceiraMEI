@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.OData.Builder;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Collections.Generic;
 
 namespace Fly01.Financeiro.API
 {
@@ -56,9 +57,9 @@ namespace Fly01.Financeiro.API
 
         //protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
         //{
-        //    var workers = new List<ServiceBusBL> { new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL() };
+        //    var workers = new List<ServiceBusBL> { new ServiceBusBL() };
 
-        //    Parallel.ForEach(workers, worker => worker.Consume().Wait());
+        //    Parallel.ForEach(workers, worker => worker.Consume());
         //});
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
 

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Globalization;
 
 namespace Fly01.Financeiro.BL
 {
@@ -176,9 +177,9 @@ namespace Fly01.Financeiro.BL
             var valorJuros = (decimal)(valorParcial * (juros / 100));
             var msgCaixa = new StringBuilder();
 
-            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("R$ ##,##0.00")} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
-            if (percentMultaPadrao > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("R$ ##,##0.00")} após o vencimento. ");
-            if (jurosDiaPadrao > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("R$ ##,##0.00")} por dia de atraso. ");
+            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("C", new CultureInfo("pt-BR"))} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
+            if (percentMultaPadrao > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("C", new CultureInfo("pt-BR"))} após o vencimento. ");
+            if (jurosDiaPadrao > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("C", new CultureInfo("pt-BR"))} por dia de atraso. ");
 
             return msgCaixa.ToString();
         }

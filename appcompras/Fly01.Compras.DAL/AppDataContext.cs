@@ -72,5 +72,6 @@ namespace Fly01.Compras.DAL
         public DbSet<CertificadoDigital> CertificadoDigitais { get; set; }
         public DbSet<ParametroTributario> ParametroTributarios { get; set; }
         public DbSet<SerieNotaFiscal> SerieNotaFiscais { get; set; }
+        public DbSet<NotaFiscalInutilizada> NotaFiscalInutilizadas { get; set; }
     }
 }

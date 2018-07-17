@@ -427,8 +427,8 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Boleto2Net, Version=2.0.2.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Boleto2.Net.2.0.2.2\lib\Boleto2Net.dll</HintPath>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.2.4\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Fly01.uiJS.2.0.2.7\lib\net452\Fly01.uiJS.dll</HintPath>

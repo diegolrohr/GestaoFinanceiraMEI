@@ -44,7 +44,7 @@ namespace Fly01.Core.ServiceBus
                 }
                 catch (Exception exErr)
                 {
-                    exceptions.Add(new KeyValuePair<string, object>(data, exErr));
+                    exceptions.Add(new KeyValuePair<string, object>(item.ToString(), exErr));
                     continue;
                 }
             }

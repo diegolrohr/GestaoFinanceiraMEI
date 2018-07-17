@@ -7,8 +7,6 @@ using System.Web.Http;
 using System.Linq;
 using Boleto2Net;
 using Fly01.Core.ViewModels.Presentation;
-using System.Globalization;
-using System.Threading;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -21,8 +19,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                //Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-
                 var boleto = unitOfWork.CnabBL.ImprimeBoleto(contaReceberId, contaBancariaId);
 
                 if (boleto == null) Ok();

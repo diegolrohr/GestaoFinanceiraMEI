@@ -11,6 +11,8 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Mensageria;
 using System.IO;
+using Fly01.Core.Presentation.Commons;
+using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -40,7 +42,8 @@ namespace Fly01.Financeiro.Controllers.Base
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"Ocorreu um erro ao gerar boleto: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);                
+                return JsonResponseStatus.GetFailure(error.Message.Replace("\r\n", " "));
             }
         }
 

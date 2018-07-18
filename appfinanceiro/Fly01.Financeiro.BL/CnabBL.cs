@@ -8,6 +8,7 @@ using System.Text;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using System.Globalization;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.BL
 {
@@ -37,6 +38,7 @@ namespace Fly01.Financeiro.BL
 
         public BoletoVM GetDadosBoleto(Guid contaReceberId, Guid contaBancariaId)
         {
+
             int nossoNumero = 0;
             var cnabReemprime = base.All.FirstOrDefault(x => x.ContaBancariaCedenteId == contaBancariaId && x.ContaReceberId == contaReceberId);
 
@@ -106,8 +108,8 @@ namespace Fly01.Financeiro.BL
             if (string.IsNullOrEmpty(boleto.Cedente.EnderecoNumero)) boleto.Cedente.EnderecoNumero = "0";
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
             if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero)) boleto.Sacado.EnderecoNumero = "0";
-
-            if (string.IsNullOrEmpty(boleto.Cedente.CodigoCedente)) throw new Exception("É necessário informar o código do cedente");
+            if (string.IsNullOrEmpty(boleto.Cedente.CodigoCedente))
+                throw new BusinessException("É necessário informar o código do cedente");
             if (string.IsNullOrEmpty(boleto.Cedente.CodigoDV)) boleto.Cedente.CodigoDV = "0";
 
             return true;

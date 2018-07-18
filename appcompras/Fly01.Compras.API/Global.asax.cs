@@ -39,6 +39,10 @@ namespace Fly01.Compras.API
             builder.EntitySet<GrupoTributario>("grupotributario");
             builder.EntitySet<Cest>("cest");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
+            builder.EntitySet<CertificadoDigital>("certificadodigital");
+            builder.EntitySet<NotaFiscalInutilizada>("notafiscalinutilizada");
+            builder.EntitySet<SerieNotaFiscal>("serienotafiscal");
+            builder.EntitySet<ParametroTributario>("parametrotributario");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

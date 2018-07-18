@@ -127,6 +127,9 @@
     <Compile Include="Application\WebAPIConfig.cs" />
     <Compile Include="Commons\ElementUIHelper.cs" />
     <Compile Include="Controllers\CertificadoDigitalBaseController.cs" />
+    <Compile Include="Controllers\NotaFiscalInutilizadaBaseController.cs" />
+    <Compile Include="Controllers\ParametroTributarioBaseController.cs" />
+    <Compile Include="Controllers\SerieNotaFiscalBaseController.cs" />
     <Compile Include="OperationRoleAttribute.cs" />
     <Compile Include="Commons\ImportacaoArquivoHelper.cs" />
     <Compile Include="Commons\LayoutHelper.cs" />

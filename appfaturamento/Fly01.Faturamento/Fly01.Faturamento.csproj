@@ -123,15 +123,12 @@
     <Compile Include="ViewModel\NFSeVM.cs" />
     <Compile Include="ViewModel\NotaFiscalCartaCorrecaoVM.cs" />
     <Compile Include="ViewModel\NotaFiscalItemVM.cs" />
-    <Compile Include="ViewModel\NotaFiscalInutilizadaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalVM.cs" />
     <Compile Include="ViewModel\OrdemVendaItemVM.cs" />
     <Compile Include="ViewModel\OrdemVendaProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaServicoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
-    <Compile Include="ViewModel\ParametroTributarioVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
-    <Compile Include="ViewModel\SerieNotaFiscalVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
     <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />

@@ -82,10 +82,13 @@
     <Compile Include="ViewModels\Presentation\Commons\GrupoTributarioVM.cs" />
     <Compile Include="ViewModels\ManagerEmpresaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\NcmVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NotaFiscalInutilizadaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ParametroTributarioVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\PessoaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutosMaisCompradosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SerieNotaFiscalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\SubstituicaoTributariaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UnidadeMedidaVM.cs" />
     <Compile Include="ViewModels\Presentation\FileVM.cs" />

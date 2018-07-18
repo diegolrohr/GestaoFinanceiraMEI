@@ -1,5 +1,4 @@
-﻿using Fly01.Faturamento.ViewModel;
-using Fly01.uiJS.Classes;
+﻿using Fly01.uiJS.Classes;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Helpers;
 using Newtonsoft.Json;
@@ -12,6 +11,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Core.Presentation.Controllers
 {

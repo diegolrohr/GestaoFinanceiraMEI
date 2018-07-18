@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Notifications;
+﻿using Fly01.Core.Entities.Domains.NoSQL;
+using Fly01.Core.Helpers;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -19,7 +20,7 @@ namespace Fly01.Core.API
         [HttpPost]
         public virtual async Task<IHttpActionResult> Post(T entity)
         {
-            entity.EventDate= DateTime.Now;
+            entity.EventDate = DateTime.Now;
             entity.PlatformId = PlataformaUrl;
 
             var mongoHelper = new LogMongoHelper<T>(MongoDBName);

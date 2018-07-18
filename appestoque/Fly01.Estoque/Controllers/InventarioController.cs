@@ -17,9 +17,11 @@ using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueInventario)]
     public class InventarioController : BaseController<InventarioVM>
     {
         public InventarioController()
@@ -27,7 +29,21 @@ namespace Fly01.Estoque.Controllers
             ExpandProperties = "";
         }
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario", Position = HtmlUIButtonPosition.Out });
+            }
+
+            return target;
+        }
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -39,12 +55,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cadastro de Inventário",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" },
-                        new HtmlUIButton { Id = "finish", Label = "Finalizar Inventário", OnClickFn = "fnFinalizaInventario" },
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -86,7 +97,7 @@ namespace Fly01.Estoque.Controllers
 
             formConfigInventarioItem.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
 
-            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
+            formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoCodigoId",
                 Class = "col s5",
@@ -95,9 +106,9 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoCodigo", "AutoComplete"),
                 LabelId = "produtoCodigo",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
-            });
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
-            formConfigInventarioItem.Elements.Add(new AutoCompleteUI
+            formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col s5",
@@ -106,7 +117,7 @@ namespace Fly01.Estoque.Controllers
                 DataUrl = @Url.Action("ProdutoDescricao", "AutoComplete"),
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoDesc" } }
-            });
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(new ButtonUI
             {
@@ -133,7 +144,10 @@ namespace Fly01.Estoque.Controllers
                 }
             };
 
-            dtConfig.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 0, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoProduto", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
@@ -150,7 +164,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(dtConfig);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public override Func<InventarioVM, object> GetDisplayData()
@@ -175,20 +189,20 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Inventários",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "Inventario", null, Request.Url?.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.inventarioStatus == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.inventarioStatus == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "(row.inventarioStatus == 'Finalizado')" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarRow", Label = "Finalizar", ShowIf = "(row.inventarioStatus == 'Aberto')" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -196,7 +210,7 @@ namespace Fly01.Estoque.Controllers
                 DisplayName = "Status do Inventário",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(InventarioStatus))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription); }"
+                RenderFn = "fnRenderEnum(full.inventarioStatusCssClass, full.inventarioStatusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataUltimaInteracao", DisplayName = "Ultima Interação", Priority = 1, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2, Type = "string" });

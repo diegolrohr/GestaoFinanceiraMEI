@@ -12,9 +12,11 @@ using System.Globalization;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroConfiguracoesNotificacoes)]
     public class ConfiguracaoNotificacaoController : BaseController<ConfiguracaoNotificacaoVM>
     {
         public ContentResult GetData()
@@ -64,8 +66,14 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public override ContentResult Form()
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
+            if (!UserCanRead)
+                return new ContentUI();
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -75,10 +83,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Envio de notificações via SMS/E-mail",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -171,7 +176,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public override Func<ConfiguracaoNotificacaoVM, object> GetDisplayData()

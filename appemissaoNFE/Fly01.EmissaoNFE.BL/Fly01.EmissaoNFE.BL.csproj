@@ -39,6 +39,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CartaCorrecaoBL.cs" />
+    <Compile Include="InutilizarNFBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="ChaveBL.cs" />
     <Compile Include="DanfeBL.cs" />
@@ -47,6 +49,8 @@
     <Compile Include="EmpresaBL.cs" />
     <Compile Include="CceBL.cs" />
     <Compile Include="FcpStBL.cs" />
+    <Compile Include="IbptNcmBL.cs" />
+    <Compile Include="MonitorEventoBL.cs" />
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />
     <Compile Include="ParametroNfBL.cs" />

@@ -10,6 +10,7 @@ using Fly01.Faturamento.ViewModel;
 using Fly01.Core.Rest;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -17,6 +18,9 @@ namespace Fly01.Faturamento.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+            if (!UserCanPerformOperation(ResourceHashConst.FaturamentoFaturamentoVisaoGeral))
+                return new ContentUI();
+
             var config = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -39,7 +43,7 @@ namespace Fly01.Faturamento.Controllers
             config.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "cardNotaFiscal",
                 Title = "Nota Fiscal",
                 Placeholder = "Número de Notas Fiscais não transmitidas",
@@ -58,83 +62,72 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() {Id = "nav-bar", AppName = "Faturamento", Parent = "header"};
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Faturamento", Parent = "header" };
 
             #region MenuItems
 
-            config.MenuItems.Add(new SidebarUIMenu()
+            var menuItems = new List<SidebarUIMenu>()
             {
-                Label = "Faturamento",
-                Items = new List<LinkUI>
+                new SidebarUIMenu()
                 {
-                    new LinkUI() {Label = "Vendas", OnClick = @Url.Action("List", "OrdemVenda")},
-                    new LinkUI() {Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscal")},
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Cadastros",
-                Items = new List<LinkUI>
-                {
-                    new LinkUI() {Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
-                    new LinkUI() {Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
-                    new LinkUI() {Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
-                    new LinkUI() {Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario")},
-                    new LinkUI() {Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
-                    new LinkUI() {Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
-                    new LinkUI() {Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
-                    new LinkUI()
+                    Class = ResourceHashConst.FaturamentoFaturamento,
+                    Label = "Faturamento",
+                    Items = new List<LinkUI>
                     {
-                        Label = "Condição Parcelamento",
-                        OnClick = @Url.Action("List", "CondicaoParcelamento")
-                    },
-                    new LinkUI() {Label = "Forma Pagamento", OnClick = @Url.Action("List", "FormaPagamento")},
-                    new LinkUI() {Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
-                    new LinkUI()
-                    {
-                        Label = "Substituição Tributária",
-                        OnClick = @Url.Action("List", "SubstituicaoTributaria")
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoFaturamentoVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List")},
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoFaturamentoVendas, Label = "Vendas", OnClick = @Url.Action("List", "OrdemVenda")},
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoFaturamentoNotasFiscais, Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscal")},
                     }
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Configurações",
-                Items = new List<LinkUI>
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() {Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital")},
-                    new LinkUI()
+                    Class = ResourceHashConst.FaturamentoCadastros,
+                    Label = "Cadastros",
+                    Items = new List<LinkUI>
                     {
-                        Label = "Parâmetros Tributários",
-                        OnClick = @Url.Action("Form", "ParametroTributario")
-                    },
-                    new LinkUI() {Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
-                    //new LinkUI() //TODO falta api emissao
-                    //{
-                    //    Label = "Notas Fiscais Inutilizadas",
-                    //    OnClick = @Url.Action("List", "SerieNotaFiscalInutilizada")
-                    //}
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Ajuda",
-                Items = new List<LinkUI>
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosClientes, Label = "Clientes", OnClick = @Url.Action("List", "Cliente") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosFornecedores, Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosTransportadoras, Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosGrupoTributario, Label = "Grupo Tributário", OnClick = @Url.Action("List", "GrupoTributario") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosGrupoProdutos, Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosServicos, Label = "Serviços", OnClick = @Url.Action("List", "Servico") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCondicoesParcelamento, Label = "Condição Parcelamento", OnClick = @Url.Action("List", "CondicaoParcelamento") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosFormasPagamento, Label = "Forma Pagamento", OnClick = @Url.Action("List", "FormaPagamento") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria") }
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                }
-            });
+                    Class = ResourceHashConst.FaturamentoConfiguracoes,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesParametrosTributarios, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesSerieNotasFiscais, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoConfiguracoesNotasFiscaisInutilizadas, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.FaturamentoAjuda,
+                    Label = "Ajuda",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoAjudaAssistenciaRemota, Label = "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx" }
+                    }
+                },
+                new SidebarUIMenu() { Class = ResourceHashConst.FaturamentoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+            };
 
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
-
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items
 
-            config.UserMenuItems.Add(new LinkUI() {Label = "Sair", Link = @Url.Action("Logoff", "Account")});
+            config.UserMenuItems.Add(new LinkUI() { Label = "Sair", Link = @Url.Action("Logoff", "Account") });
 
             #endregion
 
@@ -147,13 +140,15 @@ namespace Fly01.Faturamento.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
-            config.Widgets = new WidgetsUI();
-            config.Widgets.Conpass = new ConpassUI();
-            config.Widgets.Droz = new DrozUI();
-            config.Widgets.Zendesk = new ZendeskUI()
+            config.Widgets = new WidgetsUI
             {
-                AppName = "Fly01 Faturamento",
-                AppTag = "fly01_manufatura",
+                Conpass = new ConpassUI(),
+                Droz = new DrozUI(),
+                Zendesk = new ZendeskUI()
+                {
+                    AppName = "Fly01 Gestão",
+                    AppTag = "chat_fly01_gestao",
+                }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
@@ -176,7 +171,7 @@ namespace Fly01.Faturamento.Controllers
             var numeroNFNaoTransmitida = GetCertificado();
 
             if (numeroNFNaoTransmitida == 0)
-                return Json(new {numeroNFNaoTransmitidas = 0}, JsonRequestBehavior.AllowGet);
+                return Json(new { numeroNFNaoTransmitidas = 0 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
             {

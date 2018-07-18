@@ -9,9 +9,10 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class FeriadoController : BaseController<FeriadoVM>
     {
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<FeriadoVM, object> GetDisplayData()
         {
@@ -43,8 +44,11 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "Feriado"), UrlFunctions = Url.Action("Functions", "Feriado", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "Descricao", DisplayName = "Descrição", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "Dia", DisplayName = "Dia", Priority = 2 });

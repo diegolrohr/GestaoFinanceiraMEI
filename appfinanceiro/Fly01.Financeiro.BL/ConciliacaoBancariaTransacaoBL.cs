@@ -17,9 +17,7 @@ namespace Fly01.Financeiro.BL
         protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }
         protected ConciliacaoBancariaBL conciliacaoBancariaBL { get; set; }
 
-
-        public ConciliacaoBancariaTransacaoBL(AppDataContext Context, ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL,
-            ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL, CondicaoParcelamentoBL CondicaoParcelamentoBL, ConciliacaoBancariaItemBL ConciliacaoBancariaItemBL, ConciliacaoBancariaBL ConciliacaoBancariaBL) : base(Context)
+        public ConciliacaoBancariaTransacaoBL(AppDataContext Context, ConciliacaoBancariaItemContaFinanceiraBL ConciliacaoBancariaItemContaFinanceiraBL, ContaPagarBL ContaPagarBL, ContaReceberBL ContaReceberBL, CondicaoParcelamentoBL CondicaoParcelamentoBL, ConciliacaoBancariaItemBL ConciliacaoBancariaItemBL, ConciliacaoBancariaBL ConciliacaoBancariaBL) : base(Context)
         {
             conciliacaoBancariaItemContaFinanceiraBL = ConciliacaoBancariaItemContaFinanceiraBL;
             contaPagarBL = ContaPagarBL;
@@ -27,7 +25,6 @@ namespace Fly01.Financeiro.BL
             condicaoParcelamentoBL = CondicaoParcelamentoBL;
             conciliacaoBancariaItemBL = ConciliacaoBancariaItemBL;
             conciliacaoBancariaBL = ConciliacaoBancariaBL;
-
         }
 
         public override void Insert(ConciliacaoBancariaTransacao entity)

@@ -16,12 +16,29 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public class CategoriaBaseController<T> : BaseController<T> where T : CategoriaVM
     {
-        public CategoriaBaseController()
+        private string CategoriaResourceHash { get; set; }
+
+        public CategoriaBaseController(string categoriaResourceHash)
         {
+            CategoriaResourceHash = categoriaResourceHash;
             ExpandProperties = "categoriaPai($select=descricao)";
         }
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -33,12 +50,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Cadastro de Categoria",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -70,7 +82,7 @@ namespace Fly01.Core.Presentation.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoCarteira" } }
             });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaPaiId",
                 Class = "col s12",
@@ -80,10 +92,10 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrlPost = Url.Action("NovaCategoria"),
                 LabelId = "categoriaPaiDescricao",
                 PreFilter = "tipoCarteira"
-            });
+            }, CategoriaResourceHash));
 
             cfg.Content.Add(config);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         public override Func<T, object> GetDisplayData()
@@ -106,10 +118,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Categoria",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns="
             };
@@ -122,8 +131,12 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new DataTableUIConfig { PageLength = 50 }
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
+
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "descricao",

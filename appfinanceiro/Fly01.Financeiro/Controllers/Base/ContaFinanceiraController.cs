@@ -19,6 +19,7 @@ using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -34,6 +35,7 @@ namespace Fly01.Financeiro.Controllers.Base
         /// no grid de listagem
         /// </summary>
         /// <returns></returns>
+        [OperationRole(NotApply = true)]
         public override Func<TEntity, object> GetDisplayData()
         {
             return x => new
@@ -72,6 +74,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 repeticaoFilha = x.ContaFinanceiraRepeticaoPaiId != null && x.Repetir,
             };
         }
+        [OperationRole(NotApply = true)]
         public Func<TEntityBaixa, object> GetDisplayDataBaixas()
         {
             return x => new
@@ -82,6 +85,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 observacao = x.Observacao
             };
         }
+        [OperationRole(NotApply = true)]
         public Func<TEntity, object> GetDisplayDataRenegociacao()
         {
             return x => new
@@ -99,6 +103,7 @@ namespace Fly01.Financeiro.Controllers.Base
                 saldoSemFormatacao = x.Saldo
             };
         }
+        [OperationRole(NotApply = true)]
         public Func<TEntity, object> GetDisplayDataBaixaMultipla()
         {
             return x => new
@@ -124,7 +129,11 @@ namespace Fly01.Financeiro.Controllers.Base
             try
             {
                 entityVM.StatusContaBancaria = "EmAberto";
-                RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+
+                if (Request.Form["BaixarTitulo"] != null && bool.Parse(Request.Form["BaixarTitulo"]))
+                    entityVM.StatusContaBancaria = "Pago";
+
+                var conta = RestHelper.ExecutePostRequest<TEntity>(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
             }
@@ -139,7 +148,7 @@ namespace Fly01.Financeiro.Controllers.Base
         {
             List<ImprimirListContasVM> reportItens = new List<ImprimirListContasVM>();
 
-            foreach (TEntity  ListContas in contas)
+            foreach (TEntity ListContas in contas)
                 reportItens.Add(new ImprimirListContasVM
                 {
                     Id = ListContas.Id,
@@ -149,7 +158,7 @@ namespace Fly01.Financeiro.Controllers.Base
                     FormaPagamento = ListContas.FormaPagamento != null ? ListContas.FormaPagamento.Descricao : string.Empty,
                     Fornecedor = ListContas.Pessoa != null ? ListContas.Pessoa.Nome : string.Empty,
                     Vencimento = ListContas.DataVencimento,
-                    Titulo = titulo, 
+                    Titulo = titulo,
                     Numero = ListContas.Numero
                 });
 
@@ -167,6 +176,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return Json(id);
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult ListContaBaixas(string contaFinanceiraId)
         {
             try
@@ -194,6 +204,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpPost]
         public abstract JsonResult ListRenegociacaoRelacionamento(string contaFinanceiraId);
 
@@ -203,6 +214,7 @@ namespace Fly01.Financeiro.Controllers.Base
         /// </summary>
         /// <param name="id">Identificador do titulo</param>
         /// <returns></returns>
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult BaixaTitulo(Guid id)
         {
             TEntity entity = Get(id);
@@ -221,6 +233,8 @@ namespace Fly01.Financeiro.Controllers.Base
         /// </summary>
         /// <param name="entityVM">Entidade em questão</param>
         /// <returns></returns>
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult BaixaTitulo(TEntityBaixa entityVM)
         {
@@ -247,6 +261,8 @@ namespace Fly01.Financeiro.Controllers.Base
         /// </summary>
         /// <param name="id">Identificador do titulo</param>
         /// <returns></returns>
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult CancelarBaixaTitulo(string id)
         {
@@ -332,7 +348,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return View("Renegociacao");
         }
 
-
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult IncluirRenegociacao()
         {
             //string contaController
@@ -349,6 +365,7 @@ namespace Fly01.Financeiro.Controllers.Base
             return Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public virtual JsonResult IncluirRenegociacao(ContaFinanceiraRenegociacaoVM entityVM)
         {
@@ -385,7 +402,7 @@ namespace Fly01.Financeiro.Controllers.Base
         }
 
         #endregion
-        
+
         #region Bordero/CNAB
         /// <summary>
         /// Retorna Títulos que podem ser inclusos em um bordero
@@ -442,6 +459,7 @@ namespace Fly01.Financeiro.Controllers.Base
         /// <param name="id">Identificador do Título</param>
         /// <returns></returns>
         [HttpPost]
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult DeleteTituloBordero(string id)
         {
             try
@@ -528,17 +546,17 @@ namespace Fly01.Financeiro.Controllers.Base
             config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 l6", Label = "Data", Required = true });
             config.Elements.Add(new InputCurrencyUI { Id = "valor", Class = "col s12 l6", Label = "Valor", Required = true });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
                 Label = "Conta Bancária",
                 Required = true,
-                DataUrl = @Url.Action("ContaBancaria", "AutoComplete"),
+                DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
                 LabelId = "contaBancariaNomeConta",
                 DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
                 DataPostField = "nomeConta",
-            });
+            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
@@ -689,6 +707,5 @@ namespace Fly01.Financeiro.Controllers.Base
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
         #endregion
-
     }
 }

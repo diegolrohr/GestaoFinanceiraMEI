@@ -6,7 +6,7 @@ namespace Fly01.Core.Entities.Domains.Enum
     {
         [Subtitle("Entrada", "ENTRADA", "ENTRADA", "green")]
         Entrada = 1,
-        [Subtitle("Saida", "SAÍDA", "SAÍDA", "orange")]
+        [Subtitle("Saida", "SAÍDA", "SAÍDA", "totvs-blue")]
         Saida = 2
     }
 }

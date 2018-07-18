@@ -34,6 +34,15 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.4\lib\net45\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -41,6 +50,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,9 +65,10 @@
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
-    <Compile Include="Domains\Commons\AvaliacaoApp.cs" />
+    <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalCartaCorrecao.cs" />
     <Compile Include="Domains\Commons\Categoria.cs" />
     <Compile Include="Domains\Commons\CertificadoDigital.cs" />
     <Compile Include="Domains\Commons\Cest.cs" />
@@ -129,6 +143,7 @@
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraOrigem.cs" />
     <Compile Include="Domains\Commons\RenegociacaoContaFinanceiraRenegociada.cs" />
     <Compile Include="Domains\Commons\SaldoHistorico.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalInutilizada.cs" />
     <Compile Include="Domains\Commons\SerieNotaFiscal.cs" />
     <Compile Include="Domains\Commons\Servico.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
@@ -146,10 +161,10 @@
     <Compile Include="Domains\Enum\StatusConciliado.cs" />
     <Compile Include="Domains\Enum\StatusBoletoBancaria.cs" />
     <Compile Include="Domains\Enum\StatusContaBancaria.cs" />
+    <Compile Include="Domains\Enum\StatusCartacorrecao.cs" />
     <Compile Include="Domains\Enum\StatusNotaFiscal.cs" />
     <Compile Include="Domains\Enum\StatusOrdemCompra.cs" />
     <Compile Include="Domains\Enum\StatusOrdemVenda.cs" />
-    <Compile Include="Domains\Enum\StatusSerieNotaFiscal.cs" />
     <Compile Include="Domains\Enum\HorarioVerao.cs" />
     <Compile Include="Domains\Enum\TipoAmbiente.cs" />
     <Compile Include="Domains\Enum\TipoCodigoBanco.cs" />
@@ -186,6 +201,10 @@
     <Compile Include="Domains\Enum\TipoTributacaoISS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoPISCOFINS.cs" />
     <Compile Include="Domains\Enum\TipoVersaoNFe.cs" />
+    <Compile Include="Domains\NoSQL\LogIntegracaoRabbitMQ.cs" />
+    <Compile Include="Domains\NoSQL\LogRecordEvent.cs" />
+    <Compile Include="Domains\NoSQL\LogServiceBusEvent.cs" />
+    <Compile Include="Domains\NoSQL\RecordBaseMongoDB.cs" />
     <Compile Include="Domains\PlataformaBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

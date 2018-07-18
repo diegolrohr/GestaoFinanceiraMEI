@@ -67,7 +67,34 @@
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.submitErrorHandler(null, data.message);
             }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
             fly01.loading.stop();
+        });
+
+        fly01.loading.stop();
+        getInformacoesComplementares()
+    }
+
+    function getInformacoesComplementares() {
+        fly01.loading.start();
+        $.ajax({
+            url: '@Url.Action("GetInformacoesComplementares", "OrdemVenda")',
+            type: "GET",
+            data: {}
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('#mensagemPadraoNota').val(data.infcomp);
+                fly01.fn.updateTextFields("fly01frm");
+                fly01.loading.stop();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+                fly01.loading.stop();
+            }
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
@@ -82,7 +109,8 @@
         if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
 
-        $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         if ($('#tipoVenda').val() == "Devolucao") {
             $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
@@ -203,7 +231,7 @@
 
     function fnSetInformacoes() {
         $("#infoEstoqueNegativoField").text('O estoque não pode ficar negativo, portanto abaixo é exibido a relação dos produtos que ficarão com o estoque faltante. Marque a opção para ajustar automáticamente a quantidade negativa ou realize os ajustes '
-                + 'pelo aplicativo Fly01 Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
+            + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
     }
 
     function EstoqueNegativoETotal() {

@@ -6,6 +6,7 @@ using System.Web.OData.Builder;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace Fly01.Faturamento.API
 {
@@ -46,9 +47,10 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<NFSeServico>("nfseservico");
             builder.EntitySet<NFeProduto>("nfeproduto");
             builder.EntitySet<CertificadoDigital>("certificadodigital");
-            builder.EntitySet<SerieNotaFiscal>("serienotafiscalinutilizada");
+            builder.EntitySet<NotaFiscalInutilizada>("notafiscalinutilizada");
             builder.EntitySet<NotaFiscalItemTributacao>("notafiscalitemtributacao");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
+            builder.EntitySet<NotaFiscalCartaCorrecao>("notafiscalcartacorrecao");
 
             builder.EnableLowerCamelCase();
             
@@ -56,7 +58,7 @@ namespace Fly01.Faturamento.API
         }
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-
+        
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
 
         protected override void SetAppDefaults()

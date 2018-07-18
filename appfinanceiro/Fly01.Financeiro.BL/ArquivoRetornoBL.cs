@@ -1,10 +1,8 @@
-﻿using Fly01.Core.Base;
-using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.ViewModels;
-using Fly01.Core.Rest;
 using System.Text;
 using System.IO;
 using System.Linq;

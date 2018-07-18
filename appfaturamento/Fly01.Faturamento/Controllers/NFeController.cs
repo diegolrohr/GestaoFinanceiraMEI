@@ -3,6 +3,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -16,6 +17,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NFeController : BaseController<NFeVM>
     {
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
@@ -29,7 +31,7 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -187,6 +189,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ContentResult FormRetornoSefaz()
         {
             ModalUIForm config = new ModalUIForm()
@@ -216,6 +219,7 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult ModalTransmitir()
         {
             ModalUIForm config = new ModalUIForm()
@@ -282,12 +286,13 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPostModal = Url.Action("FormModalNFe", "SerieNotaFiscal"),
                 DataPostField = "serie"
             });
-            config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal" });
 
+            config.Elements.Add(new InputNumbersUI { Id = "numNotaFiscalNFe", Class = "col s12 m6", Label = "Número Nota Fiscal", Required = true, MinLength = 1, MaxLength = 9, Name = "numNotaFiscal" });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult Transmitir(NFeVM entity)
         {
@@ -312,6 +317,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ActionResult BaixarXML(Guid id)
         {
             try
@@ -333,6 +339,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ActionResult BaixarPDF(Guid id)
         {
             try
@@ -353,6 +360,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult Cancelar(Guid id)
         {
@@ -368,6 +376,11 @@ namespace Fly01.Faturamento.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

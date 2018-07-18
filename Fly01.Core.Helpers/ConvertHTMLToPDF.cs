@@ -18,5 +18,19 @@ namespace Fly01.Core.Helpers
 
             return bytes;
         }
+
+        public static Byte[] GerarArquivoPDF(string html)
+        {
+            Byte[] bytes = null;
+
+            var pdf = new NReco.PdfGenerator.HtmlToPdfConverter().GeneratePdf(html);
+            using (MemoryStream fs = new MemoryStream())
+            {
+                fs.Write(pdf, 0, pdf.Length);
+                bytes = fs.ToArray();
+                fs.Close();
+            }
+            return bytes;
+        }
     }
 }

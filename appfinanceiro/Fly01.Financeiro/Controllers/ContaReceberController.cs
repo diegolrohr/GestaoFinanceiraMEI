@@ -2,8 +2,10 @@
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Financeiro.Controllers.Base;
 using Fly01.Financeiro.Models.Reports;
@@ -24,6 +26,7 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroContasReceber)]
     public class ContaReceberController : ContaFinanceiraController<ContaReceberVM, ContaFinanceiraBaixaVM, ContaFinanceiraRenegociacaoVM>
     {
         public ContaReceberController()
@@ -34,21 +37,11 @@ namespace Fly01.Financeiro.Controllers
         public override ActionResult ImprimirRecibo(Guid id)
         {
             ContaReceberVM itemContaReceber = Get(id);
-            //ver??
-            //BankTransacVM itemBankTransac = GetBankTransac(id);
 
             double discount = 0;
             double interest = 0;
             double total = 0;
             string valorTituloTotalFormatado = string.Empty;
-
-            //if (itemBankTransac != null)
-            //{
-            //    discount = itemBankTransac.Discount.HasValue ? itemBankTransac.Discount.Value : 0;
-            //    interest = itemBankTransac.Interest.HasValue ? itemBankTransac.Interest.Value : 0;
-            //    total = itemBankTransac.Value + discount - interest;
-            //    valorTituloTotalFormatado = itemBankTransac.Value.ToString("C", AppDefaults.CultureInfoDefault);
-            //}
 
             var managerEmpresaVM = GetDadosEmpresa();
             total = itemContaReceber.ValorPago.Value;
@@ -62,7 +55,6 @@ namespace Fly01.Financeiro.Controllers
             ReciboContaFinanceiraVM itemRecibo = new ReciboContaFinanceiraVM
             {
                 Id = itemContaReceber.Id.ToString(),
-                //Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", itemContaReceber.Pessoa, valorTituloTotalFormatado, itemBankTransac.Value.toExtenso()),
                 Conteudo = String.Format("Recebemos de {0} o pagamento de {1} ({2}) referente à:", itemContaReceber.Pessoa.Nome, valorTituloTotalFormatado, itemContaReceber.ValorPago.Value.toExtenso()),
                 DescricaoTitulo = !String.IsNullOrWhiteSpace(itemContaReceber.Descricao) ? itemContaReceber.Descricao : itemContaReceber.Categoria.Descricao,
                 ValorTitulo = valorTituloFormatado,
@@ -79,8 +71,6 @@ namespace Fly01.Financeiro.Controllers
             };
 
             var reportViewer = new WebReportViewer<ReciboContaFinanceiraVM>(ReportRecibo.Instance);
-            //var report = ReportViewerHelper<ReciboContaFinanceiraVM>.GetReport(ReportRecibo.Instance, itemRecibo, SessionManager.Current.UserData.TokenData.Username, "");
-            //byte[] data = ReportViewerHelper<ReciboContaFinanceiraVM>.PrepareReportToPrint(report);
             return File(reportViewer.Print(itemRecibo, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
@@ -160,20 +150,34 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public override ContentResult List()
+        public override ContentResult List() 
+            => ListContaReceber();
+
+        public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string bntLabel, string btnOnClick)
         {
-            return ListContaReceber();
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "renegociacaoBtn", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR", Position = HtmlUIButtonPosition.In });
+                target.Add(new HtmlUIButton { Id = "printBtn", Label = "Imprimir", OnClickFn = "fnImprimirListContas", Position = HtmlUIButtonPosition.In });
+                target.Add(new HtmlUIButton { Id = "filterGrid", Label = bntLabel, OnClickFn = btnOnClick, Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
         }
 
         public ContentResult ListContaReceber(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todas as contas";
+            var buttonLabel = "Todas as contas";
             var buttonOnClick = "fnRemoveFilter";
 
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
-                buttonLabel = "Mostrar contas do mês atual";
+                buttonLabel = "Contas do mês";
                 buttonOnClick = "fnAddFilter";
             }
 
@@ -183,14 +187,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Contas a Receber",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" },
-                        new HtmlUIButton { Id = "baixasBtn", Label = "Baixas múltiplas", OnClickFn = "fnBaixaMultipla" },
-                        new HtmlUIButton { Id = "renegociacaoBtn", Label = "Renegociação", OnClickFn = "fnNovaRenegociacaoCR" },
-                        new HtmlUIButton { Id = "printBtn", Label = "Imprimir", OnClickFn = "fnImprimirListContas" },
-                        new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick },
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
             };
@@ -246,15 +243,18 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string>() { "fnRenderEnum", "fnImprimirBoleto" },
             };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" });
-            //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" });
-          //config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "(row.statusEnum == 'EmAberto')" },
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && row.repeticaoPai == false && row.repeticaoFilha == false)" },
+                new DataTableUIAction { OnClickFn = "fnExcluirRecorrencias", Label = "Excluir", ShowIf = "(row.statusEnum == 'EmAberto' && (row.repeticaoPai == true || row.repeticaoFilha == true))" },
+                new DataTableUIAction { OnClickFn = "fnNovaBaixa", Label = "Nova baixa", ShowIf = "row.statusEnum == 'EmAberto' || row.statusEnum == 'BaixadoParcialmente'" },
+                new DataTableUIAction { OnClickFn = "fnCancelarBaixas", Label = "Cancelar baixas", ShowIf = "row.statusEnum == 'Pago' || row.statusEnum == 'BaixadoParcialmente'" },
+                new DataTableUIAction { OnClickFn = "fnImprimirRecibo", Label = "Emitir recibo", ShowIf = "row.statusEnum == 'Pago'" },
+                new DataTableUIAction { OnClickFn = "fnModalImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento == 'Boleto'" },
+                new DataTableUIAction { OnClickFn = "fnEditImprimeBoleto", Label = "Imprimir boleto", ShowIf = "row.statusEnum != 'Pago' && row.formaPagamento != 'Boleto'" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn
             {
@@ -262,7 +262,7 @@ namespace Fly01.Financeiro.Controllers
                 DisplayName = "Status",
                 Priority = 0,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusContaBancaria))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto); }"
+                RenderFn = "fnRenderEnum(full.statusContaBancariaCssClass, full.statusContaBancariaNomeCompleto)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Nº", Priority = 1, Type = "number" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
@@ -293,7 +293,21 @@ namespace Fly01.Financeiro.Controllers
             return base.GridLoad();
         }
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvarRecorrencia", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -305,13 +319,10 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados do título a receber",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns=",
+                Functions = new List<string> { "fnSalvar" }
             };
 
             var config = new FormUI
@@ -321,18 +332,24 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List")
+                    List = @Url.Action("List"),
+                    Form = @Url.Action("Form")
                 },
                 ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "ContaReceber", null, Request.Url.Scheme) + "?fns=",
+                Id = "fly01frmContaReceber",
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "statusContaBancaria" });
             config.Elements.Add(new InputHiddenUI { Id = "descricaoParcela" });
+            config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
+            config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
+            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });
+
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "pessoaId",
                 Class = "col s12 l6",
@@ -341,7 +358,8 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = Url.Action("Cliente", "AutoComplete"),
                 LabelId = "pessoaNome",
                 DataUrlPost = Url.Action("PostCliente", "Cliente")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosClientes));
+
             config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorPrevisto",
@@ -369,7 +387,7 @@ namespace Fly01.Financeiro.Controllers
                     new DomEventUI { DomEvent = "change", Function = "fnChangeVencimento" }
                 }
             });
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -379,8 +397,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -390,8 +409,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 l6",
@@ -400,18 +420,29 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCR", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "repetir",
-                Class = "col s12",
+                Class = "col s6",
                 Label = "Repetir",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnChkRepetir" }
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "baixarTitulo",
+                Class = "col s6",
+                Label = "Marcar título como recebido?",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnChkBaixar" }
                 }
             });
 
@@ -472,9 +503,33 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            cfg.Content.Add(config);
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "contaBancariaId",
+                Class = "col s12",
+                Label = "Conta Bancária",
+                Required = true,
+                DataUrl = @Url.Action("ContaBancariaBanco", "AutoComplete"),
+                LabelId = "contaBancariaNomeConta",
+                DataUrlPostModal = @Url.Action("FormModal", "ContaBancaria"),
+                DataPostField = "nomeConta",
+            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            cfg.Content.Add(config);
+            return cfg;
+        }
+
+        public List<HtmlUIButton> GetFormButtonsRenegociacaoOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            }
+
+            return target;
         }
 
         public ContentResult FormRenegociacaoContaReceber()
@@ -489,11 +544,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados da renegociação",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar" },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsRenegociacaoOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -624,7 +675,7 @@ namespace Fly01.Financeiro.Controllers
             config2.Elements.Add(new InputTextUI { Id = "descricaoRenegociacao", Class = "col s12 m6 l6", Label = "Descrição", Required = true, MaxLength = 200 });
             config2.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3 l3", Label = "Emissão", Required = true });
             config2.Elements.Add(new InputDateUI { Id = "dtVencimento", Class = "col s12 m3 l3", Label = "Vencimento", Required = true });
-            config2.Elements.Add(new AutoCompleteUI
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
                 Class = "col s12 l6",
@@ -634,8 +685,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            });
-            config2.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosFormasPagamento));
+
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
                 Class = "col s12 l6",
@@ -645,8 +697,9 @@ namespace Fly01.Financeiro.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
-            });
-            config2.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento));
+
+            config2.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
                 Class = "col s12 l6",
@@ -655,7 +708,7 @@ namespace Fly01.Financeiro.Controllers
                 DataUrl = @Url.Action("CategoriaCR", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = Url.Action("NovaCategoriaReceita")
-            });
+            }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             cfg.Content.Add(config2);
 
@@ -683,7 +736,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "contaBancariaId",
                 Class = "col s12",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
@@ -692,6 +745,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override JsonResult Delete(Guid id)
         {
             if (Request.QueryString["excluirRecorrencias"] == "true")
@@ -711,37 +765,23 @@ namespace Fly01.Financeiro.Controllers
             return base.Delete(id);
         }
 
-        //public ContentResult ModalContaBancaria()
-        //{
-        //    ModalUIForm config = new ModalUIForm()
-        //    {
-        //        Title = "Selecione a conta bancária para gerar o boleto",
-        //        ConfirmAction = new ModalUIAction() { Label = "Gerar boleto" , OnClickFn = "fnImprimirBoleto" },
-        //        CancelAction = new ModalUIAction() { Label = "Cancelar" },
-        //        Action = new FormUIAction
-        //        {
-        //            Create = "", // @Url.Action("Create"),
-        //            Edit = "", //@Url.Action("Edit"),
-        //            Get = "", //@Url.Action("Json") + "/",
-        //        },
-        //        Id = "fly01mdlfrmModalCliente",
-        //        UrlFunctions = Url.Action("Functions") + "?fns="
-        //    };
 
+        public override JsonResult Edit(ContaReceberVM entityVM)
+        {
+            if (Request.QueryString["editarRecorrencias"] == "true")
+            {
+                var queryString = new Dictionary<string, string>
+                {
+                    { "editarRecorrencias", "true" }
+                };
 
-        //    config.Elements.Add(new InputHiddenUI { Id = "Id" });
-        //    config.Elements.Add(new AutoCompleteUI
-        //    {
-        //        Id = "bancoId",
-        //        Class = "col s12 m6 l6",
-        //        Label = "Banco cedente",
-        //        Required = true,
-        //        DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
-        //        LabelId = "bancoNome"
-        //    });
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Edit), queryString);
 
-        //    return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        //}
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Delete);
+            }
+            return base.Edit(entityVM);
+        }
 
         #region OnDemmand
 
@@ -789,6 +829,5 @@ namespace Fly01.Financeiro.Controllers
         }
 
         #endregion
-
     }
 }

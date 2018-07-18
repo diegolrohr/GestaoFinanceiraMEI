@@ -276,6 +276,30 @@
     <Compile Include="Migrations\201806251331308_AlterPessoaDadosEndereco.Designer.cs">
       <DependentUpon>201806251331308_AlterPessoaDadosEndereco.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806291151078_AlterSeriNotaFiscalRemoveStatus.cs" />
+    <Compile Include="Migrations\201806291151078_AlterSeriNotaFiscalRemoveStatus.Designer.cs">
+      <DependentUpon>201806291151078_AlterSeriNotaFiscalRemoveStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806291154479_CreateNotaFiscalInutilizada.cs" />
+    <Compile Include="Migrations\201806291154479_CreateNotaFiscalInutilizada.Designer.cs">
+      <DependentUpon>201806291154479_CreateNotaFiscalInutilizada.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.cs" />
+    <Compile Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.Designer.cs">
+      <DependentUpon>201806291922070_AlterNotaFiscalinutilizadaAddData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807041441195_CreateCartaCorrecao.cs" />
+    <Compile Include="Migrations\201807041441195_CreateCartaCorrecao.Designer.cs">
+      <DependentUpon>201807041441195_CreateCartaCorrecao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807062002291_AddStatusCartaCorrecao.cs" />
+    <Compile Include="Migrations\201807062002291_AddStatusCartaCorrecao.Designer.cs">
+      <DependentUpon>201807062002291_AddStatusCartaCorrecao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807111500244_AlterParametroTributario1.cs" />
+    <Compile Include="Migrations\201807111500244_AlterParametroTributario1.Designer.cs">
+      <DependentUpon>201807111500244_AlterParametroTributario1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -476,6 +500,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806251331308_AlterPessoaDadosEndereco.resx">
       <DependentUpon>201806251331308_AlterPessoaDadosEndereco.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806291151078_AlterSeriNotaFiscalRemoveStatus.resx">
+      <DependentUpon>201806291151078_AlterSeriNotaFiscalRemoveStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806291154479_CreateNotaFiscalInutilizada.resx">
+      <DependentUpon>201806291154479_CreateNotaFiscalInutilizada.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806291922070_AlterNotaFiscalinutilizadaAddData.resx">
+      <DependentUpon>201806291922070_AlterNotaFiscalinutilizadaAddData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807041441195_CreateCartaCorrecao.resx">
+      <DependentUpon>201807041441195_CreateCartaCorrecao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807062002291_AddStatusCartaCorrecao.resx">
+      <DependentUpon>201807062002291_AddStatusCartaCorrecao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807111500244_AlterParametroTributario1.resx">
+      <DependentUpon>201807111500244_AlterParametroTributario1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

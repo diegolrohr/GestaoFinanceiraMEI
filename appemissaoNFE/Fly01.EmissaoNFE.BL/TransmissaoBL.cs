@@ -137,7 +137,7 @@ namespace Fly01.EmissaoNFE.BL
                     entity.Fail((item.Identificador.TipoDocumentoFiscal < 0 || (int)item.Identificador.TipoDocumentoFiscal > 1),
                         new Error("O tipo da nota é inválido.", "Item.Identificador.TipoDocumentoFiscal"));
                     entity.Fail(((int)item.Identificador.DestinoOperacao < 1 || (int)item.Identificador.DestinoOperacao > 3),
-                        new Error("O tipo da nota é inválido.", "Item.Identificador.TipoDocumentoFiscal"));
+                        new Error("O tipo destino operação da nota é inválido.", "Item.Identificador.DestinoOperacao"));
                     entity.Fail(!CidadeBL.All.Any(e => e.CodigoIbge == item.Identificador.CodigoMunicipio),
                         new Error("O código do município é inválido.", "Item.Identificador.CodigoMunicipio"));
                     entity.Fail((item.Identificador.ImpressaoDANFE < 0 || (int)item.Identificador.ImpressaoDANFE > 5),

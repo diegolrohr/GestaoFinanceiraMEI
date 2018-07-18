@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {

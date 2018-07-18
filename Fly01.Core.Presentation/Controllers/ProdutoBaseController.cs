@@ -19,10 +19,12 @@ namespace Fly01.Core.Presentation.Controllers
     {
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
         protected string SelectProperties { get; set; }
-        public ProdutoBaseController()
-        {
-            ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo),enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)";
+        private string GrupoProdutoResourceHash { get; set; }
 
+        public ProdutoBaseController(string grupoProdutoResourceHash)
+        {
+            GrupoProdutoResourceHash = grupoProdutoResourceHash;
+            ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao),ncm($select=id,descricao),cest($select=id,descricao,codigo),enquadramentoLegalIPI($select=id,codigo,grupoCST,descricao)";
             SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo";
             GetDisplayDataSelect = x => new
             {
@@ -38,10 +40,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
         }
 
-        public override Func<T, object> GetDisplayData()
-        {
-            return GetDisplayDataSelect;
-        }
+        public override Func<T, object> GetDisplayData() 
+            => GetDisplayDataSelect;
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
@@ -52,6 +52,20 @@ namespace Fly01.Core.Presentation.Controllers
             return customFilters;
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUI
@@ -60,18 +74,18 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Produtos",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
@@ -82,7 +96,7 @@ namespace Fly01.Core.Presentation.Controllers
                 DisplayName = "Tipo",
                 Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao); }"
+                RenderFn = "fnRenderEnum(full.tipoProdutoCSS, full.tipoProdutoDescricao)"
             });
 
             cfg.Content.Add(config);
@@ -90,7 +104,7 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -102,12 +116,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados do Produto",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -143,8 +152,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
-
-            config.Elements.Add(new AutoCompleteUI
+            
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m3",
@@ -155,7 +164,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "grupoProdutoDescricao",
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
-            });
+            }, GrupoProdutoResourceHash));
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -226,21 +235,11 @@ namespace Fly01.Core.Presentation.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
-        public virtual List<TooltipUI> GetHelpers()
-        {
-            return null;
-            //config.Helpers.Add(new TooltipUI
-            //{
-            //    Id = "codigoBarras",
-            //    Tooltip = new HelperUITooltip()
-            //    {
-            //        Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
-            //    }
-            //});
-        }
+        public virtual List<TooltipUI> GetHelpers() 
+            => null;
 
         #region onDemand
 
@@ -304,7 +303,7 @@ namespace Fly01.Core.Presentation.Controllers
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
@@ -315,7 +314,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "grupoProdutoDescricao",
                 PreFilter = "tipoProduto",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
-            });
+            }, GrupoProdutoResourceHash));
 
             config.Elements.Add(new InputNumbersUI
             {
@@ -335,7 +334,6 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
-
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

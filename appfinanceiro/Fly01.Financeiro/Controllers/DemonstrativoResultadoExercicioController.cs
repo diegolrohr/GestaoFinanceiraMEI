@@ -1,5 +1,4 @@
-﻿using Fly01.Financeiro.Controllers.Base;
-using Fly01.Financeiro.ViewModel;
+﻿using Fly01.Financeiro.ViewModel;
 using Fly01.Financeiro.Models.Reports;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -17,13 +16,11 @@ using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE)]
     public class DemonstrativoResultadoExercicioController : BaseController<DemonstrativoResultadoExercicioVM>
     {
         [HttpGet]
-        public ActionResult Imprimir(DateTime dataInicial,
-                                     DateTime dataFinal,
-                                     bool somaRealizados = true,
-                                     bool somaPrevistos = false)
+        public ActionResult Imprimir(DateTime dataInicial, DateTime dataFinal, bool somaRealizados = true, bool somaPrevistos = false)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -48,19 +45,31 @@ namespace Fly01.Financeiro.Controllers
             return File(reportViewer.Print(movimentacao.Data, SessionManager.Current.UserData.PlatformUrl, $"Intervalo: {dataInicial:dd/MM/yyyy} a {dataFinal:dd/MM/yyyy}", parameters), "application/pdf");
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanRead)
+            {
+                target.Add(new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" });
+                target.Add(new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirDRE" });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
+            if (!UserCanRead)
+                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
                     Title = "DRE",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
-                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirDRE" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url.Scheme) + "?fns="
             };
@@ -73,22 +82,22 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12",
                 Elements = new List<BaseUI>
-                    {
-                        new InputDateUI { Id = "dataInicial", Class = "col s6", Label = "Data Inicial", Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
-                            DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
-                        },
-                        new InputDateUI { Id = "dataFinal", Class = "col s6", Label = "Data Final",
-                            Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
-                            DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
-                        }
+                {
+                    new InputDateUI { Id = "dataInicial", Class = "col s6", Label = "Data Inicial", Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
+                        DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
                     },
+                    new InputDateUI { Id = "dataFinal", Class = "col s6", Label = "Data Final",
+                        Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
+                        DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "change", Function = "fnAtualizar" } }
+                    }
+                },
                 ReadyFn = "fnFormReady"
             });
 
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m4",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardReceitas",
                 Title = "Receitas",
                 Placeholder = "R$ 0,00",
@@ -111,7 +120,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "Contas a pagar",
                     OnClick = @Url.Action("List", "ContaPagar")
                 }
-
             });
 
             cfg.Content.Add(new CardUI
@@ -126,7 +134,6 @@ namespace Fly01.Financeiro.Controllers
                     Label = "",
                     OnClick = ""
                 }
-
             });
 
             cfg.Content.Add(new DataTableUI
@@ -137,27 +144,32 @@ namespace Fly01.Financeiro.Controllers
                 UrlGridLoad = Url.Action("LoadReceitasPorCategoria", "ReceitaPorCategoria"),
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url?.Scheme) + "?fns=",
                 Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataInicial" },
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
+                {
+                    new DataTableUIParameter { Id = "dataInicial" },
+                    new DataTableUIParameter { Id = "dataFinal" }
+                },
                 Columns = new List<DataTableUIColumn>
+                {
+                    new DataTableUIColumn
                     {
-                        new DataTableUIColumn { DataField = "categoria",
-                                                DisplayName = "",
-                                                Priority = 1,
-                                                RenderFn = "fnRenderGroup",
-                                                Searchable = false,
-                                                Orderable = false },
-                        new DataTableUIColumn { DataField = "soma",
-                                                DisplayName = "",
-                                                Priority = 3,
-                                                RenderFn = "fnRenderSoma",
-                                                Orderable = false,
-                                                Searchable = false }
+                        DataField = "categoria",
+                        DisplayName = "",
+                        Priority = 1,
+                        RenderFn = "fnRenderGroup",
+                        Searchable = false,
+                        Orderable = false
                     },
+                    new DataTableUIColumn
+                    {
+                        DataField = "soma",
+                        DisplayName = "",
+                        Priority = 3,
+                        RenderFn = "fnRenderSoma",
+                        Orderable = false,
+                        Searchable = false
+                    }
+                },
                 Options = new DataTableUIConfig { PageLength = 30, WithoutRowMenu = true }
-
             });
 
             cfg.Content.Add(new DataTableUI
@@ -168,27 +180,32 @@ namespace Fly01.Financeiro.Controllers
                 UrlGridLoad = Url.Action("LoadDespesasPorCategoria", "DespesaPorCategoria"),
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url?.Scheme) + "?fns=",
                 Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataInicial" },
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
+                {
+                    new DataTableUIParameter { Id = "dataInicial" },
+                    new DataTableUIParameter { Id = "dataFinal" }
+                },
                 Columns = new List<DataTableUIColumn>
+                {
+                    new DataTableUIColumn
                     {
-                        new DataTableUIColumn { DataField = "categoria",
-                                                DisplayName = "",
-                                                Priority = 1,
-                                                RenderFn = "fnRenderGroup",
-                                                Searchable = false,
-                                                Orderable = false },
-                        new DataTableUIColumn { DataField = "soma",
-                                                DisplayName = "",
-                                                Priority = 3,
-                                                RenderFn = "fnRenderSoma",
-                                                Orderable = false,
-                                                Searchable = false }
+                        DataField = "categoria",
+                        DisplayName = "",
+                        Priority = 1,
+                        RenderFn = "fnRenderGroup",
+                        Searchable = false,
+                        Orderable = false
                     },
+                    new DataTableUIColumn
+                    {
+                        DataField = "soma",
+                        DisplayName = "",
+                        Priority = 3,
+                        RenderFn = "fnRenderSoma",
+                        Orderable = false,
+                        Searchable = false
+                    }
+                },
                 Options = new DataTableUIConfig { PageLength = 30, WithoutRowMenu = true }
-
             });
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -214,7 +231,7 @@ namespace Fly01.Financeiro.Controllers
             return Json(new { total }, JsonRequestBehavior.AllowGet);
         }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DemonstrativoResultadoExercicioVM, object> GetDisplayData() { throw new NotImplementedException(); }
     }

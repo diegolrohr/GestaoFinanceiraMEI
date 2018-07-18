@@ -8,16 +8,32 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
 using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
+        private List<HtmlUIButton> GetButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>
+            {
+                new HtmlUIButton() { Id = "atualizar", Label = "Atualizar", OnClickFn = "fnAtualizarPeriodo", Position = HtmlUIButtonPosition.Main }
+            };
+
+            if (UserCanPerformOperation(ResourceHashConst.EstoqueEstoquePosicaoAtual))
+                target.Add( new HtmlUIButton() { Id = "posicaoatual", Label = "Posição Atual", OnClickFn = "fnPosicaoAtual", Position = HtmlUIButtonPosition.Out });
+
+            return target;
+        }
+
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
-            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year,
-                                                        DateTime.Now.Month, 1)
-                                                        .AddDays(-1);
+            if (!UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueVisaoGeral))
+                return new ContentUI();
+
+            var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);
             var dataFinalFiltroDefault = DateTime.Now.Date;
 
             var cfg = new ContentUI
@@ -29,15 +45,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Visão Geral",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "atualizar",
-                                           Label = "Atualizar",
-                                           OnClickFn = "fnAtualizarPeriodo" },
-                        new HtmlUIButton { Id = "posicaoatual",
-                                           Label = "Posição Atual",
-                                           OnClickFn = "fnPosicaoAtual" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -192,46 +200,50 @@ namespace Fly01.Estoque.Controllers
 
             return cfg;
         }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Estoque", Parent = "header" };
 
             #region MenuItems
-
-            config.MenuItems.Add(new SidebarUIMenu()
+            var menuItems = new List<SidebarUIMenu>()
             {
-                Label = "Estoque",
-                Items = new List<LinkUI>
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Visão Geral", OnClick = @Url.Action("List")},
-                    new LinkUI() { Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
-                    new LinkUI() { Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
-                    new LinkUI() { Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Cadastros",
-                Items = new List<LinkUI>
+                    Class = ResourceHashConst.EstoqueEstoque,
+                    Label = "Estoque",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueAjusteManual, Label = "Ajuste Manual", OnClick = @Url.Action("Form", "AjusteManual")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoquePosicaoAtual, Label = "Posição Atual", OnClick = @Url.Action("List", "PosicaoAtual")},
+                        new LinkUI() { Class = ResourceHashConst.EstoqueEstoqueInventario, Label = "Inventário", OnClick = @Url.Action("List", "Inventario")}
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
-                    new LinkUI() { Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
-                    new LinkUI() { Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Ajuda",
-                Items = new List<LinkUI>
+                    Class = ResourceHashConst.EstoqueCadastros,
+                    Label = "Cadastros",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosGrupoProdutos, Label = "Grupos de Produtos", OnClick = @Url.Action("List", "GrupoProduto") },
+                        new LinkUI() { Class = ResourceHashConst.EstoqueCadastrosTiposMovimento, Label = "Tipos de Movimento", OnClick = @Url.Action("List", "TipoMovimento") }
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                }
-            });
+                    Class = ResourceHashConst.EstoqueAjuda,
+                    Label = "Ajuda",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.EstoqueAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                    }
+                },
+                new SidebarUIMenu() { Class = ResourceHashConst.EstoqueAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+            };
 
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") });
-
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items
@@ -245,13 +257,15 @@ namespace Fly01.Estoque.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
-            config.Widgets = new WidgetsUI();
-            config.Widgets.Conpass = new ConpassUI();
-            config.Widgets.Droz = new DrozUI();
-            config.Widgets.Zendesk = new ZendeskUI()
+            config.Widgets = new WidgetsUI
             {
-                AppName = "Fly01 Estoque",
-                AppTag = "fly01_manufatura",
+                Conpass = new ConpassUI(),
+                Droz = new DrozUI(),
+                Zendesk = new ZendeskUI()
+                {
+                    AppName = "Fly01 Gestão",
+                    AppTag = "chat_fly01_gestao",
+                }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };

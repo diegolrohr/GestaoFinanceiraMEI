@@ -371,6 +371,16 @@
     <Content Include="Views\ContaReceber\Functions\_fnFormModalContaBancaria.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnImprimirBoletoDeContasReceber.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnImprimirBoletoCnab.cshtml" />
+    <Content Include="Views\ArquivoRemessa\Functions\_fnGerarArquivo.cshtml" />
+    <Content Include="Views\Extrato\Functions\_fnContaBancariaDrawCB.cshtml" />
+    <Content Include="Views\Shared\NotAllow.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnChkBaixar.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnChkBaixar.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\Shared\View.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnExcluirRecorrencias.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnSalvarRecorrencia.cshtml" />
+    <Content Include="Views\ContaPagar\Functions\_fnSalvarRecorrencia.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -417,11 +427,11 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
+    <Reference Include="Boleto2Net, Version=2.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.2.5\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.7\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

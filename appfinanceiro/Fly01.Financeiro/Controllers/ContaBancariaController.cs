@@ -10,9 +10,13 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Rest;
+using Fly01.Core;
+using System.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosContasBancarias)]
     public class ContaBancariaController : BaseController<ContaBancariaVM>
     {
         public ContaBancariaController()
@@ -39,13 +43,16 @@ namespace Fly01.Financeiro.Controllers
                 nomeConta = x.NomeConta,
                 agencia = x.Agencia,
                 digitoAgencia = x.DigitoAgencia,
-                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ? 
+                conta = !string.IsNullOrEmpty(x.Conta) && !string.IsNullOrEmpty(x.DigitoConta) ?
                     $"{x.Conta} - {x.DigitoConta}"
                     : string.Empty,
                 digitoConta = x.DigitoConta,
                 registroFixo = x.RegistroFixo,
                 codigoCedente = x.CodigoCedente,
-                codigoDV = x.CodigoDV
+                codigoDV = x.CodigoDV,
+                taxaJuros = x.TaxaJuros,
+                percentualMulta = x.PercentualMulta,
+                //contaEmiteBoleto = x.ContaEmiteBoleto
             };
         }
 
@@ -57,18 +64,18 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Contas Bancárias",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns="
             };
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns=" };
 
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" });
-            config.Actions.Add(new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" });
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nomeConta", DisplayName = "Nome", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });
@@ -79,7 +86,21 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
+        }
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -91,12 +112,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Dados da conta bancária",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out },
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions", "ContaBancaria", null, Request.Url.Scheme) + "?fns="
             };
@@ -140,30 +156,68 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "checkCedente",
+                Id = "contaEmiteBoleto",
                 Class = "col s12 l10",
-                Label = "Informe o código do cedente",
+                Label = " Habilitar emissão de boletos bancários",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnChangeCheckCedende" },
                 }
             });
+
+            config.Elements.Add(new StaticTextUI
+            {
+                Id = "textInfoBoletos",
+                Class = "col s12",
+                Lines = new List<LineUI>
+                {
+                    new LineUI()
+                    {
+                        Tag = "h6",
+                        Text = "Se esta conta emite boletos bacários é necessários prencher os dados abaixo.",
+                    }
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col m12 l3", Label = "Código cedente", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col m12 l3", Label = "CódigoDV", Required = false, MaxLength = 150 });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "taxaJuros",
+                Class = "col m12 l3",
+                Label = "Taxa de juros",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "checkCedente",
+                Id = "taxaJuros",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Esta conta bancária emite boletos bancários? Marque para informar o código do cedente para este banco.",
+                    Text = "Informe a taxa de juros que será cobrado por dia após o vencimento do boleto, caso contrario, será utilizado a taxa de juros padão de 0.33% ao dia.",
+                    Position = TooltopUIPosition.Top
+                }
+            });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "percentualMulta",
+                Class = "col m12 l3",
+                Label = "Percentual Multa",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "percentualMulta",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe o percentual da multa que será cobrado por atraso após o vencimento do boleto, caso contrario, será utilizado o percentual padão de 2.00%.",
                     Position = TooltopUIPosition.Top
                 }
             });
 
-            config.Elements.Add(new InputTextUI { Id = "codigoCedente", Class = "col s6 m6 l6", Label = "Código cedente", Required = false, MaxLength = 150 });
-            config.Elements.Add(new InputTextUI { Id = "codigoDV", Class = "col s6 m6 l6", Label = "CódigoDV", Required = false, MaxLength = 150 });
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public ContentResult FormModal()
@@ -175,7 +229,7 @@ namespace Fly01.Financeiro.Controllers
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
-                    Create = @Url.Action("Create"),                    
+                    Create = @Url.Action("Create"),
                     Get = @Url.Action("Json") + "/",
                 },
                 Id = "fly01mdlfrmContaBancaria",
@@ -203,9 +257,18 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputTextUI { Id = "digitoAgencia", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
             config.Elements.Add(new InputTextUI { Id = "conta", Class = "col s3 m3 l2", Label = "Conta", Required = true, MinLength = 1, MaxLength = 10 });
             config.Elements.Add(new InputTextUI { Id = "digitoConta", Class = "col s1 m1 l1", Label = "Díg.", Required = true, MaxLength = 1 });
-            
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [HttpGet]
+        public JsonResult GetBancoEmiteBoleto(Guid id)
+        {
+            Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"id eq {id}");
+            var emiteBoleto = RestHelper.ExecuteGetRequest<ResultBase<BancoVM>>("Banco", queryString).Data.First().EmiteBoleto;
+
+            return Json(new { emiteBoleto }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

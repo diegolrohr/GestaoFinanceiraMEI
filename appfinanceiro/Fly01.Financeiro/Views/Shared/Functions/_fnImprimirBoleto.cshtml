@@ -1,6 +1,5 @@
 ﻿<script>
     function fnImprimirBoleto(contaReceberId, contaBancariaId, that) {
-        debugger;
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -39,15 +38,22 @@
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
-                        win.print();
-                        win.close();
+
+                        setTimeout(function () {
+                            win.print();
+                            win.close();
+                        }, 10);
                     }
                 } else {
                     fly01.loading.stop();
-                    fly01.toast(data.message, "error");
+                    fly01.fn.submitErrorHandler(null, data.message);
                 }
                 fly01.loading.stop();
             },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(textStatus, "error");
+            }
         });
     }
 </script>

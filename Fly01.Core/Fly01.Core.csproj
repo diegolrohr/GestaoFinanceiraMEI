@@ -43,6 +43,7 @@
     <Compile Include="Config\TokenDataVM.cs" />
     <Compile Include="Config\UserDataVM.cs" />
     <Compile Include="Defaults\JsonSerializerSetting.cs" />
+    <Compile Include="ResolveMessageType.cs" />
     <Compile Include="ValueObjects\InscricaoEstadualHelper.cs" />
     <Compile Include="ValueObjects\Interfaces\IDocumento.cs" />
     <Compile Include="ResultBase.cs" />
@@ -50,6 +51,8 @@
     <Compile Include="ValueObjects\CPF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
+    <Compile Include="ViewModels\EPermissionValue.cs" />
+    <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DashboardFinanceiroVM.cs" />
     <Compile Include="ViewModels\BoletoVM.cs" />
     <Compile Include="ViewModels\BuscaCepVM.cs" />
@@ -97,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Boleto2.Net.2.0.1\lib\Boleto2Net.dll</HintPath>
+      <HintPath>..\packages\Boleto2.Net.2.0.2\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -107,6 +110,7 @@
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Fly01.Core;
 using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
+using System;
 
 namespace Fly01.Faturamento.BL
 {
@@ -17,8 +18,11 @@ namespace Fly01.Faturamento.BL
         protected NFSeBL NFSeBL { get; set; }
         protected NotaFiscalBL NotaFiscalBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
+        protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL { get; set; }
 
-        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL, NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL)
+        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL,
+            NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL)
             : base(context)
         {
             TotalTributacaoBL = totalTributacao;
@@ -26,6 +30,8 @@ namespace Fly01.Faturamento.BL
             NFSeBL = nFSeBL;
             NotaFiscalBL = notaFiscalBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
+            NotaFiscalCartaCorrecaoBL = notaFiscalCartaCorrecaoBL;
         }
 
         public void AtualizaStatusTSS(string plataformaUrl)
@@ -91,6 +97,136 @@ namespace Fly01.Faturamento.BL
                                     nfse.Mensagem = itemNF.Mensagem;
                                     nfse.Recomendacao = itemNF.Recomendacao;
                                 }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
+        public void AtualizaStatusTSSInutilizada(string plataformaUrl)
+        {
+            var notasFiscaisInutilizadasByPlataforma = (from nf in NotaFiscalInutilizadaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.InutilizacaoSolicitada || x.Status == StatusNotaFiscal.Transmitida))
+                                                        where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
+                                                        group nf by nf.PlataformaId into g
+                                                        select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazChaveAcesso), notaFinal = g.Max(x => x.SefazChaveAcesso) });
+
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", AppUser },
+                { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
+            };
+
+            foreach (var dadosPlataforma in notasFiscaisInutilizadasByPlataforma)
+            {
+                try
+                {
+                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+
+                    if (dadosCertificado == null)
+                        continue;
+
+
+                    if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
+                    {
+                        var monitorVM = new MonitorVM()
+                        {
+                            Homologacao = dadosCertificado.Homologacao,
+                            Producao = dadosCertificado.Producao,
+                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            NotaInicial = dadosPlataforma.notaInicial.ToString(),
+                            NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                        };
+
+                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
+                        if (responseMonitor == null)
+                            continue;
+
+                        foreach (var itemNF in (from r in responseMonitor.Retornos
+                                                join nfi in NotaFiscalInutilizadaBL.Everything on r.NotaId equals nfi.SefazChaveAcesso
+                                                select r))
+                        {
+                            //Atualiza Status NF inutilizada;
+                            var nfInutilizada = NotaFiscalInutilizadaBL.Everything.Where(x => x.SefazChaveAcesso == itemNF.NotaId).FirstOrDefault();
+                            if (nfInutilizada != null)
+                            {
+                                nfInutilizada.Mensagem = null;
+                                nfInutilizada.Recomendacao = null;
+
+                                nfInutilizada.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                nfInutilizada.Mensagem = itemNF.Mensagem;
+                                nfInutilizada.Recomendacao = itemNF.Recomendacao;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
+        public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
+        {
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
+                                    where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
+                                    && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
+                                    group nf by nf.PlataformaId into g
+                                    select new { plataformaId = g.Key });
+
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", AppUser },
+                { "PlataformaUrl", string.IsNullOrEmpty(plataformaUrl) ? PlataformaUrl : plataformaUrl }
+            };
+
+
+            foreach (var dadosPlataforma in groupPlataformas)
+            {
+                try
+                {
+                    var dadosCertificado = CertificadoDigitalBL.GetEntidade(dadosPlataforma.plataformaId);
+
+                    if (dadosCertificado == null)
+                        continue;
+
+                    if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
+                    {
+                        var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecao>();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
+
+                        foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
+                        {
+                            var monitorEventoVM = new MonitorEventoVM()
+                            {
+                                Homologacao = dadosCertificado.Homologacao,
+                                Producao = dadosCertificado.Producao,
+                                EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                                IdEvento = cartaCorrecao.IdRetorno,
+                                SefazChaveAcesso = cartaCorrecao.NotaFiscal.SefazId
+                            };
+
+                            var responseMonitor = RestHelper.ExecutePostRequest<MonitorEventoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorevento", JsonConvert.SerializeObject(monitorEventoVM), null, header);
+                            if (responseMonitor == null)
+                                continue;                           
+                            
+                            cartaCorrecao.Mensagem = string.Format("{0} {1}",
+                                (responseMonitor.Motivo != null ? responseMonitor.Motivo : ""),
+                                (responseMonitor.MotivoEvento != null ? responseMonitor.MotivoEvento : ""));
+
+                            cartaCorrecao.Status = responseMonitor.Status;
+                            cartaCorrecao.XML = responseMonitor.XML;
+                            cartaCorrecao.IdRetorno = responseMonitor.IdEvento;
+
+                            if(responseMonitor.Status == StatusCartaCorrecao.RegistradoENaoVinculado || responseMonitor.Status == StatusCartaCorrecao.RegistradoEVinculado)
+                            {
+                                var idRetornoLength = cartaCorrecao.IdRetorno.Length;
+                                cartaCorrecao.Numero = int.Parse(responseMonitor.IdEvento.Substring(idRetornoLength - 2, 2));
                             }
                         }
                     }

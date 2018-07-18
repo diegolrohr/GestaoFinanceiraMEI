@@ -7,9 +7,11 @@ using System.Linq;
 using System.Web.Mvc;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(NotApply = true)]
     public class DespesaPorCategoriaController : BaseController<DespesaPorCategoriaVM>
     {
         private DateTime _dataInicial, _dataFinal;
@@ -64,6 +66,6 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
     }
 }

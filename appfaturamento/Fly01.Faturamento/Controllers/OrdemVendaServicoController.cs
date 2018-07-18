@@ -8,9 +8,12 @@ using Fly01.uiJS.Classes.Elements;
 using Newtonsoft.Json;
 using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoVendas)]
     public class OrdemVendaServicoController : BaseController<OrdemVendaServicoVM>
     {
         public OrdemVendaServicoController()
@@ -32,7 +35,7 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -55,7 +58,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "servicoId",
                 Class = "col s12 m6",
@@ -66,8 +69,9 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao",
                 LabelId = "servicoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeServico" } }
-            });
-            config.Elements.Add(new AutoCompleteUI
+            }, ResourceHashConst.FaturamentoCadastrosServicos));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoTributarioIdServico",
                 Class = "col s12 m6",
@@ -79,7 +83,7 @@ namespace Fly01.Faturamento.Controllers
                 LabelName = "grupoTributarioDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao"
-            });
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
             config.Elements.Add(new InputFloatUI
             {
@@ -109,12 +113,12 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Required = true, Disabled = true });
 
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult GetOrdemVendaServicos(string id)
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
@@ -122,6 +126,11 @@ namespace Fly01.Faturamento.Controllers
                 { "ordemVendaId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
             };
             return GridLoad(filters);
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

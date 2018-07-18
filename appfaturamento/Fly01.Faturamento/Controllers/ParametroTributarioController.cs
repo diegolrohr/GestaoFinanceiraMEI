@@ -14,9 +14,11 @@ using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesParametrosTributarios)]
     public class ParametroTributarioController : BaseController<ParametroTributarioVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -79,9 +81,23 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<ParametroTributarioVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() { return Form(); }
+        public override ContentResult List() 
+            => Form();
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" });
+
+            return target;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -92,10 +108,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Parâmetros Tributários | Nota Fiscal",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnAtualizaParametro", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -113,7 +126,7 @@ namespace Fly01.Faturamento.Controllers
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" });
+            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" , Disabled = true });
 
             cfg.Content.Add(form1);
 
@@ -124,7 +137,6 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
-
             };
 
             form2.Elements.Add(new InputCustommaskUI
@@ -311,7 +323,6 @@ namespace Fly01.Faturamento.Controllers
 
             #endregion
 
-
             #region Helpers 
             form3.Helpers.Add(new TooltipUI
             {
@@ -324,9 +335,10 @@ namespace Fly01.Faturamento.Controllers
             #endregion
             cfg.Content.Add(form3);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try
@@ -350,11 +362,11 @@ namespace Fly01.Faturamento.Controllers
                     tipoHorario = tipoHorario
                 };
 
-                if (dadosParametro.mensagemPadraoNota.Length > 200)
-                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 200");
+                if (dadosParametro.mensagemPadraoNota.Length > 5000)
+                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 5000 caracteres.");
 
                 if (dadosParametro.numeroRetornoNF.Length > 20)
-                    return JsonResponseStatus.GetFailure("Número de caracteres no Número de Retorno da Nota Fiscal não pode ser maior que 20");
+                    return JsonResponseStatus.GetFailure("Número de caracteres no Número de Retorno da Nota Fiscal não pode ser maior que 20 caracteres.");
 
                 ParametroTributarioVM parametroRetorno;
 

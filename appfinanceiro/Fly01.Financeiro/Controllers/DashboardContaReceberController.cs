@@ -12,19 +12,21 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasReceber)]
     public class DashboardContaReceberController : BaseController<DashboardContaReceberVM>
     {
-        public override ContentResult Form() { throw new NotImplementedException(); }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
 
         public override Func<DashboardContaReceberVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
         public override ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(DashboardContaReceberJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
-        }
+            => Content(JsonConvert.SerializeObject(DashboardContaReceberJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
 
-        protected internal static ContentUI DashboardContaReceberJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
+        protected ContentUI DashboardContaReceberJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
+            if (!UserCanRead)
+                return new ContentUI();
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "DashboardContaReceber") },
@@ -36,7 +38,6 @@ namespace Fly01.Financeiro.Controllers
             };
             if (withSidebarUrl)
                 cfg.SidebarUrl = url.Action("Sidebar", "DashboardContaReceber", null, scheme);
-
 
             cfg.Content.Add(new FormUI
             {

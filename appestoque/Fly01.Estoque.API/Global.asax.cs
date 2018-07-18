@@ -5,6 +5,7 @@ using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Configuration;
+using System.Collections.Generic;
 
 namespace Fly01.Estoque.API
 {
@@ -37,7 +38,7 @@ namespace Fly01.Estoque.API
         }
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-
+        
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
     }
 }

@@ -15,12 +15,14 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Mime;
 using System.Linq;
-using Fly01.Core.ViewModels.Presentation;
 using Fly01.Core.Rest;
-using Boleto2Net;
+using Fly01.Core.Presentation.JQueryDataTable;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCobrancaArquivosRemessa)]
     public class ArquivoRemessaController : BoletoController<ArquivoRemessaVM>
     {
         public ArquivoRemessaController()
@@ -46,6 +48,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
+        [OperationRole(NotApply = true)]
         [HttpPost]
         public ActionResult GetQtdArquivos(List<Guid> ids)
         {
@@ -69,6 +72,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        [OperationRole(NotApply = true)]
         [HttpGet]
         public ActionResult DownloadArquivoRemessa(List<string> ids)
         {
@@ -172,7 +176,20 @@ namespace Fly01.Financeiro.Controllers
             });
         }
 
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
+            }
+
+            return target;
+        }
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -183,9 +200,9 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Lista de boletos do arquivo",
-                    Buttons = new List<HtmlUIButton>()
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                     {
-                        new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" }
+                        
                     }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -210,7 +227,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "blue",
+                Color = "green",
                 Id = "cardObs",
                 Title = "Transmissão de arquivo",
                 Functions = new List<string>() { "fnFormReady" },
@@ -234,15 +251,28 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Columns = new List<DataTableUIColumn>
                 {
-                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"},
-                    new DataTableUIColumn { DataField = "nossoNumero", DisplayName = "Nosso numero", Priority = 6 },
+                    new DataTableUIColumn { DataField = "statusArquivoRemessa", DisplayName = "Status", Priority = 1, Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusCnab))), RenderFn ="fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip)"},
+                    new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nosso numero", Priority = 6 },
                     new DataTableUIColumn { DataField = "pessoa_nome", DisplayName = "Cliente", Priority = 3, Orderable = false, Searchable = false },
                     new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Data Vencimento", Priority = 6, Orderable = false, Searchable = false, Type = "date" },
                     new DataTableUIColumn { DataField = "valorBoleto", DisplayName = "Valor", Priority = 4, Orderable = false, Searchable = false, Type = "currency" },
                 }
             });
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
+        }
+
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>()
+            {
+                new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
+            };
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "GERAR ARQ. REMESSA", OnClickFn = "fnGerarArquivo" });
+
+            return target;                    
         }
 
         public override ContentResult List()
@@ -253,10 +283,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Arquivos remessa",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "btnViewBoletos", Label = "Visualizar boletos", OnClickFn = "fnListContasArquivo" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnEditar" }
@@ -281,7 +308,7 @@ namespace Fly01.Financeiro.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusArquivoRemessa))),
                 Priority = 1,
                 Width = "12%",
-                RenderFn = "function(data, type, full, meta) { return fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip); }"
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription, full.statusTooltip)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Arquivo", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn { DataField = "banco_nome", DisplayName = "Banco", Priority = 2 });
@@ -292,6 +319,36 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(NotApply = true)]
+        public JsonResult LoadGridBoletos()
+        {
+            var Id = Guid.Parse(Request.UrlReferrer.Segments.Last());
+
+            var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+            var response = GetCnab($"arquivoRemessaId eq {Id}");
+            return Json(new
+            {
+                recordsTotal = response.Count,
+                recordsFiltered = response.Count,
+                data = response.Select(item => new
+                {
+                    nossoNumero = item.NossoNumero,
+                    nossoNumeroFormatado = item.NossoNumeroFormatado,
+                    pessoa_nome = item.ContaReceber?.Pessoa?.Nome,
+                    valorBoleto = item.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
+                    dataEmissao = item.DataEmissao.ToString("dd/MM/yyyy"),
+                    dataVencimento = item.DataVencimento.ToString("dd/MM/yyyy"),
+                    statusArquivoRemessa = item.Status,
+                    statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), item.Status),
+                    statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), item.Status),
+                    statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), item.Status),
+                })
+
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

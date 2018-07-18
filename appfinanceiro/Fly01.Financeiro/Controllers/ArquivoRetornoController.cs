@@ -8,22 +8,40 @@ using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
-using System.Text;
-using System.IO;
 using Fly01.Core.Rest;
 using Fly01.Core;
 using System.Linq;
-using Fly01.Core.Config;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroCobrancaArquivoRetorno)]
     public class ArquivoRetornoController : BaseController<DomainBaseVM>
     {
-        public override ContentResult Form()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" });
+                target.Add(new HtmlUIButton() { Id = "baixar", Label = "Baixar contas", OnClickFn = "fnBaixarContas", Type = "submit" });
+            }
+
+            return target;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
+        {
+            if (!UserCanRead)
+                return new ContentUI();
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory()
@@ -33,11 +51,7 @@ namespace Fly01.Financeiro.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Importar arquivo de retorno",
-                    Buttons = new List<HtmlUIButton>()
-                    {
-                        new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnImportarArquivo", Type = "submit" },
-                        new HtmlUIButton() { Id = "baixar", Label = "Baixar contas", OnClickFn = "fnBaixarContas", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 Functions = new List<string> { "fnFormReady" },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -56,22 +70,22 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "contaBancariaId",
                 Class = "col s12 m6 l6",
-                Label = "Banco cedente",
+                Label = "Conta bancária cedente",
                 Required = true,
                 DataUrl = @Url.Action("ContaBancariaBancoEmiteBoleto", "AutoComplete") + "?emiteBoleto=true",
                 LabelId = "bancoNome"
-            });
+            }, ResourceHashConst.FinanceiroCadastrosContasBancarias));
 
             config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12 m6 l6", Label = "Arquivo de retorno do tipo (.ret)", Required = true, Accept = ".ret" });
 
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
-                Color = "blue",
+                Color = "green",
                 Id = "cardDuvidas",
                 Title = "Dicas",
                 Placeholder = "Selecione o banco de origem e localize o arquivo que deseja importar",
@@ -103,7 +117,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public override Func<DomainBaseVM, object> GetDisplayData()
@@ -116,6 +130,7 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
+        [OperationRole(NotApply = true)]
         public JsonResult ImportaArquivoRetorno(string valueArquivo, Guid contaBancariaId)
         {
             var arquivoRetorno = new ArquivoRetornoCnabVM()
@@ -157,6 +172,7 @@ namespace Fly01.Financeiro.Controllers
             };
         }
 
+        [OperationRole(NotApply = true)]
         [HttpPost]
         public JsonResult BaixarContasReceber(List<Guid> IdBoletos, List<string> IdToBaixa, Guid contaBancariaId)
         {

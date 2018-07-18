@@ -16,24 +16,26 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasPagar)]
     public class DashboardContaPagarController : BaseController<DashboardContaPagarVM>
     {
-        public override ContentResult Form()
+        protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
         }
+
         public override Func<DashboardContaPagarVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
 
         public override ContentResult List()
-        {
-            return Content(JsonConvert.SerializeObject(DashboardContaPagarJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
-        }
+            => Content(JsonConvert.SerializeObject(DashboardContaPagarJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
 
-        protected internal static ContentUI DashboardContaPagarJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
+        protected ContentUI DashboardContaPagarJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
+            if (!UserCanRead)
+                return new ContentUI();
 
             var cfg = new ContentUI
             {
@@ -44,9 +46,9 @@ namespace Fly01.Financeiro.Controllers
                 },
                 UrlFunctions = url.Action("Functions", "DashboardContaPagar") + "?fns="
             };
+
             if (withSidebarUrl)
                 cfg.SidebarUrl = url.Action("Sidebar", "DashboardContaPagar", null, scheme);
-
 
             cfg.Content.Add(new FormUI
             {

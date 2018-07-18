@@ -10,6 +10,8 @@ using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using Fly01.uiJS.Enums;
+using Fly01.Core.Presentation;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -17,6 +19,9 @@ namespace Fly01.Financeiro.Controllers
     {
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+            if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
+                return new ContentUI();
+
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
@@ -28,8 +33,8 @@ namespace Fly01.Financeiro.Controllers
                     Title = "Fluxo de Caixa",
                     Buttons = new List<HtmlUIButton>
                     {
-                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar" },
-                        new HtmlUIButton { Id = "print", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa" }
+                        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
+                        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
@@ -47,16 +52,16 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m8 offset-m2 printinfo",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardCabecalho",
                 Placeholder = response.RazaoSocial + " | CNPJ: " + response.CNPJ +
-                              " | Endereço: " + response.Endereco + ", "+ response.Numero +
+                              " | Endereço: " + response.Endereco + ", " + response.Numero +
                               " | Bairro: " + response.Bairro + " | CEP: " + response.CEP +
                               " | Cidade: " + responseCidade + " | Email: " + response.Email,
                 Action = new LinkUI
                 {
                     Label = "",
-                    OnClick= ""
+                    OnClick = ""
                 }
             });
 
@@ -101,9 +106,9 @@ namespace Fly01.Financeiro.Controllers
                         {
                             new ButtonGroupOptionUI { Id = "btnDia", Value = "1", Label = "Dia", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnMes", Value = "3", Label = "Mês", Class = "col s4 m2" },
-                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
                             new ButtonGroupOptionUI { Id = "btnTri", Value = "4", Label = "Trimestre", Class = "col s6 m3" },
                             new ButtonGroupOptionUI { Id = "btnSem", Value = "5", Label = "Semestre", Class = "col s6 m3" },
+                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
                         }
                     }
                 }
@@ -112,7 +117,7 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "orange",
+                Color = "totvs-blue",
                 Id = "fly01cardSA",
                 Title = "Saldo atual",
                 Placeholder = "R$ 0,00",
@@ -151,9 +156,9 @@ namespace Fly01.Financeiro.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "blue",
+                Color = "teal",
                 Id = "fly01cardSC",
-                Title = "Saldo Projetado",
+                Title = "Saldo projetado",
                 Placeholder = "R$ 0,00",
                 Action = new LinkUI
                 {
@@ -240,79 +245,86 @@ namespace Fly01.Financeiro.Controllers
 
             return cfg;
         }
+
         public override ContentResult Sidebar()
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
 
             #region MenuItems
-            config.MenuItems.Add(new SidebarUIMenu()
+            var menuItems = new List<SidebarUIMenu>()
             {
-                Label = "Dashboard",
-                Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
-                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
-            }
-            });
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Financeiro",
-                Items = new List<LinkUI>
-            {
-                new LinkUI() { Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                new LinkUI() { Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
-                new LinkUI() { Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
-                new LinkUI() { Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                new LinkUI() { Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                new LinkUI() { Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-            }
-            });
-
-            //config.MenuItems.Add(new SidebarUIMenu()
-            //{
-            //    Label = "Cobrança",
-            //    Items = new List<LinkUI>
-            //{
-            //    new LinkUI() { Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
-            //    new LinkUI() { Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
-            //    new LinkUI() { Label = "Importar A. retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
-            //}
-            //});
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Cadastros",
-                Items = new List<LinkUI>
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
-                    new LinkUI() { Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
-                    new LinkUI() { Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
-                    new LinkUI() { Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
-                    new LinkUI() { Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
-                    new LinkUI() { Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
-                    new LinkUI() { Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")}
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Configurações",
-                Items = new List<LinkUI>
+                    Class = ResourceHashConst.FinanceiroDashBoard,
+                    Label = "Dashboard",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "DashboardContaPagar")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
-                }
-            });
-
-            config.MenuItems.Add(new SidebarUIMenu()
-            {
-                Label = "Ajuda",
-                Items = new List<LinkUI>
+                    Class = ResourceHashConst.FinanceiroFinanceiro,
+                    Label = "Financeiro",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroExtrato, Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria, Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+                    }
+                },
+                new SidebarUIMenu()
                 {
-                    new LinkUI() { Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                }
-            });
+                    Class = ResourceHashConst.FinanceiroCobranca,
+                    Label = "Cobrança",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaBoletos, Label = "Boletos", OnClick = @Url.Action("List", "Cnab")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaArquivosRemessa, Label = "Arquivos de remessa", OnClick = @Url.Action("List", "ArquivoRemessa")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCobrancaArquivoRetorno, Label = "Arquivo de retorno", OnClick = @Url.Action("Form", "ArquivoRetorno")}
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.FinanceiroCadastros,
+                    Label = "Cadastros",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosClientes, Label = "Clientes",OnClick = @Url.Action("List", "Cliente")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosFornecedores, Label = "Fornecedores", OnClick = @Url.Action("List", "Fornecedor")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosTransportadoras, Label = "Transportadoras", OnClick = @Url.Action("List", "Transportadora")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCondicoesParcelamento, Label = "Condições de Parcelamento",OnClick = @Url.Action("List", "CondicaoParcelamento")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosFormasPagamento, Label = "Formas de Pagamento",OnClick = @Url.Action("List", "FormaPagamento")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroCadastrosContasBancarias, Label = "Contas Bancárias", OnClick = @Url.Action("List", "ContaBancaria")}
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.FinanceiroConfiguracoes,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.FinanceiroAjuda,
+                    Label = "Ajuda",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                    }
+                },
+                new SidebarUIMenu() { Class = ResourceHashConst.FinanceiroAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+            };
 
-            config.MenuItems.Add(new SidebarUIMenu() { Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp")});
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items
@@ -326,17 +338,19 @@ namespace Fly01.Financeiro.Controllers
             config.Name = SessionManager.Current.UserData.TokenData.Username;
             config.Email = SessionManager.Current.UserData.PlatformUser;
 
-            config.Widgets = new WidgetsUI();
-            config.Widgets.Conpass = new ConpassUI();
-            config.Widgets.Droz = new DrozUI();
-            config.Widgets.Zendesk = new ZendeskUI()
+            config.Widgets = new WidgetsUI
             {
-                AppName = "Fly01 Financeiro",
-                AppTag = "fly01_manufatura",
+                Conpass = new ConpassUI(),
+                Droz = new DrozUI(),
+                Zendesk = new ZendeskUI()
+                {
+                    AppName = "Fly01 Gestão",
+                    AppTag = "chat_fly01_gestao",
+                }
             };
             if (Request.Url.ToString().Contains("fly01.com.br"))
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
-            
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Fly01.Estoque.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
 using Fly01.Core;
 using Fly01.Core.Presentation.Commons;
 using Newtonsoft.Json;
@@ -12,17 +11,22 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Estoque.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.EstoqueEstoqueAjusteManual)]
     public class AjusteManualController : BaseController<AjusteManualVM>
     {
-
         public override Func<AjusteManualVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult List() { return Form(); }
+        public override ContentResult List()
+            => Form();
 
-        public override ContentResult Form()
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -34,10 +38,7 @@ namespace Fly01.Estoque.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Ajuste manual",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -71,7 +72,7 @@ namespace Fly01.Estoque.Controllers
 
             });
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "tipoMovimentoId",
                 Class = "col l6 m6 s12",
@@ -81,9 +82,9 @@ namespace Fly01.Estoque.Controllers
                 DataUrlPost = @Url.Action("NovoTipoMovimento"),
                 LabelId = "tipoMovimentoDescricao",
                 PreFilter = "tipoEntradaSaida"
-            });
+            }, ResourceHashConst.EstoqueCadastrosTiposMovimento));
 
-            config.Elements.Add(new AutoCompleteUI
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
                 Class = "col l12 m12 s12",
@@ -97,7 +98,7 @@ namespace Fly01.Estoque.Controllers
                 {
                     new DomEventUI { DomEvent = "blur", Function = "fnChangeProduto" }
                 }
-            });
+            }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col l4 m4 s12", Label = "Código", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l4 m4 s12", Label = "Código de barras", Disabled = true });
@@ -122,10 +123,11 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+            return cfg;
         }
 
         [HttpPost]
+        [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosTiposMovimento, PermissionValue = EPermissionValue.Write)]
         public JsonResult NovoTipoMovimento(string term)
         {
             try
@@ -148,7 +150,6 @@ namespace Fly01.Estoque.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
-
         }
     }
 }

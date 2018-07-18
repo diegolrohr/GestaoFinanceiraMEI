@@ -55,7 +55,11 @@ namespace Fly01.Core
 
         public static string RootPathApplication { get; set; }
 
+        public static string APICoreResourceName { get; set; }
+
         public static string APIEnumResourceName { get; set; }
+
+        public static string APIDomainResourceName { get; set; }
 
         public static string GetRootPathApplication(string app) => string.Format(RootPathApplication, app);
 

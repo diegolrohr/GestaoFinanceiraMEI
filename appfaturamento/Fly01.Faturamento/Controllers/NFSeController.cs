@@ -14,9 +14,11 @@ using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NFSeController : BaseController<NFSeVM>
     {
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
@@ -27,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override Func<NFSeVM, object> GetDisplayData() { throw new NotImplementedException(); }
 
-        public override ContentResult Form()
+        public ContentResult Modal()
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -150,6 +152,7 @@ namespace Fly01.Faturamento.Controllers
 
         public override ContentResult List() { throw new NotImplementedException(); }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult ModalTransmitir()
         {
             ModalUIForm config = new ModalUIForm()
@@ -219,6 +222,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult Transmitir(NFSeVM entity)
         {
@@ -243,6 +247,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]
         public JsonResult TotalNFSeServicos(string id)
         {
@@ -265,6 +270,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ActionResult BaixarXML(Guid id)
         {
             try
@@ -286,6 +292,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public ActionResult BaixarPDF(Guid id)
         {
             try
@@ -306,6 +313,7 @@ namespace Fly01.Faturamento.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult Cancelar(Guid id)
         {
@@ -321,6 +329,11 @@ namespace Fly01.Faturamento.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        protected override ContentUI FormJson()
+        {
+            throw new NotImplementedException();
         }
     }
 }

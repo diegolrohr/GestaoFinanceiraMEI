@@ -151,8 +151,9 @@
     }
 
     function fnFormReadyOrcamento() {
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
-        $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
         if (isCreate()) {
             var today = new Date();
             $("input#geraNotaFiscal").prop("checked", true);

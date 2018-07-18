@@ -1,13 +1,11 @@
 ﻿using Fly01.Core;
 using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
 using Fly01.Financeiro.ViewModel;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Defaults;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +13,8 @@ using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class FluxoCaixaController : Controller
+    [OperationRole(NotApply = true)]
+    public class FluxoCaixaController : PrimitiveBaseController
     {
         public JsonResult LoadSaldos(string dataFinal)
         {
@@ -91,23 +90,23 @@ namespace Fly01.Financeiro.Controllers
                         new {
                                 type = "line",
                                 label = "Saldo",
-                                backgroundColor = "rgb(99, 99, 99)",
-                                borderColor = "rgb(99, 99, 99)",
+                                backgroundColor = "rgb(44, 55, 57)",
+                                borderColor = "rgb(44, 55, 57)",
                                 data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
                                 fill = false
                             },
                         new {
                                 label = "Recebimentos",
                                 fill = false,
-                                backgroundColor = "rgb(75, 192, 192)",
-                                borderColor = "rgb(75, 192, 192)",
+                                backgroundColor = "rgb(0, 178, 121)",
+                                borderColor = "rgb(0, 178, 121)",
                                 data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
                             },
                         new {
                                 label = "Pagamentos",
                                 fill = false,
-                                backgroundColor = "rgb(255, 99, 132)",
-                                borderColor = "rgb(255, 99, 132)",
+                                backgroundColor = "rgb(239, 100, 97)",
+                                borderColor = "rgb(239, 100, 97)",
                                 data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
                         }
                     }

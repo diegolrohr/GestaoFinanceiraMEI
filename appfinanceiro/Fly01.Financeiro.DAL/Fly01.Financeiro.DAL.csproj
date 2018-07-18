@@ -180,6 +180,18 @@
     <Compile Include="Migrations\201806251359337_AddColumnCnab.Designer.cs">
       <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.cs" />
+    <Compile Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.Designer.cs">
+      <DependentUpon>201806272040218_AddColumnsTaxasJurosContaBancaria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807031843513_AddColumnEmiteBoletoContaBnacaria.cs" />
+    <Compile Include="Migrations\201807031843513_AddColumnEmiteBoletoContaBnacaria.Designer.cs">
+      <DependentUpon>201807031843513_AddColumnEmiteBoletoContaBnacaria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807041635128_ContaFinanceiraCreateSP.cs" />
+    <Compile Include="Migrations\201807041635128_ContaFinanceiraCreateSP.Designer.cs">
+      <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -299,8 +311,20 @@
     <EmbeddedResource Include="Migrations\201806251359337_AddColumnCnab.resx">
       <DependentUpon>201806251359337_AddColumnCnab.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806272040218_AddColumnsTaxasJurosContaBancaria.resx">
+      <DependentUpon>201806272040218_AddColumnsTaxasJurosContaBancaria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807031843513_AddColumnEmiteBoletoContaBnacaria.resx">
+      <DependentUpon>201807031843513_AddColumnEmiteBoletoContaBnacaria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807041635128_ContaFinanceiraCreateSP.resx">
+      <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Boleto2.Net.2.0.2\lib\Boleto2Net.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>

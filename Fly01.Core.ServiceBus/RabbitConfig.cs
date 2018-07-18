@@ -13,7 +13,9 @@ namespace Fly01.Core.ServiceBus
         public static string PlataformaUrl;
         public static string AppId => WebConfigurationManager.AppSettings["RabbitApplicationId"];
         public static string AMQPExchange => WebConfigurationManager.AppSettings["RabbitAMQPExchangeName"];
-        public static string QueueName => WebConfigurationManager.AppSettings["RabbitServiceQueueName"];
+        public static string QueueName => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev"
+            ? Environment.MachineName + "_" + WebConfigurationManager.AppSettings["RabbitServiceQueueName"]
+            : WebConfigurationManager.AppSettings["RabbitServiceQueueName"];
         public static string VirtualHostname => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev"
             ? Environment.MachineName
             : WebConfigurationManager.AppSettings["RabbitVirtualHostname"];
@@ -24,7 +26,10 @@ namespace Fly01.Core.ServiceBus
             Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
             VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"],
             UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
-            Password = WebConfigurationManager.AppSettings["RabbitPassword"]
+            Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+            DispatchConsumersAsync = true
+            //HostName = WebConfigurationManager.AppSettings["RabbitAMQPUrl"],
+            //Ssl = new SslOption("homolog", "", true)
         };
 
         public enum EnHttpVerb

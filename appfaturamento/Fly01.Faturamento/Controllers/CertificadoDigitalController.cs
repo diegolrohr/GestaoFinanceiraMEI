@@ -12,9 +12,12 @@ using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Rest;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoConfiguracoesCertificadoDigital)]
     public class CertificadoDigitalController : BaseController<CertificadoDigitalVM>
     {
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -61,7 +64,7 @@ namespace Fly01.Faturamento.Controllers
                         return Json(new
                         {
                             success = true,
-                            color = "orange",
+                            color = "totvs-blue",
                             mainInfo = "Seu certificado digital irá vencer em " + dtExpStr + ".",
                             subInfo = "Providêncie a atualização do seu certificado digital."
                         }, JsonRequestBehavior.AllowGet);
@@ -100,17 +103,29 @@ namespace Fly01.Faturamento.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet); ;
             }
         }
+
         public override Func<CertificadoDigitalVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
 
-        public override ContentResult List()
+        public override ContentResult List() 
+            => Form();
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
-            return Form();
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit", Position = HtmlUIButtonPosition.Main });
+
+            return target;
         }
 
-        public override ContentResult Form()
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public override ContentResult Form() => base.Form();
+
+        protected override ContentUI FormJson()
         {
             var cfg = new ContentUI
             {
@@ -121,10 +136,7 @@ namespace Fly01.Faturamento.Controllers
                 Header = new HtmlUIHeader
                 {
                     Title = "Certificado Digital A1",
-                    Buttons = new List<HtmlUIButton>
-                    {
-                        new HtmlUIButton() { Id = "save", Label = "Atualizar Certificado", OnClickFn = "fnAtualizaCertificado", Type = "submit" }
-                    }
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
@@ -161,7 +173,7 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         public JsonResult ImportaCertificado(string conteudo, string senha)

@@ -5,6 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
+    /*
+     * ATENÇÃO: Entidade utiliza StoreProcedures
+     * para processamento do Numero.
+     * MigrationName: ContaFinanceiraCreateSP
+     * (ISrael)
+    */
     public abstract class ContaFinanceira : PlataformaBase
     {
         public ContaFinanceira()
@@ -69,7 +75,7 @@ namespace Fly01.Core.Entities.Domains.Commons
                 return ValorPrevisto - (ValorPago.HasValue ? ValorPago.Value : 0.00);
             }
             set
-            { }   
+            { }
         }
 
         public int Numero { get; set; }
@@ -78,7 +84,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         public DateTime? DataDesconto { get; set; }
 
         public double? ValorDesconto { get; set; }
-        
         public string NomePessoa { get; set; }
 
         public Guid ContaBancariaId { get; set; }

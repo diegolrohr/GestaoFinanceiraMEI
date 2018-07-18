@@ -266,6 +266,8 @@
     <Content Include="Views\Shared\Functions\_fnChangeEstado.cshtml" />
     <Content Include="Views\Shared\NotAllow.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnAtualizaCertificado.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />

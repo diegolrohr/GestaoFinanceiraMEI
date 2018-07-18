@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.OData.Builder;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Collections.Generic;
 
 namespace Fly01.Financeiro.API
 {
@@ -53,13 +54,7 @@ namespace Fly01.Financeiro.API
         }
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-
-        //protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
-        //{
-        //    var workers = new List<ServiceBusBL> { new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL(), new ServiceBusBL() };
-
-        //    Parallel.ForEach(workers, worker => worker.Consume().Wait());
-        //});
+        
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
 
         protected override void SetAppDefaults()

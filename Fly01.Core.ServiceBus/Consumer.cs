@@ -12,14 +12,14 @@ namespace Fly01.Core.ServiceBus
 {
     public abstract class Consumer
     {
+        private IModel _channel;
+        private IConnection _connection;
         private string MsgHeaderInvalid = "A 'PlataformaUrl', o 'Hostname' e o 'AppUser' devem ser informados no Header da request";
 
-        private IConnection _connection;
         protected string Message;
         protected RabbitConfig.EnHttpVerb HTTPMethod;
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
-        protected abstract Task PersistMessage();
 
         private IConnection Connection
         {
@@ -29,6 +29,17 @@ namespace Fly01.Core.ServiceBus
                     _connection = RabbitConfig.Factory.CreateConnection("cnsm" + RabbitConfig.QueueName);
 
                 return _connection;
+            }
+        }
+
+        private IModel Channel
+        {
+            get
+            {
+                if (_channel == null)
+                    _channel = Connection.CreateModel();
+
+                return _channel;
             }
         }
 
@@ -47,111 +58,58 @@ namespace Fly01.Core.ServiceBus
             return Encoding.UTF8.GetString(Headers[key] as byte[]);
         }
 
-        private IModel Channel
+        public void Consume()
         {
-            get
-            {
-                var model = Connection.CreateModel();
-                return model;
-            }
+            var consumer = new AsyncEventingBasicConsumer(Channel);
+            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
+
+            consumer.Received += Consumer_Received;
         }
 
-        //public void Consume()
-        //{
-        //    Channel.BasicQos(0, 1, true);
-        //    var consumer = new EventingBasicConsumer(Channel);
-        //    var consumerTag = Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
-
-        //    consumer.Received += async (sender, args) =>
-        //    {
-        //        Channel.BasicAck(args.DeliveryTag, true);
-        //        if (args.BasicProperties.AppId != RabbitConfig.AppId)
-        //        {
-        //            if (args.BasicProperties.Headers == null)
-        //                throw new ArgumentException(MsgHeaderInvalid);
-
-        //            Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-        //            if (!HeaderIsValid())
-        //                throw new ArgumentException(MsgHeaderInvalid);
-
-        //            if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
-        //            {
-        //                Message = Encoding.UTF8.GetString(args.Body);
-        //                HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
-
-        //                RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-        //                RabbitConfig.AppUser = GetHeaderValue("AppUser");
-        //                RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
-
-        //                await PersistMessage();
-
-        //                foreach (var item in exceptions)
-        //                {
-        //                    var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
-
-        //                    SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-        //                }
-
-        //            }
-        //        }
-        //    };
-        //}
-
-        public async void Consume()
+        private async Task Consumer_Received(object sender, BasicDeliverEventArgs args)
         {
-            using (var channel = Connection.CreateModel())
+            try
             {
-                var queueingConsumer = new QueueingBasicConsumer(channel);
-                channel.BasicConsume(RabbitConfig.QueueName, false, "", queueingConsumer);
+                Channel.BasicAck(args.DeliveryTag, true);
 
-                while (true)
+                if (args.BasicProperties.Headers == null)
+                    throw new ArgumentException(MsgHeaderInvalid);
+
+                Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                if (!HeaderIsValid())
+                    throw new ArgumentException(MsgHeaderInvalid);
+
+                if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
                 {
-                    var args = queueingConsumer.Queue.Dequeue() as BasicDeliverEventArgs;
-
-                    try
+                    if (args.BasicProperties.AppId != RabbitConfig.AppId)
                     {
-                        channel.BasicAck(args.DeliveryTag, false);
+                        Message = Encoding.UTF8.GetString(args.Body);
+                        HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
 
-                        if (args.BasicProperties.Headers == null)
-                            throw new ArgumentException(MsgHeaderInvalid);
+                        RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
+                        RabbitConfig.AppUser = GetHeaderValue("AppUser");
+                        RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                        Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-                        if (!HeaderIsValid())
-                            throw new ArgumentException(MsgHeaderInvalid);
+                        await PersistMessage();
 
-                        if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
+                        foreach (var item in exceptions)
                         {
-                            if (args.BasicProperties.AppId != RabbitConfig.AppId)
-                            {
-                                Message = Encoding.UTF8.GetString(args.Body);
-                                HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
+                            var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
 
-                                RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-                                RabbitConfig.AppUser = GetHeaderValue("AppUser");
-                                RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
+                            SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
 
-                                await PersistMessage();
-
-                                if (exceptions.Count > 0)
-                                {
-                                    foreach (var item in exceptions)
-                                    {
-                                        var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
-
-                                        SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-                                        continue;
-                                    }
-                                }
-                            }
+                            continue;
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-                        continue;
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                Channel.BasicAck(args.DeliveryTag, true);
+            }
         }
+
+        protected abstract Task PersistMessage();
     }
 }

@@ -49,7 +49,7 @@ namespace Fly01.Compras.API
         }
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-
+        
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
     }
 }

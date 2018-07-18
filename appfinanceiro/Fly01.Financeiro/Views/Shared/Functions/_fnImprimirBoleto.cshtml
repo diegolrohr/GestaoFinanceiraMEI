@@ -46,10 +46,14 @@
                     }
                 } else {
                     fly01.loading.stop();
-                    fly01.toast(data.message, "error");
+                    fly01.fn.submitErrorHandler(null, data.message);
                 }
                 fly01.loading.stop();
             },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(textStatus, "error");
+            }
         });
     }
 </script>

@@ -71,7 +71,7 @@ namespace Fly01.Compras.Controllers
         }
 
         protected override ContentUI FormJson()
-            => FormOrcamento();
+            => FormOrcamentoJson();
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
@@ -85,7 +85,10 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public ContentUI FormOrcamento(bool isEdit = false)
+        public ContentResult FormOrcamento(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormOrcamentoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
+        private ContentUI FormOrcamentoJson(bool isEdit = false)
         {
             var cfg = new ContentUI
             {

@@ -696,8 +696,9 @@ namespace Fly01.Faturamento.Controllers
             try
             {
                 var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+
                 return Json(
-                    new { success = true, infcomp = response.Data.FirstOrDefault().MensagemPadraoNota },
+                    new { success = true, infcomp = response.Data.FirstOrDefault()?.MensagemPadraoNota },
                     JsonRequestBehavior.AllowGet
                 );
             }

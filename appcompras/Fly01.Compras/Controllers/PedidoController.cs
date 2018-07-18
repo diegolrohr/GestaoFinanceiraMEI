@@ -107,8 +107,11 @@ namespace Fly01.Compras.Controllers
         }
 
         protected override ContentUI FormJson()
-            => FormPedido();
-        
+            => FormPedidoJson();
+
+        public ContentResult FormPedido(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormPedidoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
@@ -121,7 +124,7 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        public ContentUI FormPedido(bool isEdit = false)
+        private ContentUI FormPedidoJson(bool isEdit = false)
         {
             var cfg = new ContentUI
             {

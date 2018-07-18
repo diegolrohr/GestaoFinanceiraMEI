@@ -7,6 +7,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Fly01.Estoque.BL
 {
@@ -103,10 +104,7 @@ namespace Fly01.Estoque.BL
 
         public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
         {
-            var data = JsonConvert.SerializeObject(message);
-
-            foreach (var item in MessageType.Resolve<dynamic>(data))
-                Movimenta(item);
+            Movimenta(message);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

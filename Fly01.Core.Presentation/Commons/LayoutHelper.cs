@@ -5,13 +5,10 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        private static string cdnVersion = "1.1.3";
+        private static string cdnVersion = "1.1.4";
 
-        private static string localUrl = "http://poad257.poa01.local:8000";
-        private static string cdnUrl = "https://cdnfly01.azureedge.net";
-
-        private static string serverUrl = $"{cdnUrl}/fly/{cdnVersion}"; /*
-        private static string serverUrl = $"{localUrl}/{cdnVersion}"; /**/
+        private static string serverUrl = $"https://cdnfly01.azureedge.net/fly/{cdnVersion}"; /*
+        private static string serverUrl = $"http://poad257.poa01.local:8000/{cdnVersion}"; /**/
 
         public static IHtmlString HeadTemplate(this HtmlHelper<dynamic> html, string appName)
         {

@@ -22,18 +22,15 @@ namespace Fly01.Core.ServiceBus
             replyQueueName = channel.QueueDeclare().QueueName;
             consumer = new EventingBasicConsumer(channel);
 
-            props = channel.CreateBasicProperties();
             var correlationId = Guid.NewGuid().ToString();
+            props = channel.CreateBasicProperties();
             props.CorrelationId = correlationId;
             props.ReplyTo = replyQueueName;
 
             consumer.Received += (model, ea) =>
             {
-                var body = ea.Body;
-                var response = Encoding.UTF8.GetString(body);
-
                 if (ea.BasicProperties.CorrelationId == correlationId)
-                    respQueue.Add(response);
+                    respQueue.Add(Encoding.UTF8.GetString(ea.Body));
             };
         }
 
@@ -41,9 +38,16 @@ namespace Fly01.Core.ServiceBus
         {
             var messageBytes = Encoding.UTF8.GetBytes(message);
 
-            channel.BasicPublish("", "sequence-generator-queue", props, messageBytes);
+            channel.BasicPublish(
+                exchange: "",
+                routingKey: "sequence-generator-queue",
+                basicProperties: props,
+                body: messageBytes);
 
-            channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
+            channel.BasicConsume(
+                consumer: consumer,
+                queue: replyQueueName,
+                autoAck: true);
 
             return respQueue.Take();
         }

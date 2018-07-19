@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201807041635128_ContaFinanceiraCreateSP.Designer.cs">
       <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807191416036_RemoveProcedureContaFinanceira.cs" />
+    <Compile Include="Migrations\201807191416036_RemoveProcedureContaFinanceira.Designer.cs">
+      <DependentUpon>201807191416036_RemoveProcedureContaFinanceira.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -319,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807041635128_ContaFinanceiraCreateSP.resx">
       <DependentUpon>201807041635128_ContaFinanceiraCreateSP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807191416036_RemoveProcedureContaFinanceira.resx">
+      <DependentUpon>201807191416036_RemoveProcedureContaFinanceira.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

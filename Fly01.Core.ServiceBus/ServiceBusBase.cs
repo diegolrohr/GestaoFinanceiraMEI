@@ -20,8 +20,6 @@ namespace Fly01.Core.ServiceBus
 
             if (AssemblyBL == null)
                 AssemblyBL = assemblyBL;
-
-            base.Consume();
         }
 
         protected override async Task PersistMessage()
@@ -29,7 +27,7 @@ namespace Fly01.Core.ServiceBus
             var domainAssembly = Assembly.Load("Fly01.Core.Entities").GetType($"Fly01.Core.Entities.Domains.Commons.{RabbitConfig.RoutingKey}");
             exceptions = new List<KeyValuePair<string, object>>();
             unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
-            entidade = AssemblyBL.GetProperty(RabbitConfig.RoutingKey + "BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
+            entidade = AssemblyBL.GetProperty($"{RabbitConfig.RoutingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
 
             foreach (var item in MessageType.Resolve<dynamic>(Message))
             {

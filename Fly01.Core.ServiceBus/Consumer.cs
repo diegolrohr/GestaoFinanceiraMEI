@@ -69,8 +69,6 @@ namespace Fly01.Core.ServiceBus
             {
                 try
                 {
-                    Channel.BasicAck(args.DeliveryTag, false);
-
                     if (args.BasicProperties.Headers == null)
                         throw new ArgumentException(MsgHeaderInvalid);
 
@@ -105,6 +103,9 @@ namespace Fly01.Core.ServiceBus
                 catch (Exception ex)
                 {
                     SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
+                }
+                finally
+                {
                     Channel.BasicAck(args.DeliveryTag, false);
                 }
             };

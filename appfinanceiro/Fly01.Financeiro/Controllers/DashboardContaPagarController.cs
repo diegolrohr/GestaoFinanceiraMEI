@@ -41,8 +41,7 @@ namespace Fly01.Financeiro.Controllers
                     var other = new DashboardContaPagarChartVM
                     {
                         Tipo = "Outras",
-                        Total = response.OrderByDescending(x => x.Total).Skip(5).Sum(x => x.Total),
-                        Quantidade = response.OrderByDescending(x => x.Total).Skip(5).Sum(x => x.Quantidade)
+                        Total = response.OrderByDescending(x => x.Total).Skip(5).Sum(x => x.Total)                      
                     };
 
                     response = response.OrderByDescending(x => x.Total).Take(5).ToList();
@@ -57,8 +56,8 @@ namespace Fly01.Financeiro.Controllers
         {
             var colors = new[]
             {
-                "rgba(243, 112, 33, 0.9)",
                 "rgba(250, 166, 52, 0.9)",
+                "rgba(243, 112, 33, 0.9)",
                 "rgba(0, 52, 88, 0.9)",
                 "rgba(0, 103, 139, 0.9)",
                 "rgba(12, 154, 190, 0.9)",
@@ -74,14 +73,7 @@ namespace Fly01.Financeiro.Controllers
                         data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                         backgroundColor = colors,
                         borderWidth = 1
-                    },
-                    new
-                    {
-                        data = response.Select(x => (x.Quantidade)).ToArray(),
-                        backgroundColor = colors,
-                        borderWidth = 1
                     }
-
                 }
             };
         }
@@ -117,7 +109,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     center = new
                     {
-                        maxText= "AAAAAA",
+                        maxText= "R$ AA.AAA,AA",
 					    fontColor= "#2c3739",
                         fontFamily = "'Roboto', 'Arial', sans-serif",
 					    fontStyle= "normal",

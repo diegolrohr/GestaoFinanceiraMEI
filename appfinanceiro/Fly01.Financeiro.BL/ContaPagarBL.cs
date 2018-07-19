@@ -16,14 +16,12 @@ namespace Fly01.Financeiro.BL
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         private ContaFinanceiraBaixaBL contaFinanceiraBaixaBL;
         private PessoaBL pessoaBL;
-        private RpcClient rpcClient;
 
         public ContaPagarBL(AppDataContext context, CondicaoParcelamentoBL condicaoParcelamentoBL, ContaFinanceiraBaixaBL contaFinanceiraBaixaBL, PessoaBL pessoaBL) : base(context)
         {
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
             this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
             this.pessoaBL = pessoaBL;
-            rpcClient = new RpcClient();
 
             MustConsumeMessageServiceBus = true;
         }
@@ -69,8 +67,8 @@ namespace Fly01.Financeiro.BL
                     itemContaPagar.ValorPrevisto = parcela.Valor;
                     itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
-                    var numero = rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira=1");
-                    itemContaPagar.Numero = int.Parse(numero);
+                    //var numero = new RpcClient().Call($"plataformaid={entity.PlataformaId},tipocontafinanceira=1");
+                    //itemContaPagar.Numero = int.Parse(numero);
 
                     if (iParcela == default(int))
                         itemContaPagar.Id = contaFinanceiraPrincipal;
@@ -81,7 +79,6 @@ namespace Fly01.Financeiro.BL
                         if (repetir)
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
-
 
                     base.Insert(itemContaPagar);
 

@@ -5,9 +5,6 @@ using Fly01.Core.ServiceBus;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Fly01.Estoque.BL
 {
@@ -16,10 +13,7 @@ namespace Fly01.Estoque.BL
         protected ProdutoBL ProdutoBL;
         protected TipoMovimentoBL TipoMovimentoBL;
 
-        public MovimentoBL(AppDataContextBase context,
-                           ProdutoBL produtoBL,
-                           TipoMovimentoBL tipoMovimentoBL)
-            : base(context)
+        public MovimentoBL(AppDataContextBase context, ProdutoBL produtoBL, TipoMovimentoBL tipoMovimentoBL) : base(context)
         {
             ProdutoBL = produtoBL;
             TipoMovimentoBL = tipoMovimentoBL;

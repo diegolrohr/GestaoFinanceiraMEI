@@ -8,7 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.BL
 {
-    public class MovimentoBL : PlataformaBaseBL<MovimentoEstoque>
+    public class MovimentoEstoqueBL : PlataformaBaseBL<MovimentoEstoque>
     {
         protected ProdutoBL ProdutoBL;
         protected TipoMovimentoBL TipoMovimentoBL;

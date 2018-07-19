@@ -9,13 +9,13 @@ namespace Fly01.Estoque.BL
     public class AjusteManualBL : PlataformaBaseBL<AjusteManual>
     {
         protected ProdutoBL ProdutoBL;
-        protected MovimentoBL MovimentoBL;
+        protected MovimentoEstoqueBL MovimentoEstoqueBL;
         protected InventarioItemBL InventarioItemBL;
 
-        public AjusteManualBL(AppDataContextBase context, MovimentoBL movimentoBL, ProdutoBL produtoBL, InventarioItemBL inventarioItemBL)
+        public AjusteManualBL(AppDataContextBase context, MovimentoEstoqueBL movimentoEstoqueBL, ProdutoBL produtoBL, InventarioItemBL inventarioItemBL)
             : base(context)
         {
-            MovimentoBL = movimentoBL;
+            MovimentoEstoqueBL = movimentoEstoqueBL;
             ProdutoBL = produtoBL;
             InventarioItemBL = inventarioItemBL;
         }
@@ -54,7 +54,7 @@ namespace Fly01.Estoque.BL
                 ProdutoId = entity.ProdutoId,
             };
 
-            MovimentoBL.Insert(movimento);
+            MovimentoEstoqueBL.Insert(movimento);
 
             entity.PlataformaId = movimento.PlataformaId; // TODO: Ver se tem como não precisar passar PlataformaId
             entity.UsuarioInclusao = movimento.UsuarioInclusao; // TODO: Ver se tem como não precisar passar UsuarioInclusao

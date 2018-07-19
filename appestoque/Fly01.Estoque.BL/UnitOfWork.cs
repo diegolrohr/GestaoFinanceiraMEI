@@ -48,7 +48,7 @@ namespace Fly01.Estoque.BL
         public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
 
         private InventarioItemBL inventarioItemBL;
-        public InventarioItemBL InventarioItemBL => inventarioItemBL ?? (inventarioItemBL = new InventarioItemBL(Context, MovimentoBL));
+        public InventarioItemBL InventarioItemBL => inventarioItemBL ?? (inventarioItemBL = new InventarioItemBL(Context, MovimentoEstoqueBL));
 
         private InventarioBL inventarioBL;
         public InventarioBL InventarioBL => inventarioBL ?? (inventarioBL = new InventarioBL(Context, InventarioItemBL));
@@ -60,22 +60,22 @@ namespace Fly01.Estoque.BL
         public PosicaoAtualBL PosicaoAtualBL => posicaoAtualBL ?? (posicaoAtualBL = new PosicaoAtualBL(Context, ProdutoBL));
 
         private AjusteManualBL ajusteManualBL;
-        public AjusteManualBL AjusteManualBL => ajusteManualBL ?? (ajusteManualBL = new AjusteManualBL(Context, MovimentoBL, ProdutoBL, InventarioItemBL));
+        public AjusteManualBL AjusteManualBL => ajusteManualBL ?? (ajusteManualBL = new AjusteManualBL(Context, MovimentoEstoqueBL, ProdutoBL, InventarioItemBL));
 
-        private MovimentoBL movimentoBL;
-        public MovimentoBL MovimentoBL => movimentoBL ?? (movimentoBL = new MovimentoBL(Context, ProdutoBL, TipoMovimentoBL));
+        private MovimentoEstoqueBL movimentoEstoqueBL;
+        public MovimentoEstoqueBL MovimentoEstoqueBL => movimentoEstoqueBL ?? (movimentoEstoqueBL = new MovimentoEstoqueBL(Context, ProdutoBL, TipoMovimentoBL));
 
         private ProdutosMaisMovimentadosBL produtosMaisMovimentadosBL;
-        public ProdutosMaisMovimentadosBL ProdutosMaisMovimentadosBL => produtosMaisMovimentadosBL ?? (produtosMaisMovimentadosBL = new ProdutosMaisMovimentadosBL(Context, MovimentoBL));
+        public ProdutosMaisMovimentadosBL ProdutosMaisMovimentadosBL => produtosMaisMovimentadosBL ?? (produtosMaisMovimentadosBL = new ProdutosMaisMovimentadosBL(Context, MovimentoEstoqueBL));
 
         private ProdutosMenosMovimentadosBL produtosMenosMovimentadosBL;
-        public ProdutosMenosMovimentadosBL ProdutosMenosMovimentadosBL => produtosMenosMovimentadosBL ?? (produtosMenosMovimentadosBL = new ProdutosMenosMovimentadosBL(Context, MovimentoBL));
+        public ProdutosMenosMovimentadosBL ProdutosMenosMovimentadosBL => produtosMenosMovimentadosBL ?? (produtosMenosMovimentadosBL = new ProdutosMenosMovimentadosBL(Context, MovimentoEstoqueBL));
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));
 
         private MovimentoOrdemVendaBL movimentoOrdemVendaBL;
-        public MovimentoOrdemVendaBL MovimentoOrdemVendaBL => movimentoOrdemVendaBL ?? (movimentoOrdemVendaBL = new MovimentoOrdemVendaBL(Context, ProdutoBL, MovimentoBL));
+        public MovimentoOrdemVendaBL MovimentoOrdemVendaBL => movimentoOrdemVendaBL ?? (movimentoOrdemVendaBL = new MovimentoOrdemVendaBL(Context, ProdutoBL, MovimentoEstoqueBL));
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));

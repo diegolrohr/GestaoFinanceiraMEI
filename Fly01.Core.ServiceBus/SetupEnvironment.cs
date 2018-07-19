@@ -16,7 +16,7 @@ namespace Fly01.Core.ServiceBus
                     {
                         channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
                         channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
-
+                        
                         RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
                     }
                 }

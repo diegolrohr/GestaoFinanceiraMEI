@@ -6,7 +6,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
     {
 
     }
-    public class DashboardContaPagarStatusVM
+    public class DashboardContaPagarChartVM
     {
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
@@ -17,31 +17,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("quantidade")]
         public double Quantidade { get; set; }
     }
-
-    public class DashboardContaPagarFormaPagamentoVM
-    {
-        [JsonProperty("tipo")]
-        public string Tipo { get; set; }
-
-        [JsonProperty("total")]
-        public double Total { get; set; }
-
-        [JsonProperty("quantidade")]
-        public double Quantidade { get; set; }
-    }
-
-    public class DashboardContaPagarCategoriaVM
-    {
-        [JsonProperty("tipo")]
-        public string Tipo { get; set; }
-
-        [JsonProperty("total")]
-        public double Total { get; set; }
-
-        [JsonProperty("quantidade")]
-        public double Quantidade { get; set; }
-    }
-
     public class ContasaPagarDoDiaVM
     {
         [JsonProperty("vencimento")]

@@ -8,6 +8,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,160 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroDashboardContasPagar)]
     public class DashboardContaPagarController : BaseController<DashboardContaPagarVM>
     {
-        protected override ContentUI FormJson()
+        private List<DashboardContaPagarChartVM> GetProjecaoCategoria(DateTime dataInicial) => GetProjecao(dataInicial, "dashboardcategoria");
+        private List<DashboardContaPagarChartVM> GetProjecaoStatus(DateTime dataInicial) => GetProjecao(dataInicial, "dashboardstatus");
+        private List<DashboardContaPagarChartVM> GetProjecaoPagamento(DateTime dataInicial) => GetProjecao(dataInicial, "dashboardformapagamento");
+        private List<DashboardContaPagarChartVM> GetProjecao(DateTime dataInicial, string resource)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
+                { "tipo", "ContaPagar" }
+            };
+
+            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarChartVM>>(resource, queryString);
+            if (response == null)
+                return new List<DashboardContaPagarChartVM>();
+            else
+            {
+                if (response.Count() > 5)
+                {
+                    var other = new DashboardContaPagarChartVM
+                    {
+                        Tipo = "Outras",
+                        Total = response.OrderByDescending(x => x.Total).Skip(5).Sum(x => x.Total),
+                        Quantidade = response.OrderByDescending(x => x.Total).Skip(5).Sum(x => x.Quantidade)
+                    };
+
+                    response = response.OrderByDescending(x => x.Total).Take(5).ToList();
+                    response.Add(other);
+                }
+                
+            }               
+
+            return response;
         }
+        private object ChartToView(List<DashboardContaPagarChartVM> response)
+        {
+            var colors = new[]
+            {
+                "rgba(243, 112, 33, 0.9)",
+                "rgba(250, 166, 52, 0.9)",
+                "rgba(0, 52, 88, 0.9)",
+                "rgba(0, 103, 139, 0.9)",
+                "rgba(12, 154, 190, 0.9)",
+            };
+            return new
+            {
+                success = true,
+                labels = response.Select(x => x.Tipo).ToArray(),
+                datasets = new object[]
+                {
+                    new
+                    {
+                        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
+                        backgroundColor = colors,
+                        borderWidth = 1
+                    },
+                    new
+                    {
+                        data = response.Select(x => (x.Quantidade)).ToArray(),
+                        backgroundColor = colors,
+                        borderWidth = 1
+                    }
+
+                }
+            };
+        }
+        private object ChartOptions(string title = "")
+        {
+            return new
+            {
+                title = new
+                {
+                    display = true,
+                    text = title,
+                    fontSize = 15,
+                    fontFamily = "Roboto",
+                    fontColor = "#2c3739"
+                },
+                tooltips = new
+                {
+                    mode = "label",
+                    bodySpacing = 10,
+                    cornerRadius = 0,
+                    titleMarginBottom = 15
+                },
+                legend = new
+                {
+                    position = "bottom"
+                },
+                global = new
+                {
+                    responsive = true,
+                    maintainAspectRatio = true
+                },
+                elements = new
+                {
+                    center = new
+                    {
+                        maxText= "AAAAAA",
+					    fontColor= "#2c3739",
+                        fontFamily = "'Roboto', 'Arial', sans-serif",
+					    fontStyle= "normal",
+                        minFontSize = 1,
+					    maxFontSize= 256,
+				    }
+                }
+            };
+        }
+
+        public JsonResult LoadChartStatus(DateTime dataInicial) => Json(ChartToView(GetProjecaoStatus(dataInicial)), JsonRequestBehavior.AllowGet);
+        public JsonResult LoadChartPagamento(DateTime dataInicial) => Json(ChartToView(GetProjecaoPagamento(dataInicial)), JsonRequestBehavior.AllowGet);
+        public JsonResult LoadChartCategoria(DateTime dataInicial) => Json(ChartToView(GetProjecaoCategoria(dataInicial)), JsonRequestBehavior.AllowGet);
 
         public override Func<DashboardContaPagarVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
-
         public override ContentResult List()
             => Content(JsonConvert.SerializeObject(DashboardContaPagarJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
+        public JsonResult DashboardGridLoad(DateTime? dataInicial = null)
+        {
+            try
+            {
+                var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+
+                var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
+
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                    {
+                        { "filtro", dataInicial.HasValue? dataInicial.Value.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") },
+                        { "pageNo", pageNo.ToString() },
+                        { "pageSize", "10" }
+                    };
+
+                var response = RestHelper.ExecuteGetRequest<PagedResult<ContasaPagarDoDiaVM>>("dashboardcontapagardia", queryString);
+
+                return Json(new
+                {
+                    totalRecords = response.Paging.TotalRecordCount,
+                    recordsFiltered = response.Paging.TotalRecordCount,
+                    data = response.Data.Select(x => new
+                    {
+                        vencimento = x.Vencimento,
+                        descricao = x.Descrição,
+                        valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
+                        status = x.Status
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
 
         protected ContentUI DashboardContaPagarJson(UrlHelper url, string scheme, bool withSidebarUrl = false)
         {
@@ -78,123 +221,17 @@ namespace Fly01.Financeiro.Controllers
                         Id = "dataInicial",
                         Name = "dataInicial"
                     },
-                    new InputHiddenUI()
-                    {
-                        Id = "dataFinal",
-                        Name = "dataFinal"
-                    },
-                    new ButtonGroupUI
-                    {
-                        Id = "fly01btngrp",
-                        Class = "col s12 m8 offset-m2",
-                        OnClickFn = "fnAtualizarChart",
-                        Options = new List<ButtonGroupOptionUI>
-                        {
-                            new ButtonGroupOptionUI {Id = "btnStatus", Value = "1", Label = "Status", Class="col s3"},
-                            new ButtonGroupOptionUI {Id = "btnFormaPagamento", Value = "2", Label = "Forma de Pagamento", Class="col s6"},
-                            new ButtonGroupOptionUI {Id = "btnCategoria", Value = "3", Label = "Categoria", Class="col s3" }
-                        }
-                    }
                 }
             });
 
             // CHART Status
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartStatusVlr",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Valor - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new
-                    {
-                        position = "bottom"
-                    },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartStatusVlr", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
-                Parameters = new List<ChartUIParameter>
-                    {
-                        new ChartUIParameter { Id = "dataInicial" }
-                    }
-            });
-            cfg.Content.Add(new ChartUI
-            {
-                Id = "chartStatusQtd",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Quantidade - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new { position = "bottom" },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartStatusQtd", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
+                Id = "chartStatus",
+                DrawType = ChartUIType.Doughnut,
+                Options = ChartOptions("Status"),
+                UrlData = @url.Action("LoadChartStatus", "DashboardContaPagar"),
+                Class = "col s12 l4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -204,97 +241,11 @@ namespace Fly01.Financeiro.Controllers
             // CHART Pagamento
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartPagamentoVlr",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Valor - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new { position = "bottom" },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartPagamentoVlr", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
-                Parameters = new List<ChartUIParameter>
-                    {
-                        new ChartUIParameter { Id = "dataInicial" }
-                    }
-            });
-            cfg.Content.Add(new ChartUI
-            {
-                Id = "chartPagamentoQtd",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Quantidade - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new { position = "bottom" },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartPagamentoQtd", "DashboardContaPagar"),
-                Class = "col s12 m6 l6",
+                Id = "chartPagamento",
+                DrawType = ChartUIType.Doughnut,
+                Options = ChartOptions("Formas de Pagamento"),
+                UrlData = @url.Action("LoadChartPagamento", "DashboardContaPagar"),
+                Class = "col s12 l4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -304,97 +255,11 @@ namespace Fly01.Financeiro.Controllers
             // CHART Categoria
             cfg.Content.Add(new ChartUI
             {
-                Id = "chartCategoriaVlr",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Valor - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new { position = "bottom" },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartCategoriaVlr", "DashboardContaPagar"),
-                Class = "col s12",
-                Parameters = new List<ChartUIParameter>
-                    {
-                        new ChartUIParameter { Id = "dataInicial" }
-                    }
-            });
-            cfg.Content.Add(new ChartUI
-            {
-                Id = "chartCategoriaQtd",
-                Options = new
-                {
-                    title = new
-                    {
-                        display = true,
-                        text = "Quantidade - Total",
-                        fontSize = 15,
-                        fontFamily = "Roboto",
-                        fontColor = "#555"
-                    },
-                    tooltips = new
-                    {
-                        mode = "label",
-                        bodySpacing = 10,
-                        cornerRadius = 0,
-                        titleMarginBottom = 15
-                    },
-                    legend = new { position = "bottom" },
-                    global = new
-                    {
-                        responsive = false,
-                        maintainAspectRatio = false
-                    },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
-                    }
-                },
-                UrlData = @url.Action("LoadChartCategoriaQtd", "DashboardContaPagar"),
-                Class = "col s12",
+                Id = "chartCategoria",
+                DrawType = ChartUIType.Doughnut,
+                Options = ChartOptions("Categorias"),
+                UrlData = @url.Action("LoadChartCategoria", "DashboardContaPagar"),
+                Class = "col s12 l4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -466,239 +331,9 @@ namespace Fly01.Financeiro.Controllers
 
             return cfg;
         }
-
-        // Load Status
-        public JsonResult LoadChartStatusVlr(DateTime dataInicial)
+        protected override ContentUI FormJson()
         {
-            var response = GetProjecaoStatus(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Valor",
-                            fill = false,
-                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult LoadChartStatusQtd(DateTime dataInicial)
-        {
-            var response = GetProjecaoStatus(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Quantidade",
-                            fill = true,
-                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            data = response.Select(x => (x.Quantidade)).ToArray()
-                        }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        // Load Pagamento
-        public JsonResult LoadChartPagamentoVlr(DateTime dataInicial)
-        {
-            var response = GetProjecaoPagamento(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Valor",
-                            fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
-                            data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult LoadChartPagamentoQtd(DateTime dataInicial)
-        {
-            var response = GetProjecaoPagamento(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    //new {
-                    //        label = "Valor",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(75, 192, 192)",
-                    //        borderColor = "rgb(75, 192, 192)",
-                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    //},
-                    new {
-
-                            label = "Quantidade",
-                            fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
-                            data = response.Select(x => (x.Quantidade)).ToArray(),
-                        }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        // Load Categoria
-        public JsonResult LoadChartCategoriaVlr(DateTime dataInicial)
-        {
-            var response = GetProjecaoCategoria(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Valor",
-                            fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            borderColor = "rgb(75, 192, 192)",
-                            data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    }
-                    //,
-                    //new {
-                    //        label = "Quantidade",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(255, 99, 132)",
-                    //        borderColor = "rgb(255, 99, 132)",
-                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
-                    //    }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult LoadChartCategoriaQtd(DateTime dataInicial)
-        {
-            var response = GetProjecaoCategoria(dataInicial);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    //new {
-                    //        label = "Valor",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(75, 192, 192)",
-                    //        borderColor = "rgb(75, 192, 192)",
-                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    //},
-                    new {
-                            label = "Quantidade",
-                            fill = false,
-                            backgroundColor = "rgb(255, 99, 132)",
-                            borderColor = "rgb(255, 99, 132)",
-                            data = response.Select(x => (x.Quantidade)).ToArray(),
-                        }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-
-        private List<DashboardContaPagarCategoriaVM> GetProjecaoCategoria(DateTime dataInicial)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", "ContaPagar" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarCategoriaVM>>("dashboardcategoria", queryString);
-            if (response == null)
-                return new List<DashboardContaPagarCategoriaVM>();
-
-            return response;
-        }
-        private List<DashboardContaPagarStatusVM> GetProjecaoStatus(DateTime dataInicial)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", "ContaPagar" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarStatusVM>>("dashboardstatus", queryString);
-            if (response == null)
-                return new List<DashboardContaPagarStatusVM>();
-
-            return response;
-
-        }
-        private List<DashboardContaPagarFormaPagamentoVM> GetProjecaoPagamento(DateTime dataInicial)
-        {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", "ContaPagar" }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardContaPagarFormaPagamentoVM>>("dashboardformapagamento", queryString);
-            if (response == null)
-                return new List<DashboardContaPagarFormaPagamentoVM>();
-
-            return response;
-        }
-
-        public JsonResult DashboardGridLoad(DateTime? dataInicial = null)
-        {
-            try
-            {
-                var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-
-                var pageNo = param.Start > 0 ? (param.Start / 10) + 1 : 1;
-
-                Dictionary<string, string> queryString = new Dictionary<string, string>
-                    {
-                        { "filtro", dataInicial.HasValue? dataInicial.Value.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") },
-                        { "pageNo", pageNo.ToString() },
-                        { "pageSize", "10" }
-                    };
-
-                var response = RestHelper.ExecuteGetRequest<PagedResult<ContasaPagarDoDiaVM>>("dashboardcontapagardia", queryString);
-
-                return Json(new
-                {
-                    totalRecords = response.Paging.TotalRecordCount,
-                    recordsFiltered = response.Paging.TotalRecordCount,
-                    data = response.Data.Select(x => new
-                    {
-                        vencimento = x.Vencimento,
-                        descricao = x.Descrição,
-                        valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
-                        status = x.Status
-                    })
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -49,12 +49,20 @@
     <Compile Include="GrupoTributarioBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="CestBL.cs" />
+    <Compile Include="MonitorNFBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="CondicaoParcelamentoBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="NFeBL.cs" />
+    <Compile Include="NFeProdutoBL.cs" />
+    <Compile Include="NFSeBL.cs" />
+    <Compile Include="NFSeServicoBL.cs" />
+    <Compile Include="NotaFiscalBL.cs" />
+    <Compile Include="NotaFiscalCartaCorrecaoBL.cs" />
     <Compile Include="NotaFiscalInutilizadaBL.cs" />
+    <Compile Include="NotaFiscalItemTributacaoBL.cs" />
     <Compile Include="OrcamentoItemBL.cs" />
     <Compile Include="OrdemCompraItemBL.cs" />
     <Compile Include="OrdemCompraBL.cs" />
@@ -69,6 +77,7 @@
     <Compile Include="ServiceBusBL.cs" />
     <Compile Include="SubstituicaoTributariaBL.cs" />
     <Compile Include="TipoCarteiraBL.cs" />
+    <Compile Include="TotalTributacaoBL.cs" />
     <Compile Include="UnidadeMedidaBL.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
@@ -80,6 +89,10 @@
     <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
       <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
       <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\appfaturamento\Fly01.Faturamento.BL\Fly01.Faturamento.BL.csproj">
+      <Project>{8F8627D2-EF0F-4765-BC89-84541D207A22}</Project>
+      <Name>Fly01.Faturamento.BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>

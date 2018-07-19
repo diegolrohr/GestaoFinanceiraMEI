@@ -1,6 +1,7 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Base;
 using Fly01.Core.Entities.Domains;
+using Fly01.Faturamento.BL;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
@@ -112,6 +113,37 @@ namespace Fly01.Compras.BL
 
         private CertificadoDigitalBL certificadoDigitalBL;
         public CertificadoDigitalBL CertificadoDigitalBL => certificadoDigitalBL ?? (certificadoDigitalBL = new CertificadoDigitalBL(Context, EstadoBL, ParametroTributarioBL));
+
+        private NotaFiscalBL notaFiscalBL;
+        public NotaFiscalBL NotaFiscalBL => notaFiscalBL ?? (notaFiscalBL = new NotaFiscalBL(Context, NFeBL, NFSeBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
+
+        private NFeBL nfeBL;
+        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+
+        private NFeProdutoBL nfeProdutoBL;
+        public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));
+
+        private NFSeBL nfseBL;
+        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL));
+
+        private NFSeServicoBL nfseServicoBL;
+        public NFSeServicoBL NFSeServicoBL => nfseServicoBL ?? (nfseServicoBL = new NFSeServicoBL(Context));
+
+        private SerieNotaFiscalBL serieNotaFiscalBL;
+        public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
+
+        private TotalTributacaoBL totalTributacaoBL;
+        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL));
+
+        private NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL;
+        public NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL => notaFiscalItemTributacaoBL ?? (notaFiscalItemTributacaoBL = new NotaFiscalItemTributacaoBL(Context));
+
+        private NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL;
+        public NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL => notaFiscalCartaCorrecaoBL ?? (notaFiscalCartaCorrecaoBL = new NotaFiscalCartaCorrecaoBL(Context, NotaFiscalBL, TotalTributacaoBL, CertificadoDigitalBL));
+
+        private MonitorNFBL monitorNFBL;
+        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeBL, NFSeBL, NotaFiscalBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL));
+
 
         #endregion
     }

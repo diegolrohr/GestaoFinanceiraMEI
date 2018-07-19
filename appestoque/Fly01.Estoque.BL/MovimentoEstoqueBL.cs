@@ -10,12 +10,12 @@ using Newtonsoft.Json;
 
 namespace Fly01.Estoque.BL
 {
-    public class MovimentoBL : PlataformaBaseBL<MovimentoEstoque>
+    public class MovimentoEstoqueBL : PlataformaBaseBL<MovimentoEstoque>
     {
         protected ProdutoBL ProdutoBL;
         protected TipoMovimentoBL TipoMovimentoBL;
 
-        public MovimentoBL(AppDataContextBase context,
+        public MovimentoEstoqueBL(AppDataContextBase context,
                            ProdutoBL produtoBL,
                            TipoMovimentoBL tipoMovimentoBL)
             : base(context)
@@ -103,10 +103,7 @@ namespace Fly01.Estoque.BL
 
         public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
         {
-            var data = JsonConvert.SerializeObject(message);
-
-            foreach (var item in MessageType.Resolve<dynamic>(data))
-                Movimenta(item);
+                Movimenta(message);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

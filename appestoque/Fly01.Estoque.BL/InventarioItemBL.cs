@@ -10,12 +10,12 @@ namespace Fly01.Estoque.BL
     {
         private static Error produtoInseridoEmInventarioAberto = new Error("Produto ja inserido em inventário Aberto. Favor escolher outro produto.");
         private static Error novoSaldoNegativo = new Error("O Novo Saldo não pode ser menor que 0.");
-        private MovimentoBL movimentoBL;
+        private MovimentoEstoqueBL movimentoEstoqueBL;
 
 
-        public InventarioItemBL(AppDataContextBase context, MovimentoBL movimentoBL) : base(context)
+        public InventarioItemBL(AppDataContextBase context, MovimentoEstoqueBL movimentoEstoqueBL) : base(context)
         {
-            this.movimentoBL = movimentoBL;
+            this.movimentoEstoqueBL = movimentoEstoqueBL;
         }
 
         public override void ValidaModel(InventarioItem entity)
@@ -33,7 +33,7 @@ namespace Fly01.Estoque.BL
         {
             All.Where(e => e.InventarioId == entity.Id && e.Ativo).ToList().ForEach(i =>
             {
-                movimentoBL.Movimenta(i);
+                movimentoEstoqueBL.Movimenta(i);
             });
         }
     }

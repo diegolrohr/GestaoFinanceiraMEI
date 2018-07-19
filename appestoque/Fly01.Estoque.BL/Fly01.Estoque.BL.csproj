@@ -54,7 +54,7 @@
     <Compile Include="NCMBL.cs" />
     <Compile Include="AjusteManualBL.cs" />
     <Compile Include="PosicaoAtualBL.cs" />
-    <Compile Include="MovimentoBL.cs" />
+    <Compile Include="MovimentoEstoqueBL.cs" />
     <Compile Include="ProdutosMenosMovimentadosBL.cs" />
     <Compile Include="ProdutosMaisMovimentadosBL.cs" />
     <Compile Include="ProdutoBL.cs" />

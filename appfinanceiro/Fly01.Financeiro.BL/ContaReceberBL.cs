@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Data.Entity;
@@ -28,6 +29,9 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaReceber entity)
         {
+            var numero = default(int);
+            var rpcClient = new RpcClient();
+
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
@@ -69,18 +73,20 @@ namespace Fly01.Financeiro.BL
                                                         : entity.ValorPago;
 
                     if (iParcela == default(int))
-                    {
                         itemContaReceber.Id = contaFinanceiraPrincipal;
-                    }
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    base.Insert(itemContaReceber);
+                    numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
+                    itemContaReceber.Numero = numero;
+
+                    base.Insert(itemContaReceber);
 
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
@@ -108,11 +114,17 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
+                            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+
+                            itemContaReceberRepeticao.Numero = numero;
+
                             base.Insert(itemContaReceberRepeticao);
                         }
                     }
                 }
             }
+
+            rpcClient.Close();
         }
 
         public override void Update(ContaReceber entity)

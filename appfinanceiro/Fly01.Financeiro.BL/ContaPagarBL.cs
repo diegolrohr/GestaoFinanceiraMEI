@@ -31,6 +31,7 @@ namespace Fly01.Financeiro.BL
         public override void Insert(ContaPagar entity)
         {
             var numero = default(int);
+            var rpcClient = new RpcClient();
 
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
@@ -79,9 +80,7 @@ namespace Fly01.Financeiro.BL
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    var rpcClient = new RpcClient();
                     numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
-                    rpcClient.Close();
 
                     itemContaPagar.Numero = numero;
 
@@ -113,7 +112,7 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            //numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                             itemContaPagarRepeticao.Numero = numero;
 
@@ -122,6 +121,8 @@ namespace Fly01.Financeiro.BL
                     }
                 }
             }
+
+            rpcClient.Close();
         }
 
         public override void Update(ContaPagar entity)

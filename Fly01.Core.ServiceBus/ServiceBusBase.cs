@@ -22,7 +22,7 @@ namespace Fly01.Core.ServiceBus
                 AssemblyBL = assemblyBL;
         }
 
-        protected override async Task PersistMessage()
+        protected override async Task DeliverMessage()
         {
             var domainAssembly = Assembly.Load("Fly01.Core.Entities").GetType($"Fly01.Core.Entities.Domains.Commons.{RabbitConfig.RoutingKey}");
             exceptions = new List<KeyValuePair<string, object>>();

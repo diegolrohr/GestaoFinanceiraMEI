@@ -27,7 +27,6 @@ namespace Fly01.Core.ServiceBus
             VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"],
             UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
             Password = WebConfigurationManager.AppSettings["RabbitPassword"],
-            DispatchConsumersAsync = true
             //HostName = WebConfigurationManager.AppSettings["RabbitAMQPUrl"],
             //Ssl = new SslOption("homolog", "", true)
         };

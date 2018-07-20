@@ -103,7 +103,7 @@ namespace Fly01.Estoque.BL
 
         public override void PersistMessage(MovimentoEstoque message, RabbitConfig.EnHttpVerb httpMethod)
         {
-                Movimenta(message);
+            Movimenta(message);
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

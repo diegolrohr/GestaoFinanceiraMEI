@@ -406,12 +406,6 @@ namespace Fly01.Compras.Controllers
                 success = true,
                 labels = response.Select(x => x.Status).ToArray(),
                 datasets = new object[] {
-                    //new {
-                    //        label = "Valor",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(75, 192, 192)",
-                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    //},
                     new {
                             label = "Quantidade",
                             fill = false,
@@ -441,13 +435,6 @@ namespace Fly01.Compras.Controllers
                             borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
                     }
-                    //,
-                    //new {
-                    //        label = "Quantidade",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(255, 99, 132)",
-                    //        data = response.Select(x => (x.Quantidade)).ToArray()
-                    //    }
                 }
             };
 
@@ -469,13 +456,6 @@ namespace Fly01.Compras.Controllers
                             backgroundColor = "rgb(75, 192, 192)",
                             data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
                     }
-                    //,
-                    //new {
-                    //        label = "Quantidade",
-                    //        fill = false,
-                    //        backgroundColor = "#f58542",
-                    //        data = response.Select(x => (x.Quantidade)).ToArray(),
-                    //    }
                 }
             };
 
@@ -491,13 +471,6 @@ namespace Fly01.Compras.Controllers
                 success = true,
                 labels = response.Select(x => x.TipoFormaPagamento).ToArray(),
                 datasets = new object[] {
-                    //new {
-                    //        label = "Valor",
-                    //        fill = false,
-                    //        backgroundColor = "rgb(75, 192, 192)",
-                    //        data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    //}
-                    ////,
                     new {
                             label = "Quantidade",
                             fill = false,

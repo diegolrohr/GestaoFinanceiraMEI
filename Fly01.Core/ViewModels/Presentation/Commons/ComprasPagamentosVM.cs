@@ -3,15 +3,10 @@ using Newtonsoft.Json;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ComprasFormasPagamentoVM
+    public class ComprasPagamentosVM
     {
-        [JsonProperty("tipoformapagamento")]
-        public string TipoFormaPagamento { get; set; }
-
-        [JsonProperty("total")]
+        public TipoFormaPagamento? TipoFormaPagamento { get; set; }
         public double Total { get; set; }
-
-        [JsonProperty("quantidade")]
         public double Quantidade { get; set; }
     }
 }

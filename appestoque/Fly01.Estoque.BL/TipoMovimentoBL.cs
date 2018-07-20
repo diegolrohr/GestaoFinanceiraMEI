@@ -9,9 +9,7 @@ namespace Fly01.Estoque.BL
     public class TipoMovimentoBL : PlataformaBaseBL<TipoMovimento>
     {
         public TipoMovimentoBL(AppDataContext context) : base(context)
-        {
-            MustConsumeMessageServiceBus = true;
-        }
+        { }
 
         public override void Insert(TipoMovimento entity)
         {

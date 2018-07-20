@@ -41,7 +41,7 @@
         var total = (parseFloat(quantidade) * parseFloat(valor));
         var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
 
-        if (totalDescontado > 0) {
+        if (totalDescontado >= 0) {
             totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
             $(formPedido + 'input#total').val(totalDescontado);
         }

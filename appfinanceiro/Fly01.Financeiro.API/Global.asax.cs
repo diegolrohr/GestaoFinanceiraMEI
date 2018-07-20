@@ -57,10 +57,6 @@ namespace Fly01.Financeiro.API
 
         private List<ServiceBusBL> listTasks = new List<ServiceBusBL>()
         {
-            new ServiceBusBL(),
-            new ServiceBusBL(),
-            new ServiceBusBL(),
-            new ServiceBusBL(),
             new ServiceBusBL()
         };
 

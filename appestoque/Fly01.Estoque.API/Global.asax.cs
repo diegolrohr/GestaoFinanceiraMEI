@@ -38,7 +38,12 @@ namespace Fly01.Estoque.API
         }
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
-        
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL());
+
+        private List<ServiceBusBL> listTasks = new List<ServiceBusBL>()
+        {
+            new ServiceBusBL()
+        };
+
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => listTasks.ForEach((t) => { t.Consume(); }));
     }
 }

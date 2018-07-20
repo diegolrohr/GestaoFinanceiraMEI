@@ -3,6 +3,8 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
+using System.Threading;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -40,7 +42,7 @@ namespace Fly01.Core.ServiceBus
 
             channel.BasicPublish(
                 exchange: "",
-                routingKey: "sequence-generator-queue",
+                routingKey: WebConfigurationManager.AppSettings["RabbitSequenceGenetorQueueName"],
                 basicProperties: props,
                 body: messageBytes);
 
@@ -49,7 +51,13 @@ namespace Fly01.Core.ServiceBus
                 queue: replyQueueName,
                 autoAck: true);
 
-            return respQueue.Take();
+            var result = "";
+            respQueue.TryTake(out result, 2000);
+
+            if (string.IsNullOrEmpty(result))
+                throw new Exception("RpcClient: Não foi possível obter um número");
+                
+            return result;
         }
 
         public void Close()

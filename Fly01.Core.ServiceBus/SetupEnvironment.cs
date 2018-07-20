@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
 using System;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -8,16 +9,34 @@ namespace Fly01.Core.ServiceBus
     {
         public static void Create()
         {
+            var factory = RabbitConfig.Factory;
+
             try
             {
-                using (var connection = RabbitConfig.Factory.CreateConnection("env" + RabbitConfig.QueueName))
+                factory.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"];
+                using (var connection = factory.CreateConnection("env" + RabbitConfig.QueueName))
                 {
                     using (var channel = connection.CreateModel())
                     {
                         channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
-                        channel.QueueDeclare(RabbitConfig.QueueName, false, false, false, null);
+                        channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
 
-                        RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
+                        RabbitConfig.ListRoutingKeysIntegracao.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
+                    }
+                }
+
+                if (WebConfigurationManager.AppSettings["RabbitVirtualHostname"] != "dev")
+                {
+                    factory.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
+                    using (var connection = factory.CreateConnection("env" + RabbitConfig.QueueName))
+                    {
+                        using (var channel = connection.CreateModel())
+                        {
+                            channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
+                            channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
+
+                            RabbitConfig.ListRoutingKeysIntegracao.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
+                        }
                     }
                 }
             }

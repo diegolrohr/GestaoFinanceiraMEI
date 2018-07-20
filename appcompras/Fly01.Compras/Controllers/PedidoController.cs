@@ -124,7 +124,7 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        private ContentUI FormPedidoJson(bool isEdit = false)
+        public ContentUI FormPedidoJson(bool isEdit = false)
         {
             var cfg = new ContentUI
             {

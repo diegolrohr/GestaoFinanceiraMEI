@@ -88,7 +88,7 @@ namespace Fly01.Compras.Controllers
         public ContentResult FormOrcamento(bool isEdit = false)
             => Content(JsonConvert.SerializeObject(FormOrcamentoJson(isEdit), JsonSerializerSetting.Front), "application/json");
 
-        private ContentUI FormOrcamentoJson(bool isEdit = false)
+        public ContentUI FormOrcamentoJson(bool isEdit = false)
         {
             var cfg = new ContentUI
             {

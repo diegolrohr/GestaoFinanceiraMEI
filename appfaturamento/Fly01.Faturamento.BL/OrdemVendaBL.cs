@@ -51,7 +51,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
-            entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+            entity.Fail((entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao || entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {
@@ -70,6 +70,7 @@ namespace Fly01.Faturamento.BL
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                    entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
@@ -285,8 +286,19 @@ namespace Fly01.Faturamento.BL
                                 produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
                                 produtoClonado.Id = default(Guid);
                                 produtoClonado.OrdemVendaId = entity.Id;
-                                //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
-                                produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                                {
+                                    //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
+                                    produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                }
+                                else
+                                {
+                                    //na nfe de complemento zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
+                                    produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                    produtoClonado.Quantidade = 0.00;
+                                    produtoClonado.Valor = 0.00;
+                                    produtoClonado.Desconto = 0.00;
+                                }
                                 OrdemVendaProdutoBL.Insert(produtoClonado);
                             }
                         }
@@ -314,7 +326,7 @@ namespace Fly01.Faturamento.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.TipoVenda ==  TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && (entity.TipoVenda ==  TipoFinalidadeEmissaoNFe.Devolucao || entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
             {
                 CopiaDadosNFeReferenciadaDevolucao(entity);
             }

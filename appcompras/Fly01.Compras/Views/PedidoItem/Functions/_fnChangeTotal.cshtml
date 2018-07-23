@@ -21,8 +21,6 @@
     function errTotalNegativo(total) {
         var formPedido = 'form#fly01mdlfrmPedidoItem ';
 
-       // fly01.toast("O Desconto não pode ser maior ou igual a " + total + " reais.", 'error');
-        
         fly01.fn.submitErrorHandler($formPedido.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
         $(formPedido + 'input#total').val(total);

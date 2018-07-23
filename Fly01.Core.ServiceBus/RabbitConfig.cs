@@ -21,7 +21,7 @@ namespace Fly01.Core.ServiceBus
             ? Environment.MachineName
             : WebConfigurationManager.AppSettings["RabbitVirtualHostname"];
         public static List<string> ListRoutingKeys => WebConfigurationManager.AppSettings["RabbitListRoutingKeys"].ToString().Split(',').ToList();
-        public static List<string> ListRoutingKeysIntegracao => WebConfigurationManager.AppSettings["RabbitListRoutingKeys"].ToString().Split(',').ToList();
+        public static List<string> ListRoutingKeysIntegracao => WebConfigurationManager.AppSettings["RabbitListRoutingKeysIntegracao"].ToString().Split(',').ToList();
 
         public static ConnectionFactory Factory = new ConnectionFactory()
         {

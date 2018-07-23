@@ -71,6 +71,7 @@
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCRController.cs" />
     <Compile Include="Controllers\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\ConfiguracaoNotificacaoController.cs" />
+    <Compile Include="Controllers\DashboardContaFinanceiraController.cs" />
     <Compile Include="Controllers\DashboardContaPagarController.cs" />
     <Compile Include="Controllers\DashboardContaReceberController.cs" />
     <Compile Include="Controllers\DespesaPorCategoriaController.cs" />
@@ -137,8 +138,7 @@
     <Compile Include="ViewModel\ContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\ContaPagarVM.cs" />
     <Compile Include="ViewModel\ContaReceberVM.cs" />
-    <Compile Include="ViewModel\DashboardContaPagarVM.cs" />
-    <Compile Include="ViewModel\DashboardContaReceberVM.cs" />
+    <Compile Include="ViewModel\DashboardContaFinanceiraVM.cs" />
     <Compile Include="ViewModel\DemonstrativoResultadoExercicioVM.cs" />
     <Compile Include="ViewModel\DespesaPorCategoriaVM.cs" />
     <Compile Include="ViewModel\ExtratoContaSaldoVM.cs" />
@@ -343,11 +343,7 @@
     <Content Include="Views\ContaBancaria\Functions\_fnAfterLoad.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSelectsAllClick.cshtml" />
-    <Content Include="Views\DashboardContaReceber\Functions\_fnAtualizarChart.cshtml" />
-    <Content Include="Views\DashboardContaReceber\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaReceber\Functions\_fnUpdateData.cshtml" />
-    <Content Include="Views\DashboardContaPagar\Functions\_fnAtualizarChart.cshtml" />
-    <Content Include="Views\DashboardContaPagar\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\DashboardContaPagar\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnImportarArquivo.cshtml" />
     <Content Include="Views\ArquivoRetorno\Functions\_fnFormReady.cshtml" />
@@ -383,6 +379,7 @@
     <Content Include="Views\ContaPagar\Functions\_fnSalvarRecorrencia.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

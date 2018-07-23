@@ -67,13 +67,9 @@ namespace Fly01.Financeiro.BL
                 contaFinanceira.ValorPago = entity.ValorPrevisto;
 
                 if (entity.TipoContaFinanceira == "ContaPagar")
-                {
                     contaPagarBL.Insert((ContaPagar)contaFinanceira);
-                }        
                 else
-                {
                     contaReceberBL.Insert((ContaReceber)contaFinanceira);
-                }
 
                 contaFinanceira.ValorPago = null;
 

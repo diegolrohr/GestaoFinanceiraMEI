@@ -17,7 +17,7 @@ namespace Fly01.Compras.BL
         private readonly string descricaoPedido = @"Pedido Compra nº: {0}";
         private readonly string observacaoPedido = @"Observação gerada pelo Pedido nº {0} applicativo Bemacash Compras: {1}";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
-        private readonly string routePrefixNameMovimento = @"Movimento";
+        private readonly string routePrefixNameMovimento = @"MovimentoEstoque";
         private StatusOrdemCompra previousStatus;
 
         public PedidoBL(AppDataContext context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL) : base(context)

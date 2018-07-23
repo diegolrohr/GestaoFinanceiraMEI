@@ -9,13 +9,13 @@ namespace Fly01.Estoque.BL
     public class MovimentoOrdemVendaBL : PlataformaBaseBL<MovimentoOrdemVenda>
     {
         protected ProdutoBL ProdutoBL;
-        protected MovimentoBL MovimentoBL;
+        protected MovimentoEstoqueBL MovimentoEstoqueBL;
 
-        public MovimentoOrdemVendaBL(AppDataContextBase context, ProdutoBL produtoBL, MovimentoBL movimentoBL)
+        public MovimentoOrdemVendaBL(AppDataContextBase context, ProdutoBL produtoBL, MovimentoEstoqueBL movimentoEstoqueBL)
             : base(context)
         {
             ProdutoBL = produtoBL;
-            MovimentoBL = movimentoBL;
+            MovimentoEstoqueBL = movimentoEstoqueBL;
             MustConsumeMessageServiceBus = true;
         }
 
@@ -43,7 +43,7 @@ namespace Fly01.Estoque.BL
                             UsuarioInclusao = entity.UsuarioInclusao,
                             PlataformaId = entity.PlataformaId
                         };
-                        MovimentoBL.Movimenta(movimentoEntrada);
+                        MovimentoEstoqueBL.Movimenta(movimentoEntrada);
                     }
                 }
 
@@ -56,7 +56,7 @@ namespace Fly01.Estoque.BL
                     UsuarioInclusao = entity.UsuarioInclusao,
                     PlataformaId = entity.PlataformaId
                 };
-                MovimentoBL.Movimenta(movimentoBaixa);
+                MovimentoEstoqueBL.Movimenta(movimentoBaixa);
             }
         }
 

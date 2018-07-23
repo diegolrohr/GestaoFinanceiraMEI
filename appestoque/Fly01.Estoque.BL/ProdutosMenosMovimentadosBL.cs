@@ -8,18 +8,18 @@ namespace Fly01.Estoque.BL
 {
     public class ProdutosMenosMovimentadosBL : PlataformaBaseBL<Produto>
     {
-        protected MovimentoBL MovimentoBL;
+        protected MovimentoEstoqueBL MovimentoEstoqueBL;
 
         public ProdutosMenosMovimentadosBL(AppDataContextBase context,
-                                           MovimentoBL movimentoBL) 
+                                           MovimentoEstoqueBL movimentoEstoqueBL) 
             : base(context)
         {
-            MovimentoBL = movimentoBL;
+            MovimentoEstoqueBL = movimentoEstoqueBL;
         }
 
         public List<ProdutoMovimentado> Get(DateTime dataInicial, DateTime dataFinal)
         {
-            var movimentos = MovimentoBL
+            var movimentos = MovimentoEstoqueBL
                                 .AllIncluding(x => x.Produto)
                                 .Where(x => x.DataInclusao >= dataInicial &&
                                             x.DataInclusao <= dataFinal &&

@@ -108,7 +108,10 @@ namespace Fly01.Compras.Controllers
 
         protected override ContentUI FormJson()
             => FormPedidoJson();
-        
+
+        public ContentResult FormPedido(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormPedidoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
@@ -120,9 +123,6 @@ namespace Fly01.Compras.Controllers
 
             return target;
         }
-
-        public ContentResult FormPedido(bool isEdit = false)
-            => Content(JsonConvert.SerializeObject(FormPedidoJson(isEdit), JsonSerializerSetting.Front), "application/json");
 
         public ContentUI FormPedidoJson(bool isEdit = false)
         {

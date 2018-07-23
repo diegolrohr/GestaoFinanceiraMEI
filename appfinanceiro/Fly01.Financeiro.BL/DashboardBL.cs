@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.BL
 
         }
 
-        public List<ContasReceberPagoPorDiaVM> GetDashContasReceberPagoPorDia(DateTime filtro)
+        public List<ContasReceberDoDiaVM> GetDashContasReceberPagoPorDia(DateTime filtro)
         {
             var mesAtual = CarregaMes(filtro.Month);
             return _contaFinanceiraBL.All.Where(x => x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year)
@@ -61,7 +61,7 @@ namespace Fly01.Financeiro.BL
                     x.DataVencimento.Month,
                     Valor = x.ValorPago == null ? 0 : x.ValorPago
                 }).GroupBy(x => new { x.Day, x.Month })
-                .Select(x => new ContasReceberPagoPorDiaVM
+                .Select(x => new ContasReceberDoDiaVM
                 {
                     Dia = x.Key.Day.ToString() + "/" + mesAtual,
                     Total = x.Sum(v => v.Valor)
@@ -194,8 +194,8 @@ namespace Fly01.Financeiro.BL
                 ContasPagarDoDiaVM dashContaPagarDia = new ContasPagarDoDiaVM();
                 dashContaPagarDia.Status = EnumHelper.GetValue(typeof(StatusContaBancaria), item.StatusContaBancaria.ToString());
                 dashContaPagarDia.Valor = item.ValorPrevisto;
-                dashContaPagarDia.Vencimento = item.DataVencimento.ToShortDateString().ToString();
-                dashContaPagarDia.Descrição = item.Descricao;
+                dashContaPagarDia.Vencimento = item.DataVencimento;
+                dashContaPagarDia.Descricao = item.Descricao;
                 dashLista.Add(dashContaPagarDia);
             }
 

@@ -14,38 +14,36 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Compras.BL
 {
-    public class NotaFiscalBL : PlataformaBaseBL<NotaFiscal>
+    public class NotaFiscalEntradaBL : PlataformaBaseBL<NotaFiscalEntrada>
     {
-        protected NFeBL NFeBL { get; set; }
-        protected NFSeBL NFSeBL { get; set; }
+        protected NFeEntradaBL NFeEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
 
-        public NotaFiscalBL(AppDataContext context, NFeBL nfeBL, NFSeBL nfseBL, CertificadoDigitalBL certificadoDigitalBL, TotalTributacaoBL totalTributacaoBL, SerieNotaFiscalBL serieNotaFiscalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL) : base(context)
+        public NotaFiscalEntradaBL(AppDataContext context, NFeEntradaBL nfeEntradaBL, CertificadoDigitalBL certificadoDigitalBL, TotalTributacaoBL totalTributacaoBL, SerieNotaFiscalBL serieNotaFiscalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL) : base(context)
         {
-            NFeBL = nfeBL;
-            NFSeBL = nfseBL;
+            NFeEntradaBL = nfeEntradaBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             TotalTributacaoBL = totalTributacaoBL;
             SerieNotaFiscalBL = serieNotaFiscalBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
         }
 
-        public IQueryable<NotaFiscal> Everything => repository.All.Where(x => x.Ativo);
+        public IQueryable<NotaFiscalEntrada> Everything => repository.All.Where(x => x.Ativo);
 
-        public override void Insert(NotaFiscal entity)
+        public override void Insert(NotaFiscalEntrada entity)
         {
             entity.Fail(true, new Error("Não é possível inserir, somente em NFe ou NFSe"));
         }
 
-        public override void Update(NotaFiscal entity)
+        public override void Update(NotaFiscalEntrada entity)
         {
             entity.Fail(true, new Error("Não é possível atualizar, somente em NFe ou NFSe"));
         }
 
-        public override void Delete(NotaFiscal entity)
+        public override void Delete(NotaFiscalEntrada entity)
         {
             entity.Fail(true, new Error("Não é possível deletar, somente em NFe ou NFSe"));
         }
@@ -54,11 +52,11 @@ namespace Fly01.Compras.BL
         {
             if (All.Where(x => x.Id == notaFiscalId).FirstOrDefault().TipoNotaFiscal == TipoNotaFiscal.NFe)
             {
-                return NFeBL.CalculaTotalNFe(notaFiscalId);
+                return NFeEntradaBL.CalculaTotalNFe(notaFiscalId);
             }
             else
             {
-                return NFSeBL.CalculaTotalNFSe(notaFiscalId);
+                return null;
             }
         }
 
@@ -104,15 +102,9 @@ namespace Fly01.Compras.BL
                         {
                             if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
                             {
-                                var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                var NFe = NFeEntradaBL.All.Where(x => x.Id == id).FirstOrDefault();
                                 NFe.XML = response.XML;
-                                NFeBL.Update(NFe);
-                            }
-                            else
-                            {
-                                var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                                NFSe.XML = response.XML;
-                                NFSeBL.Update(NFSe);
+                                NFeEntradaBL.Update(NFe);
                             }
                             return new { xml = response.XML, numNotaFiscal = notaFiscal.NumNotaFiscal };
                         }
@@ -167,15 +159,9 @@ namespace Fly01.Compras.BL
                         {
                             if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
                             {
-                                var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                                var NFe = NFeEntradaBL.All.Where(x => x.Id == id).FirstOrDefault();
                                 NFe.PDF = response.PDF;
-                                NFeBL.Update(NFe);
-                            }
-                            else
-                            {
-                                var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                                NFSe.PDF = response.PDF;
-                                NFSeBL.Update(NFSe);
+                                NFeEntradaBL.Update(NFe);
                             }
                             return new { pdf = response.PDF, numNotaFiscal = notaFiscal.NumNotaFiscal };
                         }
@@ -224,19 +210,11 @@ namespace Fly01.Compras.BL
                     RestHelper.ExecutePostRequest<List<CancelarFaixaRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "CancelarFaixa", JsonConvert.SerializeObject(cancelar), null, header);
                     if (notaFiscal.TipoNotaFiscal == TipoNotaFiscal.NFe)
                     {
-                        var NFe = NFeBL.All.Where(x => x.Id == id).FirstOrDefault();
+                        var NFe = NFeEntradaBL.All.Where(x => x.Id == id).FirstOrDefault();
                         NFe.Mensagem = null;
                         NFe.Recomendacao = null;
                         NFe.Status = StatusNotaFiscal.EmCancelamento;
-                        NFeBL.Update(NFe);
-                    }
-                    else
-                    {
-                        var NFSe = NFSeBL.All.Where(x => x.Id == id).FirstOrDefault();
-                        NFSe.Mensagem = null;
-                        NFSe.Recomendacao = null;
-                        NFSe.Status = StatusNotaFiscal.EmCancelamento;
-                        NFSeBL.Update(NFSe);
+                        NFeEntradaBL.Update(NFe);
                     }
                 }
                 catch (Exception ex)

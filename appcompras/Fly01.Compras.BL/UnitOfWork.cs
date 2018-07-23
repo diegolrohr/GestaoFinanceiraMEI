@@ -114,20 +114,14 @@ namespace Fly01.Compras.BL
         private CertificadoDigitalBL certificadoDigitalBL;
         public CertificadoDigitalBL CertificadoDigitalBL => certificadoDigitalBL ?? (certificadoDigitalBL = new CertificadoDigitalBL(Context, EstadoBL, ParametroTributarioBL));
 
-        private NotaFiscalBL notaFiscalBL;
-        public NotaFiscalBL NotaFiscalBL => notaFiscalBL ?? (notaFiscalBL = new NotaFiscalBL(Context, NFeBL, NFSeBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
+        private NotaFiscalEntradaBL notaFiscalEntradaBL;
+        public NotaFiscalEntradaBL NotaFiscalEntradaBL => notaFiscalEntradaBL ?? (notaFiscalEntradaBL = new NotaFiscalEntradaBL(Context, NFeEntradaBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
 
-        private NFeBL nfeBL;
-        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+        private NFeEntradaBL nfeEntradaBL;
+        public NFeEntradaBL NFeEntradaBL => nfeEntradaBL ?? (nfeEntradaBL = new NFeEntradaBL(Context, SerieNotaFiscalBL, NFeProdutoEntradaBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoEntradaBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
 
-        private NFeProdutoBL nfeProdutoBL;
-        public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));
-
-        private NFSeBL nfseBL;
-        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL));
-
-        private NFSeServicoBL nfseServicoBL;
-        public NFSeServicoBL NFSeServicoBL => nfseServicoBL ?? (nfseServicoBL = new NFSeServicoBL(Context));
+        private NFeProdutoEntradaBL nfeProdutoEntradaBL;
+        public NFeProdutoEntradaBL NFeProdutoEntradaBL => nfeProdutoEntradaBL ?? (nfeProdutoEntradaBL = new NFeProdutoEntradaBL(Context));
 
         private SerieNotaFiscalBL serieNotaFiscalBL;
         public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
@@ -135,15 +129,14 @@ namespace Fly01.Compras.BL
         private TotalTributacaoBL totalTributacaoBL;
         public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL));
 
-        private NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL;
-        public NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL => notaFiscalItemTributacaoBL ?? (notaFiscalItemTributacaoBL = new NotaFiscalItemTributacaoBL(Context));
+        private NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL;
+        public NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL => notaFiscalItemTributacaoEntradaBL ?? (notaFiscalItemTributacaoEntradaBL = new NotaFiscalItemTributacaoEntradaBL(Context));
 
-        private NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL;
-        public NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL => notaFiscalCartaCorrecaoBL ?? (notaFiscalCartaCorrecaoBL = new NotaFiscalCartaCorrecaoBL(Context, NotaFiscalBL, TotalTributacaoBL, CertificadoDigitalBL));
+        private NotaFiscalCartaCorrecaoEntradaBL notaFiscalCartaCorrecaoEntradaBL;
+        public NotaFiscalCartaCorrecaoEntradaBL NotaFiscalCartaCorrecaoEntradaBL => notaFiscalCartaCorrecaoEntradaBL ?? (notaFiscalCartaCorrecaoEntradaBL = new NotaFiscalCartaCorrecaoEntradaBL(Context, NotaFiscalEntradaBL, TotalTributacaoBL, CertificadoDigitalBL));
 
         private MonitorNFBL monitorNFBL;
-        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeBL, NFSeBL, NotaFiscalBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL));
-
+        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeEntradaBL, NotaFiscalEntradaBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL));
 
         #endregion
     }

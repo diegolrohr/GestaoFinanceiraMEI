@@ -70,8 +70,13 @@
     <Compile Include="Controllers\Api\CestController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
+    <Compile Include="Controllers\Api\NFeEntradaController.cs" />
+    <Compile Include="Controllers\Api\NFeProdutoEntradaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalCartaCorrecaoEntradaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaAtualizaStatusController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalItemTributacaoEntradaController.cs" />
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />

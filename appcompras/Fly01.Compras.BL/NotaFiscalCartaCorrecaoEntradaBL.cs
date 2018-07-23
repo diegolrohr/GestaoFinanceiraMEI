@@ -14,22 +14,22 @@ using System.Linq;
 
 namespace Fly01.Compras.BL
 {
-    public class NotaFiscalCartaCorrecaoBL : PlataformaBaseBL<NotaFiscalCartaCorrecao>
+    public class NotaFiscalCartaCorrecaoEntradaBL : PlataformaBaseBL<NotaFiscalCartaCorrecaoEntrada>
     {
-        protected NotaFiscalBL NotaFiscalBL { get; set; }
+        protected NotaFiscalEntradaBL NotaFiscalEntradaBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
-        public NotaFiscalCartaCorrecaoBL(AppDataContextBase context, NotaFiscalBL notaFiscalBL, TotalTributacaoBL totalTributacaoBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public NotaFiscalCartaCorrecaoEntradaBL(AppDataContextBase context, NotaFiscalEntradaBL notaFiscalEntradaBL, TotalTributacaoBL totalTributacaoBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
         {
-            NotaFiscalBL = notaFiscalBL;
+            NotaFiscalEntradaBL = notaFiscalEntradaBL;
             TotalTributacaoBL = totalTributacaoBL;
             CertificadoDigitalBL = certificadoDigitalBL;
         }
 
-        public IQueryable<NotaFiscalCartaCorrecao> Everything => repository.AllIncluding(y => y.NotaFiscal).Where(x => x.Ativo);
+        public IQueryable<NotaFiscalCartaCorrecaoEntrada> Everything => repository.AllIncluding(y => y.NotaFiscal).Where(x => x.Ativo);
 
-        public override void ValidaModel(NotaFiscalCartaCorrecao entity)
+        public override void ValidaModel(NotaFiscalCartaCorrecaoEntrada entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.MensagemCorrecao), new Error("Informe a mensagem de correção", "mensagemCorrecao"));
             entity.Fail(All.AsNoTracking().Where(x => x.NotaFiscalId == entity.NotaFiscalId && x.Id != entity.Id && x.Status == StatusCartaCorrecao.Transmitida).Any(), new Error("Já existe um carta de correção em transmissão, aguarde o retorno SEFAZ para emitir um novo evento. Atualize o status.","status"));        
@@ -40,7 +40,7 @@ namespace Fly01.Compras.BL
             base.ValidaModel(entity);
         }
 
-        public override void Insert(NotaFiscalCartaCorrecao entity)
+        public override void Insert(NotaFiscalCartaCorrecaoEntrada entity)
         {
             entity.Data = DateTime.Now;
             var max = 0;
@@ -69,13 +69,13 @@ namespace Fly01.Compras.BL
             base.Insert(entity);
         }
 
-        public override void Update(NotaFiscalCartaCorrecao entity)
+        public override void Update(NotaFiscalCartaCorrecaoEntrada entity)
         {
             //ver questão sobre falha na transmissão e casos de rejeição, em principio criar nova cc-e
             entity.Fail(entity.Status == StatusCartaCorrecao.Transmitida, new Error("Não é possível retransmitir uma carta de correção."));
         }
 
-        public override void Delete(NotaFiscalCartaCorrecao entityToDelete)
+        public override void Delete(NotaFiscalCartaCorrecaoEntrada entityToDelete)
         {
             var status = entityToDelete.Status;
             entityToDelete.Fail(status == StatusCartaCorrecao.Transmitida || status == StatusCartaCorrecao.RegistradoEVinculado || status == StatusCartaCorrecao.RegistradoENaoVinculado, new Error("Não é possível deletar Carta de Correção com status Transmitida ou Registrada e Vinculada/Não Vinculada.", "status"));
@@ -89,7 +89,7 @@ namespace Fly01.Compras.BL
             }
         }
 
-        public void TransmitirCartaCorrecao(NotaFiscalCartaCorrecao entity)
+        public void TransmitirCartaCorrecao(NotaFiscalCartaCorrecaoEntrada entity)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Fly01.Compras.BL
                     };
 
                     var entidade = CertificadoDigitalBL.GetEntidade();
-                    var notafiscal = NotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.NotaFiscalId).FirstOrDefault();
+                    var notafiscal = NotaFiscalEntradaBL.All.AsNoTracking().Where(x => x.Id == entity.NotaFiscalId).FirstOrDefault();
 
                     var cartaCorrecao = new CartaCorrecaoVM()
                     {

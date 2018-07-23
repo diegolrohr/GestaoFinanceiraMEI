@@ -29,7 +29,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
                 if (entity.IsValid())
                 {
-                    UnitOfWork.NotaFiscalBL.NotaFiscalInutilizar(entity);
+                    UnitOfWork.NotaFiscalEntradaBL.NotaFiscalInutilizar(entity);
                 }
 
                 Insert(entity);

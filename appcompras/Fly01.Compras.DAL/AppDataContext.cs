@@ -49,6 +49,14 @@ namespace Fly01.Compras.DAL
 
             builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
             builder.Entity<OrdemCompraItem>().Ignore(m => m.Total);
+
+            builder.Entity<NotaFiscalEntrada>()
+                .Map(m => m.ToTable("NotaFiscalEntrada"))
+                .Map<NFeEntrada>(m => m.ToTable("NFeEntrada"));
+
+            builder.Entity<NotaFiscalItemEntrada>()
+                .Map(m => m.ToTable("NotaFiscalItemEntrada"))
+                .Map<NFeProdutoEntrada>(m => m.ToTable("NFeProdutoEntrada"));
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }
@@ -73,5 +81,10 @@ namespace Fly01.Compras.DAL
         public DbSet<ParametroTributario> ParametroTributarios { get; set; }
         public DbSet<SerieNotaFiscal> SerieNotaFiscais { get; set; }
         public DbSet<NotaFiscalInutilizada> NotaFiscalInutilizadas { get; set; }
+        public DbSet<NotaFiscalItemTributacaoEntrada> NotaFiscalItemTributacoesEntrada { get; set; }
+        public DbSet<NotaFiscalCartaCorrecaoEntrada> NotaFiscalCartasCorrecaoEntrada { get; set; }
+        public DbSet<NFeEntrada> NFeEntradas { get; set; }
+        public DbSet<NFeProdutoEntrada> NFeProdutoEntradas { get; set; }
+
     }
 }

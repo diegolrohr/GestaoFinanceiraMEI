@@ -23,47 +23,47 @@ using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.Compras.BL
 {
-    public class NFeBL : PlataformaBaseBL<NFe>
+    public class NFeEntradaBL : PlataformaBaseBL<NFeEntrada>
     {
         protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
-        protected NFeProdutoBL NFeProdutoBL { get; set; }
+        protected NFeProdutoEntradaBL NFeProdutoEntradaBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected CondicaoParcelamentoBL CondicaoParcelamentoBL { get; set; }
         protected FormaPagamentoBL FormaPagamentoBL { get; set; }
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
-        protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
+        protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
 
-        public NFeBL(AppDataContext context,
+        public NFeEntradaBL(AppDataContext context,
                      SerieNotaFiscalBL serieNotaFiscalBL,
-                     NFeProdutoBL nfeProdutoBL,
+                     NFeProdutoEntradaBL nfeProdutoEntradaBL,
                      TotalTributacaoBL totalTributacaoBL,
                      CertificadoDigitalBL certificadoDigitalBL,
                      PessoaBL pessoaBL,
                      CondicaoParcelamentoBL condicaoParcelamentoBL,
                      SubstituicaoTributariaBL substituicaoTributariaBL,
-                     NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL,
+                     NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL,
                      FormaPagamentoBL formaPagamentoBL,
                      NotaFiscalInutilizadaBL notaFiscalInutilizadaBL)
             : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
-            NFeProdutoBL = nfeProdutoBL;
+            NFeProdutoEntradaBL = nfeProdutoEntradaBL;
             TotalTributacaoBL = totalTributacaoBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             PessoaBL = pessoaBL;
             CondicaoParcelamentoBL = condicaoParcelamentoBL;
             SubstituicaoTributariaBL = substituicaoTributariaBL;
-            NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
+            NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             FormaPagamentoBL = formaPagamentoBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
         }
 
-        public IQueryable<NFe> Everything => repository.All.Where(x => x.Ativo);
+        public IQueryable<NFeEntrada> Everything => repository.All.Where(x => x.Ativo);
 
-        public override void ValidaModel(NFe entity)
+        public override void ValidaModel(NFeEntrada entity)
         {
             entity.Fail(entity.TipoNotaFiscal != TipoNotaFiscal.NFe, new Error("Permitido somente nota fiscal do tipo NFe"));
             entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
@@ -116,7 +116,7 @@ namespace Fly01.Compras.BL
             base.ValidaModel(entity);
         }
 
-        public void TransmitirNFe(NFe entity)
+        public void TransmitirNFe(NFeEntrada entity)
         {
             try
             {
@@ -140,18 +140,18 @@ namespace Fly01.Compras.BL
                     var isLocal = AppDefaults.UrlGateway.Contains("fly01local.com.br");
 
                     var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
-                    var cliente = TotalTributacaoBL.GetPessoa(entity.ClienteId);
+                    var cliente = TotalTributacaoBL.GetPessoa(entity.FornecedorId);
                     var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
                     var formaPagamento = FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == entity.FormaPagamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
                     var serieNotaFiscal = SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
-                    var NFeProdutos = NFeProdutoBL.AllIncluding(
+                    var NFeProdutos = NFeProdutoEntradaBL.AllIncluding(
                         x => x.GrupoTributario.Cfop,
                         x => x.Produto.Ncm,
                         x => x.Produto.Cest,
                         x => x.Produto.UnidadeMedida,
-                        x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalId == entity.Id);
+                        x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalEntradaId == entity.Id);
 
                     var destinoOperacao = TipoDestinoOperacao.Interna;
                     if (cliente.Estado != null && cliente.Estado.Sigla.ToUpper() == "EX" || (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla.ToUpper() : "") == "EX")
@@ -290,8 +290,8 @@ namespace Fly01.Compras.BL
                             x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                             ).FirstOrDefault();
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
-                        var itemTributacao = new NotaFiscalItemTributacao();
-                        itemTributacao = NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
+                        var itemTributacao = new NotaFiscalItemTributacaoEntrada();
+                        itemTributacao = NotaFiscalItemTributacaoEntradaBL.All.Where(x => x.NotaFiscalItemEntradaId == item.Id).FirstOrDefault();
 
                         var produtoNFe = new EmissaoNFE.Domain.Entities.NFe.Produto()
                         {
@@ -572,13 +572,13 @@ namespace Fly01.Compras.BL
     }
 }
 
-public override void Insert(NFe entity)
+public override void Insert(NFeEntrada entity)
 {
     entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
     base.Insert(entity);
 }
 
-public override void Update(NFe entity)
+public override void Update(NFeEntrada entity)
 {
     var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
     entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
@@ -598,7 +598,7 @@ public override void Update(NFe entity)
     base.Update(entity);
 }
 
-public override void Delete(NFe entityToDelete)
+public override void Delete(NFeEntrada entityToDelete)
 {
     var status = entityToDelete.Status;
     entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
@@ -616,7 +616,7 @@ public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
 {
     var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
-    var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
+    var produtos = NFeProdutoEntradaBL.All.AsNoTracking().Where(x => x.NotaFiscalEntradaId == nfeId).ToList();
     var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
     var totalImpostosProdutos = nfe.TotalImpostosProdutos;
     var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;

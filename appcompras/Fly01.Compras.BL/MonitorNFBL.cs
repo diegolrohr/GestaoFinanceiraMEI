@@ -14,29 +14,27 @@ namespace Fly01.Compras.BL
     public class MonitorNFBL : PlataformaBaseBL<MonitorNF>
     {
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
-        protected NFeBL NFeBL { get; set; }
-        protected NFSeBL NFSeBL { get; set; }
-        protected NotaFiscalBL NotaFiscalBL { get; set; }
+        protected NFeEntradaBL NFeEntradaBL { get; set; }
+        protected NotaFiscalEntradaBL NotaFiscalEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
-        protected NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL { get; set; }
+        protected NotaFiscalCartaCorrecaoEntradaBL NotaFiscalCartaCorrecaoEntradaBL { get; set; }
 
-        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL,
-            NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL)
+        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeEntradaBL nFeEntradaBL,
+            NotaFiscalEntradaBL notaFiscalEntradaBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL notaFiscalCartaCorrecaoEntradaBL)
             : base(context)
         {
             TotalTributacaoBL = totalTributacao;
-            NFeBL = nFeBL;
-            NFSeBL = nFSeBL;
-            NotaFiscalBL = notaFiscalBL;
+            NFeEntradaBL = nFeEntradaBL;
+            NotaFiscalEntradaBL = notaFiscalEntradaBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
-            NotaFiscalCartaCorrecaoBL = notaFiscalCartaCorrecaoBL;
+            NotaFiscalCartaCorrecaoEntradaBL = notaFiscalCartaCorrecaoEntradaBL;
         }
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+            var notasFiscaisByPlataforma = (from nf in NotaFiscalEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
                                             where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
@@ -75,7 +73,7 @@ namespace Fly01.Compras.BL
                         foreach (var itemNF in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfe = NFeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                            var nfe = NFeEntradaBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
                             if (nfe != null)
                             {
                                 nfe.Mensagem = null;
@@ -84,19 +82,6 @@ namespace Fly01.Compras.BL
                                 nfe.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                 nfe.Mensagem = itemNF.Mensagem;
                                 nfe.Recomendacao = itemNF.Recomendacao;
-                            }
-                            else
-                            {
-                                var nfse = NFSeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
-                                if (nfse != null)
-                                {
-                                    nfse.Mensagem = null;
-                                    nfse.Recomendacao = null;
-
-                                    nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
-                                    nfse.Mensagem = itemNF.Mensagem;
-                                    nfse.Recomendacao = itemNF.Recomendacao;
-                                }
                             }
                         }
                     }
@@ -173,7 +158,7 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSSCartaCorrecao(string plataformaUrl, Guid idNotaFiscal)
         {
-            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
+            var groupPlataformas = (from nf in NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => (x.Status == StatusCartaCorrecao.Transmitida))
                                     where (string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl)
                                     && (idNotaFiscal == default(Guid) || nf.NotaFiscalId == idNotaFiscal)
                                     group nf by nf.PlataformaId into g
@@ -197,8 +182,8 @@ namespace Fly01.Compras.BL
 
                     if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
                     {
-                        var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecao>();
-                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
+                        var cartasCorrecoesByPlataforma = new List<NotaFiscalCartaCorrecaoEntrada>();
+                        cartasCorrecoesByPlataforma = NotaFiscalCartaCorrecaoEntradaBL.Everything.Where(x => x.PlataformaId == dadosPlataforma.plataformaId && (x.Status == StatusCartaCorrecao.Transmitida)).ToList();
 
                         foreach (var cartaCorrecao in cartasCorrecoesByPlataforma)
                         {

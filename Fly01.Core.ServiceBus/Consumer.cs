@@ -46,64 +46,14 @@ namespace Fly01.Core.ServiceBus
         {
             var channel = GetChannel();
             RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"];
-            ConsumerApps(new EventingBasicConsumer(channel), channel);
+            EventConsumer(new EventingBasicConsumer(channel), channel);
 
             var channelIntegracao = GetChannel();
             RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
-            ConsumerIntegracao(new EventingBasicConsumer(channelIntegracao), channelIntegracao);
+            EventConsumer(new EventingBasicConsumer(channelIntegracao), channelIntegracao);
         }
 
-        private void ConsumerApps(EventingBasicConsumer consumer, IModel channel)
-        {
-            consumer.Received += async (sender, args) =>
-            {
-                try
-                {
-                    if (args.BasicProperties.Headers == null)
-                        throw new ArgumentException(MsgHeaderInvalid);
-
-                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
-                    if (!HeaderIsValid())
-                        throw new ArgumentException(MsgHeaderInvalid);
-
-                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
-                    {
-                        if (args.BasicProperties.AppId != RabbitConfig.AppId)
-                        {
-                            Message = Encoding.UTF8.GetString(args.Body);
-                            HTTPMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties?.Type ?? "PUT");
-
-                            RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
-                            RabbitConfig.AppUser = GetHeaderValue("AppUser");
-                            RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
-
-                            await DeliverMessage();
-
-                            foreach (var item in exceptions)
-                            {
-                                var erro = (item.Value is BusinessException) ? (BusinessException)item.Value : (Exception)item.Value;
-
-                                SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-
-                                continue;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, RabbitConfig.RoutingKey);
-                }
-                finally
-                {
-                    channel.BasicAck(args.DeliveryTag, false);
-                }
-            };
-
-            channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
-        }
-
-        private void ConsumerIntegracao(EventingBasicConsumer consumer, IModel channel)
+        private void EventConsumer(EventingBasicConsumer consumer, IModel channel)
         {
             consumer.Received += async (sender, args) =>
             {

@@ -13,7 +13,9 @@
             } else {
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
+                $("#grupoTributarioPadraoIdField").hide();
 
+                $("div#clienteIdField").hide();
                 $("input#tipoCarteira").val("Receita");
             }
         }

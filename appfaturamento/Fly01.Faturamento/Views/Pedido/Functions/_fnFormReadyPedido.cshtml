@@ -116,10 +116,15 @@
             $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
             $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
+
+            if ($('#tipoVenda').val() == "Complementar") {
+                $("#tipoNfeComplementarField").show();
+            }            
         }
         else {
             $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
             $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
+            $("#tipoNfeComplementarField").hide();
         }
     }
 

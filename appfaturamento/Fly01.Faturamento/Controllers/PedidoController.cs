@@ -115,7 +115,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 11,
+                        Quantity = 12,
                     },
                     new FormWizardUIStep()
                     {
@@ -170,6 +170,7 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Cadastro
+
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
@@ -177,7 +178,6 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
@@ -205,6 +205,15 @@ namespace Fly01.Faturamento.Controllers
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoNfeComplementar",
+                Class = "col s12 l3",
+                Label = "Tipo do Complemento",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))),
+                ConstrainWidth = true
+            });
             #endregion
 
             #region step Produtos

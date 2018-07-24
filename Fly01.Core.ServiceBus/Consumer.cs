@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
 using Fly01.Core.Mensageria;
-using System.Web.Configuration;
 using System.Linq;
 
 namespace Fly01.Core.ServiceBus
@@ -23,7 +22,7 @@ namespace Fly01.Core.ServiceBus
         private IModel GetChannel(string virtualHost)
         {
             RabbitConfig.Factory.VirtualHost = virtualHost;
-            var conn = RabbitConfig.Factory.CreateConnection($"cnsmr_{RabbitConfig.Factory.VirtualHost}_{RabbitConfig.QueueName}");
+            var conn = RabbitConfig.Factory.CreateConnection($"cnsmr_{virtualHost}_{RabbitConfig.QueueName}");
             var channel = conn.CreateModel();
             channel.BasicQos(0, 1, false);
 
@@ -47,7 +46,7 @@ namespace Fly01.Core.ServiceBus
 
         public void Consume()
         {
-            WebConfigurationManager.AppSettings["RabbitVirtualHost"].Split(',').ToList().ForEach(item => { EventConsumer(GetChannel(item)); });
+            RabbitConfig.VirtualHost.Split(',').ToList().ForEach(item => { EventConsumer(GetChannel(item)); });
         }
 
         private void EventConsumer(IModel channel)

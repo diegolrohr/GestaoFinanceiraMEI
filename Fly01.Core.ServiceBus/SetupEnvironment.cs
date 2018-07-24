@@ -2,7 +2,6 @@
 using RabbitMQ.Client;
 using System;
 using System.Linq;
-using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -14,7 +13,7 @@ namespace Fly01.Core.ServiceBus
 
             try
             {
-                WebConfigurationManager.AppSettings["RabbitVirtualHost"].Split(',').ToList().ForEach(item =>
+                RabbitConfig.VirtualHost.Split(',').ToList().ForEach(item =>
                 {
                     factory.VirtualHost = item;
                     using (var connection = factory.CreateConnection("env" + RabbitConfig.QueueName))
@@ -24,14 +23,15 @@ namespace Fly01.Core.ServiceBus
                             channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
                             channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
 
-                            RabbitConfig.ListRoutingKeysIntegracao.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
+                            RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
                         }
                     }
                 });
             }
             catch (Exception ex)
             {
-                SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, "");
+                if (RabbitConfig.VirtualHostname != "dev")
+                    SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, "");
             }
         }
     }

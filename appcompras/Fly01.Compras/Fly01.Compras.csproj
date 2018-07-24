@@ -275,6 +275,7 @@
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

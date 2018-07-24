@@ -6,6 +6,7 @@ using System.Web.OData.Builder;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Configuration;
 using System.Collections.Generic;
+using Fly01.Core;
 
 namespace Fly01.Estoque.API
 {
@@ -45,5 +46,12 @@ namespace Fly01.Estoque.API
         };
 
         protected override Task RunServiceBus() => Task.Factory.StartNew(() => listTasks.ForEach((t) => { t.Consume(); }));
+
+        protected override void SetAppDefaults()
+        {
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+
+            base.SetAppDefaults();
+        }
     }
 }

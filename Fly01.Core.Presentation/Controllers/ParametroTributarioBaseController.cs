@@ -25,7 +25,7 @@ namespace Fly01.Core.Presentation.Controllers
             return queryStringDefault;
         }
 
-        private ParametroTributarioVM GetParametro()
+        public ParametroTributarioVM GetParametro()
         {
             var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>(ResourceName);
 
@@ -359,8 +359,8 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoHorario = tipoHorario
                 };
 
-                if (dadosParametro.mensagemPadraoNota.Length > 5000)
-                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 5000 caracteres.");
+                if (dadosParametro.mensagemPadraoNota.Length > 4000)
+                    return JsonResponseStatus.GetFailure("Número de caracteres na Mensagem Padrão na Nota não pode ser maior que 4000 caracteres.");
 
                 if (dadosParametro.numeroRetornoNF.Length > 20)
                     return JsonResponseStatus.GetFailure("Número de caracteres no Número de Retorno da Nota Fiscal não pode ser maior que 20 caracteres.");

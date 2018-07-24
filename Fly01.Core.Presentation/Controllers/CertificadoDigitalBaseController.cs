@@ -26,7 +26,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         private CertificadoDigitalVM GetCertificado()
         {
-            var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>(ResourceName);
+            var response = RestHelper.ExecuteGetRequest<ResultBase<CertificadoDigitalVM>>("certificadodigital");
 
 
             if (response == null || response.Data == null)

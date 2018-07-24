@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
@@ -10,6 +9,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("total")]
         public double Total { get; set; }
+
+        [JsonProperty("quantidade")]
+        public double Quantidade { get; set; }
     }
 }
-

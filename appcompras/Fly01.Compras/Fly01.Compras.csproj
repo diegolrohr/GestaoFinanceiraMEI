@@ -108,7 +108,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModel\DashboardGridVM.cs" />
-    <Compile Include="ViewModel\DashboardComprasVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />

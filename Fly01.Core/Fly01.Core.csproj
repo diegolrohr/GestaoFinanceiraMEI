@@ -73,7 +73,7 @@
     <Compile Include="ViewModels\Presentation\Commons\CfopVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CidadeVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ComprasFormasPagamentoVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\ComprasStatusVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\DashboardComprasVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DomainBaseVM.cs" />

@@ -82,7 +82,7 @@ namespace Fly01.Financeiro.Controllers
                         DataField = "valor",
                         DisplayName = "Valor",
                         Priority = 4,
-                        Type = "valor",
+                        Type = "currency",
                         Orderable = false,
                         Searchable = false
                     }

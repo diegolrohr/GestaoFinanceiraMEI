@@ -3,6 +3,6 @@
         let date = fly01._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
-        refreshDash();
+        refreshDash(true);
     }
 </script>

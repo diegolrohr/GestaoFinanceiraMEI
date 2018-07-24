@@ -22,8 +22,48 @@ namespace Fly01.Compras.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
+        protected object ChartOptions(string title = "")
+        {
+            return new
+            {
+                title = new
+                {
+                    display = true,
+                    text = title,
+                    fontSize = 15,
+                    fontFamily = "Roboto",
+                    fontColor = "#2c3739"
+                },
+                tooltips = new
+                {
+                    mode = "label",
+                    bodySpacing = 10,
+                    cornerRadius = 0,
+                    titleMarginBottom = 15
+                },
+                legend = new
+                {
+                    position = "bottom"
+                },
+                elements = new
+                {
+                    center = new
+                    {
+                        currency = true,
+                        maxText = "R$ AA.AAA,AA",
+                        fontColor = "#2c3739",
+                        fontFamily = "'Roboto', 'Arial', sans-serif",
+                        fontStyle = "normal",
+                        minFontSize = 1,
+                        maxFontSize = 256,
+                    }
+                }
+            };
+        }
+
         protected override ContentUI HomeJson(bool withSidebarUrl = false)
         {
+
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
                 return new ContentUI();
 
@@ -54,7 +94,7 @@ namespace Fly01.Compras.Controllers
                        Label= "Selecione o período",
                        Id= "mesPicker",
                        Name= "mesPicker",
-                       Class= "col s12 m6",
+                       Class= "col s12 m6 l4 offset-l2",
                        DomEvents = new List<DomEventUI>()
                        {
                            new DomEventUI()
@@ -69,12 +109,22 @@ namespace Fly01.Compras.Controllers
                         Id = "dataInicial",
                         Name = "dataInicial"
                     },
-                    new SelectUI
+                    new InputHiddenUI()
                     {
                         Id = "tpOrdemCompra",
-                        Class = "col s12 m6",
-                        Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra)).ToList()),
-                        DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoOrdemCompra" } }
+                        Name = "tpOrdemCompra"
+                    },
+                    new ButtonGroupUI()
+                    {
+                        Id = "fly01btngrp",
+                        Class = "col s12 m6 l4",
+                        Label = "Tipo",
+                        OnClickFn = "fnChangeTipoOrdemCompra",
+                        Options = new List<ButtonGroupOptionUI>
+                        {
+                            new ButtonGroupOptionUI { Id = "btnOrcamento", Value = "Orcamento", Label = "Orçamento", Class = "col s6" },
+                            new ButtonGroupOptionUI { Id = "btnPedido", Value = "Pedido", Label = "Pedido", Class = "col s6" }
+                        }
                     }
                 }
             });
@@ -84,8 +134,23 @@ namespace Fly01.Compras.Controllers
                 Id = "chartStatus",
                 DrawType = ChartUIType.Doughnut,
                 Options = ChartOptions("Status"),
-                UrlData = Url.Action("LoadChartStatus"),
-                Class = "col s12 m6",
+                UrlData = Url.Action("Status", "Dashboard"),
+                Class = "col s12 m4",
+                Parameters = new List<ChartUIParameter>
+                    {
+                        new ChartUIParameter { Id = "dataInicial" },
+                        new ChartUIParameter { Id = "tpOrdemCompra" }
+                    }
+            });
+
+            // CHART Forma de Pagamento
+            cfg.Content.Add(new ChartUI
+            {
+                Id = "chartCategoria",
+                DrawType = ChartUIType.Doughnut,
+                Options = ChartOptions("Categoria"),
+                UrlData = Url.Action("Categoria", "Dashboard"),
+                Class = "col s12 m4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },
@@ -99,8 +164,8 @@ namespace Fly01.Compras.Controllers
                 Id = "chartPagamento",
                 DrawType = ChartUIType.Doughnut,
                 Options = ChartOptions("Forma de Pagamento"),
-                UrlData = Url.Action("LoadChartFormaPagamento"),
-                Class = "col s12 m6",
+                UrlData = Url.Action("FormaPagamento", "Dashboard"),
+                Class = "col s12 m4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" },
@@ -109,13 +174,17 @@ namespace Fly01.Compras.Controllers
             });
             cfg.Content.Add(new DivUI
             {
-                Elements = new List<BaseUI>{
-                    new LabelSetUI { Id = "titleLabel", Class = "col s12", Label = "TOP 10 - PRODUTOS MAIS COMPRADOS" }
+                Elements = new List<BaseUI>
+                {
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais comprados" },
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 maiores fornecedores" }
                 }
             });
             cfg.Content.Add(new DataTableUI
             {
-                UrlGridLoad = Url.Action("DashboardGridLoad"),
+                Class = "col s6",
+                Id = "mProd",
+                UrlGridLoad = Url.Action("MaisComprados", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
                         new DataTableUIParameter { Id = "dataInicial" }
@@ -133,12 +202,48 @@ namespace Fly01.Compras.Controllers
                         Priority = 2,
                         Orderable = false,
                         Searchable = false
+                    },                  
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
                     },
                     new DataTableUIColumn
                     {
-                        DataField = "unidadeMedida",
-                        DisplayName = "Unidade de Medida",
-                        Priority = 1,
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "mforn",
+                UrlGridLoad = Url.Action("MaioresFornecedores", "Dashboard"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataInicial" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "nome",
+                        DisplayName = "Nome",
+                        Priority = 2,
                         Orderable = false,
                         Searchable = false
                     },
@@ -147,16 +252,7 @@ namespace Fly01.Compras.Controllers
                         DataField = "valor",
                         DisplayName = "Valor",
                         Priority = 3,
-                        Type = "valor",
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "quantidade",
-                        DisplayName = "Quantidade",
-                        Priority = 4,
-                        Type = "valor",
+                        Type = "currency",
                         Orderable = false,
                         Searchable = false
                     }
@@ -179,7 +275,7 @@ namespace Fly01.Compras.Controllers
                     Label = "Compras",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Dashboard")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
                     }
                 },
@@ -240,179 +336,6 @@ namespace Fly01.Compras.Controllers
                 config.Widgets.Insights = new InsightsUI { Key = ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"] };
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        protected object ChartToView(List<DashboardComprasVM> response)
-        {
-            var colors = new[]
-            {
-                "rgba(250, 166, 52, 0.9)",
-                "rgba(243, 112, 33, 0.9)",
-                "rgba(0, 52, 88, 0.9)",
-                "rgba(0, 103, 139, 0.9)",
-                "rgba(12, 154, 190, 0.9)",
-            };
-            return new
-            {
-                success = true,
-                currency = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[]
-                {
-                    new
-                    {
-                        data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                        backgroundColor = colors,
-                        borderWidth = 1
-                    }
-                }
-            };
-        }
-        protected object ChartOptions(string title = "")
-        {
-            return new
-            {
-                title = new
-                {
-                    display = true,
-                    text = title,
-                    fontSize = 15,
-                    fontFamily = "Roboto",
-                    fontColor = "#2c3739"
-                },
-                tooltips = new
-                {
-                    mode = "label",
-                    bodySpacing = 10,
-                    cornerRadius = 0,
-                    titleMarginBottom = 15
-                },
-                legend = new
-                {
-                    position = "bottom"
-                },
-                elements = new
-                {
-                    center = new
-                    {
-                        currency = true,
-                        maxText = "R$ AA.AAA,AA",
-                        fontColor = "#2c3739",
-                        fontFamily = "'Roboto', 'Arial', sans-serif",
-                        fontStyle = "normal",
-                        minFontSize = 1,
-                        maxFontSize = 256,
-                    }
-                }
-            };
-        }
-
-        public JsonResult LoadChartStatus(DateTime dataInicial, String tpOrdemCompra)
-        {
-            var response = GetProjecaoStatus(dataInicial, tpOrdemCompra);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Valor",
-                            fill = false,
-                            backgroundColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            borderColor = new string[] { "rgb(75, 192, 192)", "rgb(255, 99, 132)"},
-                            data = response.Select(x => Math.Round(x.Total, 2)).ToArray(),
-                    }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult LoadChartFormaPagamento(DateTime dataInicial, String tpOrdemCompra)
-        {
-            var response = GetProjecaoFormaPagamento(dataInicial, tpOrdemCompra);
-
-            var dataChartToView = new
-            {
-                success = true,
-                labels = response.Select(x => x.Tipo).ToArray(),
-                datasets = new object[] {
-                    new {
-                            label = "Valor",
-                            fill = false,
-                            backgroundColor = "rgb(75, 192, 192)",
-                            data = response.Select(x => Math.Round(x.Total, 2)).ToArray()
-                    }
-                }
-            };
-
-            return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult DashboardGridLoad(DateTime? dataInicial = null)
-        {
-            try
-            {
-                Dictionary<string, string> queryString = new Dictionary<string, string>
-                    {
-                        { "filtro", dataInicial.HasValue? dataInicial.Value.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") }
-                    };
-
-                var response = RestHelper.ExecuteGetRequest<List<DashboardGridVM>>("dashboardprodutosmaiscomprados", queryString);
-
-                return Json(new
-                {
-                    recordsTotal = response.Count,
-                    recordsFiltered = response.Count,
-                    data = response.Select(x => new
-                    {
-                        descricao = x.Descricao,
-                        unidadeMedida = x.UnidadeMedida,
-                        valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
-                        quantidade = x.Quantidade
-                    })
-                }, JsonRequestBehavior.AllowGet);
-
-
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        private List<DashboardComprasVM> GetProjecaoStatus(DateTime dataInicial, String tpOrdemCompra) => GetProjecao(dataInicial, tpOrdemCompra, "dashboardstatus");
-        private List<DashboardComprasVM> GetProjecaoFormaPagamento(DateTime dataInicial, String tpOrdemCompra) => GetProjecao(dataInicial, tpOrdemCompra, "dashboardformaspagamento");
-        protected List<DashboardComprasVM> GetProjecao(DateTime dataInicial, String tpOrdemCompra, string resource)
-        {
-            const int topCount = 4;
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-            {
-                { "filtro", dataInicial.ToString("yyyy-MM-dd") },
-                { "tipo", tpOrdemCompra }
-            };
-
-            var response = RestHelper.ExecuteGetRequest<List<DashboardComprasVM>>(resource, queryString);
-            if (response == null)
-                return new List<DashboardComprasVM>();
-            else
-            {
-                if (response.Count() > topCount)
-                {
-                    var other = new DashboardComprasVM
-                    {
-                        Tipo = "Outras",
-                        Total = response.OrderByDescending(x => x.Total).Skip(topCount).Sum(x => x.Total)
-                    };
-
-                    response = response.OrderByDescending(x => x.Total).Take(topCount).ToList();
-                    response.Add(other);
-                }
-
-            }
-
-            return response;
         }
     }
 }

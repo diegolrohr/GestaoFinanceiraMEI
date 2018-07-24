@@ -96,7 +96,7 @@ namespace Fly01.Compras.BL
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));
 
         private DashboardBL dashboardBL;
-        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, FormaPagamentoBL, PedidoBL, PedidoItemBL, OrcamentoBL, OrcamentoItemBL, OrdemCompraBL, OrdemCompraItemBL, ProdutoBL));
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, PedidoItemBL, OrdemCompraBL));
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));

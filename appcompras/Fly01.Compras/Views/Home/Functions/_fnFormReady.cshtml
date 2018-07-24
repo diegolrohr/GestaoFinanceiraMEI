@@ -1,14 +1,17 @@
 ﻿<script>
-    function refreshDash() {
+    function refreshDash(updateDt) {
         fly01._.chartPagamento.refresh();
         fly01._.chartStatus.refresh();
-        fly01._.fly01dt.refresh();
+        fly01._.chartCategoria.refresh();
+        if (updateDt)
+            fly01._.fly01dt.refresh();
     }
 
     function fnFormReady() {
         let date = fly01._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
-        refreshDash();        
+        $("#btnOrcamento").click();
+        fly01._.fly01dt.refresh();
     }
 </script>

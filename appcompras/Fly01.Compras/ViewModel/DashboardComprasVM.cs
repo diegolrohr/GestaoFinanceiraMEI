@@ -1,14 +1,15 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ComprasFormasPagamentoVM
+    public class DashboardComprasVM
     {
         [JsonProperty("tipo")]
-        public string TipoFormaPagamento { get; set; }
+        public string Tipo { get; set; }
 
         [JsonProperty("total")]
         public double Total { get; set; }
     }
 }
+

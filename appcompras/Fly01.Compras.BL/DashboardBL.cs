@@ -181,8 +181,7 @@ namespace Fly01.Compras.BL
                 .Select(x => new ComprasFormasPagamentoVM
                 {
                     TipoFormaPagamento = x.Key.TipoFormaPagamento,
-                    Total = Math.Round(x.Sum(u => u.Total), 2),
-                    Quantidade = x.Count()
+                    Total = Math.Round(x.Sum(u => u.Total), 2)
                 }).ToList();
 
                 List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
@@ -190,8 +189,7 @@ namespace Fly01.Compras.BL
                 foreach (var item in orcamentos)
                 {
                     ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                    itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
-                    itemCompras.Quantidade = item.Quantidade;
+                    itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());                    
                     itemCompras.Total = item.Total;
                     listaComprasPagamento.Add(itemCompras);
                 }
@@ -199,7 +197,7 @@ namespace Fly01.Compras.BL
                 return (from x in listaComprasPagamento
                         join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
                         select new ComprasFormasPagamentoVM
-                        { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
+                        { TipoFormaPagamento = x.TipoFormaPagamento, Total = x.Total }).ToList();
             }
             else
             {
@@ -236,9 +234,7 @@ namespace Fly01.Compras.BL
                     .Select(x => new ComprasFormasPagamentoVM
                     {
                         TipoFormaPagamento = x.Key.TipoFormaPagamento,
-                        //Total = Math.Round(x.Sum(u => u.Total), 2),
-                        Total = x.Sum(u => u.Total),
-                        Quantidade = x.Count()
+                        Total = x.Sum(u => u.Total)
                     }).ToList();
 
                     List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
@@ -247,7 +243,6 @@ namespace Fly01.Compras.BL
                     {
                         ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
                         itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
-                        itemCompras.Quantidade = item.Quantidade;
                         itemCompras.Total = item.Total;
                         listaComprasPagamento.Add(itemCompras);
                     }
@@ -256,7 +251,7 @@ namespace Fly01.Compras.BL
                     return (from x in listaComprasPagamento
                             join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
                             select new ComprasFormasPagamentoVM
-                            { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
+                            { TipoFormaPagamento = x.TipoFormaPagamento, Total = x.Total }).ToList();
                 }
             }
 
@@ -286,7 +281,6 @@ namespace Fly01.Compras.BL
             {
                 ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
                 itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.Value.ToString());
-                itemCompras.Quantidade = item.Quantidade;
                 itemCompras.Total = item.Total;
                 listaComprasPagamento.Add(itemCompras);
             }

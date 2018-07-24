@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
 using System;
+using System.Linq;
 using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
@@ -13,21 +14,9 @@ namespace Fly01.Core.ServiceBus
 
             try
             {
-                factory.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"];
-                using (var connection = factory.CreateConnection("env" + RabbitConfig.QueueName))
+                WebConfigurationManager.AppSettings["RabbitVirtualHost"].Split(',').ToList().ForEach(item =>
                 {
-                    using (var channel = connection.CreateModel())
-                    {
-                        channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
-                        channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
-
-                        RabbitConfig.ListRoutingKeysIntegracao.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
-                    }
-                }
-
-                if (WebConfigurationManager.AppSettings["RabbitVirtualHostname"] != "dev")
-                {
-                    factory.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
+                    factory.VirtualHost = item;
                     using (var connection = factory.CreateConnection("env" + RabbitConfig.QueueName))
                     {
                         using (var channel = connection.CreateModel())
@@ -38,7 +27,7 @@ namespace Fly01.Core.ServiceBus
                             RabbitConfig.ListRoutingKeysIntegracao.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
                         }
                     }
-                }
+                });
             }
             catch (Exception ex)
             {

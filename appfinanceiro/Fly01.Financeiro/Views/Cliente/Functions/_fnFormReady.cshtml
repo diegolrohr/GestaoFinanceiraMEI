@@ -7,14 +7,21 @@
                 fnDesabilitaCamposPessoaJuridica(false);
         });
 
+        fnDesabilitaCamposPorTipoDeInscricao();        
+
         $("#cpfcnpj").keyup();
     }
 
     function fnDesabilitaCamposPessoaJuridica(disabled) {
         $("#nomeComercial").attr("disabled", disabled);
         $("#contato").attr("disabled", disabled);
-        $("#tipoIndicacaoInscricaoEstadualField input").attr("disabled", disabled);
-        $("#inscricaoEstadual").attr("disabled", disabled);
-        $("#inscricaoMunicipal").attr("disabled", disabled);
     }
+
+    function fnDesabilitaCamposPorTipoDeInscricao() {
+
+        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
+            $("#inscricaoEstadual").attr("disabled", true);
+            $("#inscricaoMunicipal").attr("disabled", true);
+        }
+    };
 </script>

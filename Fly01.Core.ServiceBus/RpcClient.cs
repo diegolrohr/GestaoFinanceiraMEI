@@ -42,7 +42,7 @@ namespace Fly01.Core.ServiceBus
 
             channel.BasicPublish(
                 exchange: "",
-                routingKey: WebConfigurationManager.AppSettings["RabbitSequenceGenetorQueueName"],
+                routingKey: RabbitConfig.SequenceGeneratorQueue,
                 basicProperties: props,
                 body: messageBytes);
 

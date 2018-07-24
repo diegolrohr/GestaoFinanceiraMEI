@@ -1,13 +1,13 @@
-﻿using Fly01.Core.BL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using System;
-using System.Linq;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using System.Collections.Generic;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -154,8 +154,8 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Finalidade de devolução é necessário informar a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada"));
                     if (item.Identificador.NFReferenciada != null)
                     {
-                        entity.Fail(item.Identificador.FinalidadeEmissaoNFe != TipoFinalidadeEmissaoNFe.Devolucao,
-                            new Error("A chave da nota fiscal referenciada só deve ser informada com finalidade de devolução.", "Item.Identificador.NFReferenciada"));
+                        entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Ajuste,
+                            new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
                         entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
                             new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                         entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,

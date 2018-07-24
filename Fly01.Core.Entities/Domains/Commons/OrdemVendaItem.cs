@@ -11,10 +11,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid GrupoTributarioId { get; set; }
 
-        [Required]
+        //[Required]
         public double Quantidade { get; set; }
 
-        [Required]
+        //[Required]
         public double Valor { get; set; }
 
         public double Desconto { get; set; }

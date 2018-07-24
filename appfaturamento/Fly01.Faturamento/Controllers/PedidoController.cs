@@ -193,6 +193,14 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
             }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoNfeComplementar",
+                Class = "col s12 m7",
+                Label = "Tipo do Complemento",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))),
+                ConstrainWidth = true
+            });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "clienteId",
@@ -206,14 +214,7 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoNfeComplementar",
-                Class = "col s12 l3",
-                Label = "Tipo do Complemento",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))),
-                ConstrainWidth = true
-            });
+
             #endregion
 
             #region step Produtos

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
 using Fly01.Core.Mensageria;
-using System.Web.Configuration;
+using System.Linq;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -19,9 +19,11 @@ namespace Fly01.Core.ServiceBus
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
 
-        private IModel GetChannel()
+        private IModel GetChannel(string virtualHost)
         {
-            var channel = RabbitConfig.Factory.CreateConnection($"cnsm_{RabbitConfig.Factory.VirtualHost}_{RabbitConfig.QueueName}").CreateModel();
+            RabbitConfig.Factory.VirtualHost = virtualHost;
+            var conn = RabbitConfig.Factory.CreateConnection($"cnsmr_{virtualHost}_{RabbitConfig.QueueName}");
+            var channel = conn.CreateModel();
             channel.BasicQos(0, 1, false);
 
             return channel;
@@ -44,17 +46,13 @@ namespace Fly01.Core.ServiceBus
 
         public void Consume()
         {
-            var channel = GetChannel();
-            RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"];
-            EventConsumer(new EventingBasicConsumer(channel), channel);
-
-            var channelIntegracao = GetChannel();
-            RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
-            EventConsumer(new EventingBasicConsumer(channelIntegracao), channelIntegracao);
+            RabbitConfig.VirtualHost.Split(',').ToList().ForEach(item => { EventConsumer(GetChannel(item)); });
         }
 
-        private void EventConsumer(EventingBasicConsumer consumer, IModel channel)
+        private void EventConsumer(IModel channel)
         {
+            var consumer = new EventingBasicConsumer(channel);
+
             consumer.Received += async (sender, args) =>
             {
                 try

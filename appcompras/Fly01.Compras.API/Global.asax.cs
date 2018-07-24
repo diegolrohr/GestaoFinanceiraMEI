@@ -46,11 +46,6 @@ namespace Fly01.Compras.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        private List<ServiceBusBL> listTasks = new List<ServiceBusBL>()
-        {
-            new ServiceBusBL()
-        };
-
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => listTasks.ForEach((t) => { t.Consume(); }));
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
     }
 }

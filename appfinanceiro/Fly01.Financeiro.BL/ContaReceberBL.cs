@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Data.Entity;
@@ -28,6 +29,8 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaReceber entity)
         {
+            var numero = default(int);
+
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
@@ -69,18 +72,22 @@ namespace Fly01.Financeiro.BL
                                                         : entity.ValorPago;
 
                     if (iParcela == default(int))
-                    {
                         itemContaReceber.Id = contaFinanceiraPrincipal;
-                    }
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    base.Insert(itemContaReceber);
+                    var rpcClient = new RpcClient();
+                    numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                    rpcClient.Close();
 
+                    itemContaReceber.Numero = numero;
+
+                    base.Insert(itemContaReceber);
 
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
@@ -107,6 +114,12 @@ namespace Fly01.Financeiro.BL
                                     itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
                                     break;
                             }
+
+                            rpcClient = new RpcClient();
+                            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                            rpcClient.Close();
+
+                            itemContaReceberRepeticao.Numero = numero;
 
                             base.Insert(itemContaReceberRepeticao);
                         }

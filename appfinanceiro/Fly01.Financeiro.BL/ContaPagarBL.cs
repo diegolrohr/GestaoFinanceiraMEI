@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Data.Entity;
@@ -21,6 +22,7 @@ namespace Fly01.Financeiro.BL
             this.condicaoParcelamentoBL = condicaoParcelamentoBL;
             this.contaFinanceiraBaixaBL = contaFinanceiraBaixaBL;
             this.pessoaBL = pessoaBL;
+
             MustConsumeMessageServiceBus = true;
         }
 
@@ -28,6 +30,8 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaPagar entity)
         {
+            var numero = default(int);
+
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
@@ -66,23 +70,25 @@ namespace Fly01.Financeiro.BL
                     itemContaPagar.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
-                    {
                         itemContaPagar.Id = contaFinanceiraPrincipal;
-                    }
                     else
                     {
                         itemContaPagar.Id = Guid.NewGuid();
+
                         if (repetir)
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
+                    var rpcClient = new RpcClient();
+                    numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                    rpcClient.Close();
+
+                    itemContaPagar.Numero = numero;
 
                     base.Insert(itemContaPagar);
 
                     if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
-                    {
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagar);
-                    }
 
                     if (repetir)
                     {
@@ -106,6 +112,12 @@ namespace Fly01.Financeiro.BL
                                     itemContaPagarRepeticao.DataVencimento = itemContaPagarRepeticao.DataVencimento.AddYears(iRepeticao);
                                     break;
                             }
+
+                            rpcClient = new RpcClient();
+                            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                            rpcClient.Close();
+
+                            itemContaPagarRepeticao.Numero = numero;
 
                             base.Insert(itemContaPagarRepeticao);
                         }

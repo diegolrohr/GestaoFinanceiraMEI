@@ -32,6 +32,7 @@ namespace Fly01.Financeiro.BL
             var valorPagoConta = contaFinanceira.ValorPago.GetValueOrDefault(0);
 
             entity.ContaFinanceira = null;
+            contaFinanceira.ValorPrevisto = Math.Round(contaFinanceira.ValorPrevisto, 2);
 
             if (contaFinanceira == null) throw new BusinessException("Conta inválida.");
 
@@ -39,7 +40,7 @@ namespace Fly01.Financeiro.BL
 
             entity.Fail(!contaBancariaBL.All.Any(x => x.Id == entity.ContaBancariaId), ContaInvalida);
             entity.Fail(entity.Valor > contaFinanceira.ValorPrevisto, ValorPagoInvalido);
-            entity.Fail(valorPagoConta + entity.Valor > contaFinanceira.ValorPrevisto, SomaValoresInvalida);
+            entity.Fail( valorPagoConta + entity.Valor > contaFinanceira.ValorPrevisto, SomaValoresInvalida);
 
             base.Insert(entity);
 

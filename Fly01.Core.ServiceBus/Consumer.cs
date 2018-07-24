@@ -5,15 +5,13 @@ using RabbitMQ.Client.Events;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
-using System.Threading;
 using Fly01.Core.Mensageria;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
     public abstract class Consumer
     {
-        private IModel _channel;
-        private IConnection _connection;
         private string MsgHeaderInvalid = "A 'PlataformaUrl', o 'Hostname' e o 'AppUser' devem ser informados no Header da request";
 
         protected string Message;
@@ -21,29 +19,12 @@ namespace Fly01.Core.ServiceBus
         protected Dictionary<string, object> Headers = new Dictionary<string, object>();
         protected List<KeyValuePair<string, object>> exceptions = new List<KeyValuePair<string, object>>();
 
-        private IConnection Connection
+        private IModel GetChannel()
         {
-            get
-            {
-                if (_connection == null)
-                    _connection = RabbitConfig.Factory.CreateConnection("cnsm" + RabbitConfig.QueueName);
+            var channel = RabbitConfig.Factory.CreateConnection($"cnsm_{RabbitConfig.Factory.VirtualHost}_{RabbitConfig.QueueName}").CreateModel();
+            channel.BasicQos(0, 1, false);
 
-                return _connection;
-            }
-        }
-
-        private IModel Channel
-        {
-            get
-            {
-                if (_channel == null)
-                {
-                    _channel = Connection.CreateModel();
-                    _channel.BasicQos(0, 1, false);
-                }
-
-                return _channel;
-            }
+            return channel;
         }
 
         private bool HeaderIsValid()
@@ -63,8 +44,17 @@ namespace Fly01.Core.ServiceBus
 
         public void Consume()
         {
-            var consumer = new EventingBasicConsumer(Channel);
+            var channel = GetChannel();
+            RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHost"];
+            EventConsumer(new EventingBasicConsumer(channel), channel);
 
+            var channelIntegracao = GetChannel();
+            RabbitConfig.VirtualHost = WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
+            EventConsumer(new EventingBasicConsumer(channelIntegracao), channelIntegracao);
+        }
+
+        private void EventConsumer(EventingBasicConsumer consumer, IModel channel)
+        {
             consumer.Received += async (sender, args) =>
             {
                 try
@@ -106,11 +96,11 @@ namespace Fly01.Core.ServiceBus
                 }
                 finally
                 {
-                    Channel.BasicAck(args.DeliveryTag, false);
+                    channel.BasicAck(args.DeliveryTag, false);
                 }
             };
 
-            Channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
+            channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
 
         protected abstract Task DeliverMessage();

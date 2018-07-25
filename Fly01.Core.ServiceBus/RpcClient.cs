@@ -3,29 +3,53 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
     public class RpcClient
     {
-        private readonly IModel channel;
-        private readonly IConnection connection;
+        private IModel channel;
+        private IConnection connection;
         private readonly IBasicProperties props;
         private readonly string replyQueueName;
         private readonly EventingBasicConsumer consumer;
         private readonly BlockingCollection<string> respQueue = new BlockingCollection<string>();
 
+        private IConnection Connection
+        {
+            get
+            {
+                if (connection == null || !connection.IsOpen)
+                {
+                    var factory = RabbitConfig.Factory;
+                    factory.VirtualHost = RabbitConfig.VirtualHostname;
+
+                    connection = factory.CreateConnection();
+                }
+
+                return connection;
+            }
+        }
+
+        private IModel Channel
+        {
+            get
+            {
+                if (channel == null || channel.IsClosed)
+                    channel = Connection.CreateModel();
+
+                return channel;
+            }
+        }
+
         public RpcClient()
         {
-            connection = RabbitConfig.Factory.CreateConnection();
-            channel = connection.CreateModel();
-            replyQueueName = channel.QueueDeclare().QueueName;
-            consumer = new EventingBasicConsumer(channel);
+            var myChannel = Channel;
+            replyQueueName = myChannel.QueueDeclare().QueueName;
+            consumer = new EventingBasicConsumer(myChannel);
 
             var correlationId = Guid.NewGuid().ToString();
-            props = channel.CreateBasicProperties();
+            props = myChannel.CreateBasicProperties();
             props.CorrelationId = correlationId;
             props.ReplyTo = replyQueueName;
 
@@ -38,25 +62,30 @@ namespace Fly01.Core.ServiceBus
 
         public string Call(string message)
         {
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-
-            channel.BasicPublish(
-                exchange: "",
-                routingKey: RabbitConfig.SequenceGeneratorQueue,
-                basicProperties: props,
-                body: messageBytes);
-
-            channel.BasicConsume(
-                consumer: consumer,
-                queue: replyQueueName,
-                autoAck: true);
-
             var result = "";
-            respQueue.TryTake(out result, 2000);
 
-            if (string.IsNullOrEmpty(result))
-                throw new Exception("RpcClient: Não foi possível obter um número");
-                
+            try
+            {
+                var messageBytes = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(exchange: "", routingKey: RabbitConfig.SequenceGeneratorQueue, basicProperties: props, body: messageBytes);
+
+                channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
+
+                respQueue.TryTake(out result, 2000);
+
+                if (string.IsNullOrEmpty(result))
+                    throw new Exception("RpcClient: Não foi possível obter um número");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                channel.QueueDelete(replyQueueName, false, true);
+            }
+
             return result;
         }
 

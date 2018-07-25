@@ -8,7 +8,7 @@ namespace Fly01.Core.Presentation.Commons
         private static string cdnVersion = "1.1.4";
 
         //private static string serverUrl = $"https://cdnfly01.azureedge.net/fly/{cdnVersion}"; private static string complJs = ".min"; /*
-        private static string serverUrl = $"http://poad257.poa01.local:8000/{cdnVersion}";
+        private static string serverUrl = $"http://localhost:8000/{cdnVersion}";
         private static string complJs = ""; /**/
 
         private static string cssUrl = $"{serverUrl}/fly01ui.css";

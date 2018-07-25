@@ -3,8 +3,10 @@
         fly01._.chartPagamento.refresh();
         fly01._.chartStatus.refresh();
         fly01._.chartCategoria.refresh();
-        if (updateDt)
-            fly01._.fly01dt.refresh();
+        if (updateDt) {
+            fly01._.mProd.refresh();
+            fly01._.mForn.refresh();
+        }
     }
 
     function fnFormReady() {
@@ -12,6 +14,7 @@
         var firstDay = new Date(date.year, date.month, 1);
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
         $("#btnOrcamento").click();
-        fly01._.fly01dt.refresh();
+        fly01._.mProd.refresh();
+        fly01._.mForn.refresh();
     }
 </script>

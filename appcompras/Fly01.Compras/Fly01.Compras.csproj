@@ -261,7 +261,6 @@
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

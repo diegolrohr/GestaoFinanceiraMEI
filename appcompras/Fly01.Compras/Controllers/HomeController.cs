@@ -227,7 +227,7 @@ namespace Fly01.Compras.Controllers
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s6",
-                Id = "mforn",
+                Id = "mForn",
                 UrlGridLoad = Url.Action("MaioresFornecedores", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {

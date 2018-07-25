@@ -203,7 +203,6 @@
     <Content Include="Views\Shared\NotAllow.cshtml" />
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

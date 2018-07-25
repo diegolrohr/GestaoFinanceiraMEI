@@ -238,7 +238,11 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 l3",
                 Label = "Indicação Inscrição Estadual",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
-                ConstrainWidth = true
+                ConstrainWidth = true, 
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI {DomEvent = "change", Function = "fnChangeTipoInscricao" }
+                }
             });
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });

@@ -1,17 +1,4 @@
 ﻿<script>
-    function __configsChart() {
-        var simboloMonetario = " R$ ";
-        fly01._.fly01chart.options.tooltips.callbacks.label = function (tooltipItems, data) {
-            var formatedValue = __formatMoney(tooltipItems.yLabel);
-            return simboloMonetario + formatedValue;
-        }
-        fly01._.fly01chart.options.scales.yAxes[0].ticks.userCallback = function (value, index, values) {
-            var formatedValue = __formatMoney(value);
-            return simboloMonetario + formatedValue;
-        }
-        fly01._.fly01chart.update();
-    }
-
     function fnFormReady() {
         $("#contasBancariasList tbody").on("click", "tr", function () {
             if ($(this).hasClass("selected")) {
@@ -26,11 +13,8 @@
             $("#contaBancariaId").val(dataByRow.contaBancariaId);
             fnAtualizar();
         });
-        $("#contasBancariasList_info").hide();
-        $("#contasBancariasList_paginate").hide();
         $("#contasBancariasList tr").css("cursor", "pointer");
         $("#contasBancariasList tbody tr:eq(0)").addClass("selected");
         $("#btnMes").click();
-        __configsChart();
     }
 </script>

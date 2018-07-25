@@ -7,6 +7,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -49,9 +50,9 @@ namespace Fly01.Compras.Controllers
 
             if(UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento" });
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido" });
-                target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo orçamento", OnClickFn = "fnNovoOrcamento", Position = HtmlUIButtonPosition.Out});
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo pedido", OnClickFn = "fnNovoPedido", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick, Position = HtmlUIButtonPosition.In });
             }
 
             return target;

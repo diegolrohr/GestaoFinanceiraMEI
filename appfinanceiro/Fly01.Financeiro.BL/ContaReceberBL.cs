@@ -83,7 +83,6 @@ namespace Fly01.Financeiro.BL
 
                     var rpcClient = new RpcClient();
                     numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                    rpcClient.Close();
 
                     itemContaReceber.Numero = numero;
 
@@ -117,7 +116,6 @@ namespace Fly01.Financeiro.BL
 
                             rpcClient = new RpcClient();
                             numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                            rpcClient.Close();
 
                             itemContaReceberRepeticao.Numero = numero;
 

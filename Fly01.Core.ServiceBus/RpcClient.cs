@@ -8,8 +8,8 @@ namespace Fly01.Core.ServiceBus
 {
     public class RpcClient
     {
-        private IModel channel;
-        private IConnection connection;
+        private static IModel channel;
+        private static IConnection connection;
         private readonly IBasicProperties props;
         private readonly string replyQueueName;
         private readonly EventingBasicConsumer consumer;

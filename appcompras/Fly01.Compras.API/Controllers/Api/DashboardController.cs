@@ -44,7 +44,7 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.DashboardBL.GetProdutosMaisComprados(filtro));
+                return Ok(unitOfWork.DashboardBL.GetMaioresFornecedores(filtro));
             }
         }
 

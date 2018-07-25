@@ -8,4 +8,11 @@
             $("#inscricaoMunicipal").attr("disabled", false);
         }
     }
+
+    function fnDesabilitaCamposPorTipoDeInscricao() {
+        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
+            $("#inscricaoEstadual").attr("disabled", true);
+            $("#inscricaoMunicipal").attr("disabled", true);
+        }
+    };
 </script>

@@ -59,7 +59,7 @@ namespace Fly01.Compras.Controllers
                         { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
-                var response = RestHelper.ExecuteGetRequest<List<DashboardGridVM>>("dashboard/maioresfornecedores", querystring);
+                var response = RestHelper.ExecuteGetRequest<List<MaioresFornecedoresVM>>("dashboard/maioresfornecedores", querystring);
 
                 return Json(new
                 {
@@ -67,7 +67,7 @@ namespace Fly01.Compras.Controllers
                     recordsFiltered = response.Count,
                     data = response.Select(x => new
                     {
-                        nome = x.Descricao,
+                        nome = x.Nome,
                         valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                     })
                 }, JsonRequestBehavior.AllowGet);
@@ -90,7 +90,7 @@ namespace Fly01.Compras.Controllers
                         { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
-                var response = RestHelper.ExecuteGetRequest<List<DashboardGridVM>>("dashboard/produtosmaiscomprados", querystring);
+                var response = RestHelper.ExecuteGetRequest<List<ProdutosMaisCompradosVM>>("dashboard/produtosmaiscomprados", querystring);
 
                 return Json(new
                 {

@@ -23,26 +23,48 @@ namespace Fly01.Compras.BL
         {
             return _pedidoItemBL
                 .AllIncluding(x => x.Produto, x => x.Pedido)
-                .Where(x => x.Pedido.Data.Month.Equals(filtro.Month) && x.Pedido.Data.Year.Equals(filtro.Year))
+                .Where(x => x.Pedido.Data.Month.Equals(filtro.Month) && x.Pedido.Data.Year.Equals(filtro.Year) && x.Pedido.Status == StatusOrdemCompra.Finalizado)
                 .Select(x => new
-                    {
-                        x.ProdutoId,
-                        x.Produto.CodigoProduto,
-                        x.Produto.Descricao,
-                        x.Valor,
-                        x.Quantidade,
-                        UnidadeMedida = x.Produto.UnidadeMedida.Descricao
-                    })
+                {
+                    x.ProdutoId,
+                    x.Produto.CodigoProduto,
+                    x.Produto.Descricao,
+                    x.Valor,
+                    x.Quantidade,
+                    UnidadeMedida = x.Produto.UnidadeMedida.Descricao
+                })
                 .GroupBy(x => new { x.CodigoProduto, x.Descricao, x.ProdutoId })
                 .Select(x => new ProdutosMaisCompradosVM
-                    {
-                        CodigoProduto = x.Key.CodigoProduto,
-                        Descricao = x.Key.Descricao,
-                        Quantidade = x.Sum(y => y.Quantidade),
-                        Valor = x.Sum(y => y.Valor),
-                        UnidadeMedida = x.Select(y => y.UnidadeMedida).FirstOrDefault()
-                    })
+                {
+                    CodigoProduto = x.Key.CodigoProduto,
+                    Descricao = x.Key.Descricao,
+                    Quantidade = x.Sum(y => y.Quantidade),
+                    Valor = x.Sum(y => y.Valor),
+                    UnidadeMedida = x.Select(y => y.UnidadeMedida).FirstOrDefault()
+                })
                 .OrderByDescending(x => x.Quantidade)
+                .Take(10).ToList();
+        }
+        public List<MaioresFornecedoresVM> GetMaioresFornecedores(DateTime filtro)
+        {
+            return _pedidoItemBL
+                .AllIncluding(x => x.Pedido.Fornecedor)
+                .Where(x => x.Pedido.Data.Month.Equals(filtro.Month) && x.Pedido.Data.Year.Equals(filtro.Year) && x.Pedido.Status == StatusOrdemCompra.Finalizado)
+                .Select(x => new
+                {
+                    x.Pedido.Fornecedor.Id,
+                    x.Pedido.Fornecedor.Nome,
+                    x.Valor,
+                    x.Quantidade
+                })
+                .GroupBy(x => new { x.Id, x.Nome })
+                .Select(x => new MaioresFornecedoresVM
+                {
+                    Id = x.Key.Id.ToString(),
+                    Nome = x.Key.Nome,
+                    Valor = x.Sum(y => y.Valor * y.Quantidade)
+                })
+                .OrderByDescending(x => x.Valor)
                 .Take(10).ToList();
         }
 

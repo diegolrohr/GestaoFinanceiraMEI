@@ -85,6 +85,7 @@
     <Compile Include="ViewModels\ManagerEmpresaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\NcmVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\PessoaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MaioresFornecedoresVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutosMaisCompradosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />

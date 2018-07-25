@@ -7,14 +7,13 @@
                 fnDesabilitaCamposPessoaJuridica(false);
         });
 
+        fnDesabilitaCamposPorTipoDeInscricao();        
+
         $("#cpfcnpj").keyup();
     }
 
     function fnDesabilitaCamposPessoaJuridica(disabled) {
         $("#nomeComercial").attr("disabled", disabled);
         $("#contato").attr("disabled", disabled);
-        $("#tipoIndicacaoInscricaoEstadualField input").attr("disabled", disabled);
-        $("#inscricaoEstadual").attr("disabled", disabled);
-        $("#inscricaoMunicipal").attr("disabled", disabled);
     }
 </script>

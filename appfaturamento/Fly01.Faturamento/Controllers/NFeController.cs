@@ -159,8 +159,17 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m6", Label = "Valor Frete", Disabled = true });
             config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m6", Label = "Peso Bruto", Disabled = true });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m6", Label = "Peso Líquido", Disabled = true });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quantidade Volumes", Disabled = true });
+
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoEspecie",
+                Class = "col s12 m4",
+                Label = "Tipo Espécie",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
+            });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI

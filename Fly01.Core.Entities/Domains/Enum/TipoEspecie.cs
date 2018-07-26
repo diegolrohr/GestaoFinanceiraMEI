@@ -4,22 +4,22 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoEspecie
     {
-        [Subtitle("PASS", "Passageiro")]
+        [Subtitle("Passageiro", "Passageiro")]
         Passageiro = 1,
 
-        [Subtitle("CARG", "Carga")]
+        [Subtitle("Carga", "Carga")]
         Carga = 2,
 
-        [Subtitle("MIST", "Misto")]
+        [Subtitle("Misto", "Misto")]
         Misto = 3,
 
-        [Subtitle("CORR", "Corrida")]
+        [Subtitle("Corrida", "Corrida")]
         Corrida = 4,
 
-        [Subtitle("TRAC", "Tração")]
+        [Subtitle("Tracao", "Tração")]
         Tracao = 5,
 
-        [Subtitle("ESPE", "Espécie")]
+        [Subtitle("Especie", "Espécie")]
         Especie = 6
     }
 }

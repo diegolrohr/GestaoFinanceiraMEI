@@ -149,6 +149,14 @@ namespace Fly01.Faturamento.BL
                     entity.CidadeId = dadosCidade.Id;
                 }
             }
+            else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CodigoIBGEEstado))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CodigoIBGEEstado);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(Pessoa entity)

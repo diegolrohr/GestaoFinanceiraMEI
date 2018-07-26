@@ -106,5 +106,11 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("registroFixo")]
         public bool RegistroFixo { get; set; }
+
+        [JsonProperty("codigoIBGEEstado")]
+        public bool CodigoIBGEEstado { get; set; }
+
+        [JsonProperty("codigoIBGECidade")]
+        public bool CodigoIBGECidade { get; set; }
     }
 }

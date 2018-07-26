@@ -92,6 +92,8 @@ namespace Fly01.Faturamento.BL
         protected dynamic GetNotaFiscal(OrdemVenda entity, TipoNotaFiscal tipo)
         {
             dynamic notaFiscal;
+            var mensagemComplementar = "";
+
             if (tipo == TipoNotaFiscal.NFe)
             {
                 notaFiscal = new NFe();
@@ -99,6 +101,16 @@ namespace Fly01.Faturamento.BL
             else
             {
                 notaFiscal = new NFSe();
+            }
+
+            if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
+            {
+                var NFeComplementar = NFeBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
+
+                if (NFeComplementar != null)
+                {
+                    mensagemComplementar = $"NF-e Complementar a NF-e {entity.Numero} emitida em {entity.Data}";
+                }
             }
 
             notaFiscal.Id = Guid.NewGuid();
@@ -122,7 +134,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
-            notaFiscal.MensagemPadraoNota = entity.MensagemPadraoNota;
+            notaFiscal.MensagemPadraoNota = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar ? $"{entity.MensagemPadraoNota} {mensagemComplementar}" : entity.MensagemPadraoNota;
             return notaFiscal;
         }
 
@@ -327,7 +339,7 @@ namespace Fly01.Faturamento.BL
                                     produtoClonado.Valor = 0.00;
                                     produtoClonado.Desconto = 0.00;
                                 }
-                                OrdemVendaProdutoBL.Insert(produtoClonado);
+                                OrdemVendaProdutoBL.Insert(produtoClonado);                                
                             }
                         }
                     }
@@ -361,6 +373,16 @@ namespace Fly01.Faturamento.BL
 
             if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
+                if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
+                {
+                    var produtosSemQtdValor = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo && e.Quantidade == 0 && e.Valor == 0).ToList();
+                    if (produtosSemQtdValor != null) {
+                        foreach (var produto in produtosSemQtdValor)
+                        {
+                            OrdemVendaProdutoBL.Delete(produto.Id);
+                        }
+                    }
+                }
                 GeraNotasFiscais(entity);
             }
 

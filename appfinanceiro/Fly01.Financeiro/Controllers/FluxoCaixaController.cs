@@ -85,6 +85,7 @@ namespace Fly01.Financeiro.Controllers
                 var dataChartToView = new
                 {
                     success = true,
+                    currency = true,
                     labels = response.Select(x => x.Label).ToArray(),
                     datasets = new object[] {
                         new {

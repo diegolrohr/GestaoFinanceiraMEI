@@ -77,6 +77,7 @@ namespace Fly01.Financeiro.Controllers
             return new
             {
                 success = true,
+                currency = true,
                 labels = response.Select(x => x.Tipo).ToArray(),
                 datasets = new object[]
                 {
@@ -188,7 +189,7 @@ namespace Fly01.Financeiro.Controllers
                 DrawType = ChartUIType.Doughnut,
                 Options = ChartOptions("Status"),
                 UrlData = @url.Action("LoadChartStatus"),
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -202,7 +203,7 @@ namespace Fly01.Financeiro.Controllers
                 DrawType = ChartUIType.Doughnut,
                 Options = ChartOptions("Formas de Pagamento"),
                 UrlData = @url.Action("LoadChartPagamento"),
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }
@@ -216,7 +217,7 @@ namespace Fly01.Financeiro.Controllers
                 DrawType = ChartUIType.Doughnut,
                 Options = ChartOptions("Categorias"),
                 UrlData = @url.Action("LoadChartCategoria"),
-                Class = "col s12 l4",
+                Class = "col s12 m4",
                 Parameters = new List<ChartUIParameter>
                     {
                         new ChartUIParameter { Id = "dataInicial" }

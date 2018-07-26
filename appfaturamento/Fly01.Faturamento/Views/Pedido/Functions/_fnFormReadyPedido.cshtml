@@ -295,5 +295,11 @@
                 EstoqueNegativoETotal();
             }
         });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                EstoqueNegativoETotal();
+            }
+        });
     }
 </script>

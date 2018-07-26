@@ -269,40 +269,40 @@ namespace Fly01.Faturamento.BL
                         entity.Id = previousId;
                         entity.Numero = previousNumero;
                         entity.Data = previousData;
-                        entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
 
                         if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
                         {
                             entity.NaturezaOperacao = null;
                             entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
+                            entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
                         }
                         else
                         {
-                            if(previousNatureza == TipoNfeComplementar.ComplIcms)
+                            if (previousNatureza == TipoNfeComplementar.ComplIcms)
                             {
                                 entity.NaturezaOperacao = "Complemento de Imposto";
                             }
                             else
                             {
-                                if(previousNatureza == TipoNfeComplementar.ComplPreco)
+                                if (previousNatureza == TipoNfeComplementar.ComplPreco)
                                 {
                                     entity.NaturezaOperacao = "Complemento de Preco";
                                 }
                                 else
                                 {
-                                    if(previousNatureza == TipoNfeComplementar.ComplQtd)
+                                    if (previousNatureza == TipoNfeComplementar.ComplQtd)
                                     {
                                         entity.NaturezaOperacao = "Complemento de Quantidade";
                                     }
                                 }
                             }
-                            
+
                         }
 
                         entity.ClienteId = (clienteReferenciado != null && clienteReferenciado.Ativo == true) ? pedidoReferenciado.ClienteId : previousClienteId;
                         entity.Status = StatusOrdemVenda.Aberto;
                         entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
-                        entity.TipoVenda = previousTipoVenda;                        
+                        entity.TipoVenda = previousTipoVenda;
 
                         var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
 
@@ -408,6 +408,10 @@ namespace Fly01.Faturamento.BL
 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
+                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
+                {
+                    totalProdutos = produtos != null ? produtos.Select(e => e.Valor - e.Desconto).Sum() : 0;
+                }
                 double totalServicos = servicos != null ? servicos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
                 double totalImpostosServicos = 0; //servicos != null ? entity.TotalImpostosServicos.Value : 0;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
@@ -525,6 +529,10 @@ namespace Fly01.Faturamento.BL
 
             var produtos = OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            if (ordemVenda.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
+            {
+                totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+            }
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);

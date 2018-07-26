@@ -24,14 +24,11 @@
     }
 
     function fnDesabilitaCamposPorTipoDeInscricao() {
-        //if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
-        //    $("#inscricaoEstadual").attr("disabled", true);
-        //    $("#inscricaoMunicipal").attr("disabled", true);
-        //}
-        
-        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteICMS") {
-            $("#inscricaoEstadual").rules("add", { required: true });
+        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
+            $("#inscricaoEstadual").attr("disabled", true);
+            $("#inscricaoMunicipal").attr("disabled", true);
+            $("#tipoIndicacaoInscricaoEstadual").val("ContribuinteIsento");
+            $(".select-dropdown").val("Contribuinte Isento");
         }
-
     };
 </script>

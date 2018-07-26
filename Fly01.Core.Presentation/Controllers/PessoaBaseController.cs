@@ -229,10 +229,10 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
                 LabelId = "cidadeNome",
                 PreFilter = "estadoId",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
-                }
+                //DomEvents = new List<DomEventUI>
+                //{
+                //    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
+                //}
             });
 
             config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 50 });

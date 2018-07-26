@@ -162,7 +162,7 @@ namespace Fly01.Financeiro.BL
 
         public override void Update(Pessoa entity)
         {
-            GetIdEstadoCidade(entity);
+            //GetIdEstadoCidade(entity);
 
             ValidaModel(entity);
             if (!IsValid(entity))
@@ -176,9 +176,9 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(Pessoa entity)
         {
-            GetIdEstadoCidade(entity);
+            //GetIdEstadoCidade(entity);
 
-            entity.Nome = "Nome: " + entity.Nome + " || Codigo Estado: " + entity.CodigoIBGEEstado + " || Codigo Cidade: " + entity.CodigoIBGECidade; 
+            //entity.Nome = "Nome: " + entity.Nome + " || Codigo Estado: " + entity.CodigoIBGEEstado + " || Codigo NomeFantasia: " + entity.NomeComercial; 
 
             ValidaModel(entity);
             if (!IsValid(entity))

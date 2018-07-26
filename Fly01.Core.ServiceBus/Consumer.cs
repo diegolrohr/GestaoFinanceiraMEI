@@ -64,7 +64,7 @@ namespace Fly01.Core.ServiceBus
                     if (!HeaderIsValid())
                         throw new ArgumentException(MsgHeaderInvalid);
 
-                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname)
+                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostname || GetHeaderValue("Hostname") == "integracao")
                     {
                         if (args.BasicProperties.AppId != RabbitConfig.AppId)
                         {

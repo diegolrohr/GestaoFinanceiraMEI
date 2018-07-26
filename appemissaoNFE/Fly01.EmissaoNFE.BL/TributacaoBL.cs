@@ -61,7 +61,7 @@ namespace Fly01.EmissaoNFE.BL
         public override void ValidaModel(Tributacao entity)
         {
             #region Validações Entity
-            entity.Fail(entity.ValorBase <= 0, ValorBaseInvalido);
+            //entity.Fail(entity.ValorBase <= 0, ValorBaseInvalido);
             entity.Fail(!string.IsNullOrEmpty(entity.ValorDespesa.ToString()) && entity.ValorDespesa < 0, ValorDespesaNegativo);
             entity.Fail(!string.IsNullOrEmpty(entity.ValorFrete.ToString()) && entity.ValorFrete < 0, ValorFreteNegativo);
             #endregion

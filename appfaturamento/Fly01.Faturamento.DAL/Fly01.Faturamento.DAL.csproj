@@ -304,6 +304,10 @@
     <Compile Include="Migrations\201807232156355_AddTipoNfeComplementar.Designer.cs">
       <DependentUpon>201807232156355_AddTipoNfeComplementar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807261530120_AddColumnTipoEspecie.cs" />
+    <Compile Include="Migrations\201807261530120_AddColumnTipoEspecie.Designer.cs">
+      <DependentUpon>201807261530120_AddColumnTipoEspecie.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -525,6 +529,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807232156355_AddTipoNfeComplementar.resx">
       <DependentUpon>201807232156355_AddTipoNfeComplementar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807261530120_AddColumnTipoEspecie.resx">
+      <DependentUpon>201807261530120_AddColumnTipoEspecie.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

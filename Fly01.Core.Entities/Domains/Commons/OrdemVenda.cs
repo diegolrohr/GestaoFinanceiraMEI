@@ -36,6 +36,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoFrete TipoFrete { get; set; }
 
+        public TipoEspecie TipoEspecie { get; set; }
+
         [StringLength(7)]
         public string PlacaVeiculo { get; set; }
 

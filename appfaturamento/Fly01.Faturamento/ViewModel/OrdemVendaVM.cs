@@ -43,9 +43,9 @@ namespace Fly01.Faturamento.ViewModel
         [APIEnum("TipoFrete")]
         public string TipoFrete { get; set; }
 
-        //[JsonProperty("tipoEspecie")]
-        //[APIEnum("TipoEspecie")]
-        //public string TipoEspecie { get; set; }
+        [JsonProperty("tipoEspecie")]
+        [APIEnum("TipoEspecie")]
+        public string TipoEspecie { get; set; }
 
         [JsonProperty("placaVeiculo")]
         public string PlacaVeiculo { get; set; }

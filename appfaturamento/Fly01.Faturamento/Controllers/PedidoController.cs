@@ -139,7 +139,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Transporte",
                         Id = "stepTransporte",
-                        Quantity = 8,
+                        Quantity = 9,
                     },
                     new FormWizardUIStep()
                     {
@@ -299,7 +299,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoFrete",
                 Class = "col s12 m4",
                 Label = "Tipo Frete",
-                Value = "SemFrete",
+                //Value = "SemFrete",
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
                 DomEvents = new List<DomEventUI>
@@ -333,9 +333,22 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido" });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido" });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes" });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoEspecie",
+                Class = "col s12 m3",
+                Label = "Tipo Especie",
+                //Value = "SemFrete",
+                //Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
+                //DomEvents = new List<DomEventUI>
+                //{
+                //    new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
+                //}
+            });
             #endregion
 
             #region step Finalizar

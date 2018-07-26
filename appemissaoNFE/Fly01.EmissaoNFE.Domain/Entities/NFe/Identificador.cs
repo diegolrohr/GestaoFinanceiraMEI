@@ -1,9 +1,9 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain.Enums;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -77,8 +77,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// Nota: Para a NFC-e este campo não deve existir.
         /// </summary>
         [XmlIgnore]
-        public DateTime EntradaSaida  { get; set; }
-        
+        public DateTime EntradaSaida { get; set; }
+
         [XmlElement("dhSaiEnt")]
         public string EntradaSaidaString
         {
@@ -221,7 +221,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeNFReferenciada()
         {
-            return FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
+            return (FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao || FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Complementar) && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
         }
     }
 }

@@ -300,6 +300,10 @@
     <Compile Include="Migrations\201807111500244_AlterParametroTributario1.Designer.cs">
       <DependentUpon>201807111500244_AlterParametroTributario1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807232156355_AddTipoNfeComplementar.cs" />
+    <Compile Include="Migrations\201807232156355_AddTipoNfeComplementar.Designer.cs">
+      <DependentUpon>201807232156355_AddTipoNfeComplementar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -518,6 +522,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807111500244_AlterParametroTributario1.resx">
       <DependentUpon>201807111500244_AlterParametroTributario1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807232156355_AddTipoNfeComplementar.resx">
+      <DependentUpon>201807232156355_AddTipoNfeComplementar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

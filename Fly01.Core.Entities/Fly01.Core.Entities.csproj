@@ -66,6 +66,7 @@
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
+    <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />

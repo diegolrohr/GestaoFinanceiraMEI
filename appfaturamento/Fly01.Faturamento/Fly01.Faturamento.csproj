@@ -333,7 +333,6 @@
     <Content Include="Views\CartaCorrecao\Functions\_fnAtualizarStatusCartaCorrecao.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

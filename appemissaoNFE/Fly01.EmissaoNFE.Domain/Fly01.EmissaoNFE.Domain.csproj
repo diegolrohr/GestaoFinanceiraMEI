@@ -112,6 +112,7 @@
     <Compile Include="Enums\MotivoDesoneracaoICMS.cs" />
     <Compile Include="Enums\OrigemMercadoria.cs" />
     <Compile Include="Enums\OrigemProcesso.cs" />
+    <Compile Include="Enums\ModalidadeTipoEspecie.cs" />
     <Compile Include="Enums\TipoAliquota.cs" />
     <Compile Include="Enums\TipoContaFinanceiraVM.cs" />
     <Compile Include="Enums\TipoImpressaoDanfe.cs" />

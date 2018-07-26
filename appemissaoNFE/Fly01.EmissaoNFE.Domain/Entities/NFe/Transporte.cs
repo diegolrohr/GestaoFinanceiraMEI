@@ -9,6 +9,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement("modFrete")]
         public ModalidadeFrete ModalidadeFrete { get; set; }
 
+        [XmlElement("modEspecie")]
+        public ModalidadeTipoEspecie ModalidadeEspecie { get; set; }
+
         [XmlElement(ElementName = "transporta", IsNullable = true)]
         public Transportadora Transportadora { get; set; }
 

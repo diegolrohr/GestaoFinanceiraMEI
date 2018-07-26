@@ -430,7 +430,7 @@ namespace Fly01.Faturamento.BL
 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
-                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
+                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
                 {
                     totalProdutos = produtos != null ? produtos.Select(e => e.Valor - e.Desconto).Sum() : 0;
                 }
@@ -551,7 +551,7 @@ namespace Fly01.Faturamento.BL
 
             var produtos = OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            if (ordemVenda.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
+            if (ordemVenda.TipoNfeComplementar == TipoNfeComplementar.ComplPreco && ordemVenda.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
             {
                 totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
             }

@@ -56,7 +56,7 @@ namespace Fly01.Core.Presentation
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvarNovo", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
             }
 
             return target;

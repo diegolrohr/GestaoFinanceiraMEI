@@ -108,7 +108,6 @@
       <DependentUpon>DataSetReports.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="ViewModel\DashboardVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />
@@ -167,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_StatusMsg.cshtml" />
-    <Content Include="Views\Home\_List.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -247,14 +245,13 @@
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
-    <Content Include="Views\Dashboard\Functions\_fnAtualizarChart.cshtml" />
-    <Content Include="Views\Dashboard\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
-    <Content Include="Views\Dashboard\Functions\_fnChangeTipoOrdemCompra.cshtml" />
-    <Content Include="Views\Dashboard\Functions\_fnUpdateData.cshtml" />
+    <Content Include="Views\Home\Functions\_fnChangeTipoOrdemCompra.cshtml" />
+    <Content Include="Views\Home\Functions\_fnUpdateData.cshtml" />
     <Content Include="Views\Shared\Functions\_fnBuscaCEP.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnImportaCadastroFormReady.cshtml" />
@@ -264,7 +261,6 @@
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />

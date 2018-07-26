@@ -201,7 +201,7 @@ namespace Fly01.Faturamento.BL
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
-                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao || entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
                     {
                         itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
                         {
@@ -306,7 +306,7 @@ namespace Fly01.Faturamento.BL
                             QuantidadeTributada = item.Quantidade,
                             UnidadeMedida = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
                             UnidadeMedidaTributada = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
-                            ValorBruto = (item.Quantidade * item.Valor),
+                            ValorBruto = item.Quantidade > 0 ? (item.Quantidade * item.Valor) : item.Valor,
                             ValorUnitario = item.Valor,
                             ValorUnitarioTributado = item.Valor,
                             ValorDesconto = item.Desconto,
@@ -492,7 +492,7 @@ namespace Fly01.Faturamento.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao || entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -505,7 +505,7 @@ namespace Fly01.Faturamento.BL
                             new DetalhePagamento()
                             {
                                 TipoFormaPagamento = tipoFormaPagamento,
-                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                                ValorPagamento = tipoFormaPagamento == TipoFormaPagamento.SemPagamento ? 0.00 : itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }
                     };
@@ -618,6 +618,13 @@ public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
 
     var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
     var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+    if (nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
+    {
+        if (nfe.NaturezaOperacao == "Complemento de Preco")
+        {
+            totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+        }
+    }
     var totalImpostosProdutos = nfe.TotalImpostosProdutos;
     var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
     bool calculaFrete = (

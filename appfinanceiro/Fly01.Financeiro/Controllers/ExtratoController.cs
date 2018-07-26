@@ -72,6 +72,7 @@ namespace Fly01.Financeiro.Controllers
                 var dataChartToView = new
                 {
                     success = true,
+                    currency = true,
                     labels = responseChart.Value.Saldos.Select(x => x.Data.ToString("dd/MM")).ToArray(),
                     datasets = new object[] {
                         new {
@@ -381,7 +382,7 @@ namespace Fly01.Financeiro.Controllers
                         },
                         yAxes = new object[] 
                         {
-                            new {
+                            new {                                
                                 stacked = true
                             }
                         }

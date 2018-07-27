@@ -35,6 +35,7 @@ namespace Fly01.Financeiro.BL
 
         public void ValidaModelNoBase(Pessoa entity)
         {
+            ValidaDefaultCPFCNPFTipoDocumento(entity);
             entity.Fail(string.IsNullOrWhiteSpace(entity.Nome), NomeInvalido);
             entity.Fail(!entity.Transportadora && !entity.Cliente && !entity.Vendedor && !entity.Fornecedor, TipoCadastroInvalido);
             entity.Fail(entity.TipoDocumento != "J" && entity.TipoDocumento != "F", TipoDocumentoInvalido);
@@ -54,6 +55,12 @@ namespace Fly01.Financeiro.BL
                 entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id), new Error(string.Format("O CPF/CNPJ informado já foi utilizado em outro cadastro.")));
             }
         }
+
+        protected void ValidaDefaultCPFCNPFTipoDocumento(Pessoa entity)
+        {
+            entity.CPFCNPJ = !string.IsNullOrEmpty(entity.CPFCNPJ) ? entity.CPFCNPJ : string.Empty;
+            entity.TipoDocumento = !string.IsNullOrEmpty(entity.TipoDocumento) ? entity.TipoDocumento : "F";
+        } 
 
         protected void ValidaFormatoDocumento(Pessoa entity)
         {

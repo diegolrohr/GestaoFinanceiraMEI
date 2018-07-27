@@ -1,0 +1,7 @@
+﻿<script>
+    function fnChangeProduto(event, data) {
+        $('form#fly01mdlfrmOrdemVendaProduto input#produtoId').val(data.item.id);
+        $('form#fly01mdlfrmOrdemVendaProduto input#valor').val(data.item.valor);
+        fnChangeTotalProduto();
+    }
+</script>

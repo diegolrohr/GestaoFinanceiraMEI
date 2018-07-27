@@ -15,7 +15,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoNotaFiscal TipoNotaFiscal { get; set; }
 
         [Required]
-        public TipoFinalidadeEmissaoNFe TipoVenda { get; set; }
+        public TipoVenda TipoVenda { get; set; }
 
         [Required]
         public StatusNotaFiscal Status { get; set; }

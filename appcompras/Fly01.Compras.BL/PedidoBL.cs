@@ -49,7 +49,7 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
-            entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+            entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
 
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
@@ -57,8 +57,8 @@ namespace Fly01.Compras.BL
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
 
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoVenda.Devolucao)
                 );
                 entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
@@ -66,7 +66,7 @@ namespace Fly01.Compras.BL
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.FornecedorId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
-                    entity.Fail(entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                    entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
@@ -277,7 +277,7 @@ namespace Fly01.Compras.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            if (entity.Status == StatusOrdemCompra.Aberto && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.TipoVenda == TipoVenda.Devolucao && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
             {
                 CopiaDadosNFeReferenciadaDevolucao(entity);
             }
@@ -325,8 +325,8 @@ namespace Fly01.Compras.BL
             if (entity.GeraFinanceiro)
             {
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoVenda.Devolucao)
                 );
 
                 //double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -353,7 +353,7 @@ namespace Fly01.Compras.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Normal)
+                if (entity.TipoVenda == TipoVenda.Normal)
                 {
                     var contaReceber = new ContaReceber()
                     {
@@ -371,7 +371,7 @@ namespace Fly01.Compras.BL
                     };
                     Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
                 }
-                else if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                else if (entity.TipoVenda == TipoVenda.Devolucao)
                 {
                     var contaPagar = new ContaPagar()
                     {
@@ -433,7 +433,7 @@ namespace Fly01.Compras.BL
 
         public TotalOrdemVenda CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0, bool onList = false)
         {
-            var tipoVendaEnum = (TipoFinalidadeEmissaoNFe)Enum.Parse(typeof(TipoFinalidadeEmissaoNFe), tipoVenda, true);
+            var tipoVendaEnum = (TipoVenda)Enum.Parse(typeof(TipoVenda), tipoVenda, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
 
             //var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();

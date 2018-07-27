@@ -180,7 +180,7 @@
     <Compile Include="Domains\Enum\TipoCFPS.cs" />
     <Compile Include="Domains\Enum\TipoContaFinanceira.cs" />
     <Compile Include="Domains\Enum\TipoEntradaSaida.cs" />
-    <Compile Include="Domains\Enum\TipoFinalidadeEmissaoNFe.cs" />
+    <Compile Include="Domains\Enum\TipoVenda.cs" />
     <Compile Include="Domains\Enum\TipoFormaPagamento.cs" />
     <Compile Include="Domains\Enum\TipoFrete.cs" />
     <Compile Include="Domains\Enum\TipoIndicacaoInscricaoEstadual.cs" />

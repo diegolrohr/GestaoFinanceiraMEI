@@ -187,7 +187,7 @@ namespace Fly01.Compras.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = TimeZoneHelper.GetDateTimeNow(isLocal),
                         EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal),
-                        TipoDocumentoFiscal = entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
+                        TipoDocumentoFiscal = entity.TipoVenda == TipoVenda.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
@@ -201,7 +201,7 @@ namespace Fly01.Compras.BL
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
-                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    if (entity.TipoVenda == TipoVenda.Devolucao)
                     {
                         itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
                         {
@@ -492,7 +492,7 @@ namespace Fly01.Compras.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+                    if (entity.TipoVenda == TipoVenda.Devolucao)
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -621,8 +621,8 @@ public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
     var totalImpostosProdutos = nfe.TotalImpostosProdutos;
     var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
     bool calculaFrete = (
-        ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Normal) ||
-        ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoFinalidadeEmissaoNFe.Devolucao)
+        ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoVenda.Normal) ||
+        ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
     );
 
     var result = new TotalNotaFiscal()

@@ -280,6 +280,12 @@
     <Content Include="Views\Pedido\Functions\_fnFooterCallbackEstoqueNegativo.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnClickGeraNotaFiscal.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnChangeGrupoTribProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnChangeProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnChangeTotalProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnEditarOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnExcluirOrdemVendaProduto.cshtml" />
+    <Content Include="Views\OrdemCompraProduto\Functions\_fnFormReadyOrdemVendaProduto.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

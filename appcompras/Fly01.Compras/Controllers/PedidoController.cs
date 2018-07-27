@@ -131,7 +131,7 @@ namespace Fly01.Compras.Controllers
                 Parent = "ordemVendaProdutosField",
                 Id = "dtOrdemVendaProdutos",
                 UrlGridLoad = Url.Action("GetOrdemVendaProdutos", "OrdemVendaProduto"),
-                UrlFunctions = Url.Action("Functions", "OrdemVendaProduto") + "?fns=",
+                UrlFunctions = Url.Action("Functions", "OrdemCompraProduto") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true }

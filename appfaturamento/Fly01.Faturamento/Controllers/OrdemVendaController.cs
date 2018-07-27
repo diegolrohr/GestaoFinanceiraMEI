@@ -618,7 +618,7 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m3", Label = "Valor Frete", Disabled = true });
             config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto", Disabled = true });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m3", Label = "Marca", });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m3", Label = "Marca", Disabled = true });
 
             config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido", Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes", Disabled = true });
@@ -631,7 +631,7 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
             });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", });
+            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", Disabled = true });
 
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
 

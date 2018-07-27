@@ -355,7 +355,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Espécie",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
             });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracao", Class = "col s12 m3", Label = "Numeração", });
+            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", });
             #endregion
 
             #region step Finalizar

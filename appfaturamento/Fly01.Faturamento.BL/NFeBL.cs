@@ -284,7 +284,7 @@ namespace Fly01.Faturamento.BL
                         Especie = entity.TipoEspecie.ToString(), 
                         Quantidade = entity.QuantidadeVolumes??0, 
                         Marca = entity.Marca,
-                        Numeracao =entity.Marca.ToString(),
+                        Numeracao = entity.NumeracaoVolumesTrans.ToString(),
                         PesoLiquido =entity.PesoLiquido??0,
                         PesoBruto =entity.PesoBruto??0,
                     };

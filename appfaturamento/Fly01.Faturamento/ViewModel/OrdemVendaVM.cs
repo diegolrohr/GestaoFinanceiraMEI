@@ -1,7 +1,8 @@
 ﻿using System;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
-using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Faturamento.ViewModel
 {
@@ -76,7 +77,7 @@ namespace Fly01.Faturamento.ViewModel
         public bool MovimentaEstoque { get; set; }
 
         [JsonProperty("ajusteEstoqueAutomatico")]
-        public bool AjusteEstoqueAutomatico { get; set; }        
+        public bool AjusteEstoqueAutomatico { get; set; }
 
         [JsonProperty("geraFinanceiro")]
         public bool GeraFinanceiro { get; set; }
@@ -113,5 +114,9 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
+
+        [JsonProperty("tipoNfeComplementar")]
+        [APIEnum("TipoNfeComplementar")]
+        public string TipoNfeComplementar { get; set; }
     }
 }

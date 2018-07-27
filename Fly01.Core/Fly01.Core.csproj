@@ -74,7 +74,7 @@
     <Compile Include="ViewModels\Presentation\Commons\CfopVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CidadeVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ComprasFormasPagamentoVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\ComprasStatusVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\DashboardComprasVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CondicaoParcelamentoParcelaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\DomainBaseVM.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="ViewModels\Presentation\Commons\NotaFiscalInutilizadaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ParametroTributarioVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\PessoaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MaioresFornecedoresVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutosMaisCompradosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />
@@ -106,8 +107,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Boleto2Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Boleto2.Net.2.0.2\lib\Boleto2Net.dll</HintPath>
+    <Reference Include="Boleto2Net, Version=2.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Boleto2.Net.2.0.2.5\lib\Boleto2Net.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>

@@ -62,9 +62,6 @@
     <Compile Include="Controllers\Api\CidadeController.cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CfopController.cs" />
-    <Compile Include="Controllers\Api\DashboardProdutosMaisCompradosController.cs" />
-    <Compile Include="Controllers\Api\DashboardStatusController.cs" />
-    <Compile Include="Controllers\Api\DashboardFormasPagamentoController.cs" />
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\GrupoTributarioController.cs" />
     <Compile Include="Controllers\Api\CestController.cs" />

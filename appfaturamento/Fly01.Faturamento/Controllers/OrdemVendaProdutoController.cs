@@ -94,7 +94,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
                 Value = "1",
-                Required = true
+                Required = false
             });
 
             config.Elements.Add(new InputCurrencyUI
@@ -103,7 +103,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 l6 numeric",
                 Label = "Valor",
                 Value = "0",
-                Required = true
+                Required = false
             });
 
             config.Elements.Add(new InputCurrencyUI

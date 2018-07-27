@@ -2,10 +2,10 @@
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ComprasStatusVM
+    public class DashboardComprasVM
     {
-        [JsonProperty("status")]
-        public string Status { get; set; }
+        [JsonProperty("tipo")]
+        public string Tipo { get; set; }
 
         [JsonProperty("total")]
         public double Total { get; set; }

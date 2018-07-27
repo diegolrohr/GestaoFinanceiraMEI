@@ -39,6 +39,11 @@
         }
 
         var total = (parseFloat(quantidade) * parseFloat(valor));
+
+        ////para nota de complemento de quantidade,ou seja, nao foi informado quantidade, apenas valor.
+        //if (total <= 0 && valor > 0) {
+        //    total == valor
+        //}
         var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
 
         if (totalDescontado >= 0) {

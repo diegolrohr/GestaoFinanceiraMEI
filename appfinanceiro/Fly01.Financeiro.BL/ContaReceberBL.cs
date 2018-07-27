@@ -41,7 +41,7 @@ namespace Fly01.Financeiro.BL
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
             //Se Cliente não informado, busca pelo nome ou Insere
-            if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
+            if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
@@ -83,13 +83,12 @@ namespace Fly01.Financeiro.BL
 
                     var rpcClient = new RpcClient();
                     numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                    rpcClient.Close();
 
                     itemContaReceber.Numero = numero;
 
                     base.Insert(itemContaReceber);
 
-                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
 
                     if (repetir)
@@ -117,7 +116,6 @@ namespace Fly01.Financeiro.BL
 
                             rpcClient = new RpcClient();
                             numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-                            rpcClient.Close();
 
                             itemContaReceberRepeticao.Numero = numero;
 

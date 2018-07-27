@@ -1,9 +1,8 @@
 ﻿<script>
-    function fnSalvar() {
-        var myForm = "form#fly01frmInventario";
-        if ($(myForm).valid()) {
-            $(myForm).submit();
-        }
-    };
-
+function fnSalvar(event) {
+    if ($("form#fly01frmInventario").valid()) {
+        window.event = event;
+        $("form#fly01frmInventario").submit();
+    }
+};
 </script>

@@ -112,13 +112,21 @@
         if ($("#categoriaDescricao").data("url-post"))
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
-        if ($('#tipoVenda').val() == "Devolucao") {
+        if ($('#tipoVenda').val() == "Devolucao" || $('#tipoVenda').val() == "Complementar")  {
             $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
             $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
+
+            if ($('#tipoVenda').val() == "Complementar") {
+                $("#tipoNfeComplementarField").show();
+                $('#stepFinanceiro').hide();
+                $('#stepTransporte').hide();
+            }            
         }
         else {
             $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
+            $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
+            $("#tipoNfeComplementarField").hide();
         }
     }
 
@@ -199,7 +207,7 @@
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
 
-                            if (jsonData.tipoVenda == "Devolucao") {
+                            if (jsonData.tipoVenda == "Devolucao" || jsonData.tipoVenda == "Complementar") {
                                 //preencher os campos
                                 $("div#clienteIdField").show();
                                 fly01._.fly01frm.refresh(data.id);
@@ -260,7 +268,11 @@
                 $('#btnNormal').click();
             }
             else {
-                $('#btnDevolucao').click();
+                if ($('input#tipoVenda').val() == "Devolucao") {
+                    $('#btnDevolucao').click();
+                } else {
+                    $('#btnComplementar').click();
+                }                
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
@@ -280,6 +292,12 @@
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid()) {
+                EstoqueNegativoETotal();
+            }
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
                 EstoqueNegativoETotal();
             }
         });

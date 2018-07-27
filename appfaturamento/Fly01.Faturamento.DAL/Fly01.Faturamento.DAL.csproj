@@ -312,6 +312,10 @@
     <Compile Include="Migrations\201807261943341_AddColumnTipoEspecieNFe.Designer.cs">
       <DependentUpon>201807261943341_AddColumnTipoEspecieNFe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807271810541_AddColumnMarcaENunmeracaovol.cs" />
+    <Compile Include="Migrations\201807271810541_AddColumnMarcaENunmeracaovol.Designer.cs">
+      <DependentUpon>201807271810541_AddColumnMarcaENunmeracaovol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -539,6 +543,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807261943341_AddColumnTipoEspecieNFe.resx">
       <DependentUpon>201807261943341_AddColumnTipoEspecieNFe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807271810541_AddColumnMarcaENunmeracaovol.resx">
+      <DependentUpon>201807271810541_AddColumnMarcaENunmeracaovol.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

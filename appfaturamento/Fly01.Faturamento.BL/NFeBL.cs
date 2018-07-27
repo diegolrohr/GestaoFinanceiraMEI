@@ -66,9 +66,14 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(NFe entity)
         {
             entity.Fail(entity.TipoNotaFiscal != TipoNotaFiscal.NFe, new Error("Permitido somente nota fiscal do tipo NFe"));
-            entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
-            entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
-            entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
+
+            if(entity.TipoFrete != TipoFrete.SemFrete)
+            {
+                entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
+                entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
+                entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
+            }
+
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
             entity.Fail((entity.Status == StatusNotaFiscal.Transmitida && (!entity.SerieNotaFiscalId.HasValue || !entity.NumNotaFiscal.HasValue)), new Error("Para transmitir, informe série e número da nota fiscal"));
@@ -258,8 +263,7 @@ namespace Fly01.Faturamento.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString()), 
-                        ModalidadeEspecie = (ModalidadeTipoEspecie)Enum.Parse(typeof(ModalidadeTipoEspecie), entity.TipoEspecie.ToString()),
+                        ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString()),
                     };
                     if (transportadora != null)
                     {
@@ -274,6 +278,16 @@ namespace Fly01.Faturamento.BL
                             UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null
                         };
                     }
+
+                    itemTransmissao.Transporte.Volume = new Volume()
+                    {
+                        Especie = entity.TipoEspecie.ToString(), 
+                        Quantidade = entity.QuantidadeVolumes??0, 
+                        Marca = entity.Marca,
+                        Numeracao =entity.Marca.ToString(),
+                        PesoLiquido =entity.PesoLiquido??0,
+                        PesoBruto =entity.PesoBruto??0,
+                    };
                     #endregion
 
                     #region Detalhes Produtos

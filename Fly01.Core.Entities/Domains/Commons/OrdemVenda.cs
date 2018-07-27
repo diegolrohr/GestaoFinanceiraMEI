@@ -11,6 +11,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int Numero { get; set; }
 
+        public int NumeracaoVolumesTrans { get; set; }
+
+        [StringLength(60)]
+        public string Marca { get; set; }
+
         [StringLength(44)]
         public string ChaveNFeReferenciada { get; set; }
 

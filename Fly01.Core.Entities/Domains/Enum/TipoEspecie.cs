@@ -4,6 +4,9 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoEspecie
     {
+        [Subtitle("Nenhum", "Nenhum")]
+        Nenhum = 0,
+
         [Subtitle("Passageiro", "Passageiro")]
         Passageiro = 1,
 
@@ -19,7 +22,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("Tracao", "Tração")]
         Tracao = 5,
 
-        [Subtitle("Especie", "Espécie")]
-        Especie = 6
+        [Subtitle("Especial", "Especial")]
+        Especial = 6
     }
 }

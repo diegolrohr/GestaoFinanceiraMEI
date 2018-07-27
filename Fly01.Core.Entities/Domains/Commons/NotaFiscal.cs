@@ -8,6 +8,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NotaFiscal : PlataformaBase
     {
+        public int NumeracaoVolumesTrans { get; set; }
+
+        [StringLength(60)]
+        public string Marca { get; set; }
+
         [Required]
         public Guid OrdemVendaOrigemId { get; set; }
 

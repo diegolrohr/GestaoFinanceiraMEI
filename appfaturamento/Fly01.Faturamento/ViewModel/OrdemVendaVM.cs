@@ -12,6 +12,12 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("numero")]
         public int Numero { get; set; }
 
+        [JsonProperty("numeracaoVolumesTrans")]
+        public int NumeracaoVolumesTrans { get; set; }
+
+        [JsonProperty("marca")]
+        public string Marca{ get; set; }
+
         [JsonProperty("chaveNFeReferenciada")]
         public string ChaveNFeReferenciada { get; set; }
 

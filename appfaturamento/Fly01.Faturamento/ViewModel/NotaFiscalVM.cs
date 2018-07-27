@@ -9,6 +9,12 @@ namespace Fly01.Faturamento.ViewModel
     public class NotaFiscalVM : DomainBaseVM
     {
 
+        [JsonProperty("numeracaoVolumesTrans")]
+        public int NumeracaoVolumesTrans { get; set; }
+
+        [JsonProperty("marca")]
+        public string Marca { get; set; }
+
         [JsonProperty("ordemVendaOrigemId")]
         public Guid OrdemVendaOrigemId { get; set; }
 

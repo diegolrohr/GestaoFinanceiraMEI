@@ -277,6 +277,11 @@
     <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeGrupoTribPadrao.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFooterCallbackEstoqueNegativo.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnClickGeraNotaFiscal.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaProduto.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

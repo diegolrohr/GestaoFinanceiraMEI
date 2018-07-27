@@ -4,7 +4,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastros)]
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasConfiguracoesParametrosTributarios)]
     public class ParametroTributarioController : ParametroTributarioBaseController<ParametroTributarioVM>
     {    
         public ParametroTributarioController()

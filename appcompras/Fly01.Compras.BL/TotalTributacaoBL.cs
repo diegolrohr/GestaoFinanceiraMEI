@@ -54,7 +54,7 @@ namespace Fly01.Compras.BL
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
         }
 
-        public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)
+        public void DadosValidosCalculoTributario(OrdemCompra entity, Guid clienteId, bool onList = true)
         {
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";

@@ -4,7 +4,7 @@ using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastros)]
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasConfiguracoesSerieNotasFiscais)]
     public class SerieNotaFiscalController : SerieNotaFiscalBaseController<SerieNotaFiscalVM>
     {
         public SerieNotaFiscalController()

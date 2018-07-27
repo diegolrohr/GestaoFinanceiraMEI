@@ -636,7 +636,7 @@ namespace Fly01.Compras.Controllers
             {
                 Nome = term,
                 Fornecedor = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);
@@ -672,7 +672,7 @@ namespace Fly01.Compras.Controllers
             {
                 Nome = term,
                 Transportadora = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);

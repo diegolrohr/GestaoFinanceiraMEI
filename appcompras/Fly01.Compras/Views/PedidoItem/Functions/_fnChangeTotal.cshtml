@@ -26,7 +26,6 @@
         $(formPedido + 'input#total').val(total);
         $(formPedido + 'input#desconto').val("");
 
-        total.preventDefault();
         return false;
     }
 
@@ -41,7 +40,13 @@
             return;
         }
 
-        var total = (parseFloat(quantidade) * parseFloat(valor));
+        var qtd = parseFloat(quantidade);
+        if (qtd > 0) {
+            var total = (parseFloat(quantidade) * parseFloat(valor));
+        } else {
+            //nota de complemento de preço nao tem quantidade, n tem como multiplicar
+            var total = parseFloat(valor);
+        }
         var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
 
         if (totalDescontado >= 0) {

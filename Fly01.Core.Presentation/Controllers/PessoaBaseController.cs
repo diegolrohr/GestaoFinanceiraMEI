@@ -81,7 +81,7 @@ namespace Fly01.Core.Presentation.Controllers
             entityVM.InscricaoEstadual = Regex.Replace(entityVM.InscricaoEstadual ?? "", regexSomenteDigitos, "");
 
             if (string.IsNullOrEmpty(entityVM.TipoIndicacaoInscricaoEstadual))
-                entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteICMS";
+                entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteIsento";
         }
 
         private string GetTipoDocumento(string documento)

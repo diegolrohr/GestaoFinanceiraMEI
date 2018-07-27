@@ -35,7 +35,7 @@ namespace Fly01.Financeiro.BL
 
         public void ValidaModelNoBase(Pessoa entity)
         {
-            ValidaDefaultCPFCNPFTipoDocumento(entity);
+            ValidaDefaultCPFCNPJTipoDocumento(entity);
             entity.Fail(string.IsNullOrWhiteSpace(entity.Nome), NomeInvalido);
             entity.Fail(!entity.Transportadora && !entity.Cliente && !entity.Vendedor && !entity.Fornecedor, TipoCadastroInvalido);
             entity.Fail(entity.TipoDocumento != "J" && entity.TipoDocumento != "F", TipoDocumentoInvalido);
@@ -56,7 +56,7 @@ namespace Fly01.Financeiro.BL
             }
         }
 
-        protected void ValidaDefaultCPFCNPFTipoDocumento(Pessoa entity)
+        protected void ValidaDefaultCPFCNPJTipoDocumento(Pessoa entity)
         {
             entity.CPFCNPJ = !string.IsNullOrEmpty(entity.CPFCNPJ) ? entity.CPFCNPJ : string.Empty;
             entity.TipoDocumento = !string.IsNullOrEmpty(entity.TipoDocumento) ? entity.TipoDocumento : "F";

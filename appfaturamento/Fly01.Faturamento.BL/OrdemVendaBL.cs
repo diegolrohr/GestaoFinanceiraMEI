@@ -141,7 +141,7 @@ namespace Fly01.Faturamento.BL
         protected void GeraNotasFiscais(OrdemVenda entity)
         {
             //antes de gerar a nota fiscal tira os itens zerados Qtd =0 e Preço=0
-            if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
+            if (entity.TipoVenda == TipoVenda.Complementar)
             {
                 var produtosSemQtdValor = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo && e.Quantidade == 0 && e.Valor == 0).ToList();
                 if (produtosSemQtdValor != null)
@@ -305,7 +305,7 @@ namespace Fly01.Faturamento.BL
                         }
                         else
                         {
-                            if (entity.TipoVenda == TipoFinalidadeEmissaoNFe.Complementar)
+                            if (entity.TipoVenda == TipoVenda.Complementar)
                             {
                                 if (previousNatureza == TipoNfeComplementar.ComplIcms)
                                 {

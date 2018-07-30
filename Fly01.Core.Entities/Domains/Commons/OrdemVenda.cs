@@ -23,7 +23,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
-        public TipoFinalidadeEmissaoNFe TipoVenda { get; set; }
+        public TipoVenda TipoVenda { get; set; }
 
         [Required]
         public StatusOrdemVenda Status { get; set; }

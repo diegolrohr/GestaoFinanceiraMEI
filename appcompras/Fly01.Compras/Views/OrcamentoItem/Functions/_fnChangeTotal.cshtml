@@ -20,10 +20,10 @@
     function errTotalNegativo(total) {
         var formOrcamento = 'form#fly01mdlfrmOrcamentoItem ';
 
-        fly01.fn.submitErrorHandler($formPedido.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
+        fly01.fn.submitErrorHandler($formOrcamento.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
-        $(formPedido + 'input#total').val(total);
-        $(formPedido + 'input#desconto').val("");
+        $(formOrcamento + 'input#total').val(total);
+        $(formOrcamento + 'input#desconto').val("");
 
         return false;
     }
@@ -43,7 +43,7 @@
         var total = (parseFloat(quantidade) * parseFloat(valor));
         var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));      
 
-        if (totalDescontado > 0) {
+        if (totalDescontado >= 0) {
             totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
             $(formOrcamento + 'input#total').val(totalDescontado);
         }

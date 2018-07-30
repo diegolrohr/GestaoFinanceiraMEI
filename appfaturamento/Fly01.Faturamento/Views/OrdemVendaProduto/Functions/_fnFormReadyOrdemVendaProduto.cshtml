@@ -68,7 +68,6 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
-                        debugger;
                         fly01.toast(data.message, "success");
                         fly01._.dtOrdemVendaProdutos.refresh();
                         fly01._.fly01mdlfrmOrdemVendaProduto.close();

@@ -122,6 +122,9 @@ namespace Fly01.Faturamento.BL
             notaFiscal.ClienteId = entity.ClienteId;
             notaFiscal.TransportadoraId = entity.TransportadoraId;
             notaFiscal.TipoFrete = entity.TipoFrete;
+            notaFiscal.TipoEspecie = entity.TipoEspecie;
+            notaFiscal.Marca = entity.Marca;
+            notaFiscal.NumeracaoVolumesTrans = entity.NumeracaoVolumesTrans;
             notaFiscal.PlacaVeiculo = entity.PlacaVeiculo;
             notaFiscal.EstadoPlacaVeiculoId = entity.EstadoPlacaVeiculoId;
             notaFiscal.ValorFrete = tipo == TipoNotaFiscal.NFe ? entity.ValorFrete : 0;

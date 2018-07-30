@@ -35,6 +35,9 @@ namespace Fly01.Core.Config
         [JsonProperty(".expires")]
         public string ExpiresAt { get; set; }
 
+        [JsonProperty("trial")]
+        public bool Trial { get; set; }
+
         [JsonIgnore]
         public DateTime? LicenseExpiration { get; set; }
 

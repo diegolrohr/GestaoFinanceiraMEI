@@ -10,7 +10,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         Normal = 1,
 
         [XmlEnum(Name = "2")]
-        [Subtitle("Complementar", "Complementar", "Complementar")]
+        [Subtitle("Complementar", "Complementar", "Complementar", "yellow")]
         Complementar = 2,
 
         [XmlEnum(Name = "3")]

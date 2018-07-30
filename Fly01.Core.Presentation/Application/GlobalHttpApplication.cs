@@ -100,6 +100,7 @@ namespace Fly01.Core.Presentation.Application
                 {
                     Response.Cookies.Add(new HttpCookie("UserEmail", SessionManager.Current.UserData.PlatformUser) { Expires = DateTime.UtcNow.AddDays(2) });
                     Response.Cookies.Add(new HttpCookie("UserName", SessionManager.Current.UserData.TokenData.Username) { Expires = DateTime.UtcNow.AddDays(2) });
+                    Response.Cookies.Add(new HttpCookie("TrialUntil", SessionManager.Current.UserData.TokenData.Trial ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "") { Expires = DateTime.UtcNow.AddDays(2) });
                 }
             }
         }

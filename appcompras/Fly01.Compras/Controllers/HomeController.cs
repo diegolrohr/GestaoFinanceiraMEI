@@ -250,7 +250,7 @@ namespace Fly01.Compras.Controllers
                     new DataTableUIColumn
                     {
                         DataField = "valor",
-                        DisplayName = "Valor",
+                        DisplayName = "Total Pedidos",
                         Priority = 3,
                         Type = "currency",
                         Orderable = false,

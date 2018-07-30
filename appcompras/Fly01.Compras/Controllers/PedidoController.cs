@@ -278,10 +278,10 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12",
                 Label = "Fornecedor",
                 Required = true,
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "fornecedorNome",
-                DataUrlPost = Url.Action("PostCliente")
-            }, ResourceHashConst.FaturamentoCadastrosClientes));
+                DataUrlPost = Url.Action("PostFornecedor")
+            }, ResourceHashConst.ComprasCadastrosFornecedores));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
             #endregion

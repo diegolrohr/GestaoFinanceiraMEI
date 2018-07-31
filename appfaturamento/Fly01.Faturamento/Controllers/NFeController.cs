@@ -57,7 +57,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Label = "Tipo Venda",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
                 ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
@@ -157,10 +157,21 @@ namespace Fly01.Faturamento.Controllers
                 DataUrl = Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoPlacaVeiculoNome"
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m6", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m6", Label = "Peso Bruto", Disabled = true });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m6", Label = "Peso Líquido", Disabled = true });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quantidade Volumes", Disabled = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", });
+
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoEspecie",
+                Class = "col s12 m4",
+                Label = "Tipo Espécie",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
+            });
+            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI
@@ -246,7 +257,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Disabled = true,
                 Name = "tipoVenda",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe)).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
                 ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });

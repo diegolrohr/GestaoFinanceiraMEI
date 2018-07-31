@@ -139,7 +139,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Transporte",
                         Id = "stepTransporte",
-                        Quantity = 8,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -295,6 +295,18 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Transporte
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoFrete",
+                Class = "col s12 m4",
+                Label = "Tipo Frete",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
+                    }
+            });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "transportadoraId",
@@ -305,30 +317,17 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPost = Url.Action("PostTransportadora")
             }, ResourceHashConst.FaturamentoCadastrosTransportadoras));
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoFrete",
-                Class = "col s12 m4",
-                Label = "Tipo Frete",
-                Value = "SemFrete",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
-                DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
-                    }
-            });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
-                Class = "col s12 m4",
+                Class = "col s12 m3",
                 Label = "Placa Veículo",
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m4",
+                Class = "col s12 m3",
                 Label = "UF Placa Veículo",
                 DataUrl = Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoPlacaVeiculoNome"
@@ -336,7 +335,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorFrete",
-                Class = "col s12 m4",
+                Class = "col s12 m3",
                 Label = "Valor Frete",
                 Value = "0",
                 DomEvents = new List<DomEventUI>
@@ -344,9 +343,19 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido" });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes" });
+            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m3", Label = "Marca", });
+
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido" });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes" });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoEspecie",
+                Class = "col s12 m3",
+                Label = "Tipo Espécie",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
+            });
+            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", });
             #endregion
 
             #region step Finalizar
@@ -572,7 +581,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Cliente = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);
@@ -618,7 +627,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Transportadora = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);

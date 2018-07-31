@@ -9,6 +9,12 @@ namespace Fly01.Faturamento.ViewModel
     public class NotaFiscalVM : DomainBaseVM
     {
 
+        [JsonProperty("numeracaoVolumesTrans")]
+        public int NumeracaoVolumesTrans { get; set; }
+
+        [JsonProperty("marca")]
+        public string Marca { get; set; }
+
         [JsonProperty("ordemVendaOrigemId")]
         public Guid OrdemVendaOrigemId { get; set; }
 
@@ -36,6 +42,10 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("tipoFrete")]
         [APIEnum("TipoFrete")]
         public string TipoFrete { get; set; }
+
+        [JsonProperty("tipoEspecie")]
+        [APIEnum("TipoEspecie")]
+        public string TipoEspecie { get; set; }
 
         [JsonProperty("placaVeiculo")]
         public string PlacaVeiculo { get; set; }

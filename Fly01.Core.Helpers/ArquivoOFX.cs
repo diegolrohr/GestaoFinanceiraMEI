@@ -47,7 +47,10 @@ namespace Fly01.Core.Helpers
                 case "033":
                     GetLancamentosSantander();
                     break;
-                //DEMAIS BANCOS
+                //BANCO BRADESCO
+                case "0237":
+                    GetLancamentosBradesco();
+                    break;
                 default:
                     {
                         //vem formato 1000.15
@@ -73,6 +76,26 @@ namespace Fly01.Core.Helpers
 
 
 
+        }
+
+        public void GetLancamentosBradesco()
+        {
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ",";
+            provider.NumberGroupSeparator = ",";
+            provider.NumberGroupSizes = new int[] { 3 };
+
+            var list = _XElement.Descendants("STMTTRN").ToList();
+
+            _lancamentos = (
+                from c in _XElement.Descendants("STMTTRN")
+                select new OFXLancamento()
+                {
+                    Valor = Convert.ToDouble(c.Element("TRNAMT").Value, provider),
+                    Data = DateTime.ParseExact(c.Element("DTPOSTED").Value.Substring(0, 8), "yyyyMMdd", null),
+                    Descricao = c.Element("MEMO").Value,
+                    MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
+                }).ToList();
         }
 
         public string GetBancoId()

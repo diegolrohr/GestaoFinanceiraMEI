@@ -42,9 +42,9 @@ namespace Fly01.Faturamento.Controllers
                 cliente_nome = x.Cliente.Nome,
                 ordemVendaOrigem_numero = x.OrdemVendaOrigem.Numero.ToString(),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoFinalidadeEmissaoNFe), x.TipoVenda),
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
                 categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
@@ -187,7 +187,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoVenda",
                 DisplayName = "Finalidade",
                 Priority = 5,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFinalidadeEmissaoNFe))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
                 RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 6 });

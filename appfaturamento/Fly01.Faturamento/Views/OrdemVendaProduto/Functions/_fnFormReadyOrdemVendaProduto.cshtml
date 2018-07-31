@@ -70,7 +70,7 @@
                     if (data.success) {
                         fly01.toast(data.message, "success");
                         fly01._.dtOrdemVendaProdutos.refresh();
-                        fly01._.fly01mdlfrmOrdemVendaProduto.close()
+                        fly01._.fly01mdlfrmOrdemVendaProduto.close();
                     } else {
                         fly01.loading.stop();
                         try {
@@ -94,6 +94,7 @@
                         }
                     }
                     fly01.loading.stop();
+                    $('.modal-overlay').css('display', 'none');
                 },
                 error: function error(jXHR, textStatus) {
                     fly01.toast(textStatus, "error");

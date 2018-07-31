@@ -15,23 +15,23 @@
         }
         if ($('#tipoIndicacaoInscricaoEstadual').val() == "NaoContribuinte") {
             $("input#consumidorFinal").prop("checked", true);
-            $("input#consumidorFinal").attr("disabled", true);
+            $("input#consumidorFinal").attr("onclick", "return false");
         }
         else {
             $("input#consumidorFinal").prop("checked", false);
-            $("input#consumidorFinal").attr("disabled", false);
+            $("input#consumidorFinal").attr("onclick", "return true");
         }
     }
 
     function fnDesabilitaCamposPorTipoDeInscricao() {
-        //if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
-        //    $("#inscricaoEstadual").attr("disabled", true);
-        //    $("#inscricaoMunicipal").attr("disabled", true);
-        //}
-        
-        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteICMS") {
-            $("#inscricaoEstadual").rules("add", { required: true });
+        if ($('input#consumidorFinal:checked').val() == "true") {
+            $("input#consumidorFinal").attr("onclick", "return false");
         }
-
+        if ($('#id').val() == "" || $('#id').val() == undefined || $('#tipoIndicacaoInscricaoEstadual').val() == "ContribuinteIsento") {
+            $("#inscricaoEstadual").attr("disabled", true);
+            $("#inscricaoMunicipal").attr("disabled", true);
+            $("#tipoIndicacaoInscricaoEstadual").val("ContribuinteIsento");
+            $(".select-dropdown").val("Contribuinte Isento");
+        }
     };
 </script>

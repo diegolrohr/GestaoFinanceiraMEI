@@ -41,7 +41,7 @@ namespace Fly01.Financeiro.BL
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
             //Se Cliente não informado, busca pelo nome ou Insere
-            if ((entity.PessoaId == default(Guid) || entity.PessoaId == null) && !string.IsNullOrEmpty(entity.NomePessoa))
+            if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
@@ -88,7 +88,7 @@ namespace Fly01.Financeiro.BL
 
                     base.Insert(itemContaReceber);
 
-                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
 
                     if (repetir)

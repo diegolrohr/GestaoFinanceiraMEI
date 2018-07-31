@@ -347,7 +347,7 @@ namespace Fly01.EmissaoNFE.BL
                 {
                     if (item.Transporte.ModalidadeFrete != ModalidadeFrete.SemFrete)
                     {
-                        entity.Fail(item.Transporte.Volume.Quantidade <= 0,
+                        entity.Fail(item.Transporte.Volume.Quantidade < 0,
                             new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
                         entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Especie) || ( item.Transporte.Volume.Especie?.Length > 60),
                             new Error("Espécie de volume é um dado obrigatório de no máximo 60 caracteres.", "Item.Transporte.Volume.Especie"));

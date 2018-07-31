@@ -34,7 +34,7 @@
         $('input#pesoBruto').removeAttr('disabled').rules("add", { required: true });
         $('input#pesoLiquido').removeAttr('disabled').rules("add", { required: true });
         $('input#quantidadeVolumes').removeAttr('disabled').rules("add", { required: true });
-        $('#tipoEspecieField .select-dropdown').removeAttr('disabled').rules("add", { required: true });
+        $('#tipoEspecie').removeAttr('disabled').rules("add", { required: true });
         $('input#numeracaoVolumesTrans').removeAttr('disabled').rules("add", { required: true });
     }
 
@@ -48,7 +48,7 @@
         $('input#pesoBruto').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
         $('input#pesoLiquido').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
         $('input#quantidadeVolumes').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('#tipoEspecieField .select-dropdown').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
+        $('#tipoEspecie').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
         $('input#numeracaoVolumesTrans').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
     }
 </script>

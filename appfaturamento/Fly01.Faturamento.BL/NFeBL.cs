@@ -283,10 +283,10 @@ namespace Fly01.Faturamento.BL
                     {
                         itemTransmissao.Transporte.Volume = new Volume()
                         {
-                            Especie = entity.TipoEspecie?? " ",
+                            Especie = entity.TipoEspecie,
                             Quantidade = entity.QuantidadeVolumes ?? 0,
-                            Marca = entity.Marca?? " " ,
-                            Numeracao = entity.NumeracaoVolumesTrans?? " ",
+                            Marca = entity.Marca,
+                            Numeracao = entity.NumeracaoVolumesTrans,
                             PesoLiquido = entity.PesoLiquido ?? 0,
                             PesoBruto = entity.PesoBruto ?? 0,
                         };

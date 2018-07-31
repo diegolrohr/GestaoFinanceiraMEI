@@ -320,14 +320,14 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
             });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "UF Placa Veículo",
                 DataUrl = Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoPlacaVeiculoNome"
@@ -335,7 +335,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorFrete",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Valor Frete",
                 Value = "0",
                 DomEvents = new List<DomEventUI>
@@ -343,13 +343,13 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m3", Label = "Marca", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
 
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido" });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes" });
-            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m3", Label = "Tipo Espécie", MaxLength = 60 });
-            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", MaxLength = 60 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Value = "0" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Value = "0" });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });
             #endregion
 
             #region step Finalizar

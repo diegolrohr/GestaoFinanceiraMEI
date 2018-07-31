@@ -343,19 +343,13 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m3", Label = "Marca", });
+            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m3", Label = "Marca", MaxLength = 60 });
 
             config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto" });
             config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido" });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes" });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoEspecie",
-                Class = "col s12 m3",
-                Label = "Tipo Espécie",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m3", Label = "Tipo Espécie", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", MaxLength = 60 });
             #endregion
 
             #region step Finalizar

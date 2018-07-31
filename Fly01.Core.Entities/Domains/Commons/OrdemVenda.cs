@@ -11,7 +11,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int Numero { get; set; }
 
-        public int NumeracaoVolumesTrans { get; set; }
+        [StringLength(60)]
+        public string NumeracaoVolumesTrans { get; set; }
 
         [StringLength(60)]
         public string Marca { get; set; }
@@ -41,7 +42,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoFrete TipoFrete { get; set; }
 
-        public TipoEspecie TipoEspecie { get; set; }
+        [StringLength(60)]
+        public string TipoEspecie { get; set; }
 
         [StringLength(7)]
         public string PlacaVeiculo { get; set; }

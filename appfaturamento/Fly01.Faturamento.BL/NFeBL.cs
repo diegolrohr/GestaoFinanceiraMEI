@@ -279,15 +279,18 @@ namespace Fly01.Faturamento.BL
                         };
                     }
 
-                    itemTransmissao.Transporte.Volume = new Volume()
+                    if (entity.TipoFrete != TipoFrete.SemFrete)
                     {
-                        Especie = entity.TipoEspecie.ToString(),
-                        Quantidade = entity.QuantidadeVolumes ?? 0,
-                        Marca = entity.Marca,
-                        Numeracao = entity.NumeracaoVolumesTrans.ToString(),
-                        PesoLiquido = entity.PesoLiquido ?? 0,
-                        PesoBruto = entity.PesoBruto ?? 0,
-                    };
+                        itemTransmissao.Transporte.Volume = new Volume()
+                        {
+                            Especie = entity.TipoEspecie?? " ",
+                            Quantidade = entity.QuantidadeVolumes ?? 0,
+                            Marca = entity.Marca?? " " ,
+                            Numeracao = entity.NumeracaoVolumesTrans?? " ",
+                            PesoLiquido = entity.PesoLiquido ?? 0,
+                            PesoBruto = entity.PesoBruto ?? 0,
+                        };
+                    }
                     #endregion
 
                     #region Detalhes Produtos

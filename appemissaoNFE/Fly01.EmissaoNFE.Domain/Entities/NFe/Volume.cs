@@ -24,7 +24,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string PesoLiquidoString
         {
             get { return PesoLiquido.ToString("0.000").Replace(",", "."); }
-            set { PesoLiquido = double.Parse(value); }
+            set { PesoLiquido = double.Parse(value.Replace(".", ",")); }
         }
 
         [XmlIgnore]
@@ -34,7 +34,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string PesoBrutoString
         {
             get { return PesoBruto.ToString("0.000").Replace(",", "."); }
-            set { PesoBruto = double.Parse(value); }
+            set { PesoBruto = double.Parse(value.Replace(".", ",")); }
         }
     }
 }

@@ -25,8 +25,7 @@ namespace Fly01.Core.Entities.Domains
 
         public string UsuarioExclusao { get; set; }
 
-        [DefaultValue(true)]
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
 
         #region Notification
 

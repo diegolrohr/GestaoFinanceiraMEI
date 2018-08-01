@@ -103,13 +103,9 @@ namespace Fly01.Compras.BL
         {
             if (!string.IsNullOrEmpty(entity.CEP))
             {
-                int cep;
+                entity.CEP = entity.CEP.Replace("-", "");
 
-                if (entity.CEP.Length == 9 && entity.CEP.Substring(5, 1) == "-")
-                    entity.CEP = entity.CEP.Replace("-", "");
-
-                if (entity.CEP.Length != 8 || !int.TryParse(entity.CEP, out cep) || cep == 0)
-                    entity.Fail(true, FormatoCepInvalido);
+                entity.Fail(entity.CEP.Length != 8, FormatoCepInvalido);
             }
         }
 

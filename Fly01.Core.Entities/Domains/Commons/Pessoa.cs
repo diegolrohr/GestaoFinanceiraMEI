@@ -83,6 +83,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonIgnore]
         public virtual Estado Estado { get; set; }
 
+        public string CodigoIBGEEstado { get; set; }
+
         public string CodigoIBGECidade { get; set; }
     }
 }

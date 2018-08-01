@@ -217,8 +217,6 @@
     <Content Include="Views\ContaPagar\Functions\_fnChangeNumeroRepeticoes.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChangePeriodoFim.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChangeVencimento.cshtml" />
-    <Content Include="Views\Cliente\Functions\_fnChangeEstado.cshtml" />
-    <Content Include="Views\Fornecedor\Functions\_fnChangeEstado.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnSimulaParcelamento.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\CondicaoParcelamento\Functions\_fnChangeTipoSimulacao.cshtml" />
@@ -380,6 +378,12 @@
     <Content Include="Views\Fornecedor\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Cliente\Functions\_fnCitySelect.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Transportadora\Functions\_fnCitySelect.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -53,6 +53,7 @@ namespace Fly01.Faturamento.DAL
                 .Map<NFSeServico>(m => m.ToTable("NFSeServico"));
 
             builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
+            builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGEEstado);
             builder.Entity<OrdemVendaItem>().Ignore(m => m.Total);
             builder.Entity<NotaFiscalItem>().Ignore(m => m.Total);
         }

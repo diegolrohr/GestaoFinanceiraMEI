@@ -198,7 +198,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoNfeComplementar",
                 Class = "col s12 m7",
                 Label = "Tipo do Complemento",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")),
                 ConstrainWidth = true
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI

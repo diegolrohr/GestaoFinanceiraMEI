@@ -4,6 +4,9 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoNfeComplementar
     {
+        [Subtitle("NaoComplementar", "Não Complementar")]
+        NaoComplementar = 0,
+
         [Subtitle("ComplPreco", "Complemento de Preço")]
         ComplPreco = 1,
 

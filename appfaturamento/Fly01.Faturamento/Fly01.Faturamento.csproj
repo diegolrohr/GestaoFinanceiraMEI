@@ -336,10 +336,10 @@
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
-    <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
-    <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
+    <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -183,8 +183,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIbgeEstado" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIbgeCidade" });
+            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGEEstado" });
+            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGECidade" });
 
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 100 });
@@ -215,7 +215,6 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "estadoNome",
                 DomEvents = new List<DomEventUI>
                 {
-                    //new DomEventUI() { DomEvent = "change", Function = "fnChangeEstado" },
                     new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnStateSelect" }
                 }
             });

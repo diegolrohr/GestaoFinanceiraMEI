@@ -109,7 +109,7 @@ namespace Fly01.Faturamento.BL
 
                 if (NFeComplementar != null)
                 {
-                    mensagemComplementar = $"NF-e Complementar a NF-e {entity.Numero} emitida em {entity.Data}";
+                    mensagemComplementar = $"NF-e Complementar a NF-e {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
                 }
             }
 
@@ -122,6 +122,9 @@ namespace Fly01.Faturamento.BL
             notaFiscal.ClienteId = entity.ClienteId;
             notaFiscal.TransportadoraId = entity.TransportadoraId;
             notaFiscal.TipoFrete = entity.TipoFrete;
+            notaFiscal.TipoEspecie = entity.TipoEspecie;
+            notaFiscal.Marca = entity.Marca;
+            notaFiscal.NumeracaoVolumesTrans = entity.NumeracaoVolumesTrans;
             notaFiscal.PlacaVeiculo = entity.PlacaVeiculo;
             notaFiscal.EstadoPlacaVeiculoId = entity.EstadoPlacaVeiculoId;
             notaFiscal.ValorFrete = tipo == TipoNotaFiscal.NFe ? entity.ValorFrete : 0;
@@ -140,8 +143,21 @@ namespace Fly01.Faturamento.BL
 
         protected void GeraNotasFiscais(OrdemVenda entity)
         {
+            //antes de gerar a nota fiscal tira os itens zerados Qtd =0 e Preço=0
+            if (entity.TipoVenda == TipoVenda.Complementar)
+            {
+                var produtosSemQtdValor = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo && e.Quantidade == 0 && e.Valor == 0).ToList();
+                if (produtosSemQtdValor != null)
+                {
+                    foreach (var produto in produtosSemQtdValor)
+                    {
+                        OrdemVendaProdutoBL.Delete(produto);
+                    }
+                }
+            }
+
             //gerar notas fiscais divididos por produtos e serviços
-            var produtos = OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).Where(x => x.OrdemVendaId == entity.Id).ToList();
+            var produtos = OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).Where(x => x.OrdemVendaId == entity.Id && (x.Quantidade > 0 || x.Valor > 0)).ToList();
             var servicos = OrdemVendaServicoBL.All.Where(x => x.OrdemVendaId == entity.Id).ToList();
 
             if (produtos != null & produtos.Any())
@@ -281,6 +297,8 @@ namespace Fly01.Faturamento.BL
                         entity.Id = previousId;
                         entity.Numero = previousNumero;
                         entity.Data = previousData;
+                        entity.TipoVenda = previousTipoVenda;
+                        entity.TipoNfeComplementar = previousNatureza;
 
                         if (entity.TipoVenda == TipoVenda.Devolucao)
                         {
@@ -290,25 +308,27 @@ namespace Fly01.Faturamento.BL
                         }
                         else
                         {
-                            if (previousNatureza == TipoNfeComplementar.ComplIcms)
+                            if (entity.TipoVenda == TipoVenda.Complementar)
                             {
-                                entity.NaturezaOperacao = "Complemento de Imposto";
-                            }
-                            else
-                            {
-                                if (previousNatureza == TipoNfeComplementar.ComplPreco)
+                                if (previousNatureza == TipoNfeComplementar.ComplIcms)
                                 {
-                                    entity.NaturezaOperacao = "Complemento de Preco";
+                                    entity.NaturezaOperacao = "Complemento de Imposto";
                                 }
                                 else
                                 {
-                                    if (previousNatureza == TipoNfeComplementar.ComplQtd)
+                                    if (previousNatureza == TipoNfeComplementar.ComplPreco)
                                     {
-                                        entity.NaturezaOperacao = "Complemento de Quantidade";
+                                        entity.NaturezaOperacao = "Complemento de Preco";
+                                    }
+                                    else
+                                    {
+                                        if (previousNatureza == TipoNfeComplementar.ComplQtd)
+                                        {
+                                            entity.NaturezaOperacao = "Complemento de Quantidade";
+                                        }
                                     }
                                 }
                             }
-
                         }
 
                         entity.ClienteId = (clienteReferenciado != null && clienteReferenciado.Ativo == true) ? pedidoReferenciado.ClienteId : previousClienteId;
@@ -339,7 +359,7 @@ namespace Fly01.Faturamento.BL
                                     produtoClonado.Valor = 0.00;
                                     produtoClonado.Desconto = 0.00;
                                 }
-                                OrdemVendaProdutoBL.Insert(produtoClonado);                                
+                                OrdemVendaProdutoBL.Insert(produtoClonado);
                             }
                         }
                     }
@@ -385,7 +405,6 @@ namespace Fly01.Faturamento.BL
                 }
                 GeraNotasFiscais(entity);
             }
-
             base.Insert(entity);
         }
 

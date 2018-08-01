@@ -413,9 +413,9 @@ namespace Fly01.Compras.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido" });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso bruto" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso líquido" });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quant. volumes" });
             #endregion
 
             #region step Finalizar
@@ -907,8 +907,22 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)))
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso bruto", Disabled = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "pesoLiquido", Class = "col s12 m6", Label = "Peso líquido", Disabled = true });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoBruto",
+                Class = "col s12 m3",
+                Label = "Peso Bruto",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
+                Disabled = true
+            });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoLiquido",
+                Class = "col s12 m3",
+                Label = "Peso Líquido",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
+                Disabled = true               
+            });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quant. volumes", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
@@ -1136,3 +1150,18 @@ namespace Fly01.Compras.Controllers
         #endregion
     }
 }
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoBruto",
+                Class = "col s12 m3",
+                Label = "Peso Bruto",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+            });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoLiquido",
+                Class = "col s12 m3",
+                Label = "Peso Líquido",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+            });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quant. volumes" });

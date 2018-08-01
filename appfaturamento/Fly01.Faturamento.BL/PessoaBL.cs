@@ -34,6 +34,7 @@ namespace Fly01.Faturamento.BL
 
         public void ValidaModelNoBase(Pessoa entity)
         {
+            ValidaDefaultCPFCNPJTipoDocumento(entity);
             entity.Fail(string.IsNullOrWhiteSpace(entity.Nome), NomeInvalido);
             entity.Fail(!entity.Transportadora && !entity.Cliente && !entity.Vendedor && !entity.Fornecedor, TipoCadastroInvalido);
             entity.Fail(entity.TipoDocumento != "J" && entity.TipoDocumento != "F", TipoDocumentoInvalido);
@@ -52,6 +53,12 @@ namespace Fly01.Faturamento.BL
             {
                 entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id), new Error(string.Format("O CPF/CNPJ informado já foi utilizado em outro cadastro.")));
             }
+        }
+
+        protected void ValidaDefaultCPFCNPJTipoDocumento(Pessoa entity)
+        {
+            entity.CPFCNPJ = !string.IsNullOrEmpty(entity.CPFCNPJ) ? entity.CPFCNPJ : string.Empty;
+            entity.TipoDocumento = !string.IsNullOrEmpty(entity.TipoDocumento) ? entity.TipoDocumento : "F";
         }
 
         protected void ValidaFormatoDocumento(Pessoa entity)
@@ -96,13 +103,9 @@ namespace Fly01.Faturamento.BL
         {
             if (!string.IsNullOrEmpty(entity.CEP))
             {
-                int cep;
+                entity.CEP = entity.CEP.Replace("-", "");
 
-                if (entity.CEP.Length == 9 && entity.CEP.Substring(5, 1) == "-")
-                    entity.CEP = entity.CEP.Replace("-", "");
-
-                if (entity.CEP.Length != 8 || !int.TryParse(entity.CEP, out cep) || cep == 0)
-                    entity.Fail(true, FormatoCepInvalido);
+                entity.Fail(entity.CEP.Length != 8, FormatoCepInvalido);
             }
         }
 

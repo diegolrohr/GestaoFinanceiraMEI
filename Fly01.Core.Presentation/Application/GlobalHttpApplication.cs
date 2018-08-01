@@ -98,8 +98,12 @@ namespace Fly01.Core.Presentation.Application
             {
                 if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    Response.Cookies.Add(new HttpCookie("UserEmail", SessionManager.Current.UserData.PlatformUser) { Expires = DateTime.UtcNow.AddDays(2) });
-                    Response.Cookies.Add(new HttpCookie("UserName", SessionManager.Current.UserData.TokenData.Username) { Expires = DateTime.UtcNow.AddDays(2) });
+                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial 
+                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+                    Response.Cookies.Add(mpnData);
                 }
             }
         }
@@ -143,8 +147,12 @@ namespace Fly01.Core.Presentation.Application
             {
                 if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
                 {
-                    Response.Cookies.Add(new HttpCookie("UserEmail", SessionManager.Current.UserData.PlatformUser) { Expires = DateTime.UtcNow.AddDays(2) });
-                    Response.Cookies.Add(new HttpCookie("UserName", SessionManager.Current.UserData.TokenData.Username) { Expires = DateTime.UtcNow.AddDays(2) });
+                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
+                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+                    Response.Cookies.Add(mpnData);
                 }
             }
             else
@@ -161,12 +169,12 @@ namespace Fly01.Core.Presentation.Application
                 }
                 else if (Request.AppRelativeCurrentExecutionFilePath.Equals("~/") && Request.QueryString["t"] != null)
                 {
-                    Response.Write(String.Format("<script type=\"text/javascript\">top.location.href='{0}?t={1}';</script>", FormsAuthentication.LoginUrl, Request.QueryString["t"]));
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}?t={Request.QueryString["t"]}';</script>");
                     Response.End();
                 }
                 else
                 {
-                    Response.Write(String.Format("<script type=\"text/javascript\">top.location.href='{0}';</script>", FormsAuthentication.LoginUrl));
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
                     Response.End();
                 }
             }

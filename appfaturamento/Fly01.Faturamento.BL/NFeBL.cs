@@ -66,9 +66,14 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(NFe entity)
         {
             entity.Fail(entity.TipoNotaFiscal != TipoNotaFiscal.NFe, new Error("Permitido somente nota fiscal do tipo NFe"));
-            entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
-            entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
-            entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
+
+            if (entity.TipoFrete != TipoFrete.SemFrete)
+            {
+                entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
+                entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
+                entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
+            }
+
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
             entity.Fail((entity.NumNotaFiscal.HasValue || entity.SerieNotaFiscalId.HasValue) && (!entity.NumNotaFiscal.HasValue || !entity.SerieNotaFiscalId.HasValue), new Error("Informe série e número da nota fiscal"));
             entity.Fail((entity.Status == StatusNotaFiscal.Transmitida && (!entity.SerieNotaFiscalId.HasValue || !entity.NumNotaFiscal.HasValue)), new Error("Para transmitir, informe série e número da nota fiscal"));
@@ -222,12 +227,12 @@ namespace Fly01.Faturamento.BL
                         {
                             Bairro = empresa.Bairro,
                             Cep = empresa.CEP,
-                            CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
+                            CodigoMunicipio = empresa.Cidade?.CodigoIbge,
                             Fone = empresa.Telefone,
                             Logradouro = empresa.Endereco,
-                            Municipio = empresa.Cidade != null ? empresa.Cidade.Nome : null,
+                            Municipio = empresa.Cidade?.Nome,
                             Numero = empresa.Numero,
-                            UF = empresa.Cidade != null ? empresa.Cidade.Estado.Sigla : null
+                            UF = empresa.Cidade?.Estado.Sigla
                         }
                     };
                     #endregion
@@ -245,12 +250,12 @@ namespace Fly01.Faturamento.BL
                         {
                             Bairro = cliente.Bairro,
                             Cep = cliente.CEP,
-                            CodigoMunicipio = cliente.Cidade != null ? cliente.Cidade.CodigoIbge : null,
+                            CodigoMunicipio = cliente.Cidade?.CodigoIbge,
                             Fone = cliente.Telefone,
                             Logradouro = cliente.Endereco,
-                            Municipio = cliente.Cidade != null ? cliente.Cidade.Nome : null,
+                            Municipio = cliente.Cidade?.Nome,
                             Numero = cliente.Numero,
-                            UF = cliente.Estado != null ? cliente.Estado.Sigla : null
+                            UF = cliente.Estado?.Sigla
                         }
                     };
                     #endregion
@@ -258,7 +263,7 @@ namespace Fly01.Faturamento.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (ModalidadeFrete)System.Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString())
+                        ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString()),
                     };
                     if (transportadora != null)
                     {
@@ -266,13 +271,23 @@ namespace Fly01.Faturamento.BL
                         {
                             CNPJ = transportadora != null && transportadora.TipoDocumento == "J" ? transportadora.CPFCNPJ : null,
                             CPF = transportadora != null && transportadora.TipoDocumento == "F" ? transportadora.CPFCNPJ : null,
-                            Endereco = transportadora != null ? transportadora.Endereco : null,
+                            Endereco = transportadora?.Endereco,
                             IE = transportadora != null ? (transportadora.TipoIndicacaoInscricaoEstadual == TipoIndicacaoInscricaoEstadual.ContribuinteICMS ? transportadora.InscricaoEstadual : null) : null,
                             Municipio = transportadora != null && transportadora.Cidade != null ? transportadora.Cidade.Nome : null,
-                            RazaoSocial = transportadora != null ? transportadora.Nome : null,
+                            RazaoSocial = transportadora?.Nome,
                             UF = transportadora != null && transportadora.Estado != null ? transportadora.Estado.Sigla : null
                         };
                     }
+
+                    itemTransmissao.Transporte.Volume = new Volume()
+                    {
+                        Especie = entity.TipoEspecie.ToString(),
+                        Quantidade = entity.QuantidadeVolumes ?? 0,
+                        Marca = entity.Marca,
+                        Numeracao = entity.NumeracaoVolumesTrans.ToString(),
+                        PesoLiquido = entity.PesoLiquido ?? 0,
+                        PesoBruto = entity.PesoBruto ?? 0,
+                    };
                     #endregion
 
                     #region Detalhes Produtos
@@ -283,7 +298,7 @@ namespace Fly01.Faturamento.BL
                     foreach (var item in NFeProdutos)
                     {
                         var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
-                            x.NcmId == (item.Produto.NcmId.HasValue ? item.Produto.NcmId.Value : Guid.NewGuid()) &
+                            x.NcmId == (item.Produto.NcmId ?? Guid.NewGuid()) &
                             x.CestId == item.Produto.CestId.Value &
                             x.EstadoOrigem.Sigla == UFSiglaEmpresa &
                             x.EstadoDestinoId == cliente.EstadoId &
@@ -300,18 +315,18 @@ namespace Fly01.Faturamento.BL
                             Descricao = item.Produto.Descricao,
                             GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
                             GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
-                            NCM = item.Produto.Ncm != null ? item.Produto.Ncm.Codigo : null,
+                            NCM = item.Produto.Ncm?.Codigo,
                             TipoProduto = item.Produto.TipoProduto,
                             Quantidade = item.Quantidade,
                             QuantidadeTributada = item.Quantidade,
-                            UnidadeMedida = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
-                            UnidadeMedidaTributada = item.Produto.UnidadeMedida != null ? item.Produto.UnidadeMedida.Abreviacao : null,
+                            UnidadeMedida = item.Produto.UnidadeMedida?.Abreviacao,
+                            UnidadeMedidaTributada = item.Produto.UnidadeMedida?.Abreviacao,
                             ValorBruto = item.Quantidade > 0 ? (item.Quantidade * item.Valor) : item.Valor,
                             ValorUnitario = item.Valor,
                             ValorUnitarioTributado = item.Valor,
                             ValorDesconto = item.Desconto,
                             AgregaTotalNota = CompoemValorTotal.Compoe,
-                            CEST = item.Produto.Cest != null ? item.Produto.Cest.Codigo : null,
+                            CEST = item.Produto.Cest?.Codigo,
                             ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
                         };
 
@@ -345,7 +360,7 @@ namespace Fly01.Faturamento.BL
                         }
                         if (itemTributacao.CalculaST)
                         {
-                            detalhe.Imposto.ICMS.UF = cliente.Estado != null ? cliente.Estado.Sigla : null;
+                            detalhe.Imposto.ICMS.UF = cliente.Estado?.Sigla;
                             detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST = st != null ? st.Mva : 0;
                             detalhe.Imposto.ICMS.ValorBCST = Math.Round(itemTributacao.STBase, 2);
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
@@ -375,9 +390,7 @@ namespace Fly01.Faturamento.BL
                                     (CSTIPI)System.Enum.Parse(typeof(CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
                                     CSTIPI.OutrasSaidas,
                                 ValorIPI = itemTributacao.IPIValor,
-                                CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI != null ?
-                                    item.Produto.EnquadramentoLegalIPI.Codigo :
-                                    null,
+                                CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI?.Codigo,
                                 ValorBaseCalculo = Math.Round(itemTributacao.IPIBase, 2),
                                 PercentualIPI = Math.Round(itemTributacao.IPIAliquota, 2),
                                 QtdTotalUnidadeTributavel = item.Quantidade,
@@ -431,9 +444,9 @@ namespace Fly01.Faturamento.BL
                         }
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
-                                         (detalhe.Imposto.ICMS.ValorICMS.HasValue ? detalhe.Imposto.ICMS.ValorICMS.Value : 0) +
-                                         (detalhe.Imposto.ICMS.ValorFCPST.HasValue ? detalhe.Imposto.ICMS.ValorFCPST.Value : 0) +
-                                         (detalhe.Imposto.ICMS.ValorICMSST.HasValue ? detalhe.Imposto.ICMS.ValorICMSST.Value : 0) +
+                                         (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
+                                         (detalhe.Imposto.ICMS.ValorFCPST ?? 0) +
+                                         (detalhe.Imposto.ICMS.ValorICMSST ?? 0) +
                                          (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                                          (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                                          (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
@@ -519,84 +532,84 @@ namespace Fly01.Faturamento.BL
                         };
                     }
 
-                var entidade = CertificadoDigitalBL.GetEntidade();
+                    var entidade = CertificadoDigitalBL.GetEntidade();
 
-                var notaFiscal = new TransmissaoVM()
-                {
-                    Homologacao = entidade.Homologacao,
-                    Producao = entidade.Producao,
-                    EntidadeAmbiente = entidade.EntidadeAmbiente,
-                    Item = new List<ItemTransmissaoVM>()
+                    var notaFiscal = new TransmissaoVM()
+                    {
+                        Homologacao = entidade.Homologacao,
+                        Producao = entidade.Producao,
+                        EntidadeAmbiente = entidade.EntidadeAmbiente,
+                        Item = new List<ItemTransmissaoVM>()
                         {
                             itemTransmissao
                         }
-                };
+                    };
 
-                var header = new Dictionary<string, string>()
+                    var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-                entity.Mensagem = null;
-                entity.Recomendacao = null;
-                entity.XML = null;
-                entity.PDF = null;
+                    entity.Mensagem = null;
+                    entity.Recomendacao = null;
+                    entity.XML = null;
+                    entity.PDF = null;
 
-                var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
-                var retorno = response.Notas.FirstOrDefault();
-                if (retorno.Error != null)
-                {
-                    entity.Status = StatusNotaFiscal.FalhaTransmissao;
-                    var mensagens = "";
-                    foreach (var item in retorno.Error)
+                    var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
+                    var retorno = response.Notas.FirstOrDefault();
+                    if (retorno.Error != null)
                     {
-                        var schemaMensagens = "";
-                        foreach (var schema in item.SchemaMensagem)
+                        entity.Status = StatusNotaFiscal.FalhaTransmissao;
+                        var mensagens = "";
+                        foreach (var item in retorno.Error)
                         {
-                            schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            var schemaMensagens = "";
+                            foreach (var schema in item.SchemaMensagem)
+                            {
+                                schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            }
+                            mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
                         }
-                        mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
+                        entity.Mensagem = mensagens;
                     }
-                    entity.Mensagem = mensagens;
+                    else
+                    {
+                        entity.SefazId = retorno.NotaId;
+                    }
                 }
-                else
-                {
-                    entity.SefazId = retorno.NotaId;
-                }
-            }
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
-    }
-}
+            }
+        }
 
-public override void Insert(NFe entity)
-{
-    entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
-    base.Insert(entity);
-}
+        public override void Insert(NFe entity)
+        {
+            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
+            base.Insert(entity);
+        }
 
-public override void Update(NFe entity)
-{
-    var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-    entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
-    entity.Fail(
-        previous.Status != StatusNotaFiscal.NaoTransmitida &&
-        entity.Status != StatusNotaFiscal.Transmitida &&
-        (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
-        , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
+        public override void Update(NFe entity)
+        {
+            var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
+            entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
+            entity.Fail(
+                previous.Status != StatusNotaFiscal.NaoTransmitida &&
+                entity.Status != StatusNotaFiscal.Transmitida &&
+                (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
+                , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
 
-    ValidaModel(entity);
+            ValidaModel(entity);
 
-    if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
-    {
-        TransmitirNFe(entity);
-    }
+            if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
+            {
+                TransmitirNFe(entity);
+            }
 
-    base.Update(entity);
-}
+            base.Update(entity);
+        }
 
 public override void Delete(NFe entityToDelete)
 {
@@ -622,7 +635,16 @@ public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
     {
         if (nfe.NaturezaOperacao == "Complemento de Preco")
         {
-            totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
         }
     }
     var totalImpostosProdutos = nfe.TotalImpostosProdutos;
@@ -632,15 +654,35 @@ public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
         ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
     );
 
-    var result = new TotalNotaFiscal()
-    {
-        TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-        ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
-        TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
-        TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
-    };
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
+        {
+            var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
-    return result;
-}
+            var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
+            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            if (nfe.TipoVenda == TipoVenda.Complementar)
+            {
+                if (nfe.NaturezaOperacao == "Complemento de Preco")
+                {
+                    totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+                }
+            }
+            var totalImpostosProdutos = nfe.TotalImpostosProdutos;
+            var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
+            bool calculaFrete = (
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
+            );
+
+            var result = new TotalNotaFiscal()
+            {
+                TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
+                ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
+            };
+
+            return result;
+        }
     }
 }

@@ -44,10 +44,14 @@ namespace Fly01.Financeiro.BL
             if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
+            var rpcClient = new RpcClient();
+            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
+                entity.Numero = numero;
 
                 base.Insert(entity);
             }
@@ -80,9 +84,6 @@ namespace Fly01.Financeiro.BL
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
-
-                    var rpcClient = new RpcClient();
-                    numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                     itemContaReceber.Numero = numero;
 

@@ -8,9 +8,8 @@
 
             if (tipoVenda == "Devolucao") {
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
-
                 $("input#tipoCarteira").val("Despesa");
-            } else {
+            } else {//complementar
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
                 $("#grupoTributarioPadraoIdField").hide();

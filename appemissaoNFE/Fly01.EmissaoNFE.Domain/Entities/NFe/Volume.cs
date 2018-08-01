@@ -11,11 +11,26 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement("esp")]
         public string Especie { get; set; }
 
+        public bool ShouldSerializeEspecie()
+        {
+            return (!string.IsNullOrEmpty(Especie) && Especie.Replace(" ", "").Length > 0);
+        }
+
         [XmlElement("marca")]
         public string Marca { get; set; }
 
+        public bool ShouldSerializeMarca()
+        {
+            return (!string.IsNullOrEmpty(Marca) && Marca.Replace(" ", "").Length > 0);
+        }
+
         [XmlElement("nVol")]
         public string Numeracao { get; set; }
+
+        public bool ShouldSerializeNumeracao()
+        {
+            return (!string.IsNullOrEmpty(Numeracao) && Numeracao.Replace(" ", "").Length > 0);
+        }
 
         [XmlIgnore]
         public double PesoLiquido { get; set; }

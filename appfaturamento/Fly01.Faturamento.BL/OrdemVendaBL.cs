@@ -86,9 +86,9 @@ namespace Fly01.Faturamento.BL
 
                 if (entity.TipoFrete != TipoFrete.SemFrete)
                 {
-                    entity.Fail(string.IsNullOrEmpty(entity.Marca), new Error("Marca do volume é um dado obrigatório de no máximo 60 caracteres.", "marca"));
-                    entity.Fail(string.IsNullOrEmpty(entity.NumeracaoVolumesTrans), new Error("Numeração do volume é um dado obrigatório de no máximo 60 caracteres.", "numeracaoVolumesTrans"));
-                    entity.Fail(string.IsNullOrEmpty(entity.TipoEspecie), new Error("Espécie do volume é um dado obrigatório de no máximo 60 caracteres.", "tipoEspecie"));
+                    entity.Fail(!string.IsNullOrEmpty(entity.Marca) && (entity.Marca.Replace(" ", "").Length == 0 || (entity.Marca?.Length > 60)), new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "marca"));
+                    entity.Fail(!string.IsNullOrEmpty(entity.NumeracaoVolumesTrans) && (entity.NumeracaoVolumesTrans.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "numeracaoVolumesTrans"));
+                    entity.Fail(!string.IsNullOrEmpty(entity.TipoEspecie) && (entity.TipoEspecie.Replace(" ", "").Length == 0 || (entity.NumeracaoVolumesTrans?.Length > 60)), new Error("Espécie do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "tipoEspecie"));
                 }
             }
 

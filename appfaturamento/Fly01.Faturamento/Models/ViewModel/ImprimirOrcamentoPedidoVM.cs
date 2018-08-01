@@ -22,6 +22,9 @@ namespace Fly01.Faturamento.Models.ViewModel
         public int QuantidadeVolumes { get; set; }
         public double ValorFrete { get; set; }
         public string TransportadoraNome { get; set; }
+        public string NumeracaoVolumesTrans { get; set; }
+        public string Marca { get; set; }
+        public string TipoEspecie { get; set; }
         public string Observacao { get; set; }
         public Guid? ItemId { get; set; }
         public double ItemQtd { get; set; }

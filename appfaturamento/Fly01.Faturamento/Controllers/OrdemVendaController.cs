@@ -104,7 +104,10 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
 
             foreach (OrdemVendaServicoVM OrdemServico in servicos)
@@ -142,7 +145,10 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -168,7 +174,10 @@ namespace Fly01.Faturamento.Controllers
                     ValorFrete = OrdemVenda.ValorFrete.HasValue ? OrdemVenda.ValorFrete.Value : 0,
                     Observacao = OrdemVenda.Observacao,
                     QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
             }
 

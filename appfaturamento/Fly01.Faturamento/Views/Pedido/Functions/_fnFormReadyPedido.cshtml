@@ -113,21 +113,26 @@
         if ($("#categoriaDescricao").data("url-post"))
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
-        if ($('#tipoVenda').val() == "Devolucao" || $('#tipoVenda').val() == "Complementar")  {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
+        var tipoVendaVal = $('#tipoVenda').val();
+
+        if (tipoVendaVal == "Devolucao" || tipoVendaVal == "Complementar") {
+            $("#fly01btngrpFinalidade #btnNormal").hide();
             $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
-
-            if ($('#tipoVenda').val() == "Complementar") {
-                $("#tipoNfeComplementarField").show();
-                $('#stepFinanceiro').hide();
-                $('#stepTransporte').hide();
-            }            
         }
-        else {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
-            $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
+
+        if (tipoVendaVal == "Complementar") {
+            $("#tipoNfeComplementarField").show();
+            $('#stepTransporte').hide();
+            $("#fly01btngrpFinalidade #btnDevolucao").hide();
+        }
+        else if (tipoVendaVal == "Normal") {
+            $("#fly01btngrpFinalidade #btnDevolucao").hide();
+            $("#fly01btngrpFinalidade #btnComplementar").hide();
             $("#tipoNfeComplementarField").hide();
+        }
+        else if (tipoVendaVal == "Devolucao") {
+            $("#fly01btngrpFinalidade #btnComplementar").hide();
         }
     }
 
@@ -250,7 +255,7 @@
 
     function fnFormReadyPedido() {
         fnIsNovoPedido();
-         
+
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
 
@@ -275,7 +280,7 @@
                     $('#btnDevolucao').click();
                 } else {
                     $('#btnComplementar').click();
-                }                
+                }
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
@@ -313,8 +318,8 @@
 
     function fnIsNovoPedido() {
         if ($('#id').val() == "" || $('#id').val() == undefined) {
-            $('#tipoFreteField select#tipoFrete').val("SemFrete") 
-            $("#tipoFreteField .select-dropdown").val("Sem frete");   
+            $('#tipoFreteField select#tipoFrete').val("SemFrete")
+            $("#tipoFreteField .select-dropdown").val("Sem frete");
         }
     }
 </script>

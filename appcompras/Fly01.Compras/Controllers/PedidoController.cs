@@ -481,14 +481,16 @@ namespace Fly01.Compras.Controllers
                 Id = "pesoBruto",
                 Class = "col s12 m3",
                 Label = "Peso Bruto",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
+                Disabled = true
             });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "pesoLiquido",
                 Class = "col s12 m3",
                 Label = "Peso Líquido",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
+                Disabled = true               
             });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quant. volumes", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });

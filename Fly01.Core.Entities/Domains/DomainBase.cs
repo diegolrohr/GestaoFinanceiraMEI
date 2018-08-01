@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Notifications;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace Fly01.Core.Entities.Domains
 
         public string UsuarioExclusao { get; set; }
 
-        public bool Ativo { get; set; } = true;
+        [DefaultValue(true)]
+        public bool Ativo { get; set; }
 
         #region Notification
 

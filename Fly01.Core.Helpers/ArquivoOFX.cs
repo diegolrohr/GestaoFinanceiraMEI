@@ -73,9 +73,6 @@ namespace Fly01.Core.Helpers
                         break;
                     }
             };
-
-
-
         }
 
         public void GetLancamentosBradesco()

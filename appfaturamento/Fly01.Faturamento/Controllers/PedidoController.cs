@@ -344,9 +344,20 @@ namespace Fly01.Faturamento.Controllers
                     }
             });
             config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m3", Label = "Marca", });
-
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso Líquido" });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoBruto",
+                Class = "col s12 m3",
+                Label = "Peso Bruto",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+            });
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "pesoLiquido",
+                Class = "col s12 m3",
+                Label = "Peso Líquido",
+                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
+            });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes" });
             config.Elements.Add(new SelectUI
             {

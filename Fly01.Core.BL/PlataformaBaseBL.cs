@@ -71,12 +71,7 @@ namespace Fly01.Core.BL
             entity.UsuarioInclusao = AppUser;
             entity.UsuarioAlteracao = null;
             entity.UsuarioExclusao = null;
-            if (!entity.Ativo)
-            {
-                entity.UsuarioExclusao = AppUser;
-                entity.DataExclusao = DateTime.Now;
-            }
-
+            entity.Ativo = true;
 
             ValidaModel(entity);
 
@@ -93,12 +88,7 @@ namespace Fly01.Core.BL
             entity.DataExclusao = null;
             entity.UsuarioAlteracao = AppUser;
             entity.UsuarioExclusao = null;
-            if (!entity.Ativo)
-            {
-                entity.UsuarioExclusao = AppUser;
-                entity.DataExclusao = DateTime.Now;
-            }
-
+            entity.Ativo = true;
 
             ValidaModel(entity);
         }

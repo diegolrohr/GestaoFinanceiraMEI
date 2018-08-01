@@ -23,7 +23,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public PessoaBaseController()
         {
-            ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
+            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -183,8 +183,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGEEstado" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGECidade" });
+            config.Elements.Add(new InputHiddenUI { Id = "codigoIbgeEstado" });
+            config.Elements.Add(new InputHiddenUI { Id = "codigoIbgeCidade" });
 
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 100 });
@@ -215,8 +215,8 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "estadoNome",
                 DomEvents = new List<DomEventUI>
                 {
-                    new DomEventUI { DomEvent = "change", Function = "fnChangeEstado" },
-                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnStateSelect" },
+                    //new DomEventUI() { DomEvent = "change", Function = "fnChangeEstado" },
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnStateSelect" }
                 }
             });
 
@@ -229,10 +229,10 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
                 LabelId = "cidadeNome",
                 PreFilter = "estadoId",
-                //DomEvents = new List<DomEventUI>
-                //{
-                //    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
-                //}
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 50 });

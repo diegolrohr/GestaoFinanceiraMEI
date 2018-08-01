@@ -1,7 +1,8 @@
 ﻿<script>
     function fnStateSelect(event, data) {
-        //$('#codigoIBGEEstado').val(data.item.codigoNegocio);
-        //document.getElementById("input#nomeComercial").val("Exemplo NomeComercial");
-        console.log(data.item.codigoNegocio);
+        $('#codigoIBGEEstado').val(data.item.codigoIbgeEstado);
+
+        $("#cidadeNome").val("");
+        $("#cidadeId").val("");
     }
-</script>    
+</script>

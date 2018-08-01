@@ -23,7 +23,7 @@ namespace Fly01.Core.Presentation.Controllers
             queryString.AddParam("$orderby", "nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EstadoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, detail = item.Sigla, codigoNegocio = item.CodigoIbge };
+                                select new { id = item.Id, label = item.Nome, detail = item.Sigla, codigoIBGEEstado = item.CodigoIbge };
 
             return GetJson(filterObjects);
         }
@@ -40,7 +40,7 @@ namespace Fly01.Core.Presentation.Controllers
             queryString.AddParam("$orderby", "nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId, codigoNegocio = item.CodigoIbge };
+                                select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId, codigoIBGECidade = item.CodigoIbge };
 
             return GetJson(filterObjects);
         }

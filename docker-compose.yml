@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  fly01.estoque.api:
-    image: fly01estoqueapi
-    build:
-      context: .\appestoque\Fly01.Estoque.API
-      dockerfile: Dockerfile

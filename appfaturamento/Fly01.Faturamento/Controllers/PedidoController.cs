@@ -145,7 +145,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 15,
+                        Quantity = 16,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -360,7 +360,16 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + serviços + impostos + frete)", Readonly = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "movimentaEstoque",
+                Class = "col s12 m4",
+                Label = "Movimentar estoque",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI{DomEvent = "click", Function = "fnToggleMovimentaEstoque" }
+                }
+            });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraNotaFiscal",
@@ -375,9 +384,9 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
-            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
+            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12"});
             #endregion
 
             #region Helpers 
@@ -541,6 +550,7 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda)
         {
             try

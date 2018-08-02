@@ -32,11 +32,13 @@
         if (geraNotaFiscal) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
+            $('#mensagemPadraoNotaField').show();
         }
         else {
             $("#naturezaOperacaoField").hide();
             $("input#naturezaOperacao").rules("remove", "required");
             $('input#naturezaOperacao').removeClass("invalid")
+            $('#mensagemPadraoNotaField').hide();
         }
 
         fly01.loading.start();
@@ -74,8 +76,7 @@
             fly01.loading.stop();
         });
 
-        fly01.loading.stop();
-        getInformacoesComplementares()
+        fly01.loading.stop();        
     }
 
     function getInformacoesComplementares() {
@@ -269,6 +270,7 @@
             fly01._.dataVencimento.set(today);
             fly01.fn.updateTextFields();
             fnBindStepsWizard();
+            getInformacoesComplementares();
         }
         else {
             //setar o agrupamento com a opção escolhida

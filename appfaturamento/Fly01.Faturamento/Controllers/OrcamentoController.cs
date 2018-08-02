@@ -78,7 +78,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 10,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -121,6 +121,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Orcamento" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoNfeComplementar", Value = "NaoComplementar" });
 
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });

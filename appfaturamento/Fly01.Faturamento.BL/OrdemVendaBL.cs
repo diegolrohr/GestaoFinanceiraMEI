@@ -557,7 +557,7 @@ namespace Fly01.Faturamento.BL
                     ProdutoId = y.Key,
                     QuantPedido = y.Sum(f => f.Quantidade),
                     QuantEstoque = y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault(),
-                    SaldoEstoque = tipoVenda == "Normal" ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
+                    SaldoEstoque = (tipoVenda == "Normal" || tipoVenda == "Complementar") ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
                         : y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() + y.Sum(f => f.Quantidade),
                     ProdutoDescricao = y.Select(f => f.Produto.Descricao).FirstOrDefault(),
                 });

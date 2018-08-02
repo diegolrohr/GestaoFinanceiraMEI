@@ -343,7 +343,7 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputTextUI{ Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
 
             config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Value = "0" });
             config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Value = "0" });
@@ -386,7 +386,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12"});
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
             #endregion
 
             #region Helpers 

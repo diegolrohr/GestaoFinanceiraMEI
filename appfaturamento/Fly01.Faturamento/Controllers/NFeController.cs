@@ -126,7 +126,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
-                Class = "col s12",
+                Class = "col s12 m6",
                 Label = "Transportadora",
                 Disabled = true,
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
@@ -135,7 +135,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFrete",
-                Class = "col s12 m5",
+                Class = "col s12 m6",
                 Label = "Tipo Frete",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
@@ -143,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
-                Class = "col s12 m2",
+                Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Disabled = true,
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
@@ -151,7 +151,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m5",
+                Class = "col s12 m4",
                 Label = "UF Placa Veículo",
                 Disabled = true,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
@@ -161,30 +161,24 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "pesoBruto",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Peso Bruto",
                 Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
                 Disabled = true
             });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60, Disabled = true});
+
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "pesoLiquido",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Peso Líquido",
                 Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
                 Disabled = true
             });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoEspecie",
-                Class = "col s12 m4",
-                Label = "Tipo Espécie",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60, Disabled = true});
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60, Disabled = true});
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI

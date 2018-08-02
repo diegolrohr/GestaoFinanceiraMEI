@@ -32,11 +32,13 @@
         if (geraNotaFiscal) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
+            $('#mensagemPadraoNotaField').show();
         }
         else {
             $("#naturezaOperacaoField").hide();
             $("input#naturezaOperacao").rules("remove", "required");
             $('input#naturezaOperacao').removeClass("invalid")
+            $('#mensagemPadraoNotaField').hide();
         }
 
         fly01.loading.start();
@@ -74,8 +76,7 @@
             fly01.loading.stop();
         });
 
-        fly01.loading.stop();
-        getInformacoesComplementares()
+        fly01.loading.stop();        
     }
 
     function getInformacoesComplementares() {
@@ -113,21 +114,26 @@
         if ($("#categoriaDescricao").data("url-post"))
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
-        if ($('#tipoVenda').val() == "Devolucao" || $('#tipoVenda').val() == "Complementar")  {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
+        var tipoVendaVal = $('#tipoVenda').val();
+
+        if (tipoVendaVal == "Devolucao" || tipoVendaVal == "Complementar") {
+            $("#fly01btngrpFinalidade #btnNormal").hide();
             $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
-
-            if ($('#tipoVenda').val() == "Complementar") {
-                $("#tipoNfeComplementarField").show();
-                $('#stepFinanceiro').hide();
-                $('#stepTransporte').hide();
-            }            
         }
-        else {
-            $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
-            $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
+
+        if (tipoVendaVal == "Complementar") {
+            $("#tipoNfeComplementarField").show();
+            $('#stepTransporte').hide();
+            $("#fly01btngrpFinalidade #btnDevolucao").hide();
+        }
+        else if (tipoVendaVal == "Normal") {
+            $("#fly01btngrpFinalidade #btnDevolucao").hide();
+            $("#fly01btngrpFinalidade #btnComplementar").hide();
             $("#tipoNfeComplementarField").hide();
+        }
+        else if (tipoVendaVal == "Devolucao") {
+            $("#fly01btngrpFinalidade #btnComplementar").hide();
         }
     }
 
@@ -250,7 +256,7 @@
 
     function fnFormReadyPedido() {
         fnIsNovoPedido();
-         
+
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
 
@@ -264,6 +270,7 @@
             fly01._.dataVencimento.set(today);
             fly01.fn.updateTextFields();
             fnBindStepsWizard();
+            getInformacoesComplementares();
         }
         else {
             //setar o agrupamento com a opção escolhida
@@ -275,7 +282,7 @@
                     $('#btnDevolucao').click();
                 } else {
                     $('#btnComplementar').click();
-                }                
+                }
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
@@ -299,7 +306,7 @@
             }
         });
 
-        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
                 EstoqueNegativoETotal();
             }
@@ -313,8 +320,8 @@
 
     function fnIsNovoPedido() {
         if ($('#id').val() == "" || $('#id').val() == undefined) {
-            $('#tipoFreteField select#tipoFrete').val("SemFrete") 
-            $("#tipoFreteField .select-dropdown").val("Sem frete");   
+            $('#tipoFreteField select#tipoFrete').val("SemFrete")
+            $("#tipoFreteField .select-dropdown").val("Sem frete");
         }
     }
 </script>

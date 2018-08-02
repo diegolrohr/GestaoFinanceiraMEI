@@ -30,12 +30,12 @@
         $('input#transportadoraNome').removeAttr('disabled');
         $('input#placaVeiculo').removeAttr('disabled');
         $('input#estadoPlacaVeiculoNome').removeAttr('disabled');
-        $('input#marca').removeAttr('disabled').rules("add", { required: true });
-        $('input#pesoBruto').removeAttr('disabled').rules("add", { required: true });
-        $('input#pesoLiquido').removeAttr('disabled').rules("add", { required: true });
-        $('input#quantidadeVolumes').removeAttr('disabled').rules("add", { required: true });
-        $('#tipoEspecieField .select-dropdown').removeAttr('disabled').rules("add", { required: true });
-        $('input#numeracaoVolumesTrans').removeAttr('disabled').rules("add", { required: true });
+        $('input#marca').removeAttr('disabled');
+        $('input#pesoBruto').removeAttr('disabled');
+        $('input#pesoLiquido').removeAttr('disabled');
+        $('input#quantidadeVolumes').removeAttr('disabled');
+        $('#tipoEspecie').removeAttr('disabled');
+        $('input#numeracaoVolumesTrans').removeAttr('disabled');
     }
 
     function fnDisableInput() {
@@ -44,11 +44,11 @@
         $('input#transportadoraNome').attr('disabled', 'disabled');
         $('input#placaVeiculo').attr('disabled', 'disabled');
         $('input#estadoPlacaVeiculoNome').attr('disabled', 'disabled');
-        $('input#marca').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('input#pesoBruto').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('input#pesoLiquido').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('input#quantidadeVolumes').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('#tipoEspecieField .select-dropdown').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
-        $('input#numeracaoVolumesTrans').attr('disabled', 'disabled').removeClass("invalid").rules("remove", "required");
+        $('input#marca').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoBruto').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoLiquido').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#quantidadeVolumes').attr('disabled', 'disabled').removeClass("invalid");
+        $('#tipoEspecie').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#numeracaoVolumesTrans').attr('disabled', 'disabled').removeClass("invalid");
     }
 </script>

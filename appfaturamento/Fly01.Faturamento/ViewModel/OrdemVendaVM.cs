@@ -13,7 +13,7 @@ namespace Fly01.Faturamento.ViewModel
         public int Numero { get; set; }
 
         [JsonProperty("numeracaoVolumesTrans")]
-        public int NumeracaoVolumesTrans { get; set; }
+        public string NumeracaoVolumesTrans { get; set; }
 
         [JsonProperty("marca")]
         public string Marca{ get; set; }
@@ -50,7 +50,6 @@ namespace Fly01.Faturamento.ViewModel
         public string TipoFrete { get; set; }
 
         [JsonProperty("tipoEspecie")]
-        [APIEnum("TipoEspecie")]
         public string TipoEspecie { get; set; }
 
         [JsonProperty("placaVeiculo")]

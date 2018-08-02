@@ -8,9 +8,10 @@
 
             if (tipoVenda == "Devolucao") {
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
-
                 $("input#tipoCarteira").val("Despesa");
-            } else {
+            } else {//complementar
+                $('select#tipoNfeComplementar').val("ComplPreco");
+                $('select#tipoNfeComplementar').material_select();
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
                 $("#grupoTributarioPadraoIdField").hide();

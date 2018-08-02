@@ -104,7 +104,10 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
 
             foreach (OrdemVendaServicoVM OrdemServico in servicos)
@@ -142,7 +145,10 @@ namespace Fly01.Faturamento.Controllers
                     TotalImpostosServicos = response.TotalImpostosServicos.HasValue ? response.TotalImpostosServicos.Value : 0,
                     ValorFreteTotal = response.ValorFrete.HasValue ? response.ValorFrete.Value : 0,
                     Total = response.Total,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -168,7 +174,10 @@ namespace Fly01.Faturamento.Controllers
                     ValorFrete = OrdemVenda.ValorFrete.HasValue ? OrdemVenda.ValorFrete.Value : 0,
                     Observacao = OrdemVenda.Observacao,
                     QuantidadeVolumes = OrdemVenda.QuantidadeVolumes.HasValue ? OrdemVenda.QuantidadeVolumes.Value : 0,
-                    Finalidade = OrdemVenda.TipoVenda
+                    Finalidade = OrdemVenda.TipoVenda,
+                    Marca = OrdemVenda.Marca,
+                    NumeracaoVolumesTrans = OrdemVenda.NumeracaoVolumesTrans,
+                    TipoEspecie = OrdemVenda.TipoEspecie
                 });
             }
 
@@ -584,7 +593,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFrete",
-                Class = "col s12 m3",
+                Class = "col s12 m6",
                 Label = "Tipo Frete",
                 Value = "SemFrete",
                 Disabled = true,
@@ -593,7 +602,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
-                Class = "col s12 m8",
+                Class = "col s12 m6",
                 Label = "Transportadora",
                 Disabled = true,
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
@@ -602,7 +611,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Disabled = true,
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
@@ -610,22 +619,22 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "UF Placa Veículo",
                 Disabled = true,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoPlacaVeiculoNome"
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m3", Label = "Valor Frete", Disabled = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "pesoBruto",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Peso Bruto",
                 Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
                 Disabled = true
             });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m3", Label = "Marca", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", Disabled = true , MaxLength = 60});
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "pesoLiquido",
@@ -634,16 +643,9 @@ namespace Fly01.Faturamento.Controllers
                 Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
                 Disabled = true
             });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quantidade Volumes", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoEspecie",
-                Class = "col s12 m3",
-                Label = "Tipo Espécie",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m3", Label = "Numeração", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", Disabled = true , MaxLength = 60});
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", Disabled = true, MaxLength = 60 });
 
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
 

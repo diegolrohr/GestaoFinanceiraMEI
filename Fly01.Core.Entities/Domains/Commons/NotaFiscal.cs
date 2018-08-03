@@ -102,6 +102,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(44)]
         public string ChaveNFeReferenciada { get; set; }
 
+        [Required]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
+
         [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }
 

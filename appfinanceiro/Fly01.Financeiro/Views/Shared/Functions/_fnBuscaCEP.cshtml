@@ -17,11 +17,14 @@
                             endereco.City,
                             endereco.CityId,
                             endereco.Neighborhood,
-                            endereco.Address);
+                            endereco.Address,
+                            endereco.StateCodeIBGE,
+                            endereco.CityCodeIBGE);
                     }
                     else {
-                        fnFillAddressFields("", "", "", "", "", "");
+                        fnFillAddressFields("", "", "", "", "", "", "", "");
                     }
+
                     fnLoadingCamposEndereco("stop");
                     fly01.fn.updateTextFields();
                 }
@@ -29,13 +32,15 @@
         }
     }
 
-    function fnFillAddressFields(State, StateId, City, CityId, Neighborhood, Address) {
+    function fnFillAddressFields(State, StateId, City, CityId, Neighborhood, Address, StateCodeIBGE, CityCodeIBGE) {
         $("#estadoNome").val(State);
         $("#estadoId").val(StateId);
         $("#cidadeNome").val(City);
         $("#cidadeId").val(CityId);
         $("#bairro").val(Neighborhood);
         $("#endereco").val(Address);
+        $("#codigoIBGEEstado").val(StateCodeIBGE);
+        $("#codigoIBGECidade").val(CityCodeIBGE);
         $("#numero").val("");
     }
 

@@ -108,6 +108,7 @@
 
         if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
+        $('#nFeRefComplementarIsDevolucao').attr('disabled', 'disabled');
         $("#tipoNfeComplementarField").hide();
 
         if ($("#categoriaDescricao").data("url-post"))
@@ -123,6 +124,7 @@
 
         if (tipoVendaVal == "Complementar") {
             $("#tipoNfeComplementarField").show();
+            $("#nFeRefComplementarIsDevolucaoField").show();
             $('#stepTransporte').hide();
             $("#fly01btngrpFinalidade #btnDevolucao").hide();
         }
@@ -130,9 +132,11 @@
             $("#fly01btngrpFinalidade #btnDevolucao").hide();
             $("#fly01btngrpFinalidade #btnComplementar").hide();
             $("#tipoNfeComplementarField").hide();
+            $("#nFeRefComplementarIsDevolucaoField").hide();
         }
         else if (tipoVendaVal == "Devolucao") {
             $("#fly01btngrpFinalidade #btnComplementar").hide();
+            $("#nFeRefComplementarIsDevolucaoField").hide();
         }
     }
 
@@ -255,7 +259,7 @@
 
     function fnFormReadyPedido() {
         fnIsNovoPedido();
-
+        fnClickComplementarIsDevolucao();
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
 

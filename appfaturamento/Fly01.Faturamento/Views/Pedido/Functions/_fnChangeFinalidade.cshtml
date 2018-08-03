@@ -9,6 +9,7 @@
             if (tipoVenda == "Devolucao") {
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
                 $("input#tipoCarteira").val("Despesa");
+                $("#nFeRefComplementarIsDevolucaoField").hide();
             } else {//complementar
                 $('select#tipoNfeComplementar').val("ComplPreco");
                 $('select#tipoNfeComplementar').material_select();
@@ -16,6 +17,7 @@
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
                 $("#grupoTributarioPadraoIdField").hide();
+                $("#nFeRefComplementarIsDevolucaoField").show();
 
                 $("div#clienteIdField").hide();
                 $("input#tipoCarteira").val("Receita");
@@ -25,6 +27,7 @@
             $("input#chaveNFeReferenciada").rules("remove", "required");
             $("input#chaveNFeReferenciada").removeClass("invalid")
             $("#chaveNFeReferenciadaField").hide();
+            $("#nFeRefComplementarIsDevolucaoField").hide();
             $("input#chaveNFeReferenciada").val("");
 
             $("div#clienteIdField").show();

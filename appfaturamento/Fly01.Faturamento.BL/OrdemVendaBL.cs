@@ -65,7 +65,7 @@ namespace Fly01.Faturamento.BL
             {
                 var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
-                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
+                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
                 bool pagaFrete = (
                     ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
@@ -112,6 +112,7 @@ namespace Fly01.Faturamento.BL
             if (tipo == TipoNotaFiscal.NFe)
             {
                 notaFiscal = new NFe();
+                notaFiscal.TipoNfeComplementar = entity.TipoNfeComplementar;
             }
             else
             {
@@ -316,6 +317,7 @@ namespace Fly01.Faturamento.BL
                         entity.Data = previousData;
                         entity.TipoVenda = previousTipoVenda;
                         entity.TipoNfeComplementar = previousTipoNfeComplementar;
+                        entity.NFeRefComplementarIsDevolucao = pedidoReferenciado.TipoVenda == TipoVenda.Devolucao;
 
                         if (entity.TipoVenda == TipoVenda.Devolucao)
                         {
@@ -554,7 +556,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public List<PedidoProdutoEstoqueNegativo> VerificaEstoqueNegativo(Guid pedidoId, string tipoVenda)
+        public List<PedidoProdutoEstoqueNegativo> VerificaEstoqueNegativo(Guid pedidoId, string tipoVenda, bool isComplementarDevolucao)
         {
             var produtos = OrdemVendaProdutoBL.AllIncluding(p => p.Produto).Where(x => x.OrdemVendaId == pedidoId)
                 .GroupBy(x => x.ProdutoId).Select(y => new PedidoProdutoEstoqueNegativo()
@@ -562,7 +564,7 @@ namespace Fly01.Faturamento.BL
                     ProdutoId = y.Key,
                     QuantPedido = y.Sum(f => f.Quantidade),
                     QuantEstoque = y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault(),
-                    SaldoEstoque = (tipoVenda == "Normal" || tipoVenda == "Complementar") ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
+                    SaldoEstoque = ((tipoVenda == "Normal" || tipoVenda == "Complementar") && !isComplementarDevolucao) ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
                         : y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() + y.Sum(f => f.Quantidade),
                     ProdutoDescricao = y.Select(f => f.Produto.Descricao).FirstOrDefault(),
                 });

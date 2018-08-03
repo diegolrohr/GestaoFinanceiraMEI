@@ -351,7 +351,8 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Value = "0",
                 Label = "Peso Bruto",
-                Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" }
+                MaxLength = 8,
+                Data = new { inputmask = "'regex': '([0-9]{1,3})?(\\\\.[0-9]{3})*\\\\,[0-9]{1,3}', 'numericInput': true, 'jitMasking': true, 'placeholder': '0,00','autoUnmask':true, 'rightAlign': true" }
             });
             config.Elements.Add(new InputCustommaskUI
             {
@@ -359,7 +360,8 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m4",
                 Value = "0",
                 Label = "Peso Líquido",
-                Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" }
+                MaxLength = 8,
+                Data = new { inputmask = "'regex': '([0-9]{1,3})?(\\\\.[0-9]{3})*\\\\,[0-9]{1,3}', 'numericInput': true, 'jitMasking': true, 'placeholder': '0,00','autoUnmask':true, 'rightAlign': true" }
             });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
             config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });

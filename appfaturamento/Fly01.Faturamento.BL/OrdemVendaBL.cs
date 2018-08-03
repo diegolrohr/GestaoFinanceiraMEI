@@ -304,6 +304,7 @@ namespace Fly01.Faturamento.BL
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
+                    entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && pedidoReferenciado.TipoVenda == TipoVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoVenda"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && pedidoReferenciado.TipoVenda == TipoVenda.Complementar, new Error("Não é possível realizar complemento de uma nota fiscal complementar. Referencie outra nota fiscal.", "tipoVenda"));
                     entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
 

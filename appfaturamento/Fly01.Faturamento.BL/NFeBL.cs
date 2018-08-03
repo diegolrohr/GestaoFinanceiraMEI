@@ -112,8 +112,32 @@ namespace Fly01.Faturamento.BL
                 }
                 else
                 {
+                    var proximoNumNota = entity.NumNotaFiscal.Value + 1;
+                    var ProximoNumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
+                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
+                    x.NumNotaFiscal == proximoNumNota);
+
+                    if (ProximoNumeroInutilizado)
+                    {
+                        var proximoNumNotaOK = All.Max(x => x.NumNotaFiscal);
+                        if (!proximoNumNotaOK.HasValue)
+                        {
+                            proximoNumNotaOK = proximoNumNota;
+                        }
+
+                        do
+                        {
+                            proximoNumNotaOK += 1;
+                        }//enquanto incremento para próxima nota, possa estar na lista de inutilizadas
+                        while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
+                            x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
+                            x.NumNotaFiscal == proximoNumNotaOK));
+
+                        proximoNumNota = proximoNumNotaOK.Value;
+                    }
+
                     var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
-                    serie.NumNotaFiscal = entity.NumNotaFiscal.Value + 1;
+                    serie.NumNotaFiscal = proximoNumNota;
                     SerieNotaFiscalBL.Update(serie);
                 };
             }

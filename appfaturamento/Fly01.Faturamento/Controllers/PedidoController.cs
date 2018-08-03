@@ -435,7 +435,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal/Complementar-Normal) ou contas a Pagar(Devolução/Complementar-Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -451,7 +451,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal/Complementar-Normal) ou Entrada(Devolução/Complementar-Devolução) da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI

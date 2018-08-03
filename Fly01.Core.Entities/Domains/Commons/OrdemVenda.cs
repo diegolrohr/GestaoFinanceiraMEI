@@ -21,6 +21,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string ChaveNFeReferenciada { get; set; }
 
         [Required]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
+
+        [Required]
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
@@ -94,6 +97,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
+        public TipoNfeComplementar TipoNfeComplementar { get; set; }
+
         public virtual Pessoa Cliente { get; set; }
 
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
@@ -107,7 +112,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual FormaPagamento FormaPagamento { get; set; }
 
         public virtual Categoria Categoria { get; set; }
-
-        public TipoNfeComplementar TipoNfeComplementar { get; set; }
     }
 }

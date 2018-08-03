@@ -636,6 +636,7 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             if (nfe.TipoVenda == TipoVenda.Complementar)
             {
+                //TODO: Diego
                 if (nfe.NaturezaOperacao == "Complemento de Preco")
                 {
                     totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;

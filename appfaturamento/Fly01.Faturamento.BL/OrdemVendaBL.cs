@@ -494,7 +494,7 @@ namespace Fly01.Faturamento.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if (entity.TipoVenda == TipoVenda.Normal)
+                if (entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
                 {
                     var contaReceber = new ContaReceber()
                     {
@@ -512,7 +512,7 @@ namespace Fly01.Faturamento.BL
                     };
                     Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
                 }
-                else if (entity.TipoVenda == TipoVenda.Devolucao)
+                else if (entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao))
                 {
                     var contaPagar = new ContaPagar()
                     {
@@ -548,7 +548,8 @@ namespace Fly01.Faturamento.BL
                         ProdutoId = x.ProdutoId,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
                         TipoVenda = entity.TipoVenda,
-                        PlataformaId = PlataformaUrl
+                        PlataformaId = PlataformaUrl,
+                        NFeRefComplementarIsDevolucao = entity.NFeRefComplementarIsDevolucao
                     }).ToList();
 
                 foreach (var movimento in movimentos)
@@ -564,7 +565,7 @@ namespace Fly01.Faturamento.BL
                     ProdutoId = y.Key,
                     QuantPedido = y.Sum(f => f.Quantidade),
                     QuantEstoque = y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault(),
-                    SaldoEstoque = ((tipoVenda == "Normal" || tipoVenda == "Complementar") && !isComplementarDevolucao) ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
+                    SaldoEstoque = (tipoVenda == "Normal" || (tipoVenda == "Complementar" && !isComplementarDevolucao)) ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
                         : y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() + y.Sum(f => f.Quantidade),
                     ProdutoDescricao = y.Select(f => f.Produto.Descricao).FirstOrDefault(),
                 });

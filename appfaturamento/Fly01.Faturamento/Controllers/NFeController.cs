@@ -158,24 +158,9 @@ namespace Fly01.Faturamento.Controllers
                 LabelId = "estadoPlacaVeiculoNome"
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoBruto",
-                Class = "col s12 m4",
-                Label = "Peso Bruto",
-                Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
-                Disabled = true
-            });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3 });
             config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60, Disabled = true});
-
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoLiquido",
-                Class = "col s12 m4",
-                Label = "Peso Líquido",
-                Data = new { inputmask = "'alias': 'numeric', 'radixPoint': ',' , 'groupSeparator': '.', 'autoGroup': true, 'digits': 3, 'placeholder': '0,00', 'autoUnmask':true, 'digitsOptional': false, 'showMaskOnHover': true" },
-                Disabled = true
-            });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3 });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60, Disabled = true});
             config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60, Disabled = true});

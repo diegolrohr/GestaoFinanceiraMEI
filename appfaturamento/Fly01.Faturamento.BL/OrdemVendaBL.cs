@@ -59,7 +59,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
             entity.Fail((entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
-            entity.Fail((entity.TipoVenda == TipoVenda.Complementar || entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
+            entity.Fail((entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
 
             if (entity.Status == StatusOrdemVenda.Finalizado)
             {

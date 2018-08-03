@@ -14,9 +14,9 @@ namespace Fly01.Faturamento.BL
         public override void ValidaModel(OrdemVendaProduto entity)
         {
             entity.Fail(entity.Valor < 0, new Error("Valor não pode ser negativo", "valor"));
-            entity.Fail(entity.Quantidade <= 0, new Error("Quantidade não pode ser negativo", "quantidade"));
+            entity.Fail(entity.Quantidade < 0, new Error("Quantidade não pode ser negativo", "quantidade"));
             entity.Fail(entity.Desconto < 0, new Error("Desconto não pode ser negativo", "desconto"));
-            entity.Fail(entity.Desconto >= (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior ou igual ao total", "desconto"));
+            entity.Fail(entity.Desconto > (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior ao total", "desconto"));
             entity.Fail(entity.Total < 0, new Error("O Total não pode ser negativo", "total"));
 
             var jaExiste = All.Any(x => x.OrdemVendaId == entity.OrdemVendaId && x.ProdutoId == entity.ProdutoId && x.GrupoTributarioId == entity.GrupoTributarioId && x.Id != entity.Id);

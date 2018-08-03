@@ -90,8 +90,8 @@ namespace Fly01.Core.Presentation
 
                     buscaCepVM.StateId = data.EstadoId.ToString();
                     buscaCepVM.CityId = data.Id.ToString();
-                    buscaCepVM.StateCodeIBGE = data.Estado.CodigoIbge.ToString() ?? "";
-                    buscaCepVM.CityCodeIBGE = data.CodigoIbge.ToString();
+                    buscaCepVM.StateCodeIbge = data.Estado.CodigoIbge.ToString() ?? "";
+                    buscaCepVM.CityCodeIbge = data.CodigoIbge.ToString();
 
                     return JsonResponseStatus.GetJson(new { success = true, endereco = buscaCepVM });
                 }

@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.BL
                     }//enquanto sugestão possa estar na lista de inutilizadas
                     while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
                         x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                        x.NumNotaFiscal == sugestaoProximoNumNota));
+                        x.NumNotaFiscal == sugestaoProximoNumNota) || sugestaoProximoNumNota == entity.NumNotaFiscal);
 
                     entity.Fail(true, new Error("Série e número já utilizados ou inutilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
                 }
@@ -131,7 +131,7 @@ namespace Fly01.Faturamento.BL
                         }//enquanto incremento para próxima nota, possa estar na lista de inutilizadas
                         while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
                             x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                            x.NumNotaFiscal == proximoNumNotaOK));
+                            x.NumNotaFiscal == proximoNumNotaOK) || proximoNumNotaOK == entity.NumNotaFiscal);
 
                         proximoNumNota = proximoNumNotaOK.Value;
                     }

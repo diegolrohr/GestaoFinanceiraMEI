@@ -65,7 +65,7 @@ namespace Fly01.Faturamento.BL
             {
                 var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
-                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
+                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
                 bool pagaFrete = (
                     ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
@@ -112,6 +112,7 @@ namespace Fly01.Faturamento.BL
             if (tipo == TipoNotaFiscal.NFe)
             {
                 notaFiscal = new NFe();
+                notaFiscal.TipoNfeComplementar = entity.TipoNfeComplementar;
             }
             else
             {
@@ -316,6 +317,7 @@ namespace Fly01.Faturamento.BL
                         entity.Data = previousData;
                         entity.TipoVenda = previousTipoVenda;
                         entity.TipoNfeComplementar = previousTipoNfeComplementar;
+                        entity.NFeRefComplementarIsDevolucao = pedidoReferenciado.TipoVenda == TipoVenda.Devolucao;
 
                         if (entity.TipoVenda == TipoVenda.Devolucao)
                         {
@@ -367,7 +369,7 @@ namespace Fly01.Faturamento.BL
 
             if (entity.TipoVenda == TipoVenda.Complementar)
             {
-                entity.TipoFrete = TipoFrete.SemFrete;
+                entity.TipoFrete = TipoFrete.SemFrete;//regra sefaz
                 entity.ValorFrete = 0.00;
 
                 if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplIcms)
@@ -461,11 +463,24 @@ namespace Fly01.Faturamento.BL
                 );
 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
-                double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
-                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco && entity.TipoVenda == TipoVenda.Complementar)
+                var totalProdutos = 0.0;
+                if (produtos != null)
                 {
-                    totalProdutos = produtos != null ? produtos.Select(e => e.Valor - e.Desconto).Sum() : 0;
+                    if (entity.TipoVenda == TipoVenda.Normal || entity.TipoVenda == TipoVenda.Devolucao)
+                    {
+                        totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    }
+                    else if (entity.TipoVenda == TipoVenda.Complementar)
+                    {
+                        totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                    }
+                    //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
+                    //{
+
+                    //}
                 }
+
                 double totalServicos = servicos != null ? servicos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
                 double totalImpostosServicos = 0; //servicos != null ? entity.TotalImpostosServicos.Value : 0;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
@@ -492,7 +507,7 @@ namespace Fly01.Faturamento.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if (entity.TipoVenda == TipoVenda.Normal)
+                if (entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
                 {
                     var contaReceber = new ContaReceber()
                     {
@@ -510,7 +525,7 @@ namespace Fly01.Faturamento.BL
                     };
                     Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
                 }
-                else if (entity.TipoVenda == TipoVenda.Devolucao)
+                else if (entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao))
                 {
                     var contaPagar = new ContaPagar()
                     {
@@ -546,7 +561,8 @@ namespace Fly01.Faturamento.BL
                         ProdutoId = x.ProdutoId,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
                         TipoVenda = entity.TipoVenda,
-                        PlataformaId = PlataformaUrl
+                        PlataformaId = PlataformaUrl,
+                        NFeRefComplementarIsDevolucao = entity.NFeRefComplementarIsDevolucao
                     }).ToList();
 
                 foreach (var movimento in movimentos)
@@ -554,7 +570,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public List<PedidoProdutoEstoqueNegativo> VerificaEstoqueNegativo(Guid pedidoId, string tipoVenda)
+        public List<PedidoProdutoEstoqueNegativo> VerificaEstoqueNegativo(Guid pedidoId, string tipoVenda, bool isComplementarDevolucao)
         {
             var produtos = OrdemVendaProdutoBL.AllIncluding(p => p.Produto).Where(x => x.OrdemVendaId == pedidoId)
                 .GroupBy(x => x.ProdutoId).Select(y => new PedidoProdutoEstoqueNegativo()
@@ -562,7 +578,7 @@ namespace Fly01.Faturamento.BL
                     ProdutoId = y.Key,
                     QuantPedido = y.Sum(f => f.Quantidade),
                     QuantEstoque = y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault(),
-                    SaldoEstoque = (tipoVenda == "Normal" || tipoVenda == "Complementar") ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
+                    SaldoEstoque = (tipoVenda == "Normal" || (tipoVenda == "Complementar" && !isComplementarDevolucao)) ? y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() - y.Sum(f => f.Quantidade)
                         : y.Select(f => f.Produto.SaldoProduto.HasValue ? f.Produto.SaldoProduto.Value : 0.0).FirstOrDefault() + y.Sum(f => f.Quantidade),
                     ProdutoDescricao = y.Select(f => f.Produto.Descricao).FirstOrDefault(),
                 });
@@ -582,10 +598,22 @@ namespace Fly01.Faturamento.BL
             }
 
             var produtos = OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
-            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            if (ordemVenda.TipoNfeComplementar == TipoNfeComplementar.ComplPreco && ordemVenda.TipoVenda == TipoVenda.Complementar)
+            var totalProdutos = 0.0;
+            if (produtos != null)
             {
-                totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+                if (ordemVenda.TipoVenda == TipoVenda.Normal || ordemVenda.TipoVenda == TipoVenda.Devolucao)
+                {
+                    totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                }
+                else if(ordemVenda.TipoVenda == TipoVenda.Complementar)
+                {
+                    totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                }
+                //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
+                //{
+
+                //}
             }
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value

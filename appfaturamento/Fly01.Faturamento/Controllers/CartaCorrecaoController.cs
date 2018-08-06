@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
@@ -29,10 +30,9 @@ namespace Fly01.Faturamento.Controllers
             throw new NotImplementedException();
         }
 
-        protected override ContentUI FormJson()
-        {
-            throw new NotImplementedException();
-        }
+        protected override ContentUI FormJson() { throw new NotImplementedException(); }
+
+        public override ContentResult FormView() => ListCartaCorrecao();
 
         public ActionResult Novo(Guid id)
         {
@@ -88,7 +88,7 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public List<HtmlUIButton> GetListButtonsOnHeader(string idNotaFiscal)
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
@@ -101,22 +101,24 @@ namespace Fly01.Faturamento.Controllers
             return target;
         }
 
-        public ContentResult ListCartaCorrecao(string id)
+        public ContentResult ListCartaCorrecao(string id = "")
         {
+            var idRecord = !string.IsNullOrEmpty(id) ? id : Request.UrlReferrer.AbsolutePath.Replace("/", " ").Split(' ').Last();
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = $"{Url.Action("NotaFiscal", "CartaCorrecao", new { id = id })}" },
                 Header = new HtmlUIHeader
                 {
                     Title = "Cartas de Correção",
-                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader(id))
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Content = new List<HtmlUIFunctionBase> { new DivUI { Elements = new List<BaseUI> { new InputHiddenUI { Id = "idNotaFiscal", Value = id } } } }
+                Content = new List<HtmlUIFunctionBase> { new DivUI { Elements = new List<BaseUI> { new InputHiddenUI { Id = "idNotaFiscal", Value = idRecord } } } }
             };
             var config = new DataTableUI
             {
-                UrlGridLoad = $"{Url.Action("GridLoad", "CartaCorrecao")}?id={id}",
+                UrlGridLoad = $"{Url.Action("GridLoad", "CartaCorrecao")}?id={idRecord}",
                 UrlFunctions = Url.Action("Functions", "CartaCorrecao", null, Request.Url.Scheme) + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
@@ -213,7 +215,6 @@ namespace Fly01.Faturamento.Controllers
                 filters = new Dictionary<string, string>();
 
             filters.Add("notaFiscalId eq", Request.QueryString["id"]);
-
             return base.GridLoad(filters);
         }
 

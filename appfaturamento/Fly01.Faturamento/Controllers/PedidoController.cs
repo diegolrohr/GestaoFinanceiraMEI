@@ -38,7 +38,8 @@ namespace Fly01.Faturamento.Controllers
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true },
-                    new DataTableUIParameter { Id = "tipoVenda", Required = true }
+                    new DataTableUIParameter { Id = "tipoVenda", Required = true },
+                    new DataTableUIParameter { Id = "nFeRefComplementarIsDevolucao", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
                 {
@@ -109,7 +110,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalidade",
                         Id = "stepFinalidade",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -167,6 +168,15 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+            config.Elements.Add(new InputCheckboxUI {
+                Id = "nFeRefComplementarIsDevolucao",
+                Class = "col s12 m8 offset-m2",
+                Label = "Nota Fiscal Referenciada é de Devolução",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnClickComplementarIsDevolucao" }
+                }
+            });
             #endregion
 
             #region step Cadastro
@@ -410,7 +420,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal/Complementar-Normal) ou contas a Pagar(Devolução/Complementar-Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -426,7 +436,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal/Complementar-Normal) ou Entrada(Devolução/Complementar-Devolução) da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -550,13 +560,14 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda)
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string nFeRefComplementarIsDevolucao)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
                 queryString.AddParam("tipoVenda", tipoVenda);
+                queryString.AddParam("isComplementarDevolucao", nFeRefComplementarIsDevolucao);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);
 

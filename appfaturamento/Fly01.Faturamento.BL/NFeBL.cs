@@ -536,7 +536,7 @@ namespace Fly01.Faturamento.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar)
+                    if (entity.TipoVenda == TipoVenda.Devolucao)//TODO Diego sem pagamento complementar
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -549,7 +549,7 @@ namespace Fly01.Faturamento.BL
                             new DetalhePagamento()
                             {
                                 TipoFormaPagamento = tipoFormaPagamento,
-                                ValorPagamento = tipoFormaPagamento == TipoFormaPagamento.SemPagamento ? 0.00 : itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }
                     };

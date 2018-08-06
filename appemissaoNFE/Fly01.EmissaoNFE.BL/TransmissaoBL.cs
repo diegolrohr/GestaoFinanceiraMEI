@@ -1166,8 +1166,9 @@ namespace Fly01.EmissaoNFE.BL
                         var nItemPagamento = 1;
                         foreach (var detalhePagamento in item.Pagamento.DetalhesPagamentos)
                         {
+                            //TODO Diego sem pagamento complementar
                             var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar;
-                            entity.Fail(detalhePagamento.ValorPagamento <= 0 && item.Identificador.FinalidadeEmissaoNFe != TipoVenda.Complementar, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
+                            entity.Fail(detalhePagamento.ValorPagamento <= 0 && !isSemPagamento, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
                             entity.Fail(isSemPagamento && detalhePagamento.TipoFormaPagamento != TipoFormaPagamento.SemPagamento, new Error("Nota de ajuste ou devolução, somente forma de pagamento do tipo Sem Pagamento. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                             entity.Fail(detalhePagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia, new Error("Forma de pagamento do tipo Transferência inválido, informe o tipo Outros. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                             nItemPagamento++;
@@ -1177,7 +1178,7 @@ namespace Fly01.EmissaoNFE.BL
                         var somaPagamentos = item.Pagamento.DetalhesPagamentos.Sum(x => x.ValorPagamento);
                         var troco = item.Pagamento.ValorTroco.HasValue ? item.Pagamento.ValorTroco : 0;
 
-                        entity.Fail(somaPagamentos < valorTotalNF && item.Identificador.FinalidadeEmissaoNFe != TipoVenda.Complementar, new Error("O somatório do valor dos detalhes dos pagamentos não pode ser menor ao total da nota. Item[" + nItem + "].Pagamento.DetalhesPagamentos.ValorPagamento."));
+                        entity.Fail(somaPagamentos < valorTotalNF, new Error("O somatório do valor dos detalhes dos pagamentos não pode ser menor ao total da nota. Item[" + nItem + "].Pagamento.DetalhesPagamentos.ValorPagamento."));
                         entity.Fail((somaPagamentos > valorTotalNF) && ((somaPagamentos - troco) != valorTotalNF), new Error("Valor do troco inválido ou não informado. Troco = (total pagamentos - total nota). Item[" + nItem + "].Pagamento.ValorTroco."));
 
                         if (valorTotalNF.Equals(somaPagamentos))

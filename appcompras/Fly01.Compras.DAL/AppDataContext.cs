@@ -47,8 +47,8 @@ namespace Fly01.Compras.DAL
                 .Map<OrcamentoItem>(m => m.ToTable("OrcamentoItem"))
                 .Map<PedidoItem>(m => m.ToTable("PedidoItem"));
 
-            builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGECidade);
-            builder.Entity<Pessoa>().Ignore(m => m.CodigoIBGEEstado);
+            builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
+            builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
             builder.Entity<OrdemCompraItem>().Ignore(m => m.Total);
         }
 

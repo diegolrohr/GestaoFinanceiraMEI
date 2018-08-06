@@ -183,8 +183,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGEEstado" });
-            config.Elements.Add(new InputHiddenUI { Id = "codigoIBGECidade" });
+            config.Elements.Add(new InputHiddenUI { Id = "estadoCodigoIbge" });
+            config.Elements.Add(new InputHiddenUI { Id = "cidadeCodigoIbge" });
 
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 100 });

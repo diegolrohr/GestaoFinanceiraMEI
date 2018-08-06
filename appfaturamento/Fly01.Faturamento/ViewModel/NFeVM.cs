@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers.Attribute;
 using Newtonsoft.Json;
 using System;
 
@@ -14,6 +15,7 @@ namespace Fly01.Faturamento.ViewModel
         public double TotalImpostosProdutosNaoAgrega { get; set; }
 
         [JsonProperty("tipoNfeComplementar")]
-        public TipoNfeComplementar TipoNfeComplementar { get; set; }
+        [APIEnum("TipoNfeComplementar")]
+        public string TipoNfeComplementar { get; set; }
     }
 }

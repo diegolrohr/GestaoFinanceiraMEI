@@ -239,12 +239,14 @@ namespace Fly01.Faturamento.BL
                 //ST
                 if (grupoTributario.CalculaSubstituicaoTributaria)
                 {
+                    //TODO Diego tipo do complemento e devolução
+                    var isSaida = true;
                     var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
                         x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                         x.CestId == produto.CestId.Value &
                         x.EstadoOrigem.Sigla == estadoOrigem &
                         x.EstadoDestinoId == cliente.EstadoId &
-                        x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
+                        x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                         ).FirstOrDefault();
 
                     if (st != null)

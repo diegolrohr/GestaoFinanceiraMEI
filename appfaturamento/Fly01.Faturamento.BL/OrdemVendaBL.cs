@@ -472,8 +472,8 @@ namespace Fly01.Faturamento.BL
                     }
                     else if (entity.TipoVenda == TipoVenda.Complementar)
                     {
-                        totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                        totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                     }
                     //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                     //{
@@ -607,8 +607,8 @@ namespace Fly01.Faturamento.BL
                 }
                 else if(ordemVenda.TipoVenda == TipoVenda.Complementar)
                 {
-                    totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                    totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                 }
                 //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                 //{

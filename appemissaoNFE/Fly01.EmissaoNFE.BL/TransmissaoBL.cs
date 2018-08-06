@@ -1167,7 +1167,7 @@ namespace Fly01.EmissaoNFE.BL
                         foreach (var detalhePagamento in item.Pagamento.DetalhesPagamentos)
                         {
                             //TODO Diego sem pagamento complementar
-                            var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar;
+                            var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao;
                             entity.Fail(detalhePagamento.ValorPagamento <= 0 && !isSemPagamento, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
                             entity.Fail(isSemPagamento && detalhePagamento.TipoFormaPagamento != TipoFormaPagamento.SemPagamento, new Error("Nota de ajuste ou devolução, somente forma de pagamento do tipo Sem Pagamento. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                             entity.Fail(detalhePagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia, new Error("Forma de pagamento do tipo Transferência inválido, informe o tipo Outros. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));

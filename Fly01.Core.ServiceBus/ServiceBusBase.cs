@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Fly01.Core.Defaults;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -33,7 +34,7 @@ namespace Fly01.Core.ServiceBus
                 {
                     unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = RabbitConfig.AppUser, PlataformaUrl = RabbitConfig.PlataformaUrl } });
                     entidade = AssemblyBL.GetProperty($"{RabbitConfig.RoutingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
-                    data = JsonConvert.DeserializeObject(item.ToString(), domainAssembly);
+                    data = JsonConvert.DeserializeObject<dynamic>(item.ToString());
 
                     entidade.PersistMessage(data, HTTPMethod);
 

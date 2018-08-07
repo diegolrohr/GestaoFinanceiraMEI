@@ -127,6 +127,13 @@ namespace Fly01.Faturamento.BL
                 {
                     mensagemComplementar = $"NF-e Complementar a NF-e {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
                 }
+                else
+                {
+                    var numNotaFiscal = entity.ChaveNFeReferenciada.Substring(25, 9);
+                    var ano = entity.ChaveNFeReferenciada.Substring(2, 2);
+                    var mes = entity.ChaveNFeReferenciada.Substring(4, 2);
+                    mensagemComplementar = $"NF-e Complementar a NF-e {numNotaFiscal} emitida em {mes}/{ano}";
+                }
             }
 
             notaFiscal.Id = Guid.NewGuid();
@@ -372,17 +379,27 @@ namespace Fly01.Faturamento.BL
                 entity.TipoFrete = TipoFrete.SemFrete;//regra sefaz
                 entity.ValorFrete = 0.00;
 
-                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplIcms)
+                switch (entity.TipoNfeComplementar)
                 {
-                    entity.NaturezaOperacao = "Complemento de Imposto";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
-                {
-                    entity.NaturezaOperacao = "Complemento de Preco";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplQtd)
-                {
-                    entity.NaturezaOperacao = "Complemento de Quantidade";
+                    case TipoNfeComplementar.NaoComplementar:
+                        break;
+                    case TipoNfeComplementar.ComplPreco:
+                        entity.NaturezaOperacao = "Complemento de Preco";
+                        break;
+                    case TipoNfeComplementar.ComplQtd:
+                        entity.NaturezaOperacao = "Complemento de Quantidade";
+                        break;
+                    case TipoNfeComplementar.ComplIcms:
+                        entity.NaturezaOperacao = "Complemento de ICMS";
+                        break;
+                    case TipoNfeComplementar.ComplIcmsST:
+                        entity.NaturezaOperacao = "Complemento de ICMS ST";
+                        break;
+                    case TipoNfeComplementar.ComplIpi:
+                        entity.NaturezaOperacao = "Complemento de IPI";
+                        break;
+                    default:
+                        break;
                 }
             }
         }

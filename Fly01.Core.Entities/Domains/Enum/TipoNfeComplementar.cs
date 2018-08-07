@@ -13,7 +13,14 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("ComplQtd", "Complemento de Quantidade")]
         ComplQtd = 2,
 
-        [Subtitle("ComplIcms", "Complemento de Impostos")]
-        ComplIcms = 3
+        [Subtitle("ComplIcms", "Complemento de ICMS")]
+        ComplIcms = 3,
+
+        [Subtitle("ComplIcmsST", "Complemento de ICMS ST")]
+        ComplIcmsST = 4,
+
+        [Subtitle("ComplIpi", "Complemento de IPI")]
+        ComplIpi = 5
+
     }
 }

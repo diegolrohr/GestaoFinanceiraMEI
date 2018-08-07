@@ -539,7 +539,8 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m6 l4",
                 Label = "Tipo Complemento",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar)).ToList())
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))
+                    .ToList().FindAll(x => "NaoComplementar,ComplPreco,ComplQtd".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6 l2", Label = "Data", Disabled = true });
             config.Elements.Add(new AutoCompleteUI

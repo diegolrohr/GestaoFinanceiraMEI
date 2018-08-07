@@ -8,6 +8,7 @@ using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using Fly01.EmissaoNFE.BL.Helpers;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -21,6 +22,7 @@ namespace Fly01.EmissaoNFE.BL
         protected EstadoBL EstadoBL;
         protected NFeBL NFeBL;
         private static string msgError;
+        protected HelperValidaModelTransmissao helperValidaModelTransmissao;
 
         public TransmissaoBL(AppDataContextBase context, CfopBL cfopBL, ChaveBL chaveBL, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, NFeBL nfeBL) : base(context)
         {
@@ -111,10 +113,25 @@ namespace Fly01.EmissaoNFE.BL
         {
             EntidadeBL.ValidaModel(entity);
 
+            var entitiesBL = new EntitiesBLToValidate
+            {
+                _chaveBL = ChaveBL,
+                _cidadeBL = CidadeBL,
+                _cofopBL = CfopBL,
+                _empresaBL = EmpresaBL,
+                _entidadeBL = EntidadeBL,
+                _estadoBL = EstadoBL,
+                _nfeBL = NFeBL
+            };
+
+            helperValidaModelTransmissao = new HelperValidaModelTransmissao(entity, entitiesBL);
+            helperValidaModelTransmissao.ExecutarHelperValidaModel();
+
             var nItem = 1;
             foreach (var item in entity.Item)
             {
                 entity.Fail(string.IsNullOrEmpty(item.Versao), new Error("A versão da nota é um dado obrigatório.", "Item.Versao"));
+
 
                 #region Validações da classe Identificador
 

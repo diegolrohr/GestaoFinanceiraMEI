@@ -160,7 +160,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
-            notaFiscal.MensagemPadraoNota = mensagemComplementar + entity.MensagemPadraoNota ?? "";
+            notaFiscal.MensagemPadraoNota = mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "";
             return notaFiscal;
         }
 
@@ -383,11 +383,8 @@ namespace Fly01.Faturamento.BL
                 {
                     case TipoNfeComplementar.NaoComplementar:
                         break;
-                    case TipoNfeComplementar.ComplPreco:
-                        entity.NaturezaOperacao = "Complemento de Preco";
-                        break;
-                    case TipoNfeComplementar.ComplQtd:
-                        entity.NaturezaOperacao = "Complemento de Quantidade";
+                    case TipoNfeComplementar.ComplPrecoQtd:
+                        entity.NaturezaOperacao = "Complemento de Preco/Quantidade";
                         break;
                     case TipoNfeComplementar.ComplIcms:
                         entity.NaturezaOperacao = "Complemento de ICMS";

@@ -209,7 +209,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m7",
                 Label = "Tipo do Complemento",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")
-                    .ToList().FindAll(x => "NaoComplementar,ComplPreco,ComplQtd".Contains(x.Value))),
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value))),
                 ConstrainWidth = true
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI

@@ -204,7 +204,9 @@ namespace Fly01.Faturamento.BL
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
 
                 //ICMS
-                if (grupoTributario.CalculaIcms)
+                //TODO diego passar o tipo do complemento
+                //refatorar para cada caso
+                if (grupoTributario.CalculaIcms && tipoVenda != TipoVenda.Complementar)
                 {
                     tributacao.Icms = new Icms()
                     {
@@ -227,7 +229,7 @@ namespace Fly01.Faturamento.BL
                     };
                 }
                 //IPI
-                if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0)
+                if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0 && tipoVenda != TipoVenda.Complementar)
                 {
                     tributacao.Ipi = new Ipi()
                     {
@@ -237,7 +239,7 @@ namespace Fly01.Faturamento.BL
                     };
                 }
                 //ST
-                if (grupoTributario.CalculaSubstituicaoTributaria)
+                if (grupoTributario.CalculaSubstituicaoTributaria && tipoVenda != TipoVenda.Complementar)
                 {
                     //no Faturamento devolução é entrada ou se o complemento for de uma devolução
                     var isSaida = (tipoVenda == TipoVenda.Normal)
@@ -251,7 +253,7 @@ namespace Fly01.Faturamento.BL
                         x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                         ).FirstOrDefault();
 
-                    if (st != null)
+                    if (st != null && tipoVenda != TipoVenda.Complementar)
                     {
                         tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                         {
@@ -274,14 +276,14 @@ namespace Fly01.Faturamento.BL
                     }
                 }
                 //COFINS
-                if (grupoTributario.CalculaCofins)
+                if (grupoTributario.CalculaCofins && tipoVenda != TipoVenda.Complementar)
                 {
                     itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
                     itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
                     itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
                 }
                 //PIS
-                if (grupoTributario.CalculaPis)
+                if (grupoTributario.CalculaPis && tipoVenda != TipoVenda.Complementar)
                 {
                     itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
                     itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;

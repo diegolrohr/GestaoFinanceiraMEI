@@ -347,17 +347,17 @@ namespace Fly01.EmissaoNFE.BL
                 {
                     if (item.Transporte.ModalidadeFrete != ModalidadeFrete.SemFrete)
                     {
-                        entity.Fail(item.Transporte.Volume.Quantidade <= 0,
+                        entity.Fail(item.Transporte.Volume.Quantidade < 0,
                             new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
-                        entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Especie),
-                            new Error("Espécie de volume é um dado obrigatório", "Item.Transporte.Volume.Especie"));
-                        entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Marca),
-                            new Error("Marca do volume é um dado obrigatório", "Item.Transporte.Volume.marca"));
-                        entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Numeracao),
-                            new Error("Numeração do volume é um dado obrigatório", "Item.Transporte.Volume.Numeracao"));
-                        entity.Fail(item.Transporte.Volume.PesoLiquido <= 0,
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Especie) && ((item.Transporte.Volume.Especie?.Length > 60) || (item.Transporte.Volume.Especie.Replace(" ", "").Length == 0)),
+                            new Error("Espécie de volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Especie"));
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Marca) && ((item.Transporte.Volume.Marca?.Length > 60) || (item.Transporte.Volume.Marca.Replace(" ", "").Length == 0)),
+                            new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.marca"));
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Numeracao) && ((item.Transporte.Volume.Numeracao?.Length > 60) || (item.Transporte.Volume.Numeracao.Replace(" ", "").Length == 0)),
+                            new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Numeracao"));
+                        entity.Fail(item.Transporte.Volume.PesoLiquido < 0,
                             new Error("Peso líquido inválido", "Item.Transporte.Volume.PesoLiquido"));
-                        entity.Fail(item.Transporte.Volume.PesoBruto <= 0,
+                        entity.Fail(item.Transporte.Volume.PesoBruto < 0,
                             new Error("Peso bruto inválido", "Item.Transporte.Volume.PesoBruto"));
                     }
                 }

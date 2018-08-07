@@ -67,7 +67,9 @@ namespace Fly01.Core.SOAManager
                     City = results.Where(r => r.Name.Equals("Cidade")).FirstOrDefault().Value,
                     State = results.Where(r => r.Name.Equals("Estado")).FirstOrDefault().Value,
                     StateId = "",
-                    CityId = ""
+                    CityId = "",
+                    StateCodeIbge = "",
+                    CityCodeIbge = ""
                 };
             }
 

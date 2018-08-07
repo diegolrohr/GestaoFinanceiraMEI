@@ -11,13 +11,17 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int Numero { get; set; }
 
-        public int NumeracaoVolumesTrans { get; set; }
+        [StringLength(60)]
+        public string NumeracaoVolumesTrans { get; set; }
 
         [StringLength(60)]
         public string Marca { get; set; }
 
         [StringLength(44)]
         public string ChaveNFeReferenciada { get; set; }
+
+        [Required]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
 
         [Required]
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
@@ -41,7 +45,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoFrete TipoFrete { get; set; }
 
-        public TipoEspecie TipoEspecie { get; set; }
+        [StringLength(60)]
+        public string TipoEspecie { get; set; }
 
         [StringLength(7)]
         public string PlacaVeiculo { get; set; }
@@ -92,6 +97,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
+        public TipoNfeComplementar TipoNfeComplementar { get; set; }
+
         public virtual Pessoa Cliente { get; set; }
 
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }
@@ -105,7 +112,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public virtual FormaPagamento FormaPagamento { get; set; }
 
         public virtual Categoria Categoria { get; set; }
-
-        public TipoNfeComplementar TipoNfeComplementar { get; set; }
     }
 }

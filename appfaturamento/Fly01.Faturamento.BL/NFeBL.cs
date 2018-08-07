@@ -106,14 +106,38 @@ namespace Fly01.Faturamento.BL
                     }//enquanto sugestão possa estar na lista de inutilizadas
                     while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
                         x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                        x.NumNotaFiscal == sugestaoProximoNumNota));
+                        x.NumNotaFiscal == sugestaoProximoNumNota) || sugestaoProximoNumNota == entity.NumNotaFiscal);
 
                     entity.Fail(true, new Error("Série e número já utilizados ou inutilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
                 }
                 else
                 {
+                    var proximoNumNota = entity.NumNotaFiscal.Value + 1;
+                    var ProximoNumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
+                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
+                    x.NumNotaFiscal == proximoNumNota);
+
+                    if (ProximoNumeroInutilizado)
+                    {
+                        var proximoNumNotaOK = All.Max(x => x.NumNotaFiscal);
+                        if (!proximoNumNotaOK.HasValue)
+                        {
+                            proximoNumNotaOK = proximoNumNota;
+                        }
+
+                        do
+                        {
+                            proximoNumNotaOK += 1;
+                        }//enquanto incremento para próxima nota, possa estar na lista de inutilizadas
+                        while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
+                            x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
+                            x.NumNotaFiscal == proximoNumNotaOK) || proximoNumNotaOK == entity.NumNotaFiscal);
+
+                        proximoNumNota = proximoNumNotaOK.Value;
+                    }
+
                     var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
-                    serie.NumNotaFiscal = entity.NumNotaFiscal.Value + 1;
+                    serie.NumNotaFiscal = proximoNumNota;
                     SerieNotaFiscalBL.Update(serie);
                 };
             }
@@ -157,6 +181,10 @@ namespace Fly01.Faturamento.BL
                         x => x.Produto.Cest,
                         x => x.Produto.UnidadeMedida,
                         x => x.Produto.EnquadramentoLegalIPI).AsNoTracking().Where(x => x.NotaFiscalId == entity.Id);
+                    bool pagaFrete = (
+                        ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
+                        ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoVenda.Devolucao)
+                    );
 
                     var destinoOperacao = TipoDestinoOperacao.Interna;
                     if (cliente.Estado != null && cliente.Estado.Sigla.ToUpper() == "EX" || (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla.ToUpper() : "") == "EX")
@@ -279,15 +307,18 @@ namespace Fly01.Faturamento.BL
                         };
                     }
 
-                    itemTransmissao.Transporte.Volume = new Volume()
+                    if (entity.TipoFrete != TipoFrete.SemFrete)
                     {
-                        Especie = entity.TipoEspecie.ToString(),
-                        Quantidade = entity.QuantidadeVolumes ?? 0,
-                        Marca = entity.Marca,
-                        Numeracao = entity.NumeracaoVolumesTrans.ToString(),
-                        PesoLiquido = entity.PesoLiquido ?? 0,
-                        PesoBruto = entity.PesoBruto ?? 0,
-                    };
+                        itemTransmissao.Transporte.Volume = new Volume()
+                        {
+                            Especie = entity.TipoEspecie,
+                            Quantidade = entity.QuantidadeVolumes ?? 0,
+                            Marca = entity.Marca,
+                            Numeracao = entity.NumeracaoVolumesTrans,
+                            PesoLiquido = entity.PesoLiquido ?? 0,
+                            PesoBruto = entity.PesoBruto ?? 0,
+                        };
+                    }
                     #endregion
 
                     #region Detalhes Produtos
@@ -327,7 +358,7 @@ namespace Fly01.Faturamento.BL
                             ValorDesconto = item.Desconto,
                             AgregaTotalNota = CompoemValorTotal.Compoe,
                             CEST = item.Produto.Cest?.Codigo,
-                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
+                            ValorFrete = pagaFrete ? Math.Round(itemTributacao.FreteValorFracionado, 2) : 0
                         };
 
                         var detalhe = new Detalhe()
@@ -468,7 +499,7 @@ namespace Fly01.Faturamento.BL
                             SomatorioCofins = itemTransmissao.Detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                             SomatorioDesconto = NFeProdutos.Sum(x => x.Desconto),
                             SomatorioICMSST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
-                            ValorFrete = (entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
+                            ValorFrete = pagaFrete ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                             ValorSeguro = 0,
                             SomatorioIPI = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
                             SomatorioIPIDevolucao = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
@@ -629,14 +660,24 @@ public override void Delete(NFe entityToDelete)
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
             var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
-            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            if (nfe.TipoVenda == TipoVenda.Complementar)
+            var totalProdutos = 0.0;
+            if (produtos != null)
             {
-                if (nfe.NaturezaOperacao == "Complemento de Preco")
+                if (nfe.TipoVenda == TipoVenda.Normal || nfe.TipoVenda == TipoVenda.Devolucao)
                 {
-                    totalProdutos = produtos != null ? produtos.Sum(x => (x.Valor - x.Desconto)) : 0.0;
+                    totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                 }
+                else if (nfe.TipoVenda == TipoVenda.Complementar)
+                {
+                    totalProdutos = +produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    totalProdutos = +produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                }
+                //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
+                //{
+
+                //}
             }
+
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool calculaFrete = (

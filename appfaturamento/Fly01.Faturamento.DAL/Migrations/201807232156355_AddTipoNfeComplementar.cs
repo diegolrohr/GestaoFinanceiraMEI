@@ -7,7 +7,7 @@ namespace Fly01.Faturamento.DAL.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.OrdemVenda", "TipoNfeComplementar", c => c.Int(nullable: false));
+            AddColumn("dbo.OrdemVenda", "TipoNfeComplementar", c => c.Int(nullable: false, defaultValue: 0));
         }
         
         public override void Down()

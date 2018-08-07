@@ -143,13 +143,21 @@ namespace Fly01.Compras.BL
 
         public void GetIdEstadoCidade(Pessoa entity)
         {
-            if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CodigoIBGECidade))
+            if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CidadeCodigoIbge))
             {
-                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CodigoIBGECidade);
+                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
                 if (dadosCidade != null)
                 {
                     entity.EstadoId = dadosCidade.EstadoId;
                     entity.CidadeId = dadosCidade.Id;
+                }
+            }
+            else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoId = dadosEstado.Id;
                 }
             }
         }

@@ -66,6 +66,7 @@ namespace Fly01.Financeiro.Controllers
             return Json(new
             {
                 success = true,
+                currency = true,
                 labels = response.Select(x => x.Tipo).ToArray(),
                 datasets = new object[]
                 {

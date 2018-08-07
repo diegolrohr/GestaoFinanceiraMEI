@@ -30,7 +30,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeVolume()
         {
-            return Volume != null;
+            return Volume != null && ModalidadeFrete != ModalidadeFrete.SemFrete;
         }
 
     }

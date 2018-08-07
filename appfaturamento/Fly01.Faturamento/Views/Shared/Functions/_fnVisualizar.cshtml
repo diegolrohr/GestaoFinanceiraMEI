@@ -1,5 +1,5 @@
 ﻿<script>
-function fnVisualizar(idRecord) {
-    fly01.go("@Url.Action("FormView", "" + @ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)", idRecord);
-}
+    function fnVisualizar(idRecord) {
+        fly01.go("@Url.Action("FormView", "" + @ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)", idRecord);
+    }
 </script>

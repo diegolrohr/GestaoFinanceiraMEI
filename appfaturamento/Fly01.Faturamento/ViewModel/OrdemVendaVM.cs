@@ -13,7 +13,7 @@ namespace Fly01.Faturamento.ViewModel
         public int Numero { get; set; }
 
         [JsonProperty("numeracaoVolumesTrans")]
-        public int NumeracaoVolumesTrans { get; set; }
+        public string NumeracaoVolumesTrans { get; set; }
 
         [JsonProperty("marca")]
         public string Marca{ get; set; }
@@ -50,7 +50,6 @@ namespace Fly01.Faturamento.ViewModel
         public string TipoFrete { get; set; }
 
         [JsonProperty("tipoEspecie")]
-        [APIEnum("TipoEspecie")]
         public string TipoEspecie { get; set; }
 
         [JsonProperty("placaVeiculo")]
@@ -104,6 +103,13 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("mensagemPadraoNota")]
         public string MensagemPadraoNota { get; set; }
 
+        [JsonProperty("tipoNfeComplementar")]
+        [APIEnum("TipoNfeComplementar")]
+        public string TipoNfeComplementar { get; set; }
+
+        [JsonProperty("nFeRefComplementarIsDevolucao")]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
+
         [JsonProperty("cliente")]
         public virtual PessoaVM Cliente { get; set; }
 
@@ -124,9 +130,5 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("categoria")]
         public virtual CategoriaVM Categoria { get; set; }
-
-        [JsonProperty("tipoNfeComplementar")]
-        [APIEnum("TipoNfeComplementar")]
-        public string TipoNfeComplementar { get; set; }
     }
 }

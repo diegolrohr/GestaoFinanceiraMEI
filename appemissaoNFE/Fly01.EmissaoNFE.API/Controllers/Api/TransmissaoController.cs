@@ -44,9 +44,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var listNotasValidas = new List<NFESBRAProd.NFES>();
             var notasValidas = new NFESBRAProd.NFE();
 
-            var retorno = new TransmissaoRetornoVM();
-            retorno.Notas = new List<ItemTransmissaoRetornoVM>();
-
+            var retorno = new TransmissaoRetornoVM()
+            {
+                Notas = new List<ItemTransmissaoRetornoVM>()
+            };
             foreach (var nota in entity.Item)
             {
                 var base64 = unitOfWork.TransmissaoBL.SerializeNota(nota);

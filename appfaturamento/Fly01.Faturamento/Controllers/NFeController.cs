@@ -50,20 +50,28 @@ namespace Fly01.Faturamento.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputNumbersUI { Id = "ordemVendaOrigemNumero", Class = "col s12 m2", Label = "Pedido Origem", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "ordemVendaOrigemNumero", Class = "col s12 m6 l2", Label = "Pedido Origem", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
-                Class = "col s12 m4",
+                Class = "col s12 m6 l3",
                 Label = "Tipo Venda",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
-                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
+                ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
+            });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoNfeComplementar",
+                Class = "col s12 m6 l3",
+                Label = "Tipo Complemento",
+                Disabled = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar)).ToList())
             });
             config.Elements.Add(new SelectUI
             {
                 Id = "status",
-                Class = "col s12 m6",
+                Class = "col s12 m6 l4",
                 Label = "Status",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal)))
@@ -126,7 +134,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "transportadoraId",
-                Class = "col s12",
+                Class = "col s12 m6",
                 Label = "Transportadora",
                 Disabled = true,
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
@@ -135,7 +143,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoFrete",
-                Class = "col s12 m5",
+                Class = "col s12 m6",
                 Label = "Tipo Frete",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
@@ -143,7 +151,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
-                Class = "col s12 m2",
+                Class = "col s12 m4",
                 Label = "Placa Veículo",
                 Disabled = true,
                 Data = new { inputmask = "'mask':'AAA-9999', 'showMaskOnHover': false, 'autoUnmask':true" }
@@ -151,27 +159,19 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoPlacaVeiculoId",
-                Class = "col s12 m5",
+                Class = "col s12 m4",
                 Label = "UF Placa Veículo",
                 Disabled = true,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoPlacaVeiculoNome"
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Disabled = true });
-            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", });
-
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Disabled = true });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, Disabled = true });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60, Disabled = true});
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Disabled = true });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoEspecie",
-                Class = "col s12 m4",
-                Label = "Tipo Espécie",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoEspecie))),
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60, Disabled = true});
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60, Disabled = true});
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI
@@ -258,7 +258,7 @@ namespace Fly01.Faturamento.Controllers
                 Disabled = true,
                 Name = "tipoVenda",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
-                ToList().FindAll(x => "Normal,Devolucao".Contains(x.Value)))
+                ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });
             config.Elements.Add(new AutoCompleteUI

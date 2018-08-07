@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -45,6 +47,31 @@ namespace Fly01.Core.Helpers
         public static bool IsNullableType(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        private static List<string> PropertiesFromType(object source)
+        {
+            if (source == null) return new List<string>();
+
+            return new List<string>(source.GetType().GetProperties().Select(x => x.Name).ToList());
+        }
+
+        public static T CopyPropertiesFromJson<T>(T entity, string json)
+        {
+            if (entity == null) return entity;
+            if (string.IsNullOrEmpty(json)) return entity;
+
+            var obj = JObject.Parse(json);
+
+            PropertiesFromType(entity).ForEach(prop =>
+            {
+                var value = obj.GetValue(prop, StringComparison.InvariantCultureIgnoreCase);
+
+                if (value != null)
+                    SetValue(entity.GetType().GetProperty(prop), entity, value.Type == JTokenType.Null ? null : value);
+            });
+
+            return entity;
         }
     }
 }

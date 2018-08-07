@@ -342,6 +342,7 @@
     <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnClickComplementarIsDevolucao.cshtml" />
+    <Content Include="Views\Shared\View.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

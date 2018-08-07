@@ -179,7 +179,7 @@ namespace Fly01.Faturamento.BL
             if (produtos != null & produtos.Any())
             {
                 var NFe = (NFe)GetNotaFiscal(entity, TipoNotaFiscal.NFe);
-                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.ClienteId, entity.TipoVenda, entity.TipoFrete, entity.ValorFrete);
+                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.ClienteId, entity.TipoVenda, entity.TipoFrete, entity.NFeRefComplementarIsDevolucao, entity.ValorFrete);
                 var totalImpostosProdutos = TotalTributacaoBL.TributacaoItemAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
                 var totalImpostosProdutosNaoAgrega = TotalTributacaoBL.TributacaoItemNaoAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
 
@@ -472,8 +472,8 @@ namespace Fly01.Faturamento.BL
                     }
                     else if (entity.TipoVenda == TipoVenda.Complementar)
                     {
-                        totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                        totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                     }
                     //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                     //{
@@ -607,8 +607,8 @@ namespace Fly01.Faturamento.BL
                 }
                 else if(ordemVenda.TipoVenda == TipoVenda.Complementar)
                 {
-                    totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                    totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                 }
                 //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                 //{
@@ -617,10 +617,10 @@ namespace Fly01.Faturamento.BL
             }
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var totalImpostosProdutosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;

@@ -210,6 +210,8 @@ namespace Fly01.Faturamento.BL
                     TimeZoneInfo clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(CalendarTimeZoneDefault);
                     var data = TimeZoneInfo.ConvertTimeFromUtc(now, clientTimeZone);
 
+                    //Devolução no faturamento é entrada
+                    var isSaida = (entity.TipoVenda == TipoVenda.Normal) || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao); //??|| entity.TipoVenda == TipoVenda.Ajuste;
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
                     {
@@ -220,7 +222,7 @@ namespace Fly01.Faturamento.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = TimeZoneHelper.GetDateTimeNow(isLocal),
                         EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal),
-                        TipoDocumentoFiscal = entity.TipoVenda == TipoVenda.Devolucao ? TipoNota.Entrada : TipoNota.Saida,
+                        TipoDocumentoFiscal = isSaida ? TipoNota.Saida : TipoNota.Entrada,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
@@ -333,7 +335,7 @@ namespace Fly01.Faturamento.BL
                             x.CestId == item.Produto.CestId.Value &
                             x.EstadoOrigem.Sigla == UFSiglaEmpresa &
                             x.EstadoDestinoId == cliente.EstadoId &
-                            x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
+                            x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                             ).FirstOrDefault();
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
                         var itemTributacao = new NotaFiscalItemTributacao();
@@ -388,6 +390,13 @@ namespace Fly01.Faturamento.BL
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                             }
+                            if(item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST 
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
+                            {
+                                detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                                detalhe.Imposto.ICMS.PercentualReducaoBCST = 0;
+                            }
                         }
                         if (itemTributacao.CalculaST)
                         {
@@ -419,7 +428,7 @@ namespace Fly01.Faturamento.BL
                             {
                                 CodigoST = item.GrupoTributario.TipoTributacaoIPI.HasValue ?
                                     (CSTIPI)System.Enum.Parse(typeof(CSTIPI), item.GrupoTributario.TipoTributacaoIPI.Value.ToString()) :
-                                    CSTIPI.OutrasSaidas,
+                                    (isSaida ? CSTIPI.OutrasSaidas : CSTIPI.OutrasEntradas),
                                 ValorIPI = itemTributacao.IPIValor,
                                 CodigoEnquadramento = item.Produto.EnquadramentoLegalIPI?.Codigo,
                                 ValorBaseCalculo = Math.Round(itemTributacao.IPIBase, 2),
@@ -536,7 +545,7 @@ namespace Fly01.Faturamento.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar)
+                    if (entity.TipoVenda == TipoVenda.Devolucao)
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -549,7 +558,7 @@ namespace Fly01.Faturamento.BL
                             new DetalhePagamento()
                             {
                                 TipoFormaPagamento = tipoFormaPagamento,
-                                ValorPagamento = tipoFormaPagamento == TipoFormaPagamento.SemPagamento ? 0.00 : itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }
                     };

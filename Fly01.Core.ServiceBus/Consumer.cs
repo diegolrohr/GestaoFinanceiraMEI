@@ -75,8 +75,6 @@ namespace Fly01.Core.ServiceBus
                             RabbitConfig.AppUser = GetHeaderValue("AppUser");
                             RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                            RabbitConfig.RoutingKey = "Categoria";
-
                             await DeliverMessage();
 
                             foreach (var item in exceptions)

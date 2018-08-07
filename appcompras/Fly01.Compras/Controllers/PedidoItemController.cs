@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
@@ -37,8 +38,8 @@ namespace Fly01.Compras.Controllers
         {
             ModalUIForm config = new ModalUIForm()
             {
-                Title = "Adicionar Produto",
-                UrlFunctions = @Url.Action("Functions", "PedidoItem", null, Request.Url.Scheme) + "?fns=",
+                Title = "Produto",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
                 ConfirmAction = new ModalUIAction() { Label = "Salvar" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
@@ -46,27 +47,44 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "OrdemCompra")
+                    List = @Url.Action("List")
                 },
                 Id = "fly01mdlfrmPedidoItem",
-                ReadyFn = "fnFormReadyPedidoItem"
+                ReadyFn = "fnFormReadyPedidoItem",
+                Functions = new List<string>() { "fnChangeTotalProduto" }
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "pedidoId" });
+            config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioTipoTributacaoICMS" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "produtoId",
-                Class = "col s12",
+                Class = "col s12 m6",
                 Label = "Produto",
                 Required = true,
-                DataUrl = Url.Action("Produto", "AutoComplete"),
-                LabelId = "produtoDescricao",
+                DataUrl = Url.Action("ProdutoOrdem", "AutoComplete"),
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
                 DataPostField = "descricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            }, ResourceHashConst.ComprasCadastrosProdutos));
+                LabelId = "produtoDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect"/*, Function = "fnChangeProduto"*/ } }
+            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "grupoTributarioIdProduto",
+                Class = "col s12 m6",
+                Label = "Grupo Tributário",
+                Required = true,
+                Name = "grupoTributarioId",
+                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
+                LabelId = "grupoTributarioDescricaoProduto",
+                LabelName = "grupoTributarioDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
+                DataPostField = "descricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribProduto" } }
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
             config.Elements.Add(new InputFloatUI
             {
@@ -74,11 +92,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
                 Value = "1",
-                Required = true,
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
-                }
+                Required = false
             });
 
             config.Elements.Add(new InputCurrencyUI
@@ -86,11 +100,8 @@ namespace Fly01.Compras.Controllers
                 Id = "valor",
                 Class = "col s12 l6 numeric",
                 Label = "Valor",
-                Required = true,
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
-                }
+                Value = "0",
+                Required = false
             });
 
             config.Elements.Add(new InputCurrencyUI
@@ -98,13 +109,93 @@ namespace Fly01.Compras.Controllers
                 Id = "desconto",
                 Class = "col s12 l6",
                 Label = "Desconto",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }
-                }
+                Value = "0"
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Disabled = true, Required = true });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorCreditoICMS",
+                Class = "col s12 l6 numeric",
+                Label = "Crédito ICMS",
+                Value = "0"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorBCSTRetido",
+                Class = "col s12 l6 numeric",
+                Label = "Base Cálculo ST Retido",
+                Value = "0"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorICMSSTRetido",
+                Class = "col s12 l6 numeric",
+                Label = "ICMS ST Retido",
+                Value = "0"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorBCFCPSTRetidoAnterior",
+                Class = "col s12 l6",
+                Label = "Base FCP ST Retido Anterior",
+                Value = "0",
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorFCPSTRetidoAnterior",
+                Class = "col s12 l6 numeric",
+                Label = "Valor FCP ST Retido Anterior",
+                Value = "0"
+            });
+
+            #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorCreditoICMS",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorICMSSTRetido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor de Substituição Tributária retida. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorBCSTRetido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Base de cálculo de Substituição Tributária retida. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorBCFCPSTRetidoAnterior",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor Base do Fundo de Combate à Pobreza retido anteriormente. O percentual será calculado conforme base e valor informados. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorFCPSTRetidoAnterior",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor do Fundo de Combate à Pobreza retido anteriormente. O percentual será calculado conforme base e valor informados. Se o pedido gerar nota fiscal com CSOSN 500, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                }
+            });
+            #endregion
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
@@ -115,7 +206,7 @@ namespace Fly01.Compras.Controllers
         }
 
         [OperationRole(NotApply = true)]
-        public JsonResult GetPedidoItens(string id)
+        public JsonResult GetOrdemCompraProdutos(string id)
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {

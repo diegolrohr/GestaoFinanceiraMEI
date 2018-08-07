@@ -26,7 +26,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }
 
-        [Required]
         public Guid? GrupoTributarioPadraoId { get; set; }
 
         [StringLength(7)]

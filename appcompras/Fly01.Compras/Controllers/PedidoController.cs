@@ -124,34 +124,34 @@ namespace Fly01.Compras.Controllers
             return target;
         }
 
-        protected DataTableUI GetDtOrdemVendaProdutosCfg()
+        protected DataTableUI GetDtOrdemCompraItemCfg()
         {
-            DataTableUI dtOrdemVendaProdutosCfg = new DataTableUI
+            DataTableUI dtOrdemCompraItemCfg = new DataTableUI
             {
-                Parent = "ordemVendaProdutosField",
-                Id = "dtOrdemVendaProdutos",
-                UrlGridLoad = Url.Action("GetOrdemVendaProdutos", "OrdemVendaProduto"),
-                UrlFunctions = Url.Action("Functions", "OrdemCompraProduto") + "?fns=",
+                Parent = "ordemCompraItemField",
+                Id = "dtOrdemCompraItem",
+                UrlGridLoad = Url.Action("GetOrdemCompraProdutos", "PedidoItem"),
+                UrlFunctions = Url.Action("Functions", "Pedido") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 }
             };
 
-            dtOrdemVendaProdutosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            dtOrdemCompraItemCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemVendaProduto", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemVendaProduto", Label = "Excluir" }
             }));
 
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
-            dtOrdemVendaProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "grupoTributario_descricao", DisplayName = "Grupo Tributário", Priority = 2, Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemCompraItemCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
 
-            return dtOrdemVendaProdutosCfg;
+            return dtOrdemCompraItemCfg;
         }
 
         public ContentUI FormPedidoJson(bool isEdit = false)
@@ -205,12 +205,6 @@ namespace Fly01.Compras.Controllers
                     },
                     new FormWizardUIStep()
                     {
-                        Title = "Serviços",
-                        Id = "stepServicos",
-                        Quantity = 2,
-                    },
-                    new FormWizardUIStep()
-                    {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
                         Quantity = 5,
@@ -253,7 +247,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
 
@@ -289,31 +283,15 @@ namespace Fly01.Compras.Controllers
             #region step Produtos
             config.Elements.Add(new ButtonUI
             {
-                Id = "btnOrdemVendaProduto",
+                Id = "btnAddPedidoItem",
                 Class = "col s12 m2",
-                Label = "",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaProduto" }
-                    }
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
+                }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12" });
-            #endregion
-
-            #region step Serviços
-            config.Elements.Add(new ButtonUI
-            {
-                Id = "btnOrdemVendaServico",
-                Class = "col s12 m2",
-                Label = "",
-                Value = "Adicionar serviço",
-                DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
-                    }
-            });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemCompraItem", Class = "col s12" });
             #endregion
 
             #region step Financeiro
@@ -422,10 +400,8 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + serviços + impostos + frete)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + impostos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
             config.Elements.Add(new InputCheckboxUI
             {
@@ -513,14 +489,6 @@ namespace Fly01.Compras.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "totalImpostosServicos",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações ajustadas no cadastro dos parâmetros tributários."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
                 Id = "geraNotaFiscal",
                 Tooltip = new HelperUITooltip()
                 {
@@ -562,244 +530,10 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             cfg.Content.Add(config);
-            cfg.Content.Add(GetDtOrdemVendaProdutosCfg());
+            cfg.Content.Add(GetDtOrdemCompraItemCfg());
             //cfg.Content.Add(GetDtProdutosEstoqueNegativoCfg());
-
-            //cfg.Content.Add(config);
             cfg.Content.Add(GetDtPedidoItensCfg());
             return cfg;
-            //{
-            //    var cfg = new ContentUI
-            //    {
-            //        History = new ContentUIHistory
-            //        {
-            //            Default = Url.Action("Create"),
-            //            WithParams = Url.Action("Edit")
-            //        },
-            //        Header = new HtmlUIHeader
-            //        {
-            //            Title = "Pedido",
-            //            Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
-            //        },
-            //        UrlFunctions = Url.Action("Functions") + "?fns="
-            //    };
-
-            //    var config = new FormWizardUI
-            //    {
-            //        Action = new FormUIAction
-            //        {
-            //            Create = @Url.Action("Create"),
-            //            Edit = @Url.Action("Edit"),
-            //            Get = @Url.Action("Json") + "/",
-            //            List = @Url.Action("List", "OrdemCompra")
-            //        },
-            //        ReadyFn = "fnFormReadyPedido",
-            //        UrlFunctions = Url.Action("Functions") + "?fns=",
-            //        Steps = new List<FormWizardUIStep>()
-            //        {
-            //            new FormWizardUIStep()
-            //            {
-            //                Title = "Cadastro",
-            //                Id = "stepCadastro",
-            //                Quantity = 8,
-            //            },
-            //            new FormWizardUIStep()
-            //            {
-            //                Title = "Financeiro",
-            //                Id = "stepFinanceiro",
-            //                Quantity = 5,
-            //            },
-            //            new FormWizardUIStep()
-            //            {
-            //                Title = "Transporte",
-            //                Id = "stepTransporte",
-            //                Quantity = 6,
-            //            },
-            //            new FormWizardUIStep()
-            //            {
-            //                Title = "Produtos",
-            //                Id = "stepProdutos",
-            //                Quantity = 2,
-            //            },
-            //            new FormWizardUIStep()
-            //            {
-            //                Title = "Finalizar",
-            //                Id = "stepFinalizar",
-            //                Quantity = 5,
-            //            }
-            //        },
-            //        Rule = isEdit ? "parallel" : "linear",
-            //        ShowStepNumbers = true
-            //    };
-
-            //    #region step Cadastro
-            //    config.Elements.Add(new InputHiddenUI { Id = "id" });
-            //    config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
-            //    config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
-            //    config.Elements.Add(new InputNumbersUI { Id = "orcamentoOrigemNumero", Class = "col s12 m4", Label = "Orçamento Origem", Disabled = true });
-            //    config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
-            //    config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
-            //    config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            //    {
-            //        Id = "fornecedorId",
-            //        Class = "col s12",
-            //        Label = "Fornecedor",
-            //        Required = true,
-            //        DataUrl = Url.Action("Fornecedor", "AutoComplete"),
-            //        LabelId = "fornecedorNome",
-            //        DataUrlPost = Url.Action("PostFornecedor")
-            //    }, ResourceHashConst.ComprasCadastrosFornecedores));
-
-            //    config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
-            //    #endregion
-
-            //    #region step Financeiro
-            //    config.Elements.Add(new InputCheckboxUI
-            //    {
-            //        Id = "geraFinanceiro",
-            //        Class = "col s12 m3",
-            //        Label = "Gerar financeiro",
-            //        DomEvents = new List<DomEventUI>
-            //        {
-            //            new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
-            //        }
-            //    });
-            //    config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
-            //    config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            //    {
-            //        Id = "formaPagamentoId",
-            //        Class = "col s12 m6",
-            //        Label = "Forma Pagamento",
-            //        DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
-            //        LabelId = "formaPagamentoDescricao",
-            //        DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
-            //        DataPostField = "descricao"
-            //    }, ResourceHashConst.ComprasCadastrosFormaPagamento));
-
-            //    config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            //    {
-            //        Id = "condicaoParcelamentoId",
-            //        Class = "col s12 m6",
-            //        Label = "Condição Parcelamento",
-            //        DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
-            //        LabelId = "condicaoParcelamentoDescricao",
-            //        DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
-            //        DataPostField = "descricao"
-            //    }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
-
-            //    config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            //    {
-            //        Id = "categoriaId",
-            //        Class = "col s12 m6",
-            //        Label = "Categoria",
-            //        DataUrl = @Url.Action("Categoria", "AutoComplete"),
-            //        LabelId = "categoriaDescricao",
-            //        DataUrlPost = Url.Action("NovaCategoriaDespesa")
-            //    }, ResourceHashConst.ComprasCadastrosCategoria));
-
-            //    #endregion
-
-            //    #region step Transporte
-
-            //    config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            //    {
-            //        Id = "transportadoraId",
-            //        Class = "col s12 m8",
-            //        Label = "Transportadora",
-            //        DataUrl = Url.Action("Transportadora", "AutoComplete"),
-            //        LabelId = "transportadoraNome",
-            //        DataUrlPost = Url.Action("PostTransportadora")
-            //    }, ResourceHashConst.ComprasCadastrosTransportadora));
-
-            //    config.Elements.Add(new SelectUI
-            //    {
-            //        Id = "tipoFrete",
-            //        Class = "col s12 m4",
-            //        Label = "Tipo Frete",
-            //        Value = "SemFrete",
-            //        Required = true,
-            //        Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
-            //        DomEvents = new List<DomEventUI>
-            //        {
-            //            new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
-            //        }
-            //    });
-            //    config.Elements.Add(new InputCurrencyUI
-            //    {
-            //        Id = "valorFrete",
-            //        Class = "col s12 m3",
-            //        Label = "Valor Frete",
-            //        DomEvents = new List<DomEventUI>
-            //        {
-            //            new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
-            //        }
-            //    });
-            //    config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m3", Label = "Peso bruto" });
-            //    config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m3", Label = "Peso líquido" });
-            //    config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quant. volumes" });
-            //    #endregion
-
-            //    #region step Produtos
-            //    config.Elements.Add(new ButtonUI
-            //    {
-            //        Id = "btnAddPedidoItem",
-            //        Class = "col s12 m2",
-            //        Value = "Adicionar produto",
-            //        DomEvents = new List<DomEventUI>
-            //        {
-            //            new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
-            //        }
-            //    });
-            //    config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12" });
-            //    #endregion
-
-            //    #region step Finalizar
-            //    config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            //    config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
-            //    config.Elements.Add(new InputCurrencyUI { Id = "totalPedido", Class = "col s12 m4", Label = "Total pedido(produtos + frete)", Readonly = true });
-            //    config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
-            //    config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-
-            //    #endregion
-
-            //    #region Helpers
-            //    config.Helpers.Add(new TooltipUI
-            //    {
-            //        Id = "movimentaEstoque",
-            //        Tooltip = new HelperUITooltip()
-            //        {
-            //            Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de entrada da quantidade total dos produtos."
-            //        }
-            //    });
-            //    config.Helpers.Add(new TooltipUI
-            //    {
-            //        Id = "finalizarPedido",
-            //        Tooltip = new HelperUITooltip()
-            //        {
-            //            Text = "Se marcar Salvar e Finalizar, serão efetivadas as opções marcadas (Gerar financeiro, Movimentar estoque). Não será mais possível editar ou excluir este pedido."
-            //        }
-            //    });
-            //    config.Helpers.Add(new TooltipUI
-            //    {
-            //        Id = "transportadoraId",
-            //        Tooltip = new HelperUITooltip()
-            //        {
-            //            Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa(FOB/Destinatário)."
-            //        }
-            //    });
-            //    config.Helpers.Add(new TooltipUI
-            //    {
-            //        Id = "geraFinanceiro",
-            //        Tooltip = new HelperUITooltip()
-            //        {
-            //            Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
-            //        }
-            //    });
-            //    #endregion
-
-            //    cfg.Content.Add(config);
-            //    cfg.Content.Add(GetDtPedidoItensCfg());
-            //    return cfg;
         }
 
         public override ContentResult List()
@@ -1064,6 +798,45 @@ namespace Fly01.Compras.Controllers
 
             return RestHelper.ExecuteGetRequest<ResultBase<PedidoItemVM>>("PedidoItem", queryString).Data;
         }
+
+        [HttpGet]
+        public JsonResult GetInformacoesComplementares()
+        {
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+
+                return Json(
+                    new { success = true, infcomp = response.Data.FirstOrDefault()?.MensagemPadraoNota },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult TotalOrdemVenda(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
+        {
+            try
+            {
+                var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
+                var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
+
+                return Json(
+                    new { success = true, total = response },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
         #region OnDemmand
 
         [HttpPost]
@@ -1150,18 +923,3 @@ namespace Fly01.Compras.Controllers
         #endregion
     }
 }
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoBruto",
-                Class = "col s12 m3",
-                Label = "Peso Bruto",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoLiquido",
-                Class = "col s12 m3",
-                Label = "Peso Líquido",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" }
-            });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quant. volumes" });

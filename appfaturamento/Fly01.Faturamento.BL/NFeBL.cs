@@ -624,36 +624,6 @@ public override void Delete(NFe entityToDelete)
         throw new BusinessException(entityToDelete.Notification.Get());
     }
 }
-
-public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
-{
-    var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
-
-    var produtos = NFeProdutoBL.All.AsNoTracking().Where(x => x.NotaFiscalId == nfeId).ToList();
-    var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-    if (nfe.TipoVenda == TipoVenda.Complementar)
-    {
-        if (nfe.NaturezaOperacao == "Complemento de Preco")
-        {
-            var status = entityToDelete.Status;
-            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
-            if (entityToDelete.IsValid())
-            {
-                base.Delete(entityToDelete);
-            }
-            else
-            {
-                throw new BusinessException(entityToDelete.Notification.Get());
-            }
-        }
-    }
-    var totalImpostosProdutos = nfe.TotalImpostosProdutos;
-    var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
-    bool calculaFrete = (
-        ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoVenda.Normal) ||
-        ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
-    );
-
         public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();

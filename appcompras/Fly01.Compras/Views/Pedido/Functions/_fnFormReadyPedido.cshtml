@@ -2,7 +2,7 @@
     @Html.Partial("Functions/_fnMain");
 
     var justSavePedidoToGoStepProdutos = false;
-    var onCancelMustDelete = false;
+    var onCancelMustDeletePedido = false;
 
     function isCreate() {
         var id = $("form#fly01frm input#id").val();
@@ -13,46 +13,159 @@
         return false;
     }
 
+    function calculaTotalPedido() {
+        var valorFrete = 0;
+        var tipoFrete = $('select#tipoFrete').val();
+        var tipoVenda = $('#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+
+        if (calculaFrete) {
+            valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
+        }
+
+        var idPedido = $("form#fly01frm input#id").val();
+        var idCliente = $("form#fly01frm input#clienteId").val();
+        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
+        if (geraNotaFiscal) {
+            $("#naturezaOperacaoField").show();
+            $("input#naturezaOperacao").rules("add", { required: true });
+        }
+        else {
+            $("#naturezaOperacaoField").hide();
+            $("input#naturezaOperacao").rules("remove", "required");
+            $('input#naturezaOperacao').removeClass("invalid")
+        }
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemVenda", "Pedido")',
+            type: "GET",
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.updateTextFields();
+            }
+            else {
+                $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+
+        fly01.loading.stop();
+        getInformacoesComplementares()
+    }
+
+    function getInformacoesComplementares() {
+        fly01.loading.start();
+        $.ajax({
+            url: '@Url.Action("GetInformacoesComplementares", "Pedido")',
+            type: "GET",
+            data: {}
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('#mensagemPadraoNota').val(data.infcomp);
+                fly01.fn.updateTextFields("fly01frm");
+                fly01.loading.stop();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+                fly01.loading.stop();
+            }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function disableStepFinalidade() {
+        //para não ficar trocando o chaveSefaz
+
+        if (!$("form#fly01frm").valid()) return false;
+        $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
+        $("#tipoNfeComplementarField").hide();
+
+        if ($("#categoriaDescricao").data("url-post"))
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
+
+        if ($('#tipoVenda').val() == "Devolucao" || $('#tipoVenda').val() == "Complementar")  {
+            $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
+            $('#stepServicos').hide();
+            $("#chaveNFeReferenciadaField").show();
+
+            if ($('#tipoVenda').val() == "Complementar") {
+                $("#tipoNfeComplementarField").show();
+                $('#stepFinanceiro').hide();
+                $('#stepTransporte').hide();
+            }            
+        }
+        else {
+            $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
+            $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
+            $("#tipoNfeComplementarField").hide();
+        }
+    }
+
     function fnBindStepsWizard() {
         function savePedido() {
-            if (isCreate() && ($("li#stepTransporte").hasClass("active"))) {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
                 justSavePedidoToGoStepProdutos = true;
                 return $("form#fly01frm").submit();
             }
         }
-        $('li#stepProdutos').click(function () {
+        $('li#stepProdutos div.step-title').click(function () {
             savePedido();
         });
-        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             savePedido();
         });
-    }
 
-    function validaGeraFinanceiro() {
-        if ($('input#geraFinanceiro:checked').val() == "true" &&
-            (
-                ($('input#formaPagamentoDescricao').val() == "") ||
-                ($('input#condicaoParcelamentoDescricao').val() == "") ||
-                ($('input#categoriaDescricao').val() == "") ||
-                ($('input#dataVencimento').val() == "")
-            )) {
-            fly01.toast("Pedido que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento", 'error');
-            return false;
-        }
-        return true;
+        $('li#stepCadastro div.step-title').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
+        });
+        $('#stepFinalidade > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
+        });
     }
 
     function fnBindOverrideSubmit() {
+        debugger;
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
             if (!$(this).valid()) return false;
-            if (!validaGeraFinanceiro()) return false;
 
-            $('body').removeClass('loaded');
+            fly01.loading.start();
 
             $('input#numero').removeAttr('disabled');
-            $('input#orcamentoOrigemNumero').removeAttr('disabled');
+            $('input#chaveNFeReferenciada').removeAttr('disabled');
 
             var jsonData = $(this).serializeObject();
             if ($('input#finalizarPedido:checked').val() == "true") {
@@ -78,58 +191,131 @@
                 url: url,
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
+                    debugger;
                     if (data.success) {
-                        $('body').addClass('loaded');
+                        fly01.loading.stop();
 
                         var strMsg = "Cadastrado com sucesso.";
-                        if (data.message !== "" && !onCancelMustDelete) strMsg = data.message;
+                        if (data.message !== "" && !onCancelMustDeletePedido) strMsg = data.message;
                         //fica na página ou volta pra lista
                         if (justSavePedidoToGoStepProdutos) {
                             justSavePedidoToGoStepProdutos = false;
-                            onCancelMustDelete = true;
+                            onCancelMustDeletePedido = true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
-                            fly01._.dtPedidoItens.refresh();
 
+                            fly01._.dtOrdemCompraItem.refresh();
+                            //fly01._.dtOrdemVendaServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
+                            $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
+
+                            if (jsonData.tipoVenda == "Devolucao" || jsonData.tipoVenda == "Complementar") {
+                                //preencher os campos
+                                $("div#clienteIdField").show();
+                                fly01._.dtOrdemVendaProdutos.refresh(data.id);
+                                $('li#stepProdutos div.step-title').click();
+                            }
 
                             return true;
                         }
                         else {
                             fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List", "OrdemCompra")");
+                            fly01.go("@Url.Action("List","OrdemCompra")");
                         }
                     } else {
                         if (justSavePedidoToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
-                        $('body').addClass('loaded');
+                        fly01.loading.stop();
+                        $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
                     fly01.toast(textStatus, "error");
-                    $('body').addClass('loaded');
+                    fly01.loading.stop();
                 }
             });
         });
     }
 
+    function fnSetInformacoes() {
+        $("#infoEstoqueNegativoField").text('O estoque não pode ficar negativo, portanto abaixo é exibido a relação dos produtos que ficarão com o estoque faltante. Marque a opção para ajustar automáticamente a quantidade negativa ou realize os ajustes '
+            + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
+    }
+
+    function EstoqueNegativoETotal() {
+        //fly01._.dtProdutosEstoqueNegativo.refresh();
+        calculaTotalPedido();
+    }
+
     function fnFormReadyPedido() {
-        
+        fnIsNovoPedido();
+         
+        $("#naturezaOperacaoField").hide();
+        $("#chaveNFeReferenciadaField").hide();
+
         if (isCreate()) {
+            $('#btnNormal').click();
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
+            $("input#geraNotaFiscal").prop("checked", true);
             fly01._.data.set(today);
+            fly01._.dataVencimento.set(today);
             fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
-            fly01._.dtPedidoItens.refresh();
+            //setar o agrupamento com a opção escolhida
+            if ($('input#tipoVenda').val() == "Normal") {
+                $('#btnNormal').click();
+            }
+            else {
+                if ($('input#tipoVenda').val() == "Devolucao") {
+                    $('#btnDevolucao').click();
+                } else {
+                    $('#btnComplementar').click();
+                }                
+            }
+            disableStepFinalidade();
+            if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
+            fly01._.dtOrdemCompraItem.refresh();
         }
+
         fnBindOverrideSubmit();
         fnValidaCamposGeraFinanceiro();
+        fnChangeFrete();
+        fnSetInformacoes();
+
+        $('li#stepFinalizar div.step-title').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid()) {
+                EstoqueNegativoETotal();
+            }
+        });
+        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid()) {
+                EstoqueNegativoETotal();
+            }
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                EstoqueNegativoETotal();
+            }
+        });
+    }
+
+    $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+            fnDisableInput();
+    });
+
+    function fnIsNovoPedido() {
+        if ($('#id').val() == "" || $('#id').val() == undefined) {
+            $('#tipoFreteField select#tipoFrete').val("SemFrete") 
+            $("#tipoFreteField .select-dropdown").val("Sem frete");   
+        }
     }
 </script>

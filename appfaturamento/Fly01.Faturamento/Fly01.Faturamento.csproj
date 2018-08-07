@@ -27,7 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -131,7 +131,6 @@
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
-    <Compile Include="ViewModel\TotalOrdemVendaVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

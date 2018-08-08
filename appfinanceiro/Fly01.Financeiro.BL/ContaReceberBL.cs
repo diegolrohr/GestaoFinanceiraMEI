@@ -3,6 +3,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
 using System.Data.Entity;
@@ -28,6 +29,8 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaReceber entity)
         {
+            var numero = default(int);
+
             entity.PlataformaId = PlataformaUrl;
             entity.UsuarioInclusao = AppUser;
 
@@ -38,13 +41,17 @@ namespace Fly01.Financeiro.BL
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;
 
             //Se Cliente não informado, busca pelo nome ou Insere
-            if (entity.PessoaId == default(Guid) && !string.IsNullOrEmpty(entity.NomePessoa))
+            if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
+
+            var rpcClient = new RpcClient();
+            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
+                entity.Numero = numero;
 
                 base.Insert(entity);
             }
@@ -69,20 +76,20 @@ namespace Fly01.Financeiro.BL
                                                         : entity.ValorPago;
 
                     if (iParcela == default(int))
-                    {
                         itemContaReceber.Id = contaFinanceiraPrincipal;
-                    }
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
+                    itemContaReceber.Numero = numero;
+
                     base.Insert(itemContaReceber);
 
-
-                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago)
+                    if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                         contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceber);
 
                     if (repetir)
@@ -107,6 +114,11 @@ namespace Fly01.Financeiro.BL
                                     itemContaReceberRepeticao.DataVencimento = itemContaReceberRepeticao.DataVencimento.AddYears(iRepeticao);
                                     break;
                             }
+
+                            rpcClient = new RpcClient();
+                            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+
+                            itemContaReceberRepeticao.Numero = numero;
 
                             base.Insert(itemContaReceberRepeticao);
                         }

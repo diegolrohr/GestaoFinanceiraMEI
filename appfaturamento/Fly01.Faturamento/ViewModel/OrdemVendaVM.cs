@@ -1,7 +1,8 @@
 ﻿using System;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
-using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Faturamento.ViewModel
 {
@@ -10,6 +11,12 @@ namespace Fly01.Faturamento.ViewModel
     {
         [JsonProperty("numero")]
         public int Numero { get; set; }
+
+        [JsonProperty("numeracaoVolumesTrans")]
+        public string NumeracaoVolumesTrans { get; set; }
+
+        [JsonProperty("marca")]
+        public string Marca{ get; set; }
 
         [JsonProperty("chaveNFeReferenciada")]
         public string ChaveNFeReferenciada { get; set; }
@@ -41,6 +48,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("tipoFrete")]
         [APIEnum("TipoFrete")]
         public string TipoFrete { get; set; }
+
+        [JsonProperty("tipoEspecie")]
+        public string TipoEspecie { get; set; }
 
         [JsonProperty("placaVeiculo")]
         public string PlacaVeiculo { get; set; }
@@ -76,7 +86,7 @@ namespace Fly01.Faturamento.ViewModel
         public bool MovimentaEstoque { get; set; }
 
         [JsonProperty("ajusteEstoqueAutomatico")]
-        public bool AjusteEstoqueAutomatico { get; set; }        
+        public bool AjusteEstoqueAutomatico { get; set; }
 
         [JsonProperty("geraFinanceiro")]
         public bool GeraFinanceiro { get; set; }
@@ -92,6 +102,13 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("mensagemPadraoNota")]
         public string MensagemPadraoNota { get; set; }
+
+        [JsonProperty("tipoNfeComplementar")]
+        [APIEnum("TipoNfeComplementar")]
+        public string TipoNfeComplementar { get; set; }
+
+        [JsonProperty("nFeRefComplementarIsDevolucao")]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
 
         [JsonProperty("cliente")]
         public virtual PessoaVM Cliente { get; set; }

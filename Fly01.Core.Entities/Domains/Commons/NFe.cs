@@ -12,5 +12,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double TotalImpostosProdutos { get; set; }
 
         public double TotalImpostosProdutosNaoAgrega { get; set; }
+
+        public TipoNfeComplementar TipoNfeComplementar { get; set; }
     }
 }

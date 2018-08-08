@@ -7,6 +7,8 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -35,6 +37,20 @@ namespace Fly01.Estoque.Controllers
 
             SelectProperties = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
             return GridLoad(filters);
+        }
+
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+            }
+
+            return target;
         }
 
         [OperationRole(NotApply = true)]

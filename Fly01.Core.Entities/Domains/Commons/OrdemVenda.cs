@@ -1,8 +1,8 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fly01.Core.Entities.Domains.Enum;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -11,14 +11,23 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public int Numero { get; set; }
 
+        [StringLength(60)]
+        public string NumeracaoVolumesTrans { get; set; }
+
+        [StringLength(60)]
+        public string Marca { get; set; }
+
         [StringLength(44)]
         public string ChaveNFeReferenciada { get; set; }
+
+        [Required]
+        public bool NFeRefComplementarIsDevolucao { get; set; }
 
         [Required]
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
-        public TipoFinalidadeEmissaoNFe TipoVenda { get; set; }
+        public TipoVenda TipoVenda { get; set; }
 
         [Required]
         public StatusOrdemVenda Status { get; set; }
@@ -35,6 +44,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public Guid? TransportadoraId { get; set; }
 
         public TipoFrete TipoFrete { get; set; }
+
+        [StringLength(60)]
+        public string TipoEspecie { get; set; }
 
         [StringLength(7)]
         public string PlacaVeiculo { get; set; }
@@ -84,6 +96,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
+
+        public TipoNfeComplementar TipoNfeComplementar { get; set; }
 
         public virtual Pessoa Cliente { get; set; }
 

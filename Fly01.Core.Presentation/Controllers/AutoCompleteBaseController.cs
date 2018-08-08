@@ -19,11 +19,11 @@ namespace Fly01.Core.Presentation.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"contains(nome, '{term}') or contains(sigla, '{term}')");
-            queryString.AddParam("$select", "id,nome,sigla");
+            queryString.AddParam("$select", "id,nome,sigla,codigoIbge");
             queryString.AddParam("$orderby", "nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<EstadoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, detail = item.Sigla };
+                                select new { id = item.Id, label = item.Nome, detail = item.Sigla, estadoCodigoIbge = item.CodigoIbge };
 
             return GetJson(filterObjects);
         }
@@ -36,11 +36,11 @@ namespace Fly01.Core.Presentation.Controllers
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"contains(nome, '{term}') and estadoId eq {prefilter}");
-            queryString.AddParam("$select", "id,nome,estadoId");
+            queryString.AddParam("$select", "id,nome,estadoId,codigoIbge");
             queryString.AddParam("$orderby", "nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<CidadeVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId };
+                                select new { id = item.Id, label = item.Nome, estadoId = item.EstadoId, cidadeCodigoIbge = item.CodigoIbge };
 
             return GetJson(filterObjects);
         }

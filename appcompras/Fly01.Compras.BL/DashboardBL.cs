@@ -1,6 +1,5 @@
 ﻿using Fly01.Compras.DAL;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Collections.Generic;
@@ -10,301 +9,114 @@ namespace Fly01.Compras.BL
 {
     public class DashboardBL
     {
-        private FormaPagamentoBL _formaPagamentoBL;
         private PedidoBL _pedidoBL;
         private PedidoItemBL _pedidoItemBL;
-        private OrcamentoBL _orcamentoBL;
-        private OrcamentoItemBL _orcamentoItemBL;
         private OrdemCompraBL _ordemCompraBL;
-        private OrdemCompraItemBL _ordemCompraItemBL;
-        private ProdutoBL _produtoBL;
-        private DateTime filtro;
-
-        public DashboardBL(AppDataContext context, FormaPagamentoBL formaPagamentoBL, PedidoBL pedidoBL, PedidoItemBL pedidoItemBL, OrcamentoBL orcamentoBL, OrcamentoItemBL orcamentoitemBL, OrdemCompraBL ordemcompraBL, OrdemCompraItemBL ordemCompraItemBL, ProdutoBL produtoBL)
+        
+        public DashboardBL(AppDataContext context, PedidoBL pedidoBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemcompraBL)
         {
-            this._formaPagamentoBL = formaPagamentoBL;
-            this._pedidoBL = pedidoBL;
-            this._pedidoItemBL = pedidoItemBL;
-            this._orcamentoBL = orcamentoBL;
-            this._orcamentoItemBL = orcamentoitemBL;
-            this._ordemCompraBL = ordemcompraBL;
-            this._ordemCompraItemBL = ordemCompraItemBL;
-            this._produtoBL = produtoBL;
+            _pedidoBL = pedidoBL;
+            _pedidoItemBL = pedidoItemBL;
+            _ordemCompraBL = ordemcompraBL;
         }
 
-
-        public List<ComprasStatusVM> GetComprasStatus(DateTime filtro, string tipo)
+        public List<ProdutosMaisCompradosVM> GetProdutosMaisComprados(DateTime filtro)
         {
-            List<ComprasStatusVM> quantidadeLista = new List<ComprasStatusVM>();
-            List<ComprasStatusVM> retornos = new List<ComprasStatusVM>();
-            this.filtro = filtro;
-            //Retorna somente os dados de orçamentos de compras
-            if (tipo == TipoOrdemCompra.Orcamento.ToString())
-            {
-
-                quantidadeLista = getQuantidadeStatus(TipoOrdemCompra.Orcamento);
-
-                var groupJoin = (from orcamento in _orcamentoBL.All
-                                 join ordemcompra in _ordemCompraBL.All on orcamento.Id equals ordemcompra.Id
-                                 join orcamentoitem in _orcamentoItemBL.All on ordemcompra.Id equals orcamentoitem.OrcamentoId into ps
-                                 from p in ps.DefaultIfEmpty()
-                                 join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
-                                 from x in xs.DefaultIfEmpty()
-                                 where ordemcompra.Data.Month.Equals(filtro.Month) && ordemcompra.Data.Year.Equals(filtro.Year)
-                                 select new
-                                 {
-                                     OrdemCompra = ordemcompra,
-                                     OrdemCompraItem = x
-                                 }).ToList();
-
-                retornos = groupJoin.Select(x => new
+            return _pedidoItemBL
+                .AllIncluding(x => x.Produto, x => x.Pedido)
+                .Where(x => x.Pedido.Data.Month.Equals(filtro.Month) && x.Pedido.Data.Year.Equals(filtro.Year) && x.Pedido.Status == StatusOrdemCompra.Finalizado)
+                .Select(x => new
                 {
-                    Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
-                    Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
-                    x.OrdemCompra.Status
-                }).GroupBy(x => new { x.Status })
-                    .Select(x => new ComprasStatusVM
-                    {
-                        Status = x.Key.Status.ToString(),
-                        Total = Math.Round(x.Sum(u => u.Total), 2),
-                        Quantidade = x.Count()
-                    }).ToList();
-            }
-            else
-            {
-                //Retorna somente os dados de pedidos de compras
-                if (tipo == TipoOrdemCompra.Pedido.ToString())
-                {
-                    quantidadeLista = getQuantidadeStatus(TipoOrdemCompra.Pedido);
-
-
-                    var groupJoin = (from pedido in _pedidoBL.All
-                                     join ordemcompra in _ordemCompraBL.All on pedido.Id equals ordemcompra.Id
-                                     join pedidoitem in _pedidoItemBL.All on ordemcompra.Id equals pedidoitem.PedidoId into ps
-                                     from p in ps.DefaultIfEmpty()
-                                     join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
-                                     from x in xs.DefaultIfEmpty()
-                                     where ordemcompra.Data.Month.Equals(filtro.Month) && ordemcompra.Data.Year.Equals(filtro.Year)
-                                     select new
-                                     {
-                                         OrdemCompra = ordemcompra,
-                                         Pedido = pedido,
-                                         OrdemCompraItem = x
-                                     }).ToList();
-
-                    retornos = groupJoin.Select(x => new
-                    {
-                        //Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
-                        Total = x.OrdemCompraItem != null ? x.Pedido.Total.GetValueOrDefault(0) : 0,
-                        Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
-                        x.OrdemCompra.Status
-                    })
-                    .GroupBy(x => new { x.Status })
-                    .Select(x => new ComprasStatusVM
-                    {
-                        Status = x.Key.Status.ToString(),
-                        //Total = Math.Round(x.Sum(u => u.Total), 2),
-                        Total = x.Sum(u => u.Total),
-                        Quantidade = x.Count()
-                    }).ToList();
-
-                }
-            }
-
-            return (from x in retornos
-                    join y in quantidadeLista on x.Status equals y.Status
-                    select new ComprasStatusVM
-                    { Status = x.Status, Quantidade = y.Quantidade, Total = x.Total }).ToList();
-        }
-
-
-        public List<ProdutosMaisCompradosVM> getProdutosMaisComprados(DateTime filtro)
-        {
-            return _ordemCompraItemBL.All.Where(x => x.DataInclusao.Month.Equals(filtro.Month) && x.DataInclusao.Year.Equals(filtro.Year))
-                    .Join(_produtoBL.All, v =>
-                    v.ProdutoId, p => p.Id, (ordemCompraItem, produto) =>
-                    new { OrdemCompraItem = ordemCompraItem, Produto = produto })
-                        .Select(x => new
-                        {
-                            x.OrdemCompraItem.ProdutoId,
-                            x.Produto.CodigoProduto,
-                            x.Produto.Descricao,
-                            x.OrdemCompraItem.Valor,
-                            x.OrdemCompraItem.Quantidade,
-                            UnidadeMedida = x.Produto.UnidadeMedida.Descricao
-                        })
-                        .GroupBy(x => new { x.CodigoProduto, x.Descricao, x.ProdutoId })
-                        .Select(x => new ProdutosMaisCompradosVM
-                        {
-                            CodigoProduto = x.Key.CodigoProduto,
-                            Descricao = x.Key.Descricao,
-                            Quantidade = x.Count(),
-                            Valor = x.Sum(y => y.Valor),
-                            UnidadeMedida = x.Select(y => y.UnidadeMedida).FirstOrDefault()
-                        }).OrderByDescending(x => x.Quantidade).Take(10).ToList();
-        }
-
-
-        public List<ComprasFormasPagamentoVM> getComprasFormasPagamento(DateTime filtro, string tipo)
-        {
-
-            this.filtro = filtro;
-
-            //Retorna somente os dados de orçamentos de compras
-            if (tipo == TipoOrdemCompra.Orcamento.ToString())
-            {
-                List<ComprasFormasPagamentoVM> quantidadeLista = getQuantidadeComprasPagamento(TipoOrdemCompra.Orcamento);
-
-                var groupJoin = (from orcamento in _orcamentoBL.All
-                                 join ordemcompra in _ordemCompraBL.All on orcamento.Id equals ordemcompra.Id
-                                 join formapagamento in _formaPagamentoBL.All on ordemcompra.FormaPagamentoId equals formapagamento.Id into fs
-                                 from f in fs.DefaultIfEmpty()
-                                 join orcamentoitem in _orcamentoItemBL.All on ordemcompra.Id equals orcamentoitem.OrcamentoId into ps
-                                 from p in ps.DefaultIfEmpty()
-                                 join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
-                                 from x in xs.DefaultIfEmpty()
-                                 where orcamento.Data.Month.Equals(filtro.Month) && orcamento.Data.Year.Equals(filtro.Year)
-                                 select new
-                                 {
-                                     OrdemCompra = ordemcompra,
-                                     FormaPagamento = f,
-                                     OrdemCompraItem = x
-                                 }).ToList();
-
-                List<ComprasFormasPagamentoVM> orcamentos = groupJoin.Select(x => new
-                {
-                    Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
-                    Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
-                    TipoFormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.TipoFormaPagamento.ToString() : ""
+                    x.ProdutoId,
+                    x.Produto.CodigoProduto,
+                    x.Produto.Descricao,
+                    Desconto = (x.Desconto / x.Quantidade),
+                    x.Valor,
+                    x.Quantidade
                 })
-                .GroupBy(x => new { x.TipoFormaPagamento })
-                .Select(x => new ComprasFormasPagamentoVM
+                .GroupBy(x => new { x.CodigoProduto, x.Descricao, x.ProdutoId, x.Desconto })
+                .Select(x => new ProdutosMaisCompradosVM
                 {
-                    TipoFormaPagamento = x.Key.TipoFormaPagamento,
-                    Total = Math.Round(x.Sum(u => u.Total), 2),
-                    Quantidade = x.Count()
-                }).ToList();
-
-                List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
-
-                foreach (var item in orcamentos)
+                    CodigoProduto = x.Key.CodigoProduto,
+                    Descricao = x.Key.Descricao,
+                    Quantidade = x.Sum(y => y.Quantidade),
+                    Valor = x.Sum(y => y.Valor) - x.Key.Desconto
+                })
+                .OrderByDescending(x => x.Quantidade)
+                .Take(10).ToList();
+        }
+        public List<MaioresFornecedoresVM> GetMaioresFornecedores(DateTime filtro)
+        {
+            return _pedidoBL
+                .AllIncluding(x => x.Fornecedor)
+                .Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.Status == StatusOrdemCompra.Finalizado)
+                .Select(x => new 
                 {
-                    ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                    itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
-                    itemCompras.Quantidade = item.Quantidade;
-                    itemCompras.Total = item.Total;
-                    listaComprasPagamento.Add(itemCompras);
-                }
-
-                return (from x in listaComprasPagamento
-                        join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
-                        select new ComprasFormasPagamentoVM
-                        { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
-            }
-            else
-            {
-                //Retorna somente os dados de pedidos de compras
-                if (tipo == TipoOrdemCompra.Pedido.ToString())
+                    x.Fornecedor.Id,
+                    x.Fornecedor.Nome,
+                    x.Total
+                })
+                .GroupBy(x => new { x.Id, x.Nome })
+                .Select(x => new MaioresFornecedoresVM
                 {
-                    List<ComprasFormasPagamentoVM> quantidadeLista = getQuantidadeComprasPagamento(TipoOrdemCompra.Pedido);
-
-                    var groupJoin = (from pedido in _pedidoBL.All
-                                     join ordemcompra in _ordemCompraBL.All on pedido.Id equals ordemcompra.Id
-                                     join formapagamento in _formaPagamentoBL.All on ordemcompra.FormaPagamentoId equals formapagamento.Id into fs
-                                     from f in fs.DefaultIfEmpty()
-                                     join pedidoitem in _pedidoItemBL.All on ordemcompra.Id equals pedidoitem.PedidoId into ps
-                                     from p in ps.DefaultIfEmpty()
-                                     join ordemcompraitem in _ordemCompraItemBL.All on p.Id equals ordemcompraitem.Id into xs
-                                     from x in xs.DefaultIfEmpty()
-                                     where pedido.Data.Month.Equals(filtro.Month) && pedido.Data.Year.Equals(filtro.Year)
-                                     select new
-                                     {
-                                         OrdemCompra = ordemcompra,
-                                         FormaPagamento = f,
-                                         Pedido = pedido,
-                                         OrdemCompraItem = x
-                                     }).ToList();
-
-                    List<ComprasFormasPagamentoVM> pedidos = groupJoin.Select(x => new
-                    {
-                        //Total = x.OrdemCompraItem != null ? ((x.OrdemCompraItem.Quantidade * x.OrdemCompraItem.Valor) - x.OrdemCompraItem.Desconto) : 0,
-                        Total = x.OrdemCompraItem != null ? x.Pedido.Total.GetValueOrDefault(0) : 0,
-                        Quantidade = x.OrdemCompraItem != null ? x.OrdemCompraItem.Quantidade : 0,
-                        TipoFormaPagamento = x.FormaPagamento != null ? x.FormaPagamento.TipoFormaPagamento.ToString() : ""
-                    })
-                    .GroupBy(x => new { x.TipoFormaPagamento })
-                    .Select(x => new ComprasFormasPagamentoVM
-                    {
-                        TipoFormaPagamento = x.Key.TipoFormaPagamento,
-                        //Total = Math.Round(x.Sum(u => u.Total), 2),
-                        Total = x.Sum(u => u.Total),
-                        Quantidade = x.Count()
-                    }).ToList();
-
-                    List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
-
-                    foreach (var item in pedidos)
-                    {
-                        ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                        itemCompras.TipoFormaPagamento = item.TipoFormaPagamento.Length == 0 ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.ToString());
-                        itemCompras.Quantidade = item.Quantidade;
-                        itemCompras.Total = item.Total;
-                        listaComprasPagamento.Add(itemCompras);
-                    }
-
-
-                    return (from x in listaComprasPagamento
-                            join y in quantidadeLista on x.TipoFormaPagamento equals y.TipoFormaPagamento
-                            select new ComprasFormasPagamentoVM
-                            { TipoFormaPagamento = x.TipoFormaPagamento, Quantidade = y.Quantidade, Total = x.Total }).ToList();
-                }
-            }
-
-            return null;
+                    Id = x.Key.Id,
+                    Nome = x.Key.Nome,
+                    Valor = x.Sum(y => y.Total ?? 0)
+                })
+                .OrderByDescending(x => x.Valor)
+                .Take(10).ToList();
         }
 
-
-        public List<ComprasFormasPagamentoVM> getQuantidadeComprasPagamento(TipoOrdemCompra tipoOrdemCompra)
+        public List<DashboardComprasVM> GetComprasStatus(DateTime filtro, string tipo)
         {
-            //Select realizado para mostrar a quantidade de orçamentos mesmo sem Itens
-            var lista = _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
-             .GroupJoin(_formaPagamentoBL.All, v =>
-             v.FormaPagamentoId, p => p.Id, (ordemcompra, formapagamento) =>
-             new { OrdemCompra = ordemcompra, FormaPagamento = formapagamento })
-             .SelectMany(
-             temp => temp.FormaPagamento.DefaultIfEmpty(),
-             (temp, x) => new
-             {
-                 TipoFormaPagamento = x.TipoFormaPagamento
-             })
-            .GroupBy(x => new { x.TipoFormaPagamento })
-            .Select(x => new ComprasPagamentosVM { TipoFormaPagamento = x.Key.TipoFormaPagamento, Quantidade = x.Count() }).ToList();
-
-            List<ComprasFormasPagamentoVM> listaComprasPagamento = new List<ComprasFormasPagamentoVM>();
-
-            foreach (var item in lista)
-            {
-                ComprasFormasPagamentoVM itemCompras = new ComprasFormasPagamentoVM();
-                itemCompras.TipoFormaPagamento = item.TipoFormaPagamento == null ? "Não Definido" : EnumHelper.GetValue(typeof(TipoFormaPagamento), item.TipoFormaPagamento.Value.ToString());
-                itemCompras.Quantidade = item.Quantidade;
-                itemCompras.Total = item.Total;
-                listaComprasPagamento.Add(itemCompras);
-            }
-
-            return listaComprasPagamento;
-        }
-
-        public List<ComprasStatusVM> getQuantidadeStatus(TipoOrdemCompra tipoOrdemCompra)
-        {
-            //Select realizado para mostrar a quantidade de orçamentos mesmo sem Itens
-            return _ordemCompraBL.All.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.TipoOrdemCompra == tipoOrdemCompra)
-                .Select(x => new { x.Status })
-                .GroupBy(x => new { x.Status })
-                .Select(x => new ComprasStatusVM
+            return _ordemCompraBL.All
+                .Where(x => x.TipoOrdemCompra.ToString() == tipo && x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
+                .Select(x => new
                 {
-                    Quantidade = x.Count(),
-                    Status = x.Key.Status.ToString(),
-                }).ToList();
+                    Descricao = x.Status.ToString(),
+                    x.Total
+                })
+                .GroupBy(x => new { x.Descricao })
+                .Select(x => new DashboardComprasVM
+                {
+                    Tipo = x.Key.Descricao,
+                    Total = x.Sum(v => v.Total ?? 0)
+                })
+                .ToList();
+        }
+        public List<DashboardComprasVM> GetComprasCategoria(DateTime filtro, string tipo)
+        {
+            return _ordemCompraBL.AllIncluding(x => x.Categoria)
+                .Where(x => x.TipoOrdemCompra.ToString() == tipo && x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
+                .Select(x => new
+                {
+                    x.Categoria.Descricao,
+                    x.Total
+                })
+                .GroupBy(x => new { x.Descricao })
+                .Select(x => new DashboardComprasVM
+                {
+                    Tipo = x.Key.Descricao,
+                    Total = x.Sum(v => v.Total ?? 0)
+                })
+                .ToList();
+        }
+        public List<DashboardComprasVM> GetComprasFormasPagamento(DateTime filtro, string tipo)
+        {
+            return _ordemCompraBL.AllIncluding(x => x.FormaPagamento)
+                .Where(x => x.TipoOrdemCompra.ToString() == tipo && x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year))
+                .Select(x => new
+                {
+                    x.FormaPagamento.Descricao,
+                    x.Total
+                })
+                .GroupBy(x => new { x.Descricao })
+                .Select(x => new DashboardComprasVM
+                {
+                    Tipo = x.Key.Descricao,
+                    Total = x.Sum(v => v.Total ?? 0)
+                })
+                .ToList();
         }
     }
 }

@@ -21,10 +21,12 @@
     function errTotalNegativo(total) {
         var formPedido = 'form#fly01mdlfrmPedidoItem ';
 
-        fly01.toast("O Desconto não pode ser maior ou igual a " + total + " reais.", 'error');
+        fly01.fn.submitErrorHandler($formPedido.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
         $(formPedido + 'input#total').val(total);
         $(formPedido + 'input#desconto').val("");
+
+        return false;
     }
 
     function fnChangeTotal() {
@@ -38,10 +40,16 @@
             return;
         }
 
-        var total = (parseFloat(quantidade) * parseFloat(valor));
+        var qtd = parseFloat(quantidade);
+        if (qtd > 0) {
+            var total = (parseFloat(quantidade) * parseFloat(valor));
+        } else {
+            //nota de complemento de preço nao tem quantidade, n tem como multiplicar
+            var total = parseFloat(valor);
+        }
         var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
 
-        if (totalDescontado > 0) {
+        if (totalDescontado >= 0) {
             totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
             $(formPedido + 'input#total').val(totalDescontado);
         }

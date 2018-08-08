@@ -12,9 +12,13 @@ namespace Fly01.Core.ServiceBus
     {
         public static void Send(string routingKey, string appUser, string plataformaUrl, TEntity message, RabbitConfig.EnHttpVerb httpVerb)
         {
+            var factory = RabbitConfig.Factory;
+
             try
             {
-                using (var connection = RabbitConfig.Factory.CreateConnection("prdc" + RabbitConfig.QueueName))
+                factory.VirtualHost = RabbitConfig.VirtualHost.Split(',')[0];
+
+                using (var connection = factory.CreateConnection("prdc" + RabbitConfig.QueueName))
                 {
                     var channel = connection.CreateModel();
 

@@ -23,7 +23,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public PessoaBaseController()
         {
-            ExpandProperties = "estado($select=id,nome,sigla),cidade($select=id,nome,estadoId)";
+            ExpandProperties = "estado($select=id,nome,sigla,codigoIbge),cidade($select=id,nome,estadoId,codigoIbge)";
         }
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -81,7 +81,7 @@ namespace Fly01.Core.Presentation.Controllers
             entityVM.InscricaoEstadual = Regex.Replace(entityVM.InscricaoEstadual ?? "", regexSomenteDigitos, "");
 
             if (string.IsNullOrEmpty(entityVM.TipoIndicacaoInscricaoEstadual))
-                entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteICMS";
+                entityVM.TipoIndicacaoInscricaoEstadual = "ContribuinteIsento";
         }
 
         private string GetTipoDocumento(string documento)
@@ -167,7 +167,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-
+            
             var config = new FormUI
             {
                 Action = new FormUIAction
@@ -183,6 +183,8 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "estadoCodigoIbge" });
+            config.Elements.Add(new InputHiddenUI { Id = "cidadeCodigoIbge" });
 
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 100 });
@@ -213,7 +215,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "estadoNome",
                 DomEvents = new List<DomEventUI>
                 {
-                    new DomEventUI { DomEvent = "change", Function = "fnChangeEstado" }
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnStateSelect" }
                 }
             });
 
@@ -225,7 +227,11 @@ namespace Fly01.Core.Presentation.Controllers
                 MaxLength = 35,
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
                 LabelId = "cidadeNome",
-                PreFilter = "estadoId"
+                PreFilter = "estadoId",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnCitySelect" }
+                }
             });
 
             config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 50 });
@@ -238,7 +244,11 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 l3",
                 Label = "Indicação Inscrição Estadual",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoIndicacaoInscricaoEstadual))),
-                ConstrainWidth = true
+                ConstrainWidth = true, 
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI {DomEvent = "change", Function = "fnChangeTipoInscricao" }
+                }
             });
             config.Elements.Add(new InputTextUI { Id = "inscricaoEstadual", Class = "col s6 l3", Label = "Inscrição Estadual", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "inscricaoMunicipal", Class = "col s6 l3", Label = "Inscrição Municipal", MaxLength = 18 });

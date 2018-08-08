@@ -1,19 +1,33 @@
 ﻿<script>
     function fnShowHideNFeReferenciada(tipoVenda) {
-        if (tipoVenda == "Devolucao") {
+        if (tipoVenda == "Devolucao" || tipoVenda == "Complementar" ) {
             $("#chaveNFeReferenciada").rules("add", { required: true });
             $("#chaveNFeReferenciadaField").show();
 
             $("div#clienteIdField").hide();
 
-            $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
+            if (tipoVenda == "Devolucao") {
+                $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
+                $("input#tipoCarteira").val("Despesa");
+                $("#nFeRefComplementarIsDevolucaoField").hide();
+            } else {//complementar
+                $('select#tipoNfeComplementar').val("ComplPrecoQtd");
+                $('select#tipoNfeComplementar').material_select();
 
-            $("input#tipoCarteira").val("Despesa");
+                $("#grupoTributarioPadraoDescricao").rules("remove", "required");
+                $("#grupoTributarioPadraoDescricao").removeClass("invalid")
+                $("#grupoTributarioPadraoIdField").hide();
+                $("#nFeRefComplementarIsDevolucaoField").show();
+
+                $("div#clienteIdField").hide();
+                $("input#tipoCarteira").val("Receita");
+            }
         }
         else {
             $("input#chaveNFeReferenciada").rules("remove", "required");
             $("input#chaveNFeReferenciada").removeClass("invalid")
             $("#chaveNFeReferenciadaField").hide();
+            $("#nFeRefComplementarIsDevolucaoField").hide();
             $("input#chaveNFeReferenciada").val("");
 
             $("div#clienteIdField").show();

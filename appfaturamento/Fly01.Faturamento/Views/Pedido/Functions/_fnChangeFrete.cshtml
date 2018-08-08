@@ -4,7 +4,7 @@
     }
 
     function fnChangeFrete() {
-        $('input#valorFrete').removeAttr('disabled');
+        fnEnableInput();
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
         var calculaFrete = (
@@ -19,10 +19,36 @@
             $('#transportadoraNome').removeClass("invalid");
 
             if (tipoFrete == "SemFrete") {
-                $('input#valorFrete').val(0);
-                $('input#valorFrete').attr('disabled', 'disabled');
+                fnDisableInput();
             }
             fly01.fn.updateTextFields();
         }
+    }
+
+    function fnEnableInput() {
+        $('input#valorFrete').removeAttr('disabled');
+        $('input#transportadoraNome').removeAttr('disabled');
+        $('input#placaVeiculo').removeAttr('disabled');
+        $('input#estadoPlacaVeiculoNome').removeAttr('disabled');
+        $('input#marca').removeAttr('disabled');
+        $('input#pesoBruto').removeAttr('disabled');
+        $('input#pesoLiquido').removeAttr('disabled');
+        $('input#quantidadeVolumes').removeAttr('disabled');
+        $('#tipoEspecie').removeAttr('disabled');
+        $('input#numeracaoVolumesTrans').removeAttr('disabled');
+    }
+
+    function fnDisableInput() {
+        $('input#valorFrete').val(0);
+        $('input#valorFrete').attr('disabled', 'disabled');
+        $('input#transportadoraNome').attr('disabled', 'disabled');
+        $('input#placaVeiculo').attr('disabled', 'disabled');
+        $('input#estadoPlacaVeiculoNome').attr('disabled', 'disabled');
+        $('input#marca').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoBruto').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoLiquido').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#quantidadeVolumes').attr('disabled', 'disabled').removeClass("invalid");
+        $('#tipoEspecie').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#numeracaoVolumesTrans').attr('disabled', 'disabled').removeClass("invalid");
     }
 </script>

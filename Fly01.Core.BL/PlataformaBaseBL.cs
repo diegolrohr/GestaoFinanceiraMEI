@@ -2,6 +2,8 @@
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -71,7 +73,12 @@ namespace Fly01.Core.BL
             entity.UsuarioInclusao = AppUser;
             entity.UsuarioAlteracao = null;
             entity.UsuarioExclusao = null;
-            entity.Ativo = true;
+            if (!entity.Ativo)
+            {
+                entity.UsuarioExclusao = AppUser;
+                entity.DataExclusao = DateTime.Now;
+            }
+
 
             ValidaModel(entity);
 
@@ -88,7 +95,12 @@ namespace Fly01.Core.BL
             entity.DataExclusao = null;
             entity.UsuarioAlteracao = AppUser;
             entity.UsuarioExclusao = null;
-            entity.Ativo = true;
+            if (!entity.Ativo)
+            {
+                entity.UsuarioExclusao = AppUser;
+                entity.DataExclusao = DateTime.Now;
+            }
+
 
             ValidaModel(entity);
         }
@@ -125,7 +137,7 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(TEntity item, RabbitConfig.EnHttpVerb httpMethod)
+        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
@@ -133,20 +145,30 @@ namespace Fly01.Core.BL
             switch (httpMethod)
             {
                 case RabbitConfig.EnHttpVerb.POST:
-                    Insert(item);
+                    Insert(JsonConvert.DeserializeObject<TEntity>(item.ToString()));
                     break;
                 case RabbitConfig.EnHttpVerb.PUT:
-                    Update(item);
-                    AttachForUpdate(item);
-                    break;
-                case RabbitConfig.EnHttpVerb.DELETE:
-                    var itemToDelete = Find(item.Id);
-                    if (itemToDelete != null)
                     {
-                        Delete(itemToDelete);
-                        AttachForUpdate(itemToDelete);
+                        var id = item.Id ?? item.id;
+                        var itemToUpdate = Reflection.CopyPropertiesFromJson(Find(Guid.Parse(id.ToString())), item.ToString());
+
+                        Update(itemToUpdate);
+                        AttachForUpdate(itemToUpdate);
+
+                        break;
                     }
-                    break;
+                case RabbitConfig.EnHttpVerb.DELETE:
+                    {
+                        var id = item.Id ?? item.id;
+                        var itemToDelete = Find(Guid.Parse(id.ToString()));
+
+                        if (itemToDelete != null)
+                        {
+                            Delete(itemToDelete);
+                            AttachForUpdate(itemToDelete);
+                        }
+                        break;
+                    }
             }
         }
 

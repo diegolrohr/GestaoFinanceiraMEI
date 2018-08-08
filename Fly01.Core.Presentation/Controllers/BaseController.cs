@@ -56,6 +56,7 @@ namespace Fly01.Core.Presentation
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "saveNew", Label = "Salvar e Novo", OnClickFn = "fnSalvar", Type = "submit", Position = HtmlUIButtonPosition.Main });
             }
 
             return target;
@@ -89,6 +90,8 @@ namespace Fly01.Core.Presentation
 
                     buscaCepVM.StateId = data.EstadoId.ToString();
                     buscaCepVM.CityId = data.Id.ToString();
+                    buscaCepVM.StateCodeIbge = data.Estado.CodigoIbge.ToString() ?? "";
+                    buscaCepVM.CityCodeIbge = data.CodigoIbge.ToString();
 
                     return JsonResponseStatus.GetJson(new { success = true, endereco = buscaCepVM });
                 }

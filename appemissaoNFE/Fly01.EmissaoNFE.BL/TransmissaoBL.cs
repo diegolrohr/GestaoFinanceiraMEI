@@ -1,13 +1,13 @@
-﻿using Fly01.Core.BL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
-using System;
-using System.Linq;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using System.Collections.Generic;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -150,12 +150,12 @@ namespace Fly01.EmissaoNFE.BL
                         new Error("Finalidade da emissão inválida.", "Item.Identificador.FinalidadeEmissaoNFe"));
                     entity.Fail(item.Identificador.ConsumidorFinal != 0 && item.Identificador.ConsumidorFinal != 1,
                         new Error("Informação de consumidor final inválida.", "Item.Identificador.ConsumidorFinal"));
-                    entity.Fail((item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao && item.Identificador.NFReferenciada == null),
-                        new Error("Finalidade de devolução é necessário informar a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada"));
+                    entity.Fail(((item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar) && item.Identificador.NFReferenciada == null),
+                        new Error("Finalidade de devolução/complementar é necessário informar a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada"));
                     if (item.Identificador.NFReferenciada != null)
                     {
-                        entity.Fail(item.Identificador.FinalidadeEmissaoNFe != TipoFinalidadeEmissaoNFe.Devolucao,
-                            new Error("A chave da nota fiscal referenciada só deve ser informada com finalidade de devolução.", "Item.Identificador.NFReferenciada"));
+                        entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste,
+                            new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
                         entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
                             new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                         entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,
@@ -345,18 +345,21 @@ namespace Fly01.EmissaoNFE.BL
 
                 if (item.Transporte.Volume != null)
                 {
-                    entity.Fail(item.Transporte.Volume.Quantidade <= 0,
-                        new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Especie),
-                        new Error("Espécie de volume é um dado obrigatório", "Item.Transporte.Volume.Especie"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Marca),
-                        new Error("Marca do volume é um dado obrigatório", "Item.Transporte.Volume.marca"));
-                    entity.Fail(string.IsNullOrEmpty(item.Transporte.Volume.Numeracao),
-                        new Error("Numeração do volume é um dado obrigatório", "Item.Transporte.Volume.Numeracao"));
-                    entity.Fail(item.Transporte.Volume.PesoLiquido <= 0,
-                        new Error("Peso líquido inválido", "Item.Transporte.Volume.PesoLiquido"));
-                    entity.Fail(item.Transporte.Volume.PesoBruto <= 0,
-                        new Error("Peso bruto inválido", "Item.Transporte.Volume.PesoBruto"));
+                    if (item.Transporte.ModalidadeFrete != ModalidadeFrete.SemFrete)
+                    {
+                        entity.Fail(item.Transporte.Volume.Quantidade < 0,
+                            new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Especie) && ((item.Transporte.Volume.Especie?.Length > 60) || (item.Transporte.Volume.Especie.Replace(" ", "").Length == 0)),
+                            new Error("Espécie de volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Especie"));
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Marca) && ((item.Transporte.Volume.Marca?.Length > 60) || (item.Transporte.Volume.Marca.Replace(" ", "").Length == 0)),
+                            new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.marca"));
+                        entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Numeracao) && ((item.Transporte.Volume.Numeracao?.Length > 60) || (item.Transporte.Volume.Numeracao.Replace(" ", "").Length == 0)),
+                            new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Numeracao"));
+                        entity.Fail(item.Transporte.Volume.PesoLiquido < 0,
+                            new Error("Peso líquido inválido", "Item.Transporte.Volume.PesoLiquido"));
+                        entity.Fail(item.Transporte.Volume.PesoBruto < 0,
+                            new Error("Peso bruto inválido", "Item.Transporte.Volume.PesoBruto"));
+                    }
                 }
 
                 #endregion
@@ -1150,7 +1153,6 @@ namespace Fly01.EmissaoNFE.BL
                 #endregion Validação da classe Totais
 
                 #region Validação da classe Pagamento
-
                 if (item.Pagamento == null)
                     entity.Fail(true, new Error("Os dados de pagamento são obrigatórios.  Item: " + nItem, "Item.Pagamento"));
                 else
@@ -1164,8 +1166,8 @@ namespace Fly01.EmissaoNFE.BL
                         var nItemPagamento = 1;
                         foreach (var detalhePagamento in item.Pagamento.DetalhesPagamentos)
                         {
-                            var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoFinalidadeEmissaoNFe.Devolucao;
-                            entity.Fail(detalhePagamento.ValorPagamento <= 0, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
+                            var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao;
+                            entity.Fail(detalhePagamento.ValorPagamento <= 0 && !isSemPagamento, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
                             entity.Fail(isSemPagamento && detalhePagamento.TipoFormaPagamento != TipoFormaPagamento.SemPagamento, new Error("Nota de ajuste ou devolução, somente forma de pagamento do tipo Sem Pagamento. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                             entity.Fail(detalhePagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia, new Error("Forma de pagamento do tipo Transferência inválido, informe o tipo Outros. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                             nItemPagamento++;

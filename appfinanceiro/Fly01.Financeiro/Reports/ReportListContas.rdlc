@@ -943,7 +943,7 @@
                   <Style>
                     <FontSize>12pt</FontSize>
                     <FontWeight>Bold</FontWeight>
-                    <Color>#0c9abe</Color>
+                    <Color>Orange</Color>
                   </Style>
                 </TextRun>
               </TextRuns>

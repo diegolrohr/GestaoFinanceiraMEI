@@ -9,5 +9,7 @@
         public string State { get; set; }
         public string StateId { get; set; }
         public string CityId { get; set; }
+        public string StateCodeIbge { get; set; }
+        public string CityCodeIbge { get; set; }
     }
 }

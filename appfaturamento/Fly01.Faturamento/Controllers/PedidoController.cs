@@ -1,23 +1,23 @@
-﻿using Fly01.Faturamento.ViewModel;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.uiJS.Defaults;
-using Fly01.Core;
-using Fly01.Core.Helpers;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Faturamento.ViewModel;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -38,7 +38,8 @@ namespace Fly01.Faturamento.Controllers
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true },
-                    new DataTableUIParameter { Id = "tipoVenda", Required = true }
+                    new DataTableUIParameter { Id = "tipoVenda", Required = true },
+                    new DataTableUIParameter { Id = "nFeRefComplementarIsDevolucao", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
                 {
@@ -109,13 +110,13 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalidade",
                         Id = "stepFinalidade",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 11,
+                        Quantity = 12,
                     },
                     new FormWizardUIStep()
                     {
@@ -139,13 +140,13 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Transporte",
                         Id = "stepTransporte",
-                        Quantity = 8,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 15,
+                        Quantity = 16,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -163,12 +164,23 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
                     new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
+                    new ButtonGroupOptionUI { Id = "btnComplementar", Value = "Complementar", Label = "Complementar"},
                 }
             });
             config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
+            config.Elements.Add(new InputCheckboxUI {
+                Id = "nFeRefComplementarIsDevolucao",
+                Class = "col s12 m8 offset-m2",
+                Label = "Nota Fiscal Referenciada é de Devolução",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnClickComplementarIsDevolucao" }
+                }
+            });
             #endregion
 
             #region step Cadastro
+
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
@@ -176,7 +188,6 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
             config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-
 
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
 
@@ -192,6 +203,15 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
             }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoNfeComplementar",
+                Class = "col s12 m7",
+                Label = "Tipo do Complemento",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value))),
+                ConstrainWidth = true
+            });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "clienteId",
@@ -204,6 +224,8 @@ namespace Fly01.Faturamento.Controllers
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+
             #endregion
 
             #region step Produtos
@@ -284,6 +306,18 @@ namespace Fly01.Faturamento.Controllers
             #endregion
 
             #region step Transporte
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoFrete",
+                Class = "col s12 m4",
+                Label = "Tipo Frete",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
+                    }
+            });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "transportadoraId",
@@ -294,19 +328,6 @@ namespace Fly01.Faturamento.Controllers
                 DataUrlPost = Url.Action("PostTransportadora")
             }, ResourceHashConst.FaturamentoCadastrosTransportadoras));
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoFrete",
-                Class = "col s12 m4",
-                Label = "Tipo Frete",
-                Value = "SemFrete",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
-                DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
-                    }
-            });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "placaVeiculo",
@@ -333,9 +354,12 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "change", Function = "fnChangeFrete" }
                     }
             });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto" });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido" });
-            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes" });
+            config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3 });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
+            config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
+            config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });
             #endregion
 
             #region step Finalizar
@@ -346,7 +370,16 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + serviços + impostos + frete)", Readonly = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "movimentaEstoque",
+                Class = "col s12 m4",
+                Label = "Movimentar estoque",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI{DomEvent = "click", Function = "fnToggleMovimentaEstoque" }
+                }
+            });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraNotaFiscal",
@@ -361,8 +394,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
-            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });
+            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
+            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
             config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
             #endregion
 
@@ -372,7 +405,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "chaveNFeReferenciada",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a etapa da finalidade, não é mais possível voltar e editar estes dados."
+                    Text = "Se o pedido for do tipo Devolução/Complementar, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a etapa da finalidade, não é mais possível voltar e editar estes dados."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -388,7 +421,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal/Complementar-Normal) ou contas a Pagar(Devolução/Complementar-Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -404,7 +437,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal/Complementar-Normal) ou Entrada(Devolução/Complementar-Devolução) da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -527,13 +560,15 @@ namespace Fly01.Faturamento.Controllers
             };
         }
 
-        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda)
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string nFeRefComplementarIsDevolucao)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
                 queryString.AddParam("tipoVenda", tipoVenda);
+                queryString.AddParam("isComplementarDevolucao", nFeRefComplementarIsDevolucao);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);
 
@@ -561,7 +596,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Cliente = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);
@@ -607,7 +642,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Transportadora = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteICMS"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
             };
 
             NormarlizarEntidade(ref entity);

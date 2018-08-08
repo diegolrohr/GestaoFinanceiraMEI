@@ -125,14 +125,14 @@ namespace Fly01.Faturamento.BL
 
                 if (NFeComplementar != null)
                 {
-                    mensagemComplementar = $"NF-e Complementar a NF-e {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
+                    mensagemComplementar = $"NFe Complementar a NFe {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
                 }
                 else
                 {
                     var numNotaFiscal = entity.ChaveNFeReferenciada.Substring(25, 9);
                     var ano = entity.ChaveNFeReferenciada.Substring(2, 2);
                     var mes = entity.ChaveNFeReferenciada.Substring(4, 2);
-                    mensagemComplementar = $"NF-e Complementar a NF-e {numNotaFiscal} emitida em {mes}/{ano}";
+                    mensagemComplementar = $"NFe Complementar a NFe {numNotaFiscal} emitida em {mes}/{ano}";
                 }
             }
 

@@ -75,7 +75,7 @@ namespace Fly01.Core.ServiceBus
                             RabbitConfig.AppUser = GetHeaderValue("AppUser");
                             RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
 
-                            await DeliverMessage();
+                            await DeliverMessage(args.BasicProperties.AppId);
 
                             foreach (var item in exceptions)
                             {
@@ -101,6 +101,6 @@ namespace Fly01.Core.ServiceBus
             channel.BasicConsume(RabbitConfig.QueueName, false, consumer);
         }
 
-        protected abstract Task DeliverMessage();
+        protected abstract Task DeliverMessage(string appId);
     }
 }

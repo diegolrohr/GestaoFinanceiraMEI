@@ -29,6 +29,7 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaReceber entity)
         {
+            RpcClient rpcClient;
             var numero = default(int);
 
             entity.PlataformaId = PlataformaUrl;
@@ -44,13 +45,14 @@ namespace Fly01.Financeiro.BL
             if (!GuidHelper.IsValidGuid(entity.PessoaId) && !string.IsNullOrEmpty(entity.NomePessoa))
                 entity.PessoaId = pessoaBL.BuscaPessoaNome(entity.NomePessoa, true, false);
 
-            var rpcClient = new RpcClient();
-            numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
-
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
+
+                rpcClient = new RpcClient();
+                numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+
                 entity.Numero = numero;
 
                 base.Insert(entity);
@@ -61,7 +63,9 @@ namespace Fly01.Financeiro.BL
                                                 .GetPrestacoes(entity.CondicaoParcelamentoId,
                                                                entity.DataVencimento,
                                                                entity.ValorPrevisto);
+
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
+
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
                 {
                     var parcela = condicoesParcelamento[iParcela];
@@ -84,6 +88,9 @@ namespace Fly01.Financeiro.BL
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
+
+                    rpcClient = new RpcClient();
+                    numero = int.Parse(rpcClient.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                     itemContaReceber.Numero = numero;
 

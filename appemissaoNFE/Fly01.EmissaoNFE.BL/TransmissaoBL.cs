@@ -117,7 +117,7 @@ namespace Fly01.EmissaoNFE.BL
             {
                 _chaveBL = ChaveBL,
                 _cidadeBL = CidadeBL,
-                _cofopBL = CfopBL,
+                _cfopBL = CfopBL,
                 _empresaBL = EmpresaBL,
                 _entidadeBL = EntidadeBL,
                 _estadoBL = EstadoBL,

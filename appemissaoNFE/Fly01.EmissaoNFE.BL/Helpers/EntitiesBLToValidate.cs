@@ -2,7 +2,7 @@
 {
     public class EntitiesBLToValidate
     {
-        public CfopBL _cofopBL { get; set; }
+        public CfopBL _cfopBL { get; set; }
         public ChaveBL _chaveBL { get; set; }
         public CidadeBL _cidadeBL { get; set; }
         public EmpresaBL _empresaBL { get; set; }

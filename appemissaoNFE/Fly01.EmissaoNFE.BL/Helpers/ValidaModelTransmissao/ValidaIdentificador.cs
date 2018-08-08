@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 {
-    public static class ValidaClasseIdentificador
+    public static class ValidaIdentificador
     {
         public static void ExecutarValidaIdentificador(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {

@@ -137,7 +137,7 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod)
+        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isBemacash)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
@@ -149,12 +149,22 @@ namespace Fly01.Core.BL
                     break;
                 case RabbitConfig.EnHttpVerb.PUT:
                     {
-                        var id = item.Id ?? item.id;
-                        var itemToUpdate = Reflection.CopyPropertiesFromJson(Find(Guid.Parse(id.ToString())), item.ToString());
+                        if (isBemacash)
+                        {
 
-                        Update(itemToUpdate);
-                        AttachForUpdate(itemToUpdate);
+                            var id = item.Id ?? item.id;
+                            var itemToUpdate = Reflection.CopyPropertiesFromJson(Find(Guid.Parse(id.ToString())), item.ToString());
 
+                            Update(itemToUpdate);
+                            AttachForUpdate(itemToUpdate);
+                        }
+                        else
+                        {
+                            var itemToUpdate = JsonConvert.DeserializeObject<TEntity>(item.ToString());
+
+                            Update(itemToUpdate);
+                            AttachForUpdate(itemToUpdate);
+                        }
                         break;
                     }
                 case RabbitConfig.EnHttpVerb.DELETE:

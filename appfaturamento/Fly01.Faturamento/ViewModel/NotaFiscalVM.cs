@@ -8,6 +8,8 @@ namespace Fly01.Faturamento.ViewModel
     [Serializable]
     public class NotaFiscalVM : DomainBaseVM
     {
+        [JsonProperty("chaveNFeReferenciada")]
+        public string ChaveNFeReferenciada { get; set; }
 
         [JsonProperty("numeracaoVolumesTrans")]
         public string NumeracaoVolumesTrans { get; set; }

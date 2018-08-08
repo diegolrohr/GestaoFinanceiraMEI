@@ -54,7 +54,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
-                Class = "col s12 m6 l3",
+                Class = "col s12 m6 l4",
                 Label = "Tipo Venda",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
@@ -63,19 +63,21 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoNfeComplementar",
-                Class = "col s12 m6 l3",
+                Class = "col s12 m6",
                 Label = "Tipo Complemento",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar)).ToList())
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
             {
                 Id = "status",
-                Class = "col s12 m6 l4",
+                Class = "col s12 m6",
                 Label = "Status",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusNotaFiscal)))
             });
+            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m12 l6", Label = "Chave SEFAZ Nota Fiscal Referenciada", Disabled = true });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "serieNotaFiscalIdNFe",

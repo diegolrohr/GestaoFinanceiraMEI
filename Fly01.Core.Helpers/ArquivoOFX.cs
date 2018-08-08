@@ -73,9 +73,6 @@ namespace Fly01.Core.Helpers
                         break;
                     }
             };
-
-
-
         }
 
         public void GetLancamentosBradesco()
@@ -109,7 +106,6 @@ namespace Fly01.Core.Helpers
             return _lancamentos;
         }
 
-
         public void GetLancamentosSantander()
         {
             //vem formato 1000,15
@@ -129,7 +125,6 @@ namespace Fly01.Core.Helpers
                     Descricao = c.Element("MEMO").Value,
                     MD5 = Base64Helper.CalculaMD5Hash(c.ToString())
                 }).ToList();
-
         }
 
         public List<OFXLancamento> GetLancamentosDebito()

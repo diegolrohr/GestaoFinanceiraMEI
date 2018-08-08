@@ -160,7 +160,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
-            notaFiscal.MensagemPadraoNota = mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "";
+            notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
             return notaFiscal;
         }
 

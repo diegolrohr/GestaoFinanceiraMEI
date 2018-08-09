@@ -10,8 +10,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
     {
         public static void ExecutarValidaIdentificador(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            #region Validações da classe Identificador
-
             if (item.Identificador == null)
                 entity.Fail(true, new Error("Os dados de identificação são obrigatórios.", "Item.Identificador"));
             else
@@ -32,32 +30,21 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarInformacaoConsumidorFinal(item, entity);
                 ValidarChaveNotaFiscalReferenciada(item, entity);
 
-                if (item.Identificador.NFReferenciada != null)
-                {
-                    ValidarChaveReferenciadaParaTipoDeNota(item, entity);
-                    ValidarChaveNotaFiscaNaoReferenciada(item, entity);
-                    ValidarLengthChaveNotaFiscal(item, entity);
-                }
+                ValidarNFReferenciada(item, entity);
             }
-            #endregion
         }
 
-        private static void ValidarLengthChaveNotaFiscal(ItemTransmissaoVM item, TransmissaoVM entity)
+        private static void ValidarNFReferenciada(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,
-                                    new Error("Tamanho da chave da nota fiscal referenciada deve conter 44 caracteres.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
-        }
-
-        private static void ValidarChaveNotaFiscaNaoReferenciada(ItemTransmissaoVM item, TransmissaoVM entity)
-        {
-            entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
-                                    new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
-        }
-
-        private static void ValidarChaveReferenciadaParaTipoDeNota(ItemTransmissaoVM item, TransmissaoVM entity)
-        {
-            entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste,
-                                    new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
+            if (item.Identificador.NFReferenciada != null)
+            {
+                entity.Fail(!String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada) && item.Identificador.NFReferenciada.ChaveNFeReferenciada.Length != 44,
+                    new Error("Tamanho da chave da nota fiscal referenciada deve conter 44 caracteres.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
+                entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
+                    new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
+                entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste,
+                    new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
+            }
         }
 
         private static void ValidarChaveNotaFiscalReferenciada(ItemTransmissaoVM item, TransmissaoVM entity)

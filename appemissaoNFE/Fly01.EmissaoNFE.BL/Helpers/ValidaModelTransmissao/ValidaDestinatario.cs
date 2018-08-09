@@ -11,8 +11,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         public static void ExecutarValidaDestinatario(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            #region Validações da classe Destinatario
-
             if (item.Destinatario == null)
                 entity.Fail(true, new Error("Os dados do destinatário são obrigatórios.", "Item.Destinatario"));
             else
@@ -29,9 +27,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarInscricaoEstadualDestinatario(item, entity);
                 ValidarCEPDestinatario(item, entitiesBLToValidate, entity);
             }
-
-            #endregion
-
         }
 
         private static void ValidarInscricaoEstadualDestinatario(ItemTransmissaoVM item, TransmissaoVM entity)

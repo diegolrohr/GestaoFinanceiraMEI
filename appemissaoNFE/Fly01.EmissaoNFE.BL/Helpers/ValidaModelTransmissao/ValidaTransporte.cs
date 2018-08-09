@@ -12,20 +12,14 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         public static void ExecutarValidaTransporte(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            #region Validações da classe Transporte
-
             var modFrete = EnumHelper.GetDataEnumValues(typeof(ModalidadeFrete));
 
             ValidarModalidadeFrete(item, entity, modFrete);
             ValidarTransportadora(item, entitiesBLToValidate, entity);
             ValidarVeiculo(item, entitiesBLToValidate, entity);
             ValidarVolume(item, entity);
-
-            #endregion
-
         }
 
-        #region Validações
         private static void ValidarVolume(ItemTransmissaoVM item, TransmissaoVM entity)
         {
             if (item.Transporte.Volume != null)
@@ -191,6 +185,5 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             entity.Fail(!modFrete.Any(x => x.Value == ((int)item.Transporte.ModalidadeFrete).ToString()),
                             new Error("Modalidade de frete inválida", "Item.Transporte.ModalidadeFrete"));
         }
-        #endregion
     }
 }

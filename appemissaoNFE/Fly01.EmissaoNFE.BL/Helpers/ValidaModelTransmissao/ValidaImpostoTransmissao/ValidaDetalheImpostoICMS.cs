@@ -14,7 +14,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
 {
     public static class ValidaDetalheImpostoICMS
     {
-        public static void ExecutaValidaImpostoICMS(Detalhe detalhe,TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item)
+        public static void ExecutaValidaImpostoICMS(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item)
         {
             #region Validações da classe Imposto.ICMS
 
@@ -36,39 +36,39 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         {
             switch (((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString())
             {
-                case "101": //Tributada pelo Simples Nacional com permissão de crédito
+                case "101":
                     ValidarSimplesNacionalComPermissaoCredito_101(detalhe, entity, nItemDetalhe);
                     break;
 
-                case "102": //Tributada pelo Simples Nacional sem permissão de crédito
+                case "102":
                     break;
 
-                case "103": //Isenção do ICMS no Simples Nacional para faixa de receita bruta
+                case "103":
                     break;
 
-                case "201": //Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
+                case "201":
                     ValidarCasoSubstituicaoTributaria_201(detalhe, entity, nItemDetalhe, item, ModalidadeST);
                     break;
 
-                case "202": //Tributada pelo Simples Nacional sem permissão de crédito e com cobrança do ICMS por substituição tributária
+                case "202":
                     ValidarSubstituicaoTributaria_202(detalhe, entity, nItemDetalhe, item, ModalidadeST);
                     break;
 
-                case "203": //Isenção do ICMS no Simples Nacional para faixa de receita bruta e com cobrança do ICMS por substituição tributária
+                case "203":
                     ValidarSubstituicaoTributaria_203(detalhe, entity, nItemDetalhe, item, ModalidadeST);
                     break;
 
-                case "300": //Imune
+                case "300":
                     break;
 
-                case "400": //Não tributada pelo Simples Nacional
+                case "400":
                     break;
 
-                case "500": //ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
+                case "500":
                     ValidarSubstituicaoTributaria_500(detalhe, entity, nItemDetalhe);
                     break;
 
-                case "900": //Outros
+                case "900":
                     ValidarSubstituicaoTributariaOutros_900(detalhe, entity, nItemDetalhe, item, Modalidade, ModalidadeST);
                     break;
 
@@ -80,50 +80,24 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
 
         private static void ValidarSimplesNacionalComPermissaoCredito_101(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
-            ValidarAliquotaAplicavel(detalhe, entity, nItemDetalhe);
-            ValidarValorCreditoICMS(detalhe, entity, nItemDetalhe);
+            entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue,
+                                    new Error("Alíquota aplicável de cálculo do crédito é obrigatória para CSOSN 101 e 201. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
+            entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
+                                    new Error("Valor crédito do ICMS é obrigatório para CSOSN 101 e 201. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorCreditoICMS"));
         }
 
         private static void ValidarSubstituicaoTributariaOutros_900(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item, List<SubtitleAttribute> Modalidade, List<SubtitleAttribute> ModalidadeST)
         {
-            //Informação do CSOSN e valor do ICMS passível de crédito pelo destinatário
-            entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
-                new Error("Percentual de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
-            entity.Fail(detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && !detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
-                new Error("Valor de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorCreditoICMS"));
+            ValidarInformacoesDoCSOSNEICMSPossivelDeCredito(detalhe, entity, nItemDetalhe);
 
-            //Informação do CSOSN e ICMS próprio
-            var ICMSProprio = false;
-            if (!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) ||
-              (detalhe.Imposto.ICMS.PercentualReducaoBC.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBC > 0) ||
-              (detalhe.Imposto.ICMS.ValorBC.HasValue && detalhe.Imposto.ICMS.ValorBC > 0) ||
-              (detalhe.Imposto.ICMS.AliquotaICMS.HasValue && detalhe.Imposto.ICMS.AliquotaICMS > 0) ||
-              (detalhe.Imposto.ICMS.ValorICMS.HasValue && detalhe.Imposto.ICMS.ValorICMS > 0 ||
-              !string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString())))
-            {
-                ICMSProprio = true;
-                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()),
-                    new Error("Modalidade de determinação da base de cálculo é obrigatória para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBC"));
-                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
-                    new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBCST"));
-                entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) && !Modalidade.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBC)),
-                    new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBC"));
-                entity.Fail(!detalhe.Imposto.ICMS.ValorBC.HasValue,
-                    new Error("Base de cálculo requerida para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
-                entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMS.HasValue,
-                    new Error("Alíquota requerida para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
-                entity.Fail(!detalhe.Imposto.ICMS.ValorICMS.HasValue,
-                    new Error("Valor do imposto requerido para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
-            }
+            var ICMSProprio = ValidarInformacoesCSOSNeICMSProprio(detalhe, entity, nItemDetalhe, Modalidade);
 
-            //Informação do CSOSN, ICMS próprio e ICMS ST
-            if (ICMSProprio &
-              (detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue && detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST > 0) ||
-              (detalhe.Imposto.ICMS.PercentualReducaoBCST.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBCST > 0) ||
-              (detalhe.Imposto.ICMS.ValorBCST.HasValue && detalhe.Imposto.ICMS.ValorBCST > 0) ||
-              (detalhe.Imposto.ICMS.AliquotaICMSST.HasValue && detalhe.Imposto.ICMS.AliquotaICMSST > 0) ||
-              (detalhe.Imposto.ICMS.ValorICMSST.HasValue && detalhe.Imposto.ICMS.ValorICMSST > 0)
-              )
+            ValidarInformacoesCSOSN_ICMSProprioEICMSST(detalhe, entity, nItemDetalhe, item, ModalidadeST, ICMSProprio);
+        }
+
+        private static void ValidarInformacoesCSOSN_ICMSProprioEICMSST(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, ItemTransmissaoVM item, List<SubtitleAttribute> ModalidadeST, bool ICMSProprio)
+        {
+            if (IsICMSProprioEValoresDetalhesValidos(detalhe, ICMSProprio))
             {
                 entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()) && !ModalidadeST.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBCST)),
                     new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBCST"));
@@ -144,6 +118,57 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
                         new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
                 }
             }
+        }
+
+        private static bool IsICMSProprioEValoresDetalhesValidos(Detalhe detalhe, bool ICMSProprio)
+        {
+            return ICMSProprio &
+                          (detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST.HasValue && detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST > 0) ||
+                          (detalhe.Imposto.ICMS.PercentualReducaoBCST.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBCST > 0) ||
+                          (detalhe.Imposto.ICMS.ValorBCST.HasValue && detalhe.Imposto.ICMS.ValorBCST > 0) ||
+                          (detalhe.Imposto.ICMS.AliquotaICMSST.HasValue && detalhe.Imposto.ICMS.AliquotaICMSST > 0) ||
+                          (detalhe.Imposto.ICMS.ValorICMSST.HasValue && detalhe.Imposto.ICMS.ValorICMSST > 0);
+        }
+
+        private static bool ValidarInformacoesCSOSNeICMSProprio(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe, List<SubtitleAttribute> Modalidade)
+        {
+            var ICMSProprio = false;
+            if (IsICMSProprio(detalhe))
+            {
+                ICMSProprio = true;
+                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()),
+                    new Error("Modalidade de determinação da base de cálculo é obrigatória para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBC"));
+                entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
+                    new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBCST"));
+                entity.Fail(!string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) && !Modalidade.Any(x => int.Parse(x.Value) == ((int)detalhe.Imposto.ICMS.ModalidadeBC)),
+                    new Error("Modalidade de determinação da base de cálculo inválida. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBC"));
+                entity.Fail(!detalhe.Imposto.ICMS.ValorBC.HasValue,
+                    new Error("Base de cálculo requerida para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
+                entity.Fail(!detalhe.Imposto.ICMS.AliquotaICMS.HasValue,
+                    new Error("Alíquota requerida para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
+                entity.Fail(!detalhe.Imposto.ICMS.ValorICMS.HasValue,
+                    new Error("Valor do imposto requerido para operações de ICMS próprio. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorBC"));
+            }
+
+            return ICMSProprio;
+        }
+
+        private static bool IsICMSProprio(Detalhe detalhe)
+        {
+            return !string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBC.ToString()) ||
+                          (detalhe.Imposto.ICMS.PercentualReducaoBC.HasValue && detalhe.Imposto.ICMS.PercentualReducaoBC > 0) ||
+                          (detalhe.Imposto.ICMS.ValorBC.HasValue && detalhe.Imposto.ICMS.ValorBC > 0) ||
+                          (detalhe.Imposto.ICMS.AliquotaICMS.HasValue && detalhe.Imposto.ICMS.AliquotaICMS > 0) ||
+                          (detalhe.Imposto.ICMS.ValorICMS.HasValue && detalhe.Imposto.ICMS.ValorICMS > 0 ||
+                          !string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()));
+        }
+
+        private static void ValidarInformacoesDoCSOSNEICMSPossivelDeCredito(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
+        {
+            entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
+                            new Error("Percentual de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
+            entity.Fail(detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue && !detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
+                new Error("Valor de crédito é obrigatório para operações passíveis de crédito do ICMS. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorCreditoICMS"));
         }
 
         private static void ValidarSubstituicaoTributaria_500(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
@@ -172,7 +197,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
             ValidarValorBaseCalculoICMSST(detalhe, entity, nItemDetalhe);
             ValidarAliquotaICMSSTObrigatoria_203(detalhe, entity, nItemDetalhe);
             ValidarValorICMSSTParaCSOSN_203(detalhe, entity, nItemDetalhe);
-
             VerificaVersaoEValidaSubstituicaoTributaria_203(detalhe, entity, nItemDetalhe, item);
         }
 
@@ -180,28 +204,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         {
             if (item.Versao == "4.00")
             {
-                ValidarValorBaseCalculoFCP_203(detalhe, entity, nItemDetalhe);
-                ValidarPercentualFCPObrigatorio_203(detalhe, entity, nItemDetalhe);
-                ValidarValorFCPObrigatorio_203(detalhe, entity, nItemDetalhe);
-            }
-        }
-
-        private static void ValidarValorFCPObrigatorio_203(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
-                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
-        }
-
-        private static void ValidarPercentualFCPObrigatorio_203(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
-                                new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPST"));
-        }
-
-        private static void ValidarValorBaseCalculoFCP_203(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
+                entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                 new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
+            }
         }
 
         private static void ValidarValorICMSSTParaCSOSN_203(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
@@ -255,28 +264,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         {
             if (item.Versao == "4.00")
             {
-                ValidarValorBaseCalculoDoFCPPorSubstituicaoTributaria(detalhe, entity, nItemDetalhe);
-                ValidarPercentualFCPObrigatorio(detalhe, entity, nItemDetalhe);
-                ValidarValorFCPObrigatorio(detalhe, entity, nItemDetalhe);
-            }
-        }
-
-        private static void ValidarValorFCPObrigatorio(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
-                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
-        }
-
-        private static void ValidarPercentualFCPObrigatorio(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
+                                new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
                                 new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPST"));
-        }
-
-        private static void ValidarValorBaseCalculoDoFCPPorSubstituicaoTributaria(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
-            new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
+            }
         }
 
         private static void ValidarValorICMSSTParaCSOSN_202(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
@@ -332,28 +326,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         {
             if (item.Versao == "4.00")
             {
-                ValidarValorBaseCalculoFCP(detalhe, entity, nItemDetalhe);
-                ValidarPercentualFCP(detalhe, entity, nItemDetalhe);
-                ValidarValorFCP(detalhe, entity, nItemDetalhe);
-            }
-        }
-
-        private static void ValidarValorFCP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
-                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
-        }
-
-        private static void ValidarPercentualFCP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
-                                new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPST"));
-        }
-
-        private static void ValidarValorBaseCalculoFCP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
+                entity.Fail(!detalhe.Imposto.ICMS.BaseFCPST.HasValue,
                                 new Error("Valor da Base de Cálculo do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vBCFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.AliquotaFCPST.HasValue,
+                                new Error("Percentual do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.pFCPST"));
+                entity.Fail(!detalhe.Imposto.ICMS.ValorFCPST.HasValue,
+                                new Error("Valor do FCP retido por Substituição Tributária é obrigatório para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.vFCPST"));
+            }
         }
 
         private static void ValidarValorICMS(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
@@ -402,18 +381,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         {
             entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.ICMS.ModalidadeBCST.ToString()),
                                     new Error("Modalidade de determinação da base de cálculo do ICMS ST é obrigatória para CSOSN 201, 202, 203 e 900. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ModalidadeBCST"));
-        }
-
-        private static void ValidarValorCreditoICMS(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.ValorCreditoICMS.HasValue,
-                                    new Error("Valor crédito do ICMS é obrigatório para CSOSN 101 e 201. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.ValorCreditoICMS"));
-        }
-
-        private static void ValidarAliquotaAplicavel(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
-        {
-            entity.Fail(!detalhe.Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN.HasValue,
-                                    new Error("Alíquota aplicável de cálculo do crédito é obrigatória para CSOSN 101 e 201. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.ICMS.AliquotaAplicavelCalculoCreditoSN"));
         }
 
         private static void ValidarOrigemDaCategoria(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)

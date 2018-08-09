@@ -48,6 +48,8 @@
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaEmitente.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaIdentificador.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoICMS.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoIPI.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoPIS.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaTransporte.cs" />
     <Compile Include="InutilizarNFBL.cs" />
     <Compile Include="CfopBL.cs" />

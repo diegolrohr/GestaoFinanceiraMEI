@@ -31,7 +31,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers
                     ValidaDetalheImposto.ExecutarValidaDetalheImposto(detalhe, _entitiesToValidade, _entity, nItemDetalhe, item);
                     nItemDetalhe++;
                 }
-
                 nItem++;
             }
         }

@@ -17,7 +17,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             else
             {
                 detalhe.NumeroItem = nItemDetalhe;
-
                 ValidarCodigoProduto(detalhe, entity, nItemDetalhe);
                 ValidarCodigoDeBarras(detalhe, entity, nItemDetalhe);
                 ValidarDescricaoProduto(detalhe, entity, nItemDetalhe);
@@ -34,22 +33,21 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarAgregaTotalNota(detalhe, entity, nItemDetalhe);
                 ValidaCodigoProdutoInvalido(detalhe, entity, nItemDetalhe);
                 ValidaCodigoBarrasProduto(detalhe, entity, nItemDetalhe);
-                ValidarlengthDescricaoProduto(detalhe, entity, nItemDetalhe);
-                ValidarLenghtNCMProduto(detalhe, entity, nItemDetalhe);
                 ValidarCFOPProduto(detalhe, entitiesBLToValidate, entity, nItemDetalhe);
                 ValidarUnidadeMedidaProduto(detalhe, entity, nItemDetalhe);
+                ValidarCodigoDeBarrasUnidadeTributacao(detalhe, entity, nItemDetalhe);
                 ValidarUnidadeTributacao(detalhe, entity, nItemDetalhe);
+                ValidarLengthDescricaoProduto(detalhe, entity, nItemDetalhe);
+                ValidarLenghtNCMProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthQuantidadeProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorUnitarioProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorBrutoProduto(detalhe, entity, nItemDetalhe);
-                ValidarCodigoDeBarrasUnidadeTributacao(detalhe, entity, nItemDetalhe);
                 ValidarLengthQuantidadeTributada(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorUnitario(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorFrete(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorSeguro(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorDesconto(detalhe, entity, nItemDetalhe);
                 ValidarLengthValorDespesa(detalhe, entity, nItemDetalhe);
-
             }
             #endregion
         }
@@ -246,7 +244,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                                 new Error("NCM do produto inválido. (Tam. 2-8) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.NCM"));
         }
 
-        private static void ValidarlengthDescricaoProduto(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
+        private static void ValidarLengthDescricaoProduto(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
             entity.Fail(detalhe.Produto.Descricao != null && (detalhe.Produto.Descricao.Length < 1 || detalhe.Produto.Descricao.Length > 120),
                                 new Error("Descrição do produto inválida. (Tam. 1-120) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.Descricao"));

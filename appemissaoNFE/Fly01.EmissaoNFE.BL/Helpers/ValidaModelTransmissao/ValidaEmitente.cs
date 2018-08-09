@@ -10,8 +10,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         public static void ExecutarValidaEmitente(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            #region Validações da classe Emitente
-
             if (item.Emitente == null)
                 entity.Fail(true, new Error("Os dados do emitente são obrigatórios.", "Item.Emitente"));
             else
@@ -31,8 +29,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarCEPNulo(item, entity);
                 ValidarCEPInvalido(item, entitiesBLToValidate, entity);
             }
-
-            #endregion
         }
 
         private static void ValidarCEPInvalido(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)

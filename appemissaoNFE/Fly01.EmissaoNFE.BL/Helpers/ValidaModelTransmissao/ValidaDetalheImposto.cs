@@ -36,7 +36,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             }
 
             #endregion
-
         }
     }
 }

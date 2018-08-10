@@ -17,7 +17,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarCPF_CNPJNulo(item, entity);
                 ValidarCPF(item, entitiesBLToValidate, entity);
                 ValidarCNPJ(item, entitiesBLToValidate, entity);
-                ValidarNomeClienteNulo(item, entity);
+                ValidarNomeEmitenteNulo(item, entity);
                 ValidarLogradouroEmitente(item, entity);
                 ValidarNumeroEmitente(item, entity);
                 ValidarBairroEmitente(item, entity);
@@ -111,7 +111,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                                 new Error("Logradouro do emitente é um dado obrigatório.", "Item.Emitente.Endereco.Logradouro"));
         }
 
-        private static void ValidarNomeClienteNulo(ItemTransmissaoVM item, TransmissaoVM entity)
+        private static void ValidarNomeEmitenteNulo(ItemTransmissaoVM item, TransmissaoVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(item.Emitente.Nome),
                                 new Error("Nome do emitente é um dado obrigatório.", "Item.Emitente.Nome"));

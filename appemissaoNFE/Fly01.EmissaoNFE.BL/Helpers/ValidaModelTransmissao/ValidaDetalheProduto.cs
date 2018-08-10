@@ -17,6 +17,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             else
             {
                 detalhe.NumeroItem = nItemDetalhe;
+
                 ValidarCodigoProduto(detalhe, entity, nItemDetalhe);
                 ValidarCodigoDeBarras(detalhe, entity, nItemDetalhe);
                 ValidarDescricaoProduto(detalhe, entity, nItemDetalhe);
@@ -37,6 +38,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 ValidarUnidadeMedidaProduto(detalhe, entity, nItemDetalhe);
                 ValidarCodigoDeBarrasUnidadeTributacao(detalhe, entity, nItemDetalhe);
                 ValidarUnidadeTributacao(detalhe, entity, nItemDetalhe);
+
                 ValidarLengthDescricaoProduto(detalhe, entity, nItemDetalhe);
                 ValidarLenghtNCMProduto(detalhe, entity, nItemDetalhe);
                 ValidarLengthQuantidadeProduto(detalhe, entity, nItemDetalhe);
@@ -159,14 +161,19 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             if (detalhe.Produto.GTIN_UnidadeMedidaTributada != null && detalhe.Produto.GTIN_UnidadeMedidaTributada.ToUpper() != "SEM GTIN")
             {
-                entity.Fail(
-                !(detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 0 ||
-                detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 8 ||
-                detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 12 ||
-                detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 13 ||
-                detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 14)
+                entity.Fail(IsCodigoBarrasTributacaoInvalida(detalhe)
                 , new Error("Codigo de barras (GTIN/EAN) da unidade de tributação do produto inválido. (Tam. 0/8/12/13/14) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.GTIN_UnidadeMedidaTributada"));
             }
+        }
+
+        private static bool IsCodigoBarrasTributacaoInvalida(Detalhe detalhe)
+        {
+            
+            return !(detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 0 ||
+                   detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 8 ||
+                   detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 12 ||
+                   detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 13 ||
+                   detalhe.Produto.GTIN_UnidadeMedidaTributada.Length == 14);
         }
 
         private static void ValidarLengthValorBrutoProduto(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
@@ -252,14 +259,18 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidaCodigoBarrasProduto(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
-            entity.Fail(
-                (detalhe.Produto.GTIN != null && detalhe.Produto.GTIN.ToUpper() != "SEM GTIN") &&
+            entity.Fail(IsCodigoBarrasInvalido(detalhe)
+            , new Error("Codigo de barras (GTIN/EAN) do produto inválido. (Tam. 0/8/12/13/14) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.GTIN"));
+        }
+
+        private static bool IsCodigoBarrasInvalido(Detalhe detalhe)
+        {
+            return (detalhe.Produto.GTIN != null && detalhe.Produto.GTIN.ToUpper() != "SEM GTIN") &&
                 !(detalhe.Produto.GTIN.Length == 0 ||
                 detalhe.Produto.GTIN.Length == 8 ||
                 detalhe.Produto.GTIN.Length == 12 ||
                 detalhe.Produto.GTIN.Length == 13 ||
-                detalhe.Produto.GTIN.Length == 14)
-            , new Error("Codigo de barras (GTIN/EAN) do produto inválido. (Tam. 0/8/12/13/14) Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.GTIN"));
+                detalhe.Produto.GTIN.Length == 14);
         }
 
         private static void ValidaCodigoProdutoInvalido(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)

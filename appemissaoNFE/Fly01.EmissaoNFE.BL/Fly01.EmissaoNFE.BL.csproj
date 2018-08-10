@@ -40,8 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CartaCorrecaoBL.cs" />
-    <Compile Include="Helpers\EntitiesBLToValidate.cs" />
+    <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidate.cs" />
     <Compile Include="Helpers\HelperValidaModelTransmissao.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaAutorizados.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaDestinatario.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaDetalheImposto.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaDetalheProduto.cs" />
@@ -50,6 +51,8 @@
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoICMS.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoIPI.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoPIS.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaPagamento.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaTotais.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaTransporte.cs" />
     <Compile Include="InutilizarNFBL.cs" />
     <Compile Include="CfopBL.cs" />

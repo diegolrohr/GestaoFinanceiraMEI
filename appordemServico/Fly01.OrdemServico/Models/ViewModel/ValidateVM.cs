@@ -1,4 +1,4 @@
-﻿namespace Fly01.Financeiro.Models.ViewModel
+﻿namespace Fly01.OrdemServico.Models.ViewModel
 {
     public class ValidateVM
     {

@@ -31,11 +31,8 @@ namespace Fly01.OrdemServico.BL
         }
 
         #region BLS
-        private EstadoBL estadoBL;
-        public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
-
-        private CidadeBL cidadeBL;
-        public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
+        //exemplo private EstadoBL estadoBL;
+        //public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));        
 
         #endregion
     }

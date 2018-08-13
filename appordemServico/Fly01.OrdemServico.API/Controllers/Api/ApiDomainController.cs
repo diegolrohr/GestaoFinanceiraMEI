@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Fly01.Financeiro.BL;
+using Fly01.OrdemServico.BL;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains;
 using Fly01.Core.API;
 
-namespace Fly01.Financeiro.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     public class ApiDomainController<TEntity, TBL> : ApiDomainBaseController<TEntity>
         where TEntity : DomainBase, new()

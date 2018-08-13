@@ -47,8 +47,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CidadeBL.cs" />
-    <Compile Include="EstadoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceBusBL.cs" />
     <Compile Include="UnitOfWork.cs" />

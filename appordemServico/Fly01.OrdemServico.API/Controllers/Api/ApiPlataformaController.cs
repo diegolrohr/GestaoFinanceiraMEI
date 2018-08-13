@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Fly01.Core.BL;
-using Fly01.Financeiro.BL;
+using Fly01.OrdemServico.BL;
 using System.Threading.Tasks;
 using Fly01.Core.API;
 using Fly01.Core.Entities.Domains;
 
-namespace Fly01.Financeiro.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     public class ApiPlataformaController<TEntity, TBL> : ApiPlataformaBaseController<TEntity>
         where TEntity : PlataformaBase, new()

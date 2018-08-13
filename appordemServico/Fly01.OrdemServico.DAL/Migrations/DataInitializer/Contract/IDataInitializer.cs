@@ -1,6 +1,6 @@
-﻿using Fly01.Financeiro.API.Models.DAL;
+﻿using Fly01.OrdemServico.API.Models.DAL;
 
-namespace Fly01.Financeiro.DAL.Migrations.DataInitializer.Contract
+namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer.Contract
 {
     public interface IDataInitializer
     {

@@ -13,7 +13,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var exists = unitOfWork.EstadoBL.All.Any();
+                //var exists = unitOfWork.EstadoBL.All.Any();
             }
         }
     }

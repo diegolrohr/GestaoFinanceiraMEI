@@ -2,7 +2,7 @@
 using System.Reflection;
 using Fly01.Core.ServiceBus;
 
-namespace Fly01.Financeiro.BL
+namespace Fly01.OrdemServico.BL
 {
     public class ServiceBusBL : ServiceBusBase
     {

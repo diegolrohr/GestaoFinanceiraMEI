@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Entities.Domains.NoSQL;
 
-namespace Fly01.Financeiro.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     [RoutePrefix("avaliacaoapp")]
     public class AvaliacaoAppController : ApiPlataformaMongoBaseController<AvaliacaoApp>

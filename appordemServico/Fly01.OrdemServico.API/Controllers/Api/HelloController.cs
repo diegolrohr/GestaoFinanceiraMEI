@@ -1,8 +1,8 @@
-﻿using Fly01.Financeiro.BL;
+﻿using Fly01.OrdemServico.BL;
 using Fly01.Core.API;
 using System.Linq;
 
-namespace Fly01.Financeiro.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     public class HelloController : ApiHelloBaseController
     {

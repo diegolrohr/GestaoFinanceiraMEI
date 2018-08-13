@@ -20,7 +20,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 else
                 {
                     ValidarSomatorioBaseCalculo(item, entity);
-                    ValidarSOmatorioICMS(item, entity);
+                    ValidarSomatorioICMS(item, entity);
                     ValidarSomatorioBaseCalculoST(item, entity);
                     ValidarSomatorioICMSST(item, entity);
                     ValidarSomatorioProdutos(item, entity);
@@ -216,7 +216,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 new Error("O somatório da BCST não confere com os valores informados.", "Item.Total.ICMSTotal.SomatorioBCST"));
         }
 
-        private static void ValidarSOmatorioICMS(ItemTransmissaoVM item, TransmissaoVM entity)
+        private static void ValidarSomatorioICMS(ItemTransmissaoVM item, TransmissaoVM entity)
         {
             double? somatorioICMSTrue = item.Detalhes.Sum(e => e.Imposto.ICMS.ValorICMS ?? 0);
             item.Total.ICMSTotal.SomatorioICMS = Arredondar(item.Total.ICMSTotal.SomatorioICMS, 2);

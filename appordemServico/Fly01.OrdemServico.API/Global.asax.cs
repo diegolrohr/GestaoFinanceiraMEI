@@ -19,35 +19,8 @@ namespace Fly01.Financeiro.API
                 ContainerName = "DefaultContainer"
             };
 
-            builder.EntitySet<Pessoa>("pessoa");
-            builder.EntitySet<Arquivo>("arquivo");
-            builder.EntitySet<ContaBancaria>("contabancaria");
-            builder.EntitySet<Feriado>("feriado");
-            builder.EntitySet<Categoria>("categoria");
-            builder.EntitySet<Banco>("banco");
-            builder.EntitySet<ContaPagar>("contapagar");
-            builder.EntitySet<ContaReceber>("contareceber");
             builder.EntitySet<Estado>("estado");
             builder.EntitySet<Cidade>("cidade");
-            builder.EntitySet<CondicaoParcelamento>("condicaoparcelamento");
-            builder.EntitySet<ContaFinanceiraBaixa>("contafinanceirabaixa");
-            builder.EntitySet<ContaFinanceiraBaixaMultipla>("contafinanceirabaixamultipla");
-            builder.EntitySet<ConciliacaoBancaria>("conciliacaobancaria");
-            builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariaitem");
-            builder.EntitySet<ConciliacaoBancariaItemContaFinanceira>("conciliacaobancariaitemcontafinanceira");
-            builder.EntitySet<ConciliacaoBancariaTransacao>("conciliacaobancariatransacao");
-            builder.EntitySet<ConciliacaoBancariaItem>("conciliacaobancariabuscarexistentes");
-            builder.EntitySet<FormaPagamento>("formapagamento");
-            builder.EntitySet<ContaFinanceiraRenegociacao>("contafinanceirarenegociacao");
-            builder.EntitySet<MovimentacaoFinanceira>("movimentacao");
-            builder.EntitySet<TransferenciaFinanceira>("transferencia");
-            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("receitaporcategoria");
-            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("despesaporcategoria");
-            builder.EntitySet<MovimentacaoFinanceiraPorCategoria>("movimentacaoporcategoria");
-            builder.EntitySet<ConfiguracaoNotificacaoFinanceiro>("configuracaonotificacao");
-            builder.EntityType<ConfiguracaoNotificacaoFinanceiro>().Property(c => c.HoraEnvio).AsTimeOfDay();
-            builder.EntitySet<Cnab>("cnab");
-            builder.EntitySet<ArquivoRemessa>("arquivoremessa");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

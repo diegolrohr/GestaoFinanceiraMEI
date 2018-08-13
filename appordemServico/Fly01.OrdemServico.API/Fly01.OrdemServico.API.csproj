@@ -50,7 +50,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <EmbeddedResource Include="MailContent\NotificaContasFinanceira\index.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -58,61 +57,14 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
-    <Compile Include="Controllers\Api\ArquivoRemessaController.cs" />
-    <Compile Include="Controllers\Api\ArquivoRetornoController.cs" />
-    <Compile Include="Controllers\Api\BoletoController.cs" />
-    <Compile Include="Controllers\Api\CnabController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
-    <Compile Include="Controllers\Api\DashboardContaPagarDiaController.cs" />
-    <Compile Include="Controllers\Api\DashboardSaldoDiaController.cs" />
-    <Compile Include="Controllers\Api\DashboardFormaPagamentoController.cs" />
-    <Compile Include="Controllers\Api\DashboardCategoriaController.cs" />
-    <Compile Include="Controllers\Api\DashboardStatusController.cs" />
-    <Compile Include="Controllers\Api\SendTaskController.cs" />
-    <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
-    <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />
-    <Compile Include="Controllers\Api\ArquivoController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaItemContaFinanceiraController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaItemController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaBuscarExistentesController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaTransacaoController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaItemSugestaoController.cs" />
-    <Compile Include="Controllers\Api\ConfiguracaoNotificacaoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
-    <Compile Include="Controllers\Api\MovimentacaoPorCategoriaController.cs" />
-    <Compile Include="Controllers\Api\DespesaPorCategoriaController.cs" />
-    <Compile Include="Controllers\Api\ReceitaPorCategoriaController.cs" />
-    <Compile Include="Controllers\Api\MovimentacaoController.cs" />
-    <Compile Include="Controllers\Api\StatusConciliadoController.cs" />
-    <Compile Include="Controllers\Api\StatusContaBancariaController.cs" />
-    <Compile Include="Controllers\Api\CondicaoParcelamentoSimulacaoController.cs" />
-    <Compile Include="Controllers\Api\ContaFinanceiraRenegociacaoController.cs" />
-    <Compile Include="Controllers\Api\RenegociacaoContasRelacionamentoController.cs" />
-    <Compile Include="Controllers\Api\ExtratoController.cs" />
-    <Compile Include="Controllers\Api\FluxoCaixaController.cs" />
-    <Compile Include="Controllers\Api\TipoSimulacaoController.cs" />
-    <Compile Include="Controllers\Api\TipoPeriodicidade.cs" />
-    <Compile Include="Controllers\Api\TipoFormaPagamentoController.cs" />
-    <Compile Include="Controllers\Api\FormaPagamentoController.cs" />
-    <Compile Include="Controllers\Api\TipoCateiraController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
-    <Compile Include="Controllers\Api\ContaFinanceiraBaixaController.cs" />
-    <Compile Include="Controllers\Api\ConciliacaoBancariaController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />
-    <Compile Include="Controllers\Api\CondicaoParcelamentoController.cs" />
-    <Compile Include="Controllers\Api\ContaBancariaController.cs" />
-    <Compile Include="Controllers\Api\ContaReceberController.cs" />
-    <Compile Include="Controllers\Api\ContaPagarController.cs" />
-    <Compile Include="Controllers\Api\FeriadoController.cs" />
-    <Compile Include="Controllers\Api\BancoController.cs" />
-    <Compile Include="Controllers\Api\PessoaController.cs" />
-    <Compile Include="Controllers\Api\TransferenciaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\EmailFilesHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -176,9 +128,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Boleto2Net, Version=2.0.2.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Boleto2.Net.2.0.2.5\lib\Boleto2Net.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -363,9 +312,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Boleto\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

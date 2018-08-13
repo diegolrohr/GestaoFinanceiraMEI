@@ -1,4 +1,4 @@
-﻿namespace Fly01.Financeiro.Reports
+﻿namespace Fly01.OrdemServico.Reports
 {
 
 
@@ -6,7 +6,7 @@
     {
     }
 }
-namespace Fly01.Financeiro.Reports {
+namespace Fly01.OrdemServico.Reports {
     
     
     public partial class DataSetReports {

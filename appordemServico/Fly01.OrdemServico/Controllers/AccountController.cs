@@ -1,4 +1,4 @@
-﻿namespace Fly01.Financeiro.Controllers
+﻿namespace Fly01.OrdemServico.Controllers
 {
     public class AccountController : Core.Presentation.Controllers.AccountController { }
 }

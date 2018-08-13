@@ -11,7 +11,7 @@
 <script runat="server">
     protected void ReportOnPreRender(object sender, System.EventArgs e)
     {
-        Fly01.Financeiro.Models.Reports.ReportViewerHelper<object>.DisableUnwantedExportFormat((ReportViewer)sender, "WORD", "WORDOPENXML");
+        Fly01.OrdemServico.Models.Reports.ReportViewerHelper<object>.DisableUnwantedExportFormat((ReportViewer)sender, "WORD", "WORDOPENXML");
         base.OnPreRender(e);
     }
 </script>

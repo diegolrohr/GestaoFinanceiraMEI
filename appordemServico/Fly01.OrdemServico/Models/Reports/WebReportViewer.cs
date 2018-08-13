@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fly01.Financeiro.Reports;
+using Fly01.OrdemServico.Reports;
 using Fly01.Core.Config;
 using Microsoft.Reporting.WebForms;
 using Fly01.Core.Reports;
 
-namespace Fly01.Financeiro.Models.Reports
+namespace Fly01.OrdemServico.Models.Reports
 {
     public class WebReportViewer<T>
     {

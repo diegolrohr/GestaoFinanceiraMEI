@@ -1,9 +1,0 @@
-﻿
-<script>
-    @Html.Partial("Functions/_fnImprimir");
-
-    function fnImprimirRecibo(idRecord) {
-        var url = '@Url.Action("ImprimirRecibo", "ContaPagar")?id=' + idRecord;
-        fnImprimir(url);
-    }
-</script>

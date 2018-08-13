@@ -1,9 +1,0 @@
-﻿<script>
-    function fnRenderGroup(data, type, row) {
-        return createElem("span", { "class": (!!row.categoriaPaiId) ? "children" : "root" }, row.categoria).outerHTML;
-    }
-
-    function fnRenderSoma(data, type, row) {
-        return createElem("span", { "class": "right" }, row.soma).outerHTML;
-    }
-</script>

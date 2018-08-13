@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Fly01.Financeiro.ViewModel
+namespace Fly01.OrdemServico.ViewModel
 {
     [Serializable]
     public class PlatformEnvironmentVM

@@ -27,7 +27,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
                 new CidadeDataInitializer5().Initialize(context, ufs);
                 new CidadeDataInitializer6().Initialize(context, ufs);
                 new NcmDataInitializer().Initialize(context);
-                //new TabelaIcmsDataInitializer().Initialize(context, ufs);
+                new TabelaIcmsDataInitializer().Initialize(context);
                 new CfopDataInitializer().Initialize(context);
             }
             catch (DbEntityValidationException ex)

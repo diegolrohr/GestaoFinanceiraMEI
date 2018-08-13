@@ -74,8 +74,7 @@ namespace Fly01.Core.ServiceBus
                             RabbitConfig.PlataformaUrl = GetHeaderValue("PlataformaUrl");
                             RabbitConfig.AppUser = GetHeaderValue("AppUser");
                             RabbitConfig.RoutingKey = args.RoutingKey ?? string.Empty;
-                            RabbitConfig.RoutingKey = "ContaReceber";
-
+                            
                             await DeliverMessage(args.BasicProperties.AppId);
 
                             foreach (var item in exceptions)

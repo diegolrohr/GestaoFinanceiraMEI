@@ -38,7 +38,7 @@ namespace Fly01.EmissaoNFE.BL
 
             if(entity.SubstituicaoTributaria != null)
             {
-                retorno.SubstituicaoTributaria = SubstituicaoTributariaBL.CalculaSubstituicaoTributaria(entity, TabelaIcmsBL);
+                retorno.SubstituicaoTributaria = SubstituicaoTributariaBL.CalcularSubstituicaoTributaria(entity, TabelaIcmsBL);
 
                 if (entity.FcpSt != null)
                     retorno.FcpSt = FcpStBL.FcpSt(entity);

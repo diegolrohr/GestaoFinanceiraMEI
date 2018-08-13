@@ -12,7 +12,7 @@ namespace Fly01.EmissaoNFE.BL
         {
         }
 
-        public TributacaoRetornoBaseVM CalculaSubstituicaoTributaria(Tributacao entity, TabelaIcmsBL TabelaIcmsBL)
+        public TributacaoRetornoBaseVM CalcularSubstituicaoTributaria(Tributacao entity, TabelaIcmsBL TabelaIcmsBL)
         {
             var valorBase = ObterValorBase(entity);
 

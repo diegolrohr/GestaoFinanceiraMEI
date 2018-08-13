@@ -373,12 +373,23 @@ namespace Fly01.Faturamento.BL
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
                             OrigemMercadoria = OrigemMercadoria.Nacional,
-                            CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                         };
 
-                        if (itemTributacao.CalculaICMS)
+                        if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                        {
+                            detalhe.Imposto.ICMS.CodigoSituacaoOperacao = TipoTributacaoICMS.NaoTributadaPeloSN;
+                        }
+                        else
+                        {
+                            detalhe.Imposto.ICMS.CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito;
+                        }
+
+
+                        //TODO diego passar o tipo do complemento
+                        //Mudar esses monstros de ifs, nos demais complementos, por enquanto solucionado o de preço para prod
+                        if (itemTributacao.CalculaICMS && entity.TipoVenda != TipoVenda.Complementar)
                         {
                             detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
                             detalhe.Imposto.ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
@@ -398,7 +409,7 @@ namespace Fly01.Faturamento.BL
                                 detalhe.Imposto.ICMS.PercentualReducaoBCST = 0;
                             }
                         }
-                        if (itemTributacao.CalculaST)
+                        if (itemTributacao.CalculaST && entity.TipoVenda != TipoVenda.Complementar)
                         {
                             detalhe.Imposto.ICMS.UF = cliente.Estado?.Sigla;
                             detalhe.Imposto.ICMS.PercentualMargemValorAdicionadoST = st != null ? st.Mva : 0;
@@ -422,7 +433,7 @@ namespace Fly01.Faturamento.BL
                             }
                         }
 
-                        if (itemTributacao.CalculaIPI)
+                        if (itemTributacao.CalculaIPI && entity.TipoVenda != TipoVenda.Complementar)
                         {
                             detalhe.Imposto.IPI = new IPIPai()
                             {
@@ -439,12 +450,20 @@ namespace Fly01.Faturamento.BL
                         }
                         detalhe.Imposto.PIS = new PISPai()
                         {
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ?
-                                (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
-                                CSTPISCOFINS.IsentaDaContribuicao,
                         };
+                        if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                        {
+                            detalhe.Imposto.PIS.CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao;
+                        }
+                        else
+                        {
+                            detalhe.Imposto.PIS.CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue && itemTributacao.CalculaPIS ?
+                                (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS) :
+                                CSTPISCOFINS.IsentaDaContribuicao;
+                        }
 
-                        if (itemTributacao.CalculaPIS)
+
+                        if (itemTributacao.CalculaPIS && entity.TipoVenda != TipoVenda.Complementar)
                         {
                             //adValorem =  01|02, AliqEspecifica = 03
                             var tributaveis = "01|02|03";
@@ -466,12 +485,19 @@ namespace Fly01.Faturamento.BL
 
                         detalhe.Imposto.COFINS = new COFINSPai()
                         {
-                            CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ?
-                                ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
-                                CSTPISCOFINS.OutrasOperacoes
                         };
+                        if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                        {
+                            detalhe.Imposto.COFINS.CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao;
+                        }
+                        else
+                        {
+                            detalhe.Imposto.COFINS.CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null && itemTributacao.CalculaCOFINS ?
+                                ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value) :
+                                CSTPISCOFINS.OutrasOperacoes;
+                        }
 
-                        if (itemTributacao.CalculaCOFINS)
+                        if (itemTributacao.CalculaCOFINS && entity.TipoVenda != TipoVenda.Complementar)
                         {
                             //adValorem =  01|02, AliqEspecifica = 03
                             var tributaveis = "01|02|03";

@@ -125,7 +125,14 @@ namespace Fly01.Faturamento.BL
 
                 if (NFeComplementar != null)
                 {
-                    mensagemComplementar = $"NF-e Complementar a NF-e {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
+                    mensagemComplementar = $"NFe Complementar a NFe {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
+                }
+                else
+                {
+                    var numNotaFiscal = entity.ChaveNFeReferenciada.Substring(25, 9);
+                    var ano = entity.ChaveNFeReferenciada.Substring(2, 2);
+                    var mes = entity.ChaveNFeReferenciada.Substring(4, 2);
+                    mensagemComplementar = $"NFe Complementar a NFe {numNotaFiscal} emitida em {mes}/{ano}";
                 }
             }
 
@@ -153,7 +160,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
-            notaFiscal.MensagemPadraoNota = mensagemComplementar + entity.MensagemPadraoNota ?? "";
+            notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
             return notaFiscal;
         }
 
@@ -372,17 +379,24 @@ namespace Fly01.Faturamento.BL
                 entity.TipoFrete = TipoFrete.SemFrete;//regra sefaz
                 entity.ValorFrete = 0.00;
 
-                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplIcms)
+                switch (entity.TipoNfeComplementar)
                 {
-                    entity.NaturezaOperacao = "Complemento de Imposto";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
-                {
-                    entity.NaturezaOperacao = "Complemento de Preco";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplQtd)
-                {
-                    entity.NaturezaOperacao = "Complemento de Quantidade";
+                    case TipoNfeComplementar.NaoComplementar:
+                        break;
+                    case TipoNfeComplementar.ComplPrecoQtd:
+                        entity.NaturezaOperacao = "Complemento de Preco/Quantidade";
+                        break;
+                    case TipoNfeComplementar.ComplIcms:
+                        entity.NaturezaOperacao = "Complemento de ICMS";
+                        break;
+                    case TipoNfeComplementar.ComplIcmsST:
+                        entity.NaturezaOperacao = "Complemento de ICMS ST";
+                        break;
+                    case TipoNfeComplementar.ComplIpi:
+                        entity.NaturezaOperacao = "Complemento de IPI";
+                        break;
+                    default:
+                        break;
                 }
             }
         }

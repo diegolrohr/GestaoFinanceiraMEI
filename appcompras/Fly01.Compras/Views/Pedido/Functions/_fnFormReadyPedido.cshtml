@@ -117,7 +117,7 @@
     }
 
     function fnFormReadyPedido() {
-        
+        fnIsNovoPedido();
         if (isCreate()) {
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
@@ -131,5 +131,17 @@
         }
         fnBindOverrideSubmit();
         fnValidaCamposGeraFinanceiro();
+    }
+
+    $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+            fnDisableInput();
+    });
+
+    function fnIsNovoPedido() {
+        if ($('#id').val() == "" || $('#id').val() == undefined) {
+            $('#tipoFreteField select#tipoFrete').val("SemFrete")
+            $("#tipoFreteField .select-dropdown").val("Sem frete");
+        }
     }
 </script>

@@ -10110,6 +10110,7 @@ namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
 				context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("B9D1009C-A4E0-4CCD-B60A-FFF198F372D1"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "73239400", Descricao = "OUTS.ARTEF.USO DOMÉST.,FERRO/AÇO,ESMALT.", AliquotaIPI = 10 });
 				context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("C643F0E4-0AD2-4BBB-81BA-FFF81105D549"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "29242943", Descricao = "ATELONOL; METOLACLOR", AliquotaIPI = 0 });
 				context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("C439ACA0-FD17-4750-8805-FFFC2A644E72"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "29215133", Descricao = "N", AliquotaIPI = 0 });
+                context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("90E7E670-5594-4F5D-93A5-68A369C45A50"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "94069090", Descricao = "MÓVEIS,MOBILIÁRIO MÉDICO-CIRÚRGICO,COLCHÕES,ALMOFADAS E SEMELHANTES,APARELHOS DE ILUMINAÇÃO NÃO ESPECIFIC.,ANÚNCIOS,CARTAZES E PLACAS INDICADORAS,LUMINOSOS E ART. SEMELHANTES,CONSTRU. PRÉ-FABRICADAS", AliquotaIPI = 0 });
 
                 context.SaveChanges();
             }

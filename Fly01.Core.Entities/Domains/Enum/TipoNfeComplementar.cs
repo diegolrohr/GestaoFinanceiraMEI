@@ -7,13 +7,16 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("NaoComplementar", "Não Complementar")]
         NaoComplementar = 0,
 
-        [Subtitle("ComplPreco", "Complemento de Preço")]
-        ComplPreco = 1,
+        [Subtitle("ComplPrecoQtd", "Complemento de Preço/Quantidade")]
+        ComplPrecoQtd = 1,
 
-        [Subtitle("ComplQtd", "Complemento de Quantidade")]
-        ComplQtd = 2,
+        [Subtitle("ComplIcms", "Complemento de ICMS")]
+        ComplIcms = 2,
 
-        [Subtitle("ComplIcms", "Complemento de Impostos")]
-        ComplIcms = 3
+        [Subtitle("ComplIcmsST", "Complemento de ICMS ST")]
+        ComplIcmsST = 3,
+
+        [Subtitle("ComplIpi", "Complemento de IPI")]
+        ComplIpi = 4
     }
 }

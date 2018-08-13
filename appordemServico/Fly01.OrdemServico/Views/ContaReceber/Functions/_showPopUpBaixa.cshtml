@@ -1,0 +1,66 @@
+﻿<script>
+    function saveBaixa() {
+        var result = false;
+
+        var dataRow = {
+            AccountReceivableId: $('#CreateOrEditBaixa #AccountReceivableId').val(),
+            BankId: $('#CreateOrEditBaixa #BankId').val(),
+            Bank: $('#CreateOrEditBaixa #Bank').val(),
+            PayDay: $('#CreateOrEditBaixa #PayDay').val(),
+            ValuePayment: $('#CreateOrEditBaixa #ValuePayment').val(),
+            Discount: $('#CreateOrEditBaixa #Discount').val(),
+            Interest: $('#CreateOrEditBaixa #Interest').val(),
+            Note: $('#CreateOrEditBaixa #Note').val()
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("BaixaTitulo", "ContaReceber")',
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(dataRow),
+            success: function (data) {
+                if (data.success) {
+                    bootbox.hideAll();
+
+                    $("#datatable-records").DataTable().ajax.reload(null, false);
+                    ShowSuccess(data.message);
+                } else {
+                    ShowErrorGenerico("#CreateOrEditBaixa", data.message);
+                }
+            }
+        });
+
+        return result;
+    }
+    function showPopUpBaixa(id) {
+        var tituloJanela = 'Marcar como Pago';
+
+        $.ajax({
+            data: { id: id },
+            type: 'GET',
+            url: '@Url.Action("BaixaTitulo", "ContaReceber")',
+            success: function (dataHtml) {
+                bootbox.dialog({
+                    title: tituloJanela,
+                    message: dataHtml,
+                    buttons: {
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'button btn btn-default',
+                        },
+                        success: {
+                            label: "Salvar",
+                            className: "btn btn-primary",
+                            callback: function () {
+                                var result = saveBaixa();
+
+                                return result;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

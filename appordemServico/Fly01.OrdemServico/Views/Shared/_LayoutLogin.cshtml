@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.HeadTemplate("Bemacash Financeiro")
+</head>
+<body>
+    <div id="login-page" class="container">
+        @RenderBody()
+    </div>
+    @Html.ScriptsTemplate()
+    @RenderSection("scripts", required: false)
+</body>
+</html>

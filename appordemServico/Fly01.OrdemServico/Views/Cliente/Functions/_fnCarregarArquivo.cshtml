@@ -1,0 +1,40 @@
+﻿<script>
+    function fnCarregarArquivo(input) {
+        if (!window.FileReader) return; // Browser is not compatible
+
+        var reader = new FileReader();
+        // Read file into memory as UTF-8
+        reader.readAsText($("#arquivo")[0].files[0]);
+        // Handle errors load
+        reader.onload = processData;
+        reader.onerror = errorHandler;
+    }
+
+    function processData(event) {
+        $('body').removeClass('loaded');
+        var csv = event.target.result;
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ImportaArquivo")",
+            data: { pConteudo: csv },
+            success: function (response) {
+                $("#observacao").closest("div").css("display", "block");
+                $("#observacao").val(response.Retorno);
+                $("#observacao").trigger("autoresize");
+                fly01.fn.updateTextFields();
+                $('body').addClass('loaded');
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $('body').addClass('loaded');
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+    }
+
+    function errorHandler(evt) {
+        if (evt.target.error.name == "NotReadableError") {
+            alert("Não foi possível ler o arquivo!");
+        }
+    }
+</script>

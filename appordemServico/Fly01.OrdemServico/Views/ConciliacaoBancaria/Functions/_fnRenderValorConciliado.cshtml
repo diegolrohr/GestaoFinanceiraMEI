@@ -1,0 +1,32 @@
+﻿<script>
+    function fnRenderValorConciliado(data, type, row, meta) {
+        var valorSaldo = row.saldo.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".");
+
+        var edit = createElem("div", { "id": "contaFinanceiraIdField", "class": "input-field col s12" }, [
+            createElem("input", { "type": "text", "class": "valorParcial masked currency", "value": valorSaldo, "data-saldo": valorSaldo, "data-id": row.id })
+        ]);
+
+        return edit.outerHTML;
+    }
+    $(document).off("change", "input.valorParcial");
+    $(document).on("change", "input.valorParcial", function (e) {
+        var that = $(this);
+        var newValorConciliado = parseFloat(that.val().replace("R$ ", "").replace(".", "").replace(",", "."));
+        var saldo = parseFloat(that.data("saldo"));
+
+        if (newValorConciliado <= 0 || newValorConciliado > saldo || isNaN(newValorConciliado)) {
+            newValorConciliado = saldo;
+            $(this).val(newValorConciliado);
+        }
+                
+        var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == that.data("id"));
+        if (index !== -1) {//se achou atualiza o valor conciliado digitado
+            var valorAcumulado = getValorSomaSelecionados();
+            var oldValorConciliado = arrayConciliacoes[index].valorConciliado;
+            arrayConciliacoes[index].valorConciliado = newValorConciliado;
+            valorAcumulado = (valorAcumulado - oldValorConciliado + newValorConciliado);
+
+            fnAtualizaValorSelecionados(valorAcumulado);
+        }
+    });
+</script>

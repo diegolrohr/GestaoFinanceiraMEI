@@ -1,0 +1,20 @@
+﻿<script>
+    function fnFormReady() {
+        $("#contasBancariasList tbody").on("click", "tr", function () {
+            if ($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+            }
+            else {
+                fly01._.contasBancariasList.$("tr.selected").removeClass('selected');
+                $(this).addClass("selected");
+            }
+
+            var dataByRow = fly01._.contasBancariasList.row(this).data();
+            $("#contaBancariaId").val(dataByRow.contaBancariaId);
+            fnAtualizar();
+        });
+        $("#contasBancariasList tr").css("cursor", "pointer");
+        $("#contasBancariasList tbody tr:eq(0)").addClass("selected");
+        $("#btnMes").click();
+    }
+</script>

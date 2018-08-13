@@ -1,0 +1,45 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnSalvarNovaTransferencia() {
+        var contaOrigem = $('form#fly01frmNovaTransf #contaBancariaOrigemIdTransf').val();
+        var contaDestino = $('form#fly01frmNovaTransf #contaBancariaDestinoIdTransf').val();
+
+        if (!$('form#fly01frmNovaTransf').valid()) {
+            return false;
+        }
+        else if (contaOrigem == contaDestino) {
+            fly01.toast("Conta bancária de origem e destino, devem ser distintas.", "error");
+            return false;
+        }
+        else {
+            $('body').removeClass('loaded');
+            var jsonData = $("form#fly01frmNovaTransf").serializeObject();
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("NovaTransferencia","Extrato")',
+                data: JSON.stringify({ 'transferenciaCadastro': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        var strMsg = "Transferência realizada com sucesso.";
+                        if (data.message !== "") strMsg = data.message;
+                        fly01.toast(strMsg, "success");
+                        fnAtualizar();
+
+                        fly01._.fly01frmNovaTransf.close();
+                    } else {
+                        fly01.toast(data.message, "error");
+                    }
+                    $('body').addClass('loaded');
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    $('body').addClass('loaded');
+                }
+            });
+        }
+    }
+</script>

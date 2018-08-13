@@ -1,0 +1,28 @@
+﻿<script>
+    function showPopUpVisualizar(idRecord) {
+        var tituloJanela = 'Visualizar Conta a Receber';
+
+        $.ajax({
+            data: { id: idRecord },
+            url: '@Url.Action("Visualizar", "ContaReceber")',
+            type: "GET"
+        })
+        .done(function (dataHtml) {
+            bootbox.dialog({
+                title: tituloJanela,
+                size: "large",
+                message: dataHtml,
+                buttons: {
+                    cancel: {
+                        label: 'Voltar',
+                        className: 'button btn btn-default',
+                    }
+                }
+            });
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            ShowError(err);
+        });
+    }
+</script>

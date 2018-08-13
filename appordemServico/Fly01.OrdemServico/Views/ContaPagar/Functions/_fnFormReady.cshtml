@@ -1,0 +1,18 @@
+﻿<script>
+    function fnFormReady() {
+        if ($('#id').val() != "") {
+            $('#baixarTituloField').hide();
+            $('#repetirField').hide();
+            $("#condicaoParcelamentoDescricao").attr('disabled', 'disabled');
+
+            $("#repeticaoPai").val($("#contaFinanceiraRepeticaoPaiId").val() == "" && $('#repetir').prop('checked'));
+            $("#repeticaoFilha").val($("#contaFinanceiraRepeticaoPaiId").val() != "" && $('#repetir').prop('checked'));
+        }
+
+        $('#contaBancariaIdField').hide();
+        $('#tipoPeriodicidadeField').hide();
+        $('#tipoRepeticaoField').hide();
+        $('#numeroRepeticoesField').hide();
+        $('#periodoFimField').hide();
+    }
+</script>

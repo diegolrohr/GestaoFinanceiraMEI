@@ -1,0 +1,30 @@
+﻿<script>
+function fnExcluirCBItem(idRecord) {
+    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir esta movimentação importada do extrato?", "fnExcluirConfirmed(\""+idRecord+"\")");
+}
+function fnExcluirConfirmed(idRecord) {
+    $('body').removeClass('loaded');
+    if (idRecord) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ExluirLancamentoExtrato", "ConciliacaoBancaria")",
+            data: { conciliacaoBancariaItemId: idRecord },
+            success: function (data) {
+                $('body').addClass('loaded');
+                if (data.success) {
+                    fly01.toast("Excluído com sucesso.", "success");
+                    //var idRec = JSON.parse("{\"" + this.data.replace(/ /g, "\", \"").replace(/=/g, "\": \"") + "\"}").id;
+                    $("input[value=\"" + idRecord + "\"]").parent().parent().remove();
+                }
+                else {
+                    fly01.toast(data.message, "error");
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $('body').addClass('loaded');
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+}
+</script>

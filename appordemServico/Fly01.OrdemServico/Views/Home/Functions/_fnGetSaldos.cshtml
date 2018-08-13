@@ -1,0 +1,51 @@
+﻿<script>
+    function lockSaldos(elName, lock) {
+        $("#" + elName).loading(lock ? "start" : "stop");
+    }
+
+    function getSaldos(dataFinal) {
+        var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+
+        lockSaldos("fly01cardSA", true);
+        lockSaldos("fly01cardCP", true);
+        lockSaldos("fly01cardCR", true);
+        lockSaldos("fly01cardSC", true);
+
+        $.ajax({
+            url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardSA.info(data.SaldoAtual);
+                fly01._.fly01cardCP.info(data.TotalPagamentos);
+                fly01._.fly01cardCR.info(data.TotalRecebimentos);
+                fly01._.fly01cardSC.info(data.SaldoProjetado);
+
+                lockSaldos("fly01cardSA", false);
+                lockSaldos("fly01cardCP", false);
+                lockSaldos("fly01cardCR", false);
+                lockSaldos("fly01cardSC", false);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function isValidDate(dateString) {
+        var regEx = /^\d{4}-\d{2}-\d{2}$/;
+        return dateString.match(regEx) != null;
+    }
+
+</script>

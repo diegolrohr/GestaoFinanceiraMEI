@@ -1,0 +1,8 @@
+﻿@section scripts {
+<script>
+$(document).ready(function () {
+    var url = "@Url.Action("FormBuscarExistentes", "ConciliacaoBancaria", new { tipoConta = "ContaPagar" })";
+    fly01.go(url, "@Model");
+});
+</script>
+}

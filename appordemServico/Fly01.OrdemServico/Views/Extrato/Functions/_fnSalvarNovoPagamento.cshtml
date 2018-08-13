@@ -1,0 +1,38 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnSalvarNovoPagamento() {
+        if (!$('form#fly01frmNovoPgt').valid()) {
+            return false;
+        }
+        else {
+            $('body').removeClass('loaded');
+            var jsonData = $("form#fly01frmNovoPgt").serializeObject();
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("NovoPagamento","Extrato")',
+                data: JSON.stringify({ 'pagamento': jsonData}),
+                success: function success(data) {
+                    if (data.success) {
+                        var strMsg = "Pagamento cadastrado com sucesso.";
+                        if (data.message !== "") strMsg = data.message;
+                        fly01.toast(strMsg, "success");
+
+                        fnAtualizar();
+                        fly01._.fly01frmNovoPgt.close();
+                    } else {
+                        fly01.toast(data.message, "error");
+                    }
+                    $('body').addClass('loaded');
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    $('body').addClass('loaded');
+                }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,42 @@
+﻿<script>
+    function showPopUpCancelarBaixa(id) {
+        bootbox.confirm({
+            buttons: {
+                confirm: {
+                    label: "Cancelar Pagamento",
+                    className: "button btn btn-primary"
+                },
+                cancel: {
+                    label: "Cancelar",
+                    className: "button btn btn-default"
+                }
+            },
+            animate: true,
+            title: "Cancelar Pagamento",
+            message: "Deseja realmente cancelar o pagamento deste título?",
+            callback: function (result) {
+                if (result) {
+                    if (id != null && id.length > 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("CancelarBaixaTitulo", "ContaReceber")',
+                            data: { id: id },
+                            success: function (data) {
+                                if (data.success) {
+                                    $("#datatable-records").DataTable().ajax.reload(null, false);
+                                    ShowSuccess(data.message);
+                                }
+                                else {
+                                    ShowError(data.message);
+                                }
+                            },
+                            error: function (jXHR, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>

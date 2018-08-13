@@ -1,0 +1,6 @@
+﻿<script>
+    function fnNovaTransacaoCR(idRecord) {
+        var url = "@Url.Action("ModalNovaTransacao", "ConciliacaoBancaria", new { tipoConta = "ContaReceber" })";
+        fly01.modal(url, idRecord);
+    }
+</script>

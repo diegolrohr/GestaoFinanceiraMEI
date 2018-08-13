@@ -1,0 +1,28 @@
+﻿<script>
+    function inputHiddenId(id, value) {
+        var attr = { "type": "hidden", "id": id, "name": id, "value": value };
+        return createElem("input", attr);
+    };
+
+    function createElement(row) {
+        var formAttr = {
+            "class": "cnabFormMail valign-wrapper left col s6 btn btn-narrow valid",
+            "id": "btnEmail",
+            "onclick": `return fnAbreModalEnviaPorEmail("${row.contaReceberId}", "${row.contaBancariaId}")`
+        };
+        return createElem("button", formAttr, [inputHiddenId("emailId", row.email), createElem("i", { "class": "material-icons" }, "email")]);
+    }
+
+    function fnModalEmail(data, type, row, meta) {
+        return createElement(row).outerHTML;
+    }
+
+    function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId) {
+        let email = "";
+        if ($('#emailId').val() != "undefined") 
+            email = $('#emailId').val();
+        
+        var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId ;
+        fly01.modal(url);
+    }
+</script>

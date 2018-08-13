@@ -109,7 +109,7 @@
       <Name>Fly01.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fly01.OrdemServico.DAL\Fly01.OrdemServico.DAL.csproj">
-      <Project>{599fc6f5-a443-4d81-81cb-6dfd2abff728}</Project>
+      <Project>{34a5c059-4c42-42de-a272-4aa969b5a6dc}</Project>
       <Name>Fly01.OrdemServico.DAL</Name>
     </ProjectReference>
   </ItemGroup>

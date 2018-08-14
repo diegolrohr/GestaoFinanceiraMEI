@@ -326,7 +326,7 @@ namespace Fly01.Compras.BL
             return result;
         }
 
-        public List<TributacaoProdutoRetorno> TributacoesOrdemVendaProdutos(List<OrdemVendaProduto> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public List<TributacaoProdutoRetorno> TributacoesOrdemVendaProdutos(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             return TotalTributacaoProduto(ordemVendaProdutos.Select(x => new TributacaoProduto()
             {
@@ -339,7 +339,7 @@ namespace Fly01.Compras.BL
             }).ToList(), clienteId, tipoVenda, tipoFrete, valorFrete);
         }
 
-        public double TotalSomaOrdemVendaProdutos(List<OrdemVendaProduto> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaOrdemVendaProdutos(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             //Transforma para a classe auxiliar
             return TotalSomaTributacaoProduto(ordemVendaProdutos.Select(x => new TributacaoProduto()
@@ -353,7 +353,7 @@ namespace Fly01.Compras.BL
             }).ToList(), clienteId, tipoVenda, tipoFrete, valorFrete);
         }
 
-        public double TotalSomaOrdemVendaProdutosNaoAgrega(List<OrdemVendaProduto> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaOrdemVendaProdutosNaoAgrega(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             //Transforma para a classe auxiliar
             return TotalSomaTributacaoProdutoNaoAgrega(ordemVendaProdutos.Select(x => new TributacaoProduto()

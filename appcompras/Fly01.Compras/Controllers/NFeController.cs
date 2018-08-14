@@ -4,7 +4,7 @@ using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
-using Fly01.Faturamento.ViewModel;
+using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Fly01.Faturamento.Controllers
+namespace Fly01.Compras.Controllers
 {
     [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class NFeController : BaseController<NFeVM>
@@ -316,7 +316,7 @@ namespace Fly01.Faturamento.Controllers
                     numNotaFiscal = entity.NumNotaFiscal
                 };
 
-                var resourceNamePut = $"{"NFe"}/{entity.Id}";
+                var resourceNamePut = $"{"NFeEntrada"}/{entity.Id}";
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(NFe));
 
                 return JsonResponseStatus.GetSuccess("NF-e transmitida com sucesso");

@@ -1,5 +1,4 @@
-﻿using Fly01.Compras.DAL;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
@@ -8,7 +7,6 @@ using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.Collections.Generic;
-using Fly01.Core.Helpers;
 
 namespace Fly01.Compras.BL
 {
@@ -29,13 +27,14 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
 
-        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL) : base(context)
+        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
             NFeEntradaBL = nFeEntradaBL;
             NFeProdutoEntradaBL = nFeProdutoEntradaBL;
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
+            TotalTributacaoBL = totalTributacaoBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -54,7 +53,7 @@ namespace Fly01.Compras.BL
             if (entity.Status == StatusOrdemCompra.Finalizado)
             {
                 //var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
-                var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
+                //var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString()).Any();
 
                 bool pagaFrete = (
                     ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
@@ -64,12 +63,12 @@ namespace Fly01.Compras.BL
 
                 if (entity.GeraNotaFiscal)
                 {
-                    TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.FornecedorId);
+                    //TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.FornecedorId);
                     entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                 }
 
-                entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
+                //entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 //entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
@@ -93,11 +92,11 @@ namespace Fly01.Compras.BL
             
             notaFiscal.Id = Guid.NewGuid();
             notaFiscal.ChaveNFeReferenciada = tipo == TipoNotaFiscal.NFe ? entity.ChaveNFeReferenciada : null;
-            notaFiscal.OrdemVendaOrigemId = entity.Id;
+            notaFiscal.OrdemCompraOrigemId = entity.Id;
             notaFiscal.TipoVenda = entity.TipoVenda;
             notaFiscal.Status = StatusNotaFiscal.NaoTransmitida;
             notaFiscal.Data = entity.Data;
-            notaFiscal.ClienteId = entity.FornecedorId;
+            notaFiscal.FornecedorId = entity.FornecedorId;
             notaFiscal.TransportadoraId = entity.TransportadoraId;
             notaFiscal.TipoFrete = entity.TipoFrete;
             notaFiscal.PlacaVeiculo = entity.PlacaVeiculo;
@@ -119,84 +118,84 @@ namespace Fly01.Compras.BL
         protected void GeraNotasFiscais(Pedido entity)
         {
             //gerar notas fiscais divididos por produtos e serviços
-            var produtos = "abc";/*OrdemVendaProdutoBL.AllIncluding(x => x.GrupoTributario).Where(x => x.OrdemVendaId == entity.Id).ToList();*/
-            var servicos = "abc";/*OrdemVendaServicoBL.All.Where(x => x.OrdemVendaId == entity.Id).ToList();*/
+            var produtos = PedidoItemBL.AllIncluding(x => x.GrupoTributario).Where(x => x.PedidoId == entity.Id).ToList();
+            //var servicos = OrdemVendaServicoBL.All.Where(x => x.OrdemVendaId == entity.Id).ToList();
 
             if (produtos != null & produtos.Any())
             {
                 var NFe = (NFeEntrada)GetNotaFiscal(entity, TipoNotaFiscal.NFe);
-                //var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.FornecedorId, entity.TipoVenda, entity.TipoFrete, entity.ValorFrete);
-                //var totalImpostosProdutos = TotalTributacaoBL.TributacaoItemAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
-                //var totalImpostosProdutosNaoAgrega = TotalTributacaoBL.TributacaoItemNaoAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
+                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.FornecedorId, entity.TipoVenda, entity.TipoFrete, entity.ValorFrete);
+                var totalImpostosProdutos = TotalTributacaoBL.TributacaoItemAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
+                var totalImpostosProdutosNaoAgrega = TotalTributacaoBL.TributacaoItemNaoAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
 
-                //NFe.TotalImpostosProdutos = totalImpostosProdutos;
-                //NFe.TotalImpostosProdutosNaoAgrega = totalImpostosProdutosNaoAgrega;
-                //entity.TotalImpostosProdutos = totalImpostosProdutos;
-                //entity.TotalImpostosProdutosNaoAgrega = totalImpostosProdutosNaoAgrega;
+                NFe.TotalImpostosProdutos = totalImpostosProdutos;
+                NFe.TotalImpostosProdutosNaoAgrega = totalImpostosProdutosNaoAgrega;
+                entity.TotalImpostosProdutos = totalImpostosProdutos;
+                entity.TotalImpostosProdutosNaoAgrega = totalImpostosProdutosNaoAgrega;
 
-                //var nfeProdutos = produtos.Select(
-                //        x => new NFeProdutoEntrada
-                //        {
-                //            Id = Guid.NewGuid(),
-                //            NotaFiscalEntradaId = NFe.Id,
-                //            ProdutoId = x.ProdutoId,
-                //            GrupoTributarioId = x.GrupoTributarioId,
-                //            Quantidade = x.Quantidade,
-                //            Valor = x.Valor,
-                //            Desconto = x.Desconto,
-                //            Observacao = x.Observacao,
-                //            ValorBCSTRetido = x.ValorBCSTRetido,
-                //            ValorICMSSTRetido = x.ValorICMSSTRetido,
-                //            ValorCreditoICMS = x.ValorCreditoICMS,
-                //            ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
-                //            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
-                //        }).ToList();
+                var nfeProdutos = produtos.Select(
+                        x => new NFeProdutoEntrada
+                        {
+                            Id = Guid.NewGuid(),
+                            NotaFiscalEntradaId = NFe.Id,
+                            ProdutoId = x.ProdutoId,
+                            GrupoTributarioId = x.GrupoTributarioId,
+                            Quantidade = x.Quantidade,
+                            Valor = x.Valor,
+                            Desconto = x.Desconto,
+                            Observacao = x.Observacao,
+                            ValorBCSTRetido = x.ValorBCSTRetido,
+                            ValorICMSSTRetido = x.ValorICMSSTRetido,
+                            ValorCreditoICMS = x.ValorCreditoICMS,
+                            ValorFCPSTRetidoAnterior = x.ValorFCPSTRetidoAnterior,
+                            ValorBCFCPSTRetidoAnterior = x.ValorBCFCPSTRetidoAnterior
+                        }).ToList();
 
-                //var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
-                //foreach (var x in tributacoesProdutos)
-                //{
-                //    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
-                //    var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
-                //    NotaFiscalItemTributacaoEntradaBL.Insert(
-                //        new NotaFiscalItemTributacaoEntrada
-                //        {
-                //            NotaFiscalItemEntradaId = nfeProduto.Id,
-                //            CalculaICMS = grupoTributario.CalculaIcms,
-                //            ICMSBase = x.ICMSBase,
-                //            ICMSAliquota = x.ICMSAliquota,
-                //            ICMSValor = x.ICMSValor,
-                //            CalculaIPI = grupoTributario.CalculaIpi,
-                //            IPIBase = x.IPIBase,
-                //            IPIAliquota = x.IPIAliquota,
-                //            IPIValor = x.IPIValor,
-                //            CalculaST = grupoTributario.CalculaSubstituicaoTributaria,
-                //            STBase = x.STBase,
-                //            STAliquota = x.STAliquota,
-                //            STValor = x.STValor,
-                //            CalculaCOFINS = grupoTributario.CalculaCofins,
-                //            COFINSBase = x.COFINSBase,
-                //            COFINSAliquota = x.COFINSAliquota,
-                //            COFINSValor = x.COFINSValor,
-                //            CalculaPIS = grupoTributario.CalculaPis,
-                //            PISBase = x.PISBase,
-                //            PISAliquota = x.PISAliquota,
-                //            PISValor = x.PISValor,
-                //            FreteValorFracionado = x.FreteValorFracionado,
-                //            FCPSTBase = x.FCPBase,
-                //            FCPSTAliquota = x.FCPAliquota,
-                //            FCPSTValor = x.FCPValor,
-                //            FCPBase = x.FCPBase,
-                //            FCPAliquota = x.FCPAliquota,
-                //            FCPValor = x.FCPValor,
-                //        });
-                //}
+                var nfeProdutosTributacao = new List<NotaFiscalItemTributacao>();
+                foreach (var x in tributacoesProdutos)
+                {
+                    var nfeProduto = nfeProdutos.Where(y => y.ProdutoId == x.ProdutoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfeProduto.GrupoTributarioId);
+                    NotaFiscalItemTributacaoEntradaBL.Insert(
+                        new NotaFiscalItemTributacaoEntrada
+                        {
+                            NotaFiscalItemEntradaId = nfeProduto.Id,
+                            CalculaICMS = grupoTributario.CalculaIcms,
+                            ICMSBase = x.ICMSBase,
+                            ICMSAliquota = x.ICMSAliquota,
+                            ICMSValor = x.ICMSValor,
+                            CalculaIPI = grupoTributario.CalculaIpi,
+                            IPIBase = x.IPIBase,
+                            IPIAliquota = x.IPIAliquota,
+                            IPIValor = x.IPIValor,
+                            CalculaST = grupoTributario.CalculaSubstituicaoTributaria,
+                            STBase = x.STBase,
+                            STAliquota = x.STAliquota,
+                            STValor = x.STValor,
+                            CalculaCOFINS = grupoTributario.CalculaCofins,
+                            COFINSBase = x.COFINSBase,
+                            COFINSAliquota = x.COFINSAliquota,
+                            COFINSValor = x.COFINSValor,
+                            CalculaPIS = grupoTributario.CalculaPis,
+                            PISBase = x.PISBase,
+                            PISAliquota = x.PISAliquota,
+                            PISValor = x.PISValor,
+                            FreteValorFracionado = x.FreteValorFracionado,
+                            FCPSTBase = x.FCPBase,
+                            FCPSTAliquota = x.FCPAliquota,
+                            FCPSTValor = x.FCPValor,
+                            FCPBase = x.FCPBase,
+                            FCPAliquota = x.FCPAliquota,
+                            FCPValor = x.FCPValor,
+                        });
+                }
 
                 NFeEntradaBL.Insert(NFe);
 
-                //foreach (var nfeProduto in nfeProdutos)
-                //{
-                //    NFeProdutoEntradaBL.Insert(nfeProduto);
-                //}
+                foreach (var nfeProduto in nfeProdutos)
+                {
+                    NFeProdutoEntradaBL.Insert(nfeProduto);
+                }
             }
         }
 

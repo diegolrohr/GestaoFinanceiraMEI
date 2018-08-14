@@ -93,6 +93,7 @@
         public const string ComprasCompras = "8FBA6365-5788-45E8-AAFD-C2A3D6EA1EC2";
         public const string ComprasComprasDashboard = "AD41CD7C-334B-4AAB-9FD2-F69A8E73DCDE";
         public const string ComprasComprasOrcamentoPedido = "4577A2E8-4FEB-4D4F-B2E4-3040DCD13E24";
+        public const string ComprasComprasNotasFiscais = "1EC4DBEA-1F10-42E2-B998-513FF7279020";
 
         public const string ComprasCadastros = "7802F783-EF74-4FBF-94CD-BE695A5AB5FD";
         public const string ComprasCadastrosProdutos = "ABC9BF43-B4B2-4256-84AD-4CE0CF446B62";

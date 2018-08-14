@@ -54,8 +54,8 @@ namespace Fly01.EmissaoNFE.BL
         private double ObterAliquota(string EstadoOrigem, string EstadoDestino, TabelaIcmsBL TabelaIcmsBL)
         {
             return  (from e in TabelaIcmsBL.All
-                        where e.SiglaDestino.Equals(EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)
-                        && e.SiglaOrigem.Equals(EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)
+                        where e.SiglaOrigem.Equals(EstadoOrigem, StringComparison.InvariantCultureIgnoreCase)
+                        && e.SiglaDestino.Equals(EstadoDestino, StringComparison.InvariantCultureIgnoreCase)
                         select e.IcmsAliquota).FirstOrDefault();
         }
     }

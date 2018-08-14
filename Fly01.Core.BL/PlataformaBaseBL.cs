@@ -151,9 +151,11 @@ namespace Fly01.Core.BL
                     {
                         if (isBemacash)
                         {
-
                             var id = item.Id ?? item.id;
-                            var itemToUpdate = Reflection.CopyPropertiesFromJson(Find(Guid.Parse(id.ToString())), item.ToString());
+                            var entity = Find(Guid.Parse(id.ToString()));
+                            if (entity == null) throw new Exception($"Id {id} não encontrado.");
+
+                            var itemToUpdate = Reflection.CopyPropertiesFromJson(entity, item.ToString());
 
                             Update(itemToUpdate);
                             AttachForUpdate(itemToUpdate);

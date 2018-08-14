@@ -176,6 +176,14 @@
     <Compile Include="Migrations\201806281738075_InsertIBPT_TO.Designer.cs">
       <DependentUpon>201806281738075_InsertIBPT_TO.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808131810137_DeleteRowsTabelaICMSMudancaEstruturaIdsFixos.cs" />
+    <Compile Include="Migrations\201808131810137_DeleteRowsTabelaICMSMudancaEstruturaIdsFixos.Designer.cs">
+      <DependentUpon>201808131810137_DeleteRowsTabelaICMSMudancaEstruturaIdsFixos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808131824425_AlterTabelaICMSDeleteColumnsEstadosIds.cs" />
+    <Compile Include="Migrations\201808131824425_AlterTabelaICMSDeleteColumnsEstadosIds.Designer.cs">
+      <DependentUpon>201808131824425_AlterTabelaICMSDeleteColumnsEstadosIds.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -187,7 +195,6 @@
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NcmDataInitializer.cs" />
-    <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\TabelaIcmsDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -297,6 +304,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806281738075_InsertIBPT_TO.resx">
       <DependentUpon>201806281738075_InsertIBPT_TO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808131810137_DeleteRowsTabelaICMSMudancaEstruturaIdsFixos.resx">
+      <DependentUpon>201808131810137_DeleteRowsTabelaICMSMudancaEstruturaIdsFixos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808131824425_AlterTabelaICMSDeleteColumnsEstadosIds.resx">
+      <DependentUpon>201808131824425_AlterTabelaICMSDeleteColumnsEstadosIds.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

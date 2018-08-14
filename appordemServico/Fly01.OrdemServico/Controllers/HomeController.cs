@@ -22,23 +22,23 @@ namespace Fly01.OrdemServico.Controllers
             //if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
             //    return new ContentUI();
 
-            ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-            var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
+            //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+            //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
-                //Header = new HtmlUIHeader
-                //{
-                //    Title = "Fluxo de Caixa",
-                //    Buttons = new List<HtmlUIButton>
-                //    {
-                //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-                //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
-                //    }
-                //},
-                //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                //Functions = new List<string> { "__format", "fnGetSaldos" }
+            //    //Header = new HtmlUIHeader
+            //    //{
+            //    //    Title = "Fluxo de Caixa",
+            //    //    Buttons = new List<HtmlUIButton>
+            //    //    {
+            //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
+            //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
+            //    //    }
+            //    //},
+            //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+            //    //Functions = new List<string> { "__format", "fnGetSaldos" }
             };
 
             if (withSidebarUrl)
@@ -49,7 +49,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "OrdemServico", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem Serviço", Parent = "header" };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
@@ -60,7 +60,8 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Cadastro",
                     Items = new List<LinkUI>
                     {
-                        //new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu1", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu1", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu2", OnClick = @Url.Action("List", "Home")},
                     }
                 },
                 new SidebarUIMenu()
@@ -69,7 +70,7 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        //new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("List", "Home")}                        
                     }
                 },
                 new SidebarUIMenu()
@@ -79,14 +80,15 @@ namespace Fly01.OrdemServico.Controllers
                     Items = new List<LinkUI>
                     {
                         //new LinkUI() { Class = ResourceHashConst.OrdemServicoAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                        new LinkUI() { Class = "", Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                     }
                 },
                 //TODO: Ver permissoes new SidebarUIMenu() { Class = ResourceHashConst.OrdemServicoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
                 new SidebarUIMenu() { Class = "", Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
-            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
+            //config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
+            config.MenuItems.AddRange(menuItems);
             #endregion
 
             #region User Menu Items

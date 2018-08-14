@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fly01.Financeiro.Properties {
+namespace Fly01.OrdemServico.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

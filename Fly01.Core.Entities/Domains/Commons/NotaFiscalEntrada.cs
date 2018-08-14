@@ -8,6 +8,12 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NotaFiscalEntrada : PlataformaBase
     {
+        [StringLength(60)]
+        public string NumeracaoVolumesTrans { get; set; }
+
+        [StringLength(60)]
+        public string Marca { get; set; }
+
         [Required]
         public Guid OrdemCompraOrigemId { get; set; }
 
@@ -15,7 +21,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoNotaFiscal TipoNotaFiscal { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoVenda TipoCompra { get; set; }
 
         [Required]
         public StatusNotaFiscal Status { get; set; }
@@ -32,6 +38,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public Guid? TransportadoraId { get; set; }
 
         public TipoFrete TipoFrete { get; set; }
+
+        [StringLength(60)]
+        public string TipoEspecie { get; set; }
 
         [StringLength(7)]
         public string PlacaVeiculo { get; set; }

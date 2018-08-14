@@ -29,20 +29,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        [Required]
-        public Guid GrupoTributarioId { get; set; }
-
-        public double ValorCreditoICMS { get; set; }
-
-        public double ValorICMSSTRetido { get; set; }
-
-        public double ValorBCSTRetido { get; set; }
-
-        public double ValorFCPSTRetidoAnterior { get; set; }
-
-        public double ValorBCFCPSTRetidoAnterior { get; set; }
-
-        public virtual GrupoTributario GrupoTributario { get; set; }
         public virtual Produto Produto { get; set; }
     }
 }

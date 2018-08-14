@@ -20,7 +20,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public StatusOrdemCompra Status { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoVenda TipoCompra { get; set; }
 
         [Required]
         [Column(TypeName = "date")]
@@ -50,8 +50,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
-
-        public double? TotalImpostosServicos { get; set; }
 
         public double? TotalImpostosProdutos { get; set; }
 

@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using System;
 using System.Linq;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -9,7 +10,12 @@ namespace Fly01.Core.ServiceBus
     {
         public static void Create()
         {
-            var factory = RabbitConfig.Factory;
+            var factory = new ConnectionFactory()
+            {
+                Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
+                UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
+                Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+            };
 
             try
             {
@@ -31,7 +37,7 @@ namespace Fly01.Core.ServiceBus
             catch (Exception ex)
             {
                 if (RabbitConfig.VirtualHostname != "dev")
-                    SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, RabbitConfig.PlataformaUrl, "");
+                    SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, "", "");
             }
         }
     }

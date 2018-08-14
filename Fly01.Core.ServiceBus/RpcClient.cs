@@ -3,6 +3,7 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -21,8 +22,13 @@ namespace Fly01.Core.ServiceBus
             {
                 if (connection == null || !connection.IsOpen)
                 {
-                    var factory = RabbitConfig.Factory;
-                    factory.VirtualHost = RabbitConfig.VirtualHostname;
+                    var factory = new ConnectionFactory()
+                    {
+                        Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
+                        UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
+                        Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+                        VirtualHost = RabbitConfig.VirtualHostname
+                    };
 
                     connection = factory.CreateConnection();
                 }
@@ -62,6 +68,7 @@ namespace Fly01.Core.ServiceBus
 
         public string Call(string message)
         {
+            return "99";
             var result = "";
 
             try

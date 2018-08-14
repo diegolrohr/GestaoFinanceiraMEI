@@ -59,7 +59,8 @@ namespace Fly01.Faturamento.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
+        protected override Task RunServiceBusHomologacao() => Task.Factory.StartNew(() => new ServiceBusBL().Consume("israel"));
+        protected override Task RunServiceBusIntegracao() => Task.Factory.StartNew(() => new ServiceBusBL().Consume("follmann"));
 
         protected override void SetAppDefaults()
         {

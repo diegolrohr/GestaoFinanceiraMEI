@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Fly01.Core.Mensageria;
 using Fly01.Core.Entities.Domains;
 using System.Collections.Generic;
+using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -12,11 +13,17 @@ namespace Fly01.Core.ServiceBus
     {
         public static void Send(string routingKey, string appUser, string plataformaUrl, TEntity message, RabbitConfig.EnHttpVerb httpVerb)
         {
-            var factory = RabbitConfig.Factory;
+            var factory = new ConnectionFactory()
+            {
+                Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
+                UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
+                Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+                VirtualHost = RabbitConfig.VirtualHost.Split(',')[0]
+            };
 
             try
             {
-                factory.VirtualHost = RabbitConfig.VirtualHost.Split(',')[0];
+                //factory.VirtualHost = RabbitConfig.VirtualHost.Split(',')[0];
 
                 using (var connection = factory.CreateConnection("prdc" + RabbitConfig.QueueName))
                 {

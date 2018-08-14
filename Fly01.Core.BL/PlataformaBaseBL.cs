@@ -145,7 +145,12 @@ namespace Fly01.Core.BL
             switch (httpMethod)
             {
                 case RabbitConfig.EnHttpVerb.POST:
-                    Insert(JsonConvert.DeserializeObject<TEntity>(item.ToString()));
+                    {
+                        var entity = JsonConvert.DeserializeObject<TEntity>(item.ToString());
+                        if (entity == null) throw new Exception($"Não foi possível converter o objeto: {item.ToString()}");
+
+                        Insert(entity);
+                    }
                     break;
                 case RabbitConfig.EnHttpVerb.PUT:
                     {
@@ -174,11 +179,10 @@ namespace Fly01.Core.BL
                         var id = item.Id ?? item.id;
                         var itemToDelete = Find(Guid.Parse(id.ToString()));
 
-                        if (itemToDelete != null)
-                        {
-                            Delete(itemToDelete);
-                            AttachForUpdate(itemToDelete);
-                        }
+                        if (itemToDelete == null) throw new Exception($"Item {id.ToString()} não encontrado.");
+
+                        Delete(itemToDelete);
+                        AttachForUpdate(itemToDelete);
                         break;
                     }
             }

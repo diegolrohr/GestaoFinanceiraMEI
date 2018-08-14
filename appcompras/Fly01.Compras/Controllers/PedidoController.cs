@@ -357,7 +357,6 @@ namespace Fly01.Compras.Controllers
                 Id = "tipoFrete",
                 Class = "col s12 m4",
                 Label = "Tipo Frete",
-                Value = "SemFrete",
                 Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete))),
                 DomEvents = new List<DomEventUI>
@@ -413,22 +412,41 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
                 }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
-            config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
-            config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s12 m8", Label = "Produtos com estoque faltante" });
-            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s12 m4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8 });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m3", Label = "Quant. volumes" });
             #endregion
 
-            #region Helpers 
+            #region step Produtos
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnAddPedidoItem",
+                Class = "col s12 m2",
+                Value = "Adicionar produto",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
+                }
+            });
+            config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12" });
+            #endregion
+
+            #region step Finalizar
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalPedido", Class = "col s12 m4", Label = "Total pedido(produtos + frete)", Readonly = true });
+            config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimentar estoque" });
+            config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
+
+            #endregion
+
+            #region Helpers
             config.Helpers.Add(new TooltipUI
             {
-                Id = "chaveNFeReferenciada",
+                Id = "movimentaEstoque",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se o pedido for do tipo Devolução, informe a chave de acesso sefaz da nota fiscal de origem referenciada. A chave é numérica é de tamanho 44. Se existir esta nota fiscal referenciada, o sistema irá preencher as informações como sugestão, somente na criação do novo pedido. Se o pedido não gerar nota fiscal, pode preencher com sequencia de 1. Após avançar a etapa da finalidade, não é mais possível voltar e editar estes dados."
+                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de entrada da quantidade total dos produtos."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -436,79 +454,7 @@ namespace Fly01.Compras.Controllers
                 Id = "finalizarPedido",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Salvar e Finalizar, serão efetivadas as opções marcadas (Gerar financeiro, Movimentar estoque, Faturar e Ajustar negativo). Não será mais possível editar ou excluir este pedido."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "geraFinanceiro",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Receber(Normal) ou contas a Pagar(Devolução) ao cliente, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "formaPagamentoId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se o pedido vai ser faturado, informe a forma de pagamento."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "movimentaEstoque",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de Saída(Normal) ou Entrada(Devolução) da quantidade total dos produtos."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "totalOrdemVenda",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Total da soma dos produtos, serviços, frete (se for por conta da empresa) e da soma dos impostos."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "totalImpostosProdutos",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "totalImpostosProdutosNaoAgrega",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS, COFINS, PIS e FCP."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "geraNotaFiscal",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Calcula as tributações de acordo com o Grupo Tributário e gera as notas fiscais (NFe para produtos e NFSe para serviços)."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "naturezaOperacao",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Faturar, informe a natureza de operação para a nota fiscal a ser emitida."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "totalFrete",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Valor frete a ser pago, se for Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Se marcar Salvar e Finalizar, serão efetivadas as opções marcadas (Gerar financeiro, Movimentar estoque). Não será mais possível editar ou excluir este pedido."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -516,22 +462,20 @@ namespace Fly01.Compras.Controllers
                 Id = "transportadoraId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa, se for tipo pedido Normal(CIF/Remetente) ou Devolução(FOB/Destinatário)."
+                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa(FOB/Destinatário)."
                 }
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "grupoTributarioPadraoId",
+                Id = "geraFinanceiro",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
+                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
             #endregion
 
             cfg.Content.Add(config);
-            cfg.Content.Add(GetDtOrdemCompraItemCfg());
-            //cfg.Content.Add(GetDtProdutosEstoqueNegativoCfg());
             cfg.Content.Add(GetDtPedidoItensCfg());
             return cfg;
         }
@@ -641,22 +585,8 @@ namespace Fly01.Compras.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoFrete)))
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Disabled = true });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoBruto",
-                Class = "col s12 m3",
-                Label = "Peso Bruto",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
-                Disabled = true
-            });
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "pesoLiquido",
-                Class = "col s12 m3",
-                Label = "Peso Líquido",
-                Data = new { inputmask = "'mask': '[9{1,3},]9{1,3}', 'placeholder': '000,000', 'numericInput': true, 'alias': 'decimal', 'showMaskOnHover': false, 'autoUnmask':true" },
-                Disabled = true
-            });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8, Disabled = true });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8, Disabled = true });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m6", Label = "Quant. volumes", Disabled = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m4", Label = "Frete comprador paga (FOB/Destinatário)", Readonly = true });

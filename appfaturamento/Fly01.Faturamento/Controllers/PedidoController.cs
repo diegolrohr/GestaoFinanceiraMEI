@@ -208,7 +208,8 @@ namespace Fly01.Faturamento.Controllers
                 Id = "tipoNfeComplementar",
                 Class = "col s12 m7",
                 Label = "Tipo do Complemento",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value))),
                 ConstrainWidth = true
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -354,8 +355,8 @@ namespace Fly01.Faturamento.Controllers
                     }
             });
             config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8 });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
             config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
             config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });

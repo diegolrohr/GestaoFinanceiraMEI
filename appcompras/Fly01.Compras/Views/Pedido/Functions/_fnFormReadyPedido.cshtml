@@ -252,10 +252,6 @@
 
     function fnFormReadyPedido() {
         fnIsNovoPedido();
-         
-        $("#naturezaOperacaoField").hide();
-        $("#chaveNFeReferenciadaField").hide();
-
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();
@@ -314,8 +310,8 @@
 
     function fnIsNovoPedido() {
         if ($('#id').val() == "" || $('#id').val() == undefined) {
-            $('#tipoFreteField select#tipoFrete').val("SemFrete") 
-            $("#tipoFreteField .select-dropdown").val("Sem frete");   
+            $('#tipoFreteField select#tipoFrete').val("SemFrete")
+            $("#tipoFreteField .select-dropdown").val("Sem frete");
         }
     }
 </script>

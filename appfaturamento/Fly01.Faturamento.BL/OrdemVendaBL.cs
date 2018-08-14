@@ -125,7 +125,14 @@ namespace Fly01.Faturamento.BL
 
                 if (NFeComplementar != null)
                 {
-                    mensagemComplementar = $"NF-e Complementar a NF-e {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
+                    mensagemComplementar = $"NFe Complementar a NFe {NFeComplementar.NumNotaFiscal} emitida em {NFeComplementar.Data.ToShortDateString()}";
+                }
+                else
+                {
+                    var numNotaFiscal = entity.ChaveNFeReferenciada.Substring(25, 9);
+                    var ano = entity.ChaveNFeReferenciada.Substring(2, 2);
+                    var mes = entity.ChaveNFeReferenciada.Substring(4, 2);
+                    mensagemComplementar = $"NFe Complementar a NFe {numNotaFiscal} emitida em {mes}/{ano}";
                 }
             }
 
@@ -153,7 +160,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
-            notaFiscal.MensagemPadraoNota = mensagemComplementar + entity.MensagemPadraoNota ?? "";
+            notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
             return notaFiscal;
         }
 
@@ -179,7 +186,7 @@ namespace Fly01.Faturamento.BL
             if (produtos != null & produtos.Any())
             {
                 var NFe = (NFe)GetNotaFiscal(entity, TipoNotaFiscal.NFe);
-                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.ClienteId, entity.TipoVenda, entity.TipoFrete, entity.ValorFrete);
+                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.ClienteId, entity.TipoVenda, entity.TipoFrete, entity.NFeRefComplementarIsDevolucao, entity.ValorFrete);
                 var totalImpostosProdutos = TotalTributacaoBL.TributacaoItemAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
                 var totalImpostosProdutosNaoAgrega = TotalTributacaoBL.TributacaoItemNaoAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
 
@@ -372,17 +379,24 @@ namespace Fly01.Faturamento.BL
                 entity.TipoFrete = TipoFrete.SemFrete;//regra sefaz
                 entity.ValorFrete = 0.00;
 
-                if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplIcms)
+                switch (entity.TipoNfeComplementar)
                 {
-                    entity.NaturezaOperacao = "Complemento de Imposto";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplPreco)
-                {
-                    entity.NaturezaOperacao = "Complemento de Preco";
-                }
-                else if (entity.TipoNfeComplementar == TipoNfeComplementar.ComplQtd)
-                {
-                    entity.NaturezaOperacao = "Complemento de Quantidade";
+                    case TipoNfeComplementar.NaoComplementar:
+                        break;
+                    case TipoNfeComplementar.ComplPrecoQtd:
+                        entity.NaturezaOperacao = "Complemento de Preco/Quantidade";
+                        break;
+                    case TipoNfeComplementar.ComplIcms:
+                        entity.NaturezaOperacao = "Complemento de ICMS";
+                        break;
+                    case TipoNfeComplementar.ComplIcmsST:
+                        entity.NaturezaOperacao = "Complemento de ICMS ST";
+                        break;
+                    case TipoNfeComplementar.ComplIpi:
+                        entity.NaturezaOperacao = "Complemento de IPI";
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -472,8 +486,8 @@ namespace Fly01.Faturamento.BL
                     }
                     else if (entity.TipoVenda == TipoVenda.Complementar)
                     {
-                        totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                        totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                     }
                     //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                     //{
@@ -607,8 +621,8 @@ namespace Fly01.Faturamento.BL
                 }
                 else if(ordemVenda.TipoVenda == TipoVenda.Complementar)
                 {
-                    totalProdutos =+ produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                    totalProdutos =+ produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                    totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                 }
                 //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
                 //{
@@ -617,10 +631,10 @@ namespace Fly01.Faturamento.BL
             }
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var totalImpostosProdutosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, tipoVendaEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;

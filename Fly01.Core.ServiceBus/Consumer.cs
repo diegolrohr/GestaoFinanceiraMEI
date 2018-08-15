@@ -83,7 +83,7 @@ namespace Fly01.Core.ServiceBus
                     if (args.BasicProperties.Type == null) throw new ArgumentException(MsgTypeInvalid);
                     if (args.RoutingKey == null) throw new ArgumentException(MsgRoutingKeyInvalid);
                     if (args.BasicProperties.AppId == RabbitConfig.AppId) return;
-                    if (GetHeaderValue("Hostname") != RabbitConfig.VirtualHostApps && GetHeaderValue("Hostname") != RabbitConfig.VirtualHostIntegracao && GetHeaderValue("Hostname") != Environment.MachineName) return;
+                    if (GetHeaderValue("Hostname") != RabbitConfig.VirtualHostApps && GetHeaderValue("Hostname") != RabbitConfig.VirtualHostIntegracao) return;
 
                     var message = Encoding.UTF8.GetString(args.Body);
                     var httpMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties.Type);
@@ -96,7 +96,7 @@ namespace Fly01.Core.ServiceBus
                 }
                 catch (Exception ex)
                 {
-                    MediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
+                    MediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex.InnerException, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
                 }
                 finally
                 {
@@ -125,7 +125,7 @@ namespace Fly01.Core.ServiceBus
                 {
                     var erro = (exErr is BusinessException) ? (BusinessException)exErr : exErr;
 
-                    MediaClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
+                    MediaClient.PostErrorRabbitMQ(item.ToString(), erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
 
                     continue;
                 }

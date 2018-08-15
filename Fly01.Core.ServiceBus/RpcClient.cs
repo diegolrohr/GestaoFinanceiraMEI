@@ -67,7 +67,6 @@ namespace Fly01.Core.ServiceBus
 
         public string Call(string message)
         {
-            return "99";
             var result = "";
 
             try
@@ -81,7 +80,7 @@ namespace Fly01.Core.ServiceBus
                 respQueue.TryTake(out result, 2000);
 
                 if (string.IsNullOrEmpty(result))
-                    throw new Exception("RpcClient: Não foi possível obter um número");
+                    throw new Exception($"RpcClient: Não foi possível obter um número para {message}");
             }
             catch (Exception ex)
             {

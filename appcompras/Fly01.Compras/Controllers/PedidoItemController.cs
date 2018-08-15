@@ -26,11 +26,12 @@ namespace Fly01.Compras.Controllers
             {
                 id = x.Id.ToString(),
                 produto_descricao = x.Produto.Descricao,
-                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
+                quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
-            };
+            };      
+                
         }
 
         public ContentResult Modal()
@@ -75,6 +76,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Quantidade",
                 Value = "1",
                 Required = true,
+                Digits = 3,
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() {DomEvent = "change", Function = "fnChangeTotal" }

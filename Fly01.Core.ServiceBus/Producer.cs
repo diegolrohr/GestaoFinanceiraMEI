@@ -12,7 +12,6 @@ namespace Fly01.Core.ServiceBus
     {
         public static void Send(string routingKey, string appUser, string plataformaUrl, TEntity message, RabbitConfig.EnHttpVerb httpVerb)
         {
-
             try
             {
                 var factory = new ConnectionFactory()
@@ -36,7 +35,7 @@ namespace Fly01.Core.ServiceBus
                     {
                         { "AppUser", appUser },
                         { "PlataformaUrl", plataformaUrl },
-                        { "Hostname", RabbitConfig.VirtualHostname },
+                        { "Hostname", RabbitConfig.VirtualHostApps },
                     };
 
                     channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
@@ -44,7 +43,7 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                SlackClient.PostErrorRabbitMQ(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, plataformaUrl, routingKey);
+                MediaClient.PostErrorRabbitMQ(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), ex, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
             }
         }
     }

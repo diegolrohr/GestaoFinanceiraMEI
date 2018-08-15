@@ -19,6 +19,7 @@ namespace Fly01.Core.ServiceBus
         private readonly string MsgHeaderInvalid = "A 'PlataformaUrl', o 'Hostname' e o 'AppUser' devem ser informados no Header da mensagem";
         private readonly string MsgAppIdInvalid = "AppId não informado nas propriedades da mensagem";
         private readonly string MsgTypeInvalid = "Type (POST, PUT, DELETE) não informado nas propriedades da mensagem";
+        private readonly string MsgRoutingKeyInvalid = "RoutingKey não informado no corpo da mensagem";
         private Type AssemblyBL;
         private Dictionary<string, object> Headers;
 
@@ -80,25 +81,22 @@ namespace Fly01.Core.ServiceBus
                     if (args.BasicProperties.Headers == null || !HeaderIsValid()) throw new ArgumentException(MsgHeaderInvalid);
                     if (args.BasicProperties.AppId == null) throw new ArgumentException(MsgAppIdInvalid);
                     if (args.BasicProperties.Type == null) throw new ArgumentException(MsgTypeInvalid);
+                    if (args.RoutingKey == null) throw new ArgumentException(MsgRoutingKeyInvalid);
+                    if (args.BasicProperties.AppId == RabbitConfig.AppId) return;
+                    if (GetHeaderValue("Hostname") != RabbitConfig.VirtualHostApps && GetHeaderValue("Hostname") != RabbitConfig.VirtualHostIntegracao && GetHeaderValue("Hostname") != Environment.MachineName) return;
 
-                    if (GetHeaderValue("Hostname") == RabbitConfig.VirtualHostApps || GetHeaderValue("Hostname") == RabbitConfig.VirtualHostIntegracao)
-                    {
-                        if (args.BasicProperties.AppId != RabbitConfig.AppId)
-                        {
-                            var message = Encoding.UTF8.GetString(args.Body);
-                            var httpMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties.Type ?? "POST");
-                            var routingKey = args.RoutingKey ?? string.Empty;
-                            var appId = args.BasicProperties.AppId;
-                            var plataformaUrl = GetHeaderValue("PlataformaUrl");
-                            var appUser = GetHeaderValue("AppUser");
+                    var message = Encoding.UTF8.GetString(args.Body);
+                    var httpMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties.Type);
+                    var routingKey = args.RoutingKey;
+                    var appId = args.BasicProperties.AppId;
+                    var plataformaUrl = GetHeaderValue("PlataformaUrl");
+                    var appUser = GetHeaderValue("AppUser");
 
-                            await ProcessData(message, httpMethod, routingKey, appId, plataformaUrl, appUser);
-                        }
-                    }
+                    await ProcessData(message, httpMethod, routingKey, appId, plataformaUrl, appUser);
                 }
                 catch (Exception ex)
                 {
-                    SlackClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
+                    MediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
                 }
                 finally
                 {
@@ -125,9 +123,9 @@ namespace Fly01.Core.ServiceBus
                 }
                 catch (Exception exErr)
                 {
-                    var erro = (exErr is BusinessException) ? (BusinessException)exErr : (Exception)exErr;
+                    var erro = (exErr is BusinessException) ? (BusinessException)exErr : exErr;
 
-                    SlackClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, plataformaUrl, routingKey);
+                    MediaClient.PostErrorRabbitMQ(item.Key, erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
 
                     continue;
                 }

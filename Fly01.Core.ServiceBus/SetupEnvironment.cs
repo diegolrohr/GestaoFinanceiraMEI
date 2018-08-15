@@ -12,6 +12,8 @@ namespace Fly01.Core.ServiceBus
         {
             try
             {
+                if (virtualHost == "") return;
+
                 var factory = new ConnectionFactory()
                 {
                     Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
@@ -33,8 +35,7 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                if (RabbitConfig.VirtualHostname != "dev")
-                    SlackClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, RabbitConfig.VirtualHostname, RabbitConfig.QueueName, "", "");
+                MediaClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, virtualHost, RabbitConfig.QueueName, "", "");
             }
         }
     }

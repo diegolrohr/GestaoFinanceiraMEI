@@ -63,7 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RabbitConfig.cs" />
     <Compile Include="RpcClient.cs" />
-    <Compile Include="ServiceBusBase.cs" />
     <Compile Include="SetupEnvironment.cs" />
   </ItemGroup>
   <ItemGroup>

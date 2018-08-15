@@ -3,7 +3,6 @@ using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Concurrent;
-using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -27,7 +26,7 @@ namespace Fly01.Core.ServiceBus
                         Uri = RabbitConfig.AMQPURL,
                         UserName = RabbitConfig.UserName,
                         Password = RabbitConfig.Password,
-                        VirtualHost = RabbitConfig.VirtualHostname
+                        VirtualHost = RabbitConfig.VirtualHostApps
                     };
 
                     connection = factory.CreateConnection();

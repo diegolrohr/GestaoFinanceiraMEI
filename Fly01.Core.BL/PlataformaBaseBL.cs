@@ -137,7 +137,7 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isBemacash)
+        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
@@ -145,15 +145,20 @@ namespace Fly01.Core.BL
             switch (httpMethod)
             {
                 case RabbitConfig.EnHttpVerb.POST:
-                    Insert(JsonConvert.DeserializeObject<TEntity>(item.ToString()));
+                    {
+                        var entity = JsonConvert.DeserializeObject<TEntity>(item.ToString());
+                        if (entity == null) throw new Exception($"Não foi possível converter o objeto: {item.ToString()}");
+
+                        Insert(entity);
+                    }
                     break;
                 case RabbitConfig.EnHttpVerb.PUT:
                     {
-                        if (isBemacash)
+                        if (isIntegracao)
                         {
                             var id = item.Id ?? item.id;
                             var entity = Find(Guid.Parse(id.ToString()));
-                            if (entity == null) throw new Exception($"Id {id} não encontrado.");
+                            if (entity == null) throw new Exception($"Não foi possível editar o registro, pois o id {id.ToString()} não foi encontrado.");
 
                             var itemToUpdate = Reflection.CopyPropertiesFromJson(entity, item.ToString());
 
@@ -163,6 +168,7 @@ namespace Fly01.Core.BL
                         else
                         {
                             var itemToUpdate = JsonConvert.DeserializeObject<TEntity>(item.ToString());
+                            if (itemToUpdate == null) throw new Exception($"Não foi possível editar o registro, pois o item {item.ToString()} não foi encontrado.");
 
                             Update(itemToUpdate);
                             AttachForUpdate(itemToUpdate);
@@ -174,11 +180,10 @@ namespace Fly01.Core.BL
                         var id = item.Id ?? item.id;
                         var itemToDelete = Find(Guid.Parse(id.ToString()));
 
-                        if (itemToDelete != null)
-                        {
-                            Delete(itemToDelete);
-                            AttachForUpdate(itemToDelete);
-                        }
+                        if (itemToDelete == null) throw new Exception($"Não foi possível excluir o registro, pois o id {id.ToString()} não foi encontrado.");
+
+                        Delete(itemToDelete);
+                        AttachForUpdate(itemToDelete);
                         break;
                     }
             }

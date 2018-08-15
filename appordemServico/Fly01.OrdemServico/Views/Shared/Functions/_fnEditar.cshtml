@@ -1,0 +1,5 @@
+﻿<script>
+function fnEditar(idRecord) {
+    fly01.go("@Url.Action("Form", "" + @ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)", idRecord);
+}
+</script>

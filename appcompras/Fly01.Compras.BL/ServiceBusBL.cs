@@ -4,8 +4,8 @@ using Fly01.Core.ServiceBus;
 
 namespace Fly01.Compras.BL
 {
-    public class ServiceBusBL : ServiceBusBase
-    {
-        public ServiceBusBL() : base(Type.GetType($"{Assembly.GetExecutingAssembly().GetName().Name}.UnitOfWork")) { }
-    }
+    //public class ServiceBusBL : ServiceBusBase
+    //{
+    //    public ServiceBusBL() : base(Type.GetType($"{Assembly.GetExecutingAssembly().GetName().Name}.UnitOfWork")) { }
+    //}
 }

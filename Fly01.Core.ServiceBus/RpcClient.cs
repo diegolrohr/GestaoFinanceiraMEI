@@ -24,9 +24,9 @@ namespace Fly01.Core.ServiceBus
                 {
                     var factory = new ConnectionFactory()
                     {
-                        Uri = new Uri(WebConfigurationManager.AppSettings["RabbitAMQPUrl"]),
-                        UserName = WebConfigurationManager.AppSettings["RabbitUserName"],
-                        Password = WebConfigurationManager.AppSettings["RabbitPassword"],
+                        Uri = RabbitConfig.AMQPURL,
+                        UserName = RabbitConfig.UserName,
+                        Password = RabbitConfig.Password,
                         VirtualHost = RabbitConfig.VirtualHostname
                     };
 

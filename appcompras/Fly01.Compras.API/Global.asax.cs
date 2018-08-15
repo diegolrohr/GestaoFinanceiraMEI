@@ -1,9 +1,9 @@
-﻿using Fly01.Compras.BL;
-using Fly01.Core.API.Application;
+﻿using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.ServiceBus;
 using Microsoft.OData.Edm;
-using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
 
@@ -46,7 +46,12 @@ namespace Fly01.Compras.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBusHomologacao() => Task.Factory.StartNew(() => new ServiceBusBL().Consume("israel"));
-        protected override Task RunServiceBusIntegracao() => Task.Factory.StartNew(() => new ServiceBusBL().Consume("follmann"));
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        {
+            SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
+            SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);
+
+            new Consumer(Assembly.Load("Fly01.Compras.BL").GetType("Fly01.Compras.BL.UnitOfWork")).Consume();
+        });
     }
 }

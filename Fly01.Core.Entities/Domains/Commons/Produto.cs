@@ -55,8 +55,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double AliquotaIpi { get; set; }
 
-        public bool ObjetoDeManutencao { get; set; }
-
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
         public virtual Ncm Ncm { get; set; }

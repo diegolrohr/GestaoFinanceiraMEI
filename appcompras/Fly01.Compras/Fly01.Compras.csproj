@@ -267,7 +267,6 @@
     <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnStateSelect.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnAtualizaCertificado.cshtml" />
     <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />

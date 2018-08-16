@@ -338,6 +338,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         DiasPadraoEntrega = c.Int(nullable: false),
+                        ResponsavelPadraoId = c.Guid(),
                         PlataformaId = c.String(nullable: false, maxLength: 200, unicode: false),
                         RegistroFixo = c.Boolean(nullable: false),
                         DataInclusao = c.DateTime(nullable: false),
@@ -348,7 +349,9 @@ namespace Fly01.OrdemServico.DAL.Migrations
                         UsuarioExclusao = c.String(maxLength: 200, unicode: false),
                         Ativo = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Pessoa", t => t.ResponsavelPadraoId)
+                .Index(t => t.ResponsavelPadraoId);
             
             CreateTable(
                 "dbo.OrdemServicoItemProduto",
@@ -400,6 +403,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropForeignKey("dbo.OrdemServicoItemServico", "Id", "dbo.OrdemServicoItem");
             DropForeignKey("dbo.OrdemServicoItemProduto", "ProdutoId", "dbo.Produto");
             DropForeignKey("dbo.OrdemServicoItemProduto", "Id", "dbo.OrdemServicoItem");
+            DropForeignKey("dbo.ParametroOrdemServico", "ResponsavelPadraoId", "dbo.Pessoa");
             DropForeignKey("dbo.Servico", "NbsId", "dbo.Nbs");
             DropForeignKey("dbo.Produto", "UnidadeMedidaId", "dbo.UnidadeMedida");
             DropForeignKey("dbo.Produto", "NcmId", "dbo.Ncm");
@@ -421,6 +425,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropIndex("dbo.OrdemServicoItemServico", new[] { "Id" });
             DropIndex("dbo.OrdemServicoItemProduto", new[] { "ProdutoId" });
             DropIndex("dbo.OrdemServicoItemProduto", new[] { "Id" });
+            DropIndex("dbo.ParametroOrdemServico", new[] { "ResponsavelPadraoId" });
             DropIndex("dbo.Servico", new[] { "NbsId" });
             DropIndex("dbo.Cest", new[] { "NcmId" });
             DropIndex("dbo.Produto", new[] { "EnquadramentoLegalIPIId" });

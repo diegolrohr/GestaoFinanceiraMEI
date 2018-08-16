@@ -13,7 +13,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201808161107169_Initial Migration"; }
+            get { return "201808161226579_Initial Migration"; }
         }
         
         string IMigrationMetadata.Source

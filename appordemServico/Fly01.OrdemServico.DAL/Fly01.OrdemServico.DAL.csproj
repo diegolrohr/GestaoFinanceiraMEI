@@ -48,9 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppDataContext.cs" />
-    <Compile Include="Migrations\201808161107169_Initial Migration.cs" />
-    <Compile Include="Migrations\201808161107169_Initial Migration.Designer.cs">
-      <DependentUpon>201808161107169_Initial Migration.cs</DependentUpon>
+    <Compile Include="Migrations\201808161226579_Initial Migration.cs" />
+    <Compile Include="Migrations\201808161226579_Initial Migration.Designer.cs">
+      <DependentUpon>201808161226579_Initial Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -88,8 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808161107169_Initial Migration.resx">
-      <DependentUpon>201808161107169_Initial Migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808161226579_Initial Migration.resx">
+      <DependentUpon>201808161226579_Initial Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

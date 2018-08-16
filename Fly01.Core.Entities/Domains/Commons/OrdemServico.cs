@@ -24,16 +24,13 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime DataEntrega { get; set; }
 
-        [Required]
         public Guid ResponsavelId { get; set; }
 
-        [Required]
         public bool Aprovado { get; set; }
 
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        [Required]
         public bool ValorTotal { get; set; }
 
         #region Navigation

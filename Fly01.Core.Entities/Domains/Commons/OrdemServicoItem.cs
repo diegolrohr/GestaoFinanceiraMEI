@@ -14,7 +14,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double Valor { get; set; }
 
-        [Required]
         public double Desconto { get; set; }
 
         [NotMapped]

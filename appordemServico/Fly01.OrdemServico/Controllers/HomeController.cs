@@ -54,14 +54,16 @@ namespace Fly01.OrdemServico.Controllers
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
+                new SidebarUIMenu() { Class = "", Label = "Dashboard", OnClick = @Url.Action("List", "DashboardOs") },
+
                 new SidebarUIMenu()
                 {
                     //Class = ResourceHashConst.FinanceiroFinanceiro,
                     Label = "Cadastro",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produto", OnClick = @Url.Action("List", "Produto")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu2", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto") },
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente") },
                     }
                 },
                 new SidebarUIMenu()

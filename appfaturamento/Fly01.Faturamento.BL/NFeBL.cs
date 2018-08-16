@@ -677,20 +677,19 @@ namespace Fly01.Faturamento.BL
             base.Update(entity);
         }
 
-        public override void Delete(NFe entityToDelete)
-        {
-            var status = entityToDelete.Status;
-            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
-            if (entityToDelete.IsValid())
-            {
-                base.Delete(entityToDelete);
-            }
-            else
-            {
-                throw new BusinessException(entityToDelete.Notification.Get());
-            }
-        }
-
+public override void Delete(NFe entityToDelete)
+{
+    var status = entityToDelete.Status;
+    entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+    if (entityToDelete.IsValid())
+    {
+        base.Delete(entityToDelete);
+    }
+    else
+    {
+        throw new BusinessException(entityToDelete.Notification.Get());
+    }
+}
         public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();

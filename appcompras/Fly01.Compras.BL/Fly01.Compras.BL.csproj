@@ -41,29 +41,40 @@
   <ItemGroup>
     <Compile Include="ArquivoBL.cs" />
     <Compile Include="CategoriaBL.cs" />
+    <Compile Include="CertificadoDigitalBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="DashboardBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
+    <Compile Include="EntidadeBL.cs" />
     <Compile Include="GrupoTributarioBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="CestBL.cs" />
+    <Compile Include="MonitorNFBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="CondicaoParcelamentoBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="NFeEntradaBL.cs" />
+    <Compile Include="NFeProdutoEntradaBL.cs" />
+    <Compile Include="NotaFiscalEntradaBL.cs" />
+    <Compile Include="NotaFiscalCartaCorrecaoEntradaBL.cs" />
+    <Compile Include="NotaFiscalInutilizadaBL.cs" />
+    <Compile Include="NotaFiscalItemTributacaoEntradaBL.cs" />
     <Compile Include="OrcamentoItemBL.cs" />
     <Compile Include="OrdemCompraItemBL.cs" />
     <Compile Include="OrdemCompraBL.cs" />
+    <Compile Include="ParametroTributarioBL.cs" />
     <Compile Include="PedidoItemBL.cs" />
     <Compile Include="PedidoBL.cs" />
     <Compile Include="OrcamentoBL.cs" />
     <Compile Include="PessoaBL.cs" />
     <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceBusBL.cs" />
+    <Compile Include="SerieNotaFiscalBL.cs" />
     <Compile Include="SubstituicaoTributariaBL.cs" />
     <Compile Include="TipoCarteiraBL.cs" />
+    <Compile Include="TotalTributacaoBL.cs" />
     <Compile Include="UnidadeMedidaBL.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
@@ -72,6 +83,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279B3A0C-4549-4B8C-9EF9-90E35A5255D6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\appfaturamento\Fly01.Faturamento.BL\Fly01.Faturamento.BL.csproj">
+      <Project>{8F8627D2-EF0F-4765-BC89-84541D207A22}</Project>
+      <Name>Fly01.Faturamento.BL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.BL\Fly01.Core.BL.csproj">
       <Project>{E491B024-3E82-40F3-9108-F402D8023A19}</Project>
       <Name>Fly01.Core.BL</Name>
@@ -91,6 +110,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>
       <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Rest\Fly01.Core.Rest.csproj">
+      <Project>{8B4C697E-B194-4AA1-9BA5-7AD8C2D19AE7}</Project>
+      <Name>Fly01.Core.Rest</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.ServiceBus\Fly01.Core.ServiceBus.csproj">
       <Project>{321E2009-C06C-4848-9DF5-1EF9D17AD61C}</Project>

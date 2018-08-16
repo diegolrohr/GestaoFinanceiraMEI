@@ -13,7 +13,7 @@ using Fly01.Core.Helpers;
 
 namespace Fly01.Core.Mensageria
 {
-    public static class SlackClient
+    public static class MediaClient
     {
         private static void Post(string slackUrl, SlackMessage message)
         {
@@ -74,12 +74,12 @@ namespace Fly01.Core.Mensageria
 
         public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl, string routingKey)
         {
-            var slackChannel = string.Empty;
+            var mediaChannel = string.Empty;
             var isProd = (hostName == "prod");
             var isHomolog = (hostName == "homolog");
             var errorMessage = GetCustomMessage(exception);
 
-            slackChannel = isProd
+            mediaChannel = isProd
                 ? "https://totvs.ryver.com/application/webhook/YM0Hs5umn114vPb"
                 : "https://totvs.ryver.com/application/webhook/bP5-1AzID58i0ai";
 
@@ -115,7 +115,7 @@ namespace Fly01.Core.Mensageria
                 await collection.InsertOneAsync(logData);
             }
 
-            Post(slackChannel, message);
+            Post(mediaChannel, message);
         }
 
         public static void PostNotificacaoAvaliacaoApp(Guid mensagemId, string hostName, string mensagem, string plataforma)

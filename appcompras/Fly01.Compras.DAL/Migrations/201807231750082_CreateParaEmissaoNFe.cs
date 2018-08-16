@@ -203,7 +203,7 @@ namespace Fly01.Compras.DAL.Migrations
             
             AddColumn("dbo.OrdemCompra", "ChaveNFeReferenciada", c => c.String(maxLength: 44, unicode: false));
             AddColumn("dbo.OrdemCompra", "TipoVenda", c => c.Int(nullable: false));
-            AddColumn("dbo.OrdemCompra", "GrupoTributarioPadraoId", c => c.Guid(nullable: false));
+            AddColumn("dbo.OrdemCompra", "GrupoTributarioPadraoId", c => c.Guid(nullable: true));
             AddColumn("dbo.OrdemCompra", "PlacaVeiculo", c => c.String(maxLength: 7, unicode: false));
             AddColumn("dbo.OrdemCompra", "EstadoPlacaVeiculoId", c => c.Guid());
             AddColumn("dbo.OrdemCompra", "AjusteEstoqueAutomatico", c => c.Boolean(nullable: false));

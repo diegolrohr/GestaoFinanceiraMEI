@@ -85,7 +85,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\NBSVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoItemVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoItemServicoVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoManutencaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
+    <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

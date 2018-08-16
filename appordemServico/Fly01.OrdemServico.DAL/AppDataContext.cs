@@ -46,7 +46,14 @@ namespace Fly01.OrdemServico.API.Models.DAL
             builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
         }
 
+        public DbSet<Cest> Cest { get; set; }
+
+        public DbSet<EnquadramentoLegalIPI> EnquadramentosLegaisIPI { get; set; }
+
         public DbSet<GrupoProduto> GruposProduto { get; set; }
+
+        public DbSet<Nbs> Nbs { get; set; }
+        public DbSet<Ncm> Ncms { get; set; }
 
         public DbSet<Pessoa> Pessoas { get; set; }
 

@@ -8,6 +8,65 @@ namespace Fly01.OrdemServico.DAL.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.Cest",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 650, unicode: false),
+                        Segmento = c.String(maxLength: 200, unicode: false),
+                        Item = c.String(maxLength: 200, unicode: false),
+                        Anexo = c.String(maxLength: 200, unicode: false),
+                        NcmId = c.Guid(),
+                        DataInclusao = c.DateTime(nullable: false),
+                        DataAlteracao = c.DateTime(),
+                        DataExclusao = c.DateTime(),
+                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
+                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
+                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
+                        Ativo = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Ncm", t => t.NcmId)
+                .Index(t => t.NcmId);
+            
+            CreateTable(
+                "dbo.Ncm",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 200, unicode: false),
+                        AliquotaIPI = c.Double(nullable: false),
+                        DataInclusao = c.DateTime(nullable: false),
+                        DataAlteracao = c.DateTime(),
+                        DataExclusao = c.DateTime(),
+                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
+                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
+                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
+                        Ativo = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.EnquadramentoLegalIPI",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Codigo = c.String(maxLength: 200, unicode: false),
+                        GrupoCST = c.String(maxLength: 200, unicode: false),
+                        Descricao = c.String(maxLength: 600, unicode: false),
+                        DataInclusao = c.DateTime(nullable: false),
+                        DataAlteracao = c.DateTime(),
+                        DataExclusao = c.DateTime(),
+                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
+                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
+                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
+                        Ativo = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.GrupoProduto",
                 c => new
                     {
@@ -34,13 +93,12 @@ namespace Fly01.OrdemServico.DAL.Migrations
                 .Index(t => t.NcmId);
             
             CreateTable(
-                "dbo.Ncm",
+                "dbo.UnidadeMedida",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
-                        Descricao = c.String(nullable: false, maxLength: 200, unicode: false),
-                        AliquotaIPI = c.Double(nullable: false),
+                        Abreviacao = c.String(nullable: false, maxLength: 2, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 20, unicode: false),
                         DataInclusao = c.DateTime(nullable: false),
                         DataAlteracao = c.DateTime(),
                         DataExclusao = c.DateTime(),
@@ -52,12 +110,12 @@ namespace Fly01.OrdemServico.DAL.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.UnidadeMedida",
+                "dbo.Nbs",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Abreviacao = c.String(nullable: false, maxLength: 2, unicode: false),
-                        Descricao = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 600, unicode: false),
                         DataInclusao = c.DateTime(nullable: false),
                         DataAlteracao = c.DateTime(),
                         DataExclusao = c.DateTime(),
@@ -250,47 +308,6 @@ namespace Fly01.OrdemServico.DAL.Migrations
                 .Index(t => t.EnquadramentoLegalIPIId);
             
             CreateTable(
-                "dbo.Cest",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
-                        Descricao = c.String(nullable: false, maxLength: 650, unicode: false),
-                        Segmento = c.String(maxLength: 200, unicode: false),
-                        Item = c.String(maxLength: 200, unicode: false),
-                        Anexo = c.String(maxLength: 200, unicode: false),
-                        NcmId = c.Guid(),
-                        DataInclusao = c.DateTime(nullable: false),
-                        DataAlteracao = c.DateTime(),
-                        DataExclusao = c.DateTime(),
-                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
-                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
-                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
-                        Ativo = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Ncm", t => t.NcmId)
-                .Index(t => t.NcmId);
-            
-            CreateTable(
-                "dbo.EnquadramentoLegalIPI",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Codigo = c.String(maxLength: 200, unicode: false),
-                        GrupoCST = c.String(maxLength: 200, unicode: false),
-                        Descricao = c.String(maxLength: 600, unicode: false),
-                        DataInclusao = c.DateTime(nullable: false),
-                        DataAlteracao = c.DateTime(),
-                        DataExclusao = c.DateTime(),
-                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
-                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
-                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
-                        Ativo = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.Servico",
                 c => new
                     {
@@ -315,23 +332,6 @@ namespace Fly01.OrdemServico.DAL.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Nbs", t => t.NbsId)
                 .Index(t => t.NbsId);
-            
-            CreateTable(
-                "dbo.Nbs",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Codigo = c.String(nullable: false, maxLength: 200, unicode: false),
-                        Descricao = c.String(nullable: false, maxLength: 600, unicode: false),
-                        DataInclusao = c.DateTime(nullable: false),
-                        DataAlteracao = c.DateTime(),
-                        DataExclusao = c.DateTime(),
-                        UsuarioInclusao = c.String(nullable: false, maxLength: 200, unicode: false),
-                        UsuarioAlteracao = c.String(maxLength: 200, unicode: false),
-                        UsuarioExclusao = c.String(maxLength: 200, unicode: false),
-                        Ativo = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ParametroOrdemServico",
@@ -395,7 +395,6 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropForeignKey("dbo.Produto", "GrupoProdutoId", "dbo.GrupoProduto");
             DropForeignKey("dbo.Produto", "EnquadramentoLegalIPIId", "dbo.EnquadramentoLegalIPI");
             DropForeignKey("dbo.Produto", "CestId", "dbo.Cest");
-            DropForeignKey("dbo.Cest", "NcmId", "dbo.Ncm");
             DropForeignKey("dbo.OrdemServicoItem", "OrdemServicoId", "dbo.OrdemServico");
             DropForeignKey("dbo.OrdemServico", "ResponsavelId", "dbo.Pessoa");
             DropForeignKey("dbo.OrdemServico", "PessoaId", "dbo.Pessoa");
@@ -404,13 +403,13 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropForeignKey("dbo.Cidade", "EstadoId", "dbo.Estado");
             DropForeignKey("dbo.GrupoProduto", "UnidadeMedidaId", "dbo.UnidadeMedida");
             DropForeignKey("dbo.GrupoProduto", "NcmId", "dbo.Ncm");
+            DropForeignKey("dbo.Cest", "NcmId", "dbo.Ncm");
             DropIndex("dbo.OrdemServicoItemServico", new[] { "ServicoId" });
             DropIndex("dbo.OrdemServicoItemServico", new[] { "Id" });
             DropIndex("dbo.OrdemServicoItemProduto", new[] { "ProdutoId" });
             DropIndex("dbo.OrdemServicoItemProduto", new[] { "Id" });
             DropIndex("dbo.ParametroOrdemServico", new[] { "ResponsavelPadraoId" });
             DropIndex("dbo.Servico", new[] { "NbsId" });
-            DropIndex("dbo.Cest", new[] { "NcmId" });
             DropIndex("dbo.Produto", new[] { "EnquadramentoLegalIPIId" });
             DropIndex("dbo.Produto", new[] { "CestId" });
             DropIndex("dbo.Produto", new[] { "NcmId" });
@@ -424,22 +423,23 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropIndex("dbo.OrdemServicoItem", new[] { "OrdemServicoId" });
             DropIndex("dbo.GrupoProduto", new[] { "NcmId" });
             DropIndex("dbo.GrupoProduto", new[] { "UnidadeMedidaId" });
+            DropIndex("dbo.Cest", new[] { "NcmId" });
             DropTable("dbo.OrdemServicoItemServico");
             DropTable("dbo.OrdemServicoItemProduto");
             DropTable("dbo.ParametroOrdemServico");
-            DropTable("dbo.Nbs");
             DropTable("dbo.Servico");
-            DropTable("dbo.EnquadramentoLegalIPI");
-            DropTable("dbo.Cest");
             DropTable("dbo.Produto");
             DropTable("dbo.Estado");
             DropTable("dbo.Cidade");
             DropTable("dbo.Pessoa");
             DropTable("dbo.OrdemServico");
             DropTable("dbo.OrdemServicoItem");
+            DropTable("dbo.Nbs");
             DropTable("dbo.UnidadeMedida");
-            DropTable("dbo.Ncm");
             DropTable("dbo.GrupoProduto");
+            DropTable("dbo.EnquadramentoLegalIPI");
+            DropTable("dbo.Ncm");
+            DropTable("dbo.Cest");
         }
     }
 }

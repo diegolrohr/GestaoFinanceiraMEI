@@ -13,6 +13,8 @@ namespace Fly01.Faturamento.BL
 {
     public class OrdemVendaBL : PlataformaBaseBL<OrdemVenda>
     {
+        public const int MaxLengthObservacao = 200;
+
         protected OrdemVendaProdutoBL OrdemVendaProdutoBL { get; set; }
         protected OrdemVendaServicoBL OrdemVendaServicoBL { get; set; }
         protected NFeBL NFeBL { get; set; }
@@ -21,9 +23,9 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
-
+        
         private readonly string descricaoVenda = @"Venda nº: {0}";
-        private readonly string observacaoVenda = @"Observação gerada pela venda nº {0} applicativo Bemacash Faturamento: {1}";
+        private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} : {1}";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
@@ -55,7 +57,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.PesoBruto.HasValue && entity.PesoBruto.Value < 0, new Error("Peso bruto não pode ser negativo", "pesoBruto"));
             entity.Fail(entity.PesoLiquido.HasValue && entity.PesoLiquido.Value < 0, new Error("Peso liquido não pode ser negativo", "pesoLiquido"));
             entity.Fail(entity.QuantidadeVolumes.HasValue && entity.QuantidadeVolumes.Value < 0, new Error("Quantidade de volumes não pode ser negativo", "quantidadeVolumes"));
-            entity.Fail(entity.Observacao != null && entity.Observacao.Length > 200, new Error("A observacao não poder ter mais de 200 caracteres", "observacao"));
+            entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
             entity.Fail((entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
@@ -489,10 +491,6 @@ namespace Fly01.Faturamento.BL
                         totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                         totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
                     }
-                    //else if (ordemVenda.TipoVenda == TipoVenda.Ajuste)
-                    //{
-
-                    //}
                 }
 
                 double totalServicos = servicos != null ? servicos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -501,6 +499,14 @@ namespace Fly01.Faturamento.BL
                 double valorPrevisto = totalProdutos
                     + totalServicos
                     + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
+
+                var observacaoTitulo = string.Format(observacaoVenda, entity.Numero, entity.Observacao);
+                if (observacaoTitulo.Length > MaxLengthObservacao)
+                    observacaoTitulo = observacaoTitulo.Substring(0, MaxLengthObservacao);
+
+                var descricaoTitulo = string.Format(descricaoVenda, entity.Numero);
+                if (descricaoTitulo.Length > MaxLengthObservacao)
+                    descricaoTitulo = descricaoTitulo.Substring(0, MaxLengthObservacao);
 
                 if (pagaFrete)
                 {
@@ -512,8 +518,8 @@ namespace Fly01.Faturamento.BL
                         PessoaId = entity.TransportadoraId.Value,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = string.Format(descricaoVenda, entity.Numero),
-                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        Descricao = descricaoTitulo,
+                        Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -531,8 +537,8 @@ namespace Fly01.Faturamento.BL
                         PessoaId = entity.ClienteId,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = string.Format(descricaoVenda, entity.Numero),
-                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        Descricao = descricaoTitulo,
+                        Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -549,8 +555,8 @@ namespace Fly01.Faturamento.BL
                         PessoaId = entity.ClienteId,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = string.Format(descricaoVenda, entity.Numero),
-                        Observacao = string.Format(observacaoVenda, entity.Numero, entity.Observacao),
+                        Descricao = descricaoTitulo,
+                        Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao

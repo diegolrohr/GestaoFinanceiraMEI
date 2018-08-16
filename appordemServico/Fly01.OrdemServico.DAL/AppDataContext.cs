@@ -1,8 +1,8 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using Fly01.Core.Base;
+﻿using Fly01.Core.Base;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Fly01.OrdemServico.API.Models.DAL
 {
@@ -16,7 +16,7 @@ namespace Fly01.OrdemServico.API.Models.DAL
 
         public AppDataContext() : base("OrdemServicoConnection")
         {
-            
+
         }
 
         protected override void OnModelCreating(DbModelBuilder builder)
@@ -36,8 +36,36 @@ namespace Fly01.OrdemServico.API.Models.DAL
 
             builder.Properties<string>()
                 .Configure(x => x.HasColumnType("varchar"));
+
+            builder.Entity<OrdemServicoItem>()
+                .Map(m => m.ToTable("OrdemServicoItem"))
+                .Map<OrdemServicoItemProduto>(m => m.ToTable("OrdemServicoItemProduto"))
+                .Map<OrdemServicoItemServico>(m => m.ToTable("OrdemServicoItemServico"));
+
+            builder.Entity<Produto>()
+                .Map(m => m.ToTable("Produto"))
+                .Map<ProdutoOrdemServico>(m => m.ToTable("ProdutoOrdemServico"));
+
+            builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
+            builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
         }
 
-        //exemplo public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<GrupoProduto> GruposProduto { get; set; }
+
+        public DbSet<Pessoa> Pessoas { get; set; }
+
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<ProdutoOrdemServico> ProdutosOrdemServico { get; set; }
+
+        public DbSet<Core.Entities.Domains.Commons.OrdemServico> OrdensServico { get; set; }
+        public DbSet<OrdemServicoItem> OrdemServicoItens { get; set; }
+        public DbSet<OrdemServicoItemProduto> OrdemServicoItensProduto { get; set; }
+        public DbSet<OrdemServicoItemServico> OrdemServicoItensServico { get; set; }
+
+        public DbSet<ParametroOrdemServico> ParametrosOrdemServico { get; set; }
+
+        public DbSet<Servico> Servicos { get; set; }
+
+        public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
     }
 }

@@ -65,6 +65,14 @@
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
+    <Compile Include="Domains\Commons\ProdutoOrdemServico.cs" />
+    <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
+    <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemProduto.cs" />
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
     <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
@@ -222,6 +230,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domains\NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

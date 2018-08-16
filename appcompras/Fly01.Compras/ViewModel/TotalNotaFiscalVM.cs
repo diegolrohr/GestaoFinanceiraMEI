@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Fly01.Faturamento.ViewModel
+namespace Fly01.Compras.ViewModel
 {
     [Serializable]
-    public class TotalOrdemVendaVM
+    public class TotalNotaFiscalVM
     {
         [JsonProperty("totalProdutos")]
         public double? TotalProdutos { get; set; }

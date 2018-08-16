@@ -68,6 +68,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
+    <Compile Include="Controllers\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\GrupoTributarioController.cs" />
@@ -79,12 +80,17 @@
     <Compile Include="Controllers\CfopController.cs" />
     <Compile Include="Controllers\CestController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
+    <Compile Include="Controllers\NFeController.cs" />
+    <Compile Include="Controllers\NotaFiscalEntradaController.cs" />
+    <Compile Include="Controllers\NotaFiscalInutilizadaController.cs" />
+    <Compile Include="Controllers\ParametroTributarioController.cs" />
     <Compile Include="Controllers\PedidoItemController.cs" />
     <Compile Include="Controllers\OrcamentoItemController.cs" />
     <Compile Include="Controllers\PedidoController.cs" />
     <Compile Include="Controllers\OrcamentoController.cs" />
     <Compile Include="Controllers\OrdemCompraController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Controllers\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\SubstituicaoTributariaController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
@@ -108,12 +114,15 @@
       <DependentUpon>DataSetReports.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModel\NFeVM.cs" />
+    <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />
     <Compile Include="ViewModel\OrdemCompraVM.cs" />
     <Compile Include="ViewModel\PedidoItemVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
+    <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -193,12 +202,10 @@
     <Content Include="Views\GrupoTributario\Functions\_fnShowISS.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowCOFINS.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowPIS.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnModalPedidoItem.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoItem.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnFormReadyOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarPedido.cshtml" />
-    <Content Include="Views\PedidoItem\Functions\_fnFormReadyPedidoItem.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeTotal.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeProduto.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnChangeProduto.cshtml" />
@@ -219,15 +226,11 @@
     <Content Include="Views\OrdemCompra\Functions\_fnVisualizarOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnVisualizarPedido.cshtml" />
     <Content Include="Views\Categoria\Functions\_fnChangeTipoCarteira.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnFormReadyPedido.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnCancelarOrcamento.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnFormReadyVisualizarPedido.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnFormReadyVisualizarOrcamento.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnFooterCallbackPedidoItem.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnFooterCallbackOrcamentoItem.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnUpdateDataFinal.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnChangeFrete.cshtml" />
     <Content Include="Views\Pedido\Edit.cshtml" />
     <Content Include="Views\Orcamento\Edit.cshtml" />
     <Content Include="Views\Pedido\Create.cshtml" />
@@ -238,7 +241,6 @@
     <Content Include="Views\SubstituicaoTributaria\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\SubstituicaoTributaria\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Categoria\Functions\_FnFormReady.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
@@ -265,6 +267,55 @@
     <Content Include="Views\Fornecedor\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\Transportadora\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnSalvarNovo.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnAtualizaCertificado.cshtml" />
+    <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFinalidade.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeFrete.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnChangeGrupoTribPadrao.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnClickGeraNotaFiscal.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFooterCallbackEstoqueNegativo.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFormReadyPedido.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaProduto.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaServico.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalPedidoItem.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnChangeGrupoTribProduto.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnFormReadyPedidoItem.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnChangeTotalProduto.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnEditarOrdemCompraItem.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnExcluirOrdemCompraItem.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnAtualizarStatus.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarPDFNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarPDFNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarXMLNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnCancelarNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnCancelarNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnExcluirNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnExcluirNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnFormCartaCorrecao.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnNovoPedido.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnTransmitirNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnTransmitirNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarNFe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarNFSe.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnChangeSerieNFe.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnFormReadyTransmitirNFe.cshtml" />
+    <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
+    <Content Include="Views\NFe\Index.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

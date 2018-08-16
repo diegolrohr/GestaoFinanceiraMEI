@@ -16,10 +16,10 @@
     function calculaTotalPedido() {
         var valorFrete = 0;
         var tipoFrete = $('select#tipoFrete').val();
-        var tipoVenda = $('#tipoVenda').val();
+        var tipoCompra = $('#tipoCompra').val();
         var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Devolucao")
             );
 
         if (calculaFrete) {
@@ -42,18 +42,17 @@
         fly01.loading.start();
 
         $.ajax({
-            url: '@Url.Action("TotalOrdemVenda", "Pedido")',
+            url: '@Url.Action("TotalOrdemCompra", "Pedido")',
             type: "GET",
-            data: { id: idPedido, fornecedorId: idFornecedor, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, fornecedorId: idFornecedor, geraNotaFiscal: geraNotaFiscal, tipoCompra: tipoCompra, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
-            debugger;
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
-                $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemCompra').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
             }
             else {
@@ -61,7 +60,7 @@
                 $('input#totalImpostosProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemCompra').val(0.0.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.submitErrorHandler(null, data.message);
             }
         })
@@ -108,22 +107,14 @@
         $("#tipoNfeComplementarField").hide();
 
         if ($("#categoriaDescricao").data("url-post"))
-            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
+            $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoriaDespesa")?tipo=" + $("#tipoCarteira").val());
 
-        if ($('#tipoVenda').val() == "Devolucao" || $('#tipoVenda').val() == "Complementar")  {
+        if ($('#tipoCompra').val() == "Devolucao") {
             $("#fly01btngrpFinalidade.group .tab:has(#btnNormal)").hide();
-            $('#stepServicos').hide();
             $("#chaveNFeReferenciadaField").show();
-
-            if ($('#tipoVenda').val() == "Complementar") {
-                $("#tipoNfeComplementarField").show();
-                $('#stepFinanceiro').hide();
-                $('#stepTransporte').hide();
-            }            
         }
         else {
             $("#fly01btngrpFinalidade.group .tab:has(#btnDevolucao)").hide();
-            $("#fly01btngrpFinalidade.group .tab:has(#btnComplementar)").hide();
             $("#tipoNfeComplementarField").hide();
         }
     }
@@ -205,9 +196,9 @@
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
 
-                            if (jsonData.tipoVenda == "Devolucao" || jsonData.tipoVenda == "Complementar") {
+                            if (jsonData.tipoCompra == "Devolucao") {
                                 //preencher os campos
-                                $("div#clienteIdField").show();
+                                $("div#fornecedorIdField").show();
                                 //fly01._.dtOrdemVendaProdutos.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
@@ -223,7 +214,7 @@
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         fly01.loading.stop();
-                        $("div#clienteIdField").show();
+                        $("div#fornecedorIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
@@ -260,15 +251,13 @@
         }
         else {
             //setar o agrupamento com a opção escolhida
-            if ($('input#tipoVenda').val() == "Normal") {
+            if ($('input#tipoCompra').val() == "Normal") {
                 $('#btnNormal').click();
             }
             else {
-                if ($('input#tipoVenda').val() == "Devolucao") {
+                if ($('input#tipoCompra').val() == "Devolucao") {
                     $('#btnDevolucao').click();
-                } else {
-                    $('#btnComplementar').click();
-                }                
+                }
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
@@ -292,7 +281,7 @@
         });
 
         $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoCompra').val() == "Complementar") {
                 EstoqueNegativoETotal();
             }
         });

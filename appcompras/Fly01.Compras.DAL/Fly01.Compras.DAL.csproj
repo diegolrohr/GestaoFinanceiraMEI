@@ -204,6 +204,10 @@
     <Compile Include="Migrations\201808152035220_AlterPedidoTransporte.Designer.cs">
       <DependentUpon>201808152035220_AlterPedidoTransporte.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808161734318_AlterProdutoAddColumnObjetoDeManutencao.cs" />
+    <Compile Include="Migrations\201808161734318_AlterProdutoAddColumnObjetoDeManutencao.Designer.cs">
+      <DependentUpon>201808161734318_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -364,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808152035220_AlterPedidoTransporte.resx">
       <DependentUpon>201808152035220_AlterPedidoTransporte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808161734318_AlterProdutoAddColumnObjetoDeManutencao.resx">
+      <DependentUpon>201808161734318_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Fly01.Compras.DAL;
+using Fly01.Compras.DAL;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
@@ -12,6 +12,8 @@ namespace Fly01.Compras.BL
 {
     public class PedidoBL : PlataformaBaseBL<Pedido>
     {
+        public const int MaxLengthObservacao = 200;
+
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected OrdemCompraBL OrdemCompraBL { get; set; }
         private readonly string descricaoPedido = @"Pedido Compra nº: {0}";
@@ -90,6 +92,14 @@ namespace Fly01.Compras.BL
            
             var pedidoItens = PedidoItemBL.All.Where(e => e.PedidoId == entity.Id && e.Ativo);
 
+            var observacaoTitulo = string.Format(observacaoPedido, entity.Numero, entity.Observacao);
+            if (observacaoTitulo.Length > MaxLengthObservacao)
+                observacaoTitulo = observacaoTitulo.Substring(0, MaxLengthObservacao);
+
+            var descricaoTitulo = string.Format(descricaoPedido, entity.Numero);
+            if (descricaoTitulo.Length > MaxLengthObservacao)
+                descricaoTitulo = descricaoTitulo.Substring(0, MaxLengthObservacao);
+
             if (entity.GeraFinanceiro)
             {
                 double total = pedidoItens.Select(i => (i.Quantidade * i.Valor) - i.Desconto).Sum();
@@ -103,8 +113,8 @@ namespace Fly01.Compras.BL
                     PessoaId = entity.FornecedorId,
                     DataEmissao = entity.Data,
                     DataVencimento = entity.DataVencimento.Value,
-                    Descricao = string.Format(descricaoPedido, entity.Numero),
-                    Observacao = string.Format(observacaoPedido, entity.Numero, entity.Observacao),
+                    Descricao = descricaoTitulo,
+                    Observacao = observacaoTitulo,
                     FormaPagamentoId = entity.FormaPagamentoId.Value,
                     PlataformaId = PlataformaUrl,
                     UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -112,7 +122,8 @@ namespace Fly01.Compras.BL
                 Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
 
                 bool pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
-                if (pagaFrete) {
+                if (pagaFrete)
+                {
                     ContaPagar contaPagarTransp = new ContaPagar()
                     {
                         ValorPrevisto = entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0,
@@ -121,8 +132,8 @@ namespace Fly01.Compras.BL
                         PessoaId = entity.TransportadoraId.Value,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = string.Format(descricaoPedido, entity.Numero),
-                        Observacao = string.Format(observacaoPedido, entity.Numero, entity.Observacao),
+                        Descricao = descricaoTitulo,
+                        Observacao = observacaoTitulo,
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao

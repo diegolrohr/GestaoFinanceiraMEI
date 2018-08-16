@@ -5,10 +5,12 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
+using Fly01.EmissaoNFE.Domain.Entities.NFe.Totais;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.BL.Helpers.Entities;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -112,7 +114,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 EntradaSaida = TimeZoneHelper.GetDateTimeNow(Cabecalho.IsLocal),
                 TipoDocumentoFiscal = ObterTipoDocumentoFiscal(),
                 DestinoOperacao = DeterminarDestinoOperacao(),
-                CodigoMunicipio = Cabecalho.Empresa.Cidade != null ? Cabecalho.Empresa.Cidade.CodigoIbge : null,
+                CodigoMunicipio = Cabecalho.Empresa.Cidade?.CodigoIbge,
                 ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
                 ChaveAcessoDV = 0,
                 CodigoNF = NFe.NumNotaFiscal.Value.ToString(),
@@ -286,6 +288,66 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                             ValorPagamento = valorPagamento
                         }
                     }
+            };
+        }
+
+        public Total ObterTotal(List<Detalhe> detalhes)
+        {
+            return new Total()
+            {
+                ICMSTotal = new ICMSTOT()
+                {
+                    SomatorioBC = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBC.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBC.HasValue).Sum(x => x.Imposto.ICMS.ValorBC.Value), 2) : 0,
+                    SomatorioICMS = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
+                    SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
+                    SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
+                    SomatorioDesconto = ObterNFeProdutos().Sum(x => x.Desconto),
+                    SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
+                    ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
+                    ValorSeguro = 0,
+                    SomatorioIPI = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
+                    SomatorioIPIDevolucao = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPIDevolucao), 2) : 0,
+                    SomatorioPis = detalhes.Sum(y => y.Imposto.PIS.ValorPIS),
+                    SomatorioProdutos = detalhes.Sum(x => x.Produto.ValorBruto),
+                    SomatorioOutro = 0,
+                    SomatorioFCP = 0,
+                    SomatorioFCPST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPST.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPST.Value), 2) : 0,
+                    SomatorioFCPSTRetido = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorFCPSTRetido.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorFCPSTRetido.HasValue).Sum(x => x.Imposto.ICMS.ValorFCPSTRetido.Value), 2) : 0,
+                }
+            };
+        }
+
+        public abstract bool PagaFrete();
+
+        private EntidadeVM ObterEntidade() => TransmissaoBLs.CertificadoDigitalBL.GetEntidade();
+
+        public TransmissaoVM ObterTransmissaoVMApartirDoItem(ItemTransmissaoVM itemTransmissao)
+        {
+            var entidade = ObterEntidade();
+            return new TransmissaoVM()
+            {
+                Homologacao = entidade.Homologacao,
+                Producao = entidade.Producao,
+                EntidadeAmbiente = entidade.EntidadeAmbiente,
+                Item = new List<ItemTransmissaoVM>()
+                {
+                    itemTransmissao
+                }
+            };
+        }
+
+        public ItemTransmissaoVM ObterCabecalhoItemTransmissao()
+        {
+            return new ItemTransmissaoVM()
+            {
+                Versao = Cabecalho.Versao,
+                Identificador = ObterIdentificador(),
+                Emitente = ObterEmitente(),
+                Destinatario = ObterDestinatario(),
+                Transporte = new Transporte()
+                {
+                    ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), NFe.TipoFrete.ToString()),
+                }
             };
         }
     }

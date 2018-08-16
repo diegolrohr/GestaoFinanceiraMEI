@@ -1,0 +1,41 @@
+﻿<script>
+    function fnShowHideNFeReferenciada(tipoVenda) {
+        if (tipoVenda == "Devolucao" || tipoVenda == "Complementar" ) {
+            $("#chaveNFeReferenciada").rules("add", { required: true });
+            $("#chaveNFeReferenciadaField").show();
+
+            $("div#clienteIdField").hide();
+
+            if (tipoVenda == "Devolucao") {
+                $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
+
+                $("input#tipoCarteira").val("Despesa");
+            } else {
+                $("#grupoTributarioPadraoDescricao").rules("remove", "required");
+                $("#grupoTributarioPadraoDescricao").removeClass("invalid")
+                $("#grupoTributarioPadraoIdField").hide();
+
+                $("div#clienteIdField").hide();
+                $("input#tipoCarteira").val("Receita");
+            }
+        }
+        else {
+            $("input#chaveNFeReferenciada").rules("remove", "required");
+            $("input#chaveNFeReferenciada").removeClass("invalid")
+            $("#chaveNFeReferenciadaField").hide();
+            $("input#chaveNFeReferenciada").val("");
+
+            $("div#clienteIdField").show();
+
+            $("#grupoTributarioPadraoDescricao").rules("remove", "required");
+            $("#grupoTributarioPadraoDescricao").removeClass("invalid")
+
+            $("input#tipoCarteira").val("Receita");
+        }
+    }
+
+    function fnChangeFinalidade(tipoVenda) {
+        $("input#tipoVenda").val(tipoVenda);
+        fnShowHideNFeReferenciada(tipoVenda);
+    }
+</script>

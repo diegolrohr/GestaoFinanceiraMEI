@@ -9,7 +9,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     {
         public SerieNotaFiscalController()
         {
-
+            MustProduceMessageServiceBus = true;
         }
     }
 }

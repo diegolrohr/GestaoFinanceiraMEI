@@ -1,11 +1,12 @@
-﻿using Fly01.Compras.BL;
-using Fly01.Core.API.Application;
+﻿using Fly01.Core.API.Application;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.ServiceBus;
 using Microsoft.OData.Edm;
-using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
+using Fly01.Core;
 
 namespace Fly01.Compras.API
 {
@@ -39,6 +40,15 @@ namespace Fly01.Compras.API
             builder.EntitySet<GrupoTributario>("grupotributario");
             builder.EntitySet<Cest>("cest");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
+            builder.EntitySet<CertificadoDigital>("certificadodigital");
+            builder.EntitySet<NotaFiscalInutilizada>("notafiscalinutilizada");
+            builder.EntitySet<SerieNotaFiscal>("serienotafiscal");
+            builder.EntitySet<ParametroTributario>("parametrotributario");
+            builder.EntitySet<NotaFiscalEntrada>("notafiscalentrada");
+            builder.EntitySet<NotaFiscalItemTributacaoEntrada>("notafiscalitemtributacaoentrada");
+            builder.EntitySet<NFeEntrada>("nfeentrada");
+            builder.EntitySet<NFeProdutoEntrada>("nfeprodutoentrada");
+            builder.EntitySet<NotaFiscalCartaCorrecaoEntrada>("notafiscalcartacorrecaoentrada");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -46,6 +56,20 @@ namespace Fly01.Compras.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        {
+            SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
+            SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);
+
+            new Consumer(Assembly.Load("Fly01.Compras.BL").GetType("Fly01.Compras.BL.UnitOfWork")).Consume();
+        });
+        protected override void SetAppDefaults()
+        {
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
+
+            base.SetAppDefaults();
+        }
     }
 }

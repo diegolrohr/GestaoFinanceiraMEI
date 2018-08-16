@@ -14,6 +14,19 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("transportadoraId")]
         public Guid? TransportadoraId { get; set; }
 
+        [JsonProperty("numeracaoVolumesTrans")]
+        public string NumeracaoVolumesTrans { get; set; }
+
+        [JsonProperty("marca")]
+        public string Marca { get; set; }
+
+        [JsonProperty("tipoEspecie")]
+        public string TipoEspecie { get; set; }
+
+        [JsonProperty("tipoCompra")]
+        [APIEnum("TipoVenda")]
+        public string TipoCompra { get; set; }
+
         [JsonProperty("tipoFrete")]
         [APIEnum("TipoFrete")]
         public string TipoFrete { get; set; }

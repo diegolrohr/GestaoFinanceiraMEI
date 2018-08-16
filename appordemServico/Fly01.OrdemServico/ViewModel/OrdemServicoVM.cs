@@ -1,41 +1,45 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.OrdemServico.ViewModel
 {
     public class OrdemServicoVM : DomainBaseVM
     {
-        [Required]
-        public StatusOrdemServico Status { get; set; }
+        [JsonProperty("status")]
+        [APIEnum("StatusOrdemServico")]
+        public string Status { get; set; }
 
-        [Required]
+        [JsonProperty("pessoaId")]
         public Guid PessoaId { get; set; }
 
-        [Required]
+        [JsonProperty("numero")]
         public int Numero { get; set; }
 
-        [Required]
-        [Column(TypeName = "date")]
+        [JsonProperty("dataEmissao")]
         public DateTime DataEmissao { get; set; }
 
-        [Required]
-        [Column(TypeName = "date")]
+        [JsonProperty("dataEntrega")]
         public DateTime DataEntrega { get; set; }
 
+        [JsonProperty("responsavelId")]
         public Guid ResponsavelId { get; set; }
 
+        [JsonProperty("aprovado")]
         public bool Aprovado { get; set; }
 
-        [DataType(DataType.MultilineText)]
+        [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
+        [JsonProperty("valorTotal")]
         public bool ValorTotal { get; set; }
 
         #region Navigation
+        [JsonProperty("pessoa")]
         public virtual PessoaVM Pessoa { get; set; }
+
+        [JsonProperty("responsavel")]
         public virtual PessoaVM Responsavel { get; set; }
         #endregion
     }

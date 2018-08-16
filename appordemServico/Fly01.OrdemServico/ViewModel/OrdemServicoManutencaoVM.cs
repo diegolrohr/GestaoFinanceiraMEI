@@ -1,24 +1,28 @@
 ﻿using Fly01.Core.ViewModels.Presentation.Commons;
+using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.OrdemServico.ViewModel
 {
     public class OrdemServicoManutencaoVM : DomainBaseVM
     {
-        [Required]
+        [JsonProperty("ordemServicoId")]
         public Guid OrdemServicoId { get; set; }
 
-        [Required]
+        [JsonProperty("produtoId")]
         public Guid ProdutoId { get; set; }
 
-        [Required]
+        [JsonProperty("quantidade")]
         public double Quantidade { get; set; }
 
+        [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
         #region Navigation
+        [JsonProperty("ordemServico")]
         public virtual OrdemServicoVM OrdemServico { get; set; }
+
+        [JsonProperty("produto")]
         public virtual ProdutoVM Produto { get; set; }
         #endregion
     }

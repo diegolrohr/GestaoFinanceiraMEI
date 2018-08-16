@@ -51,7 +51,8 @@
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
-    <Compile Include="Helpers\EntitiesBL\TransmissaoBLs.cs" />
+    <Compile Include="Helpers\Entities\TransmissaoBLs.cs" />
+    <Compile Include="Helpers\Entities\TransmissaoCabecalho.cs" />
     <Compile Include="Helpers\Factory\ConcreteTransmissaoFactory.cs" />
     <Compile Include="Helpers\Factory\TransmissaoFactory.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeComplementoICMS.cs" />

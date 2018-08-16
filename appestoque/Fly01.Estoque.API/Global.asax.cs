@@ -4,10 +4,9 @@ using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
 using Fly01.Core.Entities.Domains.Commons;
 using System.Configuration;
-using System.Collections.Generic;
-using Fly01.Core;
 using Fly01.Core.ServiceBus;
 using System.Reflection;
+using Fly01.Core;
 
 namespace Fly01.Estoque.API
 {

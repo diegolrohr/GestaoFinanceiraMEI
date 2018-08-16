@@ -156,20 +156,7 @@
     <Content Include="Views\Cliente\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnEditarOrcamento.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnEditarPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnFinalizarFaturarPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnFinalizarPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemVenda.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrcamentoPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnNovoOrcamento.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnNovoPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnVisualizar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

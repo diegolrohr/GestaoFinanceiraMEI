@@ -67,6 +67,12 @@
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
     <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
+    <Compile Include="Domains\Commons\NFeEntrada.cs" />
+    <Compile Include="Domains\Commons\NFeProdutoEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalCartaCorrecaoEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemEntrada.cs" />
+    <Compile Include="Domains\Commons\NotaFiscalItemTributacaoEntrada.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />

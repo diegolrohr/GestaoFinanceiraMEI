@@ -277,6 +277,7 @@ namespace Fly01.Compras.Controllers
                     {
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscalEntrada")}
                     }
                 },
                 new SidebarUIMenu()
@@ -294,6 +295,19 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosGrupoProdutos, Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")}
+                    }
+                },
+                //trocar permissoes
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.ComprasCadastros,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasCadastrosProdutos, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
                     }
                 },
                 new SidebarUIMenu()
@@ -326,7 +340,7 @@ namespace Fly01.Compras.Controllers
             {
                 Conpass = new ConpassUI(),
                 Droz = new DrozUI(),
-                Zendesk = new ZendeskUI()
+                Zendesk = new ZendeskUI() 
                 {
                     AppName = "Fly01 Gestão",
                     AppTag = "chat_fly01_gestao",

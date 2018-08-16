@@ -179,7 +179,7 @@ namespace Fly01.Compras.Controllers
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "OrdemVenda")
+                    List = @Url.Action("List", "OrdemCompra")
                 },
                 ReadyFn = "fnFormReadyPedido",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
@@ -245,7 +245,7 @@ namespace Fly01.Compras.Controllers
 
             #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoCompra", Value = "Normal" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
@@ -265,7 +265,7 @@ namespace Fly01.Compras.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribPadrao" } }
-            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
+            }, ResourceHashConst.ComprasCadastrosGrupoTributario));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -316,7 +316,7 @@ namespace Fly01.Compras.Controllers
                 LabelId = "formaPagamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosFormasPagamento));
+            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -327,7 +327,7 @@ namespace Fly01.Compras.Controllers
                 LabelId = "condicaoParcelamentoDescricao",
                 DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
                 DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosCondicoesParcelamento));
+            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -337,8 +337,8 @@ namespace Fly01.Compras.Controllers
                 PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = @Url.Action("NovaCategoria")
-            }, ResourceHashConst.FaturamentoCadastrosCategoria));
+                DataUrlPost = @Url.Action("NovaCategoriaDespesa")
+            }, ResourceHashConst.ComprasCadastrosCategoria));
 
             #endregion
 
@@ -363,7 +363,7 @@ namespace Fly01.Compras.Controllers
                 DataUrl = Url.Action("Transportadora", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora")
-            }, ResourceHashConst.FaturamentoCadastrosTransportadoras));
+            }, ResourceHashConst.ComprasCadastrosTransportadora));
 
             config.Elements.Add(new InputCustommaskUI
             {
@@ -404,7 +404,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido (produtos + impostos + frete)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12 m6", Label = "Total pedido (produtos + impostos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "movimentaEstoque",
@@ -743,11 +743,11 @@ namespace Fly01.Compras.Controllers
         }
 
         [HttpGet]
-        public JsonResult TotalOrdemVenda(string id, string fornecedorId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
+        public JsonResult TotalOrdemCompra(string id, string fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
+                var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoCompra, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
 
                 return Json(

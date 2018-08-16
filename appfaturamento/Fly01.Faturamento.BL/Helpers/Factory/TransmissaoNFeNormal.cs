@@ -116,7 +116,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         #region Impostos  
 
-        private void CalculaST(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
+        private void CalculaSTICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
             if (itemTributacao.CalculaST)
             {
@@ -153,7 +153,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             }
         }
 
-        private static void CalculaICMS(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
+        private static void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
             if (itemTributacao.CalculaICMS)
             {
@@ -188,9 +188,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito
             };
 
-            CalculaICMS(item, itemTributacao, ICMS);
+            CalculaICMSPai(item, itemTributacao, ICMS);
 
-            CalculaST(item, itemTributacao, ICMS);
+            CalculaSTICMSPai(item, itemTributacao, ICMS);
 
             return ICMS;
         }

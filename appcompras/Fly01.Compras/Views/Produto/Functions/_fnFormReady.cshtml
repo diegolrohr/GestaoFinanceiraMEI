@@ -1,12 +1,16 @@
 ﻿<script>
     function fnFormReady() {
+        
         if ($("#grupoProdutoDescricao").data("url-post"))
     		$("#grupoProdutoDescricao").data("url-post", "@Url.Action("NovoGrupoProduto")?tipo=" + $("#tipoProduto").val());
 
         if (isCreate()) {
             $("#saldoProdutoField").prop('disabled', false);
         } else {
-            $("#saldoProdutoField").val($("#saldoProduto").val());
+            var saldoProduto = $("#saldoProduto").val();
+            saldoProduto = parseFloat(saldoProduto).toLocaleString("pt-BR");
+            $("#saldoProdutoField").val(saldoProduto);
+            fnChangeSaldoProduto();
         }
 
         if ($('input#ncmId').val() == "") {

@@ -65,7 +65,7 @@ namespace Fly01.Faturamento.Controllers
             );
             var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id.ToString(), OrdemVenda.ClienteId.ToString(), OrdemVenda.GeraNotaFiscal.ToString(),
                  OrdemVenda.TipoVenda, OrdemVenda.TipoFrete, calculaFrete ? OrdemVenda.ValorFrete.ToString().Replace(", ", ".") : 0.ToString(), true);
-            var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
+            var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
 
             List<ImprimirOrcamentoPedidoVM> reportItems = new List<ImprimirOrcamentoPedidoVM>();
 
@@ -700,7 +700,7 @@ namespace Fly01.Faturamento.Controllers
             try
             {
                 var resource = string.Format("CalculaTotalOrdemVenda?&ordemVendaId={0}&clienteId={1}&geraNotaFiscal={2}&tipoVenda={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, clienteId, geraNotaFiscal.ToString(), tipoVenda, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaVM>(resource, queryString: null);
+                var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
 
                 return Json(
                     new { success = true, total = response },

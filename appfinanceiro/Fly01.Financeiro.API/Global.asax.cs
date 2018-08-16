@@ -1,12 +1,12 @@
 ﻿using Fly01.Core.API.Application;
-using Fly01.Financeiro.BL;
 using Microsoft.OData.Edm;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
 using Fly01.Core;
 using Fly01.Core.Entities.Domains.Commons;
-using System.Collections.Generic;
+using Fly01.Core.ServiceBus;
+using System.Reflection;
 
 namespace Fly01.Financeiro.API
 {
@@ -55,7 +55,13 @@ namespace Fly01.Financeiro.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        {
+            SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
+            SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);
+
+            new Consumer(Assembly.Load("Fly01.Financeiro.BL").GetType("Fly01.Financeiro.BL.UnitOfWork")).Consume();
+        });
 
         protected override void SetAppDefaults()
         {

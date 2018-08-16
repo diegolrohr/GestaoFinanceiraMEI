@@ -1,0 +1,28 @@
+﻿<script>
+    function fnCancelarNFe(idRecord) {
+        fly01.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta nota fiscal?", "fnCancelarNFeConfirmed(\"" + idRecord + "\")");
+    }
+
+    function fnCancelarNFeConfirmed(idRecord) {
+        fly01.loading.start();
+        $.ajax({
+            url: '@Url.Action("Cancelar", "NFe")?id=' + idRecord,
+            type: "POST"
+        })
+        .done(function (data) {
+            fly01.loading.stop();
+            if (!data.success) {
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+            else {
+                fly01.toast(data.message, "success");
+                fly01._.fly01dt.refresh();
+            }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+</script>

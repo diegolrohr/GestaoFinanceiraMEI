@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 produto_descricao = x.Produto.Descricao,
                 grupoTributario_descricao = x.GrupoTributario.Descricao,
-                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
+                quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
@@ -93,6 +93,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "quantidade",
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
+                Digits = 3,
                 Value = "1",
                 Required = false
             });

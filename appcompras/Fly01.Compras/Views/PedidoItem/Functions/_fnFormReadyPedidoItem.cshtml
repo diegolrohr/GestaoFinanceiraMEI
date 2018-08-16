@@ -1,13 +1,53 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
-    function fnFormReadyPedidoItem() {
-        $('form#fly01mdlfrmPedidoItem input#pedidoId').val($('form#fly01frm input#id').val());
-
-        fnOverrideSubmitPedidoItem();
+    function fnConfiguraTipoTributacaoICMSProduto() {
+        var tipoTribICMS = $('form#fly01mdlfrmPedidoItem #grupoTributarioTipoTributacaoICMS').val();
+        $('form#fly01mdlfrmPedidoItem #valorCreditoICMSField').hide();
+        $('form#fly01mdlfrmPedidoItem #valorICMSSTRetidoField').hide();
+        $('form#fly01mdlfrmPedidoItem #valorBCSTRetidoField').hide();
+        $('form#fly01mdlfrmPedidoItem #valorBCFCPSTRetidoAnteriorField').hide();
+        $('form#fly01mdlfrmPedidoItem #valorFCPSTRetidoAnteriorField').hide();
+        
+        //101 e 201 e 900
+        if (tipoTribICMS == "TributadaComPermissaoDeCredito" || tipoTribICMS == "TributadaComPermissaoDeCreditoST" || tipoTribICMS == "Outros") {
+            $('form#fly01mdlfrmPedidoItem #valorCreditoICMSField').show();
+        }
+        //500
+        if (tipoTribICMS == "ICMSSubstituidoOuAntecipado") {
+            $('form#fly01mdlfrmPedidoItem #valorICMSSTRetidoField').show();
+            $('form#fly01mdlfrmPedidoItem #valorBCSTRetidoField').show();
+            $('form#fly01mdlfrmPedidoItem #valorBCFCPSTRetidoAnteriorField').show();
+            $('form#fly01mdlfrmPedidoItem #valorFCPSTRetidoAnteriorField').show();
+        }
     }
 
-    function fnOverrideSubmitPedidoItem() {
+    function fnFormReadyPedidoItem() {
+        var id = $("form#fly01mdlfrmPedidoItem input#id").val();
+
+        if (id.length == 0) {
+            $('form#fly01mdlfrmPedidoItem input#pedidoId').val($('form#fly01frm input#id').val());
+            $('form#fly01mdlfrmPedidoItem input#grupoTributarioIdProduto').val($('form#fly01frm input#grupoTributarioPadraoId').val());
+            $('form#fly01mdlfrmPedidoItem input#grupoTributarioDescricaoProduto').val($('form#fly01frm input#grupoTributarioPadraoDescricao').val());
+            $('form#fly01mdlfrmPedidoItem #grupoTributarioTipoTributacaoICMS').val($('form#fly01frm #grupoTributarioPadraoTipoTributacaoICMS').val());
+        }
+        fnConfiguraTipoTributacaoICMSProduto();
+
+        fly01.fn.updateTextFields();
+        fnOverrideSubmitOrdemVendaProduto();
+
+        $('form#fly01mdlfrmPedidoItem input#valor').on('change', function () {
+            fnChangeTotalProduto();
+        });
+        $('form#fly01mdlfrmPedidoItem input#desconto').on('change', function () {
+            fnChangeTotalProduto();
+        });
+        $('form#fly01mdlfrmPedidoItem input#quantidade').on('change', function () {
+            fnChangeTotalProduto();
+        });
+    }
+
+    function fnOverrideSubmitOrdemVendaProduto() {
         var myForm = 'form#fly01mdlfrmPedidoItem'
 
         $(myForm).off('submit');
@@ -16,7 +56,7 @@
 
             if (!that.valid())
                 return false;
-                
+
             e.preventDefault();
             fly01.loading.start();
             var formData = that.serializeObject();
@@ -30,7 +70,7 @@
                     if (data.success) {
                         fly01.toast(data.message, "success");
                         fly01._.dtPedidoItens.refresh();
-                        fly01._.fly01mdlfrmPedidoItem.close()
+                        fly01._.fly01mdlfrmPedidoItem.close();
                     } else {
                         fly01.loading.stop();
                         try {
@@ -54,6 +94,7 @@
                         }
                     }
                     fly01.loading.stop();
+                    $('.modal-overlay').css('display', 'none');
                 },
                 error: function error(jXHR, textStatus) {
                     fly01.toast(textStatus, "error");

@@ -13,6 +13,11 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [ODataRoutePrefix("certificadodigital")]
     public class CertificadoDigitalController : ApiPlataformaController<CertificadoDigital, CertificadoDigitalBL>
     {
+        public CertificadoDigitalController()
+        {
+            MustProduceMessageServiceBus = true;
+        }
+
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<CertificadoDigital> model)
         {
             using (var unitOfWork = new UnitOfWork(ContextInitialize))

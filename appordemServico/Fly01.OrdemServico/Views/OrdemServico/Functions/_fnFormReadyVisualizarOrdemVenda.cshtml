@@ -1,0 +1,134 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function listProdutos() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetOrdemVendaProdutos", "OrdemVendaProduto")?id=" + $('#fly01mdlfrmVisualizarOrdemVenda #id').val(),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#ordemVendaProdutosDataTable").DataTable().destroy();
+
+                    var table = $("#ordemVendaProdutosDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Produto", data: "produto_descricao" },
+                            { title: "Grupo Tributário", data: "grupoTributario_descricao" },
+                            { title: "Quant.", data: "quantidade" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Desconto", data: "desconto" },
+                            { title: "Total", data: "total" }
+                        ]
+                    });
+                } else {
+                    fly01.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+    }
+
+    function listServicos() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetOrdemVendaServicos", "OrdemVendaServico")?id=" + $('#fly01mdlfrmVisualizarOrdemVenda #id').val(),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#ordemVendaServicosDataTable").DataTable().destroy();
+
+                    var table = $("#ordemVendaServicosDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Serviço", data: "servico_descricao" },
+                            { title: "Grupo Tributário", data: "grupoTributario_descricao" },
+                            { title: "Quant.", data: "quantidade" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Desconto", data: "desconto" },
+                            { title: "Total", data: "total" }
+                        ]
+                    });
+                } else {
+                    fly01.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+    }
+
+    function calculaTotalOrdemVenda() {
+        var valorFrete = 0;
+        var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoFrete').val();
+        var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
+            );
+
+        if (calculaFrete) {
+            valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
+        }
+
+        var idPedido = $("form#fly01mdlfrmVisualizarOrdemVenda input#id").val();
+        var idCliente = $("form#fly01mdlfrmVisualizarOrdemVenda input#clienteId").val();
+        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
+            type: "GET",
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.updateTextFields();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnFormReadyVisualizarOrdemVenda() {
+        listProdutos();
+        listServicos();
+        calculaTotalOrdemVenda();
+    }
+</script>

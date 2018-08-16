@@ -1,5 +1,4 @@
-﻿using Fly01.Estoque.BL;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Fly01.Core.API.Application;
 using Microsoft.OData.Edm;
 using System.Web.OData.Builder;
@@ -7,6 +6,8 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Configuration;
 using System.Collections.Generic;
 using Fly01.Core;
+using Fly01.Core.ServiceBus;
+using System.Reflection;
 
 namespace Fly01.Estoque.API
 {
@@ -40,8 +41,13 @@ namespace Fly01.Estoque.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => new ServiceBusBL().Consume());
+        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        {
+            SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
+            SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);
 
+            new Consumer(Assembly.Load("Fly01.Estoque.BL").GetType("Fly01.Estoque.BL.UnitOfWork")).Consume();
+        });
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
-using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -52,7 +52,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string Observacao { get; set; }
 
         public double AliquotaIpi { get; set; }
-        
+
+        public bool ObjetoDeManutencao { get; set; }
+
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
         public virtual Ncm Ncm { get; set; }

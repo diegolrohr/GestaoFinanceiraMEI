@@ -42,10 +42,6 @@ namespace Fly01.OrdemServico.API.Models.DAL
                 .Map<OrdemServicoItemProduto>(m => m.ToTable("OrdemServicoItemProduto"))
                 .Map<OrdemServicoItemServico>(m => m.ToTable("OrdemServicoItemServico"));
 
-            builder.Entity<Produto>()
-                .Map(m => m.ToTable("Produto"))
-                .Map<ProdutoOrdemServico>(m => m.ToTable("ProdutoOrdemServico"));
-
             builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
             builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
         }
@@ -55,7 +51,6 @@ namespace Fly01.OrdemServico.API.Models.DAL
         public DbSet<Pessoa> Pessoas { get; set; }
 
         public DbSet<Produto> Produtos { get; set; }
-        public DbSet<ProdutoOrdemServico> ProdutosOrdemServico { get; set; }
 
         public DbSet<Core.Entities.Domains.Commons.OrdemServico> OrdensServico { get; set; }
         public DbSet<OrdemServicoItem> OrdemServicoItens { get; set; }

@@ -226,6 +226,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
                         SaldoMinimo = c.Double(nullable: false),
                         Observacao = c.String(maxLength: 200, unicode: false),
                         AliquotaIpi = c.Double(nullable: false),
+                        ObjetoDeManutencao = c.Boolean(nullable: false),
                         PlataformaId = c.String(nullable: false, maxLength: 200, unicode: false),
                         RegistroFixo = c.Boolean(nullable: false),
                         DataInclusao = c.DateTime(nullable: false),
@@ -379,26 +380,10 @@ namespace Fly01.OrdemServico.DAL.Migrations
                 .Index(t => t.Id)
                 .Index(t => t.ServicoId);
             
-            CreateTable(
-                "dbo.ProdutoOrdemServico",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Produto_Id = c.Guid(),
-                        ObjetoDeManutencao = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Produto", t => t.Id)
-                .ForeignKey("dbo.Produto", t => t.Produto_Id)
-                .Index(t => t.Id)
-                .Index(t => t.Produto_Id);
-            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.ProdutoOrdemServico", "Produto_Id", "dbo.Produto");
-            DropForeignKey("dbo.ProdutoOrdemServico", "Id", "dbo.Produto");
             DropForeignKey("dbo.OrdemServicoItemServico", "ServicoId", "dbo.Servico");
             DropForeignKey("dbo.OrdemServicoItemServico", "Id", "dbo.OrdemServicoItem");
             DropForeignKey("dbo.OrdemServicoItemProduto", "ProdutoId", "dbo.Produto");
@@ -419,8 +404,6 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropForeignKey("dbo.Cidade", "EstadoId", "dbo.Estado");
             DropForeignKey("dbo.GrupoProduto", "UnidadeMedidaId", "dbo.UnidadeMedida");
             DropForeignKey("dbo.GrupoProduto", "NcmId", "dbo.Ncm");
-            DropIndex("dbo.ProdutoOrdemServico", new[] { "Produto_Id" });
-            DropIndex("dbo.ProdutoOrdemServico", new[] { "Id" });
             DropIndex("dbo.OrdemServicoItemServico", new[] { "ServicoId" });
             DropIndex("dbo.OrdemServicoItemServico", new[] { "Id" });
             DropIndex("dbo.OrdemServicoItemProduto", new[] { "ProdutoId" });
@@ -441,7 +424,6 @@ namespace Fly01.OrdemServico.DAL.Migrations
             DropIndex("dbo.OrdemServicoItem", new[] { "OrdemServicoId" });
             DropIndex("dbo.GrupoProduto", new[] { "NcmId" });
             DropIndex("dbo.GrupoProduto", new[] { "UnidadeMedidaId" });
-            DropTable("dbo.ProdutoOrdemServico");
             DropTable("dbo.OrdemServicoItemServico");
             DropTable("dbo.OrdemServicoItemProduto");
             DropTable("dbo.ParametroOrdemServico");

@@ -104,12 +104,13 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputTextUI { Id = "codigoBarras", Class = "col l4 m4 s12", Label = "Código de barras", Disabled = true });
             config.Elements.Add(new InputTextUI { Id = "saldoProduto", Class = "col l4 m4 s12", Label = "Saldo atual", Value = "0", Disabled = true });
 
-            config.Elements.Add(new InputNumbersUI
+            config.Elements.Add(new InputFloatUI
             {
                 Id = "quantidade",
                 Class = "col l6 m6 s12",
                 Label = "Quantidade",
                 Value = "0",
+                Digits = 3,
                 Required = true,
                 DomEvents = new List<DomEventUI>
                 {

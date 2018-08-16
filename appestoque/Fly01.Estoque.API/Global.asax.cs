@@ -6,6 +6,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Configuration;
 using Fly01.Core.ServiceBus;
 using System.Reflection;
+using Fly01.Core;
 
 namespace Fly01.Estoque.API
 {
@@ -46,5 +47,11 @@ namespace Fly01.Estoque.API
 
             new Consumer(Assembly.Load("Fly01.Estoque.BL").GetType("Fly01.Estoque.BL.UnitOfWork")).Consume();
         });
+        protected override void SetAppDefaults()
+        {
+            AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+
+            base.SetAppDefaults();
+        }
     }
 }

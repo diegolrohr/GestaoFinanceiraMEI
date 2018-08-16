@@ -76,7 +76,7 @@ namespace Fly01.Core.ServiceBus
             {
                 try
                 {
-                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers);
+                    Headers = new Dictionary<string, object>(args.BasicProperties.Headers ?? new Dictionary<string, object>());
 
                     if (args.BasicProperties.Headers == null || !HeaderIsValid()) throw new ArgumentException(MsgHeaderInvalid);
                     if (args.BasicProperties.AppId == null) throw new ArgumentException(MsgAppIdInvalid);

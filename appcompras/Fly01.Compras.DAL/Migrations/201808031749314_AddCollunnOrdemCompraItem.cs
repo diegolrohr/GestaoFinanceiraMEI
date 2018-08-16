@@ -7,7 +7,7 @@ namespace Fly01.Compras.DAL.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.OrdemCompraItem", "GrupoTributarioId", c => c.Guid(nullable: false));
+            AddColumn("dbo.OrdemCompraItem", "GrupoTributarioId", c => c.Guid(nullable: true));
             AddColumn("dbo.OrdemCompraItem", "ValorCreditoICMS", c => c.Double(nullable: false));
             AddColumn("dbo.OrdemCompraItem", "ValorICMSSTRetido", c => c.Double(nullable: false));
             AddColumn("dbo.OrdemCompraItem", "ValorBCSTRetido", c => c.Double(nullable: false));

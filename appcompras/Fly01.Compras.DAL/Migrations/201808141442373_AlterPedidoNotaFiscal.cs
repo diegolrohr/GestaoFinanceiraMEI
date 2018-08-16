@@ -14,7 +14,7 @@ namespace Fly01.Compras.DAL.Migrations
             AddColumn("dbo.NotaFiscalEntrada", "TipoCompra", c => c.Int(nullable: false));
             AddColumn("dbo.NotaFiscalEntrada", "TipoEspecie", c => c.String(maxLength: 60, unicode: false));
             AddColumn("dbo.OrdemCompra", "TipoCompra", c => c.Int(nullable: false));
-            AddColumn("dbo.PedidoItem", "GrupoTributarioId", c => c.Guid(nullable: false));
+            AddColumn("dbo.PedidoItem", "GrupoTributarioId", c => c.Guid(nullable: true));
             AddColumn("dbo.PedidoItem", "ValorCreditoICMS", c => c.Double(nullable: false));
             AddColumn("dbo.PedidoItem", "ValorICMSSTRetido", c => c.Double(nullable: false));
             AddColumn("dbo.PedidoItem", "ValorBCSTRetido", c => c.Double(nullable: false));

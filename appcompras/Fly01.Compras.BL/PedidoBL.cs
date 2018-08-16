@@ -217,7 +217,7 @@ namespace Fly01.Compras.BL
                     //var previousClienteId = entity.ClienteId;
                     var previousGrupoTributarioPadraoId = entity.GrupoTributarioPadraoId;
                     var previousChaveNFeReferenciada = entity.ChaveNFeReferenciada;
-                    var previousTipoVenda = entity.TipoCompra;
+                    //var previousTipoVenda = entity.TipoCompra;
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     //var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
@@ -430,7 +430,7 @@ namespace Fly01.Compras.BL
             return null; /* produtos.Where(x => x.SaldoEstoque < 0).ToList();*/
         }
 
-        public TotalOrdemVenda CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        public TotalOrdemVenda CalculaTotalOrdemCompra(Guid ordemCompraId, string fornecedorId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0, bool onList = false)
         {
             var tipoVendaEnum = (TipoVenda)Enum.Parse(typeof(TipoVenda), tipoVenda, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);

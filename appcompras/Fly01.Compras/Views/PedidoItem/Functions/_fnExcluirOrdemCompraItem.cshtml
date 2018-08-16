@@ -1,19 +1,19 @@
 ﻿<script>
-    function fnExcluirOrdemVendaProduto(idRecord) {
-        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemVendaProdutoConfirmed(\"" + idRecord + "\")");
+    function fnExcluirOrdemCompraItem(idRecord) {
+        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemCompraItemConfirmed(\"" + idRecord + "\")");
     }
-    function fnExcluirOrdemVendaProdutoConfirmed(idRecord) {
+    function fnExcluirOrdemCompraItemConfirmed(idRecord) {
         $('body').removeClass('loaded');
         if (idRecord) {
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("Delete", "OrdemVendaProduto")",
+                url: "@Url.Action("Delete", "PedidoItem")",
                 data: { id: idRecord },
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
                         fly01.toast("Excluído com sucesso.", "success");
-                        fly01._.dtOrdemVendaProdutos.refresh();
+                        fly01._.dtPedidoItens.refresh();
                     }
                     else {
                         fly01.fn.submitErrorHandler(null, data.message);

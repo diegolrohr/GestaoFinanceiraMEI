@@ -12,6 +12,7 @@ namespace Fly01.Compras.BL
 
         public SerieNotaFiscalBL(AppDataContextBase context, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL) : base(context)
         {
+            MustConsumeMessageServiceBus = true;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
         }
 

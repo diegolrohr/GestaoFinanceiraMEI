@@ -13,6 +13,11 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [ODataRoutePrefix("parametrotributario")]
     public class ParametroTributarioController : ApiPlataformaController<ParametroTributario, ParametroTributarioBL>
     {
+        public ParametroTributarioController()
+        {
+            MustProduceMessageServiceBus = true;
+        }
+
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<ParametroTributario> model)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))

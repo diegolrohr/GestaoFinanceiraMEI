@@ -27,7 +27,7 @@
         }
 
         var idPedido = $("form#fly01frm input#id").val();
-        var idCliente = $("form#fly01frm input#clienteId").val();
+        var idFornecedor = $("form#fly01frm input#fornecedorId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
         if (geraNotaFiscal) {
             $("#naturezaOperacaoField").show();
@@ -44,15 +44,14 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "Pedido")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, fornecedorId: idFornecedor, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
+            debugger;
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
-                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
@@ -61,8 +60,6 @@
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.submitErrorHandler(null, data.message);
@@ -156,7 +153,6 @@
     }
 
     function fnBindOverrideSubmit() {
-        debugger;
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
@@ -191,7 +187,6 @@
                 url: url,
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
-                    debugger;
                     if (data.success) {
                         fly01.loading.stop();
 
@@ -204,7 +199,7 @@
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
 
-                            fly01._.dtOrdemCompraItem.refresh();
+                            fly01._.dtPedidoItens.refresh();
                             //fly01._.dtOrdemVendaServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
@@ -213,7 +208,7 @@
                             if (jsonData.tipoVenda == "Devolucao" || jsonData.tipoVenda == "Complementar") {
                                 //preencher os campos
                                 $("div#clienteIdField").show();
-                                fly01._.dtOrdemVendaProdutos.refresh(data.id);
+                                //fly01._.dtOrdemVendaProdutos.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
 
@@ -277,7 +272,7 @@
             }
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
-            fly01._.dtOrdemCompraItem.refresh();
+            fly01._.dtPedidoItens.refresh();
         }
 
         fnBindOverrideSubmit();

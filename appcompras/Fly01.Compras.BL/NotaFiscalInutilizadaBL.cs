@@ -10,6 +10,7 @@ namespace Fly01.Compras.BL
     {
         public NotaFiscalInutilizadaBL(AppDataContextBase context) : base(context)
         {
+            MustConsumeMessageServiceBus = true;
         }
 
         public IQueryable<NotaFiscalInutilizada> Everything => repository.All.Where(x => x.Ativo);

@@ -69,7 +69,7 @@
                 success: function (data) {
                     if (data.success) {
                         fly01.toast(data.message, "success");
-                        fly01._.dtOrdemCompraItem.refresh();
+                        fly01._.dtPedidoItens.refresh();
                         fly01._.fly01mdlfrmPedidoItem.close();
                     } else {
                         fly01.loading.stop();

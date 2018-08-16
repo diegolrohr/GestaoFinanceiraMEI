@@ -14,6 +14,7 @@ namespace Fly01.Compras.API.Controllers.Api
     {
         public NotaFiscalInutilizadaController()
         {
+            MustProduceMessageServiceBus = true;
         }
 
         public override async Task<IHttpActionResult> Post(NotaFiscalInutilizada entity)

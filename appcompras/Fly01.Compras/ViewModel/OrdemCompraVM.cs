@@ -18,10 +18,6 @@ namespace Fly01.Compras.ViewModel
         [APIEnum("StatusOrdemCompra")]
         public string Status { get; set; }
 
-        [JsonProperty("tipoVenda")]
-        [APIEnum("TipoVenda")]
-        public string TipoVenda { get; set; }
-
         [JsonProperty("data")]
         public DateTime Data { get; set; }
 
@@ -64,6 +60,12 @@ namespace Fly01.Compras.ViewModel
 
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
+
+        [JsonProperty("totalImpostosProdutos")]
+        public double? TotalImpostosProdutos { get; set; }
+
+        [JsonProperty("totalImpostosProdutosNaoAgrega")]
+        public double TotalImpostosProdutosNaoAgrega { get; set; }
 
         [JsonProperty("total")]
         public double? Total { get; set; }

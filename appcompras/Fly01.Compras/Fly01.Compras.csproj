@@ -290,8 +290,8 @@
     <Content Include="Views\PedidoItem\Functions\_fnChangeGrupoTribProduto.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnFormReadyPedidoItem.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeTotalProduto.cshtml" />
-    <Content Include="Views\PedidoItem\Functions\_fnEditarOrdemVendaProduto.cshtml" />
-    <Content Include="Views\PedidoItem\Functions\_fnExcluirOrdemVendaProduto.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnEditarOrdemCompraItem.cshtml" />
+    <Content Include="Views\PedidoItem\Functions\_fnExcluirOrdemCompraItem.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnAtualizarStatus.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnBaixarPDFNFe.cshtml" />
@@ -315,6 +315,7 @@
     <Content Include="Views\NFe\Functions\_fnFormReadyTransmitirNFe.cshtml" />
     <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFe\Index.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

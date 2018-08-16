@@ -20,9 +20,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         public StatusOrdemCompra Status { get; set; }
 
         [Required]
-        public TipoVenda TipoCompra { get; set; }
-
-        [Required]
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }
 

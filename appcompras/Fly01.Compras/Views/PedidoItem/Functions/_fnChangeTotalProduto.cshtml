@@ -4,26 +4,26 @@
     }
 
     function handleNegativeValuesProduto() {
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemVendaProduto ';
+        var formPedidoItem = 'form#fly01mdlfrmPedidoItem ';
 
-        if (parseFloat($(formOrdemVenda + 'input#valor').val()) < 0) {
-            $(formOrdemVenda + 'input#valor').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        if (parseFloat($(formPedidoItem + 'input#valor').val()) < 0) {
+            $(formPedidoItem + 'input#valor').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }
-        if (parseFloat($(formOrdemVenda + 'input#quantidade').val()) < 0) {
-            $(formOrdemVenda + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        if (parseFloat($(formPedidoItem + 'input#quantidade').val()) < 0) {
+            $(formPedidoItem + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }
-        if (parseFloat($(formOrdemVenda + 'input#desconto').val()) < 0) {
-            $(formOrdemVenda + 'input#desconto').val(function () { return (parseInt(noComma(this.value)) * -1) });
+        if (parseFloat($(formPedidoItem + 'input#desconto').val()) < 0) {
+            $(formPedidoItem + 'input#desconto').val(function () { return (parseInt(noComma(this.value)) * -1) });
         }
     }
 
     function errTotalNegativoProduto(total) {
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemVendaProduto ';
+        var formPedidoItem = 'form#fly01mdlfrmPedidoItem ';
 
-        fly01.fn.submitErrorHandler($formOrdemVenda.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
+        fly01.fn.submitErrorHandler($formPedidoItem.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
-        $(formOrdemVenda + 'input#total').val(total);
-        $(formOrdemVenda + 'input#desconto').val("");
+        $(formPedidoItem + 'input#total').val(total);
+        $(formPedidoItem + 'input#desconto').val("");
 
         return false;
     }
@@ -31,12 +31,12 @@
     function fnChangeTotalProduto() {
         handleNegativeValuesProduto();
 
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemVendaProduto ';
+        var formPedidoItem = 'form#fly01mdlfrmPedidoItem ';
 
-        var valor = noComma($(formOrdemVenda + 'input#valor').val()), quantidade = noComma($(formOrdemVenda + 'input#quantidade').val()), desconto = noComma($(formOrdemVenda + 'input#desconto').val());
+        var valor = noComma($(formPedidoItem + 'input#valor').val()), quantidade = noComma($(formPedidoItem + 'input#quantidade').val()), desconto = noComma($(formPedidoItem + 'input#desconto').val());
 
         if ((!valor) || (!quantidade)) {
-            $(formOrdemVenda + 'input#total').val("");
+            $(formPedidoItem + 'input#total').val("");
             return;
         }
 
@@ -50,7 +50,7 @@
 
         if (totalDescontado >= 0) {
             totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
-            $(formOrdemVenda + 'input#total').val(totalDescontado);
+            $(formPedidoItem + 'input#total').val(totalDescontado);
         }
         else {
             total = total.formatMoneyMask(2, 3, '', ',');

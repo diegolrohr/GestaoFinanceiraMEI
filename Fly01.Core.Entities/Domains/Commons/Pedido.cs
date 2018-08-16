@@ -11,6 +11,17 @@ namespace Fly01.Core.Entities.Domains.Commons
             TipoOrdemCompra = TipoOrdemCompra.Pedido;
         }
 
+        [StringLength(60)]
+        public string NumeracaoVolumesTrans { get; set; }
+
+        [StringLength(60)]
+        public string Marca { get; set; }
+
+        [StringLength(60)]
+        public string TipoEspecie { get; set; }
+
+        [Required]
+        public TipoVenda TipoCompra { get; set; }
         public double? ValorFrete { get; set; }
 
         public double? PesoBruto { get; set; }

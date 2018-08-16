@@ -324,6 +324,10 @@
     <Compile Include="Migrations\201808031804447_AlterNfeOrdemVendaNFeRefComplementarIsDevolucao.Designer.cs">
       <DependentUpon>201808031804447_AlterNfeOrdemVendaNFeRefComplementarIsDevolucao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808161736084_AlterProdutoAddColumnObjetoDeManutencao.cs" />
+    <Compile Include="Migrations\201808161736084_AlterProdutoAddColumnObjetoDeManutencao.Designer.cs">
+      <DependentUpon>201808161736084_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -560,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808031804447_AlterNfeOrdemVendaNFeRefComplementarIsDevolucao.resx">
       <DependentUpon>201808031804447_AlterNfeOrdemVendaNFeRefComplementarIsDevolucao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808161736084_AlterProdutoAddColumnObjetoDeManutencao.resx">
+      <DependentUpon>201808161736084_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -213,15 +213,16 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "enquadramentoLegalIPIDescricao"
             });
 
-            config.Elements.Add(new InputNumbersUI { Id = "saldoMinimo", Class = "col s12 m3", Label = "Saldo Mínimo" });
-            config.Elements.Add(new InputNumbersUI
+            config.Elements.Add(new InputFloatUI { Id = "saldoMinimo", Class = "col s12 m3", Label = "Saldo Mínimo", Digits = 3 });
+            config.Elements.Add(new InputFloatUI
             {
                 Id = "saldoProdutoField",
                 Class = "col s12 m3",
                 Label = "Saldo Atual",
-                Value = "0",
+                Digits = 3,
                 Disabled = true,
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "blur", Function = "fnChangeSaldoProduto" } }
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "blur", Function = "fnChangeSaldoProduto" } },
+                
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
@@ -316,12 +317,13 @@ namespace Fly01.Core.Presentation.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoProduto" } }
             }, GrupoProdutoResourceHash));
 
-            config.Elements.Add(new InputNumbersUI
+            config.Elements.Add(new InputFloatUI
             {
                 Id = "saldoProduto",
                 Class = "col s12 m2",
                 Label = "Saldo atual",
                 Value = "0",
+                Digits = 3,
                 Required = true
             });
 

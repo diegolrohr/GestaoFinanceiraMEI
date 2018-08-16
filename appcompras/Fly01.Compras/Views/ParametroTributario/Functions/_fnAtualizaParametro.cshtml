@@ -1,0 +1,58 @@
+﻿<script>
+    function fnAtualizaParametro() {
+        fly01.loading.start();
+
+        if ($("#aliquotaSimplesNacional").val() == "" || $("#aliquotaSimplesNacional").val() == null) {
+            $("#aliquotaSimplesNacional").val("0");
+        }
+
+        if ($("#aliquotaISS").val() == "" || $("#aliquotaISS").val() == null) {
+            $("#aliquotaISS").val("0");
+        }
+
+        if ($("#aliquotaPISPASEP").val() == "" || $("#aliquotaPISPASEP").val() == null) {
+            $("#aliquotaPISPASEP").val("0");
+        }
+
+        if ($("#aliquotaCOFINS").val() == "" || $("#aliquotaCOFINS").val() == null) {
+            $("#aliquotaCOFINS").val("0");
+        }
+
+        if ($("#aliquotaFCP").val() == "" || $("#aliquotaFCP").val() == null) {
+            $("#aliquotaFCP").val("0");
+        }
+
+        $.ajax({
+            url: '@Url.Action("ImportaParametro", "ParametroTributario")',
+            type: "POST",
+            data: {
+                registro: $('#registroSimplificadoMT').is(":checked"),
+                mensagem: $('#mensagemPadraoNota').val(),
+                simplesnacional: $("#aliquotaSimplesNacional").val(),
+                fcp: $("#aliquotaFCP").val(),
+                iss: $("#aliquotaISS").val(),
+                pispasep: $("#aliquotaPISPASEP").val(),
+                cofins: $("#aliquotaCOFINS").val(),
+                numeroRetorno: $("#numeroRetornoNF").val(),
+                modalidade: $('#tipoModalidade').val(),
+                versao: $('#tipoVersaoNFe').val(),
+                ambiente: $('#tipoAmbiente').val(),
+                tipoPresencaComprador: $('#tipoPresencaComprador').val(),
+                horarioVerao: $('#horarioVerao').val(),
+                tipoHorario: $('#tipoHorario').val()
+            },
+            success: function (response) {
+                if (response.success) {
+                    fly01.fn.updateTextFields();
+                    fly01.toast("Parâmetros Atualizados", 'success', '4000');
+                }
+                else {
+                    fly01.fn.submitErrorHandler($('#fly01frm').validate(), response.message, 'error');
+                }
+
+                fly01.loading.stop();
+            },
+        });
+    }
+
+</script>

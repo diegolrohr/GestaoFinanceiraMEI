@@ -88,8 +88,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
+    <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

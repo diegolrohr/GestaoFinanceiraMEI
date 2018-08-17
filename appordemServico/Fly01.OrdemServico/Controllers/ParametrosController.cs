@@ -1,24 +1,16 @@
-﻿using Fly01.Core;
-using Fly01.Core.Defaults;
-using Fly01.Core.Helpers;
+﻿
 using Fly01.Core.Presentation;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
-using Fly01.Faturamento.ViewModel;
+using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Enums;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    public class ParametrosController : BaseController<CertificadoDigitalVM>
+    public class ParametrosController : BaseController<ParametrosVM>
     {
 
         public override ContentResult List()
@@ -63,7 +55,7 @@ namespace Fly01.OrdemServico.Controllers
             return cfg;
         }
 
-        public override Func<CertificadoDigitalVM, object> GetDisplayData()
+        public override Func<ParametrosVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

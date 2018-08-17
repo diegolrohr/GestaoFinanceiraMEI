@@ -41,8 +41,8 @@ namespace Fly01.Core.ServiceBus
         {
             get
             {
-                channel = channel ?? Connection.CreateModel();
-                //channel = connection.CreateModel();
+                if (channel == null || channel.IsClosed)
+                    channel = Connection.CreateModel();
 
                 return channel;
             }

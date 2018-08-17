@@ -24,7 +24,7 @@ namespace Fly01.Core.Mensageria
                     ["payload"] = JsonConvert.SerializeObject(message)
                 };
 
-                client.UploadValuesAsync(new Uri(slackUrl), "POST", data);
+                client.UploadValues(new Uri(slackUrl), "POST", data);
             }
         }
 

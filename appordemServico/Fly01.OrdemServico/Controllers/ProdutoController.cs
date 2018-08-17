@@ -95,8 +95,8 @@ namespace Fly01.Estoque.Controllers
             var result = base.FormJson();
             var elements = ((FormUI)result.Content[0]).Elements;
             var index = elements.FindIndex(x => x is TextAreaUI && x.Id == "observacao");
-
-            elements.Insert(index, // Novo campo para ORDEM DE SERVIÇO
+            // Novo campo para ORDEM DE SERVIÇO
+            elements.Insert(index, 
                 new InputCheckboxUI
                 {
                     Id = "ObjetoDeManutencao",

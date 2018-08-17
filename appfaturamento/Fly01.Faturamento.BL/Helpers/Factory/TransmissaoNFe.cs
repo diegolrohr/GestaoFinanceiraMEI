@@ -272,19 +272,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public Pagamento ObterPagamento(double valorPagamento)
         {
-            var tipoFormaPagamento = TipoFormaPagamento.Outros;
-            if (Cabecalho.FormaPagamento != null)
-            {
-                //Transferência não existe para o SEFAZ
-                tipoFormaPagamento = Cabecalho.FormaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : Cabecalho.FormaPagamento.TipoFormaPagamento;
-            }
             return new Pagamento()
             {
                 DetalhesPagamentos = new List<DetalhePagamento>()
                     {
                         new DetalhePagamento()
                         {
-                            TipoFormaPagamento = tipoFormaPagamento,
+                            TipoFormaPagamento = ObterTipoFormaPagamento(),
                             ValorPagamento = valorPagamento
                         }
                     }
@@ -319,6 +313,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public abstract bool PagaFrete();
 
+        public abstract TipoFormaPagamento ObterTipoFormaPagamento();
+
         private EntidadeVM ObterEntidade() => TransmissaoBLs.CertificadoDigitalBL.GetEntidade();
 
         public TransmissaoVM ObterTransmissaoVMApartirDoItem(ItemTransmissaoVM itemTransmissao)
@@ -348,6 +344,14 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), NFe.TipoFrete.ToString()),
                 }
+            };
+        }
+
+        public NFReferenciada ObterNFReferenciada()
+        {
+            return new NFReferenciada()
+            {
+                ChaveNFeReferenciada = NFe.ChaveNFeReferenciada
             };
         }
     }

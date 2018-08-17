@@ -3,6 +3,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.BL.Helpers.Factory
 {
@@ -12,6 +13,11 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             : base(nfe, transmissaoBLs) {}
 
         public override TipoNota ObterTipoDocumentoFiscal()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override TipoFormaPagamento ObterTipoFormaPagamento()
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,5 @@
-﻿using Fly01.Core;
-using Fly01.Core.Entities.Domains.Commons;
+﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Rest;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS;
@@ -106,12 +103,23 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private static double CalcularTributosAproximados(ICMSTOT icmsTotal)
         {
-            return icmsTotal.SomatorioICMS 
-                + icmsTotal.SomatorioCofins 
-                + icmsTotal.SomatorioICMSST 
-                + icmsTotal.SomatorioIPI 
-                + icmsTotal.SomatorioPis 
+            return icmsTotal.SomatorioICMS
+                + icmsTotal.SomatorioCofins
+                + icmsTotal.SomatorioICMSST
+                + icmsTotal.SomatorioIPI
+                + icmsTotal.SomatorioPis
                 + icmsTotal.SomatorioFCPST;
+        }
+
+        public override TipoFormaPagamento ObterTipoFormaPagamento()
+        {
+            var tipoFormaPagamento = TipoFormaPagamento.Outros;
+            if (Cabecalho.FormaPagamento != null)
+            {
+                //Transferência não existe para o SEFAZ
+                tipoFormaPagamento = Cabecalho.FormaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : Cabecalho.FormaPagamento.TipoFormaPagamento;
+            }
+            return tipoFormaPagamento;
         }
 
         #region Impostos  

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Dynamic;
-using System.Data.Entity;
-using System.Threading.Tasks;
+﻿using Fly01.Core.Entities.Domains.NoSQL;
+using Fly01.Core.Helpers;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Configuration;
-using Fly01.Core.Entities.Domains.NoSQL;
-using Fly01.Core.Helpers;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Dynamic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fly01.Core.BL
 {

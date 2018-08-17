@@ -30,7 +30,6 @@ namespace Fly01.Financeiro.BL
 
         public override void Insert(ContaPagar entity)
         {
-            rpc = rpc ?? new RpcClient();
             var numero = default(int);
 
             entity.PlataformaId = PlataformaUrl;
@@ -51,6 +50,7 @@ namespace Fly01.Financeiro.BL
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
 
+                rpc = new RpcClient();
                 numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                 entity.Numero = numero;
@@ -84,6 +84,7 @@ namespace Fly01.Financeiro.BL
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
+                    rpc = new RpcClient();
                     numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                     itemContaPagar.Numero = numero;
@@ -116,6 +117,7 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
+                            rpc = new RpcClient();
                             numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                             itemContaPagarRepeticao.Numero = numero;

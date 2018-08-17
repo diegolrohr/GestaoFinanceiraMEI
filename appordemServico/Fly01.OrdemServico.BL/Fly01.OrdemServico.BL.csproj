@@ -54,6 +54,7 @@
     <Compile Include="OrdemServicoItemProdutoBL.cs" />
     <Compile Include="OrdemServicoItemServicoBL.cs" />
     <Compile Include="OrdemServicoManutencaoBL.cs" />
+    <Compile Include="ParametroOrdemServicoBL.cs" />
     <Compile Include="PessoaBL.cs" />
     <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

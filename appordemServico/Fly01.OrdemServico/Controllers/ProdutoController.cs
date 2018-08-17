@@ -90,6 +90,27 @@ namespace Fly01.Estoque.Controllers
             return GridLoad(filters);
         }
 
+        protected override ContentUI FormJson()
+        {
+            var result = base.FormJson();
+            var elements = ((FormUI)result.Content[0]).Elements;
+            var index = elements.FindIndex(x => x is TextAreaUI && x.Id == "observacao");
+
+            elements.Insert(index, // Novo campo para ORDEM DE SERVIÇO
+                new InputCheckboxUI
+                {
+                    Id = "ObjetoDeManutencao",
+                    Class = "col s12 m6 l3",
+                    Label = "Objeto de Manutenção",
+                    DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+
+            return result;
+        }
+
         public override List<TooltipUI> GetHelpers()
         {
             return new List<TooltipUI> {

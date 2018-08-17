@@ -49,9 +49,9 @@ namespace Fly01.OrdemServico.API.Models.DAL
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
 
-        public DbSet<Cest> Cest { get; set; }
+        public DbSet<Cest> Cests { get; set; }
 
-        public DbSet<EnquadramentoLegalIPI> EnquadramentosLegaisIPI { get; set; }
+        public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
 
         public DbSet<GrupoProduto> GruposProduto { get; set; }
 

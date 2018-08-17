@@ -55,7 +55,7 @@ namespace Fly01.Financeiro.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() =>
+        protected override Task RunServiceBusApps() => Task.Factory.StartNew(() =>
         {
             SetupEnvironment.Create(RabbitConfig.VirtualHostApps);
             SetupEnvironment.Create(RabbitConfig.VirtualHostIntegracao);

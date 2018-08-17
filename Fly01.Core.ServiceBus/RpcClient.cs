@@ -81,13 +81,13 @@ namespace Fly01.Core.ServiceBus
             var result = string.Empty;
 
             var messageBytes = Encoding.UTF8.GetBytes(message);
-            channel.BasicPublish(exchange: "", routingKey: RabbitConfig.SequenceGeneratorQueue, basicProperties: props, body: messageBytes);
+            Channel.BasicPublish(exchange: "", routingKey: RabbitConfig.SequenceGeneratorQueue, basicProperties: props, body: messageBytes);
 
-            lock (channel)
+            lock (Channel)
             {
                 try
                 {
-                    channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
+                    Channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
                     respQueue.TryTake(out result, 2000);
 
                     if (string.IsNullOrEmpty(result))
@@ -102,7 +102,7 @@ namespace Fly01.Core.ServiceBus
                 finally
                 {
                     //channel.BasicCancel(channelTag);
-                    channel.QueueDelete(replyQueueName, false, true);
+                    Channel.QueueDelete(replyQueueName, false, true);
                 }
             }
         }

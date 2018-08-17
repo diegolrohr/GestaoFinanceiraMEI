@@ -2,7 +2,7 @@
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Faturamento.ViewModel;
+using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
@@ -61,12 +61,6 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     new FormWizardUIStep()
                     {
-                        Title = "Finalidade",
-                        Id = "stepFinalidade",
-                        Quantity = 2,
-                    },
-                    new FormWizardUIStep()
-                    {
                         Title = "Cadastro",
                         Id = "stepCadastro",
                         Quantity = 11,
@@ -93,33 +87,11 @@ namespace Fly01.OrdemServico.Controllers
                 ShowStepNumbers = true
             };
 
-            #region step Finalidade
-            //config.Elements.Add(new ButtonGroupUI()
-            //{
-            //    Id = "fly01btngrpFinalidade",
-            //    Class = "col s12 m6 offset-m3",
-            //    OnClickFn = "fnChangeFinalidade",
-            //    Label = "Tipo do pedido",
-            //    Options = new List<ButtonGroupOptionUI>
-            //    {
-            //        new ButtonGroupOptionUI { Id = "btnNormal", Value = "Normal", Label = "Normal"},
-            //        new ButtonGroupOptionUI { Id = "btnDevolucao", Value = "Devolucao", Label = "Devolução"},
-            //    }
-            //});
-            config.Elements.Add(new InputNumbersUI { Id = "chaveNFeReferenciada", Class = "col s12 m8 offset-m2", Label = "Chave SEFAZ Nota Fiscal Referenciada", MinLength = 44, MaxLength = 44 });
-            #endregion
-
             #region step Cadastro
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoCompra", Value = "Normal" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
-            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemCompra", Value = "Pedido" });
-            config.Elements.Add(new InputHiddenUI { Id = "grupoTributarioPadraoTipoTributacaoICMS" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-
-
-            config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m3", Label = "Data", Required = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissao", Required = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
 
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI

@@ -1,6 +1,5 @@
 ﻿<script>
     function fnEditarOrcamento(idRecord) {
-        var url = "@Url.Action("FormOrcamento", "Orcamento", new { isEdit = true })";
-        fly01.go(url, idRecord);
+        fly01.go("@Url.Action("FormOrcamento", "Orcamento", new { isEdit = "true" })", idRecord);
     }
 </script>

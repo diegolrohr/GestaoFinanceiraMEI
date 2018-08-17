@@ -21,8 +21,13 @@ namespace Fly01.Core.ServiceBus
             {
                 if (connection == null || !connection.IsOpen)
                 {
-                    var factory = RabbitConfig.Factory;
-                    factory.VirtualHost = RabbitConfig.VirtualHostname;
+                    var factory = new ConnectionFactory()
+                    {
+                        Uri = RabbitConfig.AMQPURL,
+                        UserName = RabbitConfig.UserName,
+                        Password = RabbitConfig.Password,
+                        VirtualHost = RabbitConfig.VirtualHostApps
+                    };
 
                     connection = factory.CreateConnection();
                 }
@@ -75,7 +80,7 @@ namespace Fly01.Core.ServiceBus
                 respQueue.TryTake(out result, 2000);
 
                 if (string.IsNullOrEmpty(result))
-                    throw new Exception("RpcClient: Não foi possível obter um número");
+                    throw new Exception($"RpcClient: Não foi possível obter um número para {message}");
             }
             catch (Exception ex)
             {

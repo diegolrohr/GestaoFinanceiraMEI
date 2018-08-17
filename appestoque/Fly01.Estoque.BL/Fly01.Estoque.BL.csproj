@@ -58,7 +58,6 @@
     <Compile Include="ProdutosMenosMovimentadosBL.cs" />
     <Compile Include="ProdutosMaisMovimentadosBL.cs" />
     <Compile Include="ProdutoBL.cs" />
-    <Compile Include="ServiceBusBL.cs" />
     <Compile Include="TipoMovimentoBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

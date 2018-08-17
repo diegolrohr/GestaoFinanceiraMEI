@@ -24,7 +24,7 @@ namespace Fly01.Core.Mensageria
                     ["payload"] = JsonConvert.SerializeObject(message)
                 };
 
-                client.UploadValuesAsync(new Uri(slackUrl), "POST", data);
+                client.UploadValues(new Uri(slackUrl), "POST", data);
             }
         }
 
@@ -98,7 +98,8 @@ namespace Fly01.Core.Mensageria
                             new SlackField("Data", data),
                             new SlackField("Error", errorMessage),
                             new SlackField("Host", hostName, true),
-                            new SlackField("Fila", queueName, true)
+                            new SlackField("Fila", queueName, true),
+                            new SlackField("Rota", routingKey, true)
                         },
                         Actions = new List<SlackAction>()
                         {

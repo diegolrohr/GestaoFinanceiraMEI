@@ -25,7 +25,7 @@ namespace Fly01.OrdemServico.Controllers
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
-            var cfg = new ContentUI
+            var cfg = new ContentUI     
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
             //    //Header = new HtmlUIHeader

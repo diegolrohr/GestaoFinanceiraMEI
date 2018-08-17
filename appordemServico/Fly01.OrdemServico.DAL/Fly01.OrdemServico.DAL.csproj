@@ -52,6 +52,10 @@
     <Compile Include="Migrations\201808161815580_Initial Migration.Designer.cs">
       <DependentUpon>201808161815580_Initial Migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808171504189_OrdemServico_Cliente.cs" />
+    <Compile Include="Migrations\201808171504189_OrdemServico_Cliente.Designer.cs">
+      <DependentUpon>201808171504189_OrdemServico_Cliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -102,6 +106,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201808161815580_Initial Migration.resx">
       <DependentUpon>201808161815580_Initial Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808171504189_OrdemServico_Cliente.resx">
+      <DependentUpon>201808171504189_OrdemServico_Cliente.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

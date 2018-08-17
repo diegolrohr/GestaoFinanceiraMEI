@@ -11,7 +11,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public StatusOrdemServico Status { get; set; }
 
         [Required]
-        public Guid PessoaId { get; set; }
+        public Guid ClienteId { get; set; }
 
         [Required]
         public int Numero { get; set; }
@@ -34,7 +34,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool ValorTotal { get; set; }
 
         #region Navigation
-        public virtual Pessoa Pessoa { get; set; }
+        public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Responsavel { get; set; }
         #endregion
     }

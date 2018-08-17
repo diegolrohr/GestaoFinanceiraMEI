@@ -47,8 +47,18 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CidadeBL.cs" />
+    <Compile Include="EstadoBL.cs" />
+    <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="OrdemServicoBL.cs" />
+    <Compile Include="OrdemServicoItemProdutoBL.cs" />
+    <Compile Include="OrdemServicoItemServicoBL.cs" />
+    <Compile Include="OrdemServicoManutencaoBL.cs" />
+    <Compile Include="PessoaBL.cs" />
+    <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceBusBL.cs" />
+    <Compile Include="UnidadeMedidaBL.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

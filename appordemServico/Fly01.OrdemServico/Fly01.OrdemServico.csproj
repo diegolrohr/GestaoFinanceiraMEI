@@ -157,6 +157,7 @@
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

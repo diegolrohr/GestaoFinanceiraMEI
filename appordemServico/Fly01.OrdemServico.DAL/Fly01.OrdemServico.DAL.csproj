@@ -53,7 +53,19 @@
       <DependentUpon>201808161815580_Initial Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer3.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer4.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\EnquadramentoLegalIPIDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\NCMDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\UnidadeMedidaDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

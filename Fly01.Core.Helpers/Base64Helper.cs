@@ -46,6 +46,5 @@ namespace Fly01.Core.Helpers
             byte[] bytes = System.Text.Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
             return System.Text.Encoding.UTF8.GetString(bytes);
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -185,6 +186,7 @@ namespace Fly01.Core.Presentation.Controllers
                 LabelId = "ncmDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
+
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaIpi",
@@ -228,6 +230,18 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+            // Novo campo para ORDEM DE SERVIÇO
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "ObjetoDeManutencao",
+                Class = "col s12 m6 l3",
+                Label = "Objeto de Manutenção",
+                DomEvents = new List<DomEventUI>
+            {
+                new DomEventUI { DomEvent = "change", Function = "" }
+            }
+            });
 
             List<TooltipUI> tooltips = GetHelpers();
 
@@ -339,6 +353,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
 
         #endregion
     }

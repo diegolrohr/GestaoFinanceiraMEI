@@ -9,6 +9,8 @@ using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.Core.Entities.Domains.Commons;
 
 namespace Fly01.Estoque.Controllers
 {

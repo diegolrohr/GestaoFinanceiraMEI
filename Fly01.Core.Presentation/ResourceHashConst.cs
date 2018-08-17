@@ -93,6 +93,7 @@
         public const string ComprasCompras = "8FBA6365-5788-45E8-AAFD-C2A3D6EA1EC2";
         public const string ComprasComprasDashboard = "AD41CD7C-334B-4AAB-9FD2-F69A8E73DCDE";
         public const string ComprasComprasOrcamentoPedido = "4577A2E8-4FEB-4D4F-B2E4-3040DCD13E24";
+        public const string ComprasComprasNotasFiscais = "1EC4DBEA-1F10-42E2-B998-513FF7279020";
 
         public const string ComprasCadastros = "7802F783-EF74-4FBF-94CD-BE695A5AB5FD";
         public const string ComprasCadastrosProdutos = "ABC9BF43-B4B2-4256-84AD-4CE0CF446B62";
@@ -104,6 +105,12 @@
         public const string ComprasCadastrosGrupoProdutos = "30F7EE6D-3D8A-478C-876A-7888FABED371";
         public const string ComprasCadastrosCategoria = "C7BA2B5A-CB3C-4E30-86E0-7571D5CB2836";
         public const string ComprasCadastrosSubstituicaoTributaria = "361B7CF8-BC9D-4C96-800C-9CA58611E3FA";
+
+        public const string ComprasConfiguracoes = "6CC410A7-0059-4C0C-9E77-64C5F401BFA3";
+        public const string ComprasConfiguracoesCertificadoDigital = "41996A68-7DF5-4CA2-ABDA-839B52AE5DF3";
+        public const string ComprasConfiguracoesParametrosTributarios = "D3C4072E-ACAD-40DF-8C11-DFC52347FD52";
+        public const string ComprasConfiguracoesSerieNotasFiscais = "258A7E71-7F95-424A-BEF5-D20D8DDA74EC";
+        public const string ComprasConfiguracoesNotasFiscaisInutilizadas = "59811216-E4FF-4AFA-A340-B4576D2809AA";
 
         public const string ComprasAjuda = "13440943-C4F0-435F-B7FD-9DBD8F491620";
         public const string ComprasAjudaAssistenciaRemota = "ABC6847E-CBCF-43AF-B405-3412DCEC3C00";

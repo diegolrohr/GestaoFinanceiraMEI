@@ -1,24 +1,24 @@
-﻿using Fly01.Compras.Models.Reports;
-using Fly01.Compras.Models.ViewModel;
-using Fly01.Compras.ViewModel;
-using Fly01.Core;
-using Fly01.Core.Config;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Presentation;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Rest;
-using Fly01.Core.ViewModels.Presentation.Commons;
+﻿using Fly01.Compras.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
+using Fly01.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.Helpers;
+using Fly01.Compras.Models.ViewModel;
+using Fly01.Core.Config;
+using Fly01.Compras.Models.Reports;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Presentation;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Compras.Controllers
 {

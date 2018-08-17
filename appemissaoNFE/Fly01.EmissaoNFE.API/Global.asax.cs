@@ -21,6 +21,6 @@ namespace Fly01.EmissaoNFE.API
 
         protected override string GetInstrumentationKeyAppInsights() => ConfigurationManager.AppSettings["InstrumentationKeyAppInsights"];
 
-        protected override Task RunServiceBus() => Task.Factory.StartNew(() => { });
+        protected override Task RunServiceBusApps() => Task.Factory.StartNew(() => { });
     }
 }

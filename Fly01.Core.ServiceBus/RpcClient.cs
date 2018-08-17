@@ -40,8 +40,7 @@ namespace Fly01.Core.ServiceBus
         {
             get
             {
-                if (channel == null || channel.IsClosed)
-                    channel = Connection.CreateModel();
+                channel = channel ?? Connection.CreateModel();
 
                 return channel;
             }
@@ -49,54 +48,67 @@ namespace Fly01.Core.ServiceBus
 
         public RpcClient()
         {
-            var myChannel = Channel;
-            replyQueueName = myChannel.QueueDeclare().QueueName;
-            consumer = new EventingBasicConsumer(myChannel);
-
-            var correlationId = Guid.NewGuid().ToString();
-            props = myChannel.CreateBasicProperties();
-            props.CorrelationId = correlationId;
-            props.ReplyTo = replyQueueName;
-
-            consumer.Received += (model, ea) =>
+            try
             {
-                if (ea.BasicProperties.CorrelationId == correlationId)
-                    respQueue.Add(Encoding.UTF8.GetString(ea.Body));
-            };
+                var myChannel = Channel;
+                lock (myChannel)
+                {
+                    replyQueueName = myChannel.QueueDeclare().QueueName;
+                    consumer = new EventingBasicConsumer(myChannel);
+
+                    props = myChannel.CreateBasicProperties();
+                    var correlationId = Guid.NewGuid().ToString();
+                    props.CorrelationId = correlationId;
+                    props.ReplyTo = replyQueueName;
+
+                    consumer.Received += (model, ea) =>
+                    {
+                        if (ea.BasicProperties.CorrelationId == correlationId)
+                            respQueue.Add(Encoding.UTF8.GetString(ea.Body));
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"RPC: {ex.Message}");
+            }
         }
 
         public string Call(string message)
         {
-            var result = "";
+            var result = string.Empty;
 
-            try
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+            channel.BasicPublish(exchange: "", routingKey: RabbitConfig.SequenceGeneratorQueue, basicProperties: props, body: messageBytes);
+
+            lock (channel)
             {
-                var messageBytes = Encoding.UTF8.GetBytes(message);
+                try
+                {
+                    channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
+                    respQueue.TryTake(out result, 2000);
 
-                channel.BasicPublish(exchange: "", routingKey: RabbitConfig.SequenceGeneratorQueue, basicProperties: props, body: messageBytes);
+                    if (string.IsNullOrEmpty(result))
+                        throw new Exception($"RPC: Não foi possível obter um número para {message}");
 
-                channel.BasicConsume(consumer: consumer, queue: replyQueueName, autoAck: true);
-
-                respQueue.TryTake(out result, 2000);
-
-                if (string.IsNullOrEmpty(result))
-                    throw new Exception($"RpcClient: Não foi possível obter um número para {message}");
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"RPC: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                channel.QueueDelete(replyQueueName, false, true);
-            }
+            //finally
+            //{
+            //    channel.QueueDelete(replyQueueName, false, true);
+            //}
 
-            return result;
         }
 
         public void Close()
         {
-            connection.Close();
+            //channel.QueueDelete(replyQueueName, false, true);
+            //connection.Close();
         }
     }
 }

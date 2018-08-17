@@ -30,6 +30,8 @@ namespace Fly01.Core.BL
             }
         }
 
+        protected RpcClient rpc { get; set; }
+
         private string _appUser;
 
         public string AppUser
@@ -137,10 +139,12 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao)
+        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao, RpcClient rpc)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
+
+            this.rpc = rpc;
 
             switch (httpMethod)
             {

@@ -87,6 +87,7 @@
     <Compile Include="TipoCarteiraBL.cs" />
     <Compile Include="TransferenciaBL.cs" />
     <Compile Include="UnitOfWork.cs" />
+    <Compile Include="xxx.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

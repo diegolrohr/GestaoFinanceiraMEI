@@ -29,10 +29,9 @@ namespace Fly01.OrdemServico.Controllers
                 },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Parâmetros da Ordem de Serviço",
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                    Title = "Parâmetros da Ordem de Serviço"
+                }
+
             };
 
             var config = new FormUI
@@ -41,19 +40,17 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     Create = @Url.Action("Create"),
                     List = Url.Action("Form")
-                },
-                ReadyFn = "fnGetStatusCertificado",
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                }
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputPasswordUI { Id = "diasEntrega", Class = "col s12 m3", Label = "Nº de dias sugeridos para a previsão de entrega", Required = true });
+            config.Elements.Add(new InputNumbersUI { Id = "diasEntrega", Class = "col s12 m3", Label = "Nº de dias sugeridos para a previsão de entrega", Required = true });
 
-            cfg.Content.Add(config);
+            cfg.Content.Add(config);           
 
             return cfg;
-        }
+         }
 
         public override Func<ParametrosVM, object> GetDisplayData()
         {

@@ -58,12 +58,12 @@
     <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
     <Folder Include="Views\Home\" />
+    <Folder Include="Views\Parametros\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\DashboardOsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParametrosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
@@ -160,8 +160,6 @@
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
     <Content Include="Views\Parametros\Index.cshtml" />
-    <Content Include="Views\Parametros\Functions\_fnAtualizaCertificado.cshtml" />
-    <Content Include="Views\Parametros\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeGrupoProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeSaldoProduto.cshtml" />

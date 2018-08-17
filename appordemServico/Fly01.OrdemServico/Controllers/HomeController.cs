@@ -54,8 +54,6 @@ namespace Fly01.OrdemServico.Controllers
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
-                new SidebarUIMenu() { Class = "", Label = "Dashboard", OnClick = @Url.Action("List", "DashboardOs") },
-
                 new SidebarUIMenu()
                 {
                     //Class = ResourceHashConst.FinanceiroFinanceiro,

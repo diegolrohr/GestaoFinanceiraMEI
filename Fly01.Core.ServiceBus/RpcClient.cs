@@ -26,13 +26,14 @@ namespace Fly01.Core.ServiceBus
                         Uri = RabbitConfig.AMQPURL,
                         UserName = RabbitConfig.UserName,
                         Password = RabbitConfig.Password,
-                        VirtualHost = RabbitConfig.VirtualHostApps
+                        VirtualHost = RabbitConfig.VirtualHostApps,
                     };
 
-                    connection = factory.CreateConnection();
+                    connection = factory.CreateConnection("cnsmr_rpc");
                 }
 
                 return connection;
+                //return factory.CreateConnection("cnsmr_rpc");
             }
         }
 
@@ -41,6 +42,7 @@ namespace Fly01.Core.ServiceBus
             get
             {
                 channel = channel ?? Connection.CreateModel();
+                //channel = connection.CreateModel();
 
                 return channel;
             }
@@ -48,14 +50,14 @@ namespace Fly01.Core.ServiceBus
 
         public RpcClient()
         {
-            try
+            var myChannel = Channel;
+            lock (myChannel)
             {
-                var myChannel = Channel;
-                lock (myChannel)
+                try
                 {
+
                     replyQueueName = myChannel.QueueDeclare().QueueName;
                     consumer = new EventingBasicConsumer(myChannel);
-
                     props = myChannel.CreateBasicProperties();
                     var correlationId = Guid.NewGuid().ToString();
                     props.CorrelationId = correlationId;
@@ -67,10 +69,10 @@ namespace Fly01.Core.ServiceBus
                             respQueue.Add(Encoding.UTF8.GetString(ea.Body));
                     };
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"RPC: {ex.Message}");
+                catch (Exception ex)
+                {
+                    throw new Exception($"RPC: {ex.Message}");
+                }
             }
         }
 
@@ -97,16 +99,17 @@ namespace Fly01.Core.ServiceBus
                 {
                     throw new Exception($"RPC: {ex.Message}");
                 }
+                finally
+                {
+                    //channel.BasicCancel(channelTag);
+                    channel.QueueDelete(replyQueueName, false, true);
+                }
             }
-            //finally
-            //{
-            //    channel.QueueDelete(replyQueueName, false, true);
-            //}
-
         }
 
         public void Close()
         {
+            //channel.BasicCancel(consumer.ConsumerTag);
             //channel.QueueDelete(replyQueueName, false, true);
             //connection.Close();
         }

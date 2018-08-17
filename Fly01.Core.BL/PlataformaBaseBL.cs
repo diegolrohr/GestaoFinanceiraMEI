@@ -144,7 +144,7 @@ namespace Fly01.Core.BL
             if (!MustConsumeMessageServiceBus)
                 return;
 
-            this.rpc = rpc;
+            this.rpc = rpc ?? new RpcClient();
 
             switch (httpMethod)
             {

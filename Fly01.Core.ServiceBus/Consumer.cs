@@ -119,7 +119,8 @@ namespace Fly01.Core.ServiceBus
 
         private async Task ProcessData(string message, RabbitConfig.EnHttpVerb httpMethod, string routingKey, string appId, string plataformaUrl, string appUser)
         {
-            RpcClient rpc = new RpcClient();
+            //var rpc = new RpcClient();
+
             Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
 
             foreach (var item in MessageType.Resolve<dynamic>(message))
@@ -129,7 +130,7 @@ namespace Fly01.Core.ServiceBus
                     dynamic entidade = AssemblyBL.GetProperty($"{routingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
                     dynamic data = JsonConvert.DeserializeObject<dynamic>(item.ToString());
 
-                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash", rpc);
+                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash", null);
 
                     await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
@@ -141,7 +142,6 @@ namespace Fly01.Core.ServiceBus
                     continue;
                 }
             }
-            //rpc.Close();
         }
     }
 }

@@ -57,13 +57,16 @@
   <ItemGroup>
     <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
-    <Folder Include="Views\Home\Functions\" />
+    <Folder Include="Views\Home\" />
+    <Folder Include="Views\Parametros\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParametrosController.cs" />
+    <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -85,13 +88,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
-    <Compile Include="ViewModel\OrdemServicoVM.cs" />
-    <Compile Include="ViewModel\OrdemServicoItemVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemServicoVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoItemVM.cs" />
     <Compile Include="ViewModel\OrdemServicoManutencaoVM.cs" />
+    <Compile Include="ViewModel\OrdemServicoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
+    <Compile Include="ViewModel\ParametrosVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +159,13 @@
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeTipoInscricao.cshtml" />
+    <Content Include="Views\Parametros\Index.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeGrupoProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeNCM.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeSaldoProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

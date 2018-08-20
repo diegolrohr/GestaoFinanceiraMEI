@@ -52,7 +52,7 @@ namespace Fly01.OrdemServico.BL
             //         x.StatusContaBancaria
             //     }).Count();
 
-            //var result = _ordemServicoBL.All.Where(x=>x.)
+            //var result = _ordemServicoBL.All.Where(x=>x.) 
 
             return 0;
         }

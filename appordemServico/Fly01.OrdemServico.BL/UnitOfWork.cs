@@ -49,6 +49,21 @@ namespace Fly01.OrdemServico.BL
         private ParametroOrdemServicoBL parametroOrdemServicoBL;
         public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));
 
+        private OrdemServicoItemServicoBL ordemServicoItemServicoBL;
+        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL());
+
+        private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
+        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL());
+
+        private OrdemServicoManutencaoBL ordemServicoManutencaoBL;
+        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL());
+
+        private OrdemServicoBL ordemServicoBL;
+        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context, OrdemServicoItemServicoBL, OrdemServicoItemProdutoBL, OrdemServicoManutencaoBL));
+
+        private DashboardBL dashboardBL;
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, OrdemServicoBL, ProdutoBL));
+
         #endregion
     }
 }

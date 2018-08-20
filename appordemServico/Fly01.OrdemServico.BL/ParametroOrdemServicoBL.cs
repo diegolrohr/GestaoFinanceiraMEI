@@ -4,7 +4,7 @@ using Fly01.OrdemServico.API.Models.DAL;
 
 namespace Fly01.OrdemServico.BL
 {
-    class ParametroOrdemServicoBL : PlataformaBaseBL<ParametroOrdemServico>
+    public class ParametroOrdemServicoBL : PlataformaBaseBL<ParametroOrdemServico>
     {
         public ParametroOrdemServicoBL(AppDataContext context) : base(context)
         {

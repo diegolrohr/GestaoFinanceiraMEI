@@ -31,8 +31,23 @@ namespace Fly01.OrdemServico.BL
         }
 
         #region BLS
-        //exemplo private EstadoBL estadoBL;
-        //public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));        
+        private PessoaBL pessoaBL;
+        public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
+
+        private EstadoBL estadoBL;
+        public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
+
+        private CidadeBL cidadeBL;
+        public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
+
+        private ProdutoBL produtoBL;
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+
+        private GrupoProdutoBL grupoProdutoBL;
+        public GrupoProdutoBL GrupoProdutoBL => grupoProdutoBL ?? (grupoProdutoBL = new GrupoProdutoBL(Context));
+
+        private ParametroOrdemServicoBL parametroOrdemServicoBL;
+        public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));
 
         #endregion
     }

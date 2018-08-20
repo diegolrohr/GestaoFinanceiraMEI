@@ -22,6 +22,12 @@ namespace Fly01.OrdemServico.API
             };
 
             //exemplo builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Pessoa>("pessoa");
+            builder.EntitySet<Produto>("produto");
+            builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Cidade>("cidade");
+            builder.EntitySet<ParametroOrdemServico>("parametroordemservico");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

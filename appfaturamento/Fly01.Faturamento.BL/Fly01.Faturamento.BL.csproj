@@ -55,6 +55,8 @@
     <Compile Include="Helpers\Entities\TransmissaoCabecalho.cs" />
     <Compile Include="Helpers\Factory\ConcreteTransmissaoFactory.cs" />
     <Compile Include="Helpers\Factory\TransmissaoFactory.cs" />
+    <Compile Include="Helpers\Factory\TransmissaoNFeComplementoIPI.cs" />
+    <Compile Include="Helpers\Factory\TransmissaoNFeComplementoICMSST.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeComplementoICMS.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeComplementoPreco.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeDevolucao.cs" />

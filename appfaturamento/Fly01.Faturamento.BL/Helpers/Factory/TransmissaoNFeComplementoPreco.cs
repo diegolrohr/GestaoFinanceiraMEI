@@ -30,10 +30,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             var itemTransmissao = ObterCabecalhoItemTransmissao();
 
-            //Complementar não pode sai a tag de Transportadora no XML
-            //itemTransmissao.Transporte.Transportadora = null;
             itemTransmissao.Transporte.ModalidadeFrete = ModalidadeFrete.SemFrete;
-            //itemTransmissao.Transporte.Volume = null;
 
             CriarProdutosEImpostosParaDetalhes(itemTransmissao);
 
@@ -71,7 +68,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             }
         }
 
-        private static double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
+        private double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
         {
             return (itemTransmissao.Total.ICMSTotal.SomatorioProdutos - itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
         }
@@ -91,34 +88,28 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private ICMSPai ObterICMS(NFeProduto item)
         {
-            var ICMS = new ICMSPai()
+            return new ICMSPai()
             {
                 OrigemMercadoria = OrigemMercadoria.Nacional,
                 CodigoSituacaoOperacao = TipoTributacaoICMS.Imune//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
             };
-
-            return ICMS;
         }
 
         private PISPai ObterPIS(NFeProduto item)
         {
-            var PIS = new PISPai()
+            return new PISPai()
             {
-                CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao //TODO Wilson confirmar SemIncidencia
+                CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao //TODO: Wilson confirmar SemIncidencia
             };
-
-            return PIS;
         }
 
         private COFINSPai ObterCOFINS(NFeProduto item)
         {
-            var COFINS = new COFINSPai()
+            return new COFINSPai()
             {
                 //TODO: confirmar Wilson
                 CodigoSituacaoTributaria = NFe.NFeRefComplementarIsDevolucao ? CSTPISCOFINS.OutrasOperacoesDeEntrada : CSTPISCOFINS.OutrasOperacoesDeSaida
             };
-
-            return COFINS;
         }
         #endregion
     }

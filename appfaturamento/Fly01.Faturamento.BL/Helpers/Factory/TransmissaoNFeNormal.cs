@@ -91,7 +91,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             }
         }
 
-        private static double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
+        private double CalcularValorTotalNFE(ItemTransmissaoVM itemTransmissao)
         {
             return ((itemTransmissao.Total.ICMSTotal.SomatorioProdutos +
                 itemTransmissao.Total.ICMSTotal.SomatorioICMSST +
@@ -101,7 +101,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 itemTransmissao.Total.ICMSTotal.SomatorioDesconto);
         }
 
-        private static double CalcularTributosAproximados(ICMSTOT icmsTotal)
+        private double CalcularTributosAproximados(ICMSTOT icmsTotal)
         {
             return icmsTotal.SomatorioICMS
                 + icmsTotal.SomatorioCofins
@@ -161,7 +161,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             }
         }
 
-        private static void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
+        private void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
             if (itemTributacao.CalculaICMS)
             {

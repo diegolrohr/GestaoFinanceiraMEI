@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 
@@ -10,12 +11,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             switch (entity.TipoVenda)
             {
-                case Core.Entities.Domains.Enum.TipoVenda.Normal:
+                case TipoVenda.Normal:
                     var normal = new TransmissaoNFeNormal(entity, transmissaoBLs);
                     return normal.ObterTransmissaoVM();                    
-                case Core.Entities.Domains.Enum.TipoVenda.Complementar:
+                case TipoVenda.Complementar:
                     return TransmissaoTipoComplementar(entity, transmissaoBLs);
-                case Core.Entities.Domains.Enum.TipoVenda.Devolucao:
+                case TipoVenda.Devolucao:
                     var devolucao = new TransmissaoNFeDevolucao(entity, transmissaoBLs);
                     return devolucao.ObterTransmissaoVM();
                 default:
@@ -27,12 +28,18 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             switch (entity.TipoNfeComplementar)
             {
-                case Core.Entities.Domains.Enum.TipoNfeComplementar.ComplPrecoQtd:
+                case TipoNfeComplementar.ComplPrecoQtd:
                     var complementarPreco = new TransmissaoNFeComplementoPreco(entity, transmissaoBLs);
                     return complementarPreco.ObterTransmissaoVM();
-                case Core.Entities.Domains.Enum.TipoNfeComplementar.ComplIcms:
+                case TipoNfeComplementar.ComplIcms:
                     var complementarIcms = new TransmissaoNFeComplementoICMS(entity, transmissaoBLs);
                     return complementarIcms.ObterTransmissaoVM();
+                case TipoNfeComplementar.ComplIcmsST:
+                    var complementarIcmsST = new TransmissaoNFeComplementoICMSST(entity, transmissaoBLs);
+                    return complementarIcmsST.ObterTransmissaoVM();
+                case TipoNfeComplementar.ComplIpi:
+                    var complementarIpi = new TransmissaoNFeComplementoIPI(entity, transmissaoBLs);
+                    return complementarIpi.ObterTransmissaoVM();
                 default:
                     return null;
             }

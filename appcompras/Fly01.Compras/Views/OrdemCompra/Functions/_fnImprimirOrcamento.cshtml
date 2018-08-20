@@ -1,8 +1,0 @@
-﻿<script>
-    @Html.Partial("Functions/_fnImprimir");
-
-    function fnImprimirOrcamento(idRecord) {
-        var url = '@Url.Action("ImprimirOrcamento", "Orcamento")?id=' + idRecord;
-        fnImprimir(url);
-    }
-</script>

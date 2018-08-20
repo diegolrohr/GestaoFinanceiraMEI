@@ -25,6 +25,7 @@ namespace Fly01.Faturamento.BL
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             EntidadeBL = entidadeBL;
+            MustConsumeMessageServiceBus = true;
             _queryString = AppDefaults.GetQueryStringDefault();
             _header = new Dictionary<string, string>
             {

@@ -43,9 +43,8 @@ namespace Fly01.Core.Helpers
                 return String.Empty;
 
             texto = texto.Replace(Environment.NewLine, " ");//remove enters
-            byte[] bytes = Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
-            return Encoding.UTF8.GetString(bytes);
+            byte[] bytes = System.Text.Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
+            return System.Text.Encoding.UTF8.GetString(bytes);
         }
-
     }
 }

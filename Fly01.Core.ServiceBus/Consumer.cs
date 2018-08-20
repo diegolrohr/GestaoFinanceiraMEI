@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Fly01.Core.Notifications;
 using Fly01.Core.Mensageria;
-using System.Linq;
-using System.Web.Configuration;
 using Newtonsoft.Json;
 using Fly01.Core.Base;
-using System.Reflection;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -41,10 +38,18 @@ namespace Fly01.Core.ServiceBus
                 VirtualHost = virtualHost
             };
 
-            var channel = conn.CreateConnection($"cnsmr_{virtualHost}_{RabbitConfig.QueueName}").CreateModel();
-            channel.BasicQos(0, 1, false);
+            try
+            {
+                var channel = conn.CreateConnection($"cnsmr_{virtualHost}_{RabbitConfig.QueueName}").CreateModel();
+                channel.BasicQos(0, 1, false);
 
-            return channel;
+                return channel;
+            }
+            catch (Exception ex)
+            {
+                MediaClient.PostErrorRabbitMQ($"Erro ao criar canal {ex.Message}", ex.InnerException, virtualHost, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), "");
+                return null;
+            }
         }
 
         private bool HeaderIsValid()
@@ -64,8 +69,13 @@ namespace Fly01.Core.ServiceBus
 
         public void Consume()
         {
-            StartConsumer(GetChannel(RabbitConfig.VirtualHostApps));
-            StartConsumer(GetChannel(RabbitConfig.VirtualHostIntegracao));
+            var channelApps = GetChannel(RabbitConfig.VirtualHostApps);
+            lock (channelApps)
+                StartConsumer(channelApps);
+
+            var channelIntegracao = GetChannel(RabbitConfig.VirtualHostIntegracao);
+            lock (channelIntegracao)
+                StartConsumer(channelIntegracao);
         }
 
         private void StartConsumer(IModel channel)
@@ -109,22 +119,24 @@ namespace Fly01.Core.ServiceBus
 
         private async Task ProcessData(string message, RabbitConfig.EnHttpVerb httpMethod, string routingKey, string appId, string plataformaUrl, string appUser)
         {
+            //var rpc = new RpcClient();
+
+            Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
+
             foreach (var item in MessageType.Resolve<dynamic>(message))
             {
                 try
                 {
-                    Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
                     dynamic entidade = AssemblyBL.GetProperty($"{routingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
                     dynamic data = JsonConvert.DeserializeObject<dynamic>(item.ToString());
 
-                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash");
+                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash", null);
 
                     await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
                 catch (Exception exErr)
                 {
                     var erro = (exErr is BusinessException) ? (BusinessException)exErr : exErr;
-
                     MediaClient.PostErrorRabbitMQ(item.ToString(), erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
 
                     continue;

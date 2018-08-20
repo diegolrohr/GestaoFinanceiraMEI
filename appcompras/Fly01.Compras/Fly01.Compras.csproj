@@ -204,8 +204,6 @@
     <Content Include="Views\GrupoTributario\Functions\_fnShowPIS.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoItem.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnFormReadyOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnEditarPedido.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeTotal.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeProduto.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnChangeProduto.cshtml" />
@@ -213,24 +211,15 @@
     <Content Include="Views\OrcamentoItem\Functions\_fnFormReadyOrcamentoItem.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnChangeNomeFornecedor.cshtml" />
     <Content Include="Views\Categoria\Functions\_fnRenderGroup.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnExcluirPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnExcluirOrcamento.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnEditarOrcamentoItem.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnEditarPedidoItem.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnExcluirPedidoItem.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnExcluirOrcamentoItem.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnGerarPedidos.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnNovoOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnNovoPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnVisualizarOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnVisualizarPedido.cshtml" />
     <Content Include="Views\Categoria\Functions\_fnChangeTipoCarteira.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnCancelarOrcamento.cshtml" />
     <Content Include="Views\Orcamento\Functions\_fnFormReadyVisualizarOrcamento.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnFooterCallbackPedidoItem.cshtml" />
     <Content Include="Views\OrcamentoItem\Functions\_fnFooterCallbackOrcamentoItem.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\Pedido\Edit.cshtml" />
     <Content Include="Views\Orcamento\Edit.cshtml" />
     <Content Include="Views\Pedido\Create.cshtml" />
@@ -244,11 +233,7 @@
     <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowST.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Shared\Functions\_fnSalvarAvaliacaoApp.cshtml" />
     <Content Include="Views\Shared\Functions\_fnRenderEnum.cshtml" />
     <Content Include="Views\Home\Functions\_fnChangeTipoOrdemCompra.cshtml" />
@@ -282,8 +267,6 @@
     <Content Include="Views\Pedido\Functions\_fnClickGeraNotaFiscal.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnFooterCallbackEstoqueNegativo.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnFormReadyPedido.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaProduto.cshtml" />
-    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaServico.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnModalPedidoItem.cshtml" />
     <Content Include="Views\PedidoItem\Functions\_fnChangeGrupoTribProduto.cshtml" />
@@ -315,6 +298,20 @@
     <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFe\Index.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnNovoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnNovoOrcamento.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnFormReadyVisualizarOrdemCompra.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnFinalizarFaturarPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnEditarPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnGerarPedidos.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

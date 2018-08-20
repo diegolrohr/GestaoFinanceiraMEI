@@ -47,6 +47,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DashboardBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />

@@ -3,16 +3,16 @@ namespace Fly01.OrdemServico.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ValorTotaldouble : DbMigration
+    public partial class RemoçãoValorTotal : DbMigration
     {
         public override void Up()
         {
-            AlterColumn("dbo.OrdemServico", "ValorTotal", c => c.Double(nullable: false));
+            DropColumn("dbo.OrdemServico", "ValorTotal");
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.OrdemServico", "ValorTotal", c => c.Boolean(nullable: false));
+            AddColumn("dbo.OrdemServico", "ValorTotal", c => c.Boolean(nullable: false));
         }
     }
 }

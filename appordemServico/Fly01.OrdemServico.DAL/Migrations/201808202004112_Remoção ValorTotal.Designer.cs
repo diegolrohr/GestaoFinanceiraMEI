@@ -7,13 +7,13 @@ namespace Fly01.OrdemServico.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ValorTotaldouble : IMigrationMetadata
+    public sealed partial class RemoçãoValorTotal : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ValorTotaldouble));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoçãoValorTotal));
         
         string IMigrationMetadata.Id
         {
-            get { return "201808201721124_ValorTotal double"; }
+            get { return "201808202004112_Remoção ValorTotal"; }
         }
         
         string IMigrationMetadata.Source

@@ -136,7 +136,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 OrigemMercadoria = OrigemMercadoria.Nacional,
                 //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
                 //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
-                CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito//TODO: ver Wilson
+                CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson
+                
             };
 
             CalculaICMSPai(item, ICMS);

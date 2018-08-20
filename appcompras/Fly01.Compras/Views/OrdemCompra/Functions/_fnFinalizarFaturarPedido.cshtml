@@ -1,18 +1,18 @@
 ﻿<script>
-    function fnFinalizarPedido(idRecord) {
-        fly01.confirm("Confirmar Finalização", "Deseja realmente finalizar este pedido? Se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarPedidoConfirmed(\"" + idRecord + "\")");
+    function fnFinalizarFaturarPedido(idRecord) {
+        fly01.confirm("Confirmar Faturamento", "Deseja realmente finalizar e faturar este pedido? Irá gerar as notas fiscais e se marcado, irá movimentar o estoque e gerar financeiro. Não será mais possível editar/excluir", "fnFinalizarFaturarPedidoConfirmed(\"" + idRecord + "\")");
     }
-    function fnFinalizarPedidoConfirmed(idRecord) {
+    function fnFinalizarFaturarPedidoConfirmed(idRecord) {
         fly01.loading.start();
         $.ajax({
             type: "POST",
             url: "@Url.Action("FinalizarPedido", "Pedido")",
             dataType: 'json',
-            data: { id: idRecord, faturar: false },
+            data: { id: idRecord, faturar: true },
             success: function (data) {
                 fly01.loading.stop();
                 if (data.success) {
-                    fly01.toast("Pedido finalizado com sucesso", "success");
+                    fly01.toast("Pedido faturado com sucesso", "success");
                     fly01._.fly01dt.refresh();
                 }
                 else {

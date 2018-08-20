@@ -14,7 +14,7 @@ namespace Fly01.Core.API.Application
     {
         protected abstract IEdmModel GetEdmModel();
         protected abstract string GetInstrumentationKeyAppInsights();
-        protected abstract Task RunServiceBus();
+        protected abstract Task RunServiceBusApps();
         protected virtual void SetAppDefaults() { }
 
         protected void Application_Start()
@@ -45,7 +45,7 @@ namespace Fly01.Core.API.Application
             if(!string.IsNullOrWhiteSpace(instrumentationKeyAppInsights))
                 TelemetryConfiguration.Active.InstrumentationKey = instrumentationKeyAppInsights;
 
-            RunServiceBus();
+            RunServiceBusApps();
             SetAppDefaults();
         }
     }

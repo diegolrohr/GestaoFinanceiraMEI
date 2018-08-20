@@ -16,7 +16,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o grupo dup de duplicatas
         /// </summary>
         [XmlElement(ElementName = "dup")]
-        public List<Duplicata> Duplicata { get; set; }
+        public List<Duplicata> Duplicatas { get; set; }
 
     }
 }

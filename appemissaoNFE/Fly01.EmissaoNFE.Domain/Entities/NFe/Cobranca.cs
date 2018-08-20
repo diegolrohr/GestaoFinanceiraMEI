@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -15,7 +16,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o grupo dup de duplicatas
         /// </summary>
         [XmlElement(ElementName = "dup")]
-        public Duplicata[] Duplicata { get; set; }
+        public List<Duplicata> Duplicata { get; set; }
 
     }
 }

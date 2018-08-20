@@ -105,6 +105,7 @@
         if (!$("form#fly01frm").valid()) return false;
         $('input#chaveNFeReferenciada').attr('disabled', 'disabled');
         $("#tipoNfeComplementarField").hide();
+        $('#btnDevolucao').hide();
 
         if ($("#categoriaDescricao").data("url-post"))
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoriaDespesa")?tipo=" + $("#tipoCarteira").val());

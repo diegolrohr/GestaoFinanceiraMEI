@@ -31,7 +31,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 
-        public bool ValorTotal { get; set; }
+        public double ValorTotal { get; set; }
 
         #region Navigation
         public virtual Pessoa Cliente { get; set; }

@@ -10113,7 +10113,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
                 context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("C439ACA0-FD17-4750-8805-FFFC2A644E72"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "29215133", Descricao = "N", AliquotaIPI = 0 });
                 context.Ncms.AddOrUpdate(new Ncm() { Id = Guid.Parse("90E7E670-5594-4F5D-93A5-68A369C45A50"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "94069090", Descricao = "MÓVEIS,MOBILIÁRIO MÉDICO-CIRÚRGICO,COLCHÕES,ALMOFADAS E SEMELHANTES,APARELHOS DE ILUMINAÇÃO NÃO ESPECIFIC.,ANÚNCIOS,CARTAZES E PLACAS INDICADORAS,LUMINOSOS E ART. SEMELHANTES,CONSTRU. PRÉ-FABRICADAS", AliquotaIPI = 0 });
 
-                context.SaveChanges().Wait();
+                context.SaveChanges();
             }
         }
     }

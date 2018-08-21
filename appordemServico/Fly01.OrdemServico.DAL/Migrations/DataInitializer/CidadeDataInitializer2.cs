@@ -1000,7 +1000,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
                 };
 
                 context.Cidades.AddRange(listOfCidades);
-                context.SaveChanges().Wait();
+                context.SaveChanges();
             }
         }
     }

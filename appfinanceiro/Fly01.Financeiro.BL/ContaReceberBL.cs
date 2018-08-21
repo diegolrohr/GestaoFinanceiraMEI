@@ -58,11 +58,7 @@ namespace Fly01.Financeiro.BL
             }
             else
             {
-                var condicoesParcelamento = condicaoParcelamentoBL
-                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
-                                                               entity.DataVencimento,
-                                                               entity.ValorPrevisto);
-
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -74,15 +70,14 @@ namespace Fly01.Financeiro.BL
                     itemContaReceber.DataVencimento = parcela.DataVencimento;
                     itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaReceber.ValorPrevisto = parcela.Valor;
-                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
-                                                        ? parcela.Valor
-                                                        : entity.ValorPago;
+                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                         itemContaReceber.Id = contaFinanceiraPrincipal;
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+                        itemContaReceber.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
 
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
@@ -104,6 +99,7 @@ namespace Fly01.Financeiro.BL
                         {
                             var itemContaReceberRepeticao = new ContaReceber();
                             itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                            itemContaReceberRepeticao.ContaFinanceiraParcelaPaiId = null;
                             itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors); // CopyProperties não copia as notificações
                             itemContaReceberRepeticao.Id = default(Guid);
                             itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;

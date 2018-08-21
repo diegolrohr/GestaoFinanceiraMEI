@@ -17,6 +17,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlElement(ElementName = "dup")]
         public List<Duplicata> Duplicatas { get; set; }
-
     }
+
 }

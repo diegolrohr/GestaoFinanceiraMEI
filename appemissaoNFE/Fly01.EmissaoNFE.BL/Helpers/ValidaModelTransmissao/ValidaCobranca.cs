@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Notifications;
+﻿using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
@@ -35,7 +34,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 entity.Fail(true, new Error("Os dados da/s duplicata/s são obrigatórios.", "Item.Cobranca.Duplicatas"));
             else
             {
-                ValidarDetalheDuplicata(item, entity, nItem);                
+                ValidarDetalheDuplicata(item, entity, nItem);
                 var somaDuplicatas = item.Cobranca.Duplicatas.Sum(x => x.ValorDuplicata);
                 var valorLiquido = item.Cobranca.Fatura.ValorLiquido.HasValue ? item.Cobranca.Fatura.ValorLiquido.Value : 0;
 

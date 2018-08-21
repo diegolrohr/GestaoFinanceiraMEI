@@ -67,6 +67,10 @@
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />
+    <Compile Include="Controllers\Api\OrdemServicoController.cs" />
+    <Compile Include="Controllers\Api\OrdemServicoItemProdutoController.cs" />
+    <Compile Include="Controllers\Api\OrdemServicoManutencaoController.cs" />
+    <Compile Include="Controllers\Api\OrdemServicoItemServicoController.cs" />
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />

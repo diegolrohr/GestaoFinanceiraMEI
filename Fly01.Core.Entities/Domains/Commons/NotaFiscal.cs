@@ -108,6 +108,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }
 
+        public bool GeraFinanceiro { get; set; }
+
+        public Guid? ContaFinanceiraParcelaPaiId { get; set; }
+
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }
         public virtual Pessoa Transportadora { get; set; }

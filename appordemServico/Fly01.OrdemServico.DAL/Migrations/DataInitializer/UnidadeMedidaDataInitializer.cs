@@ -35,7 +35,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
             context.UnidadeMedidas.AddOrUpdate(new UnidadeMedida { Id = Guid.Parse("DF311088-0C0C-4117-9232-E64D30E295F9"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "M3", Descricao = "METRO CUBICO" });
             context.UnidadeMedidas.AddOrUpdate(new UnidadeMedida { Id = Guid.Parse("C2DF1FD5-375D-4F6B-B110-E8EDA1B57F24"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Abreviacao = "MI", Descricao = "MILHEIRO" });
 
-            context.SaveChanges().Wait();
+            context.SaveChanges();
 
         }
     }

@@ -12,3 +12,6 @@ $cmdFinanceiro = Update-Database -ProjectName Fly01.Financeiro.DAL -StartUpProje
 
 #Update Database EmissaoNFE
 $cmdEmissaoNFE = Update-Database -ProjectName Fly01.EmissaoNFE.DAL -StartUpProjectName Fly01.EmissaoNFE.API -ConfigurationTypeName Fly01.EmissaoNFE.DAL.Migrations.Configuration -Verbose
+
+#Update Database OrdemServico
+$cmdOrdemServico = Update-Database -ProjectName Fly01.OrdemServico.DAL -StartUpProjectName Fly01.OrdemServico.API -ConfigurationTypeName Fly01.OrdemServico.DAL.Migrations.Configuration -Verbose

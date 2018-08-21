@@ -164,7 +164,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
                     #endregion
             });
 
-            context.SaveChanges().Wait();
+            context.SaveChanges();
         }
     }
 }

@@ -312,6 +312,9 @@
     <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnGerarPedidos.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnExcluirOrcamento.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnExcluirPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnVisualizarOrcamento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

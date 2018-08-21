@@ -16,15 +16,14 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNotasFiscais)]
     public class NotaFiscalEntradaController : BaseController<NotaFiscalEntradaVM>
     {
         public NotaFiscalEntradaController()
         {
-            ExpandProperties = "fornecedor($select=nome),ordemCompraOrigem($select=id,numero),categoria,serieNotaFiscal";
+            ExpandProperties = "fornecedor,ordemCompraOrigem,categoria,serieNotaFiscal";
         }
 
-        //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public override Func<NotaFiscalEntradaVM, object> GetDisplayData()
         {
             return x => new
@@ -39,13 +38,13 @@ namespace Fly01.Compras.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusNotaFiscal), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
-                fornecedor = x.Fornecedor.Nome,
-                //ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
-                tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
-                categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
+                fornecedor_nome = x.Fornecedor.Nome,
+                ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
+                tipoVenda = x.TipoCompra,
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoCompra),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoCompra),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoCompra),
+                categoria_descricao = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
             };
@@ -192,7 +191,7 @@ namespace Fly01.Compras.Controllers
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 6 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 7, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });//numero int e pesquisa string
+            config.Columns.Add(new DataTableUIColumn { DataField = "ordemCompraOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });
             config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 9 });
 
             cfg.Content.Add(config);

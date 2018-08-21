@@ -21,9 +21,9 @@ namespace Fly01.Compras.BL
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
-        private readonly string descricaoCompra = @"Venda nº: {0}";
-        private readonly string observacaoCompra = @"Observação gerada pela venda nº {0} applicativo Bemacash Faturamento: {1}";
-        private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
+        private readonly string descricaoCompra = @"Compra nº: {0}";
+        private readonly string observacaoCompra = @"Observação gerada pela compra nº {0} applicativo Bemacash Compras: {1}";
+        private readonly string routePrefixNameMovimentoOrdemCompra = @"MovimentoOrdemCompra";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
@@ -112,6 +112,8 @@ namespace Fly01.Compras.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
+            notaFiscal.GeraFinanceiro = entity.GeraFinanceiro;
+            notaFiscal.ContaFinanceiraParcelaPaiId = entity.ContaFinanceiraParcelaPaiId;
             notaFiscal.MensagemPadraoNota = entity.MensagemPadraoNota;
             return notaFiscal;
         }
@@ -295,12 +297,22 @@ namespace Fly01.Compras.BL
 
             ValidaModel(entity);
 
+            GeraIdContaFinanceiraRecuperarDadosParcela(entity);
+
             if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
 
             base.Update(entity);
+        }
+
+        private void GeraIdContaFinanceiraRecuperarDadosParcela(Pedido entity)
+        {
+            if (entity.GeraFinanceiro && (entity.ContaFinanceiraParcelaPaiId == default(Guid) || entity.ContaFinanceiraParcelaPaiId == null))
+            {
+                entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
+            }
         }
 
         public override void Delete(Pedido entityToDelete)
@@ -362,6 +374,7 @@ namespace Fly01.Compras.BL
                 {
                     var contaReceber = new ContaReceber()
                     {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
                         ValorPrevisto = valorPrevisto,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
@@ -380,6 +393,7 @@ namespace Fly01.Compras.BL
                 {
                     var contaPagar = new ContaPagar()
                     {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
                         ValorPrevisto = valorPrevisto,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,

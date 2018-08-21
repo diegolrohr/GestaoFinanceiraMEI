@@ -14,21 +14,35 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o valor originário da fatura
         /// </summary>
-        [XmlElement(ElementName = "vOrig", IsNullable = true)]
-        public double? ValorOiriginarioFatura { get; set; }
+        [XmlIgnore]
+        public double? ValorOiriginario { get; set; }
 
-        public bool ShouldSerializeValorOiriginarioFatura()
+        [XmlElement(ElementName = "vOrig")]
+        public string ValorOiriginarioString
         {
-            return ValorOiriginarioFatura.HasValue & ValorOiriginarioFatura > 0;
+            get { return ValorOiriginario.HasValue ? ValorOiriginario.Value.ToString("0.00").Replace(",", ".") : null; }
+            set { ValorOiriginario = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorOiriginarioString()
+        {
+            return ValorOiriginario.HasValue & ValorOiriginario > 0;
         }
 
         /// <summary>
         /// informar o valor do desconto
         /// </summary>
-        [XmlElement(ElementName = "vDesc", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorDesconto { get; set; }
 
-        public bool ShouldSerializeValorDesconto()
+        [XmlElement(ElementName = "vDesc")]
+        public string ValorDescontoString
+        {
+            get { return ValorDesconto.HasValue ? ValorDesconto.Value.ToString("0.00").Replace(",", ".") : null; }
+            set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorDescontoString()
         {
             return ValorDesconto.HasValue & ValorDesconto > 0;
         }
@@ -36,12 +50,19 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o valor Liquido da fatura
         /// </summary>
-        [XmlElement(ElementName = "vLiq", IsNullable = true)]
-        public double? ValorLiquidoFatura { get; set; }
+        [XmlIgnore]
+        public double? ValorLiquido { get; set; }
 
-        public bool ShouldSerializeValorLiquidoFatura()
+        [XmlElement(ElementName = "vLiq")]
+        public string ValorLiquidoString
         {
-            return ValorLiquidoFatura.HasValue & ValorLiquidoFatura > 0;
+            get { return ValorLiquido.HasValue ? ValorLiquido.Value.ToString("0.00").Replace(",", ".") : null; }
+            set { ValorLiquido = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorLiquidoString()
+        {
+            return ValorLiquido.HasValue & ValorLiquido > 0;
         }
     }
 }

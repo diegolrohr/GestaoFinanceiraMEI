@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fly01.Core.Helpers;
+using System;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -10,37 +11,35 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o número da duplicata
         /// </summary>
         [XmlElement(ElementName = "nDup")]
-        public string NumeroDuplicata { get; set; }
-
-        #region dateTime
+        public string Numero { get; set; }
 
         /// <summary>
         /// informar a data de vencimento da duplicata como DateTime
         /// </summary>
         [XmlIgnore]
-        public DateTime VencimentoDuplicata { get; set; }
+        public DateTime Vencimento { get; set; }
 
         /// <summary>
         /// informar a data de vencimento da duplicata como string
         /// </summary>
         [XmlElement(ElementName = "dVenc")]
-        public string VencimentoDuplicataString
+        public string VencimentoString
         {
-            get { return this.VencimentoDuplicata.ToString("yyyy-MM-ddTHH:mm:sszzzz"); }
-            set { this.VencimentoDuplicata = DateTime.Parse(value); }
+            get { return this.Vencimento.ToString("yyyy-MM-dd"); }
+            set { this.Vencimento = value.ToDateTime(Extensions.DateFormat.YYYY_MM_DD); }
         }
-
-        #endregion dateTime
 
         /// <summary>
         /// informar o valor da duplicata
         /// </summary>
-        [XmlElement(ElementName = "vDup", IsNullable = true)]
-        public double? ValorDuplicata { get; set; }
+        [XmlIgnore]
+        public double ValorDuplicata { get; set; }
 
-        public bool ShouldSerializeValorDuplicata()
+        [XmlElement(ElementName = "vDup")]
+        public string ValorDuplicataString
         {
-            return ValorDuplicata.HasValue;
+            get { return ValorDuplicata.ToString("0.00").Replace(",", "."); }
+            set { ValorDuplicata = double.Parse(value.Replace(".", ",")); }
         }
     }
 }

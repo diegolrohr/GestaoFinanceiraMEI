@@ -44,6 +44,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? OrcamentoOrigemId { get; set; }
 
+        public Guid? ContaFinanceiraParcelaPaiId { get; set; }
+
         public virtual Pessoa Transportadora { get; set; }
         public virtual Pessoa Fornecedor { get; set; }
         public virtual Orcamento OrcamentoOrigem { get; set; }

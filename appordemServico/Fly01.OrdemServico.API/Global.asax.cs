@@ -31,6 +31,7 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<ParametroOrdemServico>("parametroordemservico");
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Produto>("produto");
+            builder.EntitySet<Servico>("servico");
             builder.EntitySet<UnidadeMedida>("unidademedida");
 
             builder.EnableLowerCamelCase();

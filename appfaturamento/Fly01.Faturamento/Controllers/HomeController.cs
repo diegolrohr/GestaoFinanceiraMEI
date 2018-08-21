@@ -54,6 +54,42 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
+            config.Content.Add(new AppUI()
+            {
+                Id = "nfenormal",
+                Class = "col s12 m4",
+                Title = "NF-e Normal",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });
+
+            config.Content.Add(new AppUI()
+            {
+                Id = "nfedevolucao",
+                Class = "col s12 m4",
+                Title = "NF-e Devolução",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });
+
+            config.Content.Add(new AppUI()
+            {
+                Id = "nfecomplemento",
+                Class = "col s12 m4",
+                Title = "NF-e Complemento",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });            
+
             if (withSidebarUrl)
                 config.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
 

@@ -77,6 +77,9 @@ namespace Fly01.Estoque.BL
         private MovimentoOrdemVendaBL movimentoOrdemVendaBL;
         public MovimentoOrdemVendaBL MovimentoOrdemVendaBL => movimentoOrdemVendaBL ?? (movimentoOrdemVendaBL = new MovimentoOrdemVendaBL(Context, ProdutoBL, MovimentoEstoqueBL));
 
+        private MovimentoPedidoCompraBL movimentoPedidoCompraBL;
+        public MovimentoPedidoCompraBL MovimentoPedidoCompraBL => movimentoPedidoCompraBL ?? (movimentoPedidoCompraBL = new MovimentoPedidoCompraBL(Context, ProdutoBL, MovimentoEstoqueBL));
+
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));
         #endregion

@@ -22,27 +22,6 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("total")]
         public double Total { get; set; }
 
-        [JsonProperty("valorCreditoICMS")]
-        public double ValorCreditoICMS { get; set; }
-
-        [JsonProperty("valorICMSSTRetido")]
-        public double ValorICMSSTRetido { get; set; }
-
-        [JsonProperty("valorBCSTRetido")]
-        public double ValorBCSTRetido { get; set; }
-
-        [JsonProperty("valorFCPSTRetidoAnterior")]
-        public double ValorFCPSTRetidoAnterior { get; set; }
-
-        [JsonProperty("valorBCFCPSTRetidoAnterior")]
-        public double ValorBCFCPSTRetidoAnterior { get; set; }
-
-        [JsonProperty("grupoTributarioId")]
-        public Guid GrupoTributarioId { get; set; }
-
-        [JsonProperty("grupoTributario")]
-        public virtual GrupoTributarioVM GrupoTributario { get; set; }
-
         [JsonProperty("produto")]
         public virtual ProdutoVM Produto { get; set; }
     }

@@ -34,6 +34,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers
 
                 ValidaTotais.ExecutarValidaTotais(item, _entitiesToValidade, _entity);
                 ValidaPagamento.ExecutarValidaPagamento(item, _entitiesToValidade, _entity, nItem);
+                ValidaCobranca.ExecutarValidaCobranca(item, _entitiesToValidade, _entity, nItem);
                 ValidaAutorizados.ExecutarValidaAutorizados(item, _entitiesToValidade, _entity);
                 nItem++;
             }

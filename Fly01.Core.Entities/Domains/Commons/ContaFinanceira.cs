@@ -5,12 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    /*
-     * ATENÇÃO: Entidade utiliza StoreProcedures
-     * para processamento do Numero.
-     * MigrationName: ContaFinanceiraCreateSP
-     * (ISrael)
-    */
     public abstract class ContaFinanceira : PlataformaBase
     {
         public ContaFinanceira()
@@ -19,6 +13,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         }
 
         public Guid? ContaFinanceiraRepeticaoPaiId { get; set; }
+
+        public Guid? ContaFinanceiraParcelaPaiId { get; set; }
 
         [Required]
         public double ValorPrevisto { get; set; }
@@ -88,11 +84,12 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid ContaBancariaId { get; set; }
 
-        public virtual ContaFinanceira ContaFinanceiraRepeticaoPai { get; set; }
+        public virtual ContaFinanceira ContaFinanceiraRepeticaoPai { get; set; }        
         public virtual Categoria Categoria { get; set; }
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
-        public virtual ContaBancaria ContaBancaria { get; set; }
+        public virtual ContaBancaria ContaBancaria { get; set; }        
+        public virtual ContaFinanceira ContaFinanceiraParcelaPai { get; set; }
     }
 }

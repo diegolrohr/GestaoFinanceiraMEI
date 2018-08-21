@@ -51,6 +51,7 @@
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoICMS.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoIPI.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaImpostoTransmissao\ValidaDetalheImpostoPIS.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissao\ValidaCobranca.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaPagamento.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaTotais.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaTransporte.cs" />

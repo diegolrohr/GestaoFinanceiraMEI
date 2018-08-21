@@ -66,7 +66,6 @@ namespace Fly01.Financeiro.BL
                 {
                     var parcela = condicoesParcelamento[iParcela];
                     var itemContaPagar = new ContaPagar();
-
                     entity.CopyProperties<ContaPagar>(itemContaPagar);
                     itemContaPagar.Notification.Errors.AddRange(entity.Notification.Errors); // CopyProperties não copia as notificações
                     itemContaPagar.DataVencimento = parcela.DataVencimento;
@@ -79,6 +78,7 @@ namespace Fly01.Financeiro.BL
                     else
                     {
                         itemContaPagar.Id = Guid.NewGuid();
+                        itemContaPagar.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
 
                         if (repetir)
                             itemContaPagar.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
@@ -100,9 +100,10 @@ namespace Fly01.Financeiro.BL
                         {
                             var itemContaPagarRepeticao = new ContaPagar();
                             itemContaPagar.CopyProperties<ContaPagar>(itemContaPagarRepeticao);
+                            itemContaPagarRepeticao.ContaFinanceiraParcelaPaiId = null;
                             itemContaPagarRepeticao.Notification.Errors.AddRange(itemContaPagar.Notification.Errors); // CopyProperties não copia as notificações
                             itemContaPagarRepeticao.Id = default(Guid);
-                            itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
+                            itemContaPagarRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;                            
 
                             switch (entity.TipoPeriodicidade)
                             {

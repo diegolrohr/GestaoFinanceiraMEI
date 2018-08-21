@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.BL
                 entity.Id = Guid.NewGuid();
 
                 rpc = new RpcClient();
-                numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                 entity.Numero = numero;
 
@@ -83,8 +83,8 @@ namespace Fly01.Financeiro.BL
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    //rpc = new RpcClient();
-                    numero = 150;//int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                    rpc = new RpcClient();
+                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                     itemContaReceber.Numero = numero;
 
@@ -117,8 +117,8 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            //rpc = new RpcClient();
-                            numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                            rpc = new RpcClient();
+                            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                             itemContaReceberRepeticao.Numero = numero;
 

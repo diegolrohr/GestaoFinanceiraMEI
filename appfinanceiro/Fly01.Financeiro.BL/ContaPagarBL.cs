@@ -50,8 +50,8 @@ namespace Fly01.Financeiro.BL
                 //post bemacash ignorando condicao parcelamento
                 entity.Id = Guid.NewGuid();
 
-                //rpc = new RpcClient();
-                numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                rpc = new RpcClient();
+                numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                 entity.Numero = numero;
 
@@ -85,7 +85,7 @@ namespace Fly01.Financeiro.BL
                     }
 
                     rpc = new RpcClient();
-                    numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                     itemContaPagar.Numero = numero;
 
@@ -118,8 +118,8 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            //rpc = new RpcClient();
-                            numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
+                            rpc = new RpcClient();
+                            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));
 
                             itemContaPagarRepeticao.Numero = numero;
 

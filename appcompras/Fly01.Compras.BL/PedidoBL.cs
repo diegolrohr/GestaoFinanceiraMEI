@@ -22,9 +22,9 @@ namespace Fly01.Compras.BL
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
-        private readonly string descricaoCompra = @"Venda nº: {0}";
-        private readonly string observacaoCompra = @"Observação gerada pela venda nº {0} applicativo Bemacash Faturamento: {1}";
-        private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
+        private readonly string descricaoCompra = @"Compra nº: {0}";
+        private readonly string observacaoCompra = @"Observação gerada pela compra nº {0} applicativo Bemacash Compras: {1}";
+        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
@@ -388,7 +388,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
-                    Producer<ContaPagar>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
                 }
                 else if (entity.TipoCompra == TipoVenda.Devolucao)
                 {
@@ -407,7 +407,7 @@ namespace Fly01.Compras.BL
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
-                    Producer<ContaReceber>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
+                    Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
                 }
             }
 
@@ -487,7 +487,3 @@ namespace Fly01.Compras.BL
         public static string ValorCreditoSNRequerido = "Valor crédito do ICMS é obrigatório para CSOSN 101 e 201. Item {itemcount} da lista de produtos";
     }
 }
-
-        private readonly string observacaoCompra = @"Observação gerada pela venda nº {0} applicativo Bemacash Compras: {1}";
-        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
-        private readonly string descricaoCompra = @"Venda nº: {0}";

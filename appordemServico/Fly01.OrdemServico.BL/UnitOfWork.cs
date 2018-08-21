@@ -31,45 +31,28 @@ namespace Fly01.OrdemServico.BL
         }
 
         #region BLS
-        private PessoaBL pessoaBL;
-        public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
-
-        private EstadoBL estadoBL;
-        public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
-
         private CidadeBL cidadeBL;
         public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
-
-        private NCMBL ncmBL;
-        public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
-
-        private ProdutoBL produtoBL;
-        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
-
+        private EstadoBL estadoBL;
+        public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
         private GrupoProdutoBL grupoProdutoBL;
         public GrupoProdutoBL GrupoProdutoBL => grupoProdutoBL ?? (grupoProdutoBL = new GrupoProdutoBL(Context));
-
+        private OrdemServicoBL ordemServicoBL;
+        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context));
+        private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
+        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL(Context, ProdutoBL));
+        private OrdemServicoItemServicoBL ordemServicoItemServicoBL;
+        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL(Context, ServicoBL));
+        private OrdemServicoManutencaoBL ordemServicoManutencaoBL;
+        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL(Context, ProdutoBL));
+        private PessoaBL pessoaBL;
+        public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
+        private ProdutoBL produtoBL;
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        private ServicoBL servicoBL;
+        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context));
         private UnidadeMedidaBL unidadeMedidaBL;
         public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
-
-        private ParametroOrdemServicoBL parametroOrdemServicoBL;
-        public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));
-
-        private OrdemServicoItemServicoBL ordemServicoItemServicoBL;
-        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL());
-
-        private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
-        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL());
-
-        private OrdemServicoManutencaoBL ordemServicoManutencaoBL;
-        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL());
-
-        private OrdemServicoBL ordemServicoBL;
-        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context, OrdemServicoItemServicoBL, OrdemServicoItemProdutoBL, OrdemServicoManutencaoBL));
-
-        private DashboardBL dashboardBL;
-        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, OrdemServicoBL, ProdutoBL));
-
         #endregion
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="DashboardBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EstadoBL.cs" />
+    <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="PessoaBL.cs" />
     <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicoBL.cs" />
     <Compile Include="UnidadeMedidaBL.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>

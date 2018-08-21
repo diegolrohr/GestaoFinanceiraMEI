@@ -12,6 +12,7 @@ namespace Fly01.OrdemServico.BL
         private readonly DbContext _context;
         private readonly OrdemServicoBL _ordemServicoBL;
         private readonly ProdutoBL _produtoBL;
+        
 
         public DashboardBL(DbContext context, OrdemServicoBL ordemServicoBL, ProdutoBL produtoBL)
         {
@@ -52,7 +53,10 @@ namespace Fly01.OrdemServico.BL
             //         x.StatusContaBancaria
             //     }).Count();
 
-            //var result = _ordemServicoBL.All.Where(x=>x.) 
+            //var result = _ordemServicoBL.All.Where(x=>x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+            //            .Select(x=>new {
+                            
+            //            })
 
             return 0;
         }
@@ -73,7 +77,7 @@ namespace Fly01.OrdemServico.BL
         }
 
         // criar vm em commons
-        public List<string> GetTopServicos(DateTime filtro)
+        public List<string> GetTopServicosOrdemServico(DateTime filtro)
         {
             //return _contaFinanceiraBL.All.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && x.StatusContaBancaria != StatusContaBancaria.Pago
             // && x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year))
@@ -84,6 +88,28 @@ namespace Fly01.OrdemServico.BL
             //         x.ValorPrevisto,
             //         x.StatusContaBancaria
             //     }).Count();
+
+
+            
+                //.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.Status == StatusOrdemCompra.Finalizado)
+                //.Select(x => new
+                //{
+                //    x.Fornecedor.Id,
+                //    x.Fornecedor.Nome,
+                //    x.Total
+                //})
+                //.GroupBy(x => new { x.Id, x.Nome })
+                //.Select(x => new MaioresFornecedoresVM
+                //{
+                //    Id = x.Key.Id,
+                //    Nome = x.Key.Nome,
+                //    Valor = x.Sum(y => y.Total ?? 0)
+                //})
+                //.OrderByDescending(x => x.Valor)
+                //.Take(10).ToList();
+
+            // retorna lista de id, nome e quantidade
+
             return null;
         }
     }

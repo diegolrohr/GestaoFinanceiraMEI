@@ -40,11 +40,17 @@ namespace Fly01.OrdemServico.BL
         private CidadeBL cidadeBL;
         public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
 
+        private NCMBL ncmBL;
+        public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
+
         private ProdutoBL produtoBL;
         public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
 
         private GrupoProdutoBL grupoProdutoBL;
         public GrupoProdutoBL GrupoProdutoBL => grupoProdutoBL ?? (grupoProdutoBL = new GrupoProdutoBL(Context));
+
+        private UnidadeMedidaBL unidadeMedidaBL;
+        public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
 
         private ParametroOrdemServicoBL parametroOrdemServicoBL;
         public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));

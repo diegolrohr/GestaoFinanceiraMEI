@@ -25,6 +25,8 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Produto>("produto");
             builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<UnidadeMedida>("unidademedida");
+            builder.EntitySet<Ncm>("ncm");
             builder.EntitySet<Estado>("estado");
             builder.EntitySet<Cidade>("cidade");
             builder.EntitySet<ParametroOrdemServico>("parametroordemservico");

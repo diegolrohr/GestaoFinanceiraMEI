@@ -62,9 +62,11 @@
     <Compile Include="Controllers\Api\EstadoController.cs" />
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
+    <Compile Include="Controllers\Api\NCMController.cs" />
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
+    <Compile Include="Controllers\Api\UnidadeMedidaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

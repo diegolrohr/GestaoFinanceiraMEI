@@ -51,6 +51,7 @@
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />
     <Compile Include="OrdemServicoItemServicoBL.cs" />

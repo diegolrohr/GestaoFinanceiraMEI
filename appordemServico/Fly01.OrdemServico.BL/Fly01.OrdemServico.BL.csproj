@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EstadoBL.cs" />
+    <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />

@@ -31,9 +31,28 @@ namespace Fly01.OrdemServico.BL
         }
 
         #region BLS
-        //exemplo private EstadoBL estadoBL;
-        //public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));        
-
+        private CidadeBL cidadeBL;
+        public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
+        private EstadoBL estadoBL;
+        public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));
+        private GrupoProdutoBL grupoProdutoBL;
+        public GrupoProdutoBL GrupoProdutoBL => grupoProdutoBL ?? (grupoProdutoBL = new GrupoProdutoBL(Context));
+        private OrdemServicoBL ordemServicoBL;
+        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context));
+        private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
+        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL(Context, ProdutoBL));
+        private OrdemServicoItemServicoBL ordemServicoItemServicoBL;
+        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL(Context, ServicoBL));
+        private OrdemServicoManutencaoBL ordemServicoManutencaoBL;
+        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL(Context, ProdutoBL));
+        private PessoaBL pessoaBL;
+        public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
+        private ProdutoBL produtoBL;
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        private ServicoBL servicoBL;
+        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context));
+        private UnidadeMedidaBL unidadeMedidaBL;
+        public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
         #endregion
     }
 }

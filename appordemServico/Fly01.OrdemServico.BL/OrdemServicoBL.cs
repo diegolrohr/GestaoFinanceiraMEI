@@ -10,18 +10,8 @@ namespace Fly01.OrdemServico.BL
     {
         public const int MaxLengthObservacao = 200;
 
-        protected OrdemServicoItemServicoBL OrdemServicoItemServicoBL { get; set; }
-        protected OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL { get; set; }
-        protected OrdemServicoManutencaoBL OrdemServicoManutencaoBL { get; set; }
-
-        public OrdemServicoBL(AppDataContextBase context,
-                              OrdemServicoItemServicoBL ordemServicoItemServicoBL,
-                              OrdemServicoItemProdutoBL ordemServicoItemProdutoBL,
-                              OrdemServicoManutencaoBL ordemServicoManutencaoBL) : base(context)
+        public OrdemServicoBL(AppDataContextBase context) : base(context)
         {
-            OrdemServicoItemServicoBL = ordemServicoItemServicoBL;
-            OrdemServicoItemProdutoBL = ordemServicoItemProdutoBL;
-            OrdemServicoManutencaoBL = ordemServicoManutencaoBL;
         }
 
         public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);

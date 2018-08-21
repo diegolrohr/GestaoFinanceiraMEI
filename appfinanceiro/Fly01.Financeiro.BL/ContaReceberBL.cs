@@ -50,7 +50,7 @@ namespace Fly01.Financeiro.BL
                 entity.Id = Guid.NewGuid();
 
                 rpc = new RpcClient();
-                numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                 entity.Numero = numero;
 
@@ -58,11 +58,7 @@ namespace Fly01.Financeiro.BL
             }
             else
             {
-                var condicoesParcelamento = condicaoParcelamentoBL
-                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
-                                                               entity.DataVencimento,
-                                                               entity.ValorPrevisto);
-
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -74,22 +70,21 @@ namespace Fly01.Financeiro.BL
                     itemContaReceber.DataVencimento = parcela.DataVencimento;
                     itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaReceber.ValorPrevisto = parcela.Valor;
-                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
-                                                        ? parcela.Valor
-                                                        : entity.ValorPago;
+                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                         itemContaReceber.Id = contaFinanceiraPrincipal;
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+                        itemContaReceber.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
 
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
                     }
 
-                    rpc = new RpcClient();
-                    numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                    //rpc = new RpcClient();
+                    numero = 150;//int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                     itemContaReceber.Numero = numero;
 
@@ -104,6 +99,7 @@ namespace Fly01.Financeiro.BL
                         {
                             var itemContaReceberRepeticao = new ContaReceber();
                             itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                            itemContaReceberRepeticao.ContaFinanceiraParcelaPaiId = null;
                             itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors); // CopyProperties não copia as notificações
                             itemContaReceberRepeticao.Id = default(Guid);
                             itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
@@ -121,8 +117,8 @@ namespace Fly01.Financeiro.BL
                                     break;
                             }
 
-                            rpc = new RpcClient();
-                            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
+                            //rpc = new RpcClient();
+                            numero = 150;// int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaReceber}"));
 
                             itemContaReceberRepeticao.Numero = numero;
 

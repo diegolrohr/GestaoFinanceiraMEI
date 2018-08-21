@@ -15,16 +15,16 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("marca")]
         public string Marca { get; set; }
 
-        [JsonProperty("ordemVendaOrigemId")]
-        public Guid OrdemVendaOrigemId { get; set; }
+        [JsonProperty("ordemCompraOrigemId")]
+        public Guid OrdemCompraOrigemId { get; set; }
 
         [JsonProperty("TipoNotaFiscal")]
         [APIEnum("TipoNotaFiscal")]
         public string TipoNotaFiscal { get; set; }
 
-        [JsonProperty("tipoVenda")]
+        [JsonProperty("tipoCompra")]
         [APIEnum("TipoVenda")]
-        public string TipoVenda { get; set; }
+        public string TipoCompra { get; set; }
 
         [JsonProperty("status")]
         [APIEnum("StatusNotaFiscal")]
@@ -106,7 +106,7 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 
-        [JsonProperty("ordemVendaOrigem")]
+        [JsonProperty("OrdemCompraOrigem")]
         public virtual OrdemCompraVM OrdemCompraOrigem { get; set; }
 
         [JsonProperty("fornecedor")]

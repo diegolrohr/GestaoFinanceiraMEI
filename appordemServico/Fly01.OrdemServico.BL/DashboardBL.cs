@@ -1,5 +1,8 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -12,105 +15,85 @@ namespace Fly01.OrdemServico.BL
         private readonly DbContext _context;
         private readonly OrdemServicoBL _ordemServicoBL;
         private readonly ProdutoBL _produtoBL;
-        
+        private readonly OrdemServicoItemServicoBL _ordemServicoItemServicoBL;
+        private readonly OrdemServicoItemProdutoBL _ordemServicoItemProdutoBL;
 
-        public DashboardBL(DbContext context, OrdemServicoBL ordemServicoBL, ProdutoBL produtoBL)
+        public DashboardBL(DbContext context, OrdemServicoBL ordemServicoBL, OrdemServicoItemServicoBL ordemServicoItemServicoBL, OrdemServicoItemProdutoBL ordemServicoItemProdutoBL)
         {
             _context = context;
             _ordemServicoBL = ordemServicoBL;
-            _produtoBL = produtoBL;
+            _ordemServicoItemServicoBL = ordemServicoItemServicoBL;
+            _ordemServicoItemProdutoBL = ordemServicoItemProdutoBL;
         }
 
-        // criar vm em commons
-        public List<string> GetOrdemServicoPorStatus(DateTime filtro, string status)
+        public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime filtro)
         {
-            //var mesAtual = CarregaMes(filtro.Month);
-            //return _contaFinanceiraBL.All.Where(x => x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year)
-            //        && x.TipoContaFinanceira == TipoContaFinanceira.ContaReceber && x.ValorPago.HasValue)
-            //    .Select(x => new
-            //    {
-            //        x.DataVencimento.Day,
-            //        x.DataVencimento.Month,
-            //        Valor = x.ValorPago == null ? 0 : x.ValorPago
-            //    }).GroupBy(x => new { x.Day, x.Month })
-            //    .Select(x => new ContasReceberDoDiaVM
-            //    {
-            //        Dia = x.Key.Day.ToString() + "/" + mesAtual,
-            //        Total = x.Sum(v => v.Valor)
-            //    }).ToList();
-            return null;
+            int QtdTotal = _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year)).Count();
+
+            return _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+                                            .GroupBy(x => x.Status)
+                                            .Select(x => new OrdemServicoPorStatusVM
+                                            {
+                                                Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.Key.ToString()),
+                                                Quantidade =  x.Count(),
+                                                QuantidadeTotal = QtdTotal
+                                            })
+                                            .ToList();
         }
 
-        public int GetQuantidadeOrdemServicoPorDia(DateTime filtro)
+        public List<OrdemServicosPorDiaVM> GetQuantidadeOrdemServicoPorDia(DateTime filtro)
         {
-            //return _contaFinanceiraBL.All.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && x.StatusContaBancaria != StatusContaBancaria.Pago
-            // && x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year))
-            //     .Select(x => new
-            //     {
-            //         x.DataVencimento,
-            //         x.Descricao,
-            //         x.ValorPrevisto,
-            //         x.StatusContaBancaria
-            //     }).Count();
-
-            //var result = _ordemServicoBL.All.Where(x=>x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
-            //            .Select(x=>new {
-                            
-            //            })
-
-            return 0;
+            return _ordemServicoBL.All.Where(x => x.Status == StatusOrdemServico.Concluido && x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+                                            .GroupBy(x => x.DataEmissao.Day)
+                                            .Select(x => new OrdemServicosPorDiaVM
+                                            {
+                                                Dia = x.Key,
+                                                QuantidadeServicos = x.Count()
+                                            })
+                                            .OrderBy(x => x.Dia)
+                                            .ToList();
         }
 
-        // criar vm em commons
-        public List<string> GetTopProdutosOrdemServico(DateTime filtro)
+        public List<TopServicosProdutosOrdemServicoVM> GetTopProdutosOrdemServico(DateTime filtro)
         {
-            //return _contaFinanceiraBL.All.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && x.StatusContaBancaria != StatusContaBancaria.Pago
-            // && x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year))
-            //     .Select(x => new
-            //     {
-            //         x.DataVencimento,
-            //         x.Descricao,
-            //         x.ValorPrevisto,
-            //         x.StatusContaBancaria
-            //     }).Count();
-            return null;
+            return _ordemServicoItemProdutoBL.All
+                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
+                                            .Select(x => new {
+                                                x.ProdutoId,
+                                                x.Produto.Descricao,
+                                                x.Quantidade
+                                            })
+                                            .GroupBy(x => new { x.ProdutoId, x.Descricao })
+                                            .Select(x => new TopServicosProdutosOrdemServicoVM
+                                            {
+                                                Id = x.Key.ProdutoId,
+                                                Descricao = x.Key.Descricao,
+                                                Quantidade = x.Sum(y => y.Quantidade)
+                                            })
+                                            .OrderByDescending(x => x.Quantidade)
+                                            .Take(10).ToList();
         }
 
-        // criar vm em commons
-        public List<string> GetTopServicosOrdemServico(DateTime filtro)
+        public List<TopServicosProdutosOrdemServicoVM> GetTopServicosOrdemServico(DateTime filtro)
         {
-            //return _contaFinanceiraBL.All.Where(x => x.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && x.StatusContaBancaria != StatusContaBancaria.Pago
-            // && x.DataVencimento.Month.Equals(filtro.Month) && x.DataVencimento.Year.Equals(filtro.Year))
-            //     .Select(x => new
-            //     {
-            //         x.DataVencimento,
-            //         x.Descricao,
-            //         x.ValorPrevisto,
-            //         x.StatusContaBancaria
-            //     }).Count();
 
-
-            
-                //.Where(x => x.Data.Month.Equals(filtro.Month) && x.Data.Year.Equals(filtro.Year) && x.Status == StatusOrdemCompra.Finalizado)
-                //.Select(x => new
-                //{
-                //    x.Fornecedor.Id,
-                //    x.Fornecedor.Nome,
-                //    x.Total
-                //})
-                //.GroupBy(x => new { x.Id, x.Nome })
-                //.Select(x => new MaioresFornecedoresVM
-                //{
-                //    Id = x.Key.Id,
-                //    Nome = x.Key.Nome,
-                //    Valor = x.Sum(y => y.Total ?? 0)
-                //})
-                //.OrderByDescending(x => x.Valor)
-                //.Take(10).ToList();
-
-            // retorna lista de id, nome e quantidade
-
-            return null;
+            return _ordemServicoItemServicoBL.All
+                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
+                                            .Select(x=> new {
+                                                x.ServicoId,
+                                                x.Servico.Descricao,
+                                                x.Quantidade
+                                            })
+                                            .GroupBy(x=>new { x.ServicoId, x.Descricao})
+                                            .Select(x=> new TopServicosProdutosOrdemServicoVM
+                                            {
+                                                Id = x.Key.ServicoId,
+                                                Descricao = x.Key.Descricao,
+                                                Quantidade = x.Sum(y=>y.Quantidade)
+                                            })
+                                            .OrderByDescending(x=>x.Quantidade)
+                                            .Take(10).ToList();
         }
-    }
+
+    }    
 }

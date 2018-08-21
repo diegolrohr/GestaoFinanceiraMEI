@@ -69,6 +69,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParametrosController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Controllers\ServicoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

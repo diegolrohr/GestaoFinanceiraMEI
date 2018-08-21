@@ -309,7 +309,7 @@ namespace Fly01.Compras.BL
 
         private void GeraIdContaFinanceiraRecuperarDadosParcela(Pedido entity)
         {
-            if (entity.GeraFinanceiro && entity.ContaFinanceiraParcelaPaiId == default(Guid))
+            if (entity.GeraFinanceiro && (entity.ContaFinanceiraParcelaPaiId == default(Guid) || entity.ContaFinanceiraParcelaPaiId == null))
             {
                 entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
             }

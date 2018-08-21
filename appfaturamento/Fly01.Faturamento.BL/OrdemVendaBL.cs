@@ -460,7 +460,7 @@ namespace Fly01.Faturamento.BL
 
         private void GeraIdContaFinanceiraRecuperarDadosParcela(OrdemVenda entity)
         {
-            if (entity.GeraFinanceiro && entity.ContaFinanceiraParcelaPaiId == default(Guid))
+            if (entity.GeraFinanceiro && (entity.ContaFinanceiraParcelaPaiId == default(Guid) || entity.ContaFinanceiraParcelaPaiId == null))
             {
                 entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
             }

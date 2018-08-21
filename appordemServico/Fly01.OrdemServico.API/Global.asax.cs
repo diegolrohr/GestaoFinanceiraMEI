@@ -1,14 +1,12 @@
-﻿using Fly01.Core.API.Application;
-using Fly01.OrdemServico.BL;
+﻿using Fly01.Core;
+using Fly01.Core.API.Application;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.ServiceBus;
 using Microsoft.OData.Edm;
 using System.Configuration;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
-using Fly01.Core;
-using Fly01.Core.Entities.Domains.Commons;
-using System.Collections.Generic;
-using System.Reflection;
-using Fly01.Core.ServiceBus;
 
 namespace Fly01.OrdemServico.API
 {
@@ -22,14 +20,18 @@ namespace Fly01.OrdemServico.API
             };
 
             //exemplo builder.EntitySet<Estado>("estado");
+            builder.EntitySet<Cidade>("cidade");
+            builder.EntitySet<Estado>("estado");
+            builder.EntitySet<GrupoProduto>("grupoproduto");
+            builder.EntitySet<Ncm>("ncm");
+            builder.EntitySet<Produto>("ordemservico");
+            builder.EntitySet<OrdemServicoItemProduto>("ordemservicoitemproduto");
+            builder.EntitySet<OrdemServicoItemServico>("ordemservicoitemservico");
+            builder.EntitySet<OrdemServicoManutencao>("ordemservicomanutencao");
+            builder.EntitySet<ParametroOrdemServico>("parametroordemservico");
             builder.EntitySet<Pessoa>("pessoa");
             builder.EntitySet<Produto>("produto");
-            builder.EntitySet<GrupoProduto>("grupoproduto");
             builder.EntitySet<UnidadeMedida>("unidademedida");
-            builder.EntitySet<Ncm>("ncm");
-            builder.EntitySet<Estado>("estado");
-            builder.EntitySet<Cidade>("cidade");
-            builder.EntitySet<ParametroOrdemServico>("parametroordemservico");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

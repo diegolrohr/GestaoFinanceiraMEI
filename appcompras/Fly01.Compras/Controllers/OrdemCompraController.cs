@@ -21,7 +21,6 @@ namespace Fly01.Compras.Controllers
     {
         public OrdemCompraController()
         {
-            //ExpandProperties = "fornecedor,grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
             ExpandProperties = "grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
         }
 

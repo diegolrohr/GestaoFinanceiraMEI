@@ -1,25 +1,28 @@
 ﻿using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Notifications;
+using Fly01.OrdemServico.BL.Extension;
 
 namespace Fly01.OrdemServico.BL
 {
-    public class OrdemServicoItemServicoBL
+    public class OrdemServicoItemServicoBL : PlataformaBaseBL<OrdemServicoItemServico>
     {
-        //public OrdemServicoItemServicoBL(AppDataContextBase context) : base(context)
-        //{
-        //}
+        private readonly ServicoBL _servicoBL;
 
-        //public override void ValidaModel(OrdemServicoItemServico entity)
-        //{
-        //    entity.Fail(entity.Valor <= 0, new Error("Valor deve ser superior a zero", "valor"));
-        //    entity.Fail(entity.Quantidade <= 0, new Error("Quantidade deve ser superior a zero", "quantidade"));
-        //    entity.Fail(entity.Desconto < 0, new Error("Desconto não pode ser negativo", "desconto"));
-        //    entity.Fail(entity.Desconto >= (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior ou igual ao total", "desconto"));
-        //    entity.Fail(entity.Total <= 0, new Error("O Total deve ser superior a zero", "total"));
+        public OrdemServicoItemServicoBL(AppDataContextBase context, ServicoBL servicoBL) : base(context)
+        {
+            _servicoBL = servicoBL;
+        }
 
-        //    var jaExiste = All.Any(x => x.OrdemVendaId == entity.OrdemVendaId && x.ServicoId == entity.ServicoId && x.GrupoTributarioId == entity.GrupoTributarioId && x.Id != entity.Id);
-        //    entity.Fail(jaExiste, new Error("Este serviço com este grupo tributário já está adicionado"));
+        public override void ValidaModel(OrdemServicoItemServico entity)
+        {
+            entity.ValidForeignKey(x => x.ServicoId, "Servico", "servicoId", _servicoBL);
+            entity.Fail(entity.Valor < 0, new Error("Valor não pode ser negativo", "valor"));
+            entity.Fail(entity.Quantidade <= 0, new Error("Quantidade deve ser positiva", "quantidade"));
+            entity.Fail(entity.Desconto < 0, new Error("Desconto não pode ser negativo", "desconto"));
+            entity.Fail(entity.Desconto > (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior ao total bruto", "desconto"));
 
-        //    base.ValidaModel(entity);
-        //}
+            base.ValidaModel(entity);
+        }
     }
 }

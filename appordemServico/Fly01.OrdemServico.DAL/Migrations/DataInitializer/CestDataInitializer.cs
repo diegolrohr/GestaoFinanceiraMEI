@@ -1274,7 +1274,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
                 };
 
                 context.Cests.AddRange(listOfCest);
-                context.SaveChanges().Wait();
+                context.SaveChanges();
             }
         }
     }

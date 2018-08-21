@@ -52,7 +52,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
             if (!context.Estados.Any())
             {
                 context.Estados.AddRange(listOfStates);
-                context.SaveChanges().Wait();
+                context.SaveChanges();
             }
             else
             {
@@ -61,7 +61,7 @@ namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
                 if (!context.Estados.Any(x => x.Id == id))
                 {
                     context.Estados.Add(new Estado() { Id = Guid.Parse("DD4D2CA7-A30A-4660-88D3-9D132916832E"), CodigoIbge = "99", Sigla = "EX", DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Nome = "Exterior", UtcId = "Bahia Standard Time" });
-                    context.SaveChanges().Wait();
+                    context.SaveChanges();
                 };
             }
         }

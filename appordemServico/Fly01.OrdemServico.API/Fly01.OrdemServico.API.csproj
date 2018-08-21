@@ -62,6 +62,7 @@
     <Compile Include="Controllers\Api\EstadoController.cs" />
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
+    <Compile Include="Controllers\Api\NBSController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />
     <Compile Include="Controllers\Api\OrdemServicoController.cs" />
     <Compile Include="Controllers\Api\OrdemServicoItemProdutoController.cs" />

@@ -298,13 +298,13 @@
     <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFe\Index.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamentoPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnFormReadyVisualizarOrdemCompra.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFormReadyVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarFaturarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />

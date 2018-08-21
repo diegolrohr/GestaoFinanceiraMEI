@@ -162,6 +162,8 @@ namespace Fly01.Faturamento.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
+            notaFiscal.GeraFinanceiro = entity.GeraFinanceiro;
+            notaFiscal.ContaFinanceiraParcelaPaiId = entity.ContaFinanceiraParcelaPaiId;
             notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
             return notaFiscal;
         }
@@ -446,12 +448,22 @@ namespace Fly01.Faturamento.BL
 
             ValidaModel(entity);
 
+            GeraIdContaFinanceiraRecuperarDadosParcela(entity);
+
             if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
 
             base.Update(entity);
+        }
+
+        private void GeraIdContaFinanceiraRecuperarDadosParcela(OrdemVenda entity)
+        {
+            if (entity.GeraFinanceiro && entity.ContaFinanceiraParcelaPaiId == default(Guid))
+            {
+                entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
+            }
         }
 
         public override void Delete(OrdemVenda entityToDelete)
@@ -531,6 +543,7 @@ namespace Fly01.Faturamento.BL
                 {
                     var contaReceber = new ContaReceber()
                     {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
                         ValorPrevisto = valorPrevisto,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
@@ -549,6 +562,7 @@ namespace Fly01.Faturamento.BL
                 {
                     var contaPagar = new ContaPagar()
                     {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
                         ValorPrevisto = valorPrevisto,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,

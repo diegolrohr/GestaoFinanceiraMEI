@@ -53,6 +53,12 @@ namespace Fly01.OrdemServico.BL
         public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context));
         private UnidadeMedidaBL unidadeMedidaBL;
         public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
+        private NCMBL ncmBL;
+        public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
+        private ParametroOrdemServicoBL parametroOrdemServicoBL;
+        public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));
+        private DashboardBL dashboardBL;
+        public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, OrdemServicoBL, ProdutoBL));
         #endregion
     }
 }

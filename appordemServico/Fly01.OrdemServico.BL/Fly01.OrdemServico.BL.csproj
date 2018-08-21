@@ -47,10 +47,12 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DashboardBL.cs" />
     <Compile Include="CidadeBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />
     <Compile Include="OrdemServicoItemServicoBL.cs" />

@@ -69,6 +69,7 @@
     <Compile Include="Controllers\Api\OrdemServicoItemServicoController.cs" />
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\ParametroOrdemServicoController.cs" />
+    <Compile Include="Controllers\Api\ServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
     <Compile Include="Controllers\Api\UnidadeMedidaController.cs" />
     <Compile Include="Global.asax.cs">

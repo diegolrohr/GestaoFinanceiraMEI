@@ -1,7 +1,6 @@
 ﻿using Fly01.Core.Base;
 using Fly01.Core.Entities.Domains;
-using Fly01.OrdemServico.API.Models.DAL;
-using System;
+using Fly01.OrdemServico.DAL;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
@@ -29,11 +28,6 @@ namespace Fly01.OrdemServico.BL
         public UnitOfWork(ContextInitialize initialize)
         {
             Context = new AppDataContext(initialize);
-        }
-
-        public new TBL GetGenericBL<TBL>()
-        {
-            throw new Exception("FAUSTÃO DIZ: ERRROU");
         }
 
         #region BLS

@@ -1,4 +1,3 @@
-using Fly01.OrdemServico.API.Models.DAL;
 using Fly01.OrdemServico.DAL.Migrations.DataInitializer;
 using System.Data.Entity.Migrations;
 

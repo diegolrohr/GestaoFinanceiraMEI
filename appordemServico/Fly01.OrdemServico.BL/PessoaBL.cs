@@ -1,9 +1,8 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ValueObjects;
-using Fly01.OrdemServico.API.Models.DAL;
+using Fly01.OrdemServico.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace Fly01.OrdemServico.BL
     public class PessoaBL : PlataformaBaseBL<Pessoa>
     {
         protected EstadoBL EstadoBL;
-        protected CidadeBL CidadeBL;        
+        protected CidadeBL CidadeBL;
 
         public PessoaBL(AppDataContext context, EstadoBL uFBL, CidadeBL cidadeBL) : base(context)
         {

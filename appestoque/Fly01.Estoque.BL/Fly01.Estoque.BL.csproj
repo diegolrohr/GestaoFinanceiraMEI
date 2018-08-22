@@ -50,6 +50,7 @@
     <Compile Include="InventarioBL.cs" />
     <Compile Include="InventarioItemBL.cs" />
     <Compile Include="CestBL.cs" />
+    <Compile Include="MovimentoPedidoCompraBL.cs" />
     <Compile Include="MovimentoOrdemVendaBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="AjusteManualBL.cs" />

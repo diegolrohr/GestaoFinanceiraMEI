@@ -51,6 +51,14 @@ namespace Fly01.Faturamento.BL
             {
                 entity.TipoFrete = TipoFrete.SemFrete;
                 entity.ValorFrete = 0.0;
+                if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplPrecoQtd)
+                {
+                    entity.MovimentaEstoque = false;
+                }
+                else if (entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms)
+                {
+                    entity.GeraFinanceiro = false;
+                }
             }
 
             entity.Fail(entity.ValorFrete.HasValue && entity.ValorFrete.Value < 0, new Error("Valor frete não pode ser negativo", "valorFrete"));
@@ -357,9 +365,9 @@ namespace Fly01.Faturamento.BL
                                     //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                                 }
-                                else
+                                else if(entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
                                 {
-                                    //na nfe de complemento zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
+                                    //na nfe de complemento de preço zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                                     produtoClonado.Quantidade = 0.00;
                                     produtoClonado.Valor = 0.00;
@@ -370,6 +378,10 @@ namespace Fly01.Faturamento.BL
                         }
                     }
                     #endregion
+                }
+                else
+                {
+                    entity.Fail(true, new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
                 }
             }
             else

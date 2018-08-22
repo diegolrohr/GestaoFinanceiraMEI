@@ -134,7 +134,7 @@
                 $('#stepFinanceiro').hide();
                 $("input#geraFinanceiro").prop("checked", false);
             }
-            else if (tipoNfeComplementarVal != "ComplPrecoQtd") {
+            if (tipoNfeComplementarVal != "ComplPrecoQtd") {
                 $("input#movimentaEstoque").prop("checked", false);
                 $("#movimentaEstoqueField").hide();
             }
@@ -185,6 +185,8 @@
 
             $('input#numero').removeAttr('disabled');
             $('input#chaveNFeReferenciada').removeAttr('disabled');
+            $('select#tipoNfeComplementar').removeAttr('disabled');
+            $('select#tipoNfeComplementar').material_select();
 
             var jsonData = $(this).serializeObject();
             if ($('input#finalizarPedido:checked').val() == "true") {
@@ -193,6 +195,8 @@
 
             $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
+            $('select#tipoNfeComplementar').attr('disabled', 'disabled');
+            $('select#tipoNfeComplementar').material_select();
             fly01.fn.updateTextFields();
 
             var url;
@@ -298,6 +302,9 @@
                     $('#btnComplementar').click();
                 }
             }
+            $('select#tipoNfeComplementar').attr('disabled','disabled');
+            $('select#tipoNfeComplementar').material_select();
+
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
             fly01._.dtOrdemVendaProdutos.refresh();
@@ -322,6 +329,12 @@
 
         $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                EstoqueNegativoETotal();
+            }
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplIcms") {
                 EstoqueNegativoETotal();
             }
         });

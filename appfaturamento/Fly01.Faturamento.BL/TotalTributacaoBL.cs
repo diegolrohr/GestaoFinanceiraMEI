@@ -26,8 +26,9 @@ namespace Fly01.Faturamento.BL
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected ParametroTributarioBL ParametroTributarioBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
+        protected OrdemVendaProdutoBL OrdemVendaProdutoBL { get; set; }
 
-        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL) : base(context)
         {
             PessoaBL = pessoaBL;
             GrupoTributarioBL = grupoTributarioBL;
@@ -37,6 +38,7 @@ namespace Fly01.Faturamento.BL
             CertificadoDigitalBL = certificadoDigitalBL;
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            OrdemVendaProdutoBL = ordemVendaProdutoBL;
         }
 
         public GrupoTributario GetGrupoTributario(Guid grupoTributarioId)
@@ -49,15 +51,39 @@ namespace Fly01.Faturamento.BL
             return PessoaBL.AllIncluding(y => y.Estado, y => y.Cidade).Where(x => x.Id == pessoaId).AsNoTracking().FirstOrDefault();
         }
 
+        public Produto GetProduto(Guid produtoId)
+        {
+            return ProdutoBL.All.Where(x => x.Id == produtoId).AsNoTracking().FirstOrDefault();
+        }
+
         public ParametroTributario GetParametrosTributarios()
         {
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
+        }
+
+        public List<OrdemVendaProduto> GetOrdemVendaItens(Guid ordemVendaId)
+        {
+            return OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
         }
 
         public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)
         {
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
+            var ordemVendaItens = GetOrdemVendaItens(entity.Id);
+            int num = 1;
+            foreach (var item in ordemVendaItens)
+            {
+                if(GetProduto(item.ProdutoId) == null)
+                {
+                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                }
+                if (GetGrupoTributario(item.GrupoTributarioId) == null)
+                {
+                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                }
+                num++;
+            }
 
             var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
@@ -167,12 +193,17 @@ namespace Fly01.Faturamento.BL
 
         public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoNfeComplementar tipoNfeComplementar, TipoFrete tipoFrete, bool nFeRefIsDevolucao, double? valorFrete = 0)
         {
+            var result = new List<TributacaoProdutoRetorno>();
+            if(tipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+            {
+                return result;
+            }
+
             var cliente = GetPessoa(clienteId);
             var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
-            var result = new List<TributacaoProdutoRetorno>();
-
+            
             var header = new Dictionary<string, string>()
                 {
                     { "AppUser", AppUser },
@@ -201,12 +232,20 @@ namespace Fly01.Faturamento.BL
                 tributacao.SimplesNacional = true;
 
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                if(grupoTributario == null)
+                {
+                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                }
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
+                if (produto == null)
+                {
+                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                }
 
                 //ICMS
-                //TODO diego passar o tipo do complemento
                 //refatorar para cada caso
-                if (grupoTributario.CalculaIcms && tipoVenda != TipoVenda.Complementar)
+                if ((grupoTributario.CalculaIcms && tipoVenda != TipoVenda.Complementar)
+                    || (tipoVenda == TipoVenda.Complementar && tipoNfeComplementar == TipoNfeComplementar.ComplIcms))
                 {
                     tributacao.Icms = new Icms()
                     {
@@ -229,7 +268,8 @@ namespace Fly01.Faturamento.BL
                     };
                 }
                 //IPI
-                if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0 && tipoVenda != TipoVenda.Complementar)
+                if ((grupoTributario.CalculaIpi && produto.AliquotaIpi > 0 && tipoVenda != TipoVenda.Complementar)
+                    || (tipoVenda == TipoVenda.Complementar && tipoNfeComplementar == TipoNfeComplementar.ComplIpi))
                 {
                     tributacao.Ipi = new Ipi()
                     {
@@ -239,7 +279,8 @@ namespace Fly01.Faturamento.BL
                     };
                 }
                 //ST
-                if (grupoTributario.CalculaSubstituicaoTributaria && tipoVenda != TipoVenda.Complementar)
+                if ((grupoTributario.CalculaSubstituicaoTributaria && tipoVenda != TipoVenda.Complementar)
+                    || (tipoVenda == TipoVenda.Complementar && tipoNfeComplementar == TipoNfeComplementar.ComplIcmsST))
                 {
                     //no Faturamento devolução é entrada ou se o complemento for de uma devolução
                     var isSaida = (tipoVenda == TipoVenda.Normal)
@@ -253,7 +294,7 @@ namespace Fly01.Faturamento.BL
                         x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                         ).FirstOrDefault();
 
-                    if (st != null && tipoVenda != TipoVenda.Complementar)
+                    if (st != null)
                     {
                         tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                         {

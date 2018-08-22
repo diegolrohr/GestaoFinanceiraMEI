@@ -243,7 +243,7 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List()
         {
             if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUIBase(Url.Action("Sidebar", "Home"), JsonSerializerSetting.Default), "application/json");
+                return Content(JsonConvert.SerializeObject(new ContentUIBase(Url.Action("Sidebar", "Home")), JsonSerializerSetting.Default), "application/json");
 
             var response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;

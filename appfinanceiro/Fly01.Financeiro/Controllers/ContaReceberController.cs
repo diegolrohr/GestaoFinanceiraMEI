@@ -181,7 +181,7 @@ namespace Fly01.Financeiro.Controllers
                 buttonOnClick = "fnAddFilter";
             }
 
-            ContentUI cfg = new ContentUIBase(Url.Action("Sidebar", "Home")
+            ContentUI cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader

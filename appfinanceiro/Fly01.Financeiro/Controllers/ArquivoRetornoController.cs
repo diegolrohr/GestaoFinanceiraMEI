@@ -40,7 +40,7 @@ namespace Fly01.Financeiro.Controllers
         protected override ContentUI FormJson()
         {
             if (!UserCanRead)
-                return new ContentUIBase(Url.Action("Sidebar", "Home");
+                return new ContentUIBase(Url.Action("Sidebar", "Home"));
 
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {

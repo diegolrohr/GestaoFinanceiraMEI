@@ -17,6 +17,8 @@
         var valorFrete = 0;
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
+        var tipoNfeComplementar = $('#tipoNfeComplementar').val();
+
         var calculaFrete = (
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
@@ -46,7 +48,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoNfeComplementar: tipoNfeComplementar, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -115,6 +117,7 @@
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         var tipoVendaVal = $('#tipoVenda').val();
+        var tipoNfeComplementarVal = $('#tipoNfeComplementar').val();
 
         if (tipoVendaVal == "Devolucao" || tipoVendaVal == "Complementar") {
             $("#fly01btngrpFinalidade #btnNormal").hide();
@@ -127,6 +130,14 @@
             $("#nFeRefComplementarIsDevolucaoField").show();
             $('#stepTransporte').hide();
             $("#fly01btngrpFinalidade #btnDevolucao").hide();
+            if (tipoNfeComplementarVal == "ComplIcms") {
+                $('#stepFinanceiro').hide();
+                $("input#geraFinanceiro").prop("checked", false);
+            }
+            else if (tipoNfeComplementarVal != "ComplPrecoQtd") {
+                $("input#movimentaEstoque").prop("checked", false);
+                $("#movimentaEstoqueField").hide();
+            }
         }
         else if (tipoVendaVal == "Normal") {
             $("#fly01btngrpFinalidade #btnDevolucao").hide();

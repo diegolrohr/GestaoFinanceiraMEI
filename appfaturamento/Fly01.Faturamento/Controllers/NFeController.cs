@@ -67,7 +67,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Complemento",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar))
-                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value)))
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd,ComplIcms".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
             {

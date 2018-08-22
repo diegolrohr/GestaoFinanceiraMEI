@@ -91,7 +91,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return new ICMSPai()
             {
                 OrigemMercadoria = OrigemMercadoria.Nacional,
-                CodigoSituacaoOperacao = TipoTributacaoICMS.Imune//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
+                CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
             };
         }
 
@@ -99,7 +99,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new PISPai()
             {
-                CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao //TODO: Wilson confirmar SemIncidencia
+                CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue
+                    ? (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS)
+                    : CSTPISCOFINS.IsentaDaContribuicao
             };
         }
 
@@ -107,8 +109,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new COFINSPai()
             {
-                //TODO: confirmar Wilson
-                CodigoSituacaoTributaria = NFe.NFeRefComplementarIsDevolucao ? CSTPISCOFINS.OutrasOperacoesDeEntrada : CSTPISCOFINS.OutrasOperacoesDeSaida
+                CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null
+                    ? ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value)
+                    : CSTPISCOFINS.OutrasOperacoes
             };
         }
         #endregion

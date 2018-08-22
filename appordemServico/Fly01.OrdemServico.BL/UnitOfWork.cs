@@ -38,7 +38,7 @@ namespace Fly01.OrdemServico.BL
         private GrupoProdutoBL grupoProdutoBL;
         public GrupoProdutoBL GrupoProdutoBL => grupoProdutoBL ?? (grupoProdutoBL = new GrupoProdutoBL(Context));
         private OrdemServicoBL ordemServicoBL;
-        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context));
+        public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context, ParametroOrdemServicoBL));
         private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
         public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL(Context, ProdutoBL));
         private OrdemServicoItemServicoBL ordemServicoItemServicoBL;

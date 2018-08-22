@@ -19,7 +19,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
-        [Required]
         [Column(TypeName = "date")]
         public DateTime DataEntrega { get; set; }
 

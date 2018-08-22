@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using System;
 using System.Data.Entity;
 using System.Linq;
 
@@ -9,9 +10,11 @@ namespace Fly01.OrdemServico.BL
     public class OrdemServicoBL : PlataformaBaseBL<Core.Entities.Domains.Commons.OrdemServico>
     {
         public const int MaxLengthObservacao = 200;
+        private readonly ParametroOrdemServicoBL _parametro;
 
-        public OrdemServicoBL(AppDataContextBase context) : base(context)
+        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametro) : base(context)
         {
+            _parametro = parametro;
         }
 
         public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
@@ -19,7 +22,10 @@ namespace Fly01.OrdemServico.BL
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
-
+            if (entity.DataEntrega == DateTime.MinValue)
+                entity.DataEntrega = entity.DataEmissao.AddDays(_parametro.ParametroPlataforma.DiasPadraoEntrega);
+            else
+                entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
             base.ValidaModel(entity);
         }
 

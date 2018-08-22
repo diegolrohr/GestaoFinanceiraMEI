@@ -57,7 +57,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
@@ -205,6 +204,8 @@
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnChangeTotalManutencao.cshtml" />
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnEditarOrdemServicoManutencao.cshtml" />
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnExcluirOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAtualizar.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">

@@ -1,0 +1,237 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    var justSavePedidoToGoStepProdutos = false;
+    var onCancelMustDeleteOrdemServico = false;
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
+    function calculaTotalOrdemServico() {
+        var idOrdemServico = $("form#fly01frm input#id").val();
+        var idCliente = $("form#fly01frm input#clienteId").val();
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
+            type: "GET",
+            data: { id: idOrdemServico, clienteId: idCliente}
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
+                $('input#totalOrdemServico').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.updateTextFields();
+            }
+            else {
+                $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemsServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });        
+    }
+
+    function getInformacoesComplementares() {
+        fly01.loading.start();
+        $.ajax({
+            url: '@Url.Action("GetInformacoesComplementares", "OrdemVenda")',
+            type: "GET",
+            data: {}
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('#mensagemPadraoNota').val(data.infcomp);
+                fly01.fn.updateTextFields("fly01frm");
+                fly01.loading.stop();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+                fly01.loading.stop();
+            }
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnBindStepsWizard() {
+        function savePedido() {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
+                justSavePedidoToGoStepProdutos = true;
+                return $("form#fly01frm").submit();
+            }
+        }
+        $('li#stepProdutos div.step-title').click(function () {
+            savePedido();
+        });
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            savePedido();
+        });
+
+        $('li#stepCadastro div.step-title').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
+        });
+        $('#stepFinalidade > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            disableStepFinalidade();
+            fnChangeFrete();
+        });
+    }
+
+    function fnBindOverrideSubmit() {
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+
+            fly01.loading.start();
+
+            $('input#numero').removeAttr('disabled');
+            $('input#chaveNFeReferenciada').removeAttr('disabled');
+
+            var jsonData = $(this).serializeObject();
+            if ($('input#finalizarPedido:checked').val() == "true") {
+                jsonData.status = "Finalizado";
+            }
+
+            $('input#numero').attr('disabled', 'disabled');
+            $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
+            fly01.fn.updateTextFields();
+
+            var url;
+            if (isCreate()) {
+                url = '@Url.Action("Create", "Pedido")';
+            }
+            else {
+                url = '@Url.Action("Edit", "Pedido")';
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify({ 'entityVM': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        fly01.loading.stop();
+
+                        var strMsg = "Cadastrado com sucesso.";
+                        if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
+                        //fica na página ou volta pra lista
+                        if (justSavePedidoToGoStepProdutos) {
+                            justSavePedidoToGoStepProdutos = false;
+                            onCancelMustDeleteOrdemServico= true;
+                            $("form#fly01frm input#id").val(data.id);
+                            $("form#fly01frm input#numeroOS").val(data.numeroOS);
+
+                            fly01._.dtOrdemVendaProdutos.refresh();
+                            fly01._.dtOrdemVendaServicos.refresh();
+                            var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                            window.history.pushState({}, document.title, url);
+                            $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
+
+                            getInformacoesComplementares();
+
+                            return true;
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List","OrdemServico")");
+                        }
+                    } else {
+                        if (justSavePedidoToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
+                        fly01.loading.stop();
+                        $("div#clienteIdField").show();
+                        fly01.fn.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    fly01.loading.stop();
+                }
+            });
+        });
+    }
+
+    function fnSetInformacoes() {
+        $("#infoEstoqueNegativoField").text('O estoque não pode ficar negativo, portanto abaixo é exibido a relação dos produtos que ficarão com o estoque faltante. Marque a opção para ajustar automáticamente a quantidade negativa ou realize os ajustes '
+            + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
+    }
+
+    function EstoqueNegativoETotal() {
+        fly01._.dtProdutosEstoqueNegativo.refresh();
+        calculaTotalPedido();
+    }
+
+    function fnFormReadyOrdemServico () {
+
+        if (isCreate()) {
+            $('#btnNormal').click();
+            var today = new Date();
+            fly01._.dataEmissao.set(today);
+            fly01._.dataVencimento.set(today);
+            fly01.fn.updateTextFields();
+            fnBindStepsWizard();
+        }
+        else {
+            //setar o agrupamento com a opção escolhida
+            if ($('input#tipoVenda').val() == "Normal") {
+                $('#btnNormal').click();
+            }
+
+            disableStepFinalidade();
+            if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
+            fly01._.dtOrdemVendaProdutos.refresh();
+            fly01._.dtOrdemVendaServicos.refresh();
+        }
+
+        fnBindOverrideSubmit();
+        fnValidaCamposGeraFinanceiro();
+        fnChangeFrete();
+        fnSetInformacoes();
+
+        $('li#stepFinalizar div.step-title').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid()) {
+                EstoqueNegativoETotal();
+            }
+        });
+        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid()) {
+                EstoqueNegativoETotal();
+            }
+        });
+
+        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                EstoqueNegativoETotal();
+            }
+        });
+    }
+
+    $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+            fnDisableInput();
+    });
+
+
+</script>

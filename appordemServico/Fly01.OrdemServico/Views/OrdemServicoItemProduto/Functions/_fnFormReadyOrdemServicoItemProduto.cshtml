@@ -1,0 +1,82 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnFormReadyOrdemServicoItemProduto() {
+        var id = $("form#fly01mdlfrmOrdemVendaProduto input#id").val();
+
+        if (id.length == 0) {
+            $('form#fly01mdlfrmOrdemServicoItemProduto input#ordemVendaId').val($('form#fly01frm input#id').val());            
+        }
+
+        fly01.fn.updateTextFields();
+        fnOverrideSubmitOrdemServicoItemProduto();
+
+        $('form#fly01mdlfrmOrdemServicoItemProduto input#valor').on('change', function () {
+            fnChangeTotalProduto();
+        });
+        $('form#fly01mdlfrmOrdemServicoItemProduto input#desconto').on('change', function () {
+            fnChangeTotalProduto();
+        });
+        $('form#fly01mdlfrmOrdemServicoItemProduto input#quantidade').on('change', function () {
+            fnChangeTotalProduto();
+        });
+    }
+
+    function fnOverrideSubmitOrdemServicoItemProduto() {
+        var myForm = 'form#fly01mdlfrmOrdemServicoItemProduto'
+
+        $(myForm).off('submit');
+        $(myForm).on('submit', function (e) {
+            var that = $(myForm)
+
+            if (!that.valid())
+                return false;
+
+            e.preventDefault();
+            fly01.loading.start();
+            var formData = that.serializeObject();
+            $.ajax({
+                type: that.attr("method"),
+                contentType: 'application/json',
+                dataType: 'json',
+                url: that.attr("action"),
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    if (data.success) {
+                        fly01.toast(data.message, "success");
+                        fly01._.dtOrdemServicoItemProdutos.refresh();
+                        fly01._.fly01mdlfrmOrdemServicoItemProduto.close();
+                    } else {
+                        fly01.loading.stop();
+                        try {
+                            var jsonMessage = JSON.parse(data.message);
+                            var validator = that.validate();
+                            var errors = {};
+                            jsonMessage.innerMessage.filter(x => ((x.dataField || "") != "")).forEach(element => {
+                                if ($("#" + element.dataField).length > 0) {
+                                    errors[element.dataField] = element.message;
+                                }
+                                else {
+                                    fly01.toast(element.message, "error", 8000);
+                                }
+                            });
+                            validator.showErrors(errors);
+                            jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
+                                fly01.toast(element.message, "error", 8000);
+                            });
+                        } catch (e) {
+                            fly01.toast(data.message, "error");
+                        }
+                    }
+                    fly01.loading.stop();
+                    $('.modal-overlay').css('display', 'none');
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    fly01.loading.stop();
+                }
+            })
+        });
+    }
+
+</script>

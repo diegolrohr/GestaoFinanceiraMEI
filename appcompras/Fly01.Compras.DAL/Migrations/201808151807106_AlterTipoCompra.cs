@@ -7,7 +7,7 @@ namespace Fly01.Compras.DAL.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Pedido", "TipoCompra", c => c.Int(nullable: false));
+            AddColumn("dbo.Pedido", "TipoCompra", c => c.Int(nullable: false, defaultValue: 1));
             DropColumn("dbo.OrdemCompra", "TipoCompra");
         }
         

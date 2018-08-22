@@ -58,15 +58,18 @@
     <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
     <Folder Include="Views\Home\" />
-    <Folder Include="Views\Parametros\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
-    <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdemServicoManutencaoController.cs" />
+    <Compile Include="Controllers\OrdemServicoItemServicoController.cs" />
+    <Compile Include="Controllers\OrdemServicoItemProdutoController.cs" />
+    <Compile Include="Controllers\OrdemServicoController.cs" />
+    <Compile Include="Controllers\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\ServicoController.cs" />
@@ -168,15 +171,43 @@
     <Content Include="Views\Cliente\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\Parametros\Index.cshtml" />
+    <Content Include="Views\ParametroOrdemServico\Index.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeGrupoProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeSaldoProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeTipoProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Produto\Functions\_fnFormReadyModal.cshtml" />
+    <Content Include="Views\OrdemServicoItemServico\Functions\_fnFormReadyOrdemServicoItemServico.cshtml" />
+    <Content Include="Views\OrdemServicoItemServico\Functions\_fnChangeServico.cshtml" />
+    <Content Include="Views\OrdemServicoItemServico\Functions\_fnChangeTotalServico.cshtml" />
+    <Content Include="Views\OrdemServicoItemServico\Functions\_fnEditarOrdemServicoItemServico.cshtml" />
+    <Content Include="Views\OrdemServicoItemServico\Functions\_fnExcluirOrdemServicoItemServico.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFinalizarFaturarPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFinalizarPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnVisualizar.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoItemProduto.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoItemServico.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFormReadyOrdemServico.cshtml" />
+    <Content Include="Views\OrdemServicoItemProduto\Functions\_fnChangeProduto.cshtml" />
+    <Content Include="Views\OrdemServicoItemProduto\Functions\_fnChangeTotalProduto.cshtml" />
+    <Content Include="Views\OrdemServicoItemProduto\Functions\_fnEditarOrdemServicoItemProduto.cshtml" />
+    <Content Include="Views\OrdemServicoItemProduto\Functions\_fnExcluirOrdemServicoItemProduto.cshtml" />
+    <Content Include="Views\OrdemServicoItemProduto\Functions\_fnFormReadyOrdemServicoItemProduto.cshtml" />
+    <Content Include="Views\OrdemServicoManutencao\Functions\_fnFormReadyOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\OrdemServicoManutencao\Functions\_fnChangeManutencao.cshtml" />
+    <Content Include="Views\OrdemServicoManutencao\Functions\_fnChangeTotalManutencao.cshtml" />
+    <Content Include="Views\OrdemServicoManutencao\Functions\_fnEditarOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\OrdemServicoManutencao\Functions\_fnExcluirOrdemServicoManutencao.cshtml" />
+    <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

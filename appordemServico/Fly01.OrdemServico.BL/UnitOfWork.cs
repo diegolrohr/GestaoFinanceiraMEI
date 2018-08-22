@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Base;
 using Fly01.Core.Entities.Domains;
 using Fly01.OrdemServico.API.Models.DAL;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
@@ -30,6 +31,11 @@ namespace Fly01.OrdemServico.BL
             Context = new AppDataContext(initialize);
         }
 
+        public new TBL GetGenericBL<TBL>()
+        {
+            throw new Exception("FAUSTÃO DIZ: ERRROU");
+        }
+
         #region BLS
         private CidadeBL cidadeBL;
         public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
@@ -55,6 +61,8 @@ namespace Fly01.OrdemServico.BL
         public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));
         private NCMBL ncmBL;
         public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
+        private NBSBL nbsBL;
+        public NBSBL NBSBL => nbsBL ?? (nbsBL = new NBSBL(Context));
         private ParametroOrdemServicoBL parametroOrdemServicoBL;
         public ParametroOrdemServicoBL ParametroOrdemServicoBL => parametroOrdemServicoBL ?? (parametroOrdemServicoBL = new ParametroOrdemServicoBL(Context));
         private DashboardBL dashboardBL;

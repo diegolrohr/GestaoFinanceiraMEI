@@ -139,12 +139,10 @@ namespace Fly01.Core.BL
         /// </summary>
         /// <param name="message"></param>
         /// <param name="httpMethod"></param>
-        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao, RpcClient rpc)
+        public virtual void PersistMessage(dynamic item, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao)
         {
             if (!MustConsumeMessageServiceBus)
                 return;
-
-            this.rpc = rpc ?? new RpcClient();
 
             switch (httpMethod)
             {

@@ -13,9 +13,9 @@ using Fly01.Core.Helpers;
 
 namespace Fly01.Core.Mensageria
 {
-    public static class MediaClient
+    public class MediaClient
     {
-        private static void Post(string slackUrl, SlackMessage message)
+        private void Post(string slackUrl, SlackMessage message)
         {
             using (var client = new WebClient())
             {
@@ -28,7 +28,7 @@ namespace Fly01.Core.Mensageria
             }
         }
 
-        private static string GetCustomMessage(Exception exception)
+        private string GetCustomMessage(Exception exception)
         {
             var response = exception.Message;
             var sb = new StringBuilder();
@@ -61,7 +61,7 @@ namespace Fly01.Core.Mensageria
             return response;
         }
 
-        private static string GetFlyEnvironmentUrl(Guid messageId, string routeName, string hostName)
+        private string GetFlyEnvironmentUrl(Guid messageId, string routeName, string hostName)
         {
             var host = hostName == "prod" ? ""
                 : hostName == "homolog" ? "dev"
@@ -72,7 +72,7 @@ namespace Fly01.Core.Mensageria
             return url;
         }
 
-        public static async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl, string routingKey)
+        public async void PostErrorRabbitMQ(string data, Exception exception, string hostName, string queueName, string plataformaUrl, string routingKey)
         {
             var mediaChannel = string.Empty;
             var isProd = (hostName == "prod");
@@ -119,7 +119,7 @@ namespace Fly01.Core.Mensageria
             Post(mediaChannel, message);
         }
 
-        public static void PostNotificacaoAvaliacaoApp(Guid mensagemId, string hostName, string mensagem, string plataforma)
+        public void PostNotificacaoAvaliacaoApp(Guid mensagemId, string hostName, string mensagem, string plataforma)
         {
             var slackChannel = "https://hooks.slack.com/services/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";
             var message = new SlackMessage()

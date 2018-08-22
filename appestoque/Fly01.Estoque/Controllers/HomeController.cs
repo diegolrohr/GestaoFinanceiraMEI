@@ -28,10 +28,10 @@ namespace Fly01.Estoque.Controllers
             return target;
         }
 
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
             if (!UserCanPerformOperation(ResourceHashConst.EstoqueEstoqueVisaoGeral))
-                return new ContentUI();
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
             var dataInicialFiltroDefault = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);
             var dataFinalFiltroDefault = DateTime.Now.Date;
@@ -47,10 +47,9 @@ namespace Fly01.Estoque.Controllers
                     Title = "Visão Geral",
                     Buttons = new List<HtmlUIButton>(GetButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar")
             };
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
 
             cfg.Content.Add(new FormUI
             {

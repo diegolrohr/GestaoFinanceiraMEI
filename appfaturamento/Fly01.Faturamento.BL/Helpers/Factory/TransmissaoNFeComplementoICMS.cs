@@ -26,13 +26,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public override TipoFormaPagamento ObterTipoFormaPagamento()
         {
-            var tipoFormaPagamento = TipoFormaPagamento.Outros;
-            if (Cabecalho.FormaPagamento != null)
-            {
-                //Transferência não existe para o SEFAZ
-                tipoFormaPagamento = Cabecalho.FormaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : Cabecalho.FormaPagamento.TipoFormaPagamento;
-            }
-            return tipoFormaPagamento;
+            return TipoFormaPagamento.SemPagamento;
         }
 
         public override TransmissaoVM ObterTransmissaoVM()

@@ -77,7 +77,7 @@ namespace Fly01.Faturamento.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult FormPedido(bool isEdit = false)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {

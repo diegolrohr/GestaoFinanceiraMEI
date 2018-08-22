@@ -124,6 +124,7 @@ namespace Fly01.Core.ServiceBus
 
         private async Task ProcessData(string message, RabbitConfig.EnHttpVerb httpMethod, string routingKey, string appId, string plataformaUrl, string appUser)
         {
+            _mediaClient = new MediaClient();
             routingKey = routingKey.Replace(Environment.MachineName + "_", "");
 
             Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
@@ -142,7 +143,6 @@ namespace Fly01.Core.ServiceBus
                 catch (Exception exErr)
                 {
                     var erro = (exErr is BusinessException) ? (BusinessException)exErr : exErr;
-                    _mediaClient = new MediaClient();
                     _mediaClient.PostErrorRabbitMQ(item.ToString(), erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
 
                     continue;

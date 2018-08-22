@@ -2,7 +2,6 @@
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -10,15 +9,15 @@ using System.Web.Mvc;
 
 namespace Fly01.Faturamento.Controllers
 {
-    public class ClienteController : PessoaBaseController<PessoaVM>
+    public class ResponsavelController : PessoaBaseController<PessoaVM>
     {
-        protected override string ResourceTitle => "Cliente";
-        protected override string LabelTitle => "Clientes";
-        protected override string Filter => "cliente eq true";
+        protected override string ResourceTitle => "Responsável";
+        protected override string LabelTitle => "Responsáveis";
+        protected override string Filter => "vendedor eq true";
 
         protected override void NormarlizarEntidade(ref PessoaVM entityVM)
         {
-            entityVM.Cliente = true;
+            entityVM.Vendedor = true;
 
             base.NormarlizarEntidade(ref entityVM);
         }
@@ -27,7 +26,7 @@ namespace Fly01.Faturamento.Controllers
         {
             ModalUIForm config = new ModalUIForm()
             {
-                Title = "Adicionar Cliente",
+                Title = "Adicionar Responsável",
                 ConfirmAction = new ModalUIAction() { Label = "Salvar" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
@@ -36,7 +35,7 @@ namespace Fly01.Faturamento.Controllers
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
                 },
-                Id = "fly01mdlfrmModalCliente",
+                Id = "fly01mdlfrmModalResponsavel",
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
@@ -76,27 +75,13 @@ namespace Fly01.Faturamento.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
-        protected override List<TooltipUI> GetHelpers()
-        {
-            return new List<TooltipUI> {
-               new TooltipUI
-               {
-                   Id = "estadoId",
-                   Tooltip = new HelperUITooltip()
-                   {
-                       Text = "Informe o estado, caso desejar emitir notas fiscais para este cliente"
-                   }
-               }
-           };
-        }
-
         protected override List<InputCheckboxUI> GetCheckBboxes()
         {
             return new List<InputCheckboxUI>
             {
                new InputCheckboxUI { Id = "fornecedor", Class = "col s12 l3", Label = "É Fornecedor" },
                new InputCheckboxUI { Id = "transportadora", Class = "col s12 l3", Label = "É Transportadora" },
-               new InputCheckboxUI { Id = "vendedor", Class = "col s12 l3", Label = "É Vendedor" },
+               new InputCheckboxUI { Id = "cliente", Class = "col s12 l3", Label = "É Cliente" },
                new InputCheckboxUI { Id = "consumidorFinal", Class = "col s12 l3", Label = "É Consumidor Final" }
            };
         }

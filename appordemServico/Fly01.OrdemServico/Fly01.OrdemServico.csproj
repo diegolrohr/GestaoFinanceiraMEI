@@ -63,6 +63,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\ResponsavelController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdemServicoManutencaoController.cs" />
@@ -207,6 +208,12 @@
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnExcluirOrdemServicoManutencao.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
+    <Content Include="Views\Responsavel\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Responsavel\Functions\_fnCitySelect.cshtml" />
+    <Content Include="Views\Responsavel\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Responsavel\Functions\_fnImportaCadastroFormReady.cshtml" />
+    <Content Include="Views\Responsavel\Functions\_fnStateSelect.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,19 @@
+﻿<script>
+    function fnFormReady() {
+        $("#cpfcnpj").keyup(function () {
+            if ($("#cpfcnpj").val() != "" && $("#cpfcnpj").val().length == 11)
+                fnDesabilitaCamposPessoaJuridica(true);
+            else
+                fnDesabilitaCamposPessoaJuridica(false);
+        });
+
+        fnDesabilitaCamposPorTipoDeInscricao();
+
+        $("#cpfcnpj").keyup();
+    }
+
+    function fnDesabilitaCamposPessoaJuridica(disabled) {
+        $("#nomeComercial").attr("disabled", disabled);
+        $("#contato").attr("disabled", disabled);
+    }
+</script>

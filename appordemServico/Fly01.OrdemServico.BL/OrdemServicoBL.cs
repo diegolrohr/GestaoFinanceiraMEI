@@ -26,7 +26,7 @@ namespace Fly01.OrdemServico.BL
         {
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             if (entity.DataEntrega == DateTime.MinValue)
-                entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPadraoEntrega);
+                entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPrazoEntrega);
             else
                 entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
 

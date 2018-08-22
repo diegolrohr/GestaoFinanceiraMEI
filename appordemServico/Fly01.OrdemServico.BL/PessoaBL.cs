@@ -5,6 +5,7 @@ using Fly01.Core.ValueObjects;
 using Fly01.OrdemServico.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -39,7 +40,7 @@ namespace Fly01.OrdemServico.BL
             entity.Fail(entity.TipoDocumento != "J" && entity.TipoDocumento != "F", TipoDocumentoInvalido);
             ValidaFormatoDocumento(entity);
             ValidaFormatoCep(entity);
-            entity.Fail(entity.Estado != null && !EstadoBL.All.Any(x => x.Sigla.Equals(entity.Estado.Sigla, StringComparison.CurrentCultureIgnoreCase)), SiglaEstadoInvalida);
+            entity.Fail(entity.Estado != null && !EstadoBL.All.AsNoTracking().Any(x => x.Sigla.Equals(entity.Estado.Sigla, StringComparison.CurrentCultureIgnoreCase)), SiglaEstadoInvalida);
             ValidaCidade(entity, entity.Estado);
             ValidaEmail(entity);
             ValidaInscricaoEstadual(entity);
@@ -50,7 +51,7 @@ namespace Fly01.OrdemServico.BL
         {
             if (!string.IsNullOrWhiteSpace(entity.CPFCNPJ.ToString()))
             {
-                entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id), new Error(string.Format("O CPF/CNPJ informado já foi utilizado em outro cadastro.")));
+                entity.Fail(All.AsNoTracking().Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id), new Error(string.Format("O CPF/CNPJ informado já foi utilizado em outro cadastro.")));
             }
         }
 
@@ -90,7 +91,7 @@ namespace Fly01.OrdemServico.BL
 
             if (!string.IsNullOrWhiteSpace(entity.InscricaoEstadual))
             {
-                var siglaUF = CidadeBL.AllIncluding(x => x.Estado).FirstOrDefault(x => x.Id == entity.CidadeId).Estado.Sigla;
+                var siglaUF = CidadeBL.AllIncluding(x => x.Estado).AsNoTracking().FirstOrDefault(x => x.Id == entity.CidadeId).Estado.Sigla;
                 var msgErrorInscricaoEstadual = string.Empty;
 
                 if (!InscricaoEstadualHelper.IsValid(siglaUF, entity.InscricaoEstadual, out msgErrorInscricaoEstadual))
@@ -120,7 +121,7 @@ namespace Fly01.OrdemServico.BL
         {
             entity.Fail(
                 entity.Cidade != null
-                && !CidadeBL.All.Any(x => x.EstadoId == entity.EstadoId && x.Nome.Equals(entity.Cidade.Nome, StringComparison.CurrentCultureIgnoreCase)), NomeCidadeInvalido);
+                && !CidadeBL.All.AsNoTracking().Any(x => x.EstadoId == entity.EstadoId && x.Nome.Equals(entity.Cidade.Nome, StringComparison.CurrentCultureIgnoreCase)), NomeCidadeInvalido);
         }
 
         public static Error TipoCadastroInvalido = new Error("Informe se ao menos a pessoa é um Cliente e/ou Fornecedor.");
@@ -144,7 +145,7 @@ namespace Fly01.OrdemServico.BL
         {
             if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.CidadeCodigoIbge))
             {
-                var dadosCidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
+                var dadosCidade = CidadeBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.CidadeCodigoIbge);
                 if (dadosCidade != null)
                 {
                     entity.EstadoId = dadosCidade.EstadoId;
@@ -153,7 +154,7 @@ namespace Fly01.OrdemServico.BL
             }
             else if (!entity.CidadeId.HasValue && !entity.EstadoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
             {
-                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                var dadosEstado = EstadoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
                 if (dadosEstado != null)
                 {
                     entity.EstadoId = dadosEstado.Id;

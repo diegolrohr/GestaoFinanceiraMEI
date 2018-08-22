@@ -20,7 +20,7 @@ namespace Fly01.OrdemServico.BL
             _pessoaBL = pessoaBL;
         }
 
-        public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+        public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.AsNoTracking().Where(x => x.PlataformaId == PlataformaUrl);
 
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {

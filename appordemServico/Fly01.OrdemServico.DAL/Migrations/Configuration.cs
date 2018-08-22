@@ -13,6 +13,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
         protected override void Seed(AppDataContext context)
         {
             new NCMDataInitializer().Initialize(context);
+            new NBSDataInitializer().Initialize(context);
             new UnidadeMedidaDataInitializer().Initialize(context);
 
             var estados = new EstadoDataInitializer();

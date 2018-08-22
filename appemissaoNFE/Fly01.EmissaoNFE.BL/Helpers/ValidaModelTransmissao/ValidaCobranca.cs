@@ -13,10 +13,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
             if (item.Cobranca != null && item.Cobranca.Fatura == null)
                 entity.Fail(true, new Error("Informe os dados da fatura. Item: " + nItem, "Item.Cobranca.Fatura"));
-            else
-            {
+            else if(item.Cobranca != null && item.Cobranca.Fatura != null)
                 ValidarDadosFatura(item, entity, nItem);
-            }
 
             #endregion Validação da classe Totais
         }

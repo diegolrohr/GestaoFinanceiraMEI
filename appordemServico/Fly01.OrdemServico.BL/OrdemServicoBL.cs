@@ -19,7 +19,6 @@ namespace Fly01.OrdemServico.BL
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
-            entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
 
             base.ValidaModel(entity);
         }

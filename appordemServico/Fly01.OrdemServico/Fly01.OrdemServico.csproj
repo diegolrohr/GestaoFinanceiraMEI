@@ -70,7 +70,6 @@
     <Compile Include="Controllers\OrdemServicoItemProdutoController.cs" />
     <Compile Include="Controllers\OrdemServicoController.cs" />
     <Compile Include="Controllers\ParametroOrdemServicoController.cs" />
-    <Compile Include="Controllers\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\ServicoController.cs" />
     <Compile Include="Global.asax.cs">

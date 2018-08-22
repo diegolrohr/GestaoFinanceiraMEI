@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.OrdemServico.BL.Extension;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -10,11 +11,13 @@ namespace Fly01.OrdemServico.BL
     public class OrdemServicoBL : PlataformaBaseBL<Core.Entities.Domains.Commons.OrdemServico>
     {
         public const int MaxLengthObservacao = 200;
-        private readonly ParametroOrdemServicoBL _parametro;
+        private readonly ParametroOrdemServicoBL _parametroBL;
+        private readonly PessoaBL _pessoaBL;
 
-        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametro) : base(context)
+        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL) : base(context)
         {
-            _parametro = parametro;
+            _parametroBL = parametroBL;
+            _pessoaBL = pessoaBL;
         }
 
         public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
@@ -23,9 +26,19 @@ namespace Fly01.OrdemServico.BL
         {
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             if (entity.DataEntrega == DateTime.MinValue)
-                entity.DataEntrega = entity.DataEmissao.AddDays(_parametro.ParametroPlataforma.DiasPadraoEntrega);
+                entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPadraoEntrega);
             else
                 entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
+
+            var responsavel = entity.ValidForeignKey(x => x.Id, "Responsável", "responsavelId", _pessoaBL, x => new
+            {
+                x.Id,
+                x.Vendedor
+            });
+
+            if (responsavel != null)
+                entity.Fail(!responsavel.Vendedor, new Error($"A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
+
             base.ValidaModel(entity);
         }
 

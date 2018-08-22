@@ -28,17 +28,18 @@ namespace Fly01.OrdemServico.Controllers
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
-            //    //Header = new HtmlUIHeader
-            //    //{
-            //    //    Title = "Fluxo de Caixa",
-            //    //    Buttons = new List<HtmlUIButton>
-            //    //    {
-            //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-            //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
-            //    //    }
-            //    //},
-            //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-            //    //Functions = new List<string> { "__format", "fnGetSaldos" }
+                SidebarUrl = @Url.Action("Sidebar")
+                //    //Header = new HtmlUIHeader
+                //    //{
+                //    //    Title = "Fluxo de Caixa",
+                //    //    Buttons = new List<HtmlUIButton>
+                //    //    {
+                //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
+                //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
+                //    //    }
+                //    //},
+                //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                //    //Functions = new List<string> { "__format", "fnGetSaldos" }
             };
 
             if (withSidebarUrl)

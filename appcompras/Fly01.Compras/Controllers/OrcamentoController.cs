@@ -90,7 +90,7 @@ namespace Fly01.Compras.Controllers
 
         public ContentUI FormOrcamentoJson(bool isEdit = false)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -103,8 +103,7 @@ namespace Fly01.Compras.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyOrcamentoItem" },
-                SidebarUrl = @Url.Action("Sidebar", "Home")
+                Functions = new List<string> { "fnFormReadyOrcamentoItem" }
             };
 
             var config = new FormWizardUI

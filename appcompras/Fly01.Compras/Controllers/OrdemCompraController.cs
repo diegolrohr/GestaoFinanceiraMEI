@@ -81,7 +81,7 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        protected ContentUI OrdemCompraJson(UrlHelper url, string scheme, bool withSidebarUrl = false, string gridLoad = "GridLoad")
+        protected ContentUI OrdemCompraJson(UrlHelper url, string scheme, string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as compras";
             var buttonOnClick = "fnRemoveFilter";
@@ -92,7 +92,7 @@ namespace Fly01.Compras.Controllers
                 buttonOnClick = "fnAddFilter";
             }
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "OrdemCompra") },
                 Header = new HtmlUIHeader
@@ -100,12 +100,8 @@ namespace Fly01.Compras.Controllers
                     Title = "Orçamento / Pedido",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
-                SidebarUrl = @Url.Action("Sidebar", "Home")
+                UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns="
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = url.Action("Sidebar", "OrdemCompra", null, scheme);
 
             if (gridLoad == "GridLoad")
             {

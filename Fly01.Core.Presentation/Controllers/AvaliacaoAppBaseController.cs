@@ -34,7 +34,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected override ContentUI FormJson()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -45,8 +45,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Avalie o Aplicativo",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                SidebarUrl = Url.Action("Sidebar", "Home")
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
             var config = new FormUI
             {

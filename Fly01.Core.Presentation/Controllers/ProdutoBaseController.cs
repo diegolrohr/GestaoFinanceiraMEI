@@ -68,7 +68,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override ContentResult List()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
@@ -77,8 +77,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" },
-                SidebarUrl = @Url.Action("Sidebar", "Home")
+                Functions = new List<string>() { "fnRenderEnum" }
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -107,7 +106,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected override ContentUI FormJson()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -119,8 +118,7 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Dados do Produto",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                SidebarUrl = @Url.Action("Sidebar", "Home")
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             var config = new FormUI

@@ -61,13 +61,12 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
 
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
-                return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
-            //return DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },

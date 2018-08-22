@@ -14,7 +14,6 @@ namespace Fly01.OrdemServico.BL
     {
         private readonly DbContext _context;
         private readonly OrdemServicoBL _ordemServicoBL;
-        private readonly ProdutoBL _produtoBL;
         private readonly OrdemServicoItemServicoBL _ordemServicoItemServicoBL;
         private readonly OrdemServicoItemProdutoBL _ordemServicoItemProdutoBL;
 
@@ -28,17 +27,28 @@ namespace Fly01.OrdemServico.BL
 
         public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime filtro)
         {
-            int QtdTotal = _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year)).Count();
+            List<OrdemServicoPorStatusVM> listaResult = new List<OrdemServicoPorStatusVM>();
+            int QtdTotal = _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year)).Count();           
 
-            return _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
-                                            .GroupBy(x => x.Status)
-                                            .Select(x => new OrdemServicoPorStatusVM
+            var result = _ordemServicoBL.All.Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+                                            .GroupBy(x => new {x.Status })
+                                            .Select(x => new 
                                             {
-                                                Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.Key.ToString()),
-                                                Quantidade =  x.Count(),
-                                                QuantidadeTotal = QtdTotal
+                                                Status = x.Key,
+                                                Quantidade = x.Count()
                                             })
                                             .ToList();
+
+            result.ForEach(x =>
+            {
+                listaResult.Add(new OrdemServicoPorStatusVM
+                {
+                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.Status.ToString()),
+                    Quantidade = x.Quantidade,
+                    QuantidadeTotal = QtdTotal
+                });
+            });
+            return listaResult;
         }
 
         public List<OrdemServicosPorDiaVM> GetQuantidadeOrdemServicoPorDia(DateTime filtro)

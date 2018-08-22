@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201808202004112_Remoção ValorTotal.Designer.cs">
       <DependentUpon>201808202004112_Remoção ValorTotal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808221420012_Nullable ResponsavelId.cs" />
+    <Compile Include="Migrations\201808221420012_Nullable ResponsavelId.Designer.cs">
+      <DependentUpon>201808221420012_Nullable ResponsavelId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -117,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808202004112_Remoção ValorTotal.resx">
       <DependentUpon>201808202004112_Remoção ValorTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221420012_Nullable ResponsavelId.resx">
+      <DependentUpon>201808221420012_Nullable ResponsavelId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

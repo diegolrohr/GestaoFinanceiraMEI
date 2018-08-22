@@ -31,7 +31,7 @@ namespace Fly01.OrdemServico.BL
             entity.Numero = ObterProximoNumero();
         }
 
-        private int ObterProximoNumero() => Everything.Max(x => x.Numero) + 1;
+        private int ObterProximoNumero() => (Everything.Max(x => (int?)x.Numero) ?? 0) + 1;
 
         public override void Update(Core.Entities.Domains.Commons.OrdemServico entity)
         {

@@ -31,7 +31,7 @@ namespace Fly01.OrdemServico.BL.Extension
             Guid? id;
             if (!GetGuid(entity, foreignId, foreignName, foreignField, out id)) return false;
             var result = foreignBL.Exists(id);
-            entity.Fail(result, new Error($"'{foreignName}' informado não existe", foreignField));
+            entity.Fail(!result, new Error($"'{foreignName}' informado não existe", foreignField));
 
             return result;
         }

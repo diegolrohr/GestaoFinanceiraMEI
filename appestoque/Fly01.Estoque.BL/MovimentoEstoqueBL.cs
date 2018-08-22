@@ -101,7 +101,7 @@ namespace Fly01.Estoque.BL
             ProdutoBL.Update(produto, true);
         }
 
-        public override void PersistMessage(dynamic message, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao, RpcClient rpc)
+        public override void PersistMessage(dynamic message, RabbitConfig.EnHttpVerb httpMethod, bool isIntegracao)
         {
             var entity = JsonConvert.DeserializeObject<MovimentoEstoque>(message.ToString());
 

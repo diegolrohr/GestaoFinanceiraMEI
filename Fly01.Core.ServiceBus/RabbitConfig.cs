@@ -19,6 +19,7 @@ namespace Fly01.Core.ServiceBus
         public static string VirtualHostIntegracao => WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];
         public static List<string> ListRoutingKeys => WebConfigurationManager.AppSettings["RabbitListRoutingKeys"].ToString().Split(',').ToList();
         public static string SequenceGeneratorQueue => WebConfigurationManager.AppSettings["RabbitSequenceGenetorQueueName"];
+        public static bool IsDevEnvironment => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev";
 
         public enum EnHttpVerb
         {

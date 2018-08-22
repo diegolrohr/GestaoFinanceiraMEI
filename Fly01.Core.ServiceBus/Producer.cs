@@ -38,12 +38,15 @@ namespace Fly01.Core.ServiceBus
                         { "Hostname", RabbitConfig.VirtualHostApps },
                     };
 
+                    if (RabbitConfig.IsDevEnvironment) routingKey = Environment.MachineName + "_" + routingKey;
+
                     channel.BasicPublish(RabbitConfig.AMQPExchange, routingKey, properties, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
                 }
             }
             catch (Exception ex)
             {
-                MediaClient.PostErrorRabbitMQ(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), ex, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
+                var _mediaClient = new MediaClient();
+                _mediaClient.PostErrorRabbitMQ(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)).ToString(), ex, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
             }
         }
     }

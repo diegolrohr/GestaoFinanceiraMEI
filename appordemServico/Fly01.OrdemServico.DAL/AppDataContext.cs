@@ -8,13 +8,15 @@ namespace Fly01.OrdemServico.DAL
 {
     public class AppDataContext : AppDataContextBase
     {
-        public AppDataContext(ContextInitialize initialize) : base("OrdemServicoConnection")
+        private const string CONNECTION = "OrdemServicoConnection";
+
+        public AppDataContext(ContextInitialize initialize) : base(CONNECTION)
         {
             AppUser = initialize.AppUser;
             PlataformaUrl = initialize.PlataformaUrl;
         }
 
-        public AppDataContext() : base("OrdemServicoConnection")
+        public AppDataContext() : base(CONNECTION)
         {
 
         }

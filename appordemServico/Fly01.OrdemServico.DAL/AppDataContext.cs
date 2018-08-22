@@ -4,17 +4,19 @@ using Fly01.Core.Entities.Domains.Commons;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace Fly01.OrdemServico.API.Models.DAL
+namespace Fly01.OrdemServico.DAL
 {
     public class AppDataContext : AppDataContextBase
     {
-        public AppDataContext(ContextInitialize initialize) : base("OrdemServicoConnection")
+        private const string CONNECTION = "OrdemServicoConnection";
+
+        public AppDataContext(ContextInitialize initialize) : base(CONNECTION)
         {
             AppUser = initialize.AppUser;
             PlataformaUrl = initialize.PlataformaUrl;
         }
 
-        public AppDataContext() : base("OrdemServicoConnection")
+        public AppDataContext() : base(CONNECTION)
         {
 
         }
@@ -55,7 +57,7 @@ namespace Fly01.OrdemServico.API.Models.DAL
 
         public DbSet<GrupoProduto> GruposProduto { get; set; }
 
-        public DbSet<Nbs> Nbs { get; set; }
+        public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Ncm> Ncms { get; set; }
 
         public DbSet<Pessoa> Pessoas { get; set; }
@@ -66,6 +68,7 @@ namespace Fly01.OrdemServico.API.Models.DAL
         public DbSet<OrdemServicoItem> OrdemServicoItens { get; set; }
         public DbSet<OrdemServicoItemProduto> OrdemServicoItensProduto { get; set; }
         public DbSet<OrdemServicoItemServico> OrdemServicoItensServico { get; set; }
+        public DbSet<OrdemServicoManutencao> OrdemServicoManutencao { get; set; }
 
         public DbSet<ParametroOrdemServico> ParametrosOrdemServico { get; set; }
 

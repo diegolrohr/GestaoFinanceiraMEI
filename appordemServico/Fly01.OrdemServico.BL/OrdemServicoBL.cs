@@ -1,6 +1,8 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.OrdemServico.BL.Extension;
+using System;
 using System.Data.Entity;
 using System.Linq;
 
@@ -9,17 +11,33 @@ namespace Fly01.OrdemServico.BL
     public class OrdemServicoBL : PlataformaBaseBL<Core.Entities.Domains.Commons.OrdemServico>
     {
         public const int MaxLengthObservacao = 200;
+        private readonly ParametroOrdemServicoBL _parametroBL;
+        private readonly PessoaBL _pessoaBL;
 
-        public OrdemServicoBL(AppDataContextBase context) : base(context)
+        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL) : base(context)
         {
+            _parametroBL = parametroBL;
+            _pessoaBL = pessoaBL;
         }
 
-        public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+        public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.AsNoTracking().Where(x => x.PlataformaId == PlataformaUrl);
 
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
-            entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
+            if (entity.DataEntrega == DateTime.MinValue)
+                entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPadraoEntrega);
+            else
+                entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
+
+            var responsavel = entity.ValidForeignKey(x => x.Id, "Responsável", "responsavelId", _pessoaBL, x => new
+            {
+                x.Id,
+                x.Vendedor
+            });
+
+            if (responsavel != null)
+                entity.Fail(!responsavel.Vendedor, new Error($"A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
 
             base.ValidaModel(entity);
         }
@@ -32,7 +50,7 @@ namespace Fly01.OrdemServico.BL
             entity.Numero = ObterProximoNumero();
         }
 
-        private int ObterProximoNumero() => Everything.Max(x => x.Numero) + 1;
+        private int ObterProximoNumero() => (Everything.Max(x => (int?)x.Numero) ?? 0) + 1;
 
         public override void Update(Core.Entities.Domains.Commons.OrdemServico entity)
         {

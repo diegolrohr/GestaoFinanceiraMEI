@@ -2,6 +2,7 @@
 using Fly01.Core.Entities.Domains;
 using Fly01.Core.Notifications;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -17,7 +18,7 @@ namespace Fly01.OrdemServico.BL.Extension
         {
             Guid? id;
             if (!GetGuid(entity, foreignId, foreignName, foreignField, out id)) return null;
-            var result = foreignBL.All.Where(x => x.Id == id).Select(resultPredicate).FirstOrDefault();
+            var result = foreignBL.All.AsNoTracking().Where(x => x.Id == id).Select(resultPredicate).FirstOrDefault();
             entity.Fail(result == null, new Error($"'{foreignName}' informado não existe", "produtoId"));
 
             return result;
@@ -31,7 +32,7 @@ namespace Fly01.OrdemServico.BL.Extension
             Guid? id;
             if (!GetGuid(entity, foreignId, foreignName, foreignField, out id)) return false;
             var result = foreignBL.Exists(id);
-            entity.Fail(result, new Error($"'{foreignName}' informado não existe", foreignField));
+            entity.Fail(!result, new Error($"'{foreignName}' informado não existe", foreignField));
 
             return result;
         }

@@ -20,7 +20,7 @@ namespace Fly01.OrdemServico.Controllers
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
-            var cfg = new ContentUI     
+            var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 //    //Header = new HtmlUIHeader
@@ -65,7 +65,7 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Cadastro",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
                     }
                 },
@@ -75,7 +75,7 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("List", "Home")}                        
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
                     }
                 },
                 new SidebarUIMenu()

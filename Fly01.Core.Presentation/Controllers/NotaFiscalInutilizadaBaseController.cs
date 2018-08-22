@@ -62,7 +62,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Nota Fiscal Inutilizada",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI
@@ -129,7 +130,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Notas Fiscais Inutilizadas",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new DataTableUI

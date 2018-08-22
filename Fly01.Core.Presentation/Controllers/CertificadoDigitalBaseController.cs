@@ -135,7 +135,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Certificado Digital A1",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

@@ -45,8 +45,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Avalie o Aplicativo",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
             var config = new FormUI
             {

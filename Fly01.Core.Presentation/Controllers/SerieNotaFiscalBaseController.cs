@@ -58,7 +58,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Série de Notas Fiscais",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
 
@@ -112,7 +113,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Dados da Série da Nota Fiscal",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

@@ -117,7 +117,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = LabelTitle,
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())                    
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -165,7 +166,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = ResourceTitle,
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
             
             var config = new FormUI
@@ -300,7 +302,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = $"Importar {ResourceTitle}",
                     Buttons = new List<HtmlUIButton>(GetFormImportacaoButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI()

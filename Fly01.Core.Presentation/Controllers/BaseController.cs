@@ -201,7 +201,8 @@ namespace Fly01.Core.Presentation
                     Title = "Opção indisponível",
                     Buttons = new List<HtmlUIButton>()
                 },
-                UrlFunctions = ""
+                UrlFunctions = "",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             cfg.Content.Add(new FormUI()

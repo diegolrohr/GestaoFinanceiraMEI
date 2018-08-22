@@ -57,7 +57,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Buttons = new List<HtmlUIButton>(GetButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" },
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "GrupoProduto", null, Request.Url?.Scheme) + "?fns=" };
@@ -111,7 +112,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Cadastro de Grupo de Produto",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

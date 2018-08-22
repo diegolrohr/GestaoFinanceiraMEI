@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Commons
@@ -18,10 +18,7 @@ namespace Fly01.Core.Presentation.Commons
         public static IHtmlString HeadTemplate(this HtmlHelper<dynamic> html, string appName)
         {
             return new HtmlString(
-                "<meta charset=\"utf-8\">" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">" +
-                $"<title>{appName}</title>" +
-                "<base href=\"~/\" />" +
+                $"<title>{appName}</title>{System.Environment.NewLine}" +
                 $"<link type=\"text/css\" rel=\"stylesheet\" href=\"{cssUrl}\" />"
             );
         }

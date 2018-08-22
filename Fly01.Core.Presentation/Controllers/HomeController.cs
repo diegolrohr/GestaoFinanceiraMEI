@@ -65,7 +65,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = $"Opção não permitida",
                     Buttons = new List<HtmlUIButton>()
                 },
-                UrlFunctions = ""
+                UrlFunctions = "",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             cfg.Content.Add(new FormUI()

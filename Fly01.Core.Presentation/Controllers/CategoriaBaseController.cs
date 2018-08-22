@@ -52,7 +52,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Cadastro de Categoria",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI
@@ -113,14 +114,15 @@ namespace Fly01.Core.Presentation.Controllers
         public override ContentResult List()
         {
             var cfg = new ContentUI
-            {
+            {                
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
                     Title = "Categoria",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new DataTableUI

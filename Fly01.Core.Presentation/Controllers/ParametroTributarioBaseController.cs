@@ -107,7 +107,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Parâmetros Tributários | Nota Fiscal",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var form1 = new FormUI

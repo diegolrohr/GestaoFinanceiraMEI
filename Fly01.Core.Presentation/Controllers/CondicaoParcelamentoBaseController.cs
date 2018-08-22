@@ -81,7 +81,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Condições de Parcelamento",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             DataTableUI config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns=" };
@@ -127,7 +128,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = "Dados da condição de parcelamento",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())                    
                 },
-                UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "CondicaoParcelamento", null, Request.Url.Scheme) + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

@@ -15,18 +15,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o valor originário da fatura
         /// </summary>
         [XmlIgnore]
-        public double? ValorOiriginario { get; set; }
+        public double? ValorOriginario { get; set; }
 
         [XmlElement(ElementName = "vOrig")]
-        public string ValorOiriginarioString
+        public string ValorOriginarioString
         {
-            get { return ValorOiriginario.HasValue ? ValorOiriginario.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorOiriginario = double.Parse(value.Replace(".", ",")); }
+            get { return ValorOriginario.HasValue ? ValorOriginario.Value.ToString("0.00").Replace(",", ".") : null; }
+            set { ValorOriginario = double.Parse(value.Replace(".", ",")); }
         }
 
         public bool ShouldSerializeValorOiriginarioString()
         {
-            return ValorOiriginario.HasValue & ValorOiriginario > 0;
+            return ValorOriginario.HasValue & ValorOriginario > 0;
         }
 
         /// <summary>

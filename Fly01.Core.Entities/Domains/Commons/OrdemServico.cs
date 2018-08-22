@@ -13,7 +13,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid ClienteId { get; set; }
 
-        [Required]
         public int Numero { get; set; }
 
         [Required]

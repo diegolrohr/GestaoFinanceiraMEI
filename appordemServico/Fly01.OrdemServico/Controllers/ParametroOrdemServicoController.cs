@@ -5,12 +5,11 @@ using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    public class ParametrosController : BaseController<ParametrosVM>
+    public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
 
         public override ContentResult List()
@@ -47,12 +46,12 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputNumbersUI { Id = "diasEntrega", Class = "col s12 m3", Label = "Nº de dias sugeridos para a previsão de entrega", Required = true });
 
-            cfg.Content.Add(config);           
+            cfg.Content.Add(config);
 
             return cfg;
-         }
+        }
 
-        public override Func<ParametrosVM, object> GetDisplayData()
+        public override Func<ParametroOrdemServicoVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }

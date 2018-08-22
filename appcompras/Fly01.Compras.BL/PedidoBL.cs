@@ -7,6 +7,7 @@ using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.Collections.Generic;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Compras.BL
 {
@@ -21,9 +22,9 @@ namespace Fly01.Compras.BL
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
-        private readonly string descricaoCompra = @"Venda nº: {0}";
-        private readonly string observacaoCompra = @"Observação gerada pela venda nº {0} applicativo Bemacash Faturamento: {1}";
-        private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
+        private readonly string descricaoCompra = @"Compra nº: {0}";
+        private readonly string observacaoCompra = @"Observação gerada pela compra nº {0} applicativo Bemacash Compras: {1}";
+        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
@@ -72,11 +73,12 @@ namespace Fly01.Compras.BL
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
-                entity.Fail(!produtos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto."));
+                entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
+                entity.Fail(produtos.Any(x => x.GrupoTributarioId == null) && entity.GeraNotaFiscal == true , new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
-                    new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
+                    new Error("Compra que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
                     );
             }
 
@@ -90,7 +92,7 @@ namespace Fly01.Compras.BL
             dynamic notaFiscal;
             
             notaFiscal = new NFeEntrada();
-            
+
             notaFiscal.Id = Guid.NewGuid();
             notaFiscal.ChaveNFeReferenciada = tipo == TipoNotaFiscal.NFe ? entity.ChaveNFeReferenciada : null;
             notaFiscal.OrdemCompraOrigemId = entity.Id;
@@ -112,6 +114,8 @@ namespace Fly01.Compras.BL
             notaFiscal.DataVencimento = entity.DataVencimento;
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
+            notaFiscal.GeraFinanceiro = entity.GeraFinanceiro;
+            notaFiscal.ContaFinanceiraParcelaPaiId = entity.ContaFinanceiraParcelaPaiId;
             notaFiscal.MensagemPadraoNota = entity.MensagemPadraoNota;
             return notaFiscal;
         }
@@ -198,7 +202,7 @@ namespace Fly01.Compras.BL
             }
         }
 
-        protected void CopiaDadosNFeReferenciadaDevolucao(OrdemCompra entity)
+        protected void CopiaDadosNFeReferenciadaDevolucao(Pedido entity)
         {
             Guid idPedidoReferenciado = default(Guid);
             var NFe = NFeEntradaBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
@@ -213,52 +217,52 @@ namespace Fly01.Compras.BL
                     var previousData = entity.Data;
                     var previousNumero = entity.Numero;
                     var previousId = entity.Id;
-                    //var previousClienteId = entity.ClienteId;
+                    var previousFornecedorId = entity.FornecedorId;
                     var previousGrupoTributarioPadraoId = entity.GrupoTributarioPadraoId;
                     var previousChaveNFeReferenciada = entity.ChaveNFeReferenciada;
-                    //var previousTipoVenda = entity.TipoCompra;
+                    var previousTipoCompra = entity.TipoCompra;
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
-                    //var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
-                    //entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
+                    var fornecedorReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.FornecedorId);
+                    entity.Fail((fornecedorReferenciado == null || fornecedorReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
 
-                    //if (entity.IsValid())
-                    //{
-                    //    pedidoReferenciado.CopyProperties<OrdemCompra>(entity);
-                    //    entity.Id = previousId;
-                    //    entity.Numero = previousNumero;
-                    //    entity.Data = previousData;
-                    //    entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
-                    //    entity.NaturezaOperacao = null;
-                    //    entity.ClienteId = (clienteReferenciado != null && clienteReferenciado.Ativo == true) ? pedidoReferenciado.ClienteId : previousClienteId;
-                    //    entity.Status = StatusOrdemCompra.Aberto;
-                    //    entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
-                    //    entity.TipoVenda = previousTipoVenda;
-                    //    entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
+                    if (entity.IsValid())
+                    {
+                        pedidoReferenciado.CopyProperties<Pedido>(entity);
+                        entity.Id = previousId;
+                        entity.Numero = previousNumero;
+                        entity.Data = previousData;
+                        entity.CategoriaId = null;
+                        entity.NaturezaOperacao = null;
+                        entity.FornecedorId = (fornecedorReferenciado != null && fornecedorReferenciado.Ativo == true) ? pedidoReferenciado.FornecedorId : previousFornecedorId;
+                        entity.Status = StatusOrdemCompra.Aberto;
+                        entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
+                        entity.TipoCompra = previousTipoCompra;
+                        entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
 
-                    //    var produtos = OrdemCompraProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == idPedidoReferenciado).ToList();
+                        var produtos = PedidoItemBL.All.AsNoTracking().Where(x => x.PedidoId == idPedidoReferenciado).ToList();
 
-                    //    if (produtos != null & produtos.Any())
-                    //    {
-                    //        foreach (var produto in produtos)
-                    //        {
-                    //            var produtoClonado = new OrdemVendaProduto();
-                    //            produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
-                    //            produtoClonado.Id = default(Guid);
-                    //            produtoClonado.OrdemVendaId = entity.Id;
-                    //            //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
-                    //            produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
-                    //            OrdemCompraProdutoBL.Insert(produtoClonado);
-                    //        }
-                    //    }
-                    //}
+                        if (produtos != null & produtos.Any())
+                        {
+                            foreach (var produto in produtos)
+                            {
+                                var produtoClonado = new PedidoItem();
+                                produto.CopyProperties<PedidoItem>(produtoClonado);
+                                produtoClonado.Id = default(Guid);
+                                produtoClonado.PedidoId = entity.Id;
+                                //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
+                                produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                PedidoItemBL.Insert(produtoClonado);
+                            }
+                        }
+                    }
                     #endregion
                 }
             }
             else
             {
-                //var clienteReferenciado = TotalTributacaoBL.GetPessoa(entity.ClienteId);
-                //entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
+                var fornecedorReferenciado = TotalTributacaoBL.GetPessoa(entity.FornecedorId);
+                entity.Fail((fornecedorReferenciado == null || fornecedorReferenciado.Ativo == false), new Error("Informe um fornecedor ativo. Fornecedor da nota fiscal referenciada inexistente ou excluído.", "fornecedorId"));
             }
         }
 
@@ -291,9 +295,11 @@ namespace Fly01.Compras.BL
         public override void Update(Pedido entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente venda em aberto pode ser alterada", "status"));
+            entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser alterada", "status"));
 
             ValidaModel(entity);
+
+            GeraIdContaFinanceiraRecuperarDadosParcela(entity);
 
             if (entity.Status == StatusOrdemCompra.Finalizado && entity.TipoOrdemCompra == TipoOrdemCompra.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
@@ -303,9 +309,17 @@ namespace Fly01.Compras.BL
             base.Update(entity);
         }
 
+        private void GeraIdContaFinanceiraRecuperarDadosParcela(Pedido entity)
+        {
+            if (entity.GeraFinanceiro && (entity.ContaFinanceiraParcelaPaiId == default(Guid) || entity.ContaFinanceiraParcelaPaiId == null))
+            {
+                entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
+            }
+        }
+
         public override void Delete(Pedido entityToDelete)
         {
-            entityToDelete.Fail(entityToDelete.Status != StatusOrdemCompra.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
+            entityToDelete.Fail(entityToDelete.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser deletada", "status"));
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(entityToDelete.Notification.Get());
@@ -324,15 +338,15 @@ namespace Fly01.Compras.BL
             if (observacaoTitulo.Length > MaxLengthObservacao)
                 observacaoTitulo = observacaoTitulo.Substring(0, MaxLengthObservacao);
 
-            var descricaoTitulo = string.Format(observacaoCompra, entity.Numero);
+            var descricaoTitulo = string.Format(descricaoCompra, entity.Numero);
             if (descricaoTitulo.Length > MaxLengthObservacao)
                 descricaoTitulo = descricaoTitulo.Substring(0, MaxLengthObservacao);
 
             if (entity.GeraFinanceiro)
             {
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoCompra == TipoVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoCompra == TipoVenda.Devolucao)
                 );
 
                 double totalProdutos = produtos != null ? produtos.Select(e => (e.Quantidade * e.Valor) - e.Desconto).Sum() : 0;
@@ -360,26 +374,9 @@ namespace Fly01.Compras.BL
 
                 if (entity.TipoCompra == TipoVenda.Normal)
                 {
-                    var contaReceber = new ContaReceber()
-                    {
-                        ValorPrevisto = valorPrevisto,
-                        CategoriaId = entity.CategoriaId.Value,
-                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                        PessoaId = entity.FornecedorId,
-                        DataEmissao = entity.Data,
-                        DataVencimento = entity.DataVencimento.Value,
-                        Descricao = descricaoTitulo,
-                        Observacao = observacaoTitulo,
-                        FormaPagamentoId = entity.FormaPagamentoId.Value,
-                        PlataformaId = PlataformaUrl,
-                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
-                    };
-                    Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
-                }
-                else if (entity.TipoCompra == TipoVenda.Devolucao)
-                {
                     var contaPagar = new ContaPagar()
                     {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
                         ValorPrevisto = valorPrevisto,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
@@ -394,29 +391,48 @@ namespace Fly01.Compras.BL
                     };
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
                 }
+                else if (entity.TipoCompra == TipoVenda.Devolucao)
+                {
+                    var contaReceber = new ContaReceber()
+                    {
+                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
+                        ValorPrevisto = valorPrevisto,
+                        CategoriaId = entity.CategoriaId.Value,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                        PessoaId = entity.FornecedorId,
+                        DataEmissao = entity.Data,
+                        DataVencimento = entity.DataVencimento.Value,
+                        Descricao = descricaoTitulo,
+                        Observacao = observacaoTitulo,
+                        FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        PlataformaId = PlataformaUrl,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+                    };
+                    Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
+                }
             }
 
             if (entity.MovimentaEstoque)
             {
-                //var movimentos = (from ordemCompraProduto in produtos
-                //                  group ordemCompraProduto by ordemCompraProduto.ProdutoId into groupResult
-                //                  select new
-                //                  {
-                //                      ProdutoId = groupResult.Key,
-                //                      Total = groupResult.Sum(f => f.Quantidade)
-                //                  })
-                //    .Select(x => new MovimentoOrdemVenda
-                //    {
-                //        Quantidade = (x.Total),
-                //        PedidoNumero = entity.Numero,
-                //        ProdutoId = x.ProdutoId,
-                //        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
-                //        TipoVenda = entity.TipoVenda,
-                //        PlataformaId = PlataformaUrl
-                //    }).ToList();
+                var movimentos = (from ordemCompraProduto in produtos
+                                  group ordemCompraProduto by ordemCompraProduto.ProdutoId into groupResult
+                                  select new
+                                  {
+                                      ProdutoId = groupResult.Key,
+                                      Total = groupResult.Sum(f => f.Quantidade)
+                                  })
+                    .Select(x => new MovimentoPedidoCompra
+                    {
+                        Quantidade = (x.Total),
+                        PedidoNumero = entity.Numero,
+                        ProdutoId = x.ProdutoId,
+                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
+                        TipoCompra = entity.TipoCompra,
+                        PlataformaId = PlataformaUrl
+                    }).ToList();
 
-                //foreach (var movimento in movimentos)
-                //    Producer<MovimentoOrdemCompra>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
+                foreach (var movimento in movimentos)
+                    Producer<MovimentoPedidoCompra>.Send(routePrefixNameMovimentoPedidoCompra, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
             }
         }
 

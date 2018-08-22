@@ -99,6 +99,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoNfeComplementar TipoNfeComplementar { get; set; }
 
+        public Guid? ContaFinanceiraParcelaPaiId { get; set; }
+
         public virtual Pessoa Cliente { get; set; }
 
         public virtual GrupoTributario GrupoTributarioPadrao { get; set; }

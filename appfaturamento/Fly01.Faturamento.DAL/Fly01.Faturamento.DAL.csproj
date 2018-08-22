@@ -328,6 +328,10 @@
     <Compile Include="Migrations\201808161736084_AlterProdutoAddColumnObjetoDeManutencao.Designer.cs">
       <DependentUpon>201808161736084_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.cs" />
+    <Compile Include="Migrations\201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.Designer.cs">
+      <DependentUpon>201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -567,6 +571,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808161736084_AlterProdutoAddColumnObjetoDeManutencao.resx">
       <DependentUpon>201808161736084_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.resx">
+      <DependentUpon>201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

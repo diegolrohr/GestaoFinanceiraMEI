@@ -13,10 +13,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
             if (item.Cobranca != null && item.Cobranca.Fatura == null)
                 entity.Fail(true, new Error("Informe os dados da fatura. Item: " + nItem, "Item.Cobranca.Fatura"));
-            else
-            {
+            else if(item.Cobranca != null && item.Cobranca.Fatura != null)
                 ValidarDadosFatura(item, entity, nItem);
-            }
 
             #endregion Validação da classe Totais
         }
@@ -25,8 +23,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             entity.Fail(string.IsNullOrEmpty(item.Cobranca.Fatura.NumeroFatura), new Error("Informe o número da fatura.", "Item.Cobranca.Fatura.NumeroFatura"));
             entity.Fail(!string.IsNullOrEmpty(item.Cobranca.Fatura.NumeroFatura) && item.Cobranca.Fatura.NumeroFatura.Length > 60, new Error("Tamanho do número da fatura deve conter até 60 caracteres.", "Item.Cobranca.Fatura.NumeroFatura"));
-            entity.Fail(!item.Cobranca.Fatura.ValorOiriginario.HasValue, new Error("Informe o valor originário.", "Item.Cobranca.Fatura.ValorOiriginario"));
-            entity.Fail(item.Cobranca.Fatura.ValorOiriginario.HasValue && item.Cobranca.Fatura.ValorOiriginario <= 0, new Error("Valor originário deve ser superior a zero.", "Item.Cobranca.Fatura.ValorOiriginario"));
+            entity.Fail(!item.Cobranca.Fatura.ValorOriginario.HasValue, new Error("Informe o valor originário.", "Item.Cobranca.Fatura.ValorOiriginario"));
+            entity.Fail(item.Cobranca.Fatura.ValorOriginario.HasValue && item.Cobranca.Fatura.ValorOriginario <= 0, new Error("Valor originário deve ser superior a zero.", "Item.Cobranca.Fatura.ValorOiriginario"));
             entity.Fail(!item.Cobranca.Fatura.ValorLiquido.HasValue, new Error("Informe o valor líquido.", "Item.Cobranca.Fatura.ValorLiquido"));
             entity.Fail(item.Cobranca.Fatura.ValorLiquido.HasValue && item.Cobranca.Fatura.ValorLiquido <= 0, new Error("Valor líquido deve ser superior a zero.", "Item.Cobranca.Fatura.ValorLiquido"));
 

@@ -16,8 +16,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 {
     public class TransmissaoNFeComplementoICMS : TransmissaoNFe
     {
-        public TransmissaoNFeComplementoICMS(NFe nfe, TransmissaoBLs transmissaoBLs) 
-            : base(nfe, transmissaoBLs) {}
+        public TransmissaoNFeComplementoICMS(NFe nfe, TransmissaoBLs transmissaoBLs)
+            : base(nfe, transmissaoBLs) { }
 
         public override TipoNota ObterTipoDocumentoFiscal()
         {
@@ -70,6 +70,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
             foreach (var item in ObterNFeProdutos())
             {
+                var itemTributacao = new NotaFiscalItemTributacao();
+                itemTributacao = TransmissaoBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == item.Id).FirstOrDefault();
+
                 var detalhe = ObterDetalhe(item, num);
                 detalhe.Produto.Quantidade = 0;
                 detalhe.Produto.ValorUnitario = 0;
@@ -77,8 +80,15 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 detalhe.Produto.QuantidadeTributada = 0;
                 detalhe.Produto.ValorUnitarioTributado = 0;
 
-                detalhe.Imposto.ICMS = ObterICMS(item);
+                detalhe.Imposto.ICMS = ObterICMS(item, itemTributacao);
                 detalhe.Imposto.PIS = ObterPIS(item);
+                if (detalhe.Imposto.PIS.CodigoSituacaoTributaria.ToString() == "05")
+                {
+                    detalhe.Imposto.PISST = new PISST()
+                    {
+                        ValorPISST = itemTributacao.PISValor,
+                    };
+                }
                 detalhe.Imposto.COFINS = ObterCOFINS(item);
                 detalhe.Imposto.TotalAprox = ObterTotalAproximado(detalhe);
 
@@ -103,44 +113,39 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         }
 
         #region Impostos
-        private void CalculaICMSPai(NFeProduto item, ICMSPai ICMS)
+        private void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
-            //Ver tipo do ICMS
-            //if (itemTributacao.CalculaICMS)
-            //{
-            //    ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-            //    ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-            //    ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+            ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
+            ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
+            ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
-            //    if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
-            //    {
-            //        ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
-            //        ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
-            //        ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
-            //    }
+            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
+            {
+                ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
+                ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
+                ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+            }
 
-            //    if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
-            //        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
-            //        || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
-            //    {
-            //        ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
-            //        ICMS.PercentualReducaoBCST = 0;
-            //    }
-            //}
+            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
+                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
+            {
+                ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                ICMS.PercentualReducaoBCST = 0;
+            }
         }
 
-        private ICMSPai ObterICMS(NFeProduto item)
+        private ICMSPai ObterICMS(NFeProduto item, NotaFiscalItemTributacao itemTributacao)
         {
             var ICMS = new ICMSPai()
             {
                 OrigemMercadoria = OrigemMercadoria.Nacional,
-                //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
-                //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
-                CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson
-                
+                AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
+                ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
+                CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
             };
 
-            CalculaICMSPai(item, ICMS);
+            CalculaICMSPai(item, itemTributacao, ICMS);
 
             return ICMS;
         }
@@ -149,7 +154,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new PISPai()
             {
-                CodigoSituacaoTributaria = CSTPISCOFINS.IsentaDaContribuicao //TODO: Wilson confirmar SemIncidencia
+                CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoPIS.HasValue
+                    ? (CSTPISCOFINS)((int)item.GrupoTributario.TipoTributacaoPIS)
+                    : CSTPISCOFINS.IsentaDaContribuicao
             };
         }
 
@@ -157,9 +164,10 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new COFINSPai()
             {
-                //Sem incidencia? TODO: Wilson
-                CodigoSituacaoTributaria = NFe.NFeRefComplementarIsDevolucao ? CSTPISCOFINS.OutrasOperacoesDeEntrada : CSTPISCOFINS.OutrasOperacoesDeSaida
-            };            
+                CodigoSituacaoTributaria = item.GrupoTributario.TipoTributacaoCOFINS != null
+                    ? ((CSTPISCOFINS)(int)item.GrupoTributario.TipoTributacaoCOFINS.Value)
+                    : CSTPISCOFINS.OutrasOperacoes
+            };
         }
         #endregion
     }

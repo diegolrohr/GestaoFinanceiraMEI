@@ -354,5 +354,24 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ChaveNFeReferenciada = NFe.ChaveNFeReferenciada
             };
         }
+
+        //public Cobranca ObterCobranca()
+        //{
+        //    if (NFe.GeraFinanceiro)
+        //    {
+        //        var contas = ObterContasFinanceiras();
+        //    }
+        //    return null;
+        //}
+
+        //public List<ContaFinanceira> ObterContasFinanceiras()
+        //{
+        //    var x = new List<ContaPagar>()
+        //    {
+
+        //    };
+
+        //    return x.ToList<ContaFinanceira>();
+        //}
     }
 }

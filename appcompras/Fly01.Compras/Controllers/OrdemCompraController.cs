@@ -100,7 +100,8 @@ namespace Fly01.Compras.Controllers
                     Title = "Orçamento / Pedido",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns="
+                UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             if (withSidebarUrl)

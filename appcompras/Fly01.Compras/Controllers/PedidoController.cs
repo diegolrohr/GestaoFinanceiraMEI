@@ -169,7 +169,8 @@ namespace Fly01.Compras.Controllers
                     Title = "Pedido",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormWizardUI

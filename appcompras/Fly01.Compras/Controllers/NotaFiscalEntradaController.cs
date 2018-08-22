@@ -90,7 +90,8 @@ namespace Fly01.Compras.Controllers
                     Title = "Notas Fiscais",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             if (gridLoad == "GridLoad")

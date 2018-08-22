@@ -103,7 +103,8 @@ namespace Fly01.Compras.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnFormReadyOrcamentoItem" }
+                Functions = new List<string> { "fnFormReadyOrcamentoItem" },
+                SidebarUrl = @Url.Action("Sidebar", "Home")
             };
 
             var config = new FormWizardUI

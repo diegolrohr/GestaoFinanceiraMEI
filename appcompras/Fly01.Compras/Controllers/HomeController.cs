@@ -65,7 +65,7 @@ namespace Fly01.Compras.Controllers
         {
 
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
-                return new ContentUI();
+                return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
 
             //return DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
             var cfg = new ContentUI
@@ -75,11 +75,9 @@ namespace Fly01.Compras.Controllers
                 {
                     Title = "Dashboard"
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar")
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar");
 
             cfg.Content.Add(new FormUI
             {

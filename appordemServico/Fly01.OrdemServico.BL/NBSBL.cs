@@ -4,8 +4,8 @@ using Fly01.OrdemServico.DAL;
 
 namespace Fly01.OrdemServico.BL
 {
-    public class NCMBL : DomainBaseBL<Ncm>
+    public class NBSBL : DomainBaseBL<Nbs>
     {
-        public NCMBL(AppDataContext context) : base(context) { }
+        public NBSBL(AppDataContext context) : base(context) { }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
-using Fly01.OrdemServico.API.Models.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

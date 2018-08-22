@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Fly01.OrdemServico.BL
@@ -13,8 +14,8 @@ namespace Fly01.OrdemServico.BL
         {
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(string.IsNullOrEmpty(entity.CodigoServico), CodigoServicoEmBranco);
-            entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
-            entity.Fail(All.Where(x => x.CodigoServico == entity.CodigoServico).Any(x => x.Id != entity.Id), CodigoServicoDuplicado);
+            entity.Fail(All.AsNoTracking().Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
+            entity.Fail(All.AsNoTracking().Where(x => x.CodigoServico == entity.CodigoServico).Any(x => x.Id != entity.Id), CodigoServicoDuplicado);
 
             base.ValidaModel(entity);
         }

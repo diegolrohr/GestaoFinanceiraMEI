@@ -24,7 +24,8 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Estado>("estado");
             builder.EntitySet<GrupoProduto>("grupoproduto");
             builder.EntitySet<Ncm>("ncm");
-            builder.EntitySet<Produto>("ordemservico");
+            builder.EntitySet<Nbs>("nbs");
+            builder.EntitySet<Core.Entities.Domains.Commons.OrdemServico>("ordemservico");
             builder.EntitySet<OrdemServicoItemProduto>("ordemservicoitemproduto");
             builder.EntitySet<OrdemServicoItemServico>("ordemservicoitemservico");
             builder.EntitySet<OrdemServicoManutencao>("ordemservicomanutencao");

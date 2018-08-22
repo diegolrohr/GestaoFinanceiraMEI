@@ -13,18 +13,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid ClienteId { get; set; }
 
-        [Required]
         public int Numero { get; set; }
 
         [Required]
         [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
-        [Required]
         [Column(TypeName = "date")]
         public DateTime DataEntrega { get; set; }
 
-        public Guid ResponsavelId { get; set; }
+        public Guid? ResponsavelId { get; set; }
 
         public bool Aprovado { get; set; }
 

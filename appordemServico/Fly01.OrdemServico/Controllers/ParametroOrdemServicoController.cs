@@ -1,4 +1,3 @@
-﻿
 using Fly01.Core;
 using Fly01.Core.Presentation;
 using Fly01.Core.Rest;

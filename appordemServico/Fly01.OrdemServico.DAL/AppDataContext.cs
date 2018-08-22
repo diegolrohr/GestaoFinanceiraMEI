@@ -68,6 +68,7 @@ namespace Fly01.OrdemServico.DAL
         public DbSet<OrdemServicoItem> OrdemServicoItens { get; set; }
         public DbSet<OrdemServicoItemProduto> OrdemServicoItensProduto { get; set; }
         public DbSet<OrdemServicoItemServico> OrdemServicoItensServico { get; set; }
+        public DbSet<OrdemServicoManutencao> OrdemServicoManutencao { get; set; }
 
         public DbSet<ParametroOrdemServico> ParametrosOrdemServico { get; set; }
 

@@ -46,44 +46,31 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new InputDateUI
+                    new PeriodPickerUI()
                     {
-                        Id = "dataInicial",
-                        Class = "col s6 m3 l4 offset-l2 offset-m3",
-                        Label = "Data Inicial",
-                        Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
-                        DomEvents = new List<DomEventUI>
+                        Label = "Selecione o período",
+                        Id = "mesPicker",
+                        Name = "mesPicker",
+                        Class = "col s12 m6 offset-m3 l4 offset-l4",
+                        DomEvents = new List<DomEventUI>()
                         {
-                            new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}
-                        },
-                        Max = 90,
-                        Min = true
+                            new DomEventUI()
+                            {
+                                DomEvent = "change",
+                                Function = "fnUpdateDataFinal"
+                            }
+                        }
                     },
-                    new InputDateUI
+                    new InputHiddenUI()
                     {
                         Id = "dataFinal",
-                        Class = "col s6 m3 l4",
-                        Label = "Data Final",
-                        Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
-                        DomEvents = new List<DomEventUI> {new DomEventUI {DomEvent = "click", Function = "fnAtualizar"}},
-                        Max = 90,
-                        Min = true
+                        Name = "dataFinal"
                     },
-                    new InputHiddenUI{ Id = "groupType", Value = "1" },
-                    new ButtonGroupUI()
+                    new InputHiddenUI()
                     {
-                        Id = "fly01btngrp",
-                        Class = "col s12 hide-on-print",
-                        Label = "Tipo de Visualização",
-                        OnClickFn = "fnAtualizaAgrupamento",
-                        Options = new List<ButtonGroupOptionUI>
-                        {
-                            new ButtonGroupOptionUI { Id = "btnDia", Value = "1", Label = "Dia", Class = "col s4 m2" },
-                            new ButtonGroupOptionUI { Id = "btnMes", Value = "3", Label = "Mês", Class = "col s4 m2" },
-                            new ButtonGroupOptionUI { Id = "btnTri", Value = "4", Label = "Trimestre", Class = "col s6 m3" },
-                            new ButtonGroupOptionUI { Id = "btnSem", Value = "5", Label = "Semestre", Class = "col s6 m3" },
-                            new ButtonGroupOptionUI { Id = "btnAno", Value = "6", Label = "Ano", Class = "col s4 m2" },
-                        }
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+
                     }
                 }
             });
@@ -92,9 +79,9 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Class = "col s12 m3",
                 Color = "totvs-blue",
-                Id = "cardAberto",
+                Id = "fly01cardAB",
                 Title = "Em Aberto",
-                Placeholder = "0/100",
+                Placeholder = "0/0",
                 Action = new LinkUI
                 {
                     Label = "Ver mais",
@@ -105,9 +92,9 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Class = "col s12 m3",
                 Color = "red",
-                Id = "cardAndamento",
+                Id = "fly01cardAN",
                 Title = "Em Andamento",
-                Placeholder = "0/100",
+                Placeholder = "0/0",
                 Action = new LinkUI
                 {
                     Label = "Ver mais",
@@ -118,9 +105,9 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Class = "col s12 m3",
                 Color = "green",
-                Id = "cardConcluido",
+                Id = "fly01cardCO",
                 Title = "Concluído",
-                Placeholder = "0/100",
+                Placeholder = "0/0",
                 Action = new LinkUI
                 {
                     Label = "Ver mais",
@@ -131,9 +118,9 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Class = "col s12 m3",
                 Color = "teal",
-                Id = "cardCancelado",
+                Id = "fly01cardCA",
                 Title = "Cancelado",
-                Placeholder = "0/100",
+                Placeholder = "0/0",
                 Action = new LinkUI
                 {
                     Label = "",
@@ -182,13 +169,111 @@ namespace Fly01.OrdemServico.Controllers
                             }
                     }
                 },
-                UrlData = @Url.Action("LoadChart", "Home"),
+                UrlData = @Url.Action("LoadChart", "Dashboard"),
                 Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                 {
                     new ChartUIParameter { Id = "dataInicial" },
                     new ChartUIParameter { Id = "dataFinal" },
                     new ChartUIParameter { Id = "groupType" }
+                }
+            });
+
+            cfg.Content.Add(new DivUI
+            {
+                Elements = new List<BaseUI>
+                {
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 maiores produtos" },
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 maiores serviços" }
+                }
+            });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "OrdemServico"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataInicial" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
+
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopServicos",
+                UrlGridLoad = Url.Action("DashboardTopServicos", "OrdemServico"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataInicial" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
                 }
             });
 

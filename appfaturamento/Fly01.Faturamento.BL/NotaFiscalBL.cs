@@ -98,7 +98,7 @@ namespace Fly01.Faturamento.BL
                         var response = RestHelper.ExecutePostRequest<XMLVM>(AppDefaults.UrlEmissaoNfeApi, "danfeXML", JsonConvert.SerializeObject(danfe), null, header);
                         if (string.IsNullOrEmpty(response.XML))
                         {
-                            throw new BusinessException("XML vazio/inválido");
+                            throw new BusinessException("XML retornado é vazio/inválido");
                         }
                         else
                         {
@@ -161,7 +161,7 @@ namespace Fly01.Faturamento.BL
                         var response = RestHelper.ExecutePostRequest<PDFVM>(AppDefaults.UrlEmissaoNfeApi, "danfePDF", JsonConvert.SerializeObject(danfe), null, header);
                         if (string.IsNullOrEmpty(response.PDF))
                         {
-                            throw new BusinessException("PDF vazio/inválido");
+                            throw new BusinessException("PDF retornado é vazio/inválido");
                         }
                         else
                         {

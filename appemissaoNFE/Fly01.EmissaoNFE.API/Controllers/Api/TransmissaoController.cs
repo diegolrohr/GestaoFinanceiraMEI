@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -50,7 +51,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             };
             foreach (var nota in entity.Item)
             {
-                var base64 = unitOfWork.TransmissaoBL.SerializeNota(nota);
+                var xmlString = unitOfWork.TransmissaoBL.SerializeNota(nota);
+                var base64 = Base64Helper.CodificaBase64(xmlString);
 
                 #region Validação do base64 via API Schema do TSS
                 var notaSchema = new NFESBRAProd.NFE();
@@ -74,6 +76,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 var mensagens = new SchemaXMLMensagemVM();
                 var response = new ItemTransmissaoRetornoVM();
                 response.NotaId = nota.NotaId.Replace("NFe", "");
+                response.XML = xmlString;
 
                 if (validacao[0].SCHEMAMSG.Length > 0)
                 {
@@ -142,7 +145,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
             foreach (var nota in entity.Item)
             {
-                var base64 = unitOfWork.TransmissaoBL.SerializeNota(nota);
+                var xmlString = unitOfWork.TransmissaoBL.SerializeNota(nota);
+                var base64 = Base64Helper.CodificaBase64(xmlString);
 
                 #region Validação do base64 via API Schema do TSS
                 var notaSchema = new NFESBRA.NFE();
@@ -166,6 +170,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 var mensagens = new SchemaXMLMensagemVM();
                 var response = new ItemTransmissaoRetornoVM();
                 response.NotaId = nota.NotaId.Replace("NFe", "");
+                response.XML = xmlString;
 
                 if (validacao[0].SCHEMAMSG.Length > 0)
                 {

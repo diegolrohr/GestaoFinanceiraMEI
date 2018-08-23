@@ -49,6 +49,9 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("geraFinanceiro")]
         public bool GeraFinanceiro { get; set; }
 
+        [JsonProperty("geraNotaFiscal")]
+        public bool GeraNotaFiscal { get; set; }
+
         [JsonProperty("orcamentoOrigemId")]
         public Guid? OrcamentoOrigemId { get; set; }
 

@@ -54,28 +54,28 @@ namespace Fly01.Compras.BL
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
         }
 
-        public void DadosValidosCalculoTributario(OrdemCompra entity, Guid clienteId, bool onList = true)
+        public void DadosValidosCalculoTributario(OrdemCompra entity, Guid fornecedorId, bool onList = true)
         {
-            var pessoa = GetPessoa(clienteId);
-            var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
+            var pessoa = GetPessoa(fornecedorId);
+            var fornecedorUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
 
             var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
             var parametros = GetParametrosTributarios();
 
-            if (string.IsNullOrEmpty(empresaUF) || string.IsNullOrEmpty(clienteUF) || parametros == null)
+            if (string.IsNullOrEmpty(empresaUF) || string.IsNullOrEmpty(fornecedorUF) || parametros == null)
             {
                 if (string.IsNullOrEmpty(empresaUF))
-                    entity.Notification.Errors.Add(new Error("Informe o estado no cadastro da empresa"));
+                    entity.Notification.Errors.Add(new Error("Informe o estado no cadastro da empresa."));
 
-                if (string.IsNullOrEmpty(clienteUF))
-                    entity.Notification.Errors.Add(new Error("Informe o estado no cadastro do cliente"));
+                if (string.IsNullOrEmpty(fornecedorUF))
+                    entity.Notification.Errors.Add(new Error("Informe o estado no cadastro do fornecedor."));
 
                 if (parametros == null)
-                    entity.Notification.Errors.Add(new Error("Vá em Configurações e defina os seus parâmetros tributários"));
+                    entity.Notification.Errors.Add(new Error("Vá em Configurações e defina os seus parâmetros tributários."));
 
                 if (!onList)
-                    entity.Notification.Errors.Add(new Error("Salve o orçamento/pedido para finalizá-lo após as alterações"));
+                    entity.Notification.Errors.Add(new Error("Salve o orçamento/pedido para finalizá-lo após as alterações."));
 
                 throw new BusinessException(entity.Notification.Get());
             }
@@ -130,44 +130,19 @@ namespace Fly01.Compras.BL
             return total;
         }
 
-        public double TotalSomaTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
-            return TributacaoItemAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoVenda, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
+            return TributacaoItemAgregaNota(TotalTributacaoProduto(tributacaoItens, fornecedorId, tipoCompra, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
         }
 
-        public double TotalSomaTributacaoProdutoNaoAgrega(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaTributacaoProdutoNaoAgrega(List<TributacaoProduto> tributacaoItens, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
-            return TributacaoItemNaoAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoVenda, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
+            return TributacaoItemNaoAgregaNota(TotalTributacaoProduto(tributacaoItens, fornecedorId, tipoCompra, tipoFrete, valorFrete).ToList<TributacaoItemRetorno>());
         }
 
-        public double TotalSomaTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
+        public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
-            return TributacaoItemAgregaNota(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoItemRetorno>());
-        }
-
-        public List<TributacaoServicoRetorno> TotalTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
-        {
-            var cliente = GetPessoa(clienteId);
-            var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-            var estadoOrigem = empresa.Cidade.Estado.Sigla;
-            var parametros = GetParametrosTributarios();
-            var result = new List<TributacaoServicoRetorno>()
-            {
-                new TributacaoServicoRetorno()
-            };
-
-            //TODO: ver Jamal
-            //var parametros = ParametroTributarioBL.All.FirstOrDefault();
-            //var somaPercentuais = parametros != null ? ((parametros.AliquotaSimplesNacional + parametros.AliquotaISS + parametros.AliquotaPISPASEP + parametros.AliquotaCOFINS) / 100) : 0;
-
-            //return somaPercentuais > 0 ? (tributacaoServicos.Sum(x => x.Total) * somaPercentuais) : 0;
-
-            return result;
-        }
-
-        public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
-        {
-            var cliente = GetPessoa(clienteId);
+            var fornecedor = GetPessoa(fornecedorId);
             var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
@@ -180,8 +155,8 @@ namespace Fly01.Compras.BL
                 };
 
             bool calculaFrete = (
-                ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoVenda == TipoVenda.Normal) ||
-                ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoVenda == TipoVenda.Devolucao)
+                ((tipoFrete == TipoFrete.CIF || tipoFrete == TipoFrete.Remetente) && tipoCompra == TipoVenda.Devolucao) ||
+                ((tipoFrete == TipoFrete.FOB || tipoFrete == TipoFrete.Destinatario) && tipoCompra == TipoVenda.Normal)
             );
 
             double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
@@ -212,7 +187,7 @@ namespace Fly01.Compras.BL
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                        EstadoDestino = cliente.Estado.Sigla,
+                        EstadoDestino = fornecedor.Estado.Sigla,
                         EstadoOrigem = estadoOrigem,
                         CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                     };
@@ -243,7 +218,7 @@ namespace Fly01.Compras.BL
                         x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                         x.CestId == produto.CestId.Value &
                         x.EstadoOrigem.Sigla == estadoOrigem &
-                        x.EstadoDestinoId == cliente.EstadoId &
+                        x.EstadoDestinoId == fornecedor.EstadoId &
                         x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                         ).FirstOrDefault();
 
@@ -251,7 +226,7 @@ namespace Fly01.Compras.BL
                     {
                         tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                         {
-                            EstadoDestino = cliente.Estado.Sigla,
+                            EstadoDestino = fornecedor.Estado.Sigla,
                             EstadoOrigem = estadoOrigem,
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
@@ -326,7 +301,7 @@ namespace Fly01.Compras.BL
             return result;
         }
 
-        public List<TributacaoProdutoRetorno> TributacoesOrdemVendaProdutos(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public List<TributacaoProdutoRetorno> TributacoesOrdemCompraItem(List<PedidoItem> ordemVendaProdutos, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             return TotalTributacaoProduto(ordemVendaProdutos.Select(x => new TributacaoProduto()
             {
@@ -336,10 +311,10 @@ namespace Fly01.Compras.BL
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId
-            }).ToList(), clienteId, tipoVenda, tipoFrete, valorFrete);
+            }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
-        public double TotalSomaOrdemVendaProdutos(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaOrdemCompraProdutos(List<PedidoItem> ordemVendaProdutos, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             //Transforma para a classe auxiliar
             return TotalSomaTributacaoProduto(ordemVendaProdutos.Select(x => new TributacaoProduto()
@@ -350,10 +325,10 @@ namespace Fly01.Compras.BL
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId
-            }).ToList(), clienteId, tipoVenda, tipoFrete, valorFrete);
+            }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
-        public double TotalSomaOrdemVendaProdutosNaoAgrega(List<PedidoItem> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoFrete tipoFrete, double? valorFrete = 0)
+        public double TotalSomaOrdemCompraProdutosNaoAgrega(List<PedidoItem> ordemVendaProdutos, Guid fornecedorId, TipoVenda tipoCompra, TipoFrete tipoFrete, double? valorFrete = 0)
         {
             //Transforma para a classe auxiliar
             return TotalSomaTributacaoProdutoNaoAgrega(ordemVendaProdutos.Select(x => new TributacaoProduto()
@@ -364,22 +339,9 @@ namespace Fly01.Compras.BL
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId
-            }).ToList(), clienteId, tipoVenda, tipoFrete, valorFrete);
+            }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
-
-        public double TotalSomaOrdemVendaServicos(List<OrdemVendaServico> ordemVendaServicos, Guid clienteId)
-        {
-            //Transforma para a classe auxiliar
-            return TotalSomaTributacaoServico(ordemVendaServicos.Select(x => new TributacaoServico()
-            {
-                Valor = x.Valor,
-                Quantidade = x.Quantidade,
-                Desconto = x.Desconto,
-                Total = x.Total,
-                GrupoTributarioId = x.GrupoTributarioId,
-                GrupoTributario = x.GrupoTributario
-            }).ToList(), clienteId);
-        }
+ 
     }
 
     #region Classes auxiliares, calculo pode ser para ordemVenda ou notaFiscal

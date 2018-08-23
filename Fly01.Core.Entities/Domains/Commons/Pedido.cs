@@ -32,6 +32,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool GeraFinanceiro { get; set; }
 
         [Required]
+        public bool GeraNotaFiscal { get; set; }
+
+        [Required]
         public bool MovimentaEstoque { get; set; }
 
         public int? QuantidadeVolumes { get; set; }

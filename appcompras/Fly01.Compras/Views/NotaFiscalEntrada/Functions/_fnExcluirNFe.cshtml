@@ -7,7 +7,7 @@ function fnExcluirNFeConfirmed(idRecord) {
     if (idRecord) {
         $.ajax({
             type: "POST",
-            url: "@Url.Action("Delete", "NFe")",
+            url: "@Url.Action("Delete", "NFeEntrada")",
             data: { id: idRecord },
             success: function (data) {
                 $('body').addClass('loaded');

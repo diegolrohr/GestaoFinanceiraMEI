@@ -6,7 +6,7 @@
     function fnCancelarNFeConfirmed(idRecord) {
         fly01.loading.start();
         $.ajax({
-            url: '@Url.Action("Cancelar", "NFe")?id=' + idRecord,
+            url: '@Url.Action("Cancelar", "NFeEntrada")?id=' + idRecord,
             type: "POST"
         })
         .done(function (data) {

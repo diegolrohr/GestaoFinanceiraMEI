@@ -16,11 +16,24 @@ namespace Fly01.OrdemServico.Controllers
     public class DashboardController : BaseController<DomainBaseVM>
     {
 
-        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, int groupType)
+        private List<OrdemServicosPorDiaVM> GetProjecao(DateTime filtro)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+            {
+                { "filtro", filtro.ToString("yyyy-MM-dd") }
+            };
+            var response = RestHelper.ExecuteGetRequest<ResponseOrdemServicosPorDiaVM>("dashboard/quantidadeordemservicopordia", queryString);
+            if (response == null)
+                return new List<OrdemServicosPorDiaVM>();
+
+            return response.Values;
+        }
+
+        public JsonResult LoadChart(DateTime filtro)
         {
             try
             {
-                //var response = GetProjecao(dataInicial, dataFinal, groupType);
+                var response = GetProjecao(filtro);
 
                 var dataChartToView = new
                 {
@@ -61,7 +74,6 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-
         public JsonResult LoadCards(string dataFinal)
         {
             try
@@ -71,20 +83,20 @@ namespace Fly01.OrdemServico.Controllers
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "dataFinal", dataFinal }
+                    { "filtro", dataFinal }
                 };
-                var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboardporstatus", queryString);
-                var aberto = "";
-                var andamento = "";
-                var concluido = "";
-                var cancelado = "";
+                var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboard/status", queryString);
+                var aberto = "0/0";
+                var andamento = "0/0";
+                var concluido = "0/0";
+                var cancelado = "0/0";
 
                 foreach (var item in response)
                 {
-                    aberto = item.Status == "EmAberto" ? item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString() : "0/0";
-                    andamento = item.Status == "EmAndamento" ? item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString() : "0/0";
-                    concluido = item.Status == "Concluido" ? item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString() : "0/0";
-                    cancelado = item.Status == "Cancelado" ? item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString() : "0/0";
+                    if (item.Status == "Em Aberto") aberto = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "Em Andamento") andamento = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "Concluído") concluido = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
+                    else if (item.Status == "Cancelado") cancelado = item.Quantidade.ToString() + "/" + item.QuantidadeTotal.ToString();
                 }
                 var responseToView = new
                 {
@@ -111,7 +123,7 @@ namespace Fly01.OrdemServico.Controllers
                         { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
-                var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("/dashboardtopprodutos", querystring);
+                var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("dashboard/topprodutosordemservico", querystring);
 
                 return Json(new
                 {
@@ -134,6 +146,7 @@ namespace Fly01.OrdemServico.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
         public JsonResult DashboardTopServicos(DateTime? dataInicial = null)
         {
             try
@@ -143,7 +156,7 @@ namespace Fly01.OrdemServico.Controllers
                         { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
-                var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("dashboardtopservicos", querystring);
+                var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("dashboard/topservicosordemservico", querystring);
 
                 return Json(new
                 {
@@ -166,6 +179,25 @@ namespace Fly01.OrdemServico.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public override Func<DomainBaseVM, object> GetDisplayData()
         {

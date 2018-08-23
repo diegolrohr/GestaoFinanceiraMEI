@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
+    public class ResponseOrdemServicosPorDiaVM
+    {
+        [JsonProperty("value")]
+        public List<OrdemServicosPorDiaVM> Values { get; set; }
+    }
+
     public class OrdemServicosPorDiaVM
     {
         [JsonProperty("dia")]
@@ -16,3 +22,4 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public int QuantidadeServicos { get; set; }
     }
 }
+

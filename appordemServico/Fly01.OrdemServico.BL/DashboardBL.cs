@@ -30,19 +30,20 @@ namespace Fly01.OrdemServico.BL
 
             var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
                                             .GroupBy(x => new { x.Status })
-                                            .Select(x => new
+                                            .Select(x => new 
                                             {
-                                                Status = x.Key,
+                                                x.Key.Status,
                                                 Quantidade = x.Count()
                                             })
                                             .ToList();
+
 
             result.ForEach(x =>
             {
                 listaResult.Add(new OrdemServicoPorStatusVM
                 {
-                    Status = EnumHelper.GetValue(typeof(StatusContaBancaria), x.Status.ToString()),
-                    Quantidade = x.Quantidade,
+                    Status = EnumHelper.GetValue(typeof(StatusOrdemServico), x.Status.ToString()),
+                Quantidade = x.Quantidade,
                     QuantidadeTotal = QtdTotal
                 });
             });

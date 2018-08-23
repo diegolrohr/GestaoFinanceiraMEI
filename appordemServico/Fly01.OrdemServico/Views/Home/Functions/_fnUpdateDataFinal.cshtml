@@ -1,5 +1,6 @@
 ﻿<script>
-    function fnUpdateDataFinal() {               
+    function fnUpdateDataFinal() {
+        debugger;
         let date = fly01._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         let lastDay = new Date(date.year, date.month + 1, 0);     
@@ -8,6 +9,7 @@
         fly01._.fly01chart.refresh();
         fly01._.dtGridTopProdutos.refresh();
         fly01._.dtGridTopServicos.refresh();
+        var dataFinal = moment(lastDay).format('YYYY-MM-DD');
         getSaldos(dataFinal);
     }
 </script>

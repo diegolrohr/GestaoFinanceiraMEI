@@ -1,16 +1,18 @@
-﻿using System;
-using Fly01.Core;
-using System.Web.Mvc;
+﻿using Fly01.Core;
+using Fly01.Core.Defaults;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
-using System.Collections.Generic;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Controllers;
+using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
-using Fly01.uiJS.Enums;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.Core.Entities.Domains.Commons;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Enums;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -18,7 +20,23 @@ namespace Fly01.Estoque.Controllers
     public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         public ProdutoController()
-            : base(ResourceHashConst.EstoqueCadastrosGrupoProdutos) { }
+            : base(ResourceHashConst.EstoqueCadastrosGrupoProdutos)
+        {
+            SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
+            GetDisplayDataSelect = x => new
+            {
+                id = x.Id,
+                codigoProduto = x.CodigoProduto,
+                descricao = x.Descricao,
+                grupoProdutoId = x.GrupoProdutoId,
+                grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
+                tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
+                tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
+                objetoDeManutencao = x.ObjetoDeManutencao,
+                registroFixo = x.RegistroFixo
+            };
+        }
 
         [OperationRole(NotApply = true)]
         public JsonResult GridLoadPos(Dictionary<string, string> filters = null)
@@ -90,25 +108,108 @@ namespace Fly01.Estoque.Controllers
             return GridLoad(filters);
         }
 
-        protected override ContentUI FormJson()
+        public override ContentResult List()
         {
-            var result = base.FormJson();
-            var elements = ((FormUI)result.Content[0]).Elements;
-            var index = elements.FindIndex(x => x is TextAreaUI && x.Id == "observacao");
-            // Novo campo para ORDEM DE SERVIÇO
-            elements.Insert(index, 
-                new InputCheckboxUI
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                Header = new HtmlUIHeader
                 {
-                    Id = "ObjetoDeManutencao",
-                    Class = "col s12 m6 l3",
-                    Label = "Objeto de Manutenção",
-                    DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "" }
-                }
+                    Title = "Produtos",
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" }
+            };
+            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" }
+            }));
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "objetoDeManutencao", DisplayName = "Objeto de Manutenção", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "valorVenda",
+                DisplayName = "Valor Venda",
+                Priority = 4
             });
 
-            return result;
+            cfg.Content.Add(config);
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
+        }
+
+        protected override ContentUI FormJson()
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Create"),
+                    WithParams = Url.Action("Edit")
+                },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Dados do Produto",
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormUI
+            {
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = Url.Action("List"),
+                    Form = Url.Action("Form")
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReady"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
+
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
+            config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "unidadeMedidaId",
+                Class = "col s12 m3",
+                Label = "Unidade de medida",
+                Required = true,
+                DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
+                LabelId = "unidadeMedidaDescricao"
+            });
+
+            config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "objetoDeManutencao",
+                Class = "col s12 m6 l3",
+                Label = "Objeto de Manutenção",
+            });
+
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+            List<TooltipUI> tooltips = GetHelpers();
+
+            if (tooltips != null)
+                config.Helpers.AddRange(tooltips);
+
+            cfg.Content.Add(config);
+
+            return cfg;
         }
 
         public override List<TooltipUI> GetHelpers()

@@ -127,7 +127,7 @@ namespace Fly01.Compras.BL
             if (produtos != null & produtos.Any())
             {
                 var NFe = (NFeEntrada)GetNotaFiscal(entity, TipoNotaFiscal.NFe);
-                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemVendaProdutos(produtos, entity.FornecedorId, entity.TipoCompra, entity.TipoFrete, entity.ValorFrete);
+                var tributacoesProdutos = TotalTributacaoBL.TributacoesOrdemCompraItem(produtos, entity.FornecedorId, entity.TipoCompra, entity.TipoFrete, entity.ValorFrete);
                 var totalImpostosProdutos = TotalTributacaoBL.TributacaoItemAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
                 var totalImpostosProdutosNaoAgrega = TotalTributacaoBL.TributacaoItemNaoAgregaNota(tributacoesProdutos.ToList<TributacaoItemRetorno>());
 
@@ -467,10 +467,10 @@ namespace Fly01.Compras.BL
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
 
             var totalImpostosProdutos = (ordemCompra.Status == StatusOrdemCompra.Finalizado && ordemCompra.TotalImpostosProdutos.HasValue) ? ordemCompra.TotalImpostosProdutos.Value
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemCompraProdutos(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
 
             var totalImpostosProdutosNaoAgrega = ordemCompra.Status == StatusOrdemCompra.Finalizado ? ordemCompra.TotalImpostosProdutosNaoAgrega
-                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
+                : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemCompraProdutosNaoAgrega(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
 
             var result = new TotalOrdemVenda()
             {

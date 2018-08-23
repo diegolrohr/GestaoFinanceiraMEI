@@ -80,7 +80,7 @@
     <Compile Include="Controllers\CfopController.cs" />
     <Compile Include="Controllers\CestController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
-    <Compile Include="Controllers\NFeController.cs" />
+    <Compile Include="Controllers\NFeEntradaController.cs" />
     <Compile Include="Controllers\NotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\ParametroTributarioController.cs" />
@@ -114,7 +114,7 @@
       <DependentUpon>DataSetReports.xsd</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="ViewModel\NFeVM.cs" />
+    <Compile Include="ViewModel\NFeEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
@@ -293,10 +293,6 @@
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarNFe.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarNFSe.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
-    <Content Include="Views\NFe\Functions\_fnChangeSerieNFe.cshtml" />
-    <Content Include="Views\NFe\Functions\_fnFormReadyTransmitirNFe.cshtml" />
-    <Content Include="Views\NFe\Functions\_fnFormReadyVisualizarNFe.cshtml" />
-    <Content Include="Views\NFe\Index.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnUpdateDataFinal.cshtml" />
@@ -315,6 +311,10 @@
     <Content Include="Views\OrdemCompra\Functions\_fnExcluirOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnExcluirPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnVisualizarOrcamento.cshtml" />
+    <Content Include="Views\NFeEntrada\Functions\_fnChangeSerieNFe.cshtml" />
+    <Content Include="Views\NFeEntrada\Functions\_fnFormReadyTransmitirNFe.cshtml" />
+    <Content Include="Views\NFeEntrada\Functions\_fnFormReadyVisualizarNFe.cshtml" />
+    <Content Include="Views\NFeEntrada\Index.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

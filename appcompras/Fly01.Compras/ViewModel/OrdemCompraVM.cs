@@ -45,9 +45,6 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("ajusteEstoqueAutomatico")]
         public bool AjusteEstoqueAutomatico { get; set; }
 
-        [JsonProperty("geraNotaFiscal")]
-        public bool GeraNotaFiscal { get; set; }
-
         [JsonProperty("naturezaOperacao")]
         public string NaturezaOperacao { get; set; }
 

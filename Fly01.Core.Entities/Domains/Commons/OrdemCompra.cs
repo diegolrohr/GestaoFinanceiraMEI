@@ -42,9 +42,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool AjusteEstoqueAutomatico { get; set; }
 
-        [Required]
-        public bool GeraNotaFiscal { get; set; }
-
         [DataType(DataType.MultilineText)]
         public string Observacao { get; set; }
 

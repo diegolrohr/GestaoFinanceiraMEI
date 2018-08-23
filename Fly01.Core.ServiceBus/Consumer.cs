@@ -125,13 +125,13 @@ namespace Fly01.Core.ServiceBus
         private async Task ProcessData(string message, RabbitConfig.EnHttpVerb httpMethod, string routingKey, string appId, string plataformaUrl, string appUser)
         {
             routingKey = routingKey.Replace(Environment.MachineName + "_", "");
-
-            Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
             _mediaClient = new MediaClient();
+
             foreach (var item in MessageType.Resolve<dynamic>(message))
             {
                 try
                 {
+                    Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
                     dynamic entidade = AssemblyBL.GetProperty($"{routingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
                     dynamic data = JsonConvert.DeserializeObject<dynamic>(item.ToString());
 

@@ -70,7 +70,7 @@ namespace Fly01.Compras.Controllers
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+            }, ResourceHashConst.ComprasCadastrosProdutos));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -85,7 +85,7 @@ namespace Fly01.Compras.Controllers
                 DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
                 DataPostField = "descricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeGrupoTribProduto" } }
-            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
+            }, ResourceHashConst.ComprasCadastrosGrupoTributario));
 
             config.Elements.Add(new InputFloatUI
             {

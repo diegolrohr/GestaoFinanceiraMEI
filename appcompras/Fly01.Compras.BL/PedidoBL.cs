@@ -329,8 +329,6 @@ namespace Fly01.Compras.BL
 
         public override void AfterSave(Pedido entity)
         {
-            ValidaModel(entity);
-
             if (entity.Status != StatusOrdemCompra.Finalizado || entity.TipoOrdemCompra != TipoOrdemCompra.Pedido)
                 return;
 

@@ -2,7 +2,7 @@
     function fnBaixarXMLNFe(idRecord) {
         fly01.loading.start();
         $.ajax({
-            url: '@Url.Action("BaixarXML", "NFe")?id=' + idRecord,
+            url: '@Url.Action("BaixarXML", "NFeEntrada")?id=' + idRecord,
             type: "GET"
         })
         .done(function (data) {

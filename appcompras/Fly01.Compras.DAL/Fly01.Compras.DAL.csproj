@@ -212,6 +212,10 @@
     <Compile Include="Migrations\201808211424578_AlterNotaFiscalEntradaEPedidoAddContaFinanceiraParcelaPaiId.Designer.cs">
       <DependentUpon>201808211424578_AlterNotaFiscalEntradaEPedidoAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808221449530_AlterGeraNotaFiscal.cs" />
+    <Compile Include="Migrations\201808221449530_AlterGeraNotaFiscal.Designer.cs">
+      <DependentUpon>201808221449530_AlterGeraNotaFiscal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -378,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808211424578_AlterNotaFiscalEntradaEPedidoAddContaFinanceiraParcelaPaiId.resx">
       <DependentUpon>201808211424578_AlterNotaFiscalEntradaEPedidoAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221449530_AlterGeraNotaFiscal.resx">
+      <DependentUpon>201808221449530_AlterGeraNotaFiscal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

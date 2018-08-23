@@ -47,8 +47,8 @@
         var tipoFrete = $('#fly01mdlfrmVisualizarPedido select#tipoFrete').val();
         var tipoCompra = $('#fly01mdlfrmVisualizarPedido select#tipoCompra').val();
         var calculaFrete = (
-                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Normal") ||
-                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Devolucao")
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Devolucao") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Normal")
             );
 
         if (calculaFrete) {

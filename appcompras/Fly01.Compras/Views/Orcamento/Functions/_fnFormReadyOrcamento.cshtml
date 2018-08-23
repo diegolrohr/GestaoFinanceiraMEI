@@ -15,7 +15,7 @@
 
     function fnBindStepsWizard() {
         function saveOrcamento() {
-            if (isCreate() && ($("li#stepFinanceiro").hasClass("active"))) {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
                 justSaveOrcamentoToGoStepProdutos = true;
                 return $("form#fly01frm").submit();
             }
@@ -24,7 +24,7 @@
         $('li#stepProdutos').click(function () {
             saveOrcamento();
         });
-        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             saveOrcamento();
         });
     }

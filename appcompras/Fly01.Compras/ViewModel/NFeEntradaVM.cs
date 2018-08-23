@@ -4,7 +4,7 @@ using System;
 namespace Fly01.Compras.ViewModel
 {
     [Serializable]
-    public class NFeVM : NotaFiscalEntradaVM
+    public class NFeEntradaVM : NotaFiscalEntradaVM
     {
         [JsonProperty("totalImpostosProdutos")]
         public double TotalImpostosProdutos { get; set; }

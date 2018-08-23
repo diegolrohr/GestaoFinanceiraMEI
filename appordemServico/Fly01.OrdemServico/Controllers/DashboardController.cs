@@ -16,6 +16,52 @@ namespace Fly01.OrdemServico.Controllers
     public class DashboardController : BaseController<DomainBaseVM>
     {
 
+        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, int groupType)
+        {
+            try
+            {
+                //var response = GetProjecao(dataInicial, dataFinal, groupType);
+
+                var dataChartToView = new
+                {
+                    success = true,
+                    currency = true,
+                    //labels = response.Select(x => x.Label).ToArray(),
+                    datasets = new object[] {
+                        new {
+                                type = "line",
+                                label = "Saldo",
+                                backgroundColor = "rgb(44, 55, 57)",
+                                borderColor = "rgb(44, 55, 57)",
+                                //data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
+                                fill = false
+                            },
+                        new {
+                                label = "Recebimentos",
+                                fill = false,
+                                backgroundColor = "rgb(0, 178, 121)",
+                                borderColor = "rgb(0, 178, 121)",
+                                //data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
+                            },
+                        new {
+                                label = "Pagamentos",
+                                fill = false,
+                                backgroundColor = "rgb(239, 100, 97)",
+                                borderColor = "rgb(239, 100, 97)",
+                                //data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                        }
+                    }
+                };
+
+                return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
+        }
+
+
         public JsonResult LoadCards(string dataFinal)
         {
             try

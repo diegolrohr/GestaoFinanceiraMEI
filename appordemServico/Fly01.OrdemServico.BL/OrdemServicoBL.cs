@@ -30,7 +30,7 @@ namespace Fly01.OrdemServico.BL
             else
                 entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
 
-            var responsavel = entity.ValidForeignKey(x => x.Id, "Responsável", "responsavelId", _pessoaBL, x => new
+            var responsavel = entity.ValidForeignKey(x => x.ResponsavelId, "Responsável", "responsavelId", _pessoaBL, x => new
             {
                 x.Id,
                 x.Vendedor

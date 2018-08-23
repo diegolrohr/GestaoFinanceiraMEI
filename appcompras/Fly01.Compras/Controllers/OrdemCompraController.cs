@@ -40,8 +40,7 @@ namespace Fly01.Compras.Controllers
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemCompra), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemCompra), x.Status),
-                statusValue = EnumHelper.GetValue(typeof(StatusOrdemCompra), x.Status),
-                geraNotaFiscal = x.GeraNotaFiscal
+                statusValue = EnumHelper.GetValue(typeof(StatusOrdemCompra), x.Status)
             };
         }
 
@@ -162,28 +161,27 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnImprimirOrcamento", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" }
             }));
 
-            config.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "tipoOrdemCompra",
-                DisplayName = "Tipo",
-                Priority = 1,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra))),
-                RenderFn = "fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription)"
-            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 5,
+                Priority = 2,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemCompra))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency" });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoOrdemCompra",
+                DisplayName = "Tipo",
+                Priority = 3,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra))),
+                RenderFn = "fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription)"
+            });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 6 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 5, Type = "currency" });
 
             cfg.Content.Add(config);
 

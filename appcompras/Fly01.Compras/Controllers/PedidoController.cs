@@ -19,6 +19,7 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
+using System.Dynamic;
 
 namespace Fly01.Compras.Controllers
 {
@@ -480,17 +481,22 @@ namespace Fly01.Compras.Controllers
         }
 
         [HttpPost]
-        public JsonResult FinalizarPedido(string id)
+        public JsonResult FinalizarPedido(string id, bool faturar = false)
         {
             try
             {
-                var queryString = AppDefaults.GetQueryStringDefault();
-                queryString.AddParam("$filter", $"id eq {id}");
 
-                var pedido = RestHelper.ExecuteGetRequest<ResultBase<PedidoVM>>("Pedido", queryString).Data.FirstOrDefault();
-                pedido.Status = "Finalizado";
+                dynamic pedido = new ExpandoObject();
+                pedido.status = "Finalizado";
+                if (faturar)
+                {
+                    pedido.geraNotaFiscal = true;
+                }
 
-                return Edit(pedido);
+                var resourceNamePut = $"Pedido/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
             }
             catch (Exception ex)
             {

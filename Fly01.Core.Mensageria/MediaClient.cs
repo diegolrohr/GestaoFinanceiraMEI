@@ -87,6 +87,7 @@ namespace Fly01.Core.Mensageria
             //    ? "https://totvs.ryver.com/application/webhook/YM0Hs5umn114vPb"
             //    : "https://totvs.ryver.com/application/webhook/bP5-1AzID58i0ai";
 
+
             var logData = new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformId = plataformaUrl, RoutingKey = routingKey };
             var message = new SlackMessage()
             {

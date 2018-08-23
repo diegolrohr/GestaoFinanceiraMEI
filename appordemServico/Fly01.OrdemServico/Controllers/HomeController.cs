@@ -17,32 +17,33 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
             //if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
-            //    return new ContentUI();
+            //    return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
 
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
 
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-            //    //Header = new HtmlUIHeader
-            //    //{
-            //    //    Title = "Fluxo de Caixa",
-            //    //    Buttons = new List<HtmlUIButton>
-            //    //    {
-            //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-            //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
-            //    //    }
-            //    //},
-            //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-            //    //Functions = new List<string> { "__format", "fnGetSaldos" }
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index")
+                },
+                SidebarUrl = @Url.Action("Sidebar")
+                //    //Header = new HtmlUIHeader
+                //    //{
+                //    //    Title = "Fluxo de Caixa",
+                //    //    Buttons = new List<HtmlUIButton>
+                //    //    {
+                //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
+                //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
+                //    //    }
+                //    //},
+                //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                //    //Functions = new List<string> { "__format", "fnGetSaldos" }
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
 
             return cfg;
         }

@@ -46,7 +46,7 @@ namespace Fly01.Faturamento.Controllers
 
         public ContentResult FormOrcamento(bool isEdit = false)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {

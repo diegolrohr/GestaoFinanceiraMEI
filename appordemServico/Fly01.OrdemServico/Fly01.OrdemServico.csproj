@@ -57,13 +57,13 @@
   <ItemGroup>
     <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdemServicoManutencaoController.cs" />
     <Compile Include="Controllers\OrdemServicoItemServicoController.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="ViewModel\OrdemServicoItemVM.cs" />
     <Compile Include="ViewModel\OrdemServicoManutencaoVM.cs" />
     <Compile Include="ViewModel\OrdemServicoVM.cs" />
+    <Compile Include="ViewModel\DashboardTopProdutos.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
@@ -205,6 +206,11 @@
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnChangeTotalManutencao.cshtml" />
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnEditarOrdemServicoManutencao.cshtml" />
     <Content Include="Views\OrdemServicoManutencao\Functions\_fnExcluirOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\Home\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAtualizaAgrupamento.cshtml" />
+    <Content Include="Views\Home\Functions\_fnGetSaldos.cshtml" />
+    <Content Include="Views\Home\Functions\_fnUpdateDataFinal.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">

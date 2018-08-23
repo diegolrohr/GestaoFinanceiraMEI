@@ -1,0 +1,51 @@
+﻿<script>
+    function lockSaldos(elName, lock) {
+        $("#" + elName).loading(lock ? "start" : "stop");
+    }
+
+    function getSaldos(dataFinal) {
+        var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+
+        lockSaldos("fly01cardAB", true);
+        lockSaldos("fly01cardAN", true);
+        lockSaldos("fly01cardCO", true);
+        lockSaldos("fly01cardCA", true);
+
+        $.ajax({
+            url: "@Url.Action("LoadCards", "Dashboard")?dataFinal=" + final,
+            type: "GET",
+            success: function (data) {
+                fly01._.fly01cardAB.info(data.EmAberto);
+                fly01._.fly01cardAN.info(data.EmAndamento);
+                fly01._.fly01cardCO.info(data.Concluido);
+                fly01._.fly01cardCA.info(data.Cancelado);
+
+                lockSaldos("fly01cardAB", false);
+                lockSaldos("fly01cardAN", false);
+                lockSaldos("fly01cardCO", false);
+                lockSaldos("fly01cardCA", false);
+            },
+            error: function (jXHR, textStatus) {
+                fly01.toast(textStatus, 'error');
+            }
+        });
+    }
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    function isValidDate(dateString) {
+        var regEx = /^\d{4}-\d{2}-\d{2}$/;
+        return dateString.match(regEx) != null;
+    }
+
+</script>

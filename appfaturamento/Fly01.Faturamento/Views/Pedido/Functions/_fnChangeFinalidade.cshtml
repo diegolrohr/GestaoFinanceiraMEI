@@ -11,8 +11,10 @@
                 $("input#tipoCarteira").val("Despesa");
                 $("#nFeRefComplementarIsDevolucaoField").hide();
             } else {//complementar
-                $('select#tipoNfeComplementar').val("ComplPrecoQtd");
-                $('select#tipoNfeComplementar').material_select();
+                if (isCreate()) {
+                    $('select#tipoNfeComplementar').val("ComplPrecoQtd");
+                    $('select#tipoNfeComplementar').material_select();
+                }
 
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
@@ -20,7 +22,12 @@
                 $("#nFeRefComplementarIsDevolucaoField").show();
 
                 $("div#clienteIdField").hide();
-                $("input#tipoCarteira").val("Receita");
+                if($('#nFeRefComplementarIsDevolucao').is(':checked')) {
+                    $("input#tipoCarteira").val("Despesa");
+                }
+                else {
+                    $("input#tipoCarteira").val("Receita");
+                }
             }
         }
         else {

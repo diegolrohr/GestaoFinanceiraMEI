@@ -134,7 +134,7 @@ namespace Fly01.OrdemServico.Controllers
                         descricao = x.Descricao,
                         valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
-                        //valorTotal = (x.Quantidade * x.Valor).ToString("C", AppDefaults.CultureInfoDefault)
+                        valorTotal = x.ValorTotal
                     })
                 }, JsonRequestBehavior.AllowGet);
 
@@ -167,7 +167,7 @@ namespace Fly01.OrdemServico.Controllers
                         descricao = x.Descricao,
                         valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
-                        //valorTotal = (x.Quantidade * x.Valor).ToString("C", AppDefaults.CultureInfoDefault)
+                        valorTotal = x.ValorTotal
                     })
                 }, JsonRequestBehavior.AllowGet);
 

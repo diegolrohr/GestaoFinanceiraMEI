@@ -71,14 +71,16 @@ namespace Fly01.OrdemServico.BL
                                             {
                                                 x.ProdutoId,
                                                 x.Produto.Descricao,
-                                                x.Quantidade
+                                                x.Quantidade,
+                                                x.Valor
                                             })
                                             .GroupBy(x => new { x.ProdutoId, x.Descricao })
                                             .Select(x => new TopServicosProdutosOrdemServicoVM
                                             {
                                                 Id = x.Key.ProdutoId,
                                                 Descricao = x.Key.Descricao,
-                                                Quantidade = x.Sum(y => y.Quantidade)
+                                                Quantidade = x.Sum(y => y.Quantidade),
+                                                ValorTotal = x.Sum(y=>y.Valor)
                                             })
                                             .OrderByDescending(x => x.Quantidade)
                                             .Take(10).ToList();
@@ -93,14 +95,17 @@ namespace Fly01.OrdemServico.BL
                                             {
                                                 x.ServicoId,
                                                 x.Servico.Descricao,
-                                                x.Quantidade
+                                                x.Quantidade,
+                                                x.Valor
                                             })
                                             .GroupBy(x => new { x.ServicoId, x.Descricao })
                                             .Select(x => new TopServicosProdutosOrdemServicoVM
                                             {
                                                 Id = x.Key.ServicoId,
                                                 Descricao = x.Key.Descricao,
-                                                Quantidade = x.Sum(y => y.Quantidade)
+                                                Quantidade = x.Sum(y => y.Quantidade),
+                                                ValorTotal = x.Sum(y=>y.Valor)
+
                                             })
                                             .OrderByDescending(x => x.Quantidade)
                                             .Take(10).ToList();

@@ -6,7 +6,7 @@ namespace Fly01.OrdemServico.ViewModel
     public class ParametroOrdemServicoVM : DomainBaseVM
     {
         [JsonProperty("diasPrazoEntrega")]
-        public string DiasPrazoEntrega { get; set; }
+        public int DiasPrazoEntrega { get; set; }
 
 
     }

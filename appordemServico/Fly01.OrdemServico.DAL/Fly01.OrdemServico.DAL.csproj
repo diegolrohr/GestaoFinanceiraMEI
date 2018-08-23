@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201808221442018_OrdemServicoManutencao.Designer.cs">
       <DependentUpon>201808221442018_OrdemServicoManutencao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs" />
+    <Compile Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.Designer.cs">
+      <DependentUpon>201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -131,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808221442018_OrdemServicoManutencao.resx">
       <DependentUpon>201808221442018_OrdemServicoManutencao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.resx">
+      <DependentUpon>201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

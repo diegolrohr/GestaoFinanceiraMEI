@@ -1,5 +1,6 @@
 using Fly01.Core;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.OrdemServico.ViewModel;
@@ -39,7 +40,7 @@ namespace Fly01.OrdemServico.Controllers
             if (parametro == null)
                 return Json(new
                 {
-                    diasPrazoEntrega = 0
+                    diasPrazoEntrega = 7
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -61,7 +62,7 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Parâmetros",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=fnFormReady,"
 
             };
 
@@ -71,12 +72,23 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     Create = @Url.Action("Create"),
                     List = Url.Action("Form")
-                }
+                },
+                ReadyFn = "fnFormReady"
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
             config.Elements.Add(new InputNumbersUI { Id = "diasPrazoEntrega", Class = "col s12 m3", Label = "Previsão de Entrega (dias)", Required = true });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "responsavelPadraoId",
+                Class = "col s12 m3",
+                Label = "Responsável padrão",
+                Required = false,
+                DataUrl = Url.Action("Responsavel", "AutoComplete"),
+                LabelId = "responsavelNome"
+            }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             #region Helpers 
             config.Helpers.Add(new TooltipUI
@@ -85,6 +97,14 @@ namespace Fly01.OrdemServico.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Número de dias sugeridos para a previsão de entrega"
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "responsavelPadraoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Pessoa que será responsável pela ordem de serviço, por padrão"
                 }
             });
             #endregion

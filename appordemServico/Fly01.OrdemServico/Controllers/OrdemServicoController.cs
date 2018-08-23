@@ -218,9 +218,9 @@ namespace Fly01.OrdemServico.Controllers
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Em Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServicoItem", Label = "Imprimir" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
@@ -398,8 +398,8 @@ namespace Fly01.OrdemServico.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ", Request.QueryString["dataFinal"]);
-            filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
+            filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
+            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }

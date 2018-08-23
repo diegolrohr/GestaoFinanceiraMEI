@@ -83,6 +83,7 @@
         var valorFrete = 0;
         var tipoFrete = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoFrete').val();
         var tipoVenda = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoVenda').val();
+        var tipoNfeComplementar = $('#fly01mdlfrmVisualizarOrdemVenda select#tipoNfeComplementar').val();
         var calculaFrete = (
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
@@ -101,7 +102,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoNfeComplementar: tipoNfeComplementar, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {

@@ -10,7 +10,7 @@ namespace Fly01.Compras.API.Controllers.Api
     [RoutePrefix("avaliacaoapp")]
     public class AvaliacaoAppController : ApiPlataformaMongoBaseController<AvaliacaoApp>
     {
-        protected MediaClient _mediaClient; 
+        protected MediaClient _mediaClient;
         public AvaliacaoAppController()
            : base(ConfigurationManager.AppSettings["MongoDBAvaliacaoApp"], ConfigurationManager.AppSettings["MongoCollectionNameAvaliacaoApp"]) { }
 

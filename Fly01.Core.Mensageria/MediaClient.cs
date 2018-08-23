@@ -80,8 +80,12 @@ namespace Fly01.Core.Mensageria
             var errorMessage = GetCustomMessage(exception);
 
             mediaChannel = isProd
-                ? "https://totvs.ryver.com/application/webhook/YM0Hs5umn114vPb"
-                : "https://totvs.ryver.com/application/webhook/bP5-1AzID58i0ai";
+                ? "https://hooks.slack.com/services/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"
+                : "https://hooks.slack.com/services/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";
+
+            //mediaChannel = isProd
+            //    ? "https://totvs.ryver.com/application/webhook/YM0Hs5umn114vPb"
+            //    : "https://totvs.ryver.com/application/webhook/bP5-1AzID58i0ai";
 
             var logData = new LogServiceBusEvent() { MessageData = data, Error = errorMessage, StackTrace = exception.StackTrace, Host = hostName, Queue = queueName, PlatformId = plataformaUrl, RoutingKey = routingKey };
             var message = new SlackMessage()

@@ -160,6 +160,22 @@ namespace Fly01.Faturamento.Controllers
             #region Helpers 
             config.Helpers.Add(new TooltipUI
             {
+                Id = "grupoTributarioIdProduto",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os impostos são calculados de acordo com as configurações do grupo Tributário."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "quantidade",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Quando for do tipo Complementar de impostos, quantidade e valor servem somente para obter o valor base dos impostos. Somente na Complementar de preço que estas informações saem no XML."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
                 Id = "valorCreditoICMS",
                 Tooltip = new HelperUITooltip()
                 {

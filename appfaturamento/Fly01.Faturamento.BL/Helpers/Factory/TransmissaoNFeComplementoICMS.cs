@@ -26,13 +26,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public override TipoFormaPagamento ObterTipoFormaPagamento()
         {
-            var tipoFormaPagamento = TipoFormaPagamento.Outros;
-            if (Cabecalho.FormaPagamento != null)
-            {
-                //Transferência não existe para o SEFAZ
-                tipoFormaPagamento = Cabecalho.FormaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : Cabecalho.FormaPagamento.TipoFormaPagamento;
-            }
-            return tipoFormaPagamento;
+            return TipoFormaPagamento.SemPagamento;
         }
 
         public override TransmissaoVM ObterTransmissaoVM()
@@ -104,26 +98,21 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private double CalcularTributosAproximados(ICMSTOT icmsTotal)
         {
-            return icmsTotal.SomatorioICMS
-                + icmsTotal.SomatorioCofins
-                + icmsTotal.SomatorioICMSST
-                + icmsTotal.SomatorioIPI
-                + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+            return icmsTotal.SomatorioICMS;
         }
 
         #region Impostos
         private void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
             ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-            ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-            ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
             {
                 ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                 ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                 ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+                ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
             }
 
             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
@@ -142,7 +131,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 OrigemMercadoria = OrigemMercadoria.Nacional,
                 AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
                 ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
-                CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
+                CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
             };
 
             CalculaICMSPai(item, itemTributacao, ICMS);

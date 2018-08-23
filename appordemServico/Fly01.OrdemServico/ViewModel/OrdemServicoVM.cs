@@ -36,8 +36,8 @@ namespace Fly01.OrdemServico.ViewModel
         public bool ValorTotal { get; set; }
 
         #region Navigation
-        [JsonProperty("pessoa")]
-        public virtual PessoaVM Pessoa { get; set; }
+        [JsonProperty("cliente")]
+        public virtual PessoaVM Cliente { get; set; }
 
         [JsonProperty("responsavel")]
         public virtual PessoaVM Responsavel { get; set; }

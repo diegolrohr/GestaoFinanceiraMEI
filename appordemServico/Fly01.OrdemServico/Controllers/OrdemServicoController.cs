@@ -1,248 +1,128 @@
-﻿using Fly01.Core.Defaults;
+﻿
+using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
         public OrdemServicoController()
         {
+            ExpandProperties = "cliente($select=id,nome,email)";
+        }
 
+        private JsonResult GetJson(object data)
+            => Json(data, JsonRequestBehavior.AllowGet);
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemServicoItemProdutoVM> GetProdutos(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"ordemVendaId eq {id}");
+            queryString.AddParam("$expand", "produto");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemProdutoVM>>("OrdemServicoItemProduto", queryString).Data;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemServicoItemServicoVM> GetServicos(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"ordemServicoId eq {id}");
+            queryString.AddParam("$expand", "servico");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemServicoVM>>("OrdemServicoItemServico", queryString).Data;
+        }
+
+        protected DataTableUI GetDtOrdemServicoItemProdutosCfg()
+        {
+            DataTableUI dtOrdemServicoItemProdutosCfg = new DataTableUI
+            {
+                Parent = "ordemServicoItemProdutosField",
+                Id = "dtOrdemServicoItemProdutos",
+                UrlGridLoad = Url.Action("GetOrdemServicoItemProdutos", "OrdemServicoItemProduto"),
+                UrlFunctions = Url.Action("Functions", "OrdemServicoItemProduto") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                }
+            };
+
+            dtOrdemServicoItemProdutosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
+            }));
+
+            dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
+            dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+
+            return dtOrdemServicoItemProdutosCfg;
+        }
+
+        protected DataTableUI GetDtOrdemServicoItemServicosCfg()
+        {
+            DataTableUI dtOrdemServicoItemServicosCfg = new DataTableUI
+            {
+                Parent = "ordemServicoItemServicosField",
+                Id = "dtOrdemServicoItemServicos",
+                UrlGridLoad = Url.Action("GetOrdemServicoItemServicos", "OrdemServicoItemServico"),
+                UrlFunctions = Url.Action("Functions", "OrdemVendaServico") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                }
+            };
+
+            dtOrdemServicoItemServicosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
+            }));
+
+            dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
+            dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+
+            return dtOrdemServicoItemServicosCfg;
         }
 
         public override Func<OrdemServicoVM, object> GetDisplayData()
         {
-            throw new NotImplementedException();
-        }
-
-
-        protected override ContentUI FormJson()
-        {
-            var cfg = new ContentUI
+            return x => new
             {
-                History = new ContentUIHistory
-                {
-                    Default = Url.Action("Create"),
-                    WithParams = Url.Action("Edit")
-                },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Ordem de Serviço",
-                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                id = x.Id.ToString(),
+                numero = x.Numero.ToString(),
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
+                dataEntrega = x.DataEntrega.ToString("dd/MM/yyyy"),
+                status = x.Status,
+                statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemServico), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemServico), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusOrdemServico), x.Status),
+                cliente_nome = x.Cliente.Nome
             };
-
-            var config = new FormWizardUI
-            {
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "OrdemCompra")
-                },
-                ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnChangeEstado" },
-                Steps = new List<FormWizardUIStep>()
-                {
-                    new FormWizardUIStep()
-                    {
-                        Title = "Cadastro",
-                        Id = "stepCadastro",
-                        Quantity = 11,
-                    },
-                    new FormWizardUIStep()
-                    {
-                        Title = "Produtos",
-                        Id = "stepProdutos",
-                        Quantity = 2,
-                    },
-                    new FormWizardUIStep()
-                    {
-                        Title = "Financeiro",
-                        Id = "stepFinanceiro",
-                        Quantity = 5,
-                    },
-                    new FormWizardUIStep()
-                    {
-                        Title = "Finalizar",
-                        Id = "stepFinalizar",
-                        Quantity = 15,
-                    }
-                },
-                ShowStepNumbers = true
-            };
-
-            #region step Cadastro
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número", Disabled = true });
-            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissao", Required = true });
-            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
-
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "fornecedorId",
-                Class = "col s12",
-                Label = "Fornecedor",
-                Required = true,
-                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
-                LabelId = "fornecedorNome",
-                DataUrlPost = Url.Action("PostFornecedor")
-            }, ResourceHashConst.ComprasCadastrosFornecedores));
-
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
-            #endregion
-
-            #region step Produtos
-            //config.Elements.Add(new ButtonUI
-            //{
-            //    Id = "btnAddPedidoItem",
-            //    Class = "col s12 m2",
-            //    Value = "Adicionar produto",
-            //    DomEvents = new List<DomEventUI>
-            //    {
-            //        new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
-            //    }
-            //});
-            //config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12" });
-            #endregion
-
-            #region step Financeiro
-            //config.Elements.Add(new InputCheckboxUI
-            //{
-            //    Id = "geraFinanceiro",
-            //    Class = "col s12 m6 l3",
-            //    Label = "Gerar financeiro",
-            //    DomEvents = new List<DomEventUI>
-            //    {
-            //        new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
-            //    }
-            //});
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "formaPagamentoId",
-                Class = "col s12 m6",
-                Label = "Forma Pagamento",
-                DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
-                LabelId = "formaPagamentoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "condicaoParcelamentoId",
-                Class = "col s12 m6",
-                Label = "Condição Parcelamento",
-                DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
-                LabelId = "condicaoParcelamentoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "categoriaId",
-                Class = "col s12 m6",
-                Label = "Categoria",
-                PreFilter = "tipoCarteira",
-                DataUrl = @Url.Action("Categoria", "AutoComplete"),
-                LabelId = "categoriaDescricao",
-                DataUrlPost = @Url.Action("NovaCategoriaDespesa")
-            }, ResourceHashConst.ComprasCadastrosCategoria));
-
-            #endregion
-
-            #region step Finalizar
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemCompra", Class = "col s12 m6", Label = "Total pedido (produtos + impostos + frete)", Readonly = true });
-            //config.Elements.Add(new InputCheckboxUI
-            //{
-            //    Id = "movimentaEstoque",
-            //    Class = "col s12 m4",
-            //    Label = "Movimentar estoque",
-            //    DomEvents = new List<DomEventUI>
-            //    {
-            //        new DomEventUI{DomEvent = "click", Function = "fnToggleMovimentaEstoque" }
-            //    }
-            //});
-            //config.Elements.Add(new InputCheckboxUI
-            //{
-            //    Id = "geraNotaFiscal",
-            //    Class = "col s12 m4",
-            //    Label = "Faturar",
-            //    DomEvents = new List<DomEventUI>
-            //    {
-            //        new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
-            //    }
-            //});
-            config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-            config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
-            config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
-            config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
-            config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
-            config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
-            #endregion
-
-            #region Helpers
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "movimentaEstoque",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Movimentar Estoque, serão realizadas as movimentações de entrada da quantidade total dos produtos."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "finalizarPedido",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Salvar e Finalizar, serão efetivadas as opções marcadas (Gerar financeiro, Movimentar estoque). Não será mais possível editar ou excluir este pedido."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "transportadoraId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe a transportadora, quando configurar frete a ser pago por sua empresa(FOB/Destinatário)."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "geraFinanceiro",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
-                }
-            });
-            #endregion
-
-            cfg.Content.Add(config);
-            return cfg;
         }
-
 
         public override ContentResult List()
             => ListOrdemServico();
@@ -251,24 +131,25 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (UserCanWrite)
-            {
-                target.Add(new HtmlUIButton { Id = "new", Label = "Nova Ordem de Serviço", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "imprimirOS", Label = "Imprimir", OnClickFn = "fnImprimirOS", Position = HtmlUIButtonPosition.In });
-            }
+            //if (UserCanWrite)
+            //{
+            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "imprimirOS", Label = "Imprimir", Position = HtmlUIButtonPosition.In/*, OnClickFn = "fnImprimir"*/ });
+
+            //}
 
             return target;
         }
 
         public ContentResult ListOrdemServico(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todas as notas";
+            var buttonLabel = "Mostrar todos as ordens de serviço";
             var buttonOnClick = "fnRemoveFilter";
 
             if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
                 gridLoad = Request.QueryString["action"];
-                buttonLabel = "Mostrar notas do mês atual";
+                buttonLabel = "Mostrar ordens de serviço do mês atual";
                 buttonOnClick = "fnAddFilter";
             }
 
@@ -291,7 +172,7 @@ namespace Fly01.OrdemServico.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
-                        new PeriodPickerUI
+                        new PeriodPickerUI()
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",
@@ -317,7 +198,6 @@ namespace Fly01.OrdemServico.Controllers
                             Name = "dataInicial"
                         }
                     }
-
                 };
 
                 cfg.Content.Add(cfgForm);
@@ -337,60 +217,181 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnVisualizarNFe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'NaoTransmitida' && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnVisualizarNFSe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnTransmitirNFe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnExcluirNFe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnExcluirNFSe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarPDFNFSe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" }
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" }
             }));
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numeroOS", DisplayName = "Número OS", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data_emissao", DisplayName = "Data de Emissão", Priority = 3, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "previsao_entrega", DisplayName = "Previsão de Entrega", Priority = 4, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor Total", Priority = 5, Type = "numbers" });
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "status",
-            //    DisplayName = "Status",
-            //    Priority = 3,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemServico))),
-            //    RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
-            //});
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoNotaFiscal",
-            //    DisplayName = "Tipo",
-            //    Priority = 4,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNotaFiscal))),
-            //    RenderFn = "fnRenderEnum(full.tipoNotaFiscalCssClass, full.tipoNotaFiscalDescription)"
-            //});
-            //config.Columns.Add(new DataTableUIColumn
-            //{
-            //    DataField = "tipoVenda",
-            //    DisplayName = "Finalidade",
-            //    Priority = 5,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
-            //    RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
-            //});
-            //config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 6 });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 7, Type = "date" });
-            //config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });//numero int e pesquisa string
-            //config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 9 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "status",
+                DisplayName = "Status",
+                Priority = 2,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemServico))),
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
 
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
+
+        public ContentUI FormOrdemServico(bool isEdit = false)
+        {
+            var cfg = new ContentUI
+            {
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Create"),
+                    WithParams = Url.Action("Edit")
+                },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Ordem de Serviços",
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormWizardUI
+            {
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "OrdemServico")
+                },
+                ReadyFn = "fnFormReadyOrdemServico",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnChangeEstado" },
+                Steps = new List<FormWizardUIStep>()
+                {
+                    new FormWizardUIStep()
+                    {
+                        Title = "Cadastro",
+                        Id = "stepCadastro",
+                        Quantity = 7,
+                    },
+                    new FormWizardUIStep()
+                    {
+                        Title = "Itens do Cliente",
+                        Id = "stepItensCliente",
+                        Quantity = 2,
+                    },
+                    new FormWizardUIStep()
+                    {
+                        Title = "Produtos",
+                        Id = "stepProdutos",
+                        Quantity = 2,
+                    },
+                    new FormWizardUIStep()
+                    {
+                        Title = "Serviços",
+                        Id = "stepServicos",
+                        Quantity = 2,
+                    },
+                    new FormWizardUIStep()
+                    {
+                        Title = "Finalizar",
+                        Id = "stepFinalizar",
+                        Quantity = 3,
+                    }
+                },
+                Rule = isEdit ? "parallel" : "linear",
+                ShowStepNumbers = true
+            };
+
+            #region step Cadastro
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Disabled = true });
+
+            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "clienteId",
+                Class = "col s12",
+                Label = "Cliente",
+                Required = true,
+                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome",
+                DataUrlPost = Url.Action("PostCliente")
+            }, ResourceHashConst.FaturamentoCadastrosClientes));
+
+            config.Elements.Add(new TextAreaUI { Id = "descricao", Class = "col s12", Label = "Descrição", MaxLength = 200 });
+
+
+            #endregion
+
+            #region Itens do Cliente
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoManutencao",
+                Class = "col s12 m2",
+                Label = "",
+                Value = "Adicionar Item",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoManutencao" }
+                    }
+            });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoManutencao", Class = "col s12" });
+            #endregion
+
+            #region step Produtos
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoItemProduto",
+                Class = "col s12 m2",
+                Label = "",
+                Value = "Adicionar produto",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemProduto" }
+                    }
+            });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemProdutos", Class = "col s12" });
+            #endregion
+
+            #region step Serviços
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoItemServico",
+                Class = "col s12 m2",
+                Label = "",
+                Value = "Adicionar serviço",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemServico" }
+                    }
+            });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemServicos", Class = "col s12" });
+            #endregion
+
+            #region step Finalizar
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m6", Label = "Total (produtos + serviços)", Readonly = true });
+
+            #endregion
+
+            cfg.Content.Add(config);
+
+            return cfg;
+
+        }
+
+        protected override ContentUI FormJson()
+            => FormOrdemServico();
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
@@ -403,19 +404,21 @@ namespace Fly01.OrdemServico.Controllers
             return base.GridLoad(filters);
         }
 
-        [HttpGet]
-        public JsonResult TotalOrdemCompra(string id, string fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0)
+        public JsonResult GridLoadNoFilter()
+            => base.GridLoad();
+
+        [HttpPost]
+        public override JsonResult Create(OrdemServicoVM entityVM)
         {
             try
             {
-                //var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoCompra, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                ////var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
-
-                //return Json(
-                //    new { success = true, total = response },
-                //    JsonRequestBehavior.AllowGet
-                //);
-                return null;
+                var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                OrdemServicoVM postResult = JsonConvert.DeserializeObject<OrdemServicoVM>(postResponse);
+                var response = new JsonResult
+                {
+                    Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), numero = postResult.Numero.ToString() }
+                };
+                return (response);
             }
             catch (Exception ex)
             {
@@ -424,6 +427,150 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-    }
+        public ContentResult Visualizar()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Visualizar",
+                UrlFunctions = @Url.Action("Functions", "OrdemServico") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                ReadyFn = "fnFormReadyVisualizarOrdemServico",
+                Id = "fly01mdlfrmVisualizarOrdemServico"
+            };
 
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m6 l2", Label = "Número", Disabled = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m6 l2", Label = "Data de Emissão" });
+            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m6 l2", Label = "Data de Entrega" });
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "clienteId",
+                Class = "col s12 m6",
+                Label = "Cliente",
+                Disabled = true,
+                DataUrl = Url.Action("Cliente", "AutoComplete"),
+                LabelId = "clienteNome"
+            });
+            config.Elements.Add(new TextAreaUI
+            {
+                Id = "descricao",
+                Class = "col s12",
+                Label = "Descrição",
+                MaxLength = 200,
+                Disabled = true
+            });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
+            config.Elements.Add(new TableUI
+            {
+                Id = "ordemServicoItemProdutosDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Produto", Value = "0"},
+                    new OptionUI { Label = "Quant.", Value = "1"},
+                    new OptionUI { Label = "Valor",Value = "2"},
+                    new OptionUI { Label = "Desconto",Value = "3"},
+                    new OptionUI { Label = "Total",Value = "4"},
+                }
+            });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetServico", Class = "col s12", Label = "Serviços" });
+            config.Elements.Add(new TableUI
+            {
+                Id = "ordemServicoItemServicosDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Serviço", Value = "0"},
+                    new OptionUI { Label = "Quant.", Value = "1"},
+                    new OptionUI { Label = "Valor",Value = "2"},
+                    new OptionUI { Label = "Desconto",Value = "3"},
+                    new OptionUI { Label = "Total",Value = "4"},
+                }
+            });
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpGet]
+        public JsonResult TotalOrdemServico(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
+        {
+            try
+            {
+                var resource = string.Format("CalculaTotalOrdemServico?&ordemServicoId={0}&clienteId={1}&&onList={2}", id, clienteId, false);
+                //var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
+                return null;
+                //return Json(
+                //    new { success = true, total = response },
+                //    JsonRequestBehavior.AllowGet
+                //);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [HttpGet]
+        public JsonResult GetInformacoesComplementares()
+        {
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+
+                return Json(
+                    new { success = true, infcomp = response.Data.FirstOrDefault()?.MensagemPadraoNota },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        #region OnDemmand
+        [HttpPost]
+        public JsonResult NovaCategoria(string term)
+        {
+            try
+            {
+                var tipoCategoria = "";
+                var tipoCarteira = Request.QueryString["tipo"];
+
+                if (tipoCarteira == "Receita")
+                    tipoCategoria = "1";
+                else
+                    tipoCategoria = "2";
+
+                var entity = new CategoriaVM
+                {
+                    Descricao = term,
+                    TipoCarteira = tipoCategoria
+                };
+
+                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+                var data = RestHelper.ExecutePostRequest<CategoriaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+        #endregion
+    }
 }

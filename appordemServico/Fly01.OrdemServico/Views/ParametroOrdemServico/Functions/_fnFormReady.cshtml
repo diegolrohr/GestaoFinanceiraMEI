@@ -1,0 +1,16 @@
+﻿<script>
+    function fnFormReady() {
+
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
+            type: "GET",
+            success: function (data) {
+                $("#diasPrazoEntrega").val(data.diasPrazoEntrega);
+                fly01.fn.updateTextFields();
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+    }
+</script>

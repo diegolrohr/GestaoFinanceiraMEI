@@ -1,0 +1,24 @@
+﻿<script>
+    function fnEnviarEmailOrcamentoPedido(idRecord) {
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("EnviaEmailOrcamentoPedido", "OrdemVenda")',
+            data: { id: idRecord },
+			type: "POST",
+			success : function(data) {
+			    fly01.loading.stop();
+			    if (data.success) {
+			        fly01.toast("Email enviado com sucesso.", "success");
+			    } else {
+			        fly01.fn.submitErrorHandler(null, data.message);
+			    }
+			},
+            error: function (jqxhr, textStatus, error) {
+				var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+				fly01.toast(err, "error");
+				fly01.loading.stop();
+			}
+        });
+    }
+</script>

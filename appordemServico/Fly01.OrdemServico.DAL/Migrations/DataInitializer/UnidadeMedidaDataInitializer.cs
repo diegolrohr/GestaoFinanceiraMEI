@@ -3,7 +3,6 @@ using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
-using Fly01.OrdemServico.API.Models.DAL;
 
 namespace Fly01.OrdemServico.DAL.Migrations.DataInitializer
 {

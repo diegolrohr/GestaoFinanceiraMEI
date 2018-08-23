@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Controllers
 {
     public class ProdutoBaseController<T> : BaseController<T> where T : ProdutoVM
     {
-        protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
+        protected Func<T, object> GetDisplayDataSelect { get; set; }
         protected string SelectProperties { get; set; }
         private string GrupoProdutoResourceHash { get; set; }
 
@@ -40,7 +40,7 @@ namespace Fly01.Core.Presentation.Controllers
             };
         }
 
-        public override Func<T, object> GetDisplayData() 
+        public override Func<T, object> GetDisplayData()
             => GetDisplayDataSelect;
 
         public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
@@ -152,7 +152,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoProduto))),
                 DomEvents = new List<DomEventUI>() { new DomEventUI() { DomEvent = "change", Function = "fnChangeTipoProduto" } }
             });
-            
+
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "grupoProdutoId",
@@ -222,7 +222,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Digits = 3,
                 Disabled = true,
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "blur", Function = "fnChangeSaldoProduto" } },
-                
+
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
@@ -239,7 +239,7 @@ namespace Fly01.Core.Presentation.Controllers
             return cfg;
         }
 
-        public virtual List<TooltipUI> GetHelpers() 
+        public virtual List<TooltipUI> GetHelpers()
             => null;
 
         #region onDemand

@@ -104,6 +104,7 @@
     <Compile Include="ViewModel\DashboardTopProdutos.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
+    <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>

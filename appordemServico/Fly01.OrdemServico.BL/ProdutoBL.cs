@@ -19,7 +19,6 @@ namespace Fly01.OrdemServico.BL
 
         public override void ValidaModel(Produto entity)
         {
-            entity.Fail(entity.GrupoProdutoId == null, GrupoProdutoInvalido);
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(All.AsNoTracking().Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
@@ -56,7 +55,6 @@ namespace Fly01.OrdemServico.BL
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
         public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
-        public static Error GrupoProdutoInvalido = new Error("Grupo de produto não foi informado.", "grupoProdutoId");
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");
         public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");
         public static Error TipoProdutoDiferente = new Error("Tipo do produto é diferente do tipo do grupo de produto.", "tipoProduto");

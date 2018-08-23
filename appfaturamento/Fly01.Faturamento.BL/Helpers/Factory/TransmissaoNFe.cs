@@ -244,7 +244,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ValorUnitarioTributado = item.Valor,
                 ValorDesconto = item.Desconto,
                 AgregaTotalNota = CompoemValorTotal.Compoe,
-                CEST = item.Produto.Cest?.Codigo
+                CEST = item.Produto.Cest?.Codigo,
             };
         }
 

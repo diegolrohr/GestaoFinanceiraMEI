@@ -77,6 +77,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reports\ReportOrdemServico.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,7 @@
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
+    <Compile Include="ViewModel\ImprimirOrdemServicoVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemServicoVM.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
+    <Compile Include="ViewModel\TotalordemServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

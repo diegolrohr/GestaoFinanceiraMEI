@@ -1,5 +1,6 @@
 ﻿
 using Fly01.Core;
+using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
@@ -7,6 +8,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -538,6 +540,78 @@ namespace Fly01.OrdemServico.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        private List<ImprimirOrdemServicoVM> GetDadosOrcamentoPedido(string id, OrdemServicoVM os)
+        {
+            var produtos = GetProdutos(Guid.Parse(id));
+            var servicos = GetServicos(Guid.Parse(id));
+            var resource = string.Format("CalculaTotalOrdemVenda?&ordemServicoId={0}&clienteId={1}&onList={2}", id.ToString(), os.ClienteId.ToString(), true);
+            var response = RestHelper.ExecuteGetRequest<TotalOrdemServicoVM>(resource, queryString: null);
+
+            List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
+
+            foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
+
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    Id = os.Id.ToString(),
+                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    DataEmissao = os.DataEmissao.ToString(),
+                    DataEntrega = os.DataEntrega.ToString(),
+                    Status = os.Status.ToString(),
+                    Numero = os.Numero.ToString(),
+                    Observacao = os.Observacao,
+                    ItemId = OrdemProduto.Produto != null ? OrdemProduto.Produto.Id : Guid.Empty,
+                    ItemNome = OrdemProduto.Produto != null ? OrdemProduto.Produto.Descricao : string.Empty,
+                    ItemQtd = OrdemProduto.Quantidade,
+                    ItemValor = OrdemProduto.Valor,
+                    ItemDesconto = OrdemProduto.Desconto,
+                    ItemTotal = OrdemProduto.Total,
+                    Total = response.Total,
+                });
+
+            foreach (OrdemServicoItemServicoVM OrdemServico in servicos)
+
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    Id = os.Id.ToString(),
+                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    DataEmissao = os.DataEmissao.ToString(),
+                    DataEntrega = os.DataEntrega.ToString(),
+                    Status = os.Status.ToString(),
+                    Numero = os.Numero.ToString(),
+                    Observacao = os.Observacao,
+                    ItemId = OrdemServico.Servico != null ? OrdemServico.Servico.Id : Guid.Empty,
+                    ItemNome = OrdemServico.Servico != null ? OrdemServico.Servico.Descricao : string.Empty,
+                    ItemQtd = OrdemServico.Quantidade,
+                    ItemValor = OrdemServico.Valor,
+                    ItemDesconto = OrdemServico.Desconto,
+                    ItemTotal = OrdemServico.Total,
+                    Total = response.Total,
+                });
+
+            if (!produtos.Any() && !servicos.Any())
+            {
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    Id = os.Id.ToString(),
+                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    DataEmissao = os.DataEmissao.ToString(),
+                    DataEntrega = os.DataEntrega.ToString(),
+                    Status = os.Status.ToString(),
+                    Numero = os.Numero.ToString(),
+                    Observacao = os.Observacao,
+                });
+            }
+
+            return reportItems;
+        }
+
+        private byte[] GetPDFFile(OrdemServicoVM ordemVenda)
+        {
+            var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
+            return reportViewer.Print(GetDadosOrcamentoPedido(ordemVenda.Id.ToString(), ordemVenda), SessionManager.Current.UserData.PlatformUrl);
         }
 
         #region OnDemmand

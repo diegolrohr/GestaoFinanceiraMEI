@@ -308,6 +308,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
                     }
                 },
                 new SidebarUIMenu()

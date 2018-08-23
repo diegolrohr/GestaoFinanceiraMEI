@@ -3,7 +3,9 @@ using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.Controllers;
+using Fly01.OrdemServico.Enum;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -34,8 +36,15 @@ namespace Fly01.Estoque.Controllers
                 tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
                 tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
                 objetoDeManutencao = x.ObjetoDeManutencao,
-                registroFixo = x.RegistroFixo
+                manutencao_sn = x.ObjetoDeManutencao ? "Sim" : "Não",
+                registroFixo = x.RegistroFixo,
+                SimNaoCss = EnumHelper.GetCSS(typeof(BoolSimNao), x.ObjetoDeManutencao ? "Sim" : "Nao"),
             };
+        }
+
+        public override Func<ProdutoVM, object> GetDisplayData()
+        {
+            return base.GetDisplayData();
         }
 
         [OperationRole(NotApply = true)]
@@ -131,12 +140,13 @@ namespace Fly01.Estoque.Controllers
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "objetoDeManutencao", DisplayName = "Objeto de Manutenção", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn
             {
-                DataField = "valorVenda",
-                DisplayName = "Valor Venda",
-                Priority = 4
+                DataField = "manutencao_sn",
+                DisplayName = "Objeto de Manutenção",
+                Priority = 3,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(BoolSimNao))),
+                RenderFn = "fnRenderEnum(full.SimNaoCss, full.manutencao_sn)"
             });
 
             cfg.Content.Add(config);

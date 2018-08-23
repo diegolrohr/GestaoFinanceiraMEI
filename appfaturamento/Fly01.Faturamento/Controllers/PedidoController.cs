@@ -39,6 +39,7 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true },
                     new DataTableUIParameter { Id = "tipoVenda", Required = true },
+                    new DataTableUIParameter { Id = "tipoNfeComplementar", Required = true },
                     new DataTableUIParameter { Id = "nFeRefComplementarIsDevolucao", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
@@ -209,7 +210,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m7",
                 Label = "Tipo do Complemento",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")
-                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value))),
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd,ComplIcms".Contains(x.Value))),
                 ConstrainWidth = true
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -561,13 +562,14 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string nFeRefComplementarIsDevolucao)
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string tipoNfeComplementar, string nFeRefComplementarIsDevolucao)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
                 queryString.AddParam("tipoVenda", tipoVenda);
+                queryString.AddParam("tipoNfeComplementar", tipoNfeComplementar);
                 queryString.AddParam("isComplementarDevolucao", nFeRefComplementarIsDevolucao);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);

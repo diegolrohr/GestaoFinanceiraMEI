@@ -98,26 +98,21 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         private double CalcularTributosAproximados(ICMSTOT icmsTotal)
         {
-            return icmsTotal.SomatorioICMS
-                + icmsTotal.SomatorioCofins
-                + icmsTotal.SomatorioICMSST
-                + icmsTotal.SomatorioIPI
-                + icmsTotal.SomatorioPis
-                + icmsTotal.SomatorioFCPST;
+            return icmsTotal.SomatorioICMS;
         }
 
         #region Impostos
         private void CalculaICMSPai(NFeProduto item, NotaFiscalItemTributacao itemTributacao, ICMSPai ICMS)
         {
             ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
-            ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
-            ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
 
             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.Outros)
             {
                 ICMS.ModalidadeBC = ModalidadeDeterminacaoBCICMS.ValorDaOperacao;
                 ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                 ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                ICMS.ValorBC = Math.Round(itemTributacao.ICMSBase, 2);
+                ICMS.ValorICMS = Math.Round(itemTributacao.ICMSValor, 2);
             }
 
             if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST

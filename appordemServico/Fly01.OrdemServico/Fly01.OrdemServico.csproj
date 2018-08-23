@@ -222,7 +222,6 @@
     <Content Include="Views\Responsavel\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnStateSelect.cshtml" />
-    <Content Include="Views\Shared\Functions\_fnRenderBool.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

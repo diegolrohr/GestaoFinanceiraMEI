@@ -9,6 +9,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public int PedidoNumero { get; set; }
         public Guid ProdutoId { get; set; }
         public TipoVenda TipoVenda { get; set; }
+        public TipoNfeComplementar TipoNfeComplementar { get; set; }
         public bool NFeRefComplementarIsDevolucao { get; set; }
 
         public virtual Produto Produto { get; set; }

@@ -1,9 +1,12 @@
 ﻿using Fly01.Core.Config;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Widgets;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
@@ -23,18 +26,256 @@ namespace Fly01.OrdemServico.Controllers
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
-                //    //Header = new HtmlUIHeader
-                //    //{
-                //    //    Title = "Fluxo de Caixa",
-                //    //    Buttons = new List<HtmlUIButton>
-                //    //    {
-                //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-                //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
-                //    //    }
-                //    //},
-                //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                //    //Functions = new List<string> { "__format", "fnGetSaldos" }
+                SidebarUrl = Url.Action("Sidebar"),
+                Header = new HtmlUIHeader()
+                {
+                    Title = "Visão Geral",
+                    Buttons = new List<HtmlUIButton>()
+                },
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns="
             };
+            var dataInicialFiltroDefault = DateTime.Now.Date;
+
+            var dataFinal = DateTime.Now.AddMonths(1);
+            var dataFinalFiltroDefault = new DateTime(dataFinal.Year, dataFinal.Month, DateTime.DaysInMonth(dataFinal.Year, dataFinal.Month));
+
+            cfg.Content.Add(new FormUI
+            {
+                ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                Class = "col s12",
+                Elements = new List<BaseUI>
+                {
+                    new PeriodPickerUI()
+                    {
+                        Label = "Selecione o período",
+                        Id = "mesPicker",
+                        Name = "mesPicker",
+                        Class = "col s12 m6 offset-m3 l4 offset-l4",
+                        DomEvents = new List<DomEventUI>()
+                        {
+                            new DomEventUI()
+                            {
+                                DomEvent = "change",
+                                Function = "fnUpdateDataFinal"
+                            }
+                        }
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+
+                    }
+                }
+            });
+
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardAB",
+                Title = "Em Aberto",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "OrdemServico")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "red",
+                Id = "fly01cardAN",
+                Title = "Em Andamento",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "OrdemServico")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "green",
+                Id = "fly01cardCO",
+                Title = "Concluído",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "Ver mais",
+                    OnClick = @Url.Action("List", "OrdemServico")
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "teal",
+                Id = "fly01cardCA",
+                Title = "Cancelado",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+
+            cfg.Content.Add(new ChartUI
+            {
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Ordens de Serviço por dia",
+                        fontSize = 12,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            },
+                        yAxes = new object[] {
+                                new
+                                {
+                                    stacked = true
+                                }
+                            }
+                    }
+                },
+                UrlData = @Url.Action("LoadChart", "Dashboard"),
+                Class = "col s12",
+                Parameters = new List<ChartUIParameter>
+                {
+                    new ChartUIParameter { Id = "dataInicial" },
+                    new ChartUIParameter { Id = "dataFinal" },
+                    new ChartUIParameter { Id = "groupType" }
+                }
+            });
+
+            cfg.Content.Add(new DivUI
+            {
+                Elements = new List<BaseUI>
+                {
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 maiores produtos" },
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 maiores serviços" }
+                }
+            });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "OrdemServico"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataInicial" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
+
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopServicos",
+                UrlGridLoad = Url.Action("DashboardTopServicos", "OrdemServico"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataInicial" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
 
             if (withSidebarUrl)
                 cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
@@ -122,5 +363,53 @@ namespace Fly01.OrdemServico.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, int groupType)
+        {
+            try
+            {
+                //var response = GetProjecao(dataInicial, dataFinal, groupType);
+
+                var dataChartToView = new
+                {
+                    success = true,
+                    currency = true,
+                    //labels = response.Select(x => x.Label).ToArray(),
+                    //datasets = new object[] {
+                    //    new {
+                    //            type = "line",
+                    //            label = "Saldo",
+                    //            backgroundColor = "rgb(44, 55, 57)",
+                    //            borderColor = "rgb(44, 55, 57)",
+                    //            //data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
+                    //            fill = false
+                    //        },
+                    //    new {
+                    //            label = "Recebimentos",
+                    //            fill = false,
+                    //            backgroundColor = "rgb(0, 178, 121)",
+                    //            borderColor = "rgb(0, 178, 121)",
+                    //            //data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
+                    //        },
+                    //    new {
+                    //            label = "Pagamentos",
+                    //            fill = false,
+                    //            backgroundColor = "rgb(239, 100, 97)",
+                    //            borderColor = "rgb(239, 100, 97)",
+                    //            //data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
+                    //    }
+                    //}
+                };
+
+                return Json(dataChartToView, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return JsonResponseStatus.GetFailure(ex.Message);
+            }
+        }
+
+
     }
+
 }

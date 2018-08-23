@@ -123,7 +123,7 @@ namespace Fly01.Faturamento.BL
         public CertificadoDigitalBL CertificadoDigitalBL => certificadoDigitalBL ?? (certificadoDigitalBL = new CertificadoDigitalBL(Context, EstadoBL, ParametroTributarioBL));
         
         private TotalTributacaoBL totalTributacaoBL;
-        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL));
+        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL, OrdemVendaProdutoBL));
 
         private MonitorNFBL monitorNFBL;
         public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeBL, NFSeBL, NotaFiscalBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL));

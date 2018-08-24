@@ -31,7 +31,7 @@ namespace Fly01.Compras.BL
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
             entity.Fail(entity.Numero < 1, new Error("Numero do orçamento inválido"));
-            entity.Fail(OrdemCompraBL.All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do orçamento duplicado"));
+            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do orçamento duplicado"));
 
             base.ValidaModel(entity);
         }
@@ -93,19 +93,25 @@ namespace Fly01.Compras.BL
             }
         }
 
+        public IQueryable<OrdemCompra> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+
         public override void Insert(Orcamento entity)
         {
-            var numero = default(int);
+            //var numero = default(int);
 
             if (entity.Id == default(Guid))
             {
                 entity.Id = Guid.NewGuid();
             }
 
-            rpc = new RpcClient();
-            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
+            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
-            entity.Numero = numero;
+            entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+
+            //rpc = new RpcClient();
+            //numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
+
+            //entity.Numero = numero;
 
             ValidaModel(entity);
 

@@ -276,9 +276,6 @@ namespace Fly01.OrdemServico.Controllers
                 }
             });
 
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
-
             return cfg;
         }
 

@@ -227,10 +227,10 @@ namespace Fly01.OrdemServico.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            config.Actions.AddRange(GetActionsInGrid(GetActionsInGrid(new List<DataTableUIAction>()
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Em Aberto')" },
-            })));
+            }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn

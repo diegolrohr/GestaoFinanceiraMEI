@@ -1,5 +1,4 @@
-﻿
-using Fly01.Core;
+﻿using Fly01.Core;
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
@@ -17,6 +16,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -224,15 +224,18 @@ namespace Fly01.OrdemServico.Controllers
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = { "fnRenderEnum", "fnExecutarOrdem", "fnExecutarOrdem", "fnCancelarOrdem", "fnConcluirOrdem" }
             };
 
             config.Actions.AddRange(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Em Aberto' || row.status == 'Em Andamento')" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Em Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" }
+                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
+                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" },
+                new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
+                new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status != '{StatusOrdemServico.Concluido}')" },
+                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" },
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
@@ -675,6 +678,62 @@ namespace Fly01.OrdemServico.Controllers
             var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
             return reportViewer.Print(GetDadosOrcamentoPedido(ordemVenda.Id.ToString(), ordemVenda), SessionManager.Current.UserData.PlatformUrl);
         }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult ExecutarOrdem(string id, bool faturar = false)
+        {
+            try
+            {
+                dynamic pedido = new ExpandoObject();
+                pedido.status = "Finalizado";
+                if (faturar)
+                {
+                    pedido.geraNotaFiscal = true;
+                }
+
+                var resourceNamePut = $"OrdemServico/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult MudarStatus(string id, StatusOrdemServico status)
+        {
+            try
+            {
+                dynamic pedido = new ExpandoObject();
+                pedido.status = status;
+
+                var resourceNamePut = $"OrdemServico/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult ExecutarOrdem(string id) => MudarStatus(id, StatusOrdemServico.EmAndamento);
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult CancelarOrdem(string id) => MudarStatus(id, StatusOrdemServico.Cancelado);
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult ConcluirOrdem(string id, bool faturar = false) => MudarStatus(id, StatusOrdemServico.Concluido);
 
         #region OnDemmand
         [HttpPost]

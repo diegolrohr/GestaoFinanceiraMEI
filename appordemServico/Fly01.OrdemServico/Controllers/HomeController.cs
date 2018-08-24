@@ -154,25 +154,9 @@ namespace Fly01.OrdemServico.Controllers
                         responsive = false,
                         maintainAspectRatio = false
                     },
-                    //scales = new
-                    //{
-                    //    xAxes = new object[] {
-                    //            new
-                    //            {
-                    //                stacked = true                                    
-                    //            }
-                    //        },
-                    //    yAxes = new object[] {
-                    //            new
-                    //            {
-                    //                stacked = true
-                    //            }
-                    //        }
-                    //}                    
-
                     scales = new {
                         xAxes = new object[] { new { stacked=true} },
-                        yAxes = new object[] { new { stacked=true, ticks = new { stepSize =1} } }
+                        yAxes = new object[] { new { stacked=true, ticks = new { stepSize = 1} } }
                     }
                 },
                 UrlData = @Url.Action("LoadChart", "Dashboard"),

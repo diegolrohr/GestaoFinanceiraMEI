@@ -61,9 +61,9 @@ namespace Fly01.Financeiro.Controllers
         public override ContentResult List()
         {
             if (!UserCanRead)
-                return Content(JsonConvert.SerializeObject(new ContentUI(), JsonSerializerSetting.Default), "application/json");
+                return Content(JsonConvert.SerializeObject(new ContentUIBase(Url.Action("Sidebar", "Home")), JsonSerializerSetting.Default), "application/json");
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader

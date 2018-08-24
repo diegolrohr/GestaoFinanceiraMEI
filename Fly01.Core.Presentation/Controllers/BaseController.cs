@@ -26,8 +26,16 @@ using Fly01.uiJS.Enums;
 
 namespace Fly01.Core.Presentation
 {
+    
     public abstract class BaseController<T> : PrimitiveBaseController where T : DomainBaseVM
     {
+        public class ContentUIBase : ContentUI
+        {
+            public ContentUIBase(string sidebarUrl)
+            {
+                SidebarUrl = sidebarUrl;
+            }
+        }
         protected string ExpandProperties { get; set; }
 
         protected string ResourceName
@@ -37,7 +45,7 @@ namespace Fly01.Core.Presentation
             => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
 
         protected string AppViewModelResourceName
-            => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
+            => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];        
 
         public virtual List<HtmlUIButton> GetListButtonsOnHeader()
         {
@@ -193,7 +201,7 @@ namespace Fly01.Core.Presentation
         [OperationRole(NotApply = true)]
         public ContentResult EmConstrucao(string history)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory() { Default = history },
                 Header = new HtmlUIHeader()

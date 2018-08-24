@@ -33,10 +33,20 @@ namespace Fly01.OrdemServico.Controllers
             => Json(data, JsonRequestBehavior.AllowGet);
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemServicoItemProdutoVM> GetObjetosManutencao(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+            queryString.AddParam("$filter", $"ordemServicoId eq {id}");
+            queryString.AddParam("$expand", "produto");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemProdutoVM>>("OrdemServicoItemProduto", queryString).Data;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemServicoItemProdutoVM> GetProdutos(Guid id)
         {
             var queryString = new Dictionary<string, string>();
-            queryString.AddParam("$filter", $"ordemVendaId eq {id}");
+            queryString.AddParam("$filter", $"ordemServicoId eq {id}");
             queryString.AddParam("$expand", "produto");
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemProdutoVM>>("OrdemServicoItemProduto", queryString).Data;
@@ -217,13 +227,11 @@ namespace Fly01.OrdemServico.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            config.Actions.AddRange(GetActionsInGrid(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
-                new DataTableUIAction { OnClickFn = "fnImprimirOrcamentoPedido", Label = "Imprimir" }
-            }));
+            })));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
@@ -241,6 +249,18 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public override List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
+        {
+            var options = new List<DataTableUIAction> {
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" }
+            };
+            if (UserCanWrite)
+                options.AddRange(customWriteActions);
+
+            return options;
         }
 
         public ContentUI FormOrdemServico(bool isEdit = false)
@@ -400,8 +420,8 @@ namespace Fly01.OrdemServico.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ", Request.QueryString["dataFinal"]);
-            filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
+            filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
+            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }
@@ -544,12 +564,34 @@ namespace Fly01.OrdemServico.Controllers
 
         private List<ImprimirOrdemServicoVM> GetDadosOrcamentoPedido(string id, OrdemServicoVM os)
         {
+            var manut = GetObjetosManutencao(Guid.Parse(id));
             var produtos = GetProdutos(Guid.Parse(id));
             var servicos = GetServicos(Guid.Parse(id));
-            var resource = string.Format("CalculaTotalOrdemVenda?&ordemServicoId={0}&clienteId={1}&onList={2}", id.ToString(), os.ClienteId.ToString(), true);
-            var response = RestHelper.ExecuteGetRequest<TotalOrdemServicoVM>(resource, queryString: null);
+            var total = produtos.Sum(x => x.Total) + servicos.Sum(x => x.Total);
 
-            List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
+            var reportItems = new List<ImprimirOrdemServicoVM>();
+
+            foreach (OrdemServicoItemProdutoVM itemManutencao in manut)
+
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    Id = os.Id.ToString(),
+                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    DataEmissao = os.DataEmissao.ToString(),
+                    DataEntrega = os.DataEntrega.ToString(),
+                    Status = os.Status.ToString(),
+                    Numero = os.Numero.ToString(),
+                    Observacao = os.Observacao,
+                    ItemTipo = "Manut",
+                    ItemId = itemManutencao.Produto != null ? itemManutencao.Produto.Id : Guid.Empty,
+                    ItemNome = itemManutencao.Produto != null ? itemManutencao.Produto.Descricao : string.Empty,
+                    ItemQtd = itemManutencao.Quantidade,
+                    ItemValor = itemManutencao.Valor,
+                    ItemDesconto = itemManutencao.Desconto,
+                    ItemTotal = itemManutencao.Total,
+                    ItemObservacao = itemManutencao.Observacao,
+                    Total = total,
+                });
 
             foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
 
@@ -562,13 +604,15 @@ namespace Fly01.OrdemServico.Controllers
                     Status = os.Status.ToString(),
                     Numero = os.Numero.ToString(),
                     Observacao = os.Observacao,
+                    ItemTipo = "Produto",
                     ItemId = OrdemProduto.Produto != null ? OrdemProduto.Produto.Id : Guid.Empty,
                     ItemNome = OrdemProduto.Produto != null ? OrdemProduto.Produto.Descricao : string.Empty,
                     ItemQtd = OrdemProduto.Quantidade,
                     ItemValor = OrdemProduto.Valor,
                     ItemDesconto = OrdemProduto.Desconto,
                     ItemTotal = OrdemProduto.Total,
-                    Total = response.Total,
+                    ItemObservacao = OrdemProduto.Observacao,
+                    Total = total,
                 });
 
             foreach (OrdemServicoItemServicoVM OrdemServico in servicos)
@@ -582,13 +626,15 @@ namespace Fly01.OrdemServico.Controllers
                     Status = os.Status.ToString(),
                     Numero = os.Numero.ToString(),
                     Observacao = os.Observacao,
+                    ItemTipo = "Servico",
                     ItemId = OrdemServico.Servico != null ? OrdemServico.Servico.Id : Guid.Empty,
                     ItemNome = OrdemServico.Servico != null ? OrdemServico.Servico.Descricao : string.Empty,
                     ItemQtd = OrdemServico.Quantidade,
                     ItemValor = OrdemServico.Valor,
                     ItemDesconto = OrdemServico.Desconto,
                     ItemTotal = OrdemServico.Total,
-                    Total = response.Total,
+                    ItemObservacao = OrdemServico.Observacao,
+                    Total = total,
                 });
 
             if (!produtos.Any() && !servicos.Any())
@@ -606,6 +652,32 @@ namespace Fly01.OrdemServico.Controllers
             }
 
             return reportItems;
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public virtual JsonResult ImprimirOrdemServico(string id)
+        {
+            try
+            {
+                var ordemVenda = Get(Guid.Parse(id));
+                var fileName = "OrdemServico" + ordemVenda.Numero.ToString() + ".pdf";
+                var fileBase64 = Convert.ToBase64String(GetPDFFile(ordemVenda));
+
+                Session.Add(fileName, fileBase64);
+
+                return Json(new
+                {
+                    success = true,
+                    fileName,
+                    recordsFiltered = 1,
+                    recordsTotal = 1
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         private byte[] GetPDFFile(OrdemServicoVM ordemVenda)

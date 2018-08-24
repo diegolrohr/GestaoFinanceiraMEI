@@ -109,7 +109,6 @@
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
-    <Compile Include="ViewModel\TotalordemServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -126,6 +125,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Reports\ReportImprimirPedido.rdlc" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
@@ -195,7 +195,7 @@
     <Content Include="Views\OrdemServico\Functions\_fnFinalizarFaturarPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrdemServico.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnVisualizar.cshtml" />

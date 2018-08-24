@@ -230,7 +230,6 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
-
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s6",

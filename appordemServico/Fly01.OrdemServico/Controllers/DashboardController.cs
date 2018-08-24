@@ -40,30 +40,16 @@ namespace Fly01.OrdemServico.Controllers
                 {
                     success = true,
                     currency = true,
-                    //labels = response.Select(x => x.Label).ToArray(),
+                    //labels = response.Select(x => x.QuantidadeServicos).ToArray(),
                     datasets = new object[] {
                         new {
                                 type = "line",
-                                label = "Saldo",
+                                label = "OS por Dia",
                                 backgroundColor = "rgb(44, 55, 57)",
                                 borderColor = "rgb(44, 55, 57)",
-                                //data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
+                                data = response.Select(x => x.QuantidadeServicos).ToArray(),
                                 fill = false
-                            },
-                        new {
-                                label = "Recebimentos",
-                                fill = false,
-                                backgroundColor = "rgb(0, 178, 121)",
-                                borderColor = "rgb(0, 178, 121)",
-                                //data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
-                            },
-                        new {
-                                label = "Pagamentos",
-                                fill = false,
-                                backgroundColor = "rgb(239, 100, 97)",
-                                borderColor = "rgb(239, 100, 97)",
-                                //data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
-                        }
+                            }
                     }
                 };
 

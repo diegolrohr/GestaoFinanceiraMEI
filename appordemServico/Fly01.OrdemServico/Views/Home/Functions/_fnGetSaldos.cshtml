@@ -4,15 +4,12 @@
     }
 
     function getSaldos(dataFinal) {
-        debugger;
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
 
         lockSaldos("fly01cardAB", true);
         lockSaldos("fly01cardAN", true);
         lockSaldos("fly01cardCO", true);
         lockSaldos("fly01cardCA", true);
-
-        debugger;
 
         $.ajax({
             url: "@Url.Action("LoadCards", "Dashboard")?dataFinal=" + final,

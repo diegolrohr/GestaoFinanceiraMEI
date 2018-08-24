@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -134,7 +135,7 @@ namespace Fly01.OrdemServico.Controllers
                         descricao = x.Descricao,
                         valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
-                        valorTotal = x.ValorTotal
+                        valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault)
                     })
                 }, JsonRequestBehavior.AllowGet);
 
@@ -167,7 +168,7 @@ namespace Fly01.OrdemServico.Controllers
                         descricao = x.Descricao,
                         valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
-                        valorTotal = x.ValorTotal
+                        valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault)
                     })
                 }, JsonRequestBehavior.AllowGet);
 
@@ -179,25 +180,6 @@ namespace Fly01.OrdemServico.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public override Func<DomainBaseVM, object> GetDisplayData()
         {

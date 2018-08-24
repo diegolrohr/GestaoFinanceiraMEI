@@ -8,7 +8,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class OrdemServico : PlataformaBase
     {
         [Required]
-        public StatusOrdemServico Status { get; set; }
+        public StatusOrdemServico Status { get; set; } = StatusOrdemServico.EmAberto;
 
         [Required]
         public Guid ClienteId { get; set; }

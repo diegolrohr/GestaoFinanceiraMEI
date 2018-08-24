@@ -11,8 +11,8 @@ namespace Fly01.OrdemServico.ViewModel
         [APIEnum("StatusOrdemServico")]
         public string Status { get; set; }
 
-        [JsonProperty("pessoaId")]
-        public Guid PessoaId { get; set; }
+        [JsonProperty("clienteId")]
+        public Guid ClienteId { get; set; }
 
         [JsonProperty("numero")]
         public int Numero { get; set; }
@@ -24,7 +24,7 @@ namespace Fly01.OrdemServico.ViewModel
         public DateTime DataEntrega { get; set; }
 
         [JsonProperty("responsavelId")]
-        public Guid ResponsavelId { get; set; }
+        public Guid? ResponsavelId { get; set; }
 
         [JsonProperty("aprovado")]
         public bool Aprovado { get; set; }

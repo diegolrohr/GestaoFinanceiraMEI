@@ -77,6 +77,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reports\ReportOrdemServico.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
     <Compile Include="Models\ViewModel\ValidateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,7 @@
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
+    <Compile Include="ViewModel\ImprimirOrdemServicoVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemServicoVM.cs" />
@@ -123,6 +125,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Reports\ReportImprimirPedido.rdlc" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
@@ -192,7 +195,7 @@
     <Content Include="Views\OrdemServico\Functions\_fnFinalizarFaturarPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnImprimirOrdemServico.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnVisualizar.cshtml" />

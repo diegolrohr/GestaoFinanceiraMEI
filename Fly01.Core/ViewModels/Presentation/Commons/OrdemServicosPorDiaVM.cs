@@ -16,3 +16,4 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public int QuantidadeServicos { get; set; }
     }
 }
+

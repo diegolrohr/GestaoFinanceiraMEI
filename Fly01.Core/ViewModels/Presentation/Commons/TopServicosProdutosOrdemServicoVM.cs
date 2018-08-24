@@ -17,5 +17,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("quantidade")]
         public double Quantidade { get; set; }
+
+        [JsonProperty("valortotal")]
+        public double ValorTotal { get; set; }
     }
 }

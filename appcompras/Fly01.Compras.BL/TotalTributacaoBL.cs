@@ -163,140 +163,148 @@ namespace Fly01.Compras.BL
 
             foreach (var itemProduto in tributacaoItens)
             {
-                var itemRetorno = new TributacaoProdutoRetorno()
+                if (itemProduto.GrupoTributarioId != default(Guid))
                 {
-                    FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
-                    ProdutoId = itemProduto.ProdutoId,
-                    GrupoTributarioId = itemProduto.GrupoTributarioId
 
-                };
-                var tributacao = new Tributacao();
-                tributacao.ValorBase = itemProduto.Total;
-                tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
-                tributacao.SimplesNacional = true;
-
-                var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
-
-                //ICMS
-                if (grupoTributario.CalculaIcms)
-                {
-                    tributacao.Icms = new Icms()
+                    var itemRetorno = new TributacaoProdutoRetorno()
                     {
-                        Aliquota = parametros.AliquotaSimplesNacional,
-                        DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
-                        Difal = grupoTributario.CalculaIcmsDifal,
-                        FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                        EstadoDestino = fornecedor.Estado.Sigla,
-                        EstadoOrigem = estadoOrigem,
-                        CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
+                        FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
+                        ProdutoId = itemProduto.ProdutoId,
+                        GrupoTributarioId = itemProduto.GrupoTributarioId
+
                     };
-                    if (produto.AliquotaIpi > 0)
-                    {
-                        tributacao.Icms.IpiNaBase = grupoTributario.AplicaIpiBaseIcms;
-                    }
+                    var tributacao = new Tributacao();
+                    tributacao.ValorBase = itemProduto.Total;
+                    tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
+                    tributacao.SimplesNacional = true;
 
-                    tributacao.Fcp = new Fcp()
-                    {
-                        Aliquota = parametros.AliquotaFCP
-                    };
-                }
-                //IPI
-                if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0)
-                {
-                    tributacao.Ipi = new Ipi()
-                    {
-                        Aliquota = produto.AliquotaIpi,
-                        DespesaNaBase = grupoTributario.AplicaDespesaBaseIpi,
-                        FreteNaBase = grupoTributario.AplicaFreteBaseIpi
-                    };
-                }
-                //ST
-                if (grupoTributario.CalculaSubstituicaoTributaria)
-                {
-                    var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
-                        x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
-                        x.CestId == produto.CestId.Value &
-                        x.EstadoOrigem.Sigla == estadoOrigem &
-                        x.EstadoDestinoId == fornecedor.EstadoId &
-                        x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
-                        ).FirstOrDefault();
+                    var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                    var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
 
-                    if (st != null)
+                    //ICMS
+                    if (grupoTributario.CalculaIcms)
                     {
-                        tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
+                        tributacao.Icms = new Icms()
                         {
+                            Aliquota = parametros.AliquotaSimplesNacional,
+                            DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
+                            Difal = grupoTributario.CalculaIcmsDifal,
+                            FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
                             EstadoDestino = fornecedor.Estado.Sigla,
                             EstadoOrigem = estadoOrigem,
-                            FreteNaBase = grupoTributario.AplicaFreteBaseST,
-                            DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
-                            Mva = st.Mva,
+                            CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                         };
                         if (produto.AliquotaIpi > 0)
                         {
-                            tributacao.SubstituicaoTributaria.IpiNaBase = grupoTributario.AplicaIpiBaseST;
+                            tributacao.Icms.IpiNaBase = grupoTributario.AplicaIpiBaseIcms;
                         }
 
-                        // FCP ST
-                        tributacao.FcpSt = new FcpSt()
+                        tributacao.Fcp = new Fcp()
                         {
-                            Aliquota = st.Fcp
+                            Aliquota = parametros.AliquotaFCP
                         };
                     }
-                }
-                //COFINS
-                if (grupoTributario.CalculaCofins)
-                {
-                    itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
-                    itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
-                }
-                //PIS
-                if (grupoTributario.CalculaPis)
-                {
-                    itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
-                    itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
-                }
+                    //IPI
+                    if (grupoTributario.CalculaIpi && produto.AliquotaIpi > 0)
+                    {
+                        tributacao.Ipi = new Ipi()
+                        {
+                            Aliquota = produto.AliquotaIpi,
+                            DespesaNaBase = grupoTributario.AplicaDespesaBaseIpi,
+                            FreteNaBase = grupoTributario.AplicaFreteBaseIpi
+                        };
+                    }
+                    //ST
+                    if (grupoTributario.CalculaSubstituicaoTributaria)
+                    {
+                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                            x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
+                            x.CestId == produto.CestId.Value &
+                            x.EstadoOrigem.Sigla == estadoOrigem &
+                            x.EstadoDestinoId == fornecedor.EstadoId &
+                            x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
+                            ).FirstOrDefault();
 
-                var json = JsonConvert.SerializeObject(tributacao);
-                var responseTributacao = RestHelper.ExecutePostRequest<TributacaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "tributacao", json, null, header);
-                if (responseTributacao.Fcp != null)
-                {
-                    itemRetorno.FCPBase = responseTributacao.Fcp.Base;
-                    itemRetorno.FCPAliquota = responseTributacao.Fcp.Aliquota;
-                    itemRetorno.FCPValor = responseTributacao.Fcp.Valor;
-                    itemRetorno.FCPAgregaTotal = responseTributacao.Fcp.AgregaTotalNota;
+                        if (st != null)
+                        {
+                            tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
+                            {
+                                EstadoDestino = fornecedor.Estado.Sigla,
+                                EstadoOrigem = estadoOrigem,
+                                FreteNaBase = grupoTributario.AplicaFreteBaseST,
+                                DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
+                                Mva = st.Mva,
+                            };
+                            if (produto.AliquotaIpi > 0)
+                            {
+                                tributacao.SubstituicaoTributaria.IpiNaBase = grupoTributario.AplicaIpiBaseST;
+                            }
+
+                            // FCP ST
+                            tributacao.FcpSt = new FcpSt()
+                            {
+                                Aliquota = st.Fcp
+                            };
+                        }
+                    }
+                    //COFINS
+                    if (grupoTributario.CalculaCofins)
+                    {
+                        itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
+                        itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
+                        itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
+                    }
+                    //PIS
+                    if (grupoTributario.CalculaPis)
+                    {
+                        itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
+                        itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
+                        itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
+                    }
+
+                    var json = JsonConvert.SerializeObject(tributacao);
+                    var responseTributacao = RestHelper.ExecutePostRequest<TributacaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "tributacao", json, null, header);
+                    if (responseTributacao.Fcp != null)
+                    {
+                        itemRetorno.FCPBase = responseTributacao.Fcp.Base;
+                        itemRetorno.FCPAliquota = responseTributacao.Fcp.Aliquota;
+                        itemRetorno.FCPValor = responseTributacao.Fcp.Valor;
+                        itemRetorno.FCPAgregaTotal = responseTributacao.Fcp.AgregaTotalNota;
+                    }
+                    if (responseTributacao.Icms != null)
+                    {
+                        itemRetorno.ICMSBase = responseTributacao.Icms.Base;
+                        itemRetorno.ICMSAliquota = responseTributacao.Icms.Aliquota;
+                        itemRetorno.ICMSValor = responseTributacao.Icms.Valor;
+                        itemRetorno.ICMSAgregaTotal = responseTributacao.Icms.AgregaTotalNota;
+                    }
+                    if (responseTributacao.Ipi != null)
+                    {
+                        itemRetorno.IPIBase = responseTributacao.Ipi.Base;
+                        itemRetorno.IPIAliquota = responseTributacao.Ipi.Aliquota;
+                        itemRetorno.IPIValor = responseTributacao.Ipi.Valor;
+                        itemRetorno.IPIAgregaTotal = responseTributacao.Ipi.AgregaTotalNota;
+                    }
+                    if (responseTributacao.SubstituicaoTributaria != null)
+                    {
+                        itemRetorno.STBase = responseTributacao.SubstituicaoTributaria.Base;
+                        itemRetorno.STAliquota = responseTributacao.SubstituicaoTributaria.Aliquota;
+                        itemRetorno.STValor = responseTributacao.SubstituicaoTributaria.Valor;
+                        itemRetorno.STAgregaTotal = responseTributacao.SubstituicaoTributaria.AgregaTotalNota;
+                    }
+                    if (responseTributacao.FcpSt != null)
+                    {
+                        itemRetorno.FCPSTBase = responseTributacao.FcpSt.Base;
+                        itemRetorno.FCPSTAliquota = responseTributacao.FcpSt.Aliquota;
+                        itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
+                        itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
+                    }
+                    result.Add(itemRetorno);
                 }
-                if (responseTributacao.Icms != null)
+                else
                 {
-                    itemRetorno.ICMSBase = responseTributacao.Icms.Base;
-                    itemRetorno.ICMSAliquota = responseTributacao.Icms.Aliquota;
-                    itemRetorno.ICMSValor = responseTributacao.Icms.Valor;
-                    itemRetorno.ICMSAgregaTotal = responseTributacao.Icms.AgregaTotalNota;
+                    throw new BusinessException("Para calcular tributações de um pedido que gera nota fiscal, informe o grupo tributário nos produtos.");
                 }
-                if (responseTributacao.Ipi != null)
-                {
-                    itemRetorno.IPIBase = responseTributacao.Ipi.Base;
-                    itemRetorno.IPIAliquota = responseTributacao.Ipi.Aliquota;
-                    itemRetorno.IPIValor = responseTributacao.Ipi.Valor;
-                    itemRetorno.IPIAgregaTotal = responseTributacao.Ipi.AgregaTotalNota;
-                }
-                if (responseTributacao.SubstituicaoTributaria != null)
-                {
-                    itemRetorno.STBase = responseTributacao.SubstituicaoTributaria.Base;
-                    itemRetorno.STAliquota = responseTributacao.SubstituicaoTributaria.Aliquota;
-                    itemRetorno.STValor = responseTributacao.SubstituicaoTributaria.Valor;
-                    itemRetorno.STAgregaTotal = responseTributacao.SubstituicaoTributaria.AgregaTotalNota;
-                }
-                if (responseTributacao.FcpSt != null)
-                {
-                    itemRetorno.FCPSTBase = responseTributacao.FcpSt.Base;
-                    itemRetorno.FCPSTAliquota = responseTributacao.FcpSt.Aliquota;
-                    itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
-                    itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
-                }
-                result.Add(itemRetorno);
             }
             return result;
         }
@@ -341,7 +349,7 @@ namespace Fly01.Compras.BL
                 GrupoTributarioId = x.GrupoTributarioId
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
- 
+
     }
 
     #region Classes auxiliares, calculo pode ser para ordemVenda ou notaFiscal
@@ -409,7 +417,7 @@ namespace Fly01.Compras.BL
         public double PISValor { get; set; }
 
         public double FCPSTBase { get; set; }
-               
+
         public double FCPSTAliquota { get; set; }
 
         public double FCPSTValor { get; set; }

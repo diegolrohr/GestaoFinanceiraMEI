@@ -25,17 +25,15 @@ namespace Fly01.OrdemServico.Controllers
 
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory
-                {
-                    Default = Url.Action("Index")
-                },
+                History = new ContentUIHistory { Default = Url.Action("Index") },
                 SidebarUrl = Url.Action("Sidebar"),
                 Header = new HtmlUIHeader()
                 {
                     Title = "Visão Geral",
                     Buttons = new List<HtmlUIButton>()
                 },
-                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                Functions = new List<string> { "__format", "fnGetSaldos" }
             };
             var dataInicialFiltroDefault = DateTime.Now.Date;
 
@@ -176,9 +174,7 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                 {
-                    new ChartUIParameter { Id = "dataInicial" },
-                    new ChartUIParameter { Id = "dataFinal" },
-                    new ChartUIParameter { Id = "groupType" }
+                    new ChartUIParameter { Id = "dataInicial" }
                 }
             });
 
@@ -194,7 +190,7 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Class = "col s6",
                 Id = "dtGridTopProdutos",
-                UrlGridLoad = Url.Action("DashboardTopProdutos", "OrdemServico"),
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
                         new DataTableUIParameter { Id = "dataInicial" }
@@ -234,12 +230,11 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
-
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s6",
                 Id = "dtGridTopServicos",
-                UrlGridLoad = Url.Action("DashboardTopServicos", "OrdemServico"),
+                UrlGridLoad = Url.Action("DashboardTopServicos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
                         new DataTableUIParameter { Id = "dataInicial" }
@@ -279,7 +274,6 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
-
 
             return cfg;
         }
@@ -365,53 +359,6 @@ namespace Fly01.OrdemServico.Controllers
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
-
-        public JsonResult LoadChart(DateTime dataInicial, DateTime dataFinal, int groupType)
-        {
-            try
-            {
-                //var response = GetProjecao(dataInicial, dataFinal, groupType);
-
-                var dataChartToView = new
-                {
-                    success = true,
-                    currency = true,
-                    //labels = response.Select(x => x.Label).ToArray(),
-                    //datasets = new object[] {
-                    //    new {
-                    //            type = "line",
-                    //            label = "Saldo",
-                    //            backgroundColor = "rgb(44, 55, 57)",
-                    //            borderColor = "rgb(44, 55, 57)",
-                    //            //data = response.Select(x => Math.Round(x.SaldoFinal, 2)).ToArray(),
-                    //            fill = false
-                    //        },
-                    //    new {
-                    //            label = "Recebimentos",
-                    //            fill = false,
-                    //            backgroundColor = "rgb(0, 178, 121)",
-                    //            borderColor = "rgb(0, 178, 121)",
-                    //            //data = response.Select(x => Math.Round(x.TotalRecebimentos, 2)).ToArray()
-                    //        },
-                    //    new {
-                    //            label = "Pagamentos",
-                    //            fill = false,
-                    //            backgroundColor = "rgb(239, 100, 97)",
-                    //            borderColor = "rgb(239, 100, 97)",
-                    //            //data = response.Select(x => Math.Round(x.TotalPagamentos * -1, 2)).ToArray()
-                    //    }
-                    //}
-                };
-
-                return Json(dataChartToView, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return JsonResponseStatus.GetFailure(ex.Message);
-            }
-        }
-
-
     }
 
 }

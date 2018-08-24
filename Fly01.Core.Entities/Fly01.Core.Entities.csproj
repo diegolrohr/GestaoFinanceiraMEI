@@ -69,6 +69,7 @@
     <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
     <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
+    <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />

@@ -15,10 +15,10 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
             //if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
-            //    return new ContentUI();
+            //    return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
 
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;

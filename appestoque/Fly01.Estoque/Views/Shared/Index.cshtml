@@ -1,7 +1,5 @@
 ﻿@section scripts {
 <script>
-    $(document).ready(function () {
-        fly01.go("@Url.Action("List", "" + ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)");
-    });
+    fly01.go("@Url.Action("List", "" + ViewContext.Controller.ValueProvider.GetValue("controller").RawValue)");
 </script>
 }

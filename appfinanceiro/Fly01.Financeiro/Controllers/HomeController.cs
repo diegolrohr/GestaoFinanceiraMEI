@@ -17,10 +17,10 @@ namespace Fly01.Financeiro.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
             if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
-                return new ContentUI();
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
@@ -38,11 +38,9 @@ namespace Fly01.Financeiro.Controllers
                     }
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Functions = new List<string> { "__format", "fnGetSaldos" }
+                Functions = new List<string> { "__format", "fnGetSaldos" },
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
 
             var dataInicialFiltroDefault = DateTime.Now.Date;
 

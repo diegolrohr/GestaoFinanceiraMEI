@@ -59,10 +59,7 @@
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
-    <Compile Include="Controllers\Api\DashboardPorStatusController.cs" />
-    <Compile Include="Controllers\Api\DashboardQuantidadePorDiaController.cs" />
-    <Compile Include="Controllers\Api\DashboardTopProdutosController.cs" />
-    <Compile Include="Controllers\Api\DashboardTopServicosController.cs" />
+    <Compile Include="Controllers\Api\DashboardController.cs" />
     <Compile Include="Controllers\Api\EstadoController.cs" />
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />

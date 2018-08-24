@@ -36,6 +36,11 @@ namespace Fly01.OrdemServico.BL
                 x.Vendedor
             });
 
+            if ((int)entity.Status < 1)
+            {
+                entity.Status = StatusOrdemServico.EmAberto;
+            }
+
             if (responsavel != null)
                 entity.Fail(!responsavel.Vendedor, new Error($"A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
 

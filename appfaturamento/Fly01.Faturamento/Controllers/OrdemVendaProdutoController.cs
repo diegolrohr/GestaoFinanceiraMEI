@@ -163,7 +163,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioIdProduto",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Os impostos são calculados de acordo com as configurações do grupo Tributário."
+                    Text = "Os impostos são calculados de acordo com as configurações do grupo Tributário. Se necessário configure substituição tributária e mantenha seus parâmetros tributários atualizados."
                 }
             });
             config.Helpers.Add(new TooltipUI

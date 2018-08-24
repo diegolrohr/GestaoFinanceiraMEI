@@ -11,6 +11,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe.COFINS;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IPI;
 using System.Linq;
 using System;
+using Fly01.EmissaoNFE.Domain.Entities.NFe.Totais;
 
 namespace Fly01.Faturamento.BL.Helpers.Factory
 {
@@ -38,6 +39,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             CriarProdutosEImpostosParaDetalhes(itemTransmissao);
 
             itemTransmissao.Total = ObterTotal(itemTransmissao.Detalhes);
+            var icmsTotal = itemTransmissao.Total.ICMSTotal;
+
+            itemTransmissao.Total.ICMSTotal.TotalTributosAprox = CalcularTributosAproximados(icmsTotal);
             itemTransmissao.Total.ICMSTotal.ValorTotalNF = CalcularValorTotalNFE(itemTransmissao);
             itemTransmissao.Pagamento = ObterPagamento(itemTransmissao.Total.ICMSTotal.ValorTotalNF);
 
@@ -65,6 +69,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
                 var detalhe = ObterDetalhe(item, num);
                 detalhe.Produto.Quantidade = 0;
+                detalhe.Produto.ValorDesconto = 0;
+                detalhe.Produto.ValorOutrasDespesas = 0;
                 detalhe.Produto.ValorUnitario = 0;
                 detalhe.Produto.ValorBruto = 0;
                 detalhe.Produto.QuantidadeTributada = 0;
@@ -94,6 +100,16 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 tipoFormaPagamento = Cabecalho.FormaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : Cabecalho.FormaPagamento.TipoFormaPagamento;
             }
             return tipoFormaPagamento;
+        }
+
+        private double CalcularTributosAproximados(ICMSTOT icmsTotal)
+        {
+            return icmsTotal.SomatorioICMS
+                + icmsTotal.SomatorioCofins
+                + icmsTotal.SomatorioICMSST
+                + icmsTotal.SomatorioIPI
+                + icmsTotal.SomatorioPis
+                + icmsTotal.SomatorioFCPST;
         }
 
         #region Impostos  

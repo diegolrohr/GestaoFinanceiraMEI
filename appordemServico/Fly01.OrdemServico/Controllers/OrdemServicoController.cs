@@ -691,37 +691,12 @@ namespace Fly01.OrdemServico.Controllers
             return reportViewer.Print(GetDadosOrcamentoPedido(ordemVenda.Id.ToString(), ordemVenda), SessionManager.Current.UserData.PlatformUrl);
         }
 
-        [OperationRole(PermissionValue = EPermissionValue.Write)]
-        [HttpPost]
-        public JsonResult ExecutarOrdem(string id, bool faturar = false)
-        {
-            try
-            {
-                dynamic pedido = new ExpandoObject();
-                pedido.status = "Finalizado";
-                if (faturar)
-                {
-                    pedido.geraNotaFiscal = true;
-                }
-
-                var resourceNamePut = $"OrdemServico/{id}";
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
-
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
         private JsonResult MudarStatus(string id, StatusOrdemServico status)
         {
             try
             {
                 dynamic pedido = new ExpandoObject();
-                pedido.status = status;
+                pedido.status = status.ToString();
 
                 var resourceNamePut = $"OrdemServico/{id}";
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));

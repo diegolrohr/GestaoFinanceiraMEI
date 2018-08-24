@@ -25,7 +25,10 @@ namespace Fly01.OrdemServico.Controllers
 
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index")
+                },
                 SidebarUrl = Url.Action("Sidebar"),
                 Header = new HtmlUIHeader()
                 {
@@ -277,8 +280,6 @@ namespace Fly01.OrdemServico.Controllers
                 }
             });
 
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
 
             return cfg;
         }

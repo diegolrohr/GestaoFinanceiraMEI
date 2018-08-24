@@ -227,11 +227,13 @@ namespace Fly01.OrdemServico.Controllers
                 Functions = new List<string>() { "fnRenderEnum" }
             };
 
-            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            config.Actions.AddRange(new List<DataTableUIAction>()
             {
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Em Aberto' || row.status == 'Em Andamento')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Em Aberto')" },
-            }));
+                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" }
+            });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
@@ -249,18 +251,6 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public override List<DataTableUIAction> GetActionsInGrid(List<DataTableUIAction> customWriteActions)
-        {
-            var options = new List<DataTableUIAction> {
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" }
-            };
-            if (UserCanWrite)
-                options.AddRange(customWriteActions);
-
-            return options;
         }
 
         public ContentUI FormOrdemServico(bool isEdit = false)

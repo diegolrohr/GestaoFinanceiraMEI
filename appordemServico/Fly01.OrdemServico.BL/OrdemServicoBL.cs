@@ -65,8 +65,7 @@ namespace Fly01.OrdemServico.BL
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
             entity.Fail(previous.Status != StatusOrdemServico.EmAberto && previous.Status != StatusOrdemServico.EmAndamento, new Error("Somente ordens em aberto e em andamento podem ser alteradas", "status"));
-            entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status != StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
-            entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status != StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
+            entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
 
             base.Update(entity);
         }

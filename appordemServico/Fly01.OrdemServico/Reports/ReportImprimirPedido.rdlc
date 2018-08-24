@@ -73,6 +73,10 @@
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
+      <Query>
+        <DataSourceName>DataSetReports</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
         <rd:SchemaPath>E:\Projeto\C#\Fly01.Apps\appordemServico\Fly01.OrdemServico\Reports\DataSetReports.xsd</rd:SchemaPath>

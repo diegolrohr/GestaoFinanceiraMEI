@@ -74,7 +74,7 @@ namespace Fly01.Compras.BL
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
-                entity.Fail(produtos.Any(x => x.GrupoTributarioId == null) && entity.GeraNotaFiscal == true , new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
+                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid) ) && entity.GeraNotaFiscal == true , new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
@@ -268,17 +268,21 @@ namespace Fly01.Compras.BL
 
         public override void Insert(Pedido entity)
         {
-            var numero = default(int);
+            //var numero = default(int);
 
             if (entity.Id == default(Guid))
             {
                 entity.Id = Guid.NewGuid();
             }
 
-            rpc = new RpcClient();
-            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
+            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
 
-            entity.Numero = numero;
+            entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+
+            //rpc = new RpcClient();
+            //numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
+
+            //entity.Numero = numero;
 
             ValidaModel(entity);
 

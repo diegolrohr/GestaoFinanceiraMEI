@@ -390,8 +390,9 @@ namespace Fly01.OrdemServico.Controllers
             #endregion
 
             #region step Finalizar
+            config.Elements.Add(new InputCurrencyUI { Id = "quantidadeItensCliente", Class = "col s12 m4", Label = "Qtd. Itens do Cliente", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m6", Label = "Total (produtos + serviços)", Readonly = true });
 
             #endregion
@@ -525,17 +526,16 @@ namespace Fly01.OrdemServico.Controllers
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         [HttpGet]
-        public JsonResult TotalOrdemServico(string id, string clienteId, bool geraNotaFiscal, string tipoVenda, string tipoFrete, double? valorFrete = 0)
+        public JsonResult TotalOrdemServico(string id)
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemServico?&ordemServicoId={0}&clienteId={1}&&onList={2}", id, clienteId, false);
-                //var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
-                return null;
-                //return Json(
-                //    new { success = true, total = response },
-                //    JsonRequestBehavior.AllowGet
-                //);
+                var resource = string.Format("CalculaTotalOrdemServico?&ordemServicoId={0}&&onList={1}", id, false);
+                var response = RestHelper.ExecuteGetRequest<TotalOrdemServicoVM>(resource, queryString: null);
+                return Json(
+                    new { success = true, total = response },
+                    JsonRequestBehavior.AllowGet
+                );
             }
             catch (Exception ex)
             {

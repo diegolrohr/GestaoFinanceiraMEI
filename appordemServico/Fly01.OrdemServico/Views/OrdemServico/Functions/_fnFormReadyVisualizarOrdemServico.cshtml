@@ -110,21 +110,20 @@
         });
     }
 
-    function calculaTotalOrdemVenda() {
-        var idPedido = $("form#fly01mdlfrmVisualizarOrdemVenda input#id").val();
-        var idCliente = $("form#fly01mdlfrmVisualizarOrdemVenda input#clienteId").val();
-        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-
+    function calculaTotalOrdemServico() {
+        var idOrdemServico = $("form#fly01mdlfrmVisualizarOrdemServico input#id").val();
+       
         fly01.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente }
+            data: { id: idOrdemServico}
         })
         .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
                 fly01.fn.updateTextFields();
             }
             else {
@@ -143,6 +142,6 @@
         listProdutos();
         listServicos();
         listItemClientes();
-        calculaTotalOrdemVenda();
+        calculaTotalOrdemServico();
     }
 </script>

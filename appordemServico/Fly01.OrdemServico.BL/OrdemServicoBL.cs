@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.OrdemServico.BL.Extension;
@@ -13,6 +14,9 @@ namespace Fly01.OrdemServico.BL
         public const int MaxLengthObservacao = 200;
         private readonly ParametroOrdemServicoBL _parametroBL;
         private readonly PessoaBL _pessoaBL;
+        protected OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL { get; set; }
+        protected OrdemServicoItemServicoBL OrdemServicoItemServicoBL { get; set; }
+        protected OrdemServicoManutencaoBL OrdemServicoManutencaoBL { get; set; }
 
         public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL) : base(context)
         {
@@ -76,6 +80,26 @@ namespace Fly01.OrdemServico.BL
                 throw new BusinessException(entityToDelete.Notification.Get());
 
             base.Delete(entityToDelete);
+        }
+
+        public TotalOrdemServico CalculaTotalOrdemServico(Guid ordemServicoId, bool onList = false)
+        {
+            var ordemServico = All.Where(x => x.Id == ordemServicoId).FirstOrDefault();
+
+            var produtos = OrdemServicoItemProdutoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            var servicos = OrdemServicoItemServicoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            var itensCliente = OrdemServicoManutencaoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var qtdItensCliente = itensCliente != null ? itensCliente.Sum(x => ((x.Quantidade))) : 0;
+            var result = new TotalOrdemServico()
+            {
+                QuantidadeItensCliente = qtdItensCliente,
+                TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
+                TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero)
+            };
+
+            return result;
         }
     }
 }

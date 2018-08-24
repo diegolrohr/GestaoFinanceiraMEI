@@ -5,17 +5,50 @@
         return e.replace(',', '.');
     }
 
+    function listItemClientes() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetOrdemServicoManutencao", "OrdemServicoManutencao")?id=" + $('#fly01mdlfrmVisualizarOrdemServico #id').val(),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#ordemServicoManutencaoDataTable").DataTable().destroy();
+
+                    var table = $("#ordemServicoManutencaoDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Item do Cliente", data: "produto_descricao" },                            
+                            { title: "Quant.", data: "quantidade" }
+                        ]
+                    });
+                } else {
+                    fly01.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(errorThrown, 'error');
+            }
+        });
+    }
+
     function listProdutos() {
         $.ajax({
             type: "POST",
-            url: "@Url.Action("GetOrdemServicoItemProdutos", "OrdemServicoItemProduto")?id=" + $('#fly01mdlfrmVisualizarOrdemVenda #id').val(),
+            url: "@Url.Action("GetOrdemServicoItemProdutos", "OrdemServicoItemProduto")?id=" + $('#fly01mdlfrmVisualizarOrdemServico #id').val(),
             dataType: "json",
             contentType: "application/json",
             success: function (response) {
                 if (response) {
                     $("#ordemServicoItemProdutosDataTable").DataTable().destroy();
 
-                    var table = $("#ordemVendaProdutosDataTable").DataTable({
+                    var table = $("#ordemServicoItemProdutosDataTable").DataTable({
                         bSort: false,
                         paging: false,
                         bLengthChange: false,
@@ -77,21 +110,20 @@
         });
     }
 
-    function calculaTotalOrdemVenda() {
-        var idPedido = $("form#fly01mdlfrmVisualizarOrdemVenda input#id").val();
-        var idCliente = $("form#fly01mdlfrmVisualizarOrdemVenda input#clienteId").val();
-        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-
+    function calculaTotalOrdemServico() {
+        var idOrdemServico = $("form#fly01mdlfrmVisualizarOrdemServico input#id").val();
+       
         fly01.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente }
+            data: { id: idOrdemServico}
         })
         .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
                 fly01.fn.updateTextFields();
             }
             else {
@@ -109,6 +141,7 @@
     function fnFormReadyVisualizarOrdemServico() {
         listProdutos();
         listServicos();
-        calculaTotalOrdemVenda();
+        listItemClientes();
+        calculaTotalOrdemServico();
     }
 </script>

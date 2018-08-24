@@ -478,6 +478,18 @@ namespace Fly01.OrdemServico.Controllers
                 MaxLength = 200,
                 Disabled = true
             });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetItensCliente", Class = "col s12", Label = "Itens do Cliente" });
+            config.Elements.Add(new TableUI
+            {
+                Id = "ordemServicoManutencaoDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Item do Cliente", Value = "0"},
+                    new OptionUI { Label = "Quant.", Value = "1"}
+                }
+            });
             config.Elements.Add(new LabelSetUI { Id = "labelSetProdutos", Class = "col s12", Label = "Produtos" });
             config.Elements.Add(new TableUI
             {

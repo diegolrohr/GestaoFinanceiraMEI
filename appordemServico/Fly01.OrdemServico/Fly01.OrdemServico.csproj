@@ -109,6 +109,7 @@
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
+    <Compile Include="ViewModel\TotalOrdemServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

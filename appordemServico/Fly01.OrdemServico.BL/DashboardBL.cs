@@ -26,9 +26,9 @@ namespace Fly01.OrdemServico.BL
         public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime filtro)
         {
             List<OrdemServicoPorStatusVM> listaResult = new List<OrdemServicoPorStatusVM>();
-            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year)).Count();
+            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEntrega.Month.Equals(filtro.Month) && x.DataEntrega.Year.Equals(filtro.Year)).Count();
 
-            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEntrega.Month.Equals(filtro.Month) && x.DataEntrega.Year.Equals(filtro.Year))
                                             .GroupBy(x => new { x.Status })
                                             .Select(x => new 
                                             {
@@ -53,20 +53,25 @@ namespace Fly01.OrdemServico.BL
         public List<OrdemServicosPorDiaVM> GetQuantidadeOrdemServicoPorDia(DateTime filtro)
         {
             return _ordemServicoBL.All.AsNoTracking().Where(x => x.Status == StatusOrdemServico.Concluido && x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
-                                            .GroupBy(x => x.DataEmissao.Day)
-                                            .Select(x => new OrdemServicosPorDiaVM
-                                            {
-                                                Dia = x.Key,
-                                                QuantidadeServicos = x.Count()
-                                            })
-                                            .OrderBy(x => x.Dia)
-                                            .ToList();
+                                                           .Select(x => new
+                                                           {
+                                                               x.DataEntrega,
+                                                               x.Id
+                                                           })
+                                                           .OrderBy(x => x.DataEntrega.Day)
+                                                           .GroupBy(x => x.DataEntrega.Day)
+                                                           .Select(x => new OrdemServicosPorDiaVM
+                                                           {
+                                                               Label = x.Key.ToString(),
+                                                               QuantidadeServicos = x.Count()
+                                                           })
+                                                           .ToList();
         }
 
         public List<TopServicosProdutosOrdemServicoVM> GetTopProdutosOrdemServico(DateTime filtro)
         {
             return _ordemServicoItemProdutoBL.All.AsNoTracking()
-                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
+                                            .Where(x => x.OrdemServico.DataEntrega.Month.Equals(filtro.Month) && x.OrdemServico.DataEntrega.Year.Equals(filtro.Year))
                                             .Select(x => new
                                             {
                                                 x.ProdutoId,
@@ -90,7 +95,7 @@ namespace Fly01.OrdemServico.BL
         {
 
             return _ordemServicoItemServicoBL.All.AsNoTracking()
-                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
+                                            .Where(x => x.OrdemServico.DataEntrega.Month.Equals(filtro.Month) && x.OrdemServico.DataEntrega.Year.Equals(filtro.Year))
                                             .Select(x => new
                                             {
                                                 x.ServicoId,

@@ -154,27 +154,32 @@ namespace Fly01.OrdemServico.Controllers
                         responsive = false,
                         maintainAspectRatio = false
                     },
-                    scales = new
-                    {
-                        xAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            },
-                        yAxes = new object[] {
-                                new
-                                {
-                                    stacked = true
-                                }
-                            }
+                    //scales = new
+                    //{
+                    //    xAxes = new object[] {
+                    //            new
+                    //            {
+                    //                stacked = true                                    
+                    //            }
+                    //        },
+                    //    yAxes = new object[] {
+                    //            new
+                    //            {
+                    //                stacked = true
+                    //            }
+                    //        }
+                    //}                    
+
+                    scales = new {
+                        xAxes = new object[] { new { stacked=true} },
+                        yAxes = new object[] { new { stacked=true, ticks = new { stepSize =1} } }
                     }
                 },
                 UrlData = @Url.Action("LoadChart", "Dashboard"),
                 Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                 {
-                    new ChartUIParameter { Id = "dataInicial" }
+                    new ChartUIParameter { Id = "dataFinal" }
                 }
             });
 
@@ -193,7 +198,7 @@ namespace Fly01.OrdemServico.Controllers
                 UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
-                        new DataTableUIParameter { Id = "dataInicial" }
+                        new DataTableUIParameter { Id = "dataFinal" }
                     },
                 Options = new DataTableUIConfig()
                 {
@@ -237,7 +242,7 @@ namespace Fly01.OrdemServico.Controllers
                 UrlGridLoad = Url.Action("DashboardTopServicos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
-                        new DataTableUIParameter { Id = "dataInicial" }
+                        new DataTableUIParameter { Id = "dataFinal" }
                     },
                 Options = new DataTableUIConfig()
                 {

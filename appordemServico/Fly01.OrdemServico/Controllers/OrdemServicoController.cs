@@ -229,7 +229,8 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Em Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Em Aberto' || row.status == 'Em Andamento')" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Em Aberto')" },
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });

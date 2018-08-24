@@ -16,15 +16,14 @@ using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNotasFiscais)]
     public class NotaFiscalEntradaController : BaseController<NotaFiscalEntradaVM>
     {
         public NotaFiscalEntradaController()
         {
-            ExpandProperties = "fornecedor($select=nome),ordemCompraOrigem($select=id,numero),categoria,serieNotaFiscal";
+            ExpandProperties = "fornecedor,ordemCompraOrigem,categoria,serieNotaFiscal";
         }
 
-        //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
         public override Func<NotaFiscalEntradaVM, object> GetDisplayData()
         {
             return x => new
@@ -39,13 +38,13 @@ namespace Fly01.Compras.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusNotaFiscal), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
                 data = x.Data.ToString("dd/MM/yyyy"),
-                fornecedor = x.Fornecedor.Nome,
-                //ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
-                tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
-                categoria_descrica = x.Categoria != null ? x.Categoria.Descricao : "",
+                fornecedor_nome = x.Fornecedor.Nome,
+                ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
+                tipoCompra = x.TipoCompra,
+                tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoCompra),
+                tipoCompraCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoCompra),
+                tipoCompraValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoCompra),
+                categoria_descricao = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
             };
@@ -83,7 +82,7 @@ namespace Fly01.Compras.Controllers
                 buttonOnClick = "fnAddFilter";
             }
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
@@ -150,18 +149,12 @@ namespace Fly01.Compras.Controllers
             {
                 new DataTableUIAction { OnClickFn = "fnVisualizarNFe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnVisualizarRetornoSefaz", Label = "Mensagem SEFAZ", ShowIf = "(row.status != 'NaoTransmitida' && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnVisualizarNFSe", Label = "Visualizar", ShowIf = "(row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnTransmitirNFe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnExcluirNFSe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarPDFNFSe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarNFe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFe')" },
-                new DataTableUIAction { OnClickFn = "fnCancelarNFSe", Label = "Cancelar", ShowIf = "((row.status == 'Autorizada' || row.status == 'FalhaNoCancelamento') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" }
+                //new DataTableUIAction { OnClickFn = "fnFormCartaCorrecao", Label = "Carta de Correção", ShowIf = "(row.status == 'Autorizada')" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "serieNotaFiscal_serie", DisplayName = "Série", Priority = 1 });
@@ -184,16 +177,15 @@ namespace Fly01.Compras.Controllers
             });
             config.Columns.Add(new DataTableUIColumn
             {
-                DataField = "tipoVenda",
+                DataField = "tipoCompra",
                 DisplayName = "Finalidade",
                 Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
-                RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
+                RenderFn = "fnRenderEnum(full.tipoCompraCssClass, full.tipoCompraDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 6 });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 7, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "ordemVendaOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });//numero int e pesquisa string
-            config.Columns.Add(new DataTableUIColumn { DataField = "categoria_descricao", DisplayName = "Categoria", Priority = 9 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "ordemCompraOrigem_numero", DisplayName = "Pedido Origem", Searchable = false, Priority = 8 });
 
             cfg.Content.Add(config);
 

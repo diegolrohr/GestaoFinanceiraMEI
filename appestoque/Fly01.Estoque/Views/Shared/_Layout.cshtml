@@ -1,15 +1,12 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-@Html.HeadTemplate("Bemacash Estoque")
-@RenderSection("styles", false)
+    @Html.HeadTemplate("Bemacash Estoque")
+    @RenderSection("styles", false)
+    @Html.ScriptsTemplate()
+    @RenderSection("scripts", false)
 </head>
 <body>
-    @Html.ScriptsTemplate()
-    <script>
-            $(function() { fly01.navigation("@Url.Action("Sidebar", "Home")"); });
-    </script>
-    @RenderSection("scripts", false)
 </body>
 </html>
 @RenderBody()

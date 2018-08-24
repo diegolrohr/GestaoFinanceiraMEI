@@ -90,7 +90,7 @@ namespace Fly01.Compras.Controllers
 
         public ContentUI FormOrcamentoJson(bool isEdit = false)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -127,15 +127,16 @@ namespace Fly01.Compras.Controllers
                     },
                     new FormWizardUIStep()
                     {
-                        Title = "Financeiro",
-                        Id = "stepFinanceiro",
-                        Quantity = 4,
-                    },
-                    new FormWizardUIStep()
-                    {
                         Title = "Produtos",
                         Id = "stepProdutos",
                         Quantity = 2,
+
+                    },
+                    new FormWizardUIStep()
+                    {
+                        Title = "Financeiro",
+                        Id = "stepFinanceiro",
+                        Quantity = 4,
                     },
                     new FormWizardUIStep()
                     {
@@ -155,6 +156,20 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m4", Label = "Número", Disabled = true });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Required = true });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            #endregion
+
+            #region step Produtos
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnAddOrcamentoItem",
+                Class = "col s12 m2",
+                Value = "Adicionar produto",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnModalOrcamentoItem" }
+                }
+            });
+            config.Elements.Add(new DivElementUI { Id = "orcamentoProdutos", Class = "col s12" });
             #endregion
 
             #region step Financeiro
@@ -191,20 +206,6 @@ namespace Fly01.Compras.Controllers
             }, ResourceHashConst.ComprasCadastrosCategoria));
 
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m3", Label = "Data Vencimento" });
-            #endregion
-
-            #region step Produtos
-            config.Elements.Add(new ButtonUI
-            {
-                Id = "btnAddOrcamentoItem",
-                Class = "col s12 m2",
-                Value = "Adicionar produto",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "click", Function = "fnModalOrcamentoItem" }
-                }
-            });
-            config.Elements.Add(new DivElementUI { Id = "orcamentoProdutos", Class = "col s12" });
             #endregion
 
             #region step Finalizar

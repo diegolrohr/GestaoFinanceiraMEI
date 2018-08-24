@@ -3,13 +3,10 @@
 <head>
     @Html.HeadTemplate("Bemacash Ordem Serviço")
     @RenderSection("styles", false)
+    @Html.ScriptsTemplate()
+    @RenderSection("scripts", false)
 </head>
 <body>
-    @Html.ScriptsTemplate()
-    <script>
-            $(function() { fly01.navigation("@Url.Action("Sidebar", "Home")"); });
-    </script>
-    @RenderSection("scripts", false)
 </body>
 </html>
 @RenderBody()

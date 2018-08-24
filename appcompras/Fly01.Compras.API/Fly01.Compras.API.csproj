@@ -58,6 +58,7 @@
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\Api\CalculaTotalNotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\Api\CalculaTotalOrdemCompraController.cs" />
     <Compile Include="Controllers\Api\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
@@ -70,11 +71,14 @@
     <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NFeEntradaController.cs" />
     <Compile Include="Controllers\Api\NFeProdutoEntradaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalAtualizaStatusController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCartaCorrecaoEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaAtualizaStatusController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoEntradaController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalPDFController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalXMLController.cs" />
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />

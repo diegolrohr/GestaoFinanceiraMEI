@@ -16,31 +16,34 @@ namespace Fly01.Faturamento.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
             if (!UserCanPerformOperation(ResourceHashConst.FaturamentoFaturamentoVisaoGeral))
-                return new ContentUI();
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
-            var config = new ContentUI
+            var cfg = new ContentUI
             {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
-                SidebarUrl = Url.Action("Sidebar"),
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index")
+                },
                 Header = new HtmlUIHeader()
                 {
                     Title = "Visão Geral",
                     Buttons = new List<HtmlUIButton>()
                 },
-                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns="
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar")
             };
 
-            config.Content.Add(new FormUI
+            cfg.Content.Add(new FormUI
             {
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12"
             });
 
-            config.Content.Add(new CardUI
+            cfg.Content.Add(new CardUI
             {
                 Class = "col s12",
                 Color = "totvs-blue",
@@ -54,10 +57,43 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
 
-            if (withSidebarUrl)
-                config.SidebarUrl = Url.Action("Sidebar", "Home", null, Request.Url.Scheme);
+            cfg.Content.Add(new AppUI()
+            {
+                Id = "nfenormal",
+                Class = "col s12 m4",
+                Title = "NF-e Normal",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });
 
-            return config;
+            cfg.Content.Add(new AppUI()
+            {
+                Id = "nfedevolucao",
+                Class = "col s12 m4",
+                Title = "NF-e Devolução",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });
+
+            cfg.Content.Add(new AppUI()
+            {
+                Id = "nfecomplemento",
+                Class = "col s12 m4",
+                Title = "NF-e Complemento",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("Form", "Pedido")
+                }
+            });            
+
+            return cfg;
         }
 
         public override ContentResult Sidebar()

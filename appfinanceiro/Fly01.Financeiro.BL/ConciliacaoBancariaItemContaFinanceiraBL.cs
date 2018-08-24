@@ -149,7 +149,7 @@ namespace Fly01.Financeiro.BL
             }
         }
 
-        private void BaixarContaFinanceiraSugestao(ConciliacaoBancariaItemContaFinanceira entity)
+         private void BaixarContaFinanceiraSugestao(ConciliacaoBancariaItemContaFinanceira entity)
         {
             if (entity.ContaFinanceiraId != null && entity.ContaFinanceiraId != default(Guid) && entity.ContaFinanceira == null)
             {
@@ -167,7 +167,7 @@ namespace Fly01.Financeiro.BL
                 }
             }
         }
-
+        
         public override void Insert(ConciliacaoBancariaItemContaFinanceira entity)
         {
             var conciliacaoBancariaItem = conciliacaoBancariaItemBL.All.FirstOrDefault(x => x.Id == entity.ConciliacaoBancariaItemId);

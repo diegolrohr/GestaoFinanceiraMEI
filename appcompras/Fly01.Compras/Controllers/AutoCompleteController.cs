@@ -32,5 +32,24 @@ namespace Fly01.Compras.Controllers
 
             return GetJson(filterObjects);
         }
+        public JsonResult SerieNotaFiscal(string term, string tipo)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(SerieNotaFiscalVM));
+
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam(
+                "$filter", $"contains(serie, '{term}') and (tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'{tipo}'" +
+                $" or tipoOperacaoSerieNotaFiscal eq {AppDefaults.APIEnumResourceName}TipoOperacaoSerieNotaFiscal'Ambas')"
+                );
+            queryString.AddParam("$orderby", "serie");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<SerieNotaFiscalVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Serie.ToUpper(), detail = "Próximo número: " + item.NumNotaFiscal.ToString(), numNotaFiscal = item.NumNotaFiscal };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult SerieNFe(string term)
+            => SerieNotaFiscal(term, "NFe");
     }
 }

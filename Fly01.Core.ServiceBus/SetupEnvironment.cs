@@ -1,7 +1,6 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
 using System;
-using System.Linq;
 using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus
@@ -29,13 +28,17 @@ namespace Fly01.Core.ServiceBus
                         channel.ExchangeDeclare(RabbitConfig.AMQPExchange, ExchangeType.Direct, true);
                         channel.QueueDeclare(RabbitConfig.QueueName, true, false, false, null);
 
-                        RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
+                        if (RabbitConfig.IsDevEnvironment)
+                            RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, $"{Environment.MachineName}_{routingKey}", null); });
+                        else
+                            RabbitConfig.ListRoutingKeys.ForEach(routingKey => { channel.QueueBind(RabbitConfig.QueueName, RabbitConfig.AMQPExchange, routingKey, null); });
                     }
                 }
             }
             catch (Exception ex)
             {
-                MediaClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, virtualHost, RabbitConfig.QueueName, "", "");
+                var _mediaClient = new MediaClient();
+                _mediaClient.PostErrorRabbitMQ($"CRIAÇÃO DO AMBIENTE {RabbitConfig.QueueName}", ex, virtualHost, RabbitConfig.QueueName, "", "");
             }
         }
     }

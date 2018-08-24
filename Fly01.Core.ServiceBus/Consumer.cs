@@ -13,6 +13,7 @@ namespace Fly01.Core.ServiceBus
 {
     public class Consumer
     {
+        protected MediaClient _mediaClient;
         private readonly string MsgHeaderInvalid = "A 'PlataformaUrl', o 'Hostname' e o 'AppUser' devem ser informados no Header da mensagem";
         private readonly string MsgAppIdInvalid = "AppId não informado nas propriedades da mensagem";
         private readonly string MsgTypeInvalid = "Type (POST, PUT, DELETE) não informado nas propriedades da mensagem";
@@ -47,7 +48,8 @@ namespace Fly01.Core.ServiceBus
             }
             catch (Exception ex)
             {
-                MediaClient.PostErrorRabbitMQ($"Erro ao criar canal {ex.Message}", ex.InnerException, virtualHost, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), "");
+                _mediaClient = new MediaClient();
+                _mediaClient.PostErrorRabbitMQ($"Erro ao criar canal {ex.Message}", ex.InnerException, virtualHost, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), "");
                 return null;
             }
         }
@@ -86,6 +88,8 @@ namespace Fly01.Core.ServiceBus
             {
                 try
                 {
+                    if (RabbitConfig.IsDevEnvironment && !RabbitConfig.QueueName.Contains(Environment.MachineName)) return;
+
                     Headers = new Dictionary<string, object>(args.BasicProperties.Headers ?? new Dictionary<string, object>());
 
                     if (args.BasicProperties.Headers == null || !HeaderIsValid()) throw new ArgumentException(MsgHeaderInvalid);
@@ -106,7 +110,8 @@ namespace Fly01.Core.ServiceBus
                 }
                 catch (Exception ex)
                 {
-                    MediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex.InnerException, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
+                    _mediaClient = new MediaClient();
+                    _mediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex.InnerException, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
                 }
                 finally
                 {
@@ -119,25 +124,25 @@ namespace Fly01.Core.ServiceBus
 
         private async Task ProcessData(string message, RabbitConfig.EnHttpVerb httpMethod, string routingKey, string appId, string plataformaUrl, string appUser)
         {
-            //var rpc = new RpcClient();
-
-            Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
+            routingKey = routingKey.Replace(Environment.MachineName + "_", "");
+            _mediaClient = new MediaClient();
 
             foreach (var item in MessageType.Resolve<dynamic>(message))
             {
                 try
                 {
+                    Object unitOfWork = AssemblyBL.GetConstructor(new Type[1] { typeof(ContextInitialize) }).Invoke(new object[] { new ContextInitialize() { AppUser = appUser, PlataformaUrl = plataformaUrl } });
                     dynamic entidade = AssemblyBL.GetProperty($"{routingKey}BL")?.GetGetMethod(false)?.Invoke(unitOfWork, null);
                     dynamic data = JsonConvert.DeserializeObject<dynamic>(item.ToString());
 
-                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash", null);
+                    entidade.PersistMessage(data, httpMethod, appId.ToLower() == "bemacash");
 
                     await (Task)AssemblyBL.GetMethod("Save").Invoke(unitOfWork, new object[] { });
                 }
                 catch (Exception exErr)
                 {
                     var erro = (exErr is BusinessException) ? (BusinessException)exErr : exErr;
-                    MediaClient.PostErrorRabbitMQ(item.ToString(), erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
+                    _mediaClient.PostErrorRabbitMQ(item.ToString(), erro, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, plataformaUrl, routingKey);
 
                     continue;
                 }

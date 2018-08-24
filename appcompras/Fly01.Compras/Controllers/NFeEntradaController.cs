@@ -17,16 +17,16 @@ using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
-    public class NFeController : BaseController<NFeVM>
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNotasFiscais)]
+    public class NFeEntradaController : BaseController<NFeEntradaVM>
     {
         //NFeVM e NFSeVM na mesma controller notaFiscal, direcionado as controller via javaScript
-        public NFeController()
+        public NFeEntradaController()
         {
-            ExpandProperties = "ordemVendaOrigem($select=numero),cliente($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
+            ExpandProperties = "ordemCompraOrigem($select=numero),fornecedor($select=id,nome),transportadora($select=id,nome),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria,serieNotaFiscal";
         }
 
-        public override Func<NFeVM, object> GetDisplayData()
+        public override Func<NFeEntradaVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
@@ -50,7 +50,7 @@ namespace Fly01.Compras.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputNumbersUI { Id = "ordemVendaOrigemNumero", Class = "col s12 m6 l2", Label = "Pedido Origem", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "ordemCompraOrigemNumero", Class = "col s12 m6 l2", Label = "Pedido Origem", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoVenda",
@@ -92,12 +92,12 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4", Label = "Data", Disabled = true });
             config.Elements.Add(new AutoCompleteUI
             {
-                Id = "clienteId",
+                Id = "fornecedorId",
                 Class = "col s12 m8",
-                Label = "Cliente",
+                Label = "Fornecedor",
                 Disabled = true,
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
-                LabelId = "clienteNome"
+                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
+                LabelId = "fornecedorNome"
             });
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Disabled = true, MaxLength = 200 });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", Disabled = true });
@@ -263,14 +263,14 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });
             config.Elements.Add(new AutoCompleteUI
             {
-                Id = "clienteIdNFe",
+                Id = "fornecedorIdNFe",
                 Class = "col s12",
-                Label = "Cliente",
+                Label = "Fornecedor",
                 Disabled = true,
-                Name = "clienteId",
-                DataUrl = Url.Action("Cliente", "AutoComplete"),
-                LabelId = "clienteNomeNFe",
-                LabelName = "clienteNome"
+                Name = "fornecedorId",
+                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
+                LabelId = "fornecedorNomeNFe",
+                LabelName = "fornecedorNome"
             });
             config.Elements.Add(new InputHiddenUI { Id = "tipoFreteNFe", Name = "tipoFrete" });
             config.Elements.Add(new InputHiddenUI { Id = "valorFreteNFe", Name = "valorFrete" });
@@ -305,7 +305,7 @@ namespace Fly01.Compras.Controllers
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
-        public JsonResult Transmitir(NFeVM entity)
+        public JsonResult Transmitir(NFeEntradaVM entity)
         {
             try
             {

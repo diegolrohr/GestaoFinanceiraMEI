@@ -55,7 +55,7 @@ namespace Fly01.Faturamento.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult NovoForm(Guid id)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -105,7 +105,7 @@ namespace Fly01.Faturamento.Controllers
         {
             var idRecord = !string.IsNullOrEmpty(id) ? id : Request.UrlReferrer.AbsolutePath.Replace("/", " ").Split(' ').Last();
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = $"{Url.Action("NotaFiscal", "CartaCorrecao", new { id = id })}" },
                 Header = new HtmlUIHeader

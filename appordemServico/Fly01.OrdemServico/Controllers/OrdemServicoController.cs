@@ -469,8 +469,8 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m6 l2", Label = "Número", Disabled = true });
-            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m6 l2", Label = "Data de Emissão" });
-            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m6 l2", Label = "Data de Entrega" });
+            config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m6 l2", Label = "Data de Emissão", Disabled = true });
+            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m6 l2", Label = "Data de Entrega", Disabled = true });
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "clienteId",

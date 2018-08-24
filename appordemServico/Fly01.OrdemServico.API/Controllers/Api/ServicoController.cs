@@ -10,7 +10,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
         public ServicoController()
         {
             //se desativar, desativar nas chamadas que vao direto as bls
-            MustProduceMessageServiceBus = true;
+            MustProduceMessageServiceBus = false; // TODO: Implementar envio a rabbit nas BL
         }
     }
 }

@@ -3,17 +3,10 @@
 <head>
     @Html.HeadTemplate("Bemacash Compras")
     @RenderSection("styles", false)
+    @Html.ScriptsTemplate()
+    @RenderSection("scripts", false)
 </head>
 <body>
-    <header></header>
-    <main></main>
-    <footer>
-        @Html.ScriptsTemplate()
-        <script>
-            $(function() { fly01.navigation("@Url.Action("Sidebar", "Home")"); });
-        </script>
-        @RenderSection("scripts", false)
-    </footer>
 </body>
 </html>
 @RenderBody()

@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -94,14 +95,17 @@ namespace Fly01.Compras.BL
 
         public override void Insert(Orcamento entity)
         {
+            var numero = default(int);
+
             if (entity.Id == default(Guid))
             {
                 entity.Id = Guid.NewGuid();
             }
 
-            var max = OrdemCompraBL.Everything.Any(x => x.Id != entity.Id) ? OrdemCompraBL.Everything.Max(x => x.Numero) : 0;
+            rpc = new RpcClient();
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
 
-            entity.Numero = (max == 1 && !OrdemCompraBL.Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+            entity.Numero = numero;
 
             ValidaModel(entity);
 

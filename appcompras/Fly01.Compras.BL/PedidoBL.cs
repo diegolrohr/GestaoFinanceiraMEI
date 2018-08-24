@@ -268,14 +268,17 @@ namespace Fly01.Compras.BL
 
         public override void Insert(Pedido entity)
         {
+            var numero = default(int);
+
             if (entity.Id == default(Guid))
             {
                 entity.Id = Guid.NewGuid();
             }
 
-            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
+            rpc = new RpcClient();
+            numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Pedido}"));
 
-            entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
+            entity.Numero = numero;
 
             ValidaModel(entity);
 

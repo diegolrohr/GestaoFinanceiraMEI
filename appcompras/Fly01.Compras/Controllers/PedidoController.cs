@@ -158,7 +158,7 @@ namespace Fly01.Compras.Controllers
 
         public ContentUI FormPedidoJson(bool isEdit = false)
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {

@@ -174,7 +174,7 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12",
                 Parameters = new List<ChartUIParameter>
                 {
-                    new ChartUIParameter { Id = "filtro" }
+                    new ChartUIParameter { Id = "dataInicial" }
                 }
             });
 

@@ -22,18 +22,18 @@ namespace Fly01.OrdemServico.Controllers
             {
                 { "filtro", filtro.ToString("yyyy-MM-dd") }
             };
-            var response = RestHelper.ExecuteGetRequest<ResponseOrdemServicosPorDiaVM>("dashboard/quantidadeordemservicopordia", queryString);
+            var response = RestHelper.ExecuteGetRequest<List<OrdemServicosPorDiaVM>>("dashboard/quantidadeordemservicopordia", queryString);
             if (response == null)
                 return new List<OrdemServicosPorDiaVM>();
 
-            return response.Values;
+            return response;
         }
 
-        public JsonResult LoadChart(DateTime filtro)
+        public JsonResult LoadChart(DateTime dataInicial)
         {
             try
             {
-                var response = GetProjecao(filtro);
+                var response = GetProjecao(dataInicial);
 
                 var dataChartToView = new
                 {

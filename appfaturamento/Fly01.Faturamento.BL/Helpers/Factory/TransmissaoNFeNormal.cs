@@ -144,6 +144,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                 ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                 ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
+                ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
 
                 if (Cabecalho.Versao == "4.00")
                 {

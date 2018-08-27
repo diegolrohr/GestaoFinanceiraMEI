@@ -76,9 +76,9 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public ContentResult FormPedido(bool isEdit = false)
+        public ContentResult FormPedido(bool isEdit = false, string tipoVenda = "Normal")
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -183,7 +183,7 @@ namespace Fly01.Faturamento.Controllers
             #region step Cadastro
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = tipoVenda });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });

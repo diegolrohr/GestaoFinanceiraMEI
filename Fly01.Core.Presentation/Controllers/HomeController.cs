@@ -17,7 +17,7 @@ namespace Fly01.Core.Presentation.Controllers
             => Request.IsAjaxRequest() ? Go() : base.Index();
 
         public ContentResult Go() 
-            => Content(JsonConvert.SerializeObject(HomeJson(true), JsonSerializerSetting.Front), "application/json");
+            => Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
 
         public ContentResult List() 
             => Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
@@ -28,7 +28,7 @@ namespace Fly01.Core.Presentation.Controllers
             return RestHelper.ExecutePostRequest<List<AppUI>>(AppDefaults.UrlGateway, "v1/sidebarApps", requestObject);
         }
 
-        protected abstract ContentUI HomeJson(bool withSidebarUrl = false);
+        protected abstract ContentUI HomeJson();
 
         public abstract ContentResult Sidebar();
 
@@ -65,7 +65,8 @@ namespace Fly01.Core.Presentation.Controllers
                     Title = $"Opção não permitida",
                     Buttons = new List<HtmlUIButton>()
                 },
-                UrlFunctions = ""
+                UrlFunctions = "",
+                SidebarUrl = @Url.Action("Sidebar")
             };
 
             cfg.Content.Add(new FormUI()

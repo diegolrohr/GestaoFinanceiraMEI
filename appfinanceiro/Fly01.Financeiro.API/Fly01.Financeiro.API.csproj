@@ -64,6 +64,8 @@
     <Compile Include="Controllers\Api\CnabController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />
+    <Compile Include="Controllers\Api\ContaPagarParcelasController.cs" />
+    <Compile Include="Controllers\Api\ContaReceberParcelasController.cs" />
     <Compile Include="Controllers\Api\DashboardContaPagarDiaController.cs" />
     <Compile Include="Controllers\Api\DashboardSaldoDiaController.cs" />
     <Compile Include="Controllers\Api\DashboardFormaPagamentoController.cs" />

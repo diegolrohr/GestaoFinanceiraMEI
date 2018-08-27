@@ -6,6 +6,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -147,6 +148,18 @@ namespace Fly01.Financeiro.BL
                 .ForEach(itemBaixa => { contaFinanceiraBaixaBL.Delete(itemBaixa); });
 
             base.Delete(entityToDelete);
+        }
+
+        public List<ContaPagar> GetParcelas(Guid contaFinanceiraParcelaPaiId)
+        {
+            var parcelas = new List<ContaPagar>();
+
+            if(All.Any(x => x.Id == contaFinanceiraParcelaPaiId))
+                parcelas.Add(All.Where(x => x.Id == contaFinanceiraParcelaPaiId).AsNoTracking().FirstOrDefault());
+            if(All.Any(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId))
+                parcelas.AddRange(All.Where(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId).AsNoTracking().OrderBy(x => x.DataInclusao));
+
+            return parcelas;
         }
 
         private static bool RepeticaoValida(ContaFinanceira entity)

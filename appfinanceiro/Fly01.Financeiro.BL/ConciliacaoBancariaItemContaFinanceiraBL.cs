@@ -15,7 +15,7 @@ namespace Fly01.Financeiro.BL
         protected ConciliacaoBancariaBL conciliacaoBancariaBL { get; set; }
         protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }
         protected ContaFinanceiraBaixaBL contaFinanceiraBaixaBL { get; set; }
-        protected ContaFinanceiraBL contaFinanceiraBL { get; set; }        
+        protected ContaFinanceiraBL contaFinanceiraBL { get; set; }
 
         public ConciliacaoBancariaItemContaFinanceiraBL(AppDataContext context, ConciliacaoBancariaBL ConciliacaoBancariaBL, ConciliacaoBancariaItemBL ConciliacaoBancariaItemBL, ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL, ContaFinanceiraBL ContaFinanceiraBL)
             : base(context)
@@ -149,6 +149,25 @@ namespace Fly01.Financeiro.BL
             }
         }
 
+         private void BaixarContaFinanceiraSugestao(ConciliacaoBancariaItemContaFinanceira entity)
+        {
+            if (entity.ContaFinanceiraId != null && entity.ContaFinanceiraId != default(Guid) && entity.ContaFinanceira == null)
+            {
+                var conta = contaFinanceiraBL.All.Where(x => x.Id == entity.ContaFinanceiraId).FirstOrDefault();
+                if (conta != null)
+                {
+                    var conciliacaoBancariaItem = conciliacaoBancariaItemBL.All.FirstOrDefault(x => x.Id == entity.ConciliacaoBancariaItemId);
+
+                    if (conciliacaoBancariaItem == null)
+                        entity.Fail(true, new Error("Id de lançamento da conciliação bancária inválido", "conciliacaoBancariaItemId"));
+                    else
+                    {
+                        SalvaContaFinanceiraBaixa(entity, conciliacaoBancariaItem);
+                    }
+                }
+            }
+        }
+        
         public override void Insert(ConciliacaoBancariaItemContaFinanceira entity)
         {
             var conciliacaoBancariaItem = conciliacaoBancariaItemBL.All.FirstOrDefault(x => x.Id == entity.ConciliacaoBancariaItemId);
@@ -158,7 +177,7 @@ namespace Fly01.Financeiro.BL
             //Já existe a contaFinanceiraId informada ou vai associar a conta que esta na navigation
             //mesma transacao, ainda não estava salvo para usar do contafinanceirabl.all.where 
             ValidaModel(entity, conciliacaoBancariaItem);
-
+            BaixarContaFinanceiraSugestao(entity);
             entity.ContaFinanceira = null;
 
             base.Insert(entity);

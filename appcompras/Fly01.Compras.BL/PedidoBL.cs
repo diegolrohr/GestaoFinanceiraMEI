@@ -224,7 +224,8 @@ namespace Fly01.Compras.BL
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     var fornecedorReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.FornecedorId);
-                    entity.Fail((fornecedorReferenciado == null || fornecedorReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
+                    entity.Fail(entity.TipoCompra == TipoVenda.Devolucao && pedidoReferenciado.TipoCompra == TipoVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoCompra"));
+                    entity.Fail((fornecedorReferenciado == null || fornecedorReferenciado.Ativo == false), new Error("Informe um fornecedor ativo. Fornecedor da nota fiscal referenciada inexistente ou excluído.", "fornecedorId"));
 
                     if (entity.IsValid())
                     {
@@ -232,13 +233,19 @@ namespace Fly01.Compras.BL
                         entity.Id = previousId;
                         entity.Numero = previousNumero;
                         entity.Data = previousData;
-                        entity.CategoriaId = null;
-                        entity.NaturezaOperacao = null;
+                        entity.TipoCompra = previousTipoCompra;
+
+                        if (entity.TipoCompra == TipoVenda.Devolucao)
+                        {
+                            entity.NaturezaOperacao = null;
+                            entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
+                            entity.CategoriaId = null;//inverte receita/despesa, terá que informar no front
+                        }
+
                         entity.FornecedorId = (fornecedorReferenciado != null && fornecedorReferenciado.Ativo == true) ? pedidoReferenciado.FornecedorId : previousFornecedorId;
                         entity.Status = StatusOrdemCompra.Aberto;
                         entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
                         entity.TipoCompra = previousTipoCompra;
-                        entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
 
                         var produtos = PedidoItemBL.All.AsNoTracking().Where(x => x.PedidoId == idPedidoReferenciado).ToList();
 
@@ -250,8 +257,19 @@ namespace Fly01.Compras.BL
                                 produto.CopyProperties<PedidoItem>(produtoClonado);
                                 produtoClonado.Id = default(Guid);
                                 produtoClonado.PedidoId = entity.Id;
-                                //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
-                                produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                if (entity.TipoCompra == TipoVenda.Devolucao)
+                                {
+                                    //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
+                                    produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                }
+                                else if (entity.TipoCompra == TipoVenda.Complementar)
+                                {
+                                    //na nfe de complemento de preço zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
+                                    produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
+                                    produtoClonado.Quantidade = 0.00;
+                                    produtoClonado.Valor = 0.00;
+                                    produtoClonado.Desconto = 0.00;
+                                }
                                 PedidoItemBL.Insert(produtoClonado);
                             }
                         }

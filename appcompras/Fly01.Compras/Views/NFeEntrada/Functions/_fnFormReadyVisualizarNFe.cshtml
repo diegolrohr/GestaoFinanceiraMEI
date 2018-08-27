@@ -37,7 +37,7 @@
     function fnFormReadyVisualizarNFe() {
         $.ajax({
             type: "POST",
-            url: "@Url.Action("GetNFeProdutos", "NFeProduto")?id=" + $('#fly01mdlfrmVisualizarNFe #id').val(),
+            url: "@Url.Action("GetNFeProdutos", "NFeProdutoEntrada")?id=" + $('#fly01mdlfrmVisualizarNFe #id').val(),
             dataType: "json",
             contentType: "application/json",
             success: function (response) {

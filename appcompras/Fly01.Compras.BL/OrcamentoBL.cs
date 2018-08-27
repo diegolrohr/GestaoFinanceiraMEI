@@ -66,6 +66,7 @@ namespace Fly01.Compras.BL
                         Observacao = entity.Observacao,
                         FornecedorId = fornecedorId,
                         OrcamentoOrigemId = entity.Id,
+                        TipoCompra = TipoVenda.Normal,
                         Total = orcamentoItens.Sum(x => x.Total)
                     };
                     PedidoBL.Insert(pedido);

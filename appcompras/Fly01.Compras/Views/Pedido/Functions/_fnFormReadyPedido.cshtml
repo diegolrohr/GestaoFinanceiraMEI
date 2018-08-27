@@ -192,7 +192,6 @@
                             $("form#fly01frm input#numero").val(data.numero);
 
                             fly01._.dtPedidoItens.refresh();
-                            //fly01._.dtOrdemVendaServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
@@ -233,7 +232,7 @@
     }
 
     function EstoqueNegativoETotal() {
-        //fly01._.dtProdutosEstoqueNegativo.refresh();
+        fly01._.dtProdutosEstoqueNegativo.refresh();
         calculaTotalPedido();
     }
 

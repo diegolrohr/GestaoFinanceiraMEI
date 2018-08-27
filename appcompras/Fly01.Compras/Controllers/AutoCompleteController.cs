@@ -24,11 +24,11 @@ namespace Fly01.Compras.Controllers
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
             queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')");
-            queryString.AddParam("$select", "id,descricao,valorVenda,codigoProduto,codigoBarras");
+            queryString.AddParam("$select", "id,descricao,valorCusto,codigoProduto,codigoBarras");
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, valor = item.ValorVenda };
+                                select new { id = item.Id, label = item.Descricao, valor = item.ValorCusto };
 
             return GetJson(filterObjects);
         }

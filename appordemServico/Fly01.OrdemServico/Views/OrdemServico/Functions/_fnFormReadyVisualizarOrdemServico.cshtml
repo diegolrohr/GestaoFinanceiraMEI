@@ -122,8 +122,8 @@
         })
         .done(function (data) {
             if (data.success) {
-                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
+                $('input#totalProdutos').val(data.total.TotalProdutos/*.formatMoneyMask(2, 3, '', ',')/**/);
+                $('input#totalServicos').val(data.total.TotalServicos/*.formatMoneyMask(2, 3, '', ',')/**/);
                 fly01.fn.updateTextFields();
             }
             else {

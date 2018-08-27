@@ -32,11 +32,11 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
             if (!OnlyCST.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
             {
                 entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()),
-                    new Error("A base de cálculo do PIS é obrigatória. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.ValorBCDoPIS"));
+                    new Error("A base de cálculo do PIS é obrigatória, para o CST informado Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.ValorBCDoPIS"));
                 entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.PercentualPIS.ToString()),
-                    new Error("A alíquota do PIS é obrigatória. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.PercentualPIS"));
+                    new Error("A alíquota do PIS é obrigatória, para o CST informado Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.PercentualPIS"));
                 entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorPIS.ToString()),
-                    new Error("O valor do PIS é obrigatório. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.ValorPIS"));
+                    new Error("O valor do PIS é obrigatório, para o CST informado Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.ValorPIS"));
 
                 ValidarLengthBaseCalculoPIS_IsNotOnlyCST(detalhe, entity, nItemDetalhe);
                 ValidarLengthAliquotaPisOnlyCST_IsNotOnlyCST(detalhe, entity, nItemDetalhe);

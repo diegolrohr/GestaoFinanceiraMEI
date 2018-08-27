@@ -57,6 +57,9 @@ namespace Fly01.Financeiro.BL
                 entity.Numero = numero;
 
                 base.Insert(entity);
+
+                if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                    contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity);
             }
             else
             {
@@ -125,6 +128,9 @@ namespace Fly01.Financeiro.BL
                             itemContaPagarRepeticao.Numero = numero;
 
                             base.Insert(itemContaPagarRepeticao);
+
+                            if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
+                                contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaPagarRepeticao);
                         }
                     }
                 }

@@ -120,6 +120,7 @@
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />
     <Compile Include="ViewModel\OrdemCompraVM.cs" />
+    <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
     <Compile Include="ViewModel\PedidoItemVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
     <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />

@@ -16,6 +16,7 @@
     }
 
     function fnHaveToShow() {
-        return fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0 && $('#movimentaEstoque').is(':checked') && ($('#tipoVenda').val() == "Normal" || $('#tipoVenda').val() == "Complementar");
+        return fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0 && $('#movimentaEstoque').is(':checked')
+            && ($('#tipoCompra').val() == "Devolucao");
     }
 </script>

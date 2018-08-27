@@ -47,5 +47,20 @@ namespace Fly01.OrdemServico.Controllers
 
         //    return GetJson(filterObjects);
         //}
+
+        public JsonResult Vendedor(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(cpfcnpj, '{term}')) and vendedor eq true");
+            queryString.AddParam("$select", "id,nome,cpfcnpj");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Nome, detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : item.CPFCNPJ };
+
+            return GetJson(filterObjects);
+        }
     }
 }

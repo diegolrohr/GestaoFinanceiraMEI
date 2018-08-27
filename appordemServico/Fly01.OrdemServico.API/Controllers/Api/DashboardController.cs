@@ -24,7 +24,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.DashboardBL.GetQuantidadeOrdemServicoPorDia(filtro));
+                return Ok(new { value = unitOfWork.DashboardBL.GetQuantidadeOrdemServicoPorDia(filtro)});
             }
         }
 

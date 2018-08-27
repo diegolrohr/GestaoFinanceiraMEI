@@ -17,34 +17,34 @@ namespace Fly01.OrdemServico.Controllers
     public class DashboardController : BaseController<DomainBaseVM>
     {
 
-        private List<OrdemServicosPorDiaVM> GetProjecao(DateTime filtro)
+        private List<OrdemServicosPorDiaVM> GetProjecao(DateTime? filtro=null)
         {
             Dictionary<string, string> queryString = new Dictionary<string, string>
             {
-                { "filtro", filtro.ToString("yyyy-MM-dd") }
+                { "filtro", filtro.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd")}
             };
-            var response = RestHelper.ExecuteGetRequest<List<OrdemServicosPorDiaVM>>("dashboard/quantidadeordemservicopordia", queryString);
+            var response = RestHelper.ExecuteGetRequest<ResponseOrdemServicosPorDiaVM>("dashboard/quantidadeordemservicopordia", queryString);
             if (response == null)
                 return new List<OrdemServicosPorDiaVM>();
 
-            return response;
+            return response.Values;
         }
 
-        public JsonResult LoadChart(DateTime dataInicial)
+        public JsonResult LoadChart(DateTime? dataFinal=null)
         {
             try
             {
-                var response = GetProjecao(dataInicial);
+                var response = GetProjecao(dataFinal);
 
                 var dataChartToView = new
                 {
                     success = true,
-                    currency = true,
-                    //labels = response.Select(x => x.QuantidadeServicos).ToArray(),
+                    currency = false,                    
+                    labels = response.Select(x =>  "Dia " + x.Label).ToArray(),
                     datasets = new object[] {
                         new {
                                 type = "line",
-                                label = "OS por Dia",
+                                label = "Quantidade de OS: ",
                                 backgroundColor = "rgb(44, 55, 57)",
                                 borderColor = "rgb(44, 55, 57)",
                                 data = response.Select(x => x.QuantidadeServicos).ToArray(),
@@ -61,16 +61,13 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        public JsonResult LoadCards(string dataFinal)
+        public JsonResult LoadCards(DateTime? dataFinal = null)
         {
             try
             {
-                if (string.IsNullOrEmpty(dataFinal))
-                    dataFinal = DateTime.Now.ToString("yyyy-MM-dd");
-
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "filtro", dataFinal }
+                    { "filtro", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                 };
                 var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboard/status", queryString);
                 var aberto = "0/0";
@@ -101,13 +98,13 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        public JsonResult DashboardTopProdutos(DateTime? dataInicial = null)
+        public JsonResult DashboardTopProdutos(DateTime? dataFinal = null)
         {
             try
             {
                 Dictionary<string, string> querystring = new Dictionary<string, string>
                     {
-                        { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
+                        { "filtro", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
                 var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("dashboard/topprodutosordemservico", querystring);
@@ -119,13 +116,10 @@ namespace Fly01.OrdemServico.Controllers
                     data = response.Select(x => new
                     {
                         descricao = x.Descricao,
-                        valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
                         valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault)
                     })
                 }, JsonRequestBehavior.AllowGet);
-
-
             }
             catch (Exception ex)
             {
@@ -134,13 +128,13 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        public JsonResult DashboardTopServicos(DateTime? dataInicial = null)
+        public JsonResult DashboardTopServicos(DateTime? dataFinal = null)
         {
             try
             {
                 Dictionary<string, string> querystring = new Dictionary<string, string>
                     {
-                        { "filtro", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
+                        { "filtro", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                     };
 
                 var response = RestHelper.ExecuteGetRequest<List<TopServicosProdutosOrdemServicoVM>>("dashboard/topservicosordemservico", querystring);
@@ -152,13 +146,10 @@ namespace Fly01.OrdemServico.Controllers
                     data = response.Select(x => new
                     {
                         descricao = x.Descricao,
-                        valor = 0, //x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                         quantidade = x.Quantidade,
                         valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault)
                     })
                 }, JsonRequestBehavior.AllowGet);
-
-
             }
             catch (Exception ex)
             {

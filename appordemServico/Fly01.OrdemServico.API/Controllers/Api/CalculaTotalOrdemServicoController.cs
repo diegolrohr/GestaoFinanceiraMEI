@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace Fly01.OrdemServico.API.Controllers.Api
 {
-    [RoutePrefix("calculatotalordemServico")]
+    [RoutePrefix("calculatotalordemservico")]
     public class CalculaTotalOrdemServicoController : ApiBaseController
     {
         [HttpGet]

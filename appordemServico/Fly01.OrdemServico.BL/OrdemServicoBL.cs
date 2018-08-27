@@ -18,8 +18,11 @@ namespace Fly01.OrdemServico.BL
         protected OrdemServicoItemServicoBL OrdemServicoItemServicoBL { get; set; }
         protected OrdemServicoManutencaoBL OrdemServicoManutencaoBL { get; set; }
 
-        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL) : base(context)
+        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL, OrdemServicoItemProdutoBL ordemServicoItemProdutoBL, OrdemServicoItemServicoBL ordemServicoItemServicoBL, OrdemServicoManutencaoBL ordemServicoManutencaoBL) : base(context)
         {
+            OrdemServicoManutencaoBL = ordemServicoManutencaoBL;
+            OrdemServicoItemProdutoBL = ordemServicoItemProdutoBL;
+            OrdemServicoItemServicoBL = ordemServicoItemServicoBL;
             _parametroBL = parametroBL;
             _pessoaBL = pessoaBL;
         }
@@ -86,9 +89,9 @@ namespace Fly01.OrdemServico.BL
 
             var produtos = OrdemServicoItemProdutoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var servicos = OrdemServicoItemServicoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var servicos = OrdemServicoItemServicoBL.All.AsNoTracking().Where(x => x.OrdemServicoId == ordemServicoId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var itensCliente = OrdemServicoManutencaoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var itensCliente = OrdemServicoManutencaoBL.All.AsNoTracking().Where(x => x.OrdemServicoId == ordemServicoId).ToList();
             var qtdItensCliente = itensCliente != null ? itensCliente.Sum(x => ((x.Quantidade))) : 0;
             var result = new TotalOrdemServico()
             {

@@ -8,10 +8,32 @@
         var id = $("form#fly01frm input#id").val();
 
         if (id.length == 0)
+        {
+            retornaDataEntregaParametro();
             return true;
+        }
 
         return false;
     }
+
+    function retornaDataEntregaParametro() {
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
+            type: "GET",
+            success: function (data) {
+                if (data) {
+                    var today = new Date();
+                    var dataEntrega = new Date();
+                    dataEntrega.setDate(today.getDate() + data.diasPrazoEntrega);
+                    fly01._.dataEntrega.set(dataEntrega);
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });   
+    }
+
 
     function calculaTotalOrdemServico() {
         var idOrdemServico = $("form#fly01frm input#id").val();

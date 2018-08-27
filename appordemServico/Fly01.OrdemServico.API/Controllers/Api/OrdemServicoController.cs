@@ -14,7 +14,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public OrdemServicoController()
         {
-            MustProduceMessageServiceBus = true;
+            MustProduceMessageServiceBus = false; // TODO: Implementar envio a rabbit nas BL
         }
 
         public override async Task<IHttpActionResult> Post(Core.Entities.Domains.Commons.OrdemServico entity)

@@ -18,7 +18,7 @@ namespace Fly01.Compras.Controllers
     {
         public PedidoItemController()
         {
-            ExpandProperties = "produto";
+            ExpandProperties = "produto,grupoTributario";
         }
 
         public override Func<PedidoItemVM, object> GetDisplayData()
@@ -27,6 +27,7 @@ namespace Fly01.Compras.Controllers
             {
                 id = x.Id.ToString(),
                 produto_descricao = x.Produto.Descricao,
+                grupoTributario_descricao = x.GrupoTributario != null ? x.GrupoTributario.Descricao : "",
                 quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),

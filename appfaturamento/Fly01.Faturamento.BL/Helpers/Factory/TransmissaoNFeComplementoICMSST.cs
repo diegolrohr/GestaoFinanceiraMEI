@@ -44,6 +44,9 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             CriarProdutosEImpostosParaDetalhes(itemTransmissao);
 
             itemTransmissao.Total = ObterTotal(itemTransmissao.Detalhes);
+            var icmsTotal = itemTransmissao.Total.ICMSTotal;
+
+            itemTransmissao.Total.ICMSTotal.TotalTributosAprox = CalcularTributosAproximados(icmsTotal);
             itemTransmissao.Total.ICMSTotal.ValorTotalNF = CalcularValorTotalNFE(itemTransmissao);
             itemTransmissao.Pagamento = ObterPagamento(itemTransmissao.Total.ICMSTotal.ValorTotalNF);
 
@@ -76,6 +79,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
                 var detalhe = ObterDetalhe(item, num);
                 detalhe.Produto.Quantidade = 0;
+                detalhe.Produto.ValorDesconto = 0;
+                detalhe.Produto.ValorOutrasDespesas = 0;
                 detalhe.Produto.ValorUnitario = 0;
                 detalhe.Produto.ValorBruto = 0;
                 detalhe.Produto.QuantidadeTributada = 0;

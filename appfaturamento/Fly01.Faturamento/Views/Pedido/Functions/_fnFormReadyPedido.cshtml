@@ -77,7 +77,7 @@
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
             fly01.toast(err, "error");
             fly01.loading.stop();
-        });        
+        });
     }
 
     function getInformacoesComplementares() {
@@ -273,14 +273,25 @@
         calculaTotalPedido();
     }
 
+    function fnTipoVendaClick() {
+        if ($('input#tipoVenda').val() == "Normal") {
+            $('#btnNormal').click();
+        }
+        else if ($('input#tipoVenda').val() == "Devolucao") {
+            $('#btnDevolucao').click();
+        } else {
+            $('#btnComplementar').click();
+        }
+    }
     function fnFormReadyPedido() {
         fnIsNovoPedido();
         fnClickComplementarIsDevolucao();
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
+        fly01.fn.updateActiveMenu("/OrdemVenda/List");
 
         if (isCreate()) {
-            $('#btnNormal').click();
+            fnTipoVendaClick();
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
@@ -291,18 +302,8 @@
             fnBindStepsWizard();
         }
         else {
-            //setar o agrupamento com a opção escolhida
-            if ($('input#tipoVenda').val() == "Normal") {
-                $('#btnNormal').click();
-            }
-            else {
-                if ($('input#tipoVenda').val() == "Devolucao") {
-                    $('#btnDevolucao').click();
-                } else {
-                    $('#btnComplementar').click();
-                }
-            }
-            $('select#tipoNfeComplementar').attr('disabled','disabled');
+            fnTipoVendaClick();
+            $('select#tipoNfeComplementar').attr('disabled', 'disabled');
             $('select#tipoNfeComplementar').material_select();
 
             disableStepFinalidade();

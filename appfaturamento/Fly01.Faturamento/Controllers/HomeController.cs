@@ -65,7 +65,7 @@ namespace Fly01.Faturamento.Controllers
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
                 Target = new LinkUI
                 {
-                    Go = Url.Action("Form", "Pedido")
+                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
                 }
             });
 
@@ -77,7 +77,7 @@ namespace Fly01.Faturamento.Controllers
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
                 Target = new LinkUI
                 {
-                    Go = Url.Action("Form", "Pedido")
+                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Devolucao" })
                 }
             });
 
@@ -89,7 +89,7 @@ namespace Fly01.Faturamento.Controllers
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
                 Target = new LinkUI
                 {
-                    Go = Url.Action("Form", "Pedido")
+                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Complementar" })
                 }
             });            
 

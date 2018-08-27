@@ -86,7 +86,7 @@ namespace Fly01.Faturamento.BL
                 if (entity.GeraNotaFiscal)
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
-                    entity.Fail(entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
+                    entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
                 }
@@ -378,10 +378,6 @@ namespace Fly01.Faturamento.BL
                         }
                     }
                     #endregion
-                }
-                else
-                {
-                    entity.Fail(true, new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
                 }
             }
             else

@@ -15,7 +15,7 @@ namespace Fly01.Financeiro.BL
         protected ConciliacaoBancariaBL conciliacaoBancariaBL { get; set; }
         protected ConciliacaoBancariaItemBL conciliacaoBancariaItemBL { get; set; }
         protected ContaFinanceiraBaixaBL contaFinanceiraBaixaBL { get; set; }
-        protected ContaFinanceiraBL contaFinanceiraBL { get; set; }        
+        protected ContaFinanceiraBL contaFinanceiraBL { get; set; }
 
         public ConciliacaoBancariaItemContaFinanceiraBL(AppDataContext context, ConciliacaoBancariaBL ConciliacaoBancariaBL, ConciliacaoBancariaItemBL ConciliacaoBancariaItemBL, ContaFinanceiraBaixaBL ContaFinanceiraBaixaBL, ContaFinanceiraBL ContaFinanceiraBL)
             : base(context)

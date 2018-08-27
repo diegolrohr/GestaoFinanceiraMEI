@@ -9,5 +9,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         /// </summary>
         public string NotaId { get; set; }
         public List<SchemaXMLRetornoVM> Error { get; set; }
+        public string XML { get; set; }
     }
 }

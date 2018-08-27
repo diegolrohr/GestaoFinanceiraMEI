@@ -4,7 +4,9 @@
             $("#chaveNFeReferenciada").rules("add", { required: true });
             $("#chaveNFeReferenciadaField").show();
 
-            $("div#clienteIdField").hide();
+            if (isCreate()) {
+                $("div#clienteIdField").hide();
+            }
 
             if (tipoVenda == "Devolucao") {
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });

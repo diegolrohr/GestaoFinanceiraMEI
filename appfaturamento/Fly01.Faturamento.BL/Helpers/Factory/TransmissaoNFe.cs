@@ -295,7 +295,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     SomatorioICMS = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
                     SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                     SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
-                    SomatorioDesconto = ObterNFeProdutos().Sum(x => x.Desconto),
+                    SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto??0), 2) : 0,
                     SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
                     ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,

@@ -62,8 +62,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Parâmetros",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns=fnFormReady,"
-
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = { "fnFormReady" }
             };
 
             var config = new FormUI
@@ -86,7 +86,7 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12 m3",
                 Label = "Responsável padrão",
                 Required = false,
-                DataUrl = Url.Action("Responsavel", "AutoComplete"),
+                DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelNome"
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 

@@ -20,6 +20,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
 using System.Dynamic;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.Controllers
 {
@@ -155,6 +156,35 @@ namespace Fly01.Compras.Controllers
 
             return dtOrdemCompraItemCfg;
         }
+
+        protected DataTableUI GetDtProdutosEstoqueNegativoCfg()
+        {
+            DataTableUI dtProdutosEstoqueNegativoCfg = new DataTableUI
+            {
+                Parent = "produtosEstoqueNegativoField",
+                Id = "dtProdutosEstoqueNegativo",
+                UrlGridLoad = Url.Action("VerificaEstoqueNegativo"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true },
+                    new DataTableUIParameter { Id = "tipoCompra", Required = true },
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    FooterCallback = "fnFooterCallbackEstoqueNegativo"
+                },
+                Functions = new List<string>() { "fnFooterCallbackEstoqueNegativo" }
+            };
+
+            dtProdutosEstoqueNegativoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produtoDescricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
+            dtProdutosEstoqueNegativoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantPedido", DisplayName = "Quantidade Pedido", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosEstoqueNegativoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantEstoque", DisplayName = "Estoque Atual", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosEstoqueNegativoCfg.Columns.Add(new DataTableUIColumn() { DataField = "saldoEstoque", DisplayName = "Saldo Estoque", Priority = 4, Type = "float", Searchable = false, Orderable = false });
+
+            return dtProdutosEstoqueNegativoCfg;
+        }
+
 
         public ContentUI FormPedidoJson(bool isEdit = false)
         {
@@ -472,6 +502,7 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtPedidoItensCfg());
+            cfg.Content.Add(GetDtProdutosEstoqueNegativoCfg());
             return cfg;
         }
 
@@ -530,7 +561,6 @@ namespace Fly01.Compras.Controllers
                 Id = "tipoCompra",
                 Class = "col s12 m6 l4",
                 Label = "Tipo Compra",
-                //Value = "Normal",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
             });
@@ -803,6 +833,45 @@ namespace Fly01.Compras.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoCompra)
+        {
+            try
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>();
+                queryString.AddParam("pedidoId", id);
+                queryString.AddParam("tipoCompra", tipoCompra);
+
+                var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);
+
+                return Json(new
+                {
+                    success = true,
+                    recordsTotal = response.Count,
+                    recordsFiltered = response.Count,
+                    produtosEstoqueNegativo = response,
+                    data = response.Select(GetDisplayDataPedidoEstoqueNegativo())
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        protected Func<PedidoEstoqueNegativoVM, object> GetDisplayDataPedidoEstoqueNegativo()
+        {
+            return x => new
+            {
+                produtoId = x.ProdutoId,
+                quantEstoque = Math.Round(x.QuantEstoque, 2, MidpointRounding.AwayFromZero),
+                quantPedido = Math.Round(x.QuantPedido, 2, MidpointRounding.AwayFromZero),
+                saldoEstoque = Math.Round(x.SaldoEstoque, 2, MidpointRounding.AwayFromZero),
+                produtoDescricao = x.ProdutoDescricao
+            };
         }
 
         [HttpGet]

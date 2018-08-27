@@ -81,6 +81,7 @@
     <Compile Include="Controllers\CestController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
     <Compile Include="Controllers\NFeEntradaController.cs" />
+    <Compile Include="Controllers\NFeProdutoEntradaController.cs" />
     <Compile Include="Controllers\NotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\ParametroTributarioController.cs" />
@@ -115,7 +116,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModel\NFeEntradaVM.cs" />
+    <Compile Include="ViewModel\NFeProdutoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />
+    <Compile Include="ViewModel\NotaFiscalItemEntradaVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
     <Compile Include="ViewModel\OrcamentoVM.cs" />
     <Compile Include="ViewModel\OrdemCompraItemVM.cs" />

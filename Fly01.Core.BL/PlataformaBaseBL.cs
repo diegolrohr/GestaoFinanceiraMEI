@@ -192,7 +192,7 @@ namespace Fly01.Core.BL
 
         public virtual void AfterSave(TEntity entity)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

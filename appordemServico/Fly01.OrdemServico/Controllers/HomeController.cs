@@ -85,8 +85,8 @@ namespace Fly01.OrdemServico.Controllers
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "OrdemServico")
+                    Label = "",
+                    OnClick = ""
                 }
             });
             cfg.Content.Add(new CardUI
@@ -98,8 +98,8 @@ namespace Fly01.OrdemServico.Controllers
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "OrdemServico")
+                    Label = "",
+                    OnClick = ""
                 }
             });
             cfg.Content.Add(new CardUI
@@ -111,8 +111,8 @@ namespace Fly01.OrdemServico.Controllers
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
-                    Label = "Ver mais",
-                    OnClick = @Url.Action("List", "OrdemServico")
+                    Label = "",
+                    OnClick = ""
                 }
             });
             cfg.Content.Add(new CardUI

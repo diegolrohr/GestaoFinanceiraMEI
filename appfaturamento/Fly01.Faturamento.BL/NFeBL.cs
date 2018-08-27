@@ -194,6 +194,7 @@ namespace Fly01.Faturamento.BL
             else
             {
                 entity.SefazId = retorno.NotaId;
+                entity.XML = retorno.XML;
             }
         }
 

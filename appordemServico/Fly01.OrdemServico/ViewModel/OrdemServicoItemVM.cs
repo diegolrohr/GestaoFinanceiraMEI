@@ -18,7 +18,7 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("desconto")]
         public double Desconto { get; set; }
 
-        [JsonProperty("total")]
+        [JsonIgnore]
         public double Total => Quantidade > 0 ? Math.Round(((Quantidade * Valor) - Desconto), 2, MidpointRounding.AwayFromZero) : Math.Round((Valor - Desconto), 2, MidpointRounding.AwayFromZero);
 
         [JsonProperty("observacao")]

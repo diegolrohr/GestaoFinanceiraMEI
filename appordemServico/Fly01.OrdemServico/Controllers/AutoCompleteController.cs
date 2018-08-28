@@ -20,7 +20,7 @@ namespace Fly01.OrdemServico.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.CodigoProduto, detail = item.Descricao, saldo = item.SaldoProduto };
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código produto: {item.CodigoProduto}" };
 
             return GetJson(filterObjects);
         }

@@ -45,20 +45,22 @@ namespace Fly01.OrdemServico.Controllers
         {
             var parametro = GetParametro();
 
-            if (parametro == null)            
+            if (parametro == null)
                 return Json(new
                 {
                     diasPrazoEntrega = 7,
-                    responsavelNome = parametro.ResponsavelPadrao.Nome
+                    responsavelNome = "",
+                    responsavelPadraoId = (Guid?)null
                 }, JsonRequestBehavior.AllowGet);
-       
+
             return Json(new
             {
                 diasPrazoEntrega = parametro.DiasPrazoEntrega,
-                responsavelPadraoId = parametro.ResponsavelPadraoId,
-                responsavelPadraoNome = "asdasdsa"
+                responsavelNome = parametro.ResponsavelPadrao?.Nome,
+                responsavelPadraoId = parametro.ResponsavelPadraoId
             }, JsonRequestBehavior.AllowGet);
         }
+
 
         protected override ContentUI FormJson()
         {

@@ -352,7 +352,7 @@ namespace Fly01.OrdemServico.Controllers
             #region step Cadastro
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "EmAberto" });
+            config.Elements.Add(new InputHiddenUI { Id = "status", Value = $"{StatusOrdemServico.EmAberto}" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Disabled = true });
 
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });

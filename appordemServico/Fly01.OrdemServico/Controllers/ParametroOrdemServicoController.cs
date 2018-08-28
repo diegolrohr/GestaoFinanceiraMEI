@@ -1,8 +1,10 @@
 using Fly01.Core;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -16,7 +18,7 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
-        public ParametroOrdemServicoController() : base()
+        public ParametroOrdemServicoController():base()
         {
             ExpandProperties = "responsavelPadrao($select=id,nome,email)";
         }
@@ -49,13 +51,31 @@ namespace Fly01.OrdemServico.Controllers
                 return Json(new
                 {
                     diasPrazoEntrega = 7,
-                    responsavelNome = parametro.ResponsavelPadrao.Nome
+                    responsavelNome = "",
+                    responsavelPadraoId = (Guid?)null
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
             {
-                diasPrazoEntrega = parametro.DiasPrazoEntrega
+                diasPrazoEntrega = parametro.DiasPrazoEntrega,
+                responsavelPadraoNome = ResponsavelPadraoNome(parametro.ResponsavelPadraoId),
+                responsavelPadraoId = parametro.ResponsavelPadraoId
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public string ResponsavelPadraoNome(Guid? idResponsvel)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"id eq {idResponsvel.GetValueOrDefault().ToString()}");
+            queryString.AddParam("$select", "id,nome");
+            queryString.AddParam("$orderby", "nome");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, nome = item.Nome };
+
+            return filterObjects.FirstOrDefault().nome;
         }
 
         protected override ContentUI FormJson()
@@ -97,6 +117,7 @@ namespace Fly01.OrdemServico.Controllers
                 Required = false,
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
+                LabelName= "responsavelPadraoNome"
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             #region Helpers 

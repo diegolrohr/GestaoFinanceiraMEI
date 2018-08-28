@@ -4,26 +4,26 @@
     }
 
     function handleNegativeValuesServico() {
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemServicoItemServico ';
+        var formOrdemServico = 'form#fly01mdlfrmOrdemServicoItemServico ';
 
-        if (parseFloat($(formOrdemVenda + 'input#valor').val()) < 0) {
-            $(formOrdemVenda + 'input#valor').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        if (parseFloat($(formOrdemServico + 'input#valor').val()) < 0) {
+            $(formOrdemServico + 'input#valor').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }
-        if (parseFloat($(formOrdemVenda + 'input#quantidade').val()) < 0) {
-            $(formOrdemVenda + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        if (parseFloat($(formOrdemServico + 'input#quantidade').val()) < 0) {
+            $(formOrdemServico + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }
-        if (parseFloat($(formOrdemVenda + 'input#desconto').val()) < 0) {
-            $(formOrdemVenda + 'input#desconto').val(function () { return (parseInt(noComma(this.value)) * -1) });
+        if (parseFloat($(formOrdemServico + 'input#desconto').val()) < 0) {
+            $(formOrdemServico + 'input#desconto').val(function () { return (parseInt(noComma(this.value)) * -1) });
         }
     }
 
     function errTotalNegativoServico(total) {
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemServicoItemServico ';
+        var formOrdemServico = 'form#fly01mdlfrmOrdemServicoItemServico ';
 
-        fly01.fn.submitErrorHandler($formOrdemVenda.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
+        fly01.fn.submitErrorHandler($formOrdemServico.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
-        $(formOrdemVenda + 'input#total').val(total);
-        $(formOrdemVenda + 'input#desconto').val("");
+        $(formOrdemServico + 'input#total').val(total);
+        $(formOrdemServico + 'input#desconto').val("");
 
         return false;
     }
@@ -33,7 +33,7 @@
 
         var formOrdemServico = 'form#fly01mdlfrmOrdemServicoItemServico ';
 
-        var valor = noComma($(formOrdemVenda + 'input#valor').val()), quantidade = noComma($(formOrdemServico + 'input#quantidade').val()), desconto = noComma($(formOrdemServico + 'input#desconto').val());
+        var valor = noComma($(formOrdemServico + 'input#valor').val()), quantidade = noComma($(formOrdemServico + 'input#quantidade').val()), desconto = noComma($(formOrdemServico + 'input#desconto').val());
 
         if ((!valor) || (!quantidade)) {
             $(formOrdemServico + 'input#total').val("");

@@ -5,7 +5,7 @@
         var id = $("form#fly01mdlfrmOrdemServicoItemProduto input#id").val();
 
         if (id.length == 0) {
-            $('form#fly01mdlfrmOrdemServicoItemProduto input#ordemVendaId').val($('form#fly01frm input#id').val());            
+            $('form#fly01mdlfrmOrdemServicoItemProduto input#ordemServicoId').val($('form#fly01frm input#id').val());            
         }
 
         fly01.fn.updateTextFields();
@@ -27,11 +27,9 @@
 
         $(myForm).off('submit');
         $(myForm).on('submit', function (e) {
-            var that = $(myForm)
-
+            var that = $(myForm)            
             if (!that.valid())
-                return false;
-
+                return false;            
             e.preventDefault();
             fly01.loading.start();
             var formData = that.serializeObject();
@@ -41,7 +39,7 @@
                 dataType: 'json',
                 url: that.attr("action"),
                 data: JSON.stringify(formData),
-                success: function (data) {
+                success: function (data) {                   
                     if (data.success) {
                         fly01.toast(data.message, "success");
                         fly01._.dtOrdemServicoItemProdutos.refresh();

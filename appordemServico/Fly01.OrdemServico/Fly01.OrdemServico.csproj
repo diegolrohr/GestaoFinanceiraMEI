@@ -191,7 +191,6 @@
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnExcluirOrdemServicoItemServico.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnImprimirOrdemServico.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnRemoveFilter.cshtml" />

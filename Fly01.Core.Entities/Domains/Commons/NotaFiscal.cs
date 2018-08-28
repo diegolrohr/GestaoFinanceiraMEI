@@ -110,7 +110,9 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool GeraFinanceiro { get; set; }
 
-        public Guid? ContaFinanceiraParcelaPaiId { get; set; }
+        public Guid? ContaFinanceiraParcelaPaiIdProdutos { get; set; }
+
+        public Guid? ContaFinanceiraParcelaPaiIdServicos { get; set; }
 
         public virtual OrdemVenda OrdemVendaOrigem { get; set; }
         public virtual Pessoa Cliente { get; set; }

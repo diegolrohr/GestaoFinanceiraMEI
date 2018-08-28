@@ -32,9 +32,6 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
-        [JsonProperty("valorTotal")]
-        public bool ValorTotal { get; set; }
-
         #region Navigation
         [JsonProperty("cliente")]
         public virtual PessoaVM Cliente { get; set; }

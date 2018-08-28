@@ -20,7 +20,7 @@ namespace Fly01.OrdemServico.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.CodigoProduto, detail = item.Descricao, saldo = item.SaldoProduto };
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código produto: {item.CodigoProduto}" };
 
             return GetJson(filterObjects);
         }
@@ -71,6 +71,21 @@ namespace Fly01.OrdemServico.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<Core.ViewModels.Presentation.Commons.PessoaVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Nome, detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : item.CPFCNPJ };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Servico(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ServicoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoServico, '{term}')");
+            queryString.AddParam("$select", "id,descricao,codigoServico,valorServico");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ServicoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código Serviço: {item.CodigoServico}", valor = item.ValorServico };
 
             return GetJson(filterObjects);
         }

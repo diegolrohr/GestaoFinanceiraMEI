@@ -43,6 +43,11 @@ namespace Fly01.OrdemServico.Controllers
             return response.Data.FirstOrDefault();
         }
 
+        /// <summary>
+        /// TODO: Checar o motivo da entidade ParametroOrdemServico não retornar a propriedade de navegação do responsavelPadrao
+        /// </summary>
+        /// <returns></returns>
+
         public JsonResult CarregaParametro()
         {
             var parametro = GetParametro();

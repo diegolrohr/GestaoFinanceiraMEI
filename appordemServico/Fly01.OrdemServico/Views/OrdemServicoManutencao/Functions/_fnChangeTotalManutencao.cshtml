@@ -3,37 +3,17 @@
         return e.replace(',', '.');
     }
 
-    function handleNegativeValuesServico() {
-        var formOrdemVenda = 'form#fly01mdlfrmOrdemServicoManutencao ';
+    function handleNegativeValuesManutencao() {
+        debugger;
+        var formOrdemServico = 'form#fly01mdlfrmOrdemServicoManutencao ';
         
-        if (parseFloat($(formOrdemVenda + 'input#quantidade').val()) < 0) {
-            $(formOrdemVenda + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        if (parseFloat($(formOrdemServico + 'input#quantidade').val()) < 0) {
+            $(formOrdemServico + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }        
     }
 
 
-    function fnChangeTotalServico() {
-        //handleNegativeValuesServico();
-
-        //var formOrdemServico = 'form#fly01mdlfrmOrdemServicoItemServico ';
-
-        //var valor = noComma(quantidade = noComma($(formOrdemServico + 'input#quantidade').val()));
-
-        //if ((!quantidade)) {
-        //    $(formOrdemServico + 'input#total').val("");
-        //    return;
-        //}
-
-        //var total = (parseFloat(quantidade) * parseFloat(valor));
-        //var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
-
-        //if (totalDescontado >= 0) {
-        //    totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
-        //    $(formOrdemServico + 'input#total').val(totalDescontado);
-        //}
-        //else {
-        //    total = total.formatMoneyMask(2, 3, '', ',');
-        //    errTotalNegativoServico(total);
-        //}
+    function fnChangeTotalManutencao() {
+        handleNegativeValuesManutencao();
     }
 </script>

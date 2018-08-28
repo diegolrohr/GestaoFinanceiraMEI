@@ -1,7 +1,6 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
-
-    var justSavePedidoToGoStepProdutos = false;
+    
     var onCancelMustDeleteOrdemServico = false;
 
     function isCreate() {
@@ -68,52 +67,17 @@
         });        
     }
 
-    function getInformacoesComplementares() {
-        fly01.loading.start();
-        $.ajax({
-            url: '@Url.Action("GetInformacoesComplementares", "OrdemVenda")',
-            type: "GET",
-            data: {}
-        })
-        .done(function (data) {
-            if (data.success) {
-                $('#mensagemPadraoNota').val(data.infcomp);
-                fly01.fn.updateTextFields("fly01frm");
-                fly01.loading.stop();
-            }
-            else {
-                fly01.fn.submitErrorHandler(null, data.message);
-                fly01.loading.stop();
-            }
-        })
-        .fail(function (jqxhr, textStatus, error) {
-            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
-        });
-    }
-
     function fnBindStepsWizard() {
-        function savePedido() {
-            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
-                justSavePedidoToGoStepProdutos = true;
+        function saveOrdemServico() {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {                
                 return $("form#fly01frm").submit();
             }
         }
         $('li#stepProdutos div.step-title').click(function () {
-            savePedido();
+            saveOrdemServico();
         });
         $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            savePedido();
-        });
-
-        $('li#stepCadastro div.step-title').click(function () {
-            disableStepFinalidade();
-            fnChangeFrete();
-        });
-        $('#stepFinalidade > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            disableStepFinalidade();
-            fnChangeFrete();
+            saveOrdemServico();
         });
     }
 
@@ -126,7 +90,7 @@
             fly01.loading.start();
 
             $('input#numero').removeAttr('disabled');
-            $('input#chaveNFeReferenciada').removeAttr('disabled');
+            
 
             var jsonData = $(this).serializeObject();
             if ($('input#finalizarPedido:checked').val() == "true") {
@@ -139,10 +103,10 @@
 
             var url;
             if (isCreate()) {
-                url = '@Url.Action("Create", "Pedido")';
+                url = '@Url.Action("Create", "OrdemServico")';
             }
             else {
-                url = '@Url.Action("Edit", "Pedido")';
+                url = '@Url.Action("Edit", "OrdemServico")';
             }
 
             $.ajax({
@@ -157,31 +121,22 @@
 
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
-                        //fica na página ou volta pra lista
-                        if (justSavePedidoToGoStepProdutos) {
-                            justSavePedidoToGoStepProdutos = false;
+                        //fica na página ou volta pra lista                        
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
-                            $("form#fly01frm input#numeroOS").val(data.numeroOS);
-
-                            fly01._.dtOrdemVendaProdutos.refresh();
-                            fly01._.dtOrdemVendaServicos.refresh();
+                            $("form#fly01frm input#numero").val(data.numero);
+                            fly01._.dtOrdemServicoManutencao.refresh();
+                            fly01._.dtOrdemServicoItemProdutos.refresh();
+                            fly01._.dtOrdemServicoItemServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
 
-                            getInformacoesComplementares();
-
                             return true;
-                        }
-                        else {
-                            fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List","OrdemServico")");
-                        }
+
                     } else {
-                        if (justSavePedidoToGoStepProdutos) {
-                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
-                        }
+                       
+                        $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         fly01.loading.stop();
                         $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
@@ -202,7 +157,7 @@
 
     function EstoqueNegativoETotal() {
         fly01._.dtProdutosEstoqueNegativo.refresh();
-        calculaTotalPedido();
+        calculaTotalOrdemServico();
     }
 
     function fnFormReadyOrdemServico () {
@@ -211,7 +166,7 @@
             $('#btnNormal').click();
             var today = new Date();
             fly01._.dataEmissao.set(today);
-            fly01._.dataVencimento.set(today);
+            
             fly01.fn.updateTextFields();
             fnBindStepsWizard();
         }
@@ -220,16 +175,15 @@
             if ($('input#tipoVenda').val() == "Normal") {
                 $('#btnNormal').click();
             }
-
-            disableStepFinalidade();
-            if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
+            
+            if (!onCancelMustDeleteOrdemServico) { $('li#stepCadastro div.step-title').click(); }
+            fly01._.dtOrdemServicoManutencao.refresh();
             fly01._.dtOrdemVendaProdutos.refresh();
             fly01._.dtOrdemVendaServicos.refresh();
         }
 
         fnBindOverrideSubmit();
-        fnValidaCamposGeraFinanceiro();
-        fnChangeFrete();
+
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
@@ -249,11 +203,5 @@
             }
         });
     }
-
-    $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
-        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
-            fnDisableInput();
-    });
-
 
 </script>

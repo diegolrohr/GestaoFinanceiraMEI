@@ -62,12 +62,12 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12 m6",
                 Label = "Produto",
                 Required = true,
-                DataUrl = Url.Action("ProdutoOrdem", "AutoComplete"),
+                DataUrl = Url.Action("Produto", "AutoComplete"),
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+            }, ""));
 
             config.Elements.Add(new InputFloatUI
             {

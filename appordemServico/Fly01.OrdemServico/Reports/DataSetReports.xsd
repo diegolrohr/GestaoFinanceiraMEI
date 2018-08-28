@@ -33,6 +33,9 @@
               <xs:element name="ClienteCPF" msprop:Generator_ColumnVarNameInTable="columnClienteCPF" msprop:Generator_ColumnPropNameInRow="ClienteCPF" msprop:Generator_ColumnPropNameInTable="ClienteCPFColumn" msprop:Generator_UserColumnName="ClienteCPF" type="xs:string" minOccurs="0" />
               <xs:element name="ClienteEndereco" msprop:Generator_ColumnVarNameInTable="columnClienteEndereco" msprop:Generator_ColumnPropNameInRow="ClienteEndereco" msprop:Generator_ColumnPropNameInTable="ClienteEnderecoColumn" msprop:Generator_UserColumnName="ClienteEndereco" type="xs:string" minOccurs="0" />
               <xs:element name="ClienteEmail" msprop:Generator_ColumnVarNameInTable="columnClienteEmail" msprop:Generator_ColumnPropNameInRow="ClienteEmail" msprop:Generator_ColumnPropNameInTable="ClienteEmailColumn" msprop:Generator_UserColumnName="ClienteEmail" type="xs:string" minOccurs="0" />
+              <xs:element name="ItemObservacao" msprop:Generator_ColumnVarNameInTable="columnItemObservacao" msprop:Generator_ColumnPropNameInRow="ItemObservacao" msprop:Generator_ColumnPropNameInTable="ItemObservacaoColumn" msprop:Generator_UserColumnName="ItemObservacao" type="xs:string" minOccurs="0" />
+              <xs:element name="ClienteCelular" msprop:Generator_ColumnVarNameInTable="columnClienteCelular" msprop:Generator_ColumnPropNameInRow="ClienteCelular" msprop:Generator_ColumnPropNameInTable="ClienteCelularColumn" msprop:Generator_UserColumnName="ClienteCelular" type="xs:string" minOccurs="0" />
+              <xs:element name="ClienteTelefone" msprop:Generator_ColumnVarNameInTable="columnClienteTelefone" msprop:Generator_ColumnPropNameInRow="ClienteTelefone" msprop:Generator_ColumnPropNameInTable="ClienteTelefoneColumn" msprop:Generator_UserColumnName="ClienteTelefone" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

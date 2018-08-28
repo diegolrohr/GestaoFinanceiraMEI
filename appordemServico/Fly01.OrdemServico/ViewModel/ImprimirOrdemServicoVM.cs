@@ -23,5 +23,7 @@ namespace Fly01.OrdemServico.ViewModel
         public string ClienteCPF { get; internal set; }
         public string ClienteEndereco { get; internal set; }
         public string ClientEmail { get; internal set; }
+        public string ClienteTelefone { get; internal set; }
+        public string ClienteCelular { get; internal set; }
     }
 }

@@ -602,107 +602,57 @@ namespace Fly01.OrdemServico.Controllers
             var total = produtos.Sum(x => x.Total) + servicos.Sum(x => x.Total);
 
             var reportItems = new List<ImprimirOrdemServicoVM>();
-
             foreach (OrdemServicoItemProdutoVM itemManutencao in manut)
-
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente?.Nome,
-                    ClienteCPF = os.Cliente?.CPFCNPJ,
-                    ClienteEndereco = GetEndereco(os.Cliente),
-                    ClientEmail = os.Cliente?.Email,
-                    DataEmissao = os.DataEmissao.ToString(),
-                    DataEntrega = os.DataEntrega.ToString(),
-                    Status = os.Status.ToString(),
-                    Numero = os.Numero.ToString(),
-                    Observacao = os.Observacao,
-                    ItemTipo = "Objetos de manutenção",
-                    ItemId = itemManutencao.Produto != null ? itemManutencao.Produto.Id : Guid.Empty,
-                    ItemNome = itemManutencao.Produto != null ? itemManutencao.Produto.Descricao : string.Empty,
-                    ItemQtd = itemManutencao.Quantidade,
-                    ItemValor = 0,
-                    ItemDesconto = 0,
-                    ItemTotal = 0,
-                    ItemObservacao = itemManutencao.Observacao,
-                    Total = total,
-                });
+                reportItems.Add(PreencherItemBase(os, total, "Objetos de manutenção", itemManutencao, itemManutencao.ProdutoId, itemManutencao.Produto?.Descricao));
 
             foreach (OrdemServicoItemServicoVM OrdemServico in servicos)
-
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente?.Nome,
-                    ClienteCPF = os.Cliente?.CPFCNPJ,
-                    ClienteEndereco = GetEndereco(os.Cliente),
-                    ClientEmail = os.Cliente?.Email,
-                    DataEmissao = os.DataEmissao.ToString(),
-                    DataEntrega = os.DataEntrega.ToString(),
-                    Status = os.Status.ToString(),
-                    Numero = os.Numero.ToString(),
-                    Observacao = os.Observacao,
-                    ItemTipo = "Serviços",
-                    ItemId = OrdemServico.Servico != null ? OrdemServico.Servico.Id : Guid.Empty,
-                    ItemNome = OrdemServico.Servico != null ? OrdemServico.Servico.Descricao : string.Empty,
-                    ItemQtd = OrdemServico.Quantidade,
-                    ItemValor = OrdemServico.Valor,
-                    ItemDesconto = OrdemServico.Desconto,
-                    ItemTotal = OrdemServico.Total,
-                    ItemObservacao = OrdemServico.Observacao,
-                    Total = total,
-                });
+                reportItems.Add(PreencherItemBase(os, total, "Serviços", OrdemServico, OrdemServico.ServicoId, OrdemServico.Servico?.Descricao));
 
             foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
-
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente?.Nome,
-                    ClienteCPF = os.Cliente?.CPFCNPJ,
-                    ClienteEndereco = GetEndereco(os.Cliente),
-                    ClientEmail = os.Cliente?.Email,
-                    DataEmissao = os.DataEmissao.ToString(),
-                    DataEntrega = os.DataEntrega.ToString(),
-                    Status = os.Status.ToString(),
-                    Numero = os.Numero.ToString(),
-                    Observacao = os.Observacao,
-                    ItemTipo = "Produtos",
-                    ItemId = OrdemProduto.Produto != null ? OrdemProduto.Produto.Id : Guid.Empty,
-                    ItemNome = OrdemProduto.Produto != null ? OrdemProduto.Produto.Descricao : string.Empty,
-                    ItemQtd = OrdemProduto.Quantidade,
-                    ItemValor = OrdemProduto.Valor,
-                    ItemDesconto = OrdemProduto.Desconto,
-                    ItemTotal = OrdemProduto.Total,
-                    ItemObservacao = OrdemProduto.Observacao,
-                    Total = total,
-                });
+                reportItems.Add(PreencherItemBase(os, total, "Produtos", OrdemProduto, OrdemProduto.ProdutoId, OrdemProduto.Produto?.Descricao));
 
             if (!produtos.Any() && !servicos.Any())
-            {
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente?.Nome,
-                    ClienteCPF = os.Cliente?.CPFCNPJ,
-                    ClienteEndereco = GetEndereco(os.Cliente),
-                    DataEmissao = os.DataEmissao.ToString(),
-                    DataEntrega = os.DataEntrega.ToString(),
-                    Status = os.Status.ToString(),
-                    Numero = os.Numero.ToString(),
-                    Observacao = os.Observacao,
-                });
-            }
+                reportItems.Add(GetEntidadeImpressaoBase(os, total));
 
             return reportItems;
         }
 
-        private string GetEndereco(PessoaVM cliente)
+        private static ImprimirOrdemServicoVM GetEntidadeImpressaoBase(OrdemServicoVM os, double total) => new ImprimirOrdemServicoVM
         {
-            if (cliente == null) return "";
+            Id = os.Id.ToString(),
+            ClienteNome = os.Cliente?.Nome,
+            ClienteCPF = os.Cliente?.CPFCNPJ,
+            ClienteCelular = os.Cliente?.Celular,
+            ClienteTelefone = os.Cliente?.Telefone,
+            ClienteEndereco = GetEndereco(os.Cliente),
+            ClientEmail = os.Cliente?.Email,
+            DataEmissao = os.DataEmissao.ToString(),
+            DataEntrega = os.DataEntrega.ToString(),
+            Status = os.Status.ToString(),
+            Numero = os.Numero.ToString(),
+            Observacao = os.Observacao,
+            Total = total
+        };
 
-            return $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}";
+        private static ImprimirOrdemServicoVM PreencherItemBase(OrdemServicoVM os, double total, string itemTipo, OrdemServicoItemVM OrdemProduto, Guid itemId, string itemNome)
+        {
+            var ent = GetEntidadeImpressaoBase(os, total);
+            ent.ItemTipo = itemTipo;
+            ent.ItemId = itemId;
+            ent.ItemNome = itemNome;
+            ent.ItemQtd = OrdemProduto.Quantidade;
+            ent.ItemValor = OrdemProduto.Valor;
+            ent.ItemDesconto = OrdemProduto.Desconto;
+            ent.ItemTotal = OrdemProduto.Total;
+            ent.ItemObservacao = OrdemProduto.Observacao;
+
+            return ent;
         }
+
+        private static string GetEndereco(PessoaVM cliente) =>
+                cliente == null || string.IsNullOrEmpty(cliente.Endereco) ?
+                "" :
+                $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}. CEP: {cliente.CEP}";
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public virtual JsonResult ImprimirOrdemServico(string id)

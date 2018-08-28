@@ -315,6 +315,12 @@ namespace Fly01.OrdemServico.Reports {
             
             private global::System.Data.DataColumn columnClienteEmail;
             
+            private global::System.Data.DataColumn columnItemObservacao;
+            
+            private global::System.Data.DataColumn columnClienteCelular;
+            
+            private global::System.Data.DataColumn columnClienteTelefone;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public OrdemServicoDataTable() {
@@ -494,6 +500,30 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ItemObservacaoColumn {
+                get {
+                    return this.columnItemObservacao;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ClienteCelularColumn {
+                get {
+                    return this.columnClienteCelular;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ClienteTelefoneColumn {
+                get {
+                    return this.columnClienteTelefone;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -547,7 +577,10 @@ namespace Fly01.OrdemServico.Reports {
                         string ItemTipo, 
                         string ClienteCPF, 
                         string ClienteEndereco, 
-                        string ClienteEmail) {
+                        string ClienteEmail, 
+                        string ItemObservacao, 
+                        string ClienteCelular, 
+                        string ClienteTelefone) {
                 OrdemServicoRow rowOrdemServicoRow = ((OrdemServicoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -567,7 +600,10 @@ namespace Fly01.OrdemServico.Reports {
                         ItemTipo,
                         ClienteCPF,
                         ClienteEndereco,
-                        ClienteEmail};
+                        ClienteEmail,
+                        ItemObservacao,
+                        ClienteCelular,
+                        ClienteTelefone};
                 rowOrdemServicoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrdemServicoRow);
                 return rowOrdemServicoRow;
@@ -608,6 +644,9 @@ namespace Fly01.OrdemServico.Reports {
                 this.columnClienteCPF = base.Columns["ClienteCPF"];
                 this.columnClienteEndereco = base.Columns["ClienteEndereco"];
                 this.columnClienteEmail = base.Columns["ClienteEmail"];
+                this.columnItemObservacao = base.Columns["ItemObservacao"];
+                this.columnClienteCelular = base.Columns["ClienteCelular"];
+                this.columnClienteTelefone = base.Columns["ClienteTelefone"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -649,6 +688,12 @@ namespace Fly01.OrdemServico.Reports {
                 base.Columns.Add(this.columnClienteEndereco);
                 this.columnClienteEmail = new global::System.Data.DataColumn("ClienteEmail", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClienteEmail);
+                this.columnItemObservacao = new global::System.Data.DataColumn("ItemObservacao", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemObservacao);
+                this.columnClienteCelular = new global::System.Data.DataColumn("ClienteCelular", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClienteCelular);
+                this.columnClienteTelefone = new global::System.Data.DataColumn("ClienteTelefone", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClienteTelefone);
                 this.columnNumero.Caption = "NumeroNota";
                 this.columnDataEmissao.Caption = "Data Emissão";
                 this.columnDataEntrega.Caption = "Data Entrega";
@@ -1086,6 +1131,54 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ItemObservacao {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ItemObservacaoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ItemObservacao\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ItemObservacaoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ClienteCelular {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ClienteCelularColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClienteCelular\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ClienteCelularColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ClienteTelefone {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ClienteTelefoneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClienteTelefone\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ClienteTelefoneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableOrdemServico.IdColumn);
             }
@@ -1298,6 +1391,42 @@ namespace Fly01.OrdemServico.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetClienteEmailNull() {
                 this[this.tableOrdemServico.ClienteEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsItemObservacaoNull() {
+                return this.IsNull(this.tableOrdemServico.ItemObservacaoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetItemObservacaoNull() {
+                this[this.tableOrdemServico.ItemObservacaoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsClienteCelularNull() {
+                return this.IsNull(this.tableOrdemServico.ClienteCelularColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetClienteCelularNull() {
+                this[this.tableOrdemServico.ClienteCelularColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsClienteTelefoneNull() {
+                return this.IsNull(this.tableOrdemServico.ClienteTelefoneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetClienteTelefoneNull() {
+                this[this.tableOrdemServico.ClienteTelefoneColumn] = global::System.Convert.DBNull;
             }
         }
         

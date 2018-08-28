@@ -3,6 +3,7 @@ using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -16,7 +17,7 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
-        public ParametroOrdemServicoController() : base()
+        public ParametroOrdemServicoController():base()
         {
             ExpandProperties = "responsavelPadrao($select=id,nome,email)";
         }
@@ -56,10 +57,27 @@ namespace Fly01.OrdemServico.Controllers
             return Json(new
             {
                 diasPrazoEntrega = parametro.DiasPrazoEntrega,
-                responsavelNome = parametro.ResponsavelPadrao?.Nome,
+                responsavelNome = CarregaNomeResponsavel(parametro.ResponsavelPadraoId),
                 responsavelPadraoId = parametro.ResponsavelPadraoId
             }, JsonRequestBehavior.AllowGet);
         }
+
+
+        public string CarregaNomeResponsavel(Guid? idResponsavel)
+        {
+            Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "id", idResponsavel.GetValueOrDefault().ToString() }
+                };
+
+            var response = RestHelper.ExecuteGetRequest<PessoaVM>("pessoa", queryString);
+
+            if (response != null)
+                return response.Nome;
+
+            return string.Empty;
+        }
+
 
 
         protected override ContentUI FormJson()

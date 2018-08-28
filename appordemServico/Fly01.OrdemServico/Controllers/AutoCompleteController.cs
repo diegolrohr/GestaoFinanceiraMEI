@@ -2,9 +2,7 @@
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.Core.Rest;
-using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,6 +10,20 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
+        public JsonResult ItemManutencao(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"objetoDeManutencao eq true");
+            queryString.AddParam("$select", "id,descricao,codigoProduto,saldoProduto");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.CodigoProduto, detail = item.Descricao, saldo = item.SaldoProduto };
+
+            return GetJson(filterObjects);
+        }
         //public override JsonResult Categoria(string term, string filterTipoCarteira)
         //{
         //    filterTipoCarteira = $"and tipoCarteira eq {AppDefaults.APIEnumResourceName}TipoCarteira'Despesa'";
@@ -50,14 +62,14 @@ namespace Fly01.OrdemServico.Controllers
 
         public JsonResult Vendedor(string term)
         {
-            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var resourceName = AppDefaults.GetResourceName(typeof(Core.ViewModels.Presentation.Commons.PessoaVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"(contains(nome, '{term}') or contains(cpfcnpj, '{term}')) and vendedor eq true");
             queryString.AddParam("$select", "id,nome,cpfcnpj");
             queryString.AddParam("$orderby", "nome");
 
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<Core.ViewModels.Presentation.Commons.PessoaVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Nome, detail = item.CPFCNPJ == string.Empty ? "(Sem documento)" : item.CPFCNPJ };
 
             return GetJson(filterObjects);

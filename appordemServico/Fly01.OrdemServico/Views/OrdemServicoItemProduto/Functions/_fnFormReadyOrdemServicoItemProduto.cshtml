@@ -2,7 +2,7 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnFormReadyOrdemServicoItemProduto() {
-        var id = $("form#fly01mdlfrmOrdemVendaProduto input#id").val();
+        var id = $("form#fly01mdlfrmOrdemServicoItemProduto input#id").val();
 
         if (id.length == 0) {
             $('form#fly01mdlfrmOrdemServicoItemProduto input#ordemVendaId').val($('form#fly01frm input#id').val());            

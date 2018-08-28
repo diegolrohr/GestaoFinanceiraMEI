@@ -62,6 +62,33 @@ namespace Fly01.OrdemServico.Controllers
             return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemServicoVM>>("OrdemServicoItemServico", queryString).Data;
         }
 
+        protected DataTableUI GetDtOrdemServicoManutencaoCfg()
+        {
+            DataTableUI dtOrdemServicoManutencaoCfg = new DataTableUI
+            {
+                Parent = "ordemServicoManutencaoField",
+                Id = "dtOrdemServicoManutencao",
+                UrlGridLoad = Url.Action("GetOrdemServicoManutencao", "OrdemServicoManutencao"),
+                UrlFunctions = Url.Action("Functions", "OrdemServicoManutencao") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                }
+            };
+
+            dtOrdemServicoManutencaoCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
+            }));
+
+            dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
+            dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+
+            return dtOrdemServicoManutencaoCfg;
+        }
+
         protected DataTableUI GetDtOrdemServicoItemProdutosCfg()
         {
             DataTableUI dtOrdemServicoItemProdutosCfg = new DataTableUI
@@ -230,7 +257,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Actions.AddRange(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
-                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir" },
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
@@ -325,7 +352,7 @@ namespace Fly01.OrdemServico.Controllers
             #region step Cadastro
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
+            config.Elements.Add(new InputHiddenUI { Id = "status", Value = "EmAberto" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Disabled = true });
 
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });

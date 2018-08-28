@@ -1,6 +1,25 @@
 ﻿<script>
     function fnChangeManutencao(event, data) {
+        debugger;
         $('form#fly01mdlfrmOrdemServicoManutencao input#produtoId').val(data.item.id);        
         fnChangeTotalManutencao();
+    }
+
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function handleNegativeValuesManutencao() {
+        debugger;
+        var formOrdemServico = 'form#fly01mdlfrmOrdemServicoManutencao ';
+
+        if (parseFloat($(formOrdemServico + 'input#quantidade').val()) < 0) {
+            $(formOrdemServico + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        }
+    }
+
+
+    function fnChangeTotalManutencao() {
+        handleNegativeValuesManutencao();
     }
 </script>

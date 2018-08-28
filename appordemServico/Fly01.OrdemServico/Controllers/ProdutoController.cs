@@ -191,6 +191,8 @@ namespace Fly01.Estoque.Controllers
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
 
+            config.Elements.Add(new InputHiddenUI { Id = "tipoProduto", Value = "1" });
+
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",

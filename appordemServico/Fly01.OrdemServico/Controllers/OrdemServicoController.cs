@@ -533,7 +533,7 @@ namespace Fly01.OrdemServico.Controllers
         {
             try
             {
-                var resource = string.Format("CalculaTotalOrdemServico?&ordemServicoId={0}&onList={1}", id, false);
+                var resource = string.Format("CalculaTotalOrdemServico?ordemServicoId={0}&onList={1}", id, false);
                 var response = RestHelper.ExecuteGetRequest<TotalOrdemServicoVM>(resource, queryString: null);
                 return Json(
                     new { success = true, total = response },

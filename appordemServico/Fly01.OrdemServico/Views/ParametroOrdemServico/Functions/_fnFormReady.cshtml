@@ -5,7 +5,12 @@
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
             success: function (data) {
+
+                debugger;
+
                 $("#diasPrazoEntrega").val(data.diasPrazoEntrega);
+                $("#responsavelPadraoId").val(data.responsavelPadraoId);
+                $("#responsavelPadraoNome").val("dasdasd");
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

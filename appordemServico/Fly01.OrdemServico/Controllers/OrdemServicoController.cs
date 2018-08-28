@@ -76,11 +76,11 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            dtOrdemServicoManutencaoCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            dtOrdemServicoManutencaoCfg.Actions.AddRange(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
-            }));
+            });
 
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -103,11 +103,11 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            dtOrdemServicoItemProdutosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            dtOrdemServicoItemProdutosCfg.Actions.AddRange(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
-            }));
+            });
 
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -125,18 +125,18 @@ namespace Fly01.OrdemServico.Controllers
                 Parent = "ordemServicoItemServicosField",
                 Id = "dtOrdemServicoItemServicos",
                 UrlGridLoad = Url.Action("GetOrdemServicoItemServicos", "OrdemServicoItemServico"),
-                UrlFunctions = Url.Action("Functions", "OrdemVendaServico") + "?fns=",
+                UrlFunctions = Url.Action("Functions", "OrdemServicoItemServico") + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 }
             };
 
-            dtOrdemServicoItemServicosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            dtOrdemServicoItemServicosCfg.Actions.AddRange(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
-            }));
+            });
 
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -428,7 +428,9 @@ namespace Fly01.OrdemServico.Controllers
             #endregion
 
             cfg.Content.Add(config);
-
+            cfg.Content.Add(GetDtOrdemServicoManutencaoCfg());
+            cfg.Content.Add(GetDtOrdemServicoItemProdutosCfg());
+            cfg.Content.Add(GetDtOrdemServicoItemServicosCfg());
             return cfg;
 
         }

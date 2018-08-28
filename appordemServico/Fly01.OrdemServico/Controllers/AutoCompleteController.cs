@@ -74,5 +74,20 @@ namespace Fly01.OrdemServico.Controllers
 
             return GetJson(filterObjects);
         }
+
+        public JsonResult Servico(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ServicoVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoServico, '{term}')");
+            queryString.AddParam("$select", "id,descricao,codigoServico,valorServico");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ServicoVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código Serviço: {item.CodigoServico}", valor = item.ValorServico };
+
+            return GetJson(filterObjects);
+        }
     }
 }

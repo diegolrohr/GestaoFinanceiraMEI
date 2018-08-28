@@ -9,25 +9,27 @@
         if (id.length == 0)
         {
             retornaDataEntregaParametro();
+            retornaResponsavelPadraoParametro();
             return true;
         }
 
         return false;
     }
 
-    function retornaResponsavelPadraoParametro() {
+    function retornaResponsavelPadraoParametro() {        
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
             success: function (data) {
-                if (data) {                
-                    fly01._.responsavelPadraoId.set(data.responsavelPadraoId);
-                }
+                $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
+                $("#responsavelPadraoId").val(data.responsavelPadraoId);
+                fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {
                 fly01.toast(data.message, 'error');
             }
-        });   
+        });
+
     }
 
     function retornaDataEntregaParametro() {
@@ -50,6 +52,7 @@
 
 
     function calculaTotalOrdemServico() {
+        debugger;
         var idOrdemServico = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
 

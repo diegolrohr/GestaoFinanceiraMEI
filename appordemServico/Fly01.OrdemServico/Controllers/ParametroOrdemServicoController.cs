@@ -16,6 +16,10 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
+        public ParametroOrdemServicoController() : base()
+        {
+            ExpandProperties = "responsavelPadrao($select=id,nome,email)";
+        }
 
         public override ContentResult List()
             => Form();
@@ -25,7 +29,11 @@ namespace Fly01.OrdemServico.Controllers
 
         public ParametroOrdemServicoVM GetParametro()
         {
-            var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroOrdemServicoVM>>(ResourceName);
+            var queryParams = new Dictionary<string, string>
+            {
+                {  "$expand", ExpandProperties }
+            };
+            var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroOrdemServicoVM>>(ResourceName, queryParams);
 
             if (response == null || response.Data == null)
                 return null;
@@ -40,7 +48,8 @@ namespace Fly01.OrdemServico.Controllers
             if (parametro == null)
                 return Json(new
                 {
-                    diasPrazoEntrega = 7
+                    diasPrazoEntrega = 7,
+                    responsavelNome = parametro.ResponsavelPadrao.Nome
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -87,7 +96,7 @@ namespace Fly01.OrdemServico.Controllers
                 Label = "Responsável padrão",
                 Required = false,
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
-                LabelId = "responsavelNome"
+                LabelId = "responsavelPadraoNome",
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             #region Helpers 

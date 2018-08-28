@@ -6,6 +6,7 @@
             type: "GET",
             success: function (data) {
                 $("#diasPrazoEntrega").val(data.diasPrazoEntrega);
+                $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

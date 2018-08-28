@@ -661,9 +661,9 @@ namespace Fly01.OrdemServico.Controllers
         {
             try
             {
-                var ordemVenda = Get(Guid.Parse(id));
-                var fileName = "OrdemServico" + ordemVenda.Numero.ToString() + ".pdf";
-                var fileBase64 = Convert.ToBase64String(GetPDFFile(ordemVenda));
+                var ordemServico = Get(Guid.Parse(id));
+                var fileName = "OrdemServico" + ordemServico.Numero.ToString() + ".pdf";
+                var fileBase64 = Convert.ToBase64String(GetPDFFile(ordemServico));
 
                 Session.Add(fileName, fileBase64);
 
@@ -677,10 +677,10 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        private byte[] GetPDFFile(OrdemServicoVM ordemVenda)
+        private byte[] GetPDFFile(OrdemServicoVM ordemServico)
         {
             var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
-            return reportViewer.Print(GetDadosOrcamentoPedido(ordemVenda.Id.ToString(), ordemVenda), SessionManager.Current.UserData.PlatformUrl);
+            return reportViewer.Print(GetDadosOrcamentoPedido(ordemServico.Id.ToString(), ordemServico), SessionManager.Current.UserData.PlatformUrl);
         }
 
         private JsonResult MudarStatus(string id, StatusOrdemServico status)

@@ -26,7 +26,7 @@ namespace Fly01.OrdemServico.Controllers
     {
         public OrdemServicoController()
         {
-            ExpandProperties = "cliente($select=id,nome,email)";
+            ExpandProperties = "cliente($select=id,nome,email;$expand=cidade($select=nome),estado($select=sigla))";
         }
 
         private JsonResult GetJson(object data)
@@ -608,42 +608,23 @@ namespace Fly01.OrdemServico.Controllers
                 reportItems.Add(new ImprimirOrdemServicoVM
                 {
                     Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    ClienteNome = os.Cliente?.Nome,
+                    ClienteCPF = os.Cliente?.CPFCNPJ,
+                    ClienteEndereco = GetEndereco(os.Cliente),
+                    ClientEmail = os.Cliente?.Email,
                     DataEmissao = os.DataEmissao.ToString(),
                     DataEntrega = os.DataEntrega.ToString(),
                     Status = os.Status.ToString(),
                     Numero = os.Numero.ToString(),
                     Observacao = os.Observacao,
-                    ItemTipo = "Manut",
+                    ItemTipo = "Objetos de manutenção",
                     ItemId = itemManutencao.Produto != null ? itemManutencao.Produto.Id : Guid.Empty,
                     ItemNome = itemManutencao.Produto != null ? itemManutencao.Produto.Descricao : string.Empty,
                     ItemQtd = itemManutencao.Quantidade,
-                    ItemValor = itemManutencao.Valor,
-                    ItemDesconto = itemManutencao.Desconto,
-                    ItemTotal = itemManutencao.Total,
+                    ItemValor = 0,
+                    ItemDesconto = 0,
+                    ItemTotal = 0,
                     ItemObservacao = itemManutencao.Observacao,
-                    Total = total,
-                });
-
-            foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
-
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
-                    DataEmissao = os.DataEmissao.ToString(),
-                    DataEntrega = os.DataEntrega.ToString(),
-                    Status = os.Status.ToString(),
-                    Numero = os.Numero.ToString(),
-                    Observacao = os.Observacao,
-                    ItemTipo = "Produto",
-                    ItemId = OrdemProduto.Produto != null ? OrdemProduto.Produto.Id : Guid.Empty,
-                    ItemNome = OrdemProduto.Produto != null ? OrdemProduto.Produto.Descricao : string.Empty,
-                    ItemQtd = OrdemProduto.Quantidade,
-                    ItemValor = OrdemProduto.Valor,
-                    ItemDesconto = OrdemProduto.Desconto,
-                    ItemTotal = OrdemProduto.Total,
-                    ItemObservacao = OrdemProduto.Observacao,
                     Total = total,
                 });
 
@@ -652,13 +633,16 @@ namespace Fly01.OrdemServico.Controllers
                 reportItems.Add(new ImprimirOrdemServicoVM
                 {
                     Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    ClienteNome = os.Cliente?.Nome,
+                    ClienteCPF = os.Cliente?.CPFCNPJ,
+                    ClienteEndereco = GetEndereco(os.Cliente),
+                    ClientEmail = os.Cliente?.Email,
                     DataEmissao = os.DataEmissao.ToString(),
                     DataEntrega = os.DataEntrega.ToString(),
                     Status = os.Status.ToString(),
                     Numero = os.Numero.ToString(),
                     Observacao = os.Observacao,
-                    ItemTipo = "Servico",
+                    ItemTipo = "Serviços",
                     ItemId = OrdemServico.Servico != null ? OrdemServico.Servico.Id : Guid.Empty,
                     ItemNome = OrdemServico.Servico != null ? OrdemServico.Servico.Descricao : string.Empty,
                     ItemQtd = OrdemServico.Quantidade,
@@ -669,12 +653,39 @@ namespace Fly01.OrdemServico.Controllers
                     Total = total,
                 });
 
+            foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
+
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    Id = os.Id.ToString(),
+                    ClienteNome = os.Cliente?.Nome,
+                    ClienteCPF = os.Cliente?.CPFCNPJ,
+                    ClienteEndereco = GetEndereco(os.Cliente),
+                    ClientEmail = os.Cliente?.Email,
+                    DataEmissao = os.DataEmissao.ToString(),
+                    DataEntrega = os.DataEntrega.ToString(),
+                    Status = os.Status.ToString(),
+                    Numero = os.Numero.ToString(),
+                    Observacao = os.Observacao,
+                    ItemTipo = "Produtos",
+                    ItemId = OrdemProduto.Produto != null ? OrdemProduto.Produto.Id : Guid.Empty,
+                    ItemNome = OrdemProduto.Produto != null ? OrdemProduto.Produto.Descricao : string.Empty,
+                    ItemQtd = OrdemProduto.Quantidade,
+                    ItemValor = OrdemProduto.Valor,
+                    ItemDesconto = OrdemProduto.Desconto,
+                    ItemTotal = OrdemProduto.Total,
+                    ItemObservacao = OrdemProduto.Observacao,
+                    Total = total,
+                });
+
             if (!produtos.Any() && !servicos.Any())
             {
                 reportItems.Add(new ImprimirOrdemServicoVM
                 {
                     Id = os.Id.ToString(),
-                    ClienteNome = os.Cliente != null ? os.Cliente.Nome : string.Empty,
+                    ClienteNome = os.Cliente?.Nome,
+                    ClienteCPF = os.Cliente?.CPFCNPJ,
+                    ClienteEndereco = GetEndereco(os.Cliente),
                     DataEmissao = os.DataEmissao.ToString(),
                     DataEntrega = os.DataEntrega.ToString(),
                     Status = os.Status.ToString(),
@@ -684,6 +695,13 @@ namespace Fly01.OrdemServico.Controllers
             }
 
             return reportItems;
+        }
+
+        private string GetEndereco(PessoaVM cliente)
+        {
+            if (cliente == null) return "";
+
+            return $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}";
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]

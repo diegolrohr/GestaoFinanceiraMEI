@@ -460,8 +460,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\ReportOrdemServico.rdlc" />
-    <EmbeddedResource Include="Reports\ReportOrdemServico1.rdlc" />
+    <Content Include="Reports\ReportOrdemServico.rdlc" />
+    <Content Include="Reports\ReportOrdemServico1.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -12,12 +12,7 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("responsavelPadraoId")]
         public Guid? ResponsavelPadraoId { get; set; }
 
-        #region NavigationProperties
-
         [JsonProperty("responsavelPadrao")]
-        public virtual PessoaVM ResponsavelPadrao { get; set; }
-
-        #endregion
-
+        public PessoaVM ResponsavelPadrao { get; set; }
     }
 }

@@ -70,10 +70,15 @@ namespace Fly01.OrdemServico.Controllers
                     { "filtro", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                 };
                 var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboard/status", queryString);
-                var aberto = "0/0";
-                var andamento = "0/0";
-                var concluido = "0/0";
-                var cancelado = "0/0";
+                var qtdTotal = 0;
+
+                if (response != null)
+                    qtdTotal = response.First().QuantidadeTotal;                   
+
+                var aberto = "0/" + qtdTotal;
+                var andamento = "0/" + qtdTotal;
+                var concluido = "0/" + qtdTotal;
+                var cancelado = "0/" + qtdTotal;
 
                 foreach (var item in response)
                 {

@@ -42,7 +42,7 @@ namespace Fly01.OrdemServico.Models.Reports
         {
             get
             {
-                return HttpContext.Current.Server.MapPath("~/Reports/ReportRecibo.rdlc");
+                return HttpContext.Current.Server.MapPath("~/Reports/ReportOrdemServico.rdlc");
             }
         }
     }

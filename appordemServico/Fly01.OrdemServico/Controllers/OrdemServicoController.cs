@@ -318,7 +318,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 7,
+                        Quantity = 8,
                     },
                     new FormWizardUIStep()
                     {
@@ -357,6 +357,17 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
             config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "responsavelPadraoId",
+                Class = "col s12 m3",
+                Label = "Responsável padrão",
+                Required = false,
+                DataUrl = Url.Action("Vendedor", "AutoComplete"),
+                LabelId = "responsavelPadraoNome",
+                LabelName = "responsavelPadraoNome"
+            }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {

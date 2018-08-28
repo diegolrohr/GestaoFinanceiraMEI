@@ -55,6 +55,10 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     InformacoesComplementares = NFe.MensagemPadraoNota
                 };
             }
+            if (NFe.GeraFinanceiro)
+            {
+                itemTransmissao.Cobranca = ObterCobranca();
+            }
 
             var transmissao = ObterTransmissaoVMApartirDoItem(itemTransmissao);
             return transmissao;

@@ -697,13 +697,8 @@ namespace Fly01.OrdemServico.Controllers
 
                 Session.Add(fileName, fileBase64);
 
-                return Json(new
-                {
-                    success = true,
-                    fileName,
-                    recordsFiltered = 1,
-                    recordsTotal = 1
-                }, JsonRequestBehavior.AllowGet);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadPDF", new { fileName }) });
             }
             catch (Exception ex)
             {

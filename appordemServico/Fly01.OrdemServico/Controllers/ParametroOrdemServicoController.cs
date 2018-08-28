@@ -1,4 +1,5 @@
 using Fly01.Core;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
@@ -57,28 +58,25 @@ namespace Fly01.OrdemServico.Controllers
             return Json(new
             {
                 diasPrazoEntrega = parametro.DiasPrazoEntrega,
-                responsavelNome = CarregaNomeResponsavel(parametro.ResponsavelPadraoId),
+                responsavelPadraoNome = ResponsavelPadraoNome(parametro.ResponsavelPadraoId),
                 responsavelPadraoId = parametro.ResponsavelPadraoId
             }, JsonRequestBehavior.AllowGet);
         }
 
-
-        public string CarregaNomeResponsavel(Guid? idResponsavel)
+        public string ResponsavelPadraoNome(Guid? idResponsvel)
         {
-            Dictionary<string, string> queryString = new Dictionary<string, string>
-                {
-                    { "id", idResponsavel.GetValueOrDefault().ToString() }
-                };
+            var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
 
-            var response = RestHelper.ExecuteGetRequest<PessoaVM>("pessoa", queryString);
+            queryString.AddParam("$filter", $"id eq {idResponsvel.GetValueOrDefault().ToString()}");
+            queryString.AddParam("$select", "id,nome");
+            queryString.AddParam("$orderby", "nome");
 
-            if (response != null)
-                return response.Nome;
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, nome = item.Nome };
 
-            return string.Empty;
+            return filterObjects.FirstOrDefault().nome;
         }
-
-
 
         protected override ContentUI FormJson()
         {
@@ -119,6 +117,7 @@ namespace Fly01.OrdemServico.Controllers
                 Required = false,
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
+                LabelName= "responsavelPadraoNome"
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             #region Helpers 

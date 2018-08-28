@@ -8,13 +8,13 @@
             url: '@Url.Action("ImprimirOrdemServico", "OrdemServico")',
             data: { id: idRecord },
 			type: "GET",
-			success : function(data) {
-			    fly01.loading.stop();
-			    if (data.message) {
-			        fly01.fn.submitErrorHandler(null, data.message);
-			    } else {
-			        fnImprimir(data.fileName);
-			    }
+            success: function (data) {
+                fly01.loading.stop();
+                if (data.message) {
+                    fly01.fn.submitErrorHandler(null, data.message);
+                } else {
+                    location.href = data.downloadAddress;
+                }
 			},
             error: function (jqxhr, textStatus, error) {
 				var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;

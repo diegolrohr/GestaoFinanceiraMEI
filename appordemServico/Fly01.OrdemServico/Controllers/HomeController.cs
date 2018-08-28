@@ -1,6 +1,5 @@
 ﻿using Fly01.Core.Config;
 using Fly01.Core.Presentation;
-using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Widgets;
@@ -154,9 +153,10 @@ namespace Fly01.OrdemServico.Controllers
                         responsive = false,
                         maintainAspectRatio = false
                     },
-                    scales = new {
-                        xAxes = new object[] { new { stacked=true} },
-                        yAxes = new object[] { new { stacked=true, ticks = new { stepSize = 1} } }
+                    scales = new
+                    {
+                        xAxes = new object[] { new { stacked = true } },
+                        yAxes = new object[] { new { stacked = true, ticks = new { stepSize = 1 } } }
                     }
                 },
                 UrlData = @Url.Action("LoadChart", "Dashboard"),
@@ -291,6 +291,7 @@ namespace Fly01.OrdemServico.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
                         new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
                     }

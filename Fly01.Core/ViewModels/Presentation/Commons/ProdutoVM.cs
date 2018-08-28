@@ -1,11 +1,11 @@
-﻿using Fly01.Core.Helpers.Attribute;
+﻿using System;
 using Newtonsoft.Json;
-using System;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class ProdutoVM : DomainBaseVM
-    {
+    {        
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 

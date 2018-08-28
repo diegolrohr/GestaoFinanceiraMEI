@@ -1,7 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
+﻿using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
-using Fly01.Core.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -125,32 +123,8 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputTextUI { Id = "codigoServico", Class = "col l3 m3 s12", Label = "Código", Required = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
 
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "nbsId",
-                Class = "col s12",
-                Label = "NBS",
-                DataUrl = @Url.Action("Nbs", "AutoComplete"),
-                LabelId = "nbsDescricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
-            });
-
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoPagamentoImpostoISS",
-                Class = "col l3 m3 s12",
-                Label = "Tipo Pagto ISS",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoTributacaoISS",
-                Class = "col l6 m6 s12",
-                Label = "Tipo Tributação ISS",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS)))
-            });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoPagamentoImpostoISS" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoISS" });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
 

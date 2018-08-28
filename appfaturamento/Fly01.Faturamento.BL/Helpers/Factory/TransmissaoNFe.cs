@@ -279,7 +279,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         new DetalhePagamento()
                         {
                             TipoFormaPagamento = ObterTipoFormaPagamento(),
-                            ValorPagamento = valorPagamento
+                            ValorPagamento = ObterTipoFormaPagamento() == TipoFormaPagamento.SemPagamento ? 0.0 : valorPagamento
                         }
                     }
             };
@@ -367,7 +367,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         Fatura = new Fatura()
                         {
                             NumeroFatura = "NF:"+NFe.NumNotaFiscal.Value.ToString(),
-                            ValorOriginario = contas.Sum(x => x.ValorPrevisto)
+                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                            ValorLiquido = contas.Sum(x => x.ValorPrevisto)
                         }
                     };
                     cobranca.Duplicatas = new List<Duplicata>(
@@ -378,6 +379,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                             Vencimento = x.DataVencimento
                         }).ToList()
                     );
+                    return cobranca;
                 }
             }
             return null;
@@ -403,12 +405,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             var contas = new List<ContaFinanceira>();
             if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
             {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
                 contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
             }
             else
             {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
                 contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
             }
 

@@ -29,8 +29,8 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("aprovado")]
         public bool Aprovado { get; set; }
 
-        [JsonProperty("observacao")]
-        public string Observacao { get; set; }
+        [JsonProperty("descricao")]
+        public string Descricao { get; set; }
 
         #region Navigation
         [JsonProperty("cliente")]

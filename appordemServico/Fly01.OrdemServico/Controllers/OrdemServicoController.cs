@@ -668,7 +668,7 @@ namespace Fly01.OrdemServico.Controllers
             DataEntrega = os.DataEntrega.ToString(),
             Status = os.Status.ToString(),
             Numero = os.Numero.ToString(),
-            Observacao = os.Observacao,
+            Descricao = os.Descricao,
             Total = total
         };
 

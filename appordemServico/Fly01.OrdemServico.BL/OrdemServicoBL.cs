@@ -31,7 +31,7 @@ namespace Fly01.OrdemServico.BL
 
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {
-            entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
+            entity.Fail(entity.Descricao != null && entity.Descricao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             if (entity.DataEntrega == DateTime.MinValue)
                 entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPrazoEntrega);
             else

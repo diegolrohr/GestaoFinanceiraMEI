@@ -27,7 +27,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool Aprovado { get; set; }
 
         [DataType(DataType.MultilineText)]
-        public string Observacao { get; set; }
+        public string Descricao { get; set; }
 
         #region Navigation
         public virtual Pessoa Cliente { get; set; }

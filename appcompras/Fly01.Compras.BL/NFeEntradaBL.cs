@@ -576,68 +576,68 @@ namespace Fly01.Compras.BL
     }
 }
 
-public override void Insert(NFeEntrada entity)
-{
-    entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
-    base.Insert(entity);
-}
+        public override void Insert(NFeEntrada entity)
+        {
+            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
+            base.Insert(entity);
+        }
 
-public override void Update(NFeEntrada entity)
-{
-    var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-    entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
-    entity.Fail(
-        previous.Status != StatusNotaFiscal.NaoTransmitida &&
-        entity.Status != StatusNotaFiscal.Transmitida &&
-        (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
-        , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
+        public override void Update(NFeEntrada entity)
+        {
+            var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
+            entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
+            entity.Fail(
+                previous.Status != StatusNotaFiscal.NaoTransmitida &&
+                entity.Status != StatusNotaFiscal.Transmitida &&
+                (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
+                , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
 
-    ValidaModel(entity);
+            ValidaModel(entity);
 
-    if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
-    {
-        TransmitirNFe(entity);
-    }
+            if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
+            {
+                TransmitirNFe(entity);
+            }
 
-    base.Update(entity);
-}
+            base.Update(entity);
+        }
 
-public override void Delete(NFeEntrada entityToDelete)
-{
-    var status = entityToDelete.Status;
-    entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
-    if (entityToDelete.IsValid())
-    {
-        base.Delete(entityToDelete);
-    }
-    else
-    {
-        throw new BusinessException(entityToDelete.Notification.Get());
-    }
-}
+        public override void Delete(NFeEntrada entityToDelete)
+        {
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
+        }
 
-public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
-{
-    var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
+        {
+            var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
-    var produtos = NFeProdutoEntradaBL.All.AsNoTracking().Where(x => x.NotaFiscalEntradaId == nfeId).ToList();
-    var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-    var totalImpostosProdutos = nfe.TotalImpostosProdutos;
-    var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
-    bool calculaFrete = (
-        ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
-        ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
-    );
+            var produtos = NFeProdutoEntradaBL.All.AsNoTracking().Where(x => x.NotaFiscalEntradaId == nfeId).ToList();
+            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            var totalImpostosProdutos = nfe.TotalImpostosProdutos;
+            var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
+            bool calculaFrete = (
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
+            );
 
-    var result = new TotalNotaFiscal()
-    {
-        TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-        ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
-        TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
-        TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
-    };
+            var result = new TotalNotaFiscal()
+            {
+                TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
+                ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
+            };
 
-    return result;
-}
+            return result;
+        }
     }
 }

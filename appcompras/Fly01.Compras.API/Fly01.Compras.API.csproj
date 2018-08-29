@@ -72,6 +72,7 @@
     <Compile Include="Controllers\Api\NFeEntradaController.cs" />
     <Compile Include="Controllers\Api\NFeProdutoEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalAtualizaStatusController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCartaCorrecaoEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaAtualizaStatusController.cs" />

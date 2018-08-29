@@ -371,17 +371,23 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         {
                             NumeroFatura = "NF:"+NFe.NumNotaFiscal.Value.ToString(),
                             ValorOriginario = contas.Sum(x => x.ValorPrevisto),
-                            ValorLiquido = contas.Sum(x => x.ValorPrevisto)
+                            ValorLiquido = contas.Sum(x => x.ValorPrevisto),
+                            ValorDesconto = 0.0
                         }
                     };
-                    cobranca.Duplicatas = new List<Duplicata>(
-                        contas.Select(x => new Duplicata()
-                        {
-                            Numero = x.Numero.ToString(),
-                            ValorDuplicata = x.ValorPrevisto,
-                            Vencimento = x.DataVencimento
-                        }).ToList()
-                    );
+                    var num = 1;
+                    cobranca.Duplicatas = new List<Duplicata>();
+                    foreach (var item in contas.OrderBy(x => x.DataVencimento))
+                    {
+                        cobranca.Duplicatas.Add(
+                            new Duplicata()
+                            {
+                                Numero = num.ToString().PadLeft(3,'0'),
+                                ValorDuplicata = item.ValorPrevisto,
+                                Vencimento = item.DataVencimento
+                            });
+                        num++;
+                    }
                     return cobranca;
                 }
             }

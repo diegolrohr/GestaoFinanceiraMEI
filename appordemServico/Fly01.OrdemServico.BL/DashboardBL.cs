@@ -81,7 +81,7 @@ namespace Fly01.OrdemServico.BL
                                     x.Desconto
                                 })
                                 .GroupBy(x=> new {
-                                    x.ProdutoId, x.Descricao, x.Valor
+                                    x.ProdutoId, x.Descricao
                                 })
                                 .Select(x=> new TopServicosProdutosOrdemServicoVM {
                                     Id = x.Key.ProdutoId,

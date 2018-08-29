@@ -291,7 +291,7 @@ namespace Fly01.OrdemServico.Reports {
             
             private global::System.Data.DataColumn columnStatus;
             
-            private global::System.Data.DataColumn columnObservacao;
+            private global::System.Data.DataColumn columnDescricao;
             
             private global::System.Data.DataColumn columnItemId;
             
@@ -404,9 +404,9 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn ObservacaoColumn {
+            public global::System.Data.DataColumn DescricaoColumn {
                 get {
-                    return this.columnObservacao;
+                    return this.columnDescricao;
                 }
             }
             
@@ -566,7 +566,7 @@ namespace Fly01.OrdemServico.Reports {
                         string DataEmissao, 
                         string DataEntrega, 
                         string Status, 
-                        string Observacao, 
+                        string Descricao, 
                         string ItemId, 
                         double ItemQtd, 
                         string ItemNome, 
@@ -589,7 +589,7 @@ namespace Fly01.OrdemServico.Reports {
                         DataEmissao,
                         DataEntrega,
                         Status,
-                        Observacao,
+                        Descricao,
                         ItemId,
                         ItemQtd,
                         ItemNome,
@@ -632,7 +632,7 @@ namespace Fly01.OrdemServico.Reports {
                 this.columnDataEmissao = base.Columns["DataEmissao"];
                 this.columnDataEntrega = base.Columns["DataEntrega"];
                 this.columnStatus = base.Columns["Status"];
-                this.columnObservacao = base.Columns["Observacao"];
+                this.columnDescricao = base.Columns["Descricao"];
                 this.columnItemId = base.Columns["ItemId"];
                 this.columnItemQtd = base.Columns["ItemQtd"];
                 this.columnItemNome = base.Columns["ItemNome"];
@@ -664,8 +664,8 @@ namespace Fly01.OrdemServico.Reports {
                 base.Columns.Add(this.columnDataEntrega);
                 this.columnStatus = new global::System.Data.DataColumn("Status", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatus);
-                this.columnObservacao = new global::System.Data.DataColumn("Observacao", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnObservacao);
+                this.columnDescricao = new global::System.Data.DataColumn("Descricao", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescricao);
                 this.columnItemId = new global::System.Data.DataColumn("ItemId", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnItemId);
                 this.columnItemQtd = new global::System.Data.DataColumn("ItemQtd", typeof(double), null, global::System.Data.MappingType.Element);
@@ -939,17 +939,17 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string Observacao {
+            public string Descricao {
                 get {
                     try {
-                        return ((string)(this[this.tableOrdemServico.ObservacaoColumn]));
+                        return ((string)(this[this.tableOrdemServico.DescricaoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Observacao\' in table \'OrdemServico\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Descricao\' in table \'OrdemServico\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableOrdemServico.ObservacaoColumn] = value;
+                    this[this.tableOrdemServico.DescricaoColumn] = value;
                 }
             }
             
@@ -1251,14 +1251,14 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsObservacaoNull() {
-                return this.IsNull(this.tableOrdemServico.ObservacaoColumn);
+            public bool IsDescricaoNull() {
+                return this.IsNull(this.tableOrdemServico.DescricaoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetObservacaoNull() {
-                this[this.tableOrdemServico.ObservacaoColumn] = global::System.Convert.DBNull;
+            public void SetDescricaoNull() {
+                this[this.tableOrdemServico.DescricaoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -10,7 +10,7 @@ namespace Fly01.OrdemServico.ViewModel
         public string DataEntrega { get; internal set; }
         public string Status { get; internal set; }
         public string Numero { get; internal set; }
-        public string Observacao { get; internal set; }
+        public string Descricao { get; internal set; }
         public Guid ItemId { get; internal set; }
         public string ItemNome { get; internal set; }
         public double ItemQtd { get; internal set; }

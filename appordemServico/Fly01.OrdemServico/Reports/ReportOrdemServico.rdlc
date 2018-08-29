@@ -36,8 +36,8 @@
           <DataField>Status</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Observacao">
-          <DataField>Observacao</DataField>
+        <Field Name="Descricao">
+          <DataField>Descricao</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ItemId">
@@ -630,7 +630,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ds</DataSetName>
-        <Top>7.46846cm</Top>
+        <Top>10.64346cm</Top>
         <Left>0.05298cm</Left>
         <Height>1.19146cm</Height>
         <Width>16.43002cm</Width>
@@ -662,7 +662,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Nome</rd:DefaultName>
-        <Top>6.44513cm</Top>
+        <Top>9.62013cm</Top>
         <Left>0.05298cm</Left>
         <Height>0.6cm</Height>
         <Width>16.46672cm</Width>
@@ -1095,7 +1095,7 @@
         <DataSetName>ds</DataSetName>
         <Top>3.90331cm</Top>
         <Left>0.05298cm</Left>
-        <Height>2.00095cm</Height>
+        <Height>2.00094cm</Height>
         <Width>16.46672cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
@@ -1133,7 +1133,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>8.82043cm</Top>
+        <Top>11.99543cm</Top>
         <Left>0.07462cm</Left>
         <Height>0.6cm</Height>
         <Width>16.30829cm</Width>
@@ -1223,7 +1223,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>13.21075cm</Top>
+        <Top>12.89325cm</Top>
         <Left>0.04257cm</Left>
         <Height>2.56557cm</Height>
         <Width>16.39333cm</Width>
@@ -1243,7 +1243,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Observações:</Value>
+                    <Value>Descrição:</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1273,7 +1273,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!Observacao.Value</Value>
+                    <Value>=Fields!Descricao.Value</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -1298,7 +1298,8 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>9.58596cm</Top>
+        <Top>6.09341cm</Top>
+        <Left>0.07921cm</Left>
         <Height>3.2191cm</Height>
         <Width>16.38292cm</Width>
         <ZIndex>7</ZIndex>
@@ -1321,7 +1322,7 @@
         </Style>
       </Rectangle>
     </ReportItems>
-    <Height>6.31532in</Height>
+    <Height>6.08615in</Height>
     <Style />
   </Body>
   <ReportParameters>

@@ -35,7 +35,7 @@ namespace Fly01.OrdemServico.BL
             if (entity.DataEntrega == DateTime.MinValue)
                 entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPrazoEntrega);
             else
-                entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error($"A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
+                entity.Fail(entity.DataEntrega < entity.DataEntrega, new Error("A Data de entrega deve ser maior ou igual à de emissão!", "dataEntrega"));
 
             var responsavel = entity.ValidForeignKey(x => x.ResponsavelId, "Responsável", "responsavelId", _pessoaBL, x => new
             {
@@ -49,7 +49,7 @@ namespace Fly01.OrdemServico.BL
             }
 
             if (responsavel != null)
-                entity.Fail(!responsavel.Vendedor, new Error($"A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
+                entity.Fail(!responsavel.Vendedor, new Error("A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
 
             base.ValidaModel(entity);
         }
@@ -67,8 +67,14 @@ namespace Fly01.OrdemServico.BL
         public override void Update(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            entity.Fail(previous.Status != StatusOrdemServico.EmAberto && previous.Status != StatusOrdemServico.EmAndamento, new Error("Somente ordens em aberto e em andamento podem ser alteradas", "status"));
-            entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
+            var canUpdate = previous.Status == StatusOrdemServico.EmAberto || previous.Status == StatusOrdemServico.EmAndamento;
+            entity.Fail(!canUpdate, new Error("Somente ordens em aberto e em andamento podem ser alteradas", "status"));
+            if (canUpdate)
+            {
+                entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
+                entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
+                entity.Fail(previous.Numero != entity.Numero, new Error("Não é permitido alterar o número da OS", "status"));
+            }
 
             base.Update(entity);
         }

@@ -1,7 +1,7 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
-    var justSavePedidoToGoStepProdutos = false;
+    var justSaveOrdemToGoStepProdutos = false;
     var onCancelMustDeletePedido = false;
 
     function isCreate() {
@@ -154,7 +154,7 @@
     function fnBindStepsWizard() {
         function savePedido() {
             if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {
-                justSavePedidoToGoStepProdutos = true;
+                justSaveOrdemToGoStepProdutos = true;
                 return $("form#fly01frm").submit();
             }
         }
@@ -220,8 +220,8 @@
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeletePedido) strMsg = data.message;
                         //fica na página ou volta pra lista
-                        if (justSavePedidoToGoStepProdutos) {
-                            justSavePedidoToGoStepProdutos = false;
+                        if (justSaveOrdemToGoStepProdutos) {
+                            justSaveOrdemToGoStepProdutos = false;
                             onCancelMustDeletePedido = true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
@@ -247,7 +247,7 @@
                             fly01.go("@Url.Action("List","OrdemVenda")");
                         }
                     } else {
-                        if (justSavePedidoToGoStepProdutos) {
+                        if (justSaveOrdemToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                         fly01.loading.stop();

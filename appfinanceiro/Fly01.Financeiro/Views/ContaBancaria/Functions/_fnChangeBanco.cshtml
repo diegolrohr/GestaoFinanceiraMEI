@@ -7,7 +7,15 @@
         controlaCamposConta(data.item.agenciaContaRequired);
     }
 
-    function fnContaEmiteBoleto(id) {
+    function hideFildsEmiteBoleto() {
+        $('#codigoCedenteField').hide();
+        $('#codigoDVField').hide();
+        $('#taxaJurosField').hide();
+        $('#percentualMultaField').hide();
+        $('#textInfoBoletosField').hide();
+    }
+
+    function fnContaEmiteBoleto(id) {        
         $.ajax({
             url: '@Url.Action("GetBancoEmiteBoleto", "ContaBancaria")?id='+ id,
             type: "GET",
@@ -20,16 +28,13 @@
                         $('#taxaJurosField').show();
                         $('#percentualMultaField').show();
                         $('#textInfoBoletosField').show();
-                    }
-                }
-                else {
+                    } else {
+                        hideFildsEmiteBoleto();
+                    };
+                } else {
                     $('#contaEmiteBoletoField').hide();
-                    $('#codigoCedenteField').hide();
-                    $('#codigoDVField').hide();
-                    $('#taxaJurosField').hide();
-                    $('#percentualMultaField').hide();
-                    $('#textInfoBoletosField').hide();
-                }
+                    hideFildsEmiteBoleto();
+                };
             },
             error: function (jXHR, textStatus) {
                 fly01.toast(textStatus, 'error');

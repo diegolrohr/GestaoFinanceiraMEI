@@ -1,6 +1,7 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
-    
+
+    var justSaveOrdemToGoStepProdutos = false;
     var onCancelMustDeleteOrdemServico = false;
 
     function isCreate() {
@@ -87,7 +88,8 @@
 
     function fnBindStepsWizard() {
         function saveOrdemServico() {
-            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {                
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {   
+                justSaveOrdemToGoStepProdutos = true;
                 return $("form#fly01frm").submit();
             }
         }
@@ -139,7 +141,9 @@
 
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
-                        //fica na página ou volta pra lista                        
+                        //fica na página ou volta pra lista
+                        if (justSaveOrdemToGoStepProdutos) {
+                            justSaveOrdemToGoStepProdutos = false;
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
@@ -151,10 +155,15 @@
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
 
                             return true;
-
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List","OrdemVenda")");
+                        }
                     } else {
-                       
-                        $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        if (justSaveOrdemToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
                         fly01.loading.stop();
                         $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);

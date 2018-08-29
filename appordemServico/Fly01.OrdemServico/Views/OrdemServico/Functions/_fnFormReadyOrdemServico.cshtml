@@ -64,17 +64,19 @@
             type: "GET",
             data: { id: idOrdemServico, clienteId: idCliente}
         })
-        .done(function (data) {
+            .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
                 $('input#totalOrdemServico').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val(data.total.QuantidadeItensCliente);
                 fly01.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalOrdemsServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val("0");
                 fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
@@ -182,10 +184,6 @@
             + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
     }
 
-    function EstoqueNegativoETotal() {
-        calculaTotalOrdemServico();
-    }
-
     function fnFormReadyOrdemServico() {
         debugger;
         if (isCreate()) {
@@ -211,12 +209,10 @@
         fnBindOverrideSubmit();
 
         fnSetInformacoes();
-        debugger;
-        $('li#stepFinalizar div.step-title').click(function () {
-            debugger;
+
+        $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid()) {
-                debugger;
-                EstoqueNegativoETotal();
+                calculaTotalOrdemServico();
             }
         });
     }

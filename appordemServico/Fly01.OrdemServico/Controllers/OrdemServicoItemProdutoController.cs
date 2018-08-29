@@ -62,7 +62,7 @@ namespace Fly01.OrdemServico.Controllers
                 Class = "col s12 m6",
                 Label = "Produto",
                 Required = true,
-                DataUrl = Url.Action("Produto", "AutoComplete"),
+                DataUrl = Url.Action("ProdutoVenda", "AutoComplete"),
                 DataUrlPostModal = Url.Action("FormModal", "Produto"),
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",

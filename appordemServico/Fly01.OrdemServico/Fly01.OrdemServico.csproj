@@ -217,6 +217,7 @@
     <Content Include="Views\OrdemServico\Functions\_fnExecutarOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnCancelarOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConcluirOrdem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnCancelarNovaOrdem.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
@@ -225,6 +226,7 @@
     <Content Include="Views\Responsavel\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnStateSelect.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnNovaOS.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

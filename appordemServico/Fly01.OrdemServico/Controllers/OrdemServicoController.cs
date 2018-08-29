@@ -24,6 +24,8 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
+        private bool _novaOS;
+
         public OrdemServicoController()
         {
             ExpandProperties = "cliente($select=id,nome,email;$expand=cidade($select=nome),estado($select=sigla))";
@@ -172,7 +174,7 @@ namespace Fly01.OrdemServico.Controllers
 
             //if (UserCanWrite)
             //{
-            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
             target.Add(new HtmlUIButton { Id = "imprimirOS", Label = "Imprimir", Position = HtmlUIButtonPosition.In/*, OnClickFn = "fnImprimir"*/ });
 
             //}
@@ -184,10 +186,10 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            //if (UserCanWrite)
-            //{
-            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrdem" });
-            //}
+            if (_novaOS)
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
+            }
 
             return target;
         }
@@ -297,6 +299,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public ContentUI FormOrdemServico(bool isEdit = false)
         {
+
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory
@@ -459,6 +462,13 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(GetDtOrdemServicoItemServicosCfg());
             return cfg;
 
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        public virtual ContentResult FormNew()
+        {
+            _novaOS = true;
+            return Form();
         }
 
         protected override ContentUI FormJson()

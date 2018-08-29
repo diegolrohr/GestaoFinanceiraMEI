@@ -6,7 +6,7 @@
 
     function isCreate() {
         var id = $("form#fly01frm input#id").val();
-
+        
         if (id.length == 0)
         {
             retornaDataEntregaParametro();
@@ -103,7 +103,7 @@
     }
 
     function fnBindOverrideSubmit() {
-        debugger;
+        
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
@@ -123,6 +123,8 @@
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
             fly01.fn.updateTextFields();
 
+            
+
             var url;
             if (isCreate()) {
                 url = '@Url.Action("Create", "OrdemServico")';
@@ -130,6 +132,8 @@
             else {
                 url = '@Url.Action("Edit", "OrdemServico")';
             }
+
+            
 
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
@@ -143,6 +147,7 @@
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
                         //fica na página ou volta pra lista
+                        
                         if (justSaveOrdemToGoStepProdutos) {
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
@@ -153,8 +158,7 @@
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
-
-                            return true;
+                            justSaveOrdemToGoStepProdutos = false;
                         }
                         else {
                             fly01.toast(strMsg, "success");
@@ -168,7 +172,8 @@
                         $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
-                    justSaveOrdemToGoStepProdutos = false;
+
+                    return data.success;
                 },
                 error: function error(jXHR, textStatus) {
                     fly01.toast(textStatus, "error");

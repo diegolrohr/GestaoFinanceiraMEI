@@ -17,7 +17,7 @@
         return false;
     }
 
-    function retornaResponsavelPadraoParametro() {        
+    function retornaResponsavelPadraoParametro() {
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
@@ -139,12 +139,10 @@
                 success: function success(data) {
                     if (data.success) {
                         fly01.loading.stop();
-
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
                         //fica na página ou volta pra lista
                         if (justSaveOrdemToGoStepProdutos) {
-                            justSaveOrdemToGoStepProdutos = false;
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
@@ -159,7 +157,7 @@
                         }
                         else {
                             fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List","OrdemVenda")");
+                            fly01.go("@Url.Action("List", "OrdemServico")");
                         }
                     } else {
                         if (justSaveOrdemToGoStepProdutos) {
@@ -169,6 +167,7 @@
                         $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
                     }
+                    justSaveOrdemToGoStepProdutos = false;
                 },
                 error: function error(jXHR, textStatus) {
                     fly01.toast(textStatus, "error");
@@ -205,7 +204,7 @@
             
             if (!onCancelMustDeleteOrdemServico) { $('li#stepCadastro div.step-title').click(); }
             fly01._.dtOrdemServicoManutencao.refresh();
-            fly01._.dtOrdemServicoProdutos.refresh();
+            fly01._.dtOrdemServicoItemProdutos.refresh();
             fly01._.dtOrdemServicoItemServicos.refresh();
         }
 

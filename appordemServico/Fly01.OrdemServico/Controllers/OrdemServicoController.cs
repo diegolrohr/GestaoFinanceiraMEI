@@ -180,6 +180,18 @@ namespace Fly01.OrdemServico.Controllers
             return target;
         }
 
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            //if (UserCanWrite)
+            //{
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarOrdem" });
+            //}
+
+            return target;
+        }
+
         public ContentResult ListOrdemServico(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todos as ordens de serviço";

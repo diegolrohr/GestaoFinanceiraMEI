@@ -40,11 +40,11 @@ namespace Fly01.OrdemServico.BL
         private OrdemServicoBL ordemServicoBL;
         public OrdemServicoBL OrdemServicoBL => ordemServicoBL ?? (ordemServicoBL = new OrdemServicoBL(Context, ParametroOrdemServicoBL, PessoaBL, OrdemServicoItemProdutoBL, OrdemServicoItemServicoBL, OrdemServicoManutencaoBL));
         private OrdemServicoItemProdutoBL ordemServicoItemProdutoBL;
-        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL(Context, ProdutoBL));
+        public OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL => ordemServicoItemProdutoBL ?? (ordemServicoItemProdutoBL = new OrdemServicoItemProdutoBL(Context, ProdutoBL, OrdemServicoBL));
         private OrdemServicoItemServicoBL ordemServicoItemServicoBL;
-        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL(Context, ServicoBL));
+        public OrdemServicoItemServicoBL OrdemServicoItemServicoBL => ordemServicoItemServicoBL ?? (ordemServicoItemServicoBL = new OrdemServicoItemServicoBL(Context, ServicoBL, OrdemServicoBL));
         private OrdemServicoManutencaoBL ordemServicoManutencaoBL;
-        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL(Context, ProdutoBL));
+        public OrdemServicoManutencaoBL OrdemServicoManutencaoBL => ordemServicoManutencaoBL ?? (ordemServicoManutencaoBL = new OrdemServicoManutencaoBL(Context, ProdutoBL, OrdemServicoBL));
         private PessoaBL pessoaBL;
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
         private ProdutoBL produtoBL;

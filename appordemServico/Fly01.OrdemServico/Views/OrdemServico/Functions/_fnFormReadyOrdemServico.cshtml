@@ -102,6 +102,7 @@
     }
 
     function fnBindOverrideSubmit() {
+        debugger;
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
@@ -183,12 +184,11 @@
     }
 
     function EstoqueNegativoETotal() {
-        fly01._.dtProdutosEstoqueNegativo.refresh();
         calculaTotalOrdemServico();
     }
 
-    function fnFormReadyOrdemServico () {
-
+    function fnFormReadyOrdemServico() {
+        debugger;
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();
@@ -212,20 +212,11 @@
         fnBindOverrideSubmit();
 
         fnSetInformacoes();
-
+        debugger;
         $('li#stepFinalizar div.step-title').click(function () {
+            debugger;
             if (!isCreate() && $("form#fly01frm").valid()) {
-                EstoqueNegativoETotal();
-            }
-        });
-        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").valid()) {
-                EstoqueNegativoETotal();
-            }
-        });
-
-        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                debugger;
                 EstoqueNegativoETotal();
             }
         });

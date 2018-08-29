@@ -436,6 +436,9 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m6", Label = "Total (produtos + serviços)", Readonly = true });
 
+
+
+
             #endregion
 
             cfg.Content.Add(config);

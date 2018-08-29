@@ -71,14 +71,20 @@ namespace Fly01.OrdemServico.Controllers
                 };
                 var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboard/status", queryString);
                 var qtdTotal = 0;
+                var aberto = "0/0";
+                var andamento = "0/0";
+                var concluido = "0/0";
+                var cancelado = "0/0";
 
                 if (response != null)
-                    qtdTotal = response.First().QuantidadeTotal;                   
+                {
+                    qtdTotal = response.First().QuantidadeTotal;
+                    aberto = "0/" + qtdTotal;
+                    andamento = "0/" + qtdTotal;
+                    concluido = "0/" + qtdTotal;
+                    cancelado = "0/" + qtdTotal;
+                }
 
-                var aberto = "0/" + qtdTotal;
-                var andamento = "0/" + qtdTotal;
-                var concluido = "0/" + qtdTotal;
-                var cancelado = "0/" + qtdTotal;
 
                 foreach (var item in response)
                 {

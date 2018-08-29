@@ -279,7 +279,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         new DetalhePagamento()
                         {
                             TipoFormaPagamento = ObterTipoFormaPagamento(),
-                            ValorPagamento = valorPagamento
+                            ValorPagamento = ObterTipoFormaPagamento() == TipoFormaPagamento.SemPagamento ? 0.0 : valorPagamento
                         }
                     }
             };
@@ -295,7 +295,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     SomatorioICMS = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
                     SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                     SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
-                    SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto??0), 2) : 0,
+                    SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto ?? 0), 2) : 0,
                     SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
                     ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,
@@ -355,23 +355,66 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
-        //public Cobranca ObterCobranca()
-        //{
-        //    if (NFe.GeraFinanceiro)
-        //    {
-        //        var contas = ObterContasFinanceiras();
-        //    }
-        //    return null;
-        //}
+        public Cobranca ObterCobranca()
+        {
+            if (NFe.GeraFinanceiro)
+            {
+                var contas = ObterContasFinanceiras();
+                if (contas != null && contas.Any())
+                {
+                    var cobranca = new Cobranca()
+                    {
+                        Fatura = new Fatura()
+                        {
+                            NumeroFatura = "NF:"+NFe.NumNotaFiscal.Value.ToString(),
+                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                            ValorLiquido = contas.Sum(x => x.ValorPrevisto)
+                        }
+                    };
+                    cobranca.Duplicatas = new List<Duplicata>(
+                        contas.Select(x => new Duplicata()
+                        {
+                            Numero = x.Numero.ToString(),
+                            ValorDuplicata = x.ValorPrevisto,
+                            Vencimento = x.DataVencimento
+                        }).ToList()
+                    );
+                    return cobranca;
+                }
+            }
+            return null;
+        }
 
-        //public List<ContaFinanceira> ObterContasFinanceiras()
-        //{
-        //    var x = new List<ContaPagar>()
-        //    {
+        public List<ContaFinanceira> ObterContasFinanceiras()
+        {
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", TransmissaoBLs.AppUser  },
+                { "PlataformaUrl", TransmissaoBLs.PlataformaUrl }
+            };
+            var queryString = new Dictionary<string, string>()
+            {
+                {
+                    "contaFinanceiraParcelaPaiId",
+                    NFe.ContaFinanceiraParcelaPaiIdProdutos.HasValue
+                        ? NFe.ContaFinanceiraParcelaPaiIdProdutos.Value.ToString()
+                        : default(Guid).ToString()
+                }
+            };
 
-        //    };
+            var contas = new List<ContaFinanceira>();
+            if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
+            else
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
 
-        //    return x.ToList<ContaFinanceira>();
-        //}
+            return contas;
+        }
     }
 }

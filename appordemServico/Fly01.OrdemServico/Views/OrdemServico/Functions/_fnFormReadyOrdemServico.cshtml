@@ -1,6 +1,7 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
-    
+
+    var justSaveOrdemToGoStepProdutos = false;
     var onCancelMustDeleteOrdemServico = false;
 
     function isCreate() {
@@ -9,10 +10,27 @@
         if (id.length == 0)
         {
             retornaDataEntregaParametro();
+            retornaResponsavelPadraoParametro();
             return true;
         }
 
         return false;
+    }
+
+    function retornaResponsavelPadraoParametro() {        
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
+            type: "GET",
+            success: function (data) {
+                $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
+                $("#responsavelPadraoId").val(data.responsavelPadraoId);
+                fly01.fn.updateTextFields();
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+
     }
 
     function retornaDataEntregaParametro() {
@@ -35,6 +53,7 @@
 
 
     function calculaTotalOrdemServico() {
+        debugger;
         var idOrdemServico = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
 
@@ -69,7 +88,8 @@
 
     function fnBindStepsWizard() {
         function saveOrdemServico() {
-            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {                
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {   
+                justSaveOrdemToGoStepProdutos = true;
                 return $("form#fly01frm").submit();
             }
         }
@@ -121,7 +141,9 @@
 
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
-                        //fica na página ou volta pra lista                        
+                        //fica na página ou volta pra lista
+                        if (justSaveOrdemToGoStepProdutos) {
+                            justSaveOrdemToGoStepProdutos = false;
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
@@ -133,10 +155,15 @@
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
 
                             return true;
-
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List","OrdemVenda")");
+                        }
                     } else {
-                       
-                        $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        if (justSaveOrdemToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
                         fly01.loading.stop();
                         $("div#clienteIdField").show();
                         fly01.fn.submitErrorHandler(null, data.message);
@@ -179,7 +206,7 @@
             if (!onCancelMustDeleteOrdemServico) { $('li#stepCadastro div.step-title').click(); }
             fly01._.dtOrdemServicoManutencao.refresh();
             fly01._.dtOrdemServicoProdutos.refresh();
-            fly01._.dtOrdemServicoServicos.refresh();
+            fly01._.dtOrdemServicoItemServicos.refresh();
         }
 
         fnBindOverrideSubmit();

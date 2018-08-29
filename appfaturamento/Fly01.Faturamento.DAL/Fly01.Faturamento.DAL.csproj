@@ -332,6 +332,10 @@
     <Compile Include="Migrations\201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.Designer.cs">
       <DependentUpon>201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808281841207_AlterOrdemVendaNotaFiscalContaFinanceiraParcelaPaiIdProdutosServicos.cs" />
+    <Compile Include="Migrations\201808281841207_AlterOrdemVendaNotaFiscalContaFinanceiraParcelaPaiIdProdutosServicos.Designer.cs">
+      <DependentUpon>201808281841207_AlterOrdemVendaNotaFiscalContaFinanceiraParcelaPaiIdProdutosServicos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -574,6 +578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.resx">
       <DependentUpon>201808211426200_AlterNotaFiscalEOrdemVendaAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808281841207_AlterOrdemVendaNotaFiscalContaFinanceiraParcelaPaiIdProdutosServicos.resx">
+      <DependentUpon>201808281841207_AlterOrdemVendaNotaFiscalContaFinanceiraParcelaPaiIdProdutosServicos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

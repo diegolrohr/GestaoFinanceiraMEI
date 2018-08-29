@@ -17,6 +17,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlElement(ElementName = "IE")]
         public string IE { get; set; }
 
+        public bool ShouldSerializeIE()
+        {
+            return !string.IsNullOrEmpty(IE);
+        }
+
         [XmlElement(ElementName = "xEnder")]
         public string Endereco { get; set; }
 

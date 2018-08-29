@@ -53,7 +53,6 @@
 
 
     function calculaTotalOrdemServico() {
-        debugger;
         var idOrdemServico = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
 
@@ -64,17 +63,19 @@
             type: "GET",
             data: { id: idOrdemServico, clienteId: idCliente}
         })
-        .done(function (data) {
+            .done(function (data) {
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
                 $('input#totalOrdemServico').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val(data.total.QuantidadeItensCliente);
                 fly01.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalOrdemsServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val("0");
                 fly01.fn.submitErrorHandler(null, data.message);
             }
             fly01.loading.stop();
@@ -102,6 +103,7 @@
     }
 
     function fnBindOverrideSubmit() {
+        debugger;
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
@@ -181,13 +183,7 @@
             + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
     }
 
-    function EstoqueNegativoETotal() {
-        fly01._.dtProdutosEstoqueNegativo.refresh();
-        calculaTotalOrdemServico();
-    }
-
-    function fnFormReadyOrdemServico () {
-
+    function fnFormReadyOrdemServico() {
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();
@@ -212,20 +208,9 @@
 
         fnSetInformacoes();
 
-        $('li#stepFinalizar div.step-title').click(function () {
+        $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid()) {
-                EstoqueNegativoETotal();
-            }
-        });
-        $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").valid()) {
-                EstoqueNegativoETotal();
-            }
-        });
-
-        $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
-                EstoqueNegativoETotal();
+                calculaTotalOrdemServico();
             }
         });
     }

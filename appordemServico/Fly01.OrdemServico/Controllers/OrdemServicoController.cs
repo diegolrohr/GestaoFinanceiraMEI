@@ -357,7 +357,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 3,
+                        Quantity = 4,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -446,10 +446,13 @@ namespace Fly01.OrdemServico.Controllers
             #endregion
 
             #region step Finalizar
-            config.Elements.Add(new InputCurrencyUI { Id = "quantidadeItensCliente", Class = "col s12 m4", Label = "Qtd. Itens do Cliente", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m6", Label = "Total (produtos + serviços)", Readonly = true });
+            config.Elements.Add(new InputNumbersUI { Id = "quantidadeItensCliente", Class = "col s12 m3", Label = "Qtd. Itens do Cliente", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m3", Label = "Total produtos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m3", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m3", Label = "Total (produtos + serviços)", Readonly = true });
+
+
+
 
             #endregion
 

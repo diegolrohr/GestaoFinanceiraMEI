@@ -14,15 +14,17 @@
         }
     }
 
+
     function fnFormReady() {
-        if ($('#contaEmiteBoleto').prop('checked') == false)
-        {
+        if ($('#id').val() != "" && $('#id').val() != undefined) {
+            fnContaEmiteBoleto($('#bancoId').val());
+        } else {
             $('#contaEmiteBoletoField').hide();
             $('#codigoCedenteField').hide();
             $('#codigoDVField').hide();
             $('#taxaJurosField').hide();
             $('#percentualMultaField').hide();
-            $('#textInfoBoletosField').hide();   
+            $('#textInfoBoletosField').hide();
         }
     }
 </script>

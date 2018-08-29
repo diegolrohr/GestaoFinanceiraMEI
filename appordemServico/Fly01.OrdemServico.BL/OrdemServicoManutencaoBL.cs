@@ -10,7 +10,7 @@ namespace Fly01.OrdemServico.BL
     {
         private readonly ProdutoBL _produtoBL;
 
-        public OrdemServicoManutencaoBL(AppDataContextBase context, ProdutoBL produtoBL, OrdemServicoBL ordemServicoBL) : base(context, ordemServicoBL)
+        public OrdemServicoManutencaoBL(AppDataContextBase context, ProdutoBL produtoBL) : base(context)
         {
             _produtoBL = produtoBL;
         }

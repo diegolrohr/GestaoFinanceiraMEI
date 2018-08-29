@@ -10,11 +10,11 @@ namespace Fly01.OrdemServico.BL.Base
 {
     public abstract class OrdemServicoItemBLBase<TEntity> : PlataformaBaseBL<TEntity> where TEntity : OrdemServicoItemBase
     {
-        private readonly OrdemServicoBL _ordemServicoBL;
+        private readonly GenericRepository<Core.Entities.Domains.Commons.OrdemServico> _repositoryOS;
 
-        public OrdemServicoItemBLBase(AppDataContextBase context, OrdemServicoBL ordemServicoBL) : base(context)
+        public OrdemServicoItemBLBase(AppDataContextBase context) : base(context)
         {
-            _ordemServicoBL = ordemServicoBL;
+            _repositoryOS = new GenericRepository<Core.Entities.Domains.Commons.OrdemServico>(context);
         }
 
         public override void Delete(TEntity entityToDelete)
@@ -56,6 +56,6 @@ namespace Fly01.OrdemServico.BL.Base
                         new Error("Só é permitido editar ordens 'Em Preenchimento', 'Em Aberto' e 'Em Andamento'", "status"));
 
         private Core.Entities.Domains.Commons.OrdemServico GetOrdemServico(Guid id)
-            => _ordemServicoBL.All.AsNoTracking().FirstOrDefault(e => e.Id == id);
+            => _repositoryOS.All.AsNoTracking().FirstOrDefault(e => e.Id == id && e.PlataformaId == PlataformaUrl);
     }
 }

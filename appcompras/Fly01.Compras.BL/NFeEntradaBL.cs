@@ -343,6 +343,13 @@ namespace Fly01.Compras.BL
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                             }
+                            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
+                            {
+                                detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                                detalhe.Imposto.ICMS.PercentualReducaoBCST = 0;
+                            }
                         }
                         if (itemTributacao.CalculaST)
                         {
@@ -523,58 +530,58 @@ namespace Fly01.Compras.BL
                         };
                     }
 
-                var entidade = CertificadoDigitalBL.GetEntidade();
+                    var entidade = CertificadoDigitalBL.GetEntidade();
 
-                var notaFiscal = new TransmissaoVM()
-                {
-                    Homologacao = entidade.Homologacao,
-                    Producao = entidade.Producao,
-                    EntidadeAmbiente = entidade.EntidadeAmbiente,
-                    Item = new List<ItemTransmissaoVM>()
+                    var notaFiscal = new TransmissaoVM()
+                    {
+                        Homologacao = entidade.Homologacao,
+                        Producao = entidade.Producao,
+                        EntidadeAmbiente = entidade.EntidadeAmbiente,
+                        Item = new List<ItemTransmissaoVM>()
                         {
                             itemTransmissao
                         }
-                };
+                    };
 
-                var header = new Dictionary<string, string>()
+                    var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-                entity.Mensagem = null;
-                entity.Recomendacao = null;
-                entity.XML = null;
-                entity.PDF = null;
+                    entity.Mensagem = null;
+                    entity.Recomendacao = null;
+                    entity.XML = null;
+                    entity.PDF = null;
 
-                var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
-                var retorno = response.Notas.FirstOrDefault();
-                if (retorno.Error != null)
-                {
-                    entity.Status = StatusNotaFiscal.FalhaTransmissao;
-                    var mensagens = "";
-                    foreach (var item in retorno.Error)
+                    var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
+                    var retorno = response.Notas.FirstOrDefault();
+                    if (retorno.Error != null)
                     {
-                        var schemaMensagens = "";
-                        foreach (var schema in item.SchemaMensagem)
+                        entity.Status = StatusNotaFiscal.FalhaTransmissao;
+                        var mensagens = "";
+                        foreach (var item in retorno.Error)
                         {
-                            schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            var schemaMensagens = "";
+                            foreach (var schema in item.SchemaMensagem)
+                            {
+                                schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            }
+                            mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
                         }
-                        mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
+                        entity.Mensagem = mensagens;
                     }
-                    entity.Mensagem = mensagens;
+                    else
+                    {
+                        entity.SefazId = retorno.NotaId;
+                    }
                 }
-                else
-                {
-                    entity.SefazId = retorno.NotaId;
-                }
-            }
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
-    }
-}
+            }
+        }
 
         public override void Insert(NFeEntrada entity)
         {

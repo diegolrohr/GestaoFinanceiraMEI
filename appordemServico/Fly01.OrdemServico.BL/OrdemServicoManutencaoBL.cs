@@ -1,11 +1,12 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
+using Fly01.OrdemServico.BL.Base;
 using Fly01.OrdemServico.BL.Extension;
 
 namespace Fly01.OrdemServico.BL
 {
-    public class OrdemServicoManutencaoBL : PlataformaBaseBL<OrdemServicoManutencao>
+    public class OrdemServicoManutencaoBL : OrdemServicoItemBLBase<OrdemServicoManutencao>
     {
         private readonly ProdutoBL _produtoBL;
 

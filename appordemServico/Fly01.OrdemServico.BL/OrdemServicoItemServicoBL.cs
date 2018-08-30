@@ -1,11 +1,16 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.OrdemServico.BL.Base;
 using Fly01.OrdemServico.BL.Extension;
+using System;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Fly01.OrdemServico.BL
 {
-    public class OrdemServicoItemServicoBL : PlataformaBaseBL<OrdemServicoItemServico>
+    public class OrdemServicoItemServicoBL : OrdemServicoItemBLBase<OrdemServicoItemServico>
     {
         private readonly ServicoBL _servicoBL;
 
@@ -23,6 +28,13 @@ namespace Fly01.OrdemServico.BL
             entity.Fail(entity.Desconto > (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior ao total bruto", "desconto"));
 
             base.ValidaModel(entity);
+        }
+
+        protected override void ValidarOSDelete(OrdemServicoItemServico entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id)
+        {
+            base.ValidarOSDelete(entity, os, id);
+            if (os.Status == StatusOrdemServico.EmAberto || os.Status == StatusOrdemServico.EmAndamento)
+                entity.Fail(!All.AsNoTracking().Any(x => x.OrdemServicoId == x.Id && x.Id != id), new Error("É preciso existir ao menos um serviço na ordem", "status"));
         }
     }
 }

@@ -3,6 +3,8 @@
 
     var justSaveOrdemToGoStepProdutos = false;
     var onCancelMustDeleteOrdemServico = false;
+    var finalizarPreenchimento = true
+    var numeroOS = 0;
 
     function isCreate() {
         var id = $("form#fly01frm input#id").val();
@@ -94,12 +96,8 @@
                 return $("form#fly01frm").submit();
             }
         }
-        $('li#stepProdutos div.step-title').click(function () {
-            saveOrdemServico();
-        });
-        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            saveOrdemServico();
-        });
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () { saveOrdemServico(); });
+        $('li#stepProdutos div.step-title').click(function () { saveOrdemServico(); });
     }
 
     function fnBindOverrideSubmit() {
@@ -115,9 +113,6 @@
             
 
             var jsonData = $(this).serializeObject();
-            if ($('input#finalizarPedido:checked').val() == "true") {
-                jsonData.status = "Finalizado";
-            }
 
             $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
@@ -127,13 +122,23 @@
 
             var url;
             if (isCreate()) {
+                jsonData.status = 'EmPreenchimento';
                 url = '@Url.Action("Create", "OrdemServico")';
             }
             else {
                 url = '@Url.Action("Edit", "OrdemServico")';
+                if (finalizarPreenchimento && jsonData.status === 'EmPreenchimento') {
+                    jsonData.status = "EmAberto";
+                }
             }
 
-            
+            //No FIREFOX, o comando $("form#fly01frm input#numero").val não está pegando
+            //A atualização feita no success abiaxo do ajax, de forma que em um próximo
+            //passo de salvamento, o número gerado não é resgatado
+            console.log('Status: ' + jsonData.status);
+            if (numeroOS > 0) {
+                jsonData.numero = numeroOS;
+            }
 
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
@@ -151,7 +156,7 @@
                         if (justSaveOrdemToGoStepProdutos) {
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
-                            $("form#fly01frm input#numero").val(data.numero);
+                            $("form#fly01frm input#numero").val(numeroOS = data.numero);
                             fly01._.dtOrdemServicoManutencao.refresh();
                             fly01._.dtOrdemServicoItemProdutos.refresh();
                             fly01._.dtOrdemServicoItemServicos.refresh();
@@ -213,11 +218,14 @@
 
         fnSetInformacoes();
 
-        $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+        function finalizarPreenchmento() {
             if (!isCreate() && $("form#fly01frm").valid()) {
                 calculaTotalOrdemServico();
+                finalizarPreenchimento = true;
             }
-        });
+        };
+        $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () { finalizarPreenchmento(); });
+        $('li#stepFinalizar div.step-title').click(function () { finalizarPreenchmento(); });
     }
 
 </script>

@@ -43,11 +43,6 @@ namespace Fly01.OrdemServico.BL
                 x.Vendedor
             });
 
-            if ((int)entity.Status < 1)
-            {
-                entity.Status = StatusOrdemServico.EmAberto;
-            }
-
             if (responsavel != null)
                 entity.Fail(!responsavel.Vendedor, new Error("A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
 
@@ -56,6 +51,8 @@ namespace Fly01.OrdemServico.BL
 
         public override void Insert(Core.Entities.Domains.Commons.OrdemServico entity)
         {
+            entity.Status = StatusOrdemServico.EmPreenchimento;
+
             base.Insert(entity);
 
             //Só obtém próximo número depois que tudo foi validado, para poupar sequenciais no caso defalha
@@ -67,12 +64,15 @@ namespace Fly01.OrdemServico.BL
         public override void Update(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            var canUpdate = previous.Status == StatusOrdemServico.EmAberto || previous.Status == StatusOrdemServico.EmAndamento;
+            var canUpdate = previous.Status == StatusOrdemServico.EmAberto || previous.Status == StatusOrdemServico.EmAndamento || previous.Status == StatusOrdemServico.EmPreenchimento;
             entity.Fail(!canUpdate, new Error("Somente ordens em aberto e em andamento podem ser alteradas", "status"));
             if (canUpdate)
             {
                 entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
                 entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
+                entity.Fail(previous.Status != StatusOrdemServico.EmAberto && entity.Status == StatusOrdemServico.EmAndamento, new Error("Somente ordens 'Em Aberto' podem se tornar 'Em Andamento'", "status"));
+                if (previous.Status == StatusOrdemServico.EmPreenchimento || previous.Status == StatusOrdemServico.EmAberto)
+                    entity.Fail(!OrdemServicoItemServicoBL.All.AsNoTracking().Any(x => x.OrdemServicoId == entity.Id), new Error("É preciso informar ao menos um serviço", "status"));
                 entity.Fail(previous.Numero != entity.Numero, new Error("Não é permitido alterar o número da OS", "status"));
             }
 

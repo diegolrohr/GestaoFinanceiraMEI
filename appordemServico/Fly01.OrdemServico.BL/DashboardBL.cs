@@ -26,11 +26,11 @@ namespace Fly01.OrdemServico.BL
         public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime filtro)
         {
             List<OrdemServicoPorStatusVM> listaResult = new List<OrdemServicoPorStatusVM>();
-            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year)).Count();
+            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year) && x.Status != StatusOrdemServico.EmPreenchimento).Count();
 
-            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year) && x.Status != StatusOrdemServico.EmPreenchimento)
                                             .GroupBy(x => new { x.Status })
-                                            .Select(x => new 
+                                            .Select(x => new
                                             {
                                                 x.Key.Status,
                                                 Quantidade = x.Count()
@@ -43,7 +43,7 @@ namespace Fly01.OrdemServico.BL
                 listaResult.Add(new OrdemServicoPorStatusVM
                 {
                     Status = EnumHelper.GetValue(typeof(StatusOrdemServico), x.Status.ToString()),
-                Quantidade = x.Quantidade,
+                    Quantidade = x.Quantidade,
                     QuantidadeTotal = QtdTotal
                 });
             });
@@ -52,7 +52,7 @@ namespace Fly01.OrdemServico.BL
 
         public List<OrdemServicosPorDiaVM> GetQuantidadeOrdemServicoPorDia(DateTime filtro)
         {
-            return _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year))
+            return _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year) && x.Status != StatusOrdemServico.EmPreenchimento)
                                                            .Select(x => new
                                                            {
                                                                x.DataEntrega,
@@ -71,40 +71,37 @@ namespace Fly01.OrdemServico.BL
         public List<TopServicosProdutosOrdemServicoVM> GetTopProdutosOrdemServico(DateTime filtro)
         {
             return _ordemServicoItemProdutoBL.All.AsNoTracking()
-                                .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
-                                .Select(x => new
-                                {
-                                    x.ProdutoId,
-                                    x.Produto.Descricao,
-                                    x.Quantidade,
-                                    x.Valor,
-                                    x.Desconto
-                                })
-                                .GroupBy(x=> new {
-                                    x.ProdutoId, x.Descricao
-                                })
-                                .Select(x=> new TopServicosProdutosOrdemServicoVM {
-                                    Id = x.Key.ProdutoId,
-                                    Descricao = x.Key.Descricao,
-                                    Quantidade = x.Sum(y=>y.Quantidade),
-                                    ValorTotal = x.Sum(y => (y.Quantidade * y.Valor) - y.Desconto)
-                                })
-                                .OrderByDescending(x => x.Quantidade)
-                                .Take(10).ToList();
+                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year) && x.OrdemServico.Status != StatusOrdemServico.EmPreenchimento)
+                                            .Select(x => new
+                                            {
+                                                x.ProdutoId,
+                                                x.Produto.Descricao,
+                                                x.Quantidade,
+                                                x.Valor
+                                            })
+                                            .GroupBy(x => new { x.ProdutoId, x.Descricao })
+                                            .Select(x => new TopServicosProdutosOrdemServicoVM
+                                            {
+                                                Id = x.Key.ProdutoId,
+                                                Descricao = x.Key.Descricao,
+                                                Quantidade = x.Sum(y => y.Quantidade),
+                                                ValorTotal = x.Sum(y => y.Valor)
+                                            })
+                                            .OrderByDescending(x => x.Quantidade)
+                                            .Take(10).ToList();
         }
 
         public List<TopServicosProdutosOrdemServicoVM> GetTopServicosOrdemServico(DateTime filtro)
         {
 
             return _ordemServicoItemServicoBL.All.AsNoTracking()
-                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year))
+                                            .Where(x => x.OrdemServico.DataEmissao.Month.Equals(filtro.Month) && x.OrdemServico.DataEmissao.Year.Equals(filtro.Year) && x.OrdemServico.Status != StatusOrdemServico.EmPreenchimento)
                                             .Select(x => new
                                             {
                                                 x.ServicoId,
                                                 x.Servico.Descricao,
                                                 x.Quantidade,
-                                                x.Valor,
-                                                x.Desconto
+                                                x.Valor
                                             })
                                             .GroupBy(x => new { x.ServicoId, x.Descricao })
                                             .Select(x => new TopServicosProdutosOrdemServicoVM
@@ -112,7 +109,7 @@ namespace Fly01.OrdemServico.BL
                                                 Id = x.Key.ServicoId,
                                                 Descricao = x.Key.Descricao,
                                                 Quantidade = x.Sum(y => y.Quantidade),
-                                                ValorTotal = x.Sum(y => (y.Quantidade * y.Valor) - y.Desconto)
+                                                ValorTotal = x.Sum(y => y.Valor)
 
                                             })
                                             .OrderByDescending(x => x.Quantidade)

@@ -34,7 +34,7 @@ namespace Fly01.OrdemServico.BL
         {
             base.ValidarOSDelete(entity, os, id);
             if (os.Status == StatusOrdemServico.EmAberto || os.Status == StatusOrdemServico.EmAndamento)
-                entity.Fail(!All.AsNoTracking().Any(x => x.OrdemServicoId == x.Id && x.Id != id), new Error("É preciso existir ao menos um serviço na ordem", "status"));
+                entity.Fail(!All.AsNoTracking().Any(x => x.OrdemServicoId == entity.OrdemServicoId && x.Id != id), new Error("É preciso existir ao menos um serviço na ordem", "status"));
         }
     }
 }

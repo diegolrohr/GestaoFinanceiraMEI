@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Notifications;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
 using System.Linq;
@@ -194,7 +195,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSomatorioICMSST(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            double? somatorioICMSSTTrue = item.Detalhes.Sum(e => e.Imposto.ICMS.ValorICMSST ?? 0);
+            var CSTsICMSST = "201||202||203||900";
+            double? somatorioICMSSTTrue = item.Detalhes.Where(x => CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(e => e.Imposto.ICMS.ValorICMSST ?? 0);
             item.Total.ICMSTotal.SomatorioICMSST = Arredondar(item.Total.ICMSTotal.SomatorioICMSST, 2);
             somatorioICMSSTTrue = Arredondar(somatorioICMSSTTrue, 2);
 
@@ -206,7 +208,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarSomatorioBaseCalculoST(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            double? somatorioBCSTTrue = item.Detalhes.Sum(e => e.Imposto.ICMS.ValorBCST ?? 0);
+            double? somatorioBCSTTrue = item.Detalhes.Where(x => (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros))
+                .Sum(e => e.Imposto.ICMS.ValorBCST ?? 0);
             item.Total.ICMSTotal.SomatorioBCST = Arredondar(item.Total.ICMSTotal.SomatorioBCST, 2);
             somatorioBCSTTrue = Arredondar(somatorioBCSTTrue, 2);
 

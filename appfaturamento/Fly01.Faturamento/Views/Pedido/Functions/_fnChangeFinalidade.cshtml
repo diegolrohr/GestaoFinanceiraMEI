@@ -12,6 +12,10 @@
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
                 $("input#tipoCarteira").val("Despesa");
                 $("#nFeRefComplementarIsDevolucaoField").hide();
+                if (isCreate()) {
+                    $('select#tipoNfeComplementar').val("NaoComplementar");
+                    $('select#tipoNfeComplementar').material_select();
+                }
             } else {//complementar
                 if (isCreate()) {
                     $('select#tipoNfeComplementar').val("ComplPrecoQtd");
@@ -45,6 +49,10 @@
             $("#grupoTributarioPadraoDescricao").removeClass("invalid")
 
             $("input#tipoCarteira").val("Receita");
+            if (isCreate()) {
+                $('select#tipoNfeComplementar').val("NaoComplementar");
+                $('select#tipoNfeComplementar').material_select();
+            }
         }
     }
 

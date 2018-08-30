@@ -140,7 +140,6 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     x.EstadoDestinoId == Cabecalho.Cliente.EstadoId &
                     x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                     ).FirstOrDefault();
-                var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
 
                 ICMS.UF = Cabecalho.Cliente.Estado?.Sigla;
                 ICMS.PercentualMargemValorAdicionadoST = st != null ? st.Mva : 0;

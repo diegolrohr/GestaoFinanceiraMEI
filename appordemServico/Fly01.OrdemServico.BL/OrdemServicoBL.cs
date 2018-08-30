@@ -68,9 +68,13 @@ namespace Fly01.OrdemServico.BL
             entity.Fail(!canUpdate, new Error("Somente ordens em aberto e em andamento podem ser alteradas", "status"));
             if (canUpdate)
             {
-                entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
-                entity.Fail(previous.Status != StatusOrdemServico.EmAberto && previous.Status != StatusOrdemServico.EmAndamento
-                            && entity.Status == StatusOrdemServico.EmAndamento, new Error("Somente ordens 'Em Aberto' podem se tornar 'Em Andamento'", "status"));
+                if (previous.Status != entity.Status)
+                {
+                    entity.Fail(previous.Status != StatusOrdemServico.EmPreenchimento && entity.Status == StatusOrdemServico.EmAberto, new Error("Apenas ordens 'Em Preenchimento' podem se tornar 'Em Aberto'", "status"));
+                    entity.Fail(previous.Status != StatusOrdemServico.EmAberto && entity.Status == StatusOrdemServico.EmAndamento, new Error("Somente ordens 'Em Aberto' podem se tornar 'Em Andamento'", "status"));
+                    entity.Fail(previous.Status != StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.Concluido, new Error("Somente ordens 'Em Andamento' podem se tornar 'Concluído'", "status"));
+                    entity.Fail(previous.Status == StatusOrdemServico.EmPreenchimento && entity.Status == StatusOrdemServico.Cancelado, new Error("Ordens 'Em Preenchimento' não podem ser canceladas. Conclua o preenchimento ou a exclua", "status"));
+                }
                 if (previous.Status == StatusOrdemServico.EmPreenchimento || previous.Status == StatusOrdemServico.EmAberto)
                     entity.Fail(!OrdemServicoItemServicoBL.All.AsNoTracking().Any(x => x.OrdemServicoId == entity.Id), new Error("É preciso informar ao menos um serviço", "status"));
                 entity.Fail(previous.Numero != entity.Numero, new Error("Não é permitido alterar o número da OS", "status"));

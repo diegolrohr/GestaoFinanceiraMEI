@@ -30,11 +30,11 @@ namespace Fly01.OrdemServico.BL
             base.ValidaModel(entity);
         }
 
-        protected override void ValidarOSDelete(Core.Entities.Domains.Commons.OrdemServico os, Guid id)
+        protected override void ValidarOSDelete(OrdemServicoItemServico entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id)
         {
-            base.ValidarOSDelete(os, id);
+            base.ValidarOSDelete(entity, os, id);
             if (os.Status == StatusOrdemServico.EmAberto || os.Status == StatusOrdemServico.EmAndamento)
-                os.Fail(!All.AsNoTracking().Any(x => x.OrdemServicoId == x.Id && x.Id != id), new Error("É preciso existir ao menos um serviço na ordem", "status"));
+                entity.Fail(!All.AsNoTracking().Any(x => x.OrdemServicoId == x.Id && x.Id != id), new Error("É preciso existir ao menos um serviço na ordem", "status"));
         }
     }
 }

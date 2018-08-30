@@ -22,7 +22,7 @@ namespace Fly01.OrdemServico.BL.Base
             var id = entityToDelete.Id;
             var os = GetOrdemServico(entityToDelete);
 
-            if (os != null) ValidarOSDelete(os, id);
+            if (os != null) ValidarOSDelete(entityToDelete, os, id);
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(os.Notification.Get());
@@ -33,7 +33,7 @@ namespace Fly01.OrdemServico.BL.Base
         {
             var os = GetOrdemServico(entity);
 
-            if (os != null) ValidarOSUpdate(os, entity.Id);
+            if (os != null) ValidarOSUpdate(entity, os, entity.Id);
 
             base.Update(entity);
         }
@@ -42,17 +42,17 @@ namespace Fly01.OrdemServico.BL.Base
         {
             var os = GetOrdemServico(entity);
 
-            if (os != null) ValidarOSInsert(os, entity.Id);
+            if (os != null) ValidarOSInsert(entity, os, entity.Id);
 
             base.Insert(entity);
         }
 
-        protected virtual void ValidarOSInsert(Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(os, id);
-        protected virtual void ValidarOSUpdate(Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(os, id);
-        protected virtual void ValidarOSDelete(Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(os, id);
+        protected virtual void ValidarOSInsert(TEntity entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(entity, os, id);
+        protected virtual void ValidarOSUpdate(TEntity entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(entity, os, id);
+        protected virtual void ValidarOSDelete(TEntity entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id) => ValidarOS(entity, os, id);
 
-        protected virtual void ValidarOS(Core.Entities.Domains.Commons.OrdemServico os, Guid id)
-            => os.Fail(os.Status != StatusOrdemServico.EmAberto && os.Status != StatusOrdemServico.EmAndamento && os.Status != StatusOrdemServico.EmPreenchimento,
+        protected virtual void ValidarOS(TEntity entity, Core.Entities.Domains.Commons.OrdemServico os, Guid id)
+            => entity.Fail(os.Status != StatusOrdemServico.EmAberto && os.Status != StatusOrdemServico.EmAndamento && os.Status != StatusOrdemServico.EmPreenchimento,
                         new Error("Só é permitido editar ordens 'Em Preenchimento', 'Em Aberto' e 'Em Andamento'", "status"));
 
         private Core.Entities.Domains.Commons.OrdemServico GetOrdemServico(TEntity entity)

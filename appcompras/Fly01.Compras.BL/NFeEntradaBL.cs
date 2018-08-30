@@ -574,6 +574,7 @@ namespace Fly01.Compras.BL
                     else
                     {
                         entity.SefazId = retorno.NotaId;
+                        entity.XML = retorno.XML;
                     }
                 }
             }

@@ -69,8 +69,8 @@ namespace Fly01.OrdemServico.BL
             if (canUpdate)
             {
                 entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
-                entity.Fail(previous.Status == StatusOrdemServico.EmAndamento && entity.Status == StatusOrdemServico.EmAberto, new Error("Não é possível alterar o status de 'Em Andamento' para 'Em Aberto'", "status"));
-                entity.Fail(previous.Status != StatusOrdemServico.EmAberto && entity.Status == StatusOrdemServico.EmAndamento, new Error("Somente ordens 'Em Aberto' podem se tornar 'Em Andamento'", "status"));
+                entity.Fail(previous.Status != StatusOrdemServico.EmAberto && previous.Status != StatusOrdemServico.EmAndamento
+                            && entity.Status == StatusOrdemServico.EmAndamento, new Error("Somente ordens 'Em Aberto' podem se tornar 'Em Andamento'", "status"));
                 if (previous.Status == StatusOrdemServico.EmPreenchimento || previous.Status == StatusOrdemServico.EmAberto)
                     entity.Fail(!OrdemServicoItemServicoBL.All.AsNoTracking().Any(x => x.OrdemServicoId == entity.Id), new Error("É preciso informar ao menos um serviço", "status"));
                 entity.Fail(previous.Numero != entity.Numero, new Error("Não é permitido alterar o número da OS", "status"));
@@ -81,7 +81,8 @@ namespace Fly01.OrdemServico.BL
 
         public override void Delete(Core.Entities.Domains.Commons.OrdemServico entityToDelete)
         {
-            entityToDelete.Fail(entityToDelete.Status != StatusOrdemServico.EmAberto, new Error("Somente ordens em aberto pode ser deletada", "status"));
+            entityToDelete.Fail(entityToDelete.Status != StatusOrdemServico.EmAberto && entityToDelete.Status != StatusOrdemServico.EmPreenchimento,
+                                new Error("Somente ordens 'Em Aberto' ou 'Em Preenchimento' podem ser deletadas", "status"));
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(entityToDelete.Notification.Get());

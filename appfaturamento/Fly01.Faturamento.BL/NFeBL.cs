@@ -293,7 +293,8 @@ namespace Fly01.Faturamento.BL
                 SerieNotaFiscalBL = SerieNotaFiscalBL,
                 SubstituicaoTributariaBL = SubstituicaoTributariaBL,
                 TotalTributacaoBL = TotalTributacaoBL,
-                PlataformaUrl = PlataformaUrl
+                PlataformaUrl = PlataformaUrl,
+                AppUser = AppUser
             };
         }
     }

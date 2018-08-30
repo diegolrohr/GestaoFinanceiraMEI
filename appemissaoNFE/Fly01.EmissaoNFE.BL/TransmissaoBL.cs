@@ -20,8 +20,7 @@ namespace Fly01.EmissaoNFE.BL
         protected EmpresaBL EmpresaBL;
         protected EntidadeBL EntidadeBL;
         protected EstadoBL EstadoBL;
-        protected NFeBL NFeBL;
-        private static string msgError;
+        protected NFeBL NFeBL;        
         protected HelperValidaModelTransmissao helperValidaModelTransmissao;
 
         public TransmissaoBL(AppDataContextBase context, CfopBL cfopBL, ChaveBL chaveBL, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, NFeBL nfeBL) : base(context)

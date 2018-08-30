@@ -67,7 +67,8 @@ namespace Fly01.Compras.BL
                         FornecedorId = fornecedorId,
                         OrcamentoOrigemId = entity.Id,
                         TipoCompra = TipoVenda.Normal,
-                        Total = orcamentoItens.Sum(x => x.Total)
+                        Total = orcamentoItens.Sum(x => x.Total),
+                        PlataformaId = PlataformaUrl.ToString()
                     };
                     PedidoBL.Insert(pedido);
 
@@ -98,22 +99,16 @@ namespace Fly01.Compras.BL
 
         public override void Insert(Orcamento entity)
         {
-            //var numero = default(int);
-
             if (entity.Id == default(Guid))
             {
                 entity.Id = Guid.NewGuid();
             }
 
-            var max = Everything.Any(x => x.Id != entity.Id) ? Everything.Max(x => x.Numero) : 0;
-
-            entity.Numero = (max == 1 && !Everything.Any(x => x.Id != entity.Id && x.Ativo && x.Numero == 1)) ? 1 : ++max;
-
-            //rpc = new RpcClient();
-            //numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
-
-            //entity.Numero = numero;
-
+            var numero = default(int);
+            rpc = new RpcClient();
+            numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl.ToString()},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
+            entity.Numero = numero;
+            
             ValidaModel(entity);
 
             if (entity.Status == StatusOrdemCompra.Finalizado & entity.IsValid())
@@ -131,6 +126,7 @@ namespace Fly01.Compras.BL
 
             ValidaModel(entity);
 
+ 
             if (entity.Status == StatusOrdemCompra.Finalizado & entity.IsValid())
             {
                 GeraPedidos(entity);

@@ -20,6 +20,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 {
     public abstract class TransmissaoNFe
     {
+        const string CSTsICMSST = "201||202||203||900";
         protected NFe NFe { get; set; }
         protected TransmissaoBLs TransmissaoBLs { get; set; }
         protected ParametroTributario ParametrosTributarios { get; set; }
@@ -263,7 +264,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             return (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
                    (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
                    (detalhe.Imposto.ICMS.ValorFCPST ?? 0) +
-                   (detalhe.Imposto.ICMS.ValorICMSST ?? 0) +
+                   (CSTsICMSST.Contains(((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString()) ? (detalhe.Imposto.ICMS.ValorICMSST ?? 0) : 0) +
                    (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
                    (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
                    (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
@@ -279,7 +280,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                         new DetalhePagamento()
                         {
                             TipoFormaPagamento = ObterTipoFormaPagamento(),
-                            ValorPagamento = valorPagamento
+                            ValorPagamento = ObterTipoFormaPagamento() == TipoFormaPagamento.SemPagamento ? 0.0 : valorPagamento
                         }
                     }
             };
@@ -293,10 +294,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 {
                     SomatorioBC = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBC.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBC.HasValue).Sum(x => x.Imposto.ICMS.ValorBC.Value), 2) : 0,
                     SomatorioICMS = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
-                    SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
+                    SomatorioBCST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue && (x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros))
+                        ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros)).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                     SomatorioCofins = detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
-                    SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto??0), 2) : 0,
-                    SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
+                    SomatorioDesconto = detalhes.Select(x => x.Produto).Any(x => x != null) ? Math.Round(detalhes.Sum(x => x.Produto.ValorDesconto ?? 0), 2) : 0,
+                    SomatorioICMSST = detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
+                        ? Math.Round(detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
                     ValorFrete = PagaFrete() ? detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                     ValorSeguro = 0,
                     SomatorioIPI = detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,
@@ -355,23 +358,72 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             };
         }
 
-        //public Cobranca ObterCobranca()
-        //{
-        //    if (NFe.GeraFinanceiro)
-        //    {
-        //        var contas = ObterContasFinanceiras();
-        //    }
-        //    return null;
-        //}
+        public Cobranca ObterCobranca()
+        {
+            if (NFe.GeraFinanceiro)
+            {
+                var contas = ObterContasFinanceiras();
+                if (contas != null && contas.Any())
+                {
+                    var cobranca = new Cobranca()
+                    {
+                        Fatura = new Fatura()
+                        {
+                            NumeroFatura = "NF:"+NFe.NumNotaFiscal.Value.ToString(),
+                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                            ValorLiquido = contas.Sum(x => x.ValorPrevisto),
+                            ValorDesconto = 0.0
+                        }
+                    };
+                    var num = 1;
+                    cobranca.Duplicatas = new List<Duplicata>();
+                    foreach (var item in contas.OrderBy(x => x.DataVencimento))
+                    {
+                        cobranca.Duplicatas.Add(
+                            new Duplicata()
+                            {
+                                Numero = num.ToString().PadLeft(3,'0'),
+                                ValorDuplicata = item.ValorPrevisto,
+                                Vencimento = item.DataVencimento
+                            });
+                        num++;
+                    }
+                    return cobranca;
+                }
+            }
+            return null;
+        }
 
-        //public List<ContaFinanceira> ObterContasFinanceiras()
-        //{
-        //    var x = new List<ContaPagar>()
-        //    {
+        public List<ContaFinanceira> ObterContasFinanceiras()
+        {
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", TransmissaoBLs.AppUser  },
+                { "PlataformaUrl", TransmissaoBLs.PlataformaUrl }
+            };
+            var queryString = new Dictionary<string, string>()
+            {
+                {
+                    "contaFinanceiraParcelaPaiId",
+                    NFe.ContaFinanceiraParcelaPaiIdProdutos.HasValue
+                        ? NFe.ContaFinanceiraParcelaPaiIdProdutos.Value.ToString()
+                        : default(Guid).ToString()
+                }
+            };
 
-        //    };
+            var contas = new List<ContaFinanceira>();
+            if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
+            else
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
 
-        //    return x.ToList<ContaFinanceira>();
-        //}
+            return contas;
+        }
     }
 }

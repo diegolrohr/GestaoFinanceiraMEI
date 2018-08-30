@@ -8,9 +8,19 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Faturamento.BL
 {
+    public enum TipoItem
+    {
+        [Subtitle("Produtos", "Produtos", "Produtos")]
+        Produtos = 1,
+
+        [Subtitle("Servicos", "Serviços", "Serviços")]
+        Servicos = 2
+    }
+
     public class OrdemVendaBL : PlataformaBaseBL<OrdemVenda>
     {
         public const int MaxLengthObservacao = 200;
@@ -24,8 +34,8 @@ namespace Fly01.Faturamento.BL
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         
-        private readonly string descricaoVenda = @"Venda nº: {0}";
-        private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} : {1}";
+        private readonly string descricaoVenda = @"Venda nº: {0} de {1}";
+        private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} de {1} : {2}";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
@@ -126,7 +136,7 @@ namespace Fly01.Faturamento.BL
             }
             else
             {
-                notaFiscal = new NFSe();
+                notaFiscal = new NFSe();                
             }
 
             if (entity.TipoVenda == TipoVenda.Complementar)
@@ -171,8 +181,9 @@ namespace Fly01.Faturamento.BL
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
             notaFiscal.GeraFinanceiro = entity.GeraFinanceiro;
-            notaFiscal.ContaFinanceiraParcelaPaiId = entity.ContaFinanceiraParcelaPaiId;
             notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
+            notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
+            notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
             return notaFiscal;
         }
 
@@ -468,9 +479,16 @@ namespace Fly01.Faturamento.BL
 
         private void GeraIdContaFinanceiraRecuperarDadosParcela(OrdemVenda entity)
         {
-            if (entity.GeraFinanceiro && (entity.ContaFinanceiraParcelaPaiId == default(Guid) || entity.ContaFinanceiraParcelaPaiId == null))
+            if (entity.GeraFinanceiro)
             {
-                entity.ContaFinanceiraParcelaPaiId = Guid.NewGuid();
+                if (entity.ContaFinanceiraParcelaPaiIdProdutos == default(Guid) || entity.ContaFinanceiraParcelaPaiIdProdutos == null)
+                {
+                    entity.ContaFinanceiraParcelaPaiIdProdutos = Guid.NewGuid();
+                }
+                if (entity.ContaFinanceiraParcelaPaiIdServicos == default(Guid) || entity.ContaFinanceiraParcelaPaiIdServicos == null)
+                {
+                    entity.ContaFinanceiraParcelaPaiIdServicos = Guid.NewGuid();
+                }
             }
         }
 
@@ -522,32 +540,25 @@ namespace Fly01.Faturamento.BL
                     }
                 }
 
-                double totalImpostosServicos = 0; //
+                double totalImpostosServicos = 0;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
-                double valorPrevisto = totalProdutos
-                    + totalServicos
-                    + (entity.GeraNotaFiscal ? totalImpostosProdutos + totalImpostosServicos : 0);
 
-                var observacaoTitulo = string.Format(observacaoVenda, entity.Numero, entity.Observacao);
-                if (observacaoTitulo.Length > MaxLengthObservacao)
-                    observacaoTitulo = observacaoTitulo.Substring(0, MaxLengthObservacao);
-
-                var descricaoTitulo = string.Format(descricaoVenda, entity.Numero);
-                if (descricaoTitulo.Length > MaxLengthObservacao)
-                    descricaoTitulo = descricaoTitulo.Substring(0, MaxLengthObservacao);
+                double valorPrevistoProdutos = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
+                double valorPrevistoServicos = totalServicos + (entity.GeraNotaFiscal ? totalImpostosServicos : 0);
 
                 if (pagaFrete)
                 {
                     var contaPagarTransp = new ContaPagar()
                     {
+                        Id = GetContaFinanceiraParcelaId(TipoItem.Produtos, entity),
                         ValorPrevisto = entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
                         PessoaId = entity.TransportadoraId.Value,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = descricaoTitulo,
-                        Observacao = observacaoTitulo,
+                        Descricao = GetDescricaoTitulo(TipoItem.Produtos, entity),
+                        Observacao = GetObservacaoTitulo(TipoItem.Produtos, entity),
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -555,43 +566,27 @@ namespace Fly01.Faturamento.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if ((entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)) && valorPrevisto > 0)
+                if ((entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))
                 {
-                    var contaReceber = new ContaReceber()
+                    if(valorPrevistoProdutos > 0)
                     {
-                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
-                        ValorPrevisto = valorPrevisto,
-                        CategoriaId = entity.CategoriaId.Value,
-                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                        PessoaId = entity.ClienteId,
-                        DataEmissao = entity.Data,
-                        DataVencimento = entity.DataVencimento.Value,
-                        Descricao = descricaoTitulo,
-                        Observacao = observacaoTitulo,
-                        FormaPagamentoId = entity.FormaPagamentoId.Value,
-                        PlataformaId = PlataformaUrl,
-                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
-                    };
-                    Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
+                        GeraContaReceber(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                    }
+                    if (valorPrevistoServicos > 0)
+                    {
+                        GeraContaReceber(TipoItem.Servicos, valorPrevistoServicos, entity);
+                    }
                 }
-                else if ((entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao)) && valorPrevisto > 0)
+                else if ((entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao)))
                 {
-                    var contaPagar = new ContaPagar()
+                    if (valorPrevistoProdutos > 0)
                     {
-                        Id = entity.ContaFinanceiraParcelaPaiId ?? default(Guid),
-                        ValorPrevisto = valorPrevisto,
-                        CategoriaId = entity.CategoriaId.Value,
-                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                        PessoaId = entity.ClienteId,
-                        DataEmissao = entity.Data,
-                        DataVencimento = entity.DataVencimento.Value,
-                        Descricao = descricaoTitulo,
-                        Observacao = observacaoTitulo,
-                        FormaPagamentoId = entity.FormaPagamentoId.Value,
-                        PlataformaId = PlataformaUrl,
-                        UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
-                    };
-                    Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                        GeraContaPagar(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                    }
+                    if (valorPrevistoServicos > 0)
+                    {
+                        GeraContaPagar(TipoItem.Servicos, valorPrevistoServicos, entity);
+                    }
                 }
             }
 
@@ -623,6 +618,82 @@ namespace Fly01.Faturamento.BL
                 foreach (var movimento in movimentos)
                     Producer<MovimentoOrdemVenda>.Send(routePrefixNameMovimentoOrdemVenda, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
             }
+        }
+
+        private string LimitarMaxLength(string text)
+        {
+            if (text.Length > MaxLengthObservacao)
+                text = text.Substring(0, MaxLengthObservacao);
+
+            return text;
+        }
+
+        private string GetObservacaoTitulo(TipoItem tipoItem, OrdemVenda entity)
+        {
+            var tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), tipoItem.ToString());
+            var observacaoTitulo = string.Format(observacaoVenda, entity.Numero, tipoItemDescription, entity.Observacao);
+            return LimitarMaxLength(observacaoTitulo);
+        }
+
+        private string GetDescricaoTitulo(TipoItem tipoItem, OrdemVenda entity)
+        {
+            var tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), tipoItem.ToString());
+            var descricaoTitulo = string.Format(descricaoVenda, entity.Numero, tipoItemDescription);
+            return LimitarMaxLength(descricaoTitulo);
+        }
+
+        private void GeraContaReceber(TipoItem tipoItem, double valorPrevisto, OrdemVenda entity)
+        {
+            var contaReceber = new ContaReceber()
+            {
+                Id = GetContaFinanceiraParcelaId(tipoItem, entity),
+                ValorPrevisto = valorPrevisto,
+                CategoriaId = entity.CategoriaId.Value,
+                CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                PessoaId = entity.ClienteId,
+                DataEmissao = entity.Data,
+                DataVencimento = entity.DataVencimento.Value,
+                Descricao = GetDescricaoTitulo(tipoItem, entity),
+                Observacao = GetObservacaoTitulo(tipoItem, entity),
+                FormaPagamentoId = entity.FormaPagamentoId.Value,
+                PlataformaId = PlataformaUrl,
+                UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+            };
+            Producer<ContaReceber>.Send(routePrefixNameContaReceber, AppUser, PlataformaUrl, contaReceber, RabbitConfig.EnHttpVerb.POST);
+        }
+
+        private Guid GetContaFinanceiraParcelaId(TipoItem tipoItem, OrdemVenda entity)
+        {
+            var idConta = default(Guid);
+            if (tipoItem == TipoItem.Produtos)
+            {
+                idConta = entity.ContaFinanceiraParcelaPaiIdProdutos ?? default(Guid);
+            }
+            else
+            {
+                idConta = entity.ContaFinanceiraParcelaPaiIdServicos ?? default(Guid);
+            }
+            return idConta;
+        }
+
+        private void GeraContaPagar(TipoItem tipoItem, double valorPrevisto, OrdemVenda entity)
+        { 
+            var contaPagar = new ContaPagar()
+            {
+                Id = GetContaFinanceiraParcelaId(tipoItem, entity),
+                ValorPrevisto = valorPrevisto,
+                CategoriaId = entity.CategoriaId.Value,
+                CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                PessoaId = entity.ClienteId,
+                DataEmissao = entity.Data,
+                DataVencimento = entity.DataVencimento.Value,
+                Descricao = GetDescricaoTitulo(tipoItem, entity),
+                Observacao = GetObservacaoTitulo(tipoItem, entity),
+                FormaPagamentoId = entity.FormaPagamentoId.Value,
+                PlataformaId = PlataformaUrl,
+                UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
+            };
+            Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
         }
 
         public List<PedidoProdutoEstoqueNegativo> VerificaEstoqueNegativo(Guid pedidoId, string tipoVenda, string tipoNfeComplementar, bool isComplementarDevolucao)

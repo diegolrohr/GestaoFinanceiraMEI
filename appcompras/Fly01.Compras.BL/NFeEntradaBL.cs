@@ -25,6 +25,7 @@ namespace Fly01.Compras.BL
 {
     public class NFeEntradaBL : PlataformaBaseBL<NFeEntrada>
     {
+        const string CSTsICMSST = "201||202||203||900";
         protected SerieNotaFiscalBL SerieNotaFiscalBL { get; set; }
         protected NFeProdutoEntradaBL NFeProdutoEntradaBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
@@ -351,6 +352,7 @@ namespace Fly01.Compras.BL
                             detalhe.Imposto.ICMS.AliquotaICMSST = Math.Round(itemTributacao.STAliquota, 2);
                             detalhe.Imposto.ICMS.ValorICMSST = Math.Round(itemTributacao.STValor, 2);
                             detalhe.Imposto.ICMS.ValorBCSTRetido = Math.Round(item.ValorBCSTRetido, 2);
+                            detalhe.Imposto.ICMS.ValorICMSSTRetido = Math.Round(item.ValorICMSSTRetido, 2);
 
                             if (versao == "4.00")
                             {
@@ -431,13 +433,13 @@ namespace Fly01.Compras.BL
                         }
 
                         detalhe.Imposto.TotalAprox = (detalhe.Imposto.COFINS != null ? detalhe.Imposto.COFINS.ValorCOFINS : 0) +
-                                         (detalhe.Imposto.ICMS.ValorICMS.HasValue ? detalhe.Imposto.ICMS.ValorICMS.Value : 0) +
-                                         (detalhe.Imposto.ICMS.ValorFCPST.HasValue ? detalhe.Imposto.ICMS.ValorFCPST.Value : 0) +
-                                         (detalhe.Imposto.ICMS.ValorICMSST.HasValue ? detalhe.Imposto.ICMS.ValorICMSST.Value : 0) +
-                                         (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
-                                         (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
-                                         (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
-                                         (detalhe.Imposto.PISST != null ? detalhe.Imposto.PISST.ValorPISST : 0);
+                                                    (detalhe.Imposto.ICMS.ValorICMS ?? 0) +
+                                                    (detalhe.Imposto.ICMS.ValorFCPST ?? 0) +
+                                                    (CSTsICMSST.Contains(((int)detalhe.Imposto.ICMS.CodigoSituacaoOperacao).ToString()) ? (detalhe.Imposto.ICMS.ValorICMSST ?? 0) : 0) +
+                                                    (detalhe.Imposto.II != null ? detalhe.Imposto.II.ValorII : 0) +
+                                                    (detalhe.Imposto.IPI != null ? detalhe.Imposto.IPI.ValorIPI : 0) +
+                                                    (detalhe.Imposto.PIS != null ? detalhe.Imposto.PIS.ValorPIS : 0) +
+                                                    (detalhe.Imposto.PISST != null ? detalhe.Imposto.PISST.ValorPISST : 0);
 
                         itemTransmissao.Detalhes.Add(detalhe);
                         num++;
@@ -451,10 +453,12 @@ namespace Fly01.Compras.BL
                         {
                             SomatorioBC = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBC.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBC.HasValue).Sum(x => x.Imposto.ICMS.ValorBC.Value), 2) : 0,
                             SomatorioICMS = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMS.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMS.HasValue).Sum(x => x.Imposto.ICMS.ValorICMS.Value), 2) : 0,
-                            SomatorioBCST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
+                            SomatorioBCST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorBCST.HasValue && (x.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros))
+                                ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorBCST.HasValue && (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST || x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros)).Sum(x => x.Imposto.ICMS.ValorBCST.Value), 2) : 0,
                             SomatorioCofins = itemTransmissao.Detalhes.Select(x => x.Imposto.COFINS).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Sum(x => x.Imposto.COFINS.ValorCOFINS), 2) : 0,
                             SomatorioDesconto = NFeProdutos.Sum(x => x.Desconto),
-                            SomatorioICMSST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
+                            SomatorioICMSST = itemTransmissao.Detalhes.Select(x => x.Imposto.ICMS).Any(x => x != null && x.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.CodigoSituacaoOperacao).ToString()))
+                                ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.ICMS != null && x.Imposto.ICMS.ValorICMSST.HasValue && CSTsICMSST.Contains(((int)x.Imposto.ICMS.CodigoSituacaoOperacao).ToString())).Sum(x => x.Imposto.ICMS.ValorICMSST.Value), 2) : 0,
                             ValorFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) ? itemTransmissao.Detalhes.Sum(x => x.Produto.ValorFrete.Value) : 0,
                             ValorSeguro = 0,
                             SomatorioIPI = itemTransmissao.Detalhes.Select(x => x.Imposto.IPI).Any(x => x != null) ? Math.Round(itemTransmissao.Detalhes.Where(x => x.Imposto.IPI != null).Sum(x => x.Imposto.IPI.ValorIPI), 2) : 0,

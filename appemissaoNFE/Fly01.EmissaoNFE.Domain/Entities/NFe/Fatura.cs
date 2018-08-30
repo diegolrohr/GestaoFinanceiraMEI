@@ -44,7 +44,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeValorDescontoString()
         {
-            return ValorDesconto.HasValue & ValorDesconto > 0;
+            return ValorDesconto.HasValue;
         }
 
         /// <summary>

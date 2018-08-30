@@ -20,18 +20,18 @@ namespace Fly01.OrdemServico.BL.Base
         public override void Delete(TEntity entityToDelete)
         {
             var id = entityToDelete.Id;
-            var os = GetOrdemServico(id);
+            var os = GetOrdemServico(entityToDelete);
 
             if (os != null) ValidarOSDelete(os, id);
 
-            if (!os.IsValid())
+            if (!entityToDelete.IsValid())
                 throw new BusinessException(os.Notification.Get());
             base.Delete(entityToDelete);
         }
 
         public override void Update(TEntity entity)
         {
-            var os = GetOrdemServico(entity.OrdemServicoId);
+            var os = GetOrdemServico(entity);
 
             if (os != null) ValidarOSUpdate(os, entity.Id);
 
@@ -40,7 +40,7 @@ namespace Fly01.OrdemServico.BL.Base
 
         public override void Insert(TEntity entity)
         {
-            var os = GetOrdemServico(entity.OrdemServicoId);
+            var os = GetOrdemServico(entity);
 
             if (os != null) ValidarOSInsert(os, entity.Id);
 
@@ -55,7 +55,7 @@ namespace Fly01.OrdemServico.BL.Base
             => os.Fail(os.Status != StatusOrdemServico.EmAberto && os.Status != StatusOrdemServico.EmAndamento && os.Status != StatusOrdemServico.EmPreenchimento,
                         new Error("Só é permitido editar ordens 'Em Preenchimento', 'Em Aberto' e 'Em Andamento'", "status"));
 
-        private Core.Entities.Domains.Commons.OrdemServico GetOrdemServico(Guid id)
-            => _repositoryOS.All.AsNoTracking().FirstOrDefault(e => e.Id == id && e.PlataformaId == PlataformaUrl);
+        private Core.Entities.Domains.Commons.OrdemServico GetOrdemServico(TEntity entity)
+            => _repositoryOS.All.AsNoTracking().FirstOrDefault(e => e.Id == entity.OrdemServicoId && e.PlataformaId == PlataformaUrl);
     }
 }

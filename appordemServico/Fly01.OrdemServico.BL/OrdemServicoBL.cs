@@ -43,8 +43,6 @@ namespace Fly01.OrdemServico.BL
                 x.Vendedor
             });
 
-            entity.Status = StatusOrdemServico.EmPreenchimento;
-
             if (responsavel != null)
                 entity.Fail(!responsavel.Vendedor, new Error("A pessoa escolhida como responsável deve estar marcada como vendedor em seu cadastro!", "responsavelId"));
 
@@ -53,6 +51,8 @@ namespace Fly01.OrdemServico.BL
 
         public override void Insert(Core.Entities.Domains.Commons.OrdemServico entity)
         {
+            entity.Status = StatusOrdemServico.EmPreenchimento;
+
             base.Insert(entity);
 
             //Só obtém próximo número depois que tudo foi validado, para poupar sequenciais no caso defalha

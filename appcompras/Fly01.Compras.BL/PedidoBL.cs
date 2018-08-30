@@ -142,7 +142,7 @@ namespace Fly01.Compras.BL
                             Id = Guid.NewGuid(),
                             NotaFiscalEntradaId = NFe.Id,
                             ProdutoId = x.ProdutoId,
-                            GrupoTributarioId = x.GrupoTributarioId,
+                            GrupoTributarioId = x.GrupoTributarioId.Value,
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,

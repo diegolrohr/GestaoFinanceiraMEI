@@ -171,8 +171,8 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 maiores produtos" },
-                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 maiores serviços" }
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" },
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" }
                 }
             });
             cfg.Content.Add(new DataTableUI

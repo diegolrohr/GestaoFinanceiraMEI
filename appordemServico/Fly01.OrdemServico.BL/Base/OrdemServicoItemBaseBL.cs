@@ -25,7 +25,7 @@ namespace Fly01.OrdemServico.BL.Base
             if (os != null) ValidarOSDelete(entityToDelete, os, id);
 
             if (!entityToDelete.IsValid())
-                throw new BusinessException(os.Notification.Get());
+                throw new BusinessException(entityToDelete.Notification.Get());
             base.Delete(entityToDelete);
         }
 

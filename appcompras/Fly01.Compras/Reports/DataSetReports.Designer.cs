@@ -690,7 +690,7 @@ namespace Fly01.Compras.Reports {
                         string EstadoPlacaVeiculo, 
                         string TipoEspecie, 
                         string Marca, 
-                        double NumeracaoVolumesTrans, 
+                        string NumeracaoVolumesTrans, 
                         double TotalImpostosProdutos, 
                         string Status) {
                 ImprimirPedidoRow rowImprimirPedidoRow = ((ImprimirPedidoRow)(this.NewRow()));
@@ -828,7 +828,7 @@ namespace Fly01.Compras.Reports {
                 base.Columns.Add(this.columnTipoEspecie);
                 this.columnMarca = new global::System.Data.DataColumn("Marca", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMarca);
-                this.columnNumeracaoVolumesTrans = new global::System.Data.DataColumn("NumeracaoVolumesTrans", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnNumeracaoVolumesTrans = new global::System.Data.DataColumn("NumeracaoVolumesTrans", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumeracaoVolumesTrans);
                 this.columnTotalImpostosProdutos = new global::System.Data.DataColumn("TotalImpostosProdutos", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalImpostosProdutos);
@@ -1777,10 +1777,10 @@ namespace Fly01.Compras.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double NumeracaoVolumesTrans {
+            public string NumeracaoVolumesTrans {
                 get {
                     try {
-                        return ((double)(this[this.tableImprimirPedido.NumeracaoVolumesTransColumn]));
+                        return ((string)(this[this.tableImprimirPedido.NumeracaoVolumesTransColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'NumeracaoVolumesTrans\' in table \'ImprimirPedido\' is DBNull." +

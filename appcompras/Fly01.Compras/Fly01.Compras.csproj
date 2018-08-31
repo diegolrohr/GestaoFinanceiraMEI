@@ -305,7 +305,7 @@
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnFormReadyVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarFaturarPedido.cshtml" />
@@ -321,6 +321,7 @@
     <Content Include="Views\NFeEntrada\Functions\_fnFormReadyTransmitirNFe.cshtml" />
     <Content Include="Views\NFeEntrada\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFeEntrada\Index.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -21,6 +21,9 @@ using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes.Helpers;
 using System.Dynamic;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Mensageria;
+using System.IO;
+using Fly01.Compras.Helpers;
 
 namespace Fly01.Compras.Controllers
 {
@@ -746,65 +749,21 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+
         public virtual ActionResult ImprimirPedido(Guid id)
         {
-
             PedidoVM Pedido = Get(id);
 
             var produtos = GetProdutos(id);
             List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
 
-            foreach (PedidoItemVM produtospedido in produtos)
-
-                reportItems.Add(new ImprimirPedidoVM
-                {
-                    //PEDIDO
-                    Fornecedor = Pedido.Fornecedor != null ? Pedido.Fornecedor.Nome.ToString() : string.Empty,
-                    Categoria = Pedido.Categoria != null ? Pedido.Categoria.Descricao : string.Empty,
-                    CondicaoParcelamento = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.Descricao : string.Empty,
-                    DataVencimento = Pedido.DataVencimento,
-                    FormaPagamento = Pedido.FormaPagamento != null ? Pedido.FormaPagamento.Descricao : string.Empty,
-                    Transportadora = Pedido.Transportadora != null ? Pedido.Transportadora.Nome : string.Empty,
-                    Numero = Pedido.Numero,
-                    Observacao = Pedido.Observacao,
-                    PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
-                    PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
-                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
-                    TipoFrete = Pedido.TipoFrete,
-                    QuantVolumes = Pedido.QuantidadeVolumes,
-                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
-                    //PRODUTO
-                    Id = produtospedido.Id.ToString(),
-                    NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
-                    QtdProduto = produtospedido.Quantidade,
-                    ValorUnitario = produtospedido.Valor,
-                    ValorTotal = produtospedido.Total
-                });
-
             if (!produtos.Any())
-            {
-                reportItems.Add(new ImprimirPedidoVM
-                {
-                    //PEDIDO
-                    Fornecedor = Pedido.Fornecedor != null ? Pedido.Fornecedor.Nome.ToString() : string.Empty,
-                    Categoria = Pedido.Categoria != null ? Pedido.Categoria.Descricao : string.Empty,
-                    CondicaoParcelamento = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.Descricao : string.Empty,
-                    DataVencimento = Pedido.DataVencimento,
-                    FormaPagamento = Pedido.FormaPagamento != null ? Pedido.FormaPagamento.Descricao : string.Empty,
-                    Transportadora = Pedido.Transportadora != null ? Pedido.Transportadora.Nome : string.Empty,
-                    Numero = Pedido.Numero,
-                    Observacao = Pedido.Observacao,
-                    PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
-                    PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
-                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
-                    TipoFrete = Pedido.TipoFrete,
-                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
-                });
-            }
+                AdicionarInformacoesPadrao(Pedido, reportItems);
+            else
+                MontarItensParaPrint(Pedido, produtos, reportItems);
 
             var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
             return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
-
         }
 
         public List<PedidoItemVM> GetProdutos(Guid id)
@@ -893,8 +852,117 @@ namespace Fly01.Compras.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
-        #region OnDemmand
 
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult EnviaEmailPedido(string id)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+                var pedido = Get(Guid.Parse(id));
+
+                var ResponseError = ValidarDadosEmail(id, empresa, pedido);
+                if (ResponseError != null) return ResponseError; // tem que arrumar uma solução para o retorno nulo
+
+                MailSend(empresa, pedido);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult ValidarDadosEmail(string id, ManagerEmpresaVM empresa, PedidoVM pedido)
+        {
+
+            if (pedido.Fornecedor == null) return JsonResponseStatus.GetFailure("Nenhum Fornecedor foi encontrado.");
+            if (string.IsNullOrEmpty(pedido.Fornecedor.Email)) return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este Fornecedor.");
+            if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+
+            return null;
+        }
+
+        private void MailSend(ManagerEmpresaVM empresa, PedidoVM pedido)
+        {
+            var anexo = File(GetPDFFile(pedido), "application/pdf");
+            var mensagemPrincipal = $"Você está recebendo uma cópia de seu {pedido.TipoOrdemCompra}.".ToUpper();
+            var tituloEmail = $"{empresa.NomeFantasia} {pedido.TipoOrdemCompra} - Nº {pedido.Numero}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemCompra.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+            var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), anexo.ContentType);
+
+            Mail.Send(empresa.NomeFantasia, pedido.Fornecedor.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
+        }
+
+        private byte[] GetPDFFile(PedidoVM pedido)
+        {
+            var produtos = GetProdutos(pedido.Id);
+            List<ImprimirPedidoVM> reportItems = new List<ImprimirPedidoVM>();
+
+            if (!produtos.Any())
+                AdicionarInformacoesPadrao(pedido, reportItems);
+            else
+                MontarItensParaPrint(pedido, produtos, reportItems);
+
+            var reportViewer = new WebReportViewer<ImprimirPedidoVM>(ReportImprimirPedido.Instance);
+            return reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl);
+        }
+
+        private static void MontarItensParaPrint(PedidoVM Pedido, List<PedidoItemVM> produtos, List<ImprimirPedidoVM> reportItems)
+        {
+            foreach (PedidoItemVM produtospedido in produtos)
+            {
+                reportItems.Add(new ImprimirPedidoVM
+                {
+                    //PEDIDO
+                    Fornecedor = Pedido.Fornecedor != null ? Pedido.Fornecedor.Nome.ToString() : string.Empty,
+                    Categoria = Pedido.Categoria != null ? Pedido.Categoria.Descricao : string.Empty,
+                    CondicaoParcelamento = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.Descricao : string.Empty,
+                    DataVencimento = Pedido.DataVencimento,
+                    FormaPagamento = Pedido.FormaPagamento != null ? Pedido.FormaPagamento.Descricao : string.Empty,
+                    Transportadora = Pedido.Transportadora != null ? Pedido.Transportadora.Nome : string.Empty,
+                    Numero = Pedido.Numero,
+                    Observacao = Pedido.Observacao,
+                    PesoBruto = Pedido.PesoBruto != null ? Pedido.PesoBruto : 0,
+                    PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
+                    ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
+                    TipoFrete = Pedido.TipoFrete,
+                    QuantVolumes = Pedido.QuantidadeVolumes,
+                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
+                    //PRODUTO
+                    Id = produtospedido.Id.ToString(),
+                    NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
+                    QtdProduto = produtospedido.Quantidade,
+                    ValorUnitario = produtospedido.Valor,
+                    ValorTotal = produtospedido.Total
+                });
+            }
+        }
+
+        private static void AdicionarInformacoesPadrao(PedidoVM Pedido, List<ImprimirPedidoVM> reportItems)
+        {
+            reportItems.Add(new ImprimirPedidoVM
+            {
+                //PEDIDO
+                Fornecedor = Pedido.Fornecedor != null ? Pedido.Fornecedor.Nome.ToString() : string.Empty,
+                Categoria = Pedido.Categoria != null ? Pedido.Categoria.Descricao : string.Empty,
+                CondicaoParcelamento = Pedido.CondicaoParcelamento != null ? Pedido.CondicaoParcelamento.Descricao : string.Empty,
+                DataVencimento = Pedido.DataVencimento,
+                FormaPagamento = Pedido.FormaPagamento != null ? Pedido.FormaPagamento.Descricao : string.Empty,
+                Transportadora = Pedido.Transportadora != null ? Pedido.Transportadora.Nome : string.Empty,
+                Numero = Pedido.Numero,
+                Observacao = Pedido.Observacao,
+                PesoBruto = Pedido.PesoBruto ?? 0,
+                PesoLiquido = Pedido.PesoLiquido ?? 0,
+                ValorFrete = Pedido.ValorFrete ?? 0,
+                TipoFrete = Pedido.TipoFrete,
+                TotalGeral = Pedido.Total ?? 0,
+            });
+        }
+        #region OnDemmand
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)
         {

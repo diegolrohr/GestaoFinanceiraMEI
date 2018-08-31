@@ -11,36 +11,6 @@ namespace Fly01.Estoque.Controllers
 {
     public class AutoCompleteController : AutoCompleteBaseController
     {
-        public JsonResult ProdutoDescricao(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"contains(descricao, '{term}')");
-            queryString.AddParam("$select", "id,descricao,codigoProduto,saldoProduto");
-            queryString.AddParam("$orderby", "descricao");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = item.CodigoProduto, saldo = item.SaldoProduto };
-
-            return GetJson(filterObjects);
-        }
-
-        public JsonResult ProdutoCodigo(string term)
-        {
-            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
-            var queryString = AppDefaults.GetQueryStringDefault();
-
-            queryString.AddParam("$filter", $"contains(codigoProduto, '{term}')");
-            queryString.AddParam("$select", "id,descricao,codigoProduto,saldoProduto");
-            queryString.AddParam("$orderby", "codigoProduto");
-
-            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.CodigoProduto, detail = item.Descricao, saldo = item.SaldoProduto };
-
-            return GetJson(filterObjects);
-        }
-
         public JsonResult TipoMovimento(string term, string prefilter = "")
         {
             var resourceName = AppDefaults.GetResourceName(typeof(TipoMovimentoVM));

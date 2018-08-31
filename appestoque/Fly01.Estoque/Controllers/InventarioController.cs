@@ -99,24 +99,12 @@ namespace Fly01.Estoque.Controllers
 
             formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "produtoCodigoId",
-                Class = "col s5",
-                Label = "Codigo Produto",
-                Required = true,
-                DataUrl = @Url.Action("ProdutoCodigo", "AutoComplete"),
-                LabelId = "produtoCodigo",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoCod" } }
-            }, ResourceHashConst.EstoqueCadastrosProdutos));
-
-            formConfigInventarioItem.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
                 Id = "produtoId",
-                Class = "col s5",
-                Label = "Produto",
+                Class = "col s10",
+                Label = "Produto ou Código",
                 Required = true,
-                DataUrl = @Url.Action("ProdutoDescricao", "AutoComplete"),
+                DataUrl = @Url.Action("Produto", "AutoComplete"),
                 LabelId = "produtoDescricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProdutoDesc" } }
             }, ResourceHashConst.EstoqueCadastrosProdutos));
 
             formConfigInventarioItem.Elements.Add(new ButtonUI

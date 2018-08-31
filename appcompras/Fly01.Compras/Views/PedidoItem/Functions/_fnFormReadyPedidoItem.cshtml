@@ -34,7 +34,7 @@
         fnConfiguraTipoTributacaoICMSProduto();
 
         fly01.fn.updateTextFields();
-        fnOverrideSubmitOrdemVendaProduto();
+        fnOverrideSubmitOrdemCompraProduto();
 
         $('form#fly01mdlfrmPedidoItem input#valor').on('change', function () {
             fnChangeTotalProduto();
@@ -47,7 +47,7 @@
         });
     }
 
-    function fnOverrideSubmitOrdemVendaProduto() {
+    function fnOverrideSubmitOrdemCompraProduto() {
         var myForm = 'form#fly01mdlfrmPedidoItem'
 
         $(myForm).off('submit');

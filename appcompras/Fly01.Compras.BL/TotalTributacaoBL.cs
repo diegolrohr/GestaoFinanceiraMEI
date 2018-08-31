@@ -26,8 +26,9 @@ namespace Fly01.Compras.BL
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected ParametroTributarioBL ParametroTributarioBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
+        protected PedidoItemBL PedidoItemBL { get; set; }
 
-        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, PedidoItemBL pedidoItemBL) : base(context)
         {
             PessoaBL = pessoaBL;
             GrupoTributarioBL = grupoTributarioBL;
@@ -35,6 +36,7 @@ namespace Fly01.Compras.BL
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            PedidoItemBL = pedidoItemBL;
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
         }
@@ -54,10 +56,34 @@ namespace Fly01.Compras.BL
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
         }
 
+        public Produto GetProduto(Guid produtoId)
+        {
+            return ProdutoBL.All.Where(x => x.Id == produtoId).AsNoTracking().FirstOrDefault();
+        }
+
+        public List<PedidoItem> GetPedidoItens(Guid pedidoId)
+        {
+            return PedidoItemBL.All.Where(x => x.PedidoId == pedidoId).ToList();
+        }
+
         public void DadosValidosCalculoTributario(OrdemCompra entity, Guid fornecedorId, bool onList = true)
         {
             var pessoa = GetPessoa(fornecedorId);
             var fornecedorUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
+            var pedidoItens = GetPedidoItens(entity.Id);
+            int num = 1;
+            foreach (var item in pedidoItens)
+            {
+                if (GetProduto(item.ProdutoId) == null)
+                {
+                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                }
+                if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
+                {
+                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                }
+                num++;
+            }
 
             var dadosEmpresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var empresaUF = dadosEmpresa.Cidade != null ? (dadosEmpresa.Cidade.Estado != null ? dadosEmpresa.Cidade.Estado.Sigla : "") : "";
@@ -318,7 +344,7 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -332,7 +358,7 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 
@@ -346,7 +372,7 @@ namespace Fly01.Compras.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), fornecedorId, tipoCompra, tipoFrete, valorFrete);
         }
 

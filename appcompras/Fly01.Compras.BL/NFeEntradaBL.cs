@@ -523,7 +523,7 @@ namespace Fly01.Compras.BL
                             new DetalhePagamento()
                             {
                                 TipoFormaPagamento = tipoFormaPagamento,
-                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                                ValorPagamento = tipoFormaPagamento == TipoFormaPagamento.SemPagamento ? 0.0 : itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }
                     };

@@ -55,6 +55,9 @@ namespace Fly01.Financeiro.BL
 
                 case TipoCodigoBanco.Banrisul:
                     return TipoArquivo.CNAB400;
+
+                case TipoCodigoBanco.Bradesco:
+                    return TipoArquivo.CNAB400;
             }
             return TipoArquivo.CNAB240;
         }

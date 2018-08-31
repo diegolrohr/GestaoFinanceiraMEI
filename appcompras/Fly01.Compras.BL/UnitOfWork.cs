@@ -126,7 +126,7 @@ namespace Fly01.Compras.BL
         public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
 
         private TotalTributacaoBL totalTributacaoBL;
-        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL));
+        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL, PedidoItemBL));
 
         private NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL;
         public NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL => notaFiscalItemTributacaoEntradaBL ?? (notaFiscalItemTributacaoEntradaBL = new NotaFiscalItemTributacaoEntradaBL(Context));

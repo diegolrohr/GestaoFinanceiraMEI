@@ -1,9 +1,9 @@
 ﻿<script>
-    function fnEnviarEmailOrcamentoPedido(idRecord) {
+    function fnEnviarEmailPedido(idRecord) {
         fly01.loading.start();
 
         $.ajax({
-            url: '@Url.Action("EnviaEmailOrcamentoPedido", "OrdemVenda")',
+            url: '@Url.Action("EnviaEmailPedido", "Pedido")',
             data: { id: idRecord },
 			type: "POST",
 			success : function(data) {

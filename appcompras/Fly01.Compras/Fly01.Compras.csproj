@@ -60,6 +60,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MailTemplates\Templates\OrdemCompra.html" />
     <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
     <Content Include="Reports\ReportImprimirPedido.rdlc" />
   </ItemGroup>
@@ -97,6 +98,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
@@ -307,7 +309,7 @@
     <Content Include="Views\Pedido\Functions\_fnFormReadyVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarFaturarPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnGerarPedidos.cshtml" />
@@ -501,6 +503,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
+      <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
+      <Name>Fly01.Core.Mensageria</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Presentation\Fly01.Core.Presentation.csproj">
       <Project>{C285FE7E-0A0C-47CE-BAE9-7FCBDCEEE378}</Project>

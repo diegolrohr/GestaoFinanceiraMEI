@@ -1,11 +1,11 @@
 ﻿<script>
     @Html.Partial("Functions/_fnImprimir");
 
-    function fnImprimirOrcamentoPedido(idRecord) {
+    function fnImprimirPedido(idRecord) {
         fly01.loading.start();
 
         $.ajax({
-            url: '@Url.Action("ImprimirOrcamentoPedido", "OrdemVenda")',
+            url: '@Url.Action("ImprimirPedido", "Pedido")',
             data: { id: idRecord },
 			type: "GET",
 			success : function(data) {

@@ -748,7 +748,6 @@ namespace Fly01.Compras.Controllers
 
         public virtual ActionResult ImprimirPedido(Guid id)
         {
-
             PedidoVM Pedido = Get(id);
 
             var produtos = GetProdutos(id);

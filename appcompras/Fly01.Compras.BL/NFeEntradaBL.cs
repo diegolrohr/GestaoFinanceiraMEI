@@ -511,7 +511,7 @@ namespace Fly01.Compras.BL
                     #region Fatura
                     if (entity.GeraFinanceiro)
                     {
-                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal, entity., entity.ContaFinanceiraParcelaPaiId);
+                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
                     }
                     #endregion
 

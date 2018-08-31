@@ -174,7 +174,7 @@ namespace Fly01.Financeiro.Controllers
                     new LineUI()
                     {
                         Tag = "h6",
-                        Text = "Se esta conta emite boletos bacários é necessários prencher os dados abaixo.",
+                        Text = "Se esta conta emite boletos bancários é necessário preencher os dados abaixo.",
                     }
                 }
             });

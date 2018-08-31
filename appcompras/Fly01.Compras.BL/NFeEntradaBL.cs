@@ -508,6 +508,13 @@ namespace Fly01.Compras.BL
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
 
+                    #region Fatura
+                    if (entity.GeraFinanceiro)
+                    {
+                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal, entity., entity.ContaFinanceiraParcelaPaiId);
+                    }
+                    #endregion
+
                     #region Pagamento
                     itemTransmissao.Pagamento = new Pagamento()
                     {
@@ -582,6 +589,71 @@ namespace Fly01.Compras.BL
             {
                 throw new BusinessException(ex.Message);
             }
+        }
+
+        public Cobranca ObterCobranca(int numNotaFiscal, TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
+        {
+                var contas = ObterContasFinanceiras(tipoNota, contaFinanceiraParcelaPaiId);
+                if (contas != null && contas.Any())
+                {
+                    var cobranca = new Cobranca()
+                    {
+                        Fatura = new Fatura()
+                        {
+                            NumeroFatura = "NF:" + numNotaFiscal.ToString(),
+                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                            ValorLiquido = contas.Sum(x => x.ValorPrevisto),
+                            ValorDesconto = 0.0
+                        }
+                    };
+                    var num = 1;
+                    cobranca.Duplicatas = new List<Duplicata>();
+                    foreach (var item in contas.OrderBy(x => x.DataVencimento))
+                    {
+                        cobranca.Duplicatas.Add(
+                            new Duplicata()
+                            {
+                                Numero = num.ToString().PadLeft(3, '0'),
+                                ValorDuplicata = item.ValorPrevisto,
+                                Vencimento = item.DataVencimento
+                            });
+                        num++;
+                    }
+                    return cobranca;
+                }
+            return null;
+        }
+
+        public List<ContaFinanceira> ObterContasFinanceiras(TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
+        {
+            var header = new Dictionary<string, string>()
+            {
+                { "AppUser", AppUser  },
+                { "PlataformaUrl", PlataformaUrl }
+            };
+            var queryString = new Dictionary<string, string>()
+            {
+                {
+                    "contaFinanceiraParcelaPaiId",
+                        contaFinanceiraParcelaPaiId.HasValue
+                        ? contaFinanceiraParcelaPaiId.Value.ToString()
+                        : default(Guid).ToString()
+                }
+            };
+
+            var contas = new List<ContaFinanceira>();
+            if (tipoNota == TipoNota.Saida)
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
+            else
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+            }
+
+            return contas;
         }
 
         public override void Insert(NFeEntrada entity)

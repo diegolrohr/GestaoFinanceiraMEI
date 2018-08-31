@@ -53,9 +53,9 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputNumbersUI { Id = "ordemCompraOrigemNumero", Class = "col s12 m6 l2", Label = "Pedido Origem", Disabled = true });
             config.Elements.Add(new SelectUI
             {
-                Id = "tipoVenda",
+                Id = "tipoCompra",
                 Class = "col s12 m6 l3",
-                Label = "Tipo Venda",
+                Label = "Tipo Compra",
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
                 ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
@@ -252,11 +252,11 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "idNFe", Name = "id" });
             config.Elements.Add(new SelectUI
             {
-                Id = "tipoVendaNFe",
+                Id = "tipoCompraNFe",
                 Class = "col s12 m6",
-                Label = "Tipo Venda",
+                Label = "Tipo Compra",
                 Disabled = true,
-                Name = "tipoVenda",
+                Name = "tipoCompra",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
                 ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
             });

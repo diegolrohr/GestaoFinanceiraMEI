@@ -930,8 +930,17 @@ namespace Fly01.Compras.Controllers
                     PesoLiquido = Pedido.PesoLiquido != null ? Pedido.PesoLiquido : 0,
                     ValorFrete = Pedido.ValorFrete != null ? Pedido.ValorFrete : 0,
                     TipoFrete = Pedido.TipoFrete,
-                    QuantVolumes = Pedido.QuantidadeVolumes,
-                    TotalGeral = Pedido.Total != null ? Pedido.Total : 0,
+                    QuantVolumes = Pedido.QuantidadeVolumes != null ? Pedido.QuantidadeVolumes : 0,
+                    Data = Pedido.Data,
+                    Finalidade = Pedido.TipoCompra,
+                    PlacaVeiculo = Pedido.PlacaVeiculo != null ? Pedido.PlacaVeiculo : "",
+                    EstadoPlacaVeiculo = Pedido.EstadoPlacaVeiculo != null ? Pedido.EstadoPlacaVeiculo.ToString() : "",
+                    TipoEspecie = Pedido.TipoEspecie != null ? Pedido.TipoEspecie : "" ,
+                    Marca = Pedido.Marca != null ? Pedido.Marca : "",
+                    NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans != null ? Pedido.NumeracaoVolumesTrans : "" ,
+                    TotalImpostosProdutos = Pedido.TotalImpostosProdutos != null ? Pedido.TotalImpostosProdutos : 0,
+                    TotalGeral = Pedido.Total + Pedido.TotalImpostosProdutos,
+                    Status = Pedido.Status,
                     //PRODUTO
                     Id = produtospedido.Id.ToString(),
                     NomeProduto = produtospedido.Produto != null ? produtospedido.Produto.Descricao : string.Empty,
@@ -960,6 +969,17 @@ namespace Fly01.Compras.Controllers
                 ValorFrete = Pedido.ValorFrete ?? 0,
                 TipoFrete = Pedido.TipoFrete,
                 TotalGeral = Pedido.Total ?? 0,
+                Data = Pedido.Data,
+                Finalidade = Pedido.TipoCompra,
+                PlacaVeiculo = Pedido.PlacaVeiculo,
+                EstadoPlacaVeiculo = Pedido.EstadoPlacaVeiculo.ToString(),
+                TipoEspecie = Pedido.TipoEspecie,
+                Marca = Pedido.Marca,
+                NumeracaoVolumesTrans = Pedido.NumeracaoVolumesTrans,
+                TotalProdutos = Pedido.Total,
+                TotalImpostosProdutos = Pedido.TotalImpostosProdutos,
+                Status = Pedido.Status,
+
             });
         }
         #region OnDemmand

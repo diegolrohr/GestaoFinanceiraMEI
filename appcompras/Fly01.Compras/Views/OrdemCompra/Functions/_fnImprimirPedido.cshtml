@@ -2,25 +2,9 @@
     @Html.Partial("Functions/_fnImprimir");
 
     function fnImprimirPedido(idRecord) {
-        fly01.loading.start();
-
-        $.ajax({
-            url: '@Url.Action("ImprimirPedido", "Pedido")',
-            data: { id: idRecord },
-			type: "GET",
-			success : function(data) {
-			    fly01.loading.stop();
-			    if (data.message) {
-			        fly01.fn.submitErrorHandler(null, data.message);
-			    } else {
-			        fnImprimir(data.fileName);
-			    }
-			},
-            error: function (jqxhr, textStatus, error) {
-				var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-				fly01.toast(err, "error");
-				fly01.loading.stop();
-			}
-        });
+        var url = '@Url.Action("ImprimirPedido", "Pedido")?id=' + idRecord;
+        fnImprimir(url);
     }
 </script>
+
+

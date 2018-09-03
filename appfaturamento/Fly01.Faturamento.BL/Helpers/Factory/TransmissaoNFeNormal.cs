@@ -57,81 +57,13 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                     InformacoesComplementares = NFe.MensagemPadraoNota
                 };
             }
-            if (NFe.GeraFinanceiro)
-            {
-                itemTransmissao.Cobranca = ObterCobranca();
-            }
+            //if (NFe.GeraFinanceiro) //descomentar quando SEFAZ voltar
+            //{
+            //    itemTransmissao.Cobranca = ObterCobranca();
+            //}
 
             var transmissao = ObterTransmissaoVMApartirDoItem(itemTransmissao);
             return transmissao;
-        }
-
-        public Cobranca ObterCobranca()
-        {
-            if (NFe.GeraFinanceiro)
-            {
-                var contas = ObterContasFinanceiras();
-                if (contas != null && contas.Any())
-                {
-                    var cobranca = new Cobranca()
-                    {
-                        Fatura = new Fatura()
-                        {
-                            NumeroFatura = "NF:" + NFe.NumNotaFiscal.Value.ToString(),
-                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
-                            ValorLiquido = contas.Sum(x => x.ValorPrevisto),
-                            ValorDesconto = 0.0
-                        }
-                    };
-                    var num = 1;
-                    cobranca.Duplicatas = new List<Duplicata>();
-                    foreach (var item in contas.OrderBy(x => x.DataVencimento))
-                    {
-                        cobranca.Duplicatas.Add(
-                            new Duplicata()
-                            {
-                                Numero = num.ToString().PadLeft(3, '0'),
-                                ValorDuplicata = item.ValorPrevisto,
-                                Vencimento = item.DataVencimento
-                            });
-                        num++;
-                    }
-                    return cobranca;
-                }
-            }
-            return null;
-        }
-
-        public List<ContaFinanceira> ObterContasFinanceiras()
-        {
-            var header = new Dictionary<string, string>()
-            {
-                { "AppUser", TransmissaoBLs.AppUser  },
-                { "PlataformaUrl", TransmissaoBLs.PlataformaUrl }
-            };
-            var queryString = new Dictionary<string, string>()
-            {
-                {
-                    "contaFinanceiraParcelaPaiId",
-                    NFe.ContaFinanceiraParcelaPaiIdProdutos.HasValue
-                        ? NFe.ContaFinanceiraParcelaPaiIdProdutos.Value.ToString()
-                        : default(Guid).ToString()
-                }
-            };
-
-            var contas = new List<ContaFinanceira>();
-            if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
-            {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
-            }
-            else
-            {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
-            }
-
-            return contas;
         }
 
         private void CriarProdutosEImpostosParaDetalhes(ItemTransmissaoVM itemTransmissao)

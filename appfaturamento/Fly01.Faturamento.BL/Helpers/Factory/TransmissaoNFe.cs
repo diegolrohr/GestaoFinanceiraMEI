@@ -396,34 +396,41 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
         public List<ContaFinanceira> ObterContasFinanceiras()
         {
-            var header = new Dictionary<string, string>()
+            try
             {
-                { "AppUser", TransmissaoBLs.AppUser  },
-                { "PlataformaUrl", TransmissaoBLs.PlataformaUrl }
-            };
-            var queryString = new Dictionary<string, string>()
-            {
+                var header = new Dictionary<string, string>()
                 {
-                    "contaFinanceiraParcelaPaiId",
-                    NFe.ContaFinanceiraParcelaPaiIdProdutos.HasValue
-                        ? NFe.ContaFinanceiraParcelaPaiIdProdutos.Value.ToString()
-                        : default(Guid).ToString()
+                    { "AppUser", TransmissaoBLs.AppUser  },
+                    { "PlataformaUrl", TransmissaoBLs.PlataformaUrl }
+                };
+                    var queryString = new Dictionary<string, string>()
+                {
+                    {
+                        "contaFinanceiraParcelaPaiId",
+                        NFe.ContaFinanceiraParcelaPaiIdProdutos.HasValue
+                            ? NFe.ContaFinanceiraParcelaPaiIdProdutos.Value.ToString()
+                            : default(Guid).ToString()
+                    }
+                };
+
+                var contas = new List<ContaFinanceira>();
+                if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
                 }
-            };
+                else
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                }
 
-            var contas = new List<ContaFinanceira>();
-            if (ObterTipoDocumentoFiscal() == TipoNota.Saida)
-            {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                return contas;
             }
-            else
+            catch (Exception ex)
             {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message );
             }
-
-            return contas;
         }
     }
 }

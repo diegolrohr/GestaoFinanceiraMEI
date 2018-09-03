@@ -20,7 +20,7 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.Desconto > (entity.Quantidade * entity.Valor), new Error("O Desconto não pode ser maior que o valor total do produto.", "desconto"));
             entity.Fail(entity.Total <= 0, new Error("O Total deve ser superior a zero", "total"));
 
-            var jaExiste = All.Any(x => x.PedidoId == entity.PedidoId && x.ProdutoId == entity.ProdutoId && x.Id != entity.Id);
+            var jaExiste = All.Any(x => x.PedidoId == entity.PedidoId && x.ProdutoId == entity.ProdutoId && x.GrupoTributarioId == entity.GrupoTributarioId && x.Id != entity.Id);
             entity.Fail(jaExiste, new Error("Este produto já está adicionado a este pedido"));
 
             base.ValidaModel(entity);

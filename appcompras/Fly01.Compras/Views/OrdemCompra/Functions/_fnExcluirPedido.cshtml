@@ -1,6 +1,6 @@
 ﻿<script>
-function fnExcluirPedido(idRecord) {
-    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirPedidoConfirmed(\""+idRecord+"\")");
+    function fnExcluirPedido(idRecord) {
+        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirPedidoConfirmed(\"" + idRecord + "\")");
 }
 function fnExcluirPedidoConfirmed(idRecord) {
     $('body').removeClass('loaded');
@@ -13,7 +13,6 @@ function fnExcluirPedidoConfirmed(idRecord) {
                 $('body').addClass('loaded');
                 if (data.success) {
                     fly01.toast("Excluído com sucesso.", "success");
-                    //var idRec = JSON.parse("{\"" + this.data.replace(/ /g, "\", \"").replace(/=/g, "\": \"") + "\"}").id;
                     $("input[value=\"" + idRecord + "\"]").parent().parent().remove();
                 }
                 else {

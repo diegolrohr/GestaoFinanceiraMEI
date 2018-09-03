@@ -6,6 +6,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Financeiro.API.Models.DAL;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -55,17 +56,14 @@ namespace Fly01.Financeiro.BL
                 entity.Numero = numero;
 
                 base.Insert(entity);
-                
+
                 if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                     contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(entity);
+
             }
             else
             {
-                var condicoesParcelamento = condicaoParcelamentoBL
-                                                .GetPrestacoes(entity.CondicaoParcelamentoId,
-                                                               entity.DataVencimento,
-                                                               entity.ValorPrevisto);
-
+                var condicoesParcelamento = condicaoParcelamentoBL.GetPrestacoes(entity.CondicaoParcelamentoId, entity.DataVencimento, entity.ValorPrevisto);
                 var contaFinanceiraPrincipal = entity.Id == default(Guid) ? Guid.NewGuid() : entity.Id;
 
                 for (int iParcela = 0; iParcela < condicoesParcelamento.Count; iParcela++)
@@ -77,15 +75,14 @@ namespace Fly01.Financeiro.BL
                     itemContaReceber.DataVencimento = parcela.DataVencimento;
                     itemContaReceber.DescricaoParcela = parcela.DescricaoParcela;
                     itemContaReceber.ValorPrevisto = parcela.Valor;
-                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago
-                                                        ? parcela.Valor
-                                                        : entity.ValorPago;
+                    itemContaReceber.ValorPago = entity.StatusContaBancaria == StatusContaBancaria.Pago ? parcela.Valor : entity.ValorPago;
 
                     if (iParcela == default(int))
                         itemContaReceber.Id = contaFinanceiraPrincipal;
                     else
                     {
                         itemContaReceber.Id = Guid.NewGuid();
+                        itemContaReceber.ContaFinanceiraParcelaPaiId = contaFinanceiraPrincipal;
 
                         if (repetir)
                             itemContaReceber.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
@@ -107,6 +104,7 @@ namespace Fly01.Financeiro.BL
                         {
                             var itemContaReceberRepeticao = new ContaReceber();
                             itemContaReceber.CopyProperties<ContaReceber>(itemContaReceberRepeticao);
+                            itemContaReceberRepeticao.ContaFinanceiraParcelaPaiId = null;
                             itemContaReceberRepeticao.Notification.Errors.AddRange(itemContaReceber.Notification.Errors); // CopyProperties não copia as notificações
                             itemContaReceberRepeticao.Id = default(Guid);
                             itemContaReceberRepeticao.ContaFinanceiraRepeticaoPaiId = contaFinanceiraPrincipal;
@@ -130,7 +128,7 @@ namespace Fly01.Financeiro.BL
                             itemContaReceberRepeticao.Numero = numero;
 
                             base.Insert(itemContaReceberRepeticao);
-                            
+
                             if (entity.StatusContaBancaria == StatusContaBancaria.Pago || entity.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                                 contaFinanceiraBaixaBL.GeraContaFinanceiraBaixa(itemContaReceberRepeticao);
                         }
@@ -156,6 +154,19 @@ namespace Fly01.Financeiro.BL
                 .ForEach(itemBaixa => { contaFinanceiraBaixaBL.Delete(itemBaixa); });
 
             base.Delete(entityToDelete);
+        }
+
+        public List<ContaReceber> GetParcelas(Guid contaFinanceiraParcelaPaiId)
+        {
+            var parcelas = new List<ContaReceber>();
+
+
+            if (All.Any(x => x.Id == contaFinanceiraParcelaPaiId))
+                parcelas.Add(All.Where(x => x.Id == contaFinanceiraParcelaPaiId).AsNoTracking().FirstOrDefault());
+            if (All.Any(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId))
+                parcelas.AddRange(All.Where(x => x.ContaFinanceiraParcelaPaiId == contaFinanceiraParcelaPaiId).AsNoTracking().OrderBy(x => x.DataInclusao));
+
+            return parcelas;
         }
 
         private static bool RepeticaoValida(ContaFinanceira entity)

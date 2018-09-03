@@ -109,7 +109,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public override ContentResult List()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
@@ -153,7 +153,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         protected override ContentUI FormJson()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -237,7 +237,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputTextUI { Id = "bairro", Class = "col s12 l3", Label = "Bairro", MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "endereco", Class = "col s12 l4", Label = "Endereço", MaxLength = 80 });
             config.Elements.Add(new InputTextUI { Id = "numero", Class = "col s6 l2", Label = "Número", MaxLength = 10 });
-            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l3", Label = "Complemento", MaxLength = 30 });
+            config.Elements.Add(new InputTextUI { Id = "complemento", Class = "col s6 l3", Label = "Complemento", MaxLength = 120 });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoIndicacaoInscricaoEstadual",
@@ -289,7 +289,7 @@ namespace Fly01.Core.Presentation.Controllers
 
         public ContentResult FormImportacao()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory()
                 {

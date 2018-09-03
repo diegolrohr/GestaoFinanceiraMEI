@@ -196,6 +196,14 @@
     <Compile Include="Migrations\201807191416036_RemoveProcedureContaFinanceira.Designer.cs">
       <DependentUpon>201807191416036_RemoveProcedureContaFinanceira.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808211322073_ALterContaFinanceiraAddContaFinanceiraParcelaPaiId.cs" />
+    <Compile Include="Migrations\201808211322073_ALterContaFinanceiraAddContaFinanceiraParcelaPaiId.Designer.cs">
+      <DependentUpon>201808211322073_ALterContaFinanceiraAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808292112401_AlterTamanhoCampoComplemento.cs" />
+    <Compile Include="Migrations\201808292112401_AlterTamanhoCampoComplemento.Designer.cs">
+      <DependentUpon>201808292112401_AlterTamanhoCampoComplemento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -326,6 +334,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807191416036_RemoveProcedureContaFinanceira.resx">
       <DependentUpon>201807191416036_RemoveProcedureContaFinanceira.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808211322073_ALterContaFinanceiraAddContaFinanceiraParcelaPaiId.resx">
+      <DependentUpon>201808211322073_ALterContaFinanceiraAddContaFinanceiraParcelaPaiId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808292112401_AlterTamanhoCampoComplemento.resx">
+      <DependentUpon>201808292112401_AlterTamanhoCampoComplemento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

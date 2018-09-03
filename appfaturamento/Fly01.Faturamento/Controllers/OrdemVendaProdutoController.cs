@@ -29,7 +29,7 @@ namespace Fly01.Faturamento.Controllers
                 id = x.Id.ToString(),
                 produto_descricao = x.Produto.Descricao,
                 grupoTributario_descricao = x.GrupoTributario.Descricao,
-                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
+                quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
@@ -93,6 +93,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "quantidade",
                 Class = "col s12 l6 numeric",
                 Label = "Quantidade",
+                Digits = 3,
                 Value = "1",
                 Required = false
             });
@@ -157,6 +158,22 @@ namespace Fly01.Faturamento.Controllers
             });
 
             #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioIdProduto",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os impostos são calculados de acordo com as configurações do grupo Tributário. Se necessário configure substituição tributária e mantenha seus parâmetros tributários atualizados."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "quantidade",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Quando for do tipo Complementar de impostos, quantidade e valor servem somente para obter o valor base dos impostos. Somente na Complementar de preço que estas informações saem no XML."
+                }
+            });
             config.Helpers.Add(new TooltipUI
             {
                 Id = "valorCreditoICMS",

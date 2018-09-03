@@ -8,7 +8,7 @@
             type: "POST",
             url: "@Url.Action("FinalizarPedido", "Pedido")",
             dataType: 'json',
-            data: { id: idRecord },
+            data: { id: idRecord, faturar: false },
             success: function (data) {
                 fly01.loading.stop();
                 if (data.success) {

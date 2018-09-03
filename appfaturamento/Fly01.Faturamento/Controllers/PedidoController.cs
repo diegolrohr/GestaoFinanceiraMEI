@@ -39,6 +39,7 @@ namespace Fly01.Faturamento.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true },
                     new DataTableUIParameter { Id = "tipoVenda", Required = true },
+                    new DataTableUIParameter { Id = "tipoNfeComplementar", Required = true },
                     new DataTableUIParameter { Id = "nFeRefComplementarIsDevolucao", Required = true }
                 },
                 Callbacks = new DataTableUICallbacks()
@@ -75,9 +76,9 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public ContentResult FormPedido(bool isEdit = false)
+        public ContentResult FormPedido(bool isEdit = false, string tipoVenda = "Normal")
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -182,7 +183,7 @@ namespace Fly01.Faturamento.Controllers
             #region step Cadastro
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = "Normal" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoVenda", Value = tipoVenda });
             config.Elements.Add(new InputHiddenUI { Id = "tipoCarteira", Value = "Receita" });
             config.Elements.Add(new InputHiddenUI { Id = "status", Value = "Aberto" });
             config.Elements.Add(new InputHiddenUI { Id = "tipoOrdemVenda", Value = "Pedido" });
@@ -209,7 +210,7 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 m7",
                 Label = "Tipo do Complemento",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoNfeComplementar), false, "NaoComplementar")
-                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd".Contains(x.Value))),
+                    .ToList().FindAll(x => "NaoComplementar,ComplPrecoQtd,ComplIcms".Contains(x.Value))),
                 ConstrainWidth = true
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -355,8 +356,8 @@ namespace Fly01.Faturamento.Controllers
                     }
             });
             config.Elements.Add(new InputTextUI { Id = "marca", Class = "col s12 m4", Label = "Marca", MaxLength = 60 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3 });
-            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoBruto", Class = "col s12 m4", Label = "Peso Bruto", Digits = 3, MaxLength = 8 });
+            config.Elements.Add(new InputFloatUI { Id = "pesoLiquido", Class = "col s12 m4", Label = "Peso Líquido", Digits = 3, MaxLength = 8 });
             config.Elements.Add(new InputNumbersUI { Id = "quantidadeVolumes", Class = "col s12 m4", Label = "Quantidade Volumes", Value = "0" });
             config.Elements.Add(new InputTextUI { Id = "tipoEspecie", Class = "col s12 m4", Label = "Tipo Espécie", MaxLength = 60 });
             config.Elements.Add(new InputTextUI { Id = "numeracaoVolumesTrans", Class = "col s12 m4", Label = "Numeração", MaxLength = 60 });
@@ -561,13 +562,14 @@ namespace Fly01.Faturamento.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string nFeRefComplementarIsDevolucao)
+        public JsonResult VerificaEstoqueNegativo(string id, string tipoVenda, string tipoNfeComplementar, string nFeRefComplementarIsDevolucao)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>();
                 queryString.AddParam("pedidoId", id);
                 queryString.AddParam("tipoVenda", tipoVenda);
+                queryString.AddParam("tipoNfeComplementar", tipoNfeComplementar);
                 queryString.AddParam("isComplementarDevolucao", nFeRefComplementarIsDevolucao);
 
                 var response = RestHelper.ExecuteGetRequest<List<PedidoEstoqueNegativoVM>>("PedidoEstoqueNegativo", queryString);

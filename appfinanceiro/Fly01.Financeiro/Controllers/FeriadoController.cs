@@ -28,7 +28,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index", "Feriado") },
                 Header = new HtmlUIHeader

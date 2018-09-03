@@ -5,34 +5,17 @@
         return e.replace(',', '.');
     }
 
-    function fnChangeFrete() {
-        var valorFrete = parseFloat(noComma($('input#valorFrete').val()));
-        var valorTotal = parseFloat(noComma($('input#totalProdutos').val()));
-
-        $('input#totalFrete').val(0);
-        if ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario") {
-            $('input#totalFrete').val(valorFrete);
-            valorTotal += valorFrete;
-        }
-        else if ($('select#tipoFrete').val() == "SemFrete") {
-            $('input#valorFrete').val(0);
-        }
-
-        $('input#totalPedido').val(valorTotal);
-        fly01.fn.updateTextFields();
-    }
-
-    function fnFormReadyVisualizarPedido() {
+    function listProdutos() {
         $.ajax({
             type: "POST",
-            url: "@Url.Action("GetPedidoItens", "PedidoItem")?id=" + $('#fly01mdlfrmPedido #id').val(),
+            url: "@Url.Action("GetOrdemCompraProdutos", "PedidoItem")?id=" + $('#fly01mdlfrmVisualizarPedido #id').val(),
             dataType: "json",
             contentType: "application/json",
             success: function (response) {
                 if (response) {
-                    $("#pedidoItensDataTable").DataTable().destroy();
+                    $("#PedidoItemDataTable").DataTable().destroy();
 
-                    var table = $("#pedidoItensDataTable").DataTable({
+                    var table = $("#PedidoItemDataTable").DataTable({
                         bSort: false,
                         paging: false,
                         bLengthChange: false,
@@ -42,42 +25,12 @@
                         data: response.data,
                         columns: [
                             { title: "Produto", data: "produto_descricao" },
+                            { title: "Grupo Tributário", data: "grupoTributario_descricao" },
                             { title: "Quant.", data: "quantidade" },
                             { title: "Valor", data: "valor" },
                             { title: "Desconto", data: "desconto" },
                             { title: "Total", data: "total" }
-                        ],
-                        footerCallback:function (tfoot, data, start, end, display) {
-                            var api = this.api(), data;
-                            var displayTotal = '';
-
-                            if (data.length > 1) {
-                                var total = api
-                                    .column(4)
-                                    .data()
-                                    .reduce(function (a, b) {
-                                        var aFloat = typeof a === 'number' ? a : a.removeMoneyMask();
-                                        var bFloat = typeof b === 'number' ? b : b.removeMoneyMask();
-
-                                        return aFloat + bFloat;
-                                    });
-
-                                displayTotal = total.formatMoneyMask(2, 3, '', ',');
-                            } else {
-                                if (!!data[0])
-                                    displayTotal = data[0].total.replace('R$ ', '').replace('R$', '');
-                                else
-                                    displayTotal = "0,00"
-                            }
-
-                            if (displayTotal.indexOf(',') < 0) {
-                                displayTotal += ',00';
-                            }
-
-                            $(tfoot).find('th').eq(0).html("Total: R$" + displayTotal);
-                            $('input#totalProdutos').val(displayTotal);
-                            fnChangeFrete();
-                        }
+                        ]
                     });
                 } else {
                     fly01.toast(response.message, 'error');
@@ -87,5 +40,55 @@
                 fly01.toast(errorThrown, 'error');
             }
         });
+    }
+
+    function calculaTotalOrdemCompra() {
+        var valorFrete = 0;
+        var tipoFrete = $('#fly01mdlfrmVisualizarPedido select#tipoFrete').val();
+        var tipoCompra = $('#fly01mdlfrmVisualizarPedido select#tipoCompra').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Devolucao") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Normal")
+            );
+
+        if (calculaFrete) {
+            valorFrete = TryParseFloat(noComma($('input#valorFrete').val()));
+        }
+
+        var idPedido = $("form#fly01mdlfrmVisualizarPedido input#id").val();
+        var fornecedorId = $("form#fly01mdlfrmVisualizarPedido input#fornecedorId").val();
+        var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemCompra", "Pedido")',
+            type: "GET",
+            data: { id: idPedido, fornecedorId: fornecedorId, geraNotaFiscal: geraNotaFiscal, tipoCompra: tipoCompra, tipoFrete: tipoFrete, valorFrete: valorFrete }
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
+                $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemCompra').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                fly01.fn.updateTextFields();
+            }
+            else {
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });
+    }
+
+    function fnFormReadyVisualizarPedido() {
+        listProdutos();
+        calculaTotalOrdemCompra();
     }
 </script>

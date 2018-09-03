@@ -1,7 +1,6 @@
 ﻿using Fly01.Core.Mensageria;
 using RabbitMQ.Client;
 using System;
-using System.Linq;
 using System.Web.Configuration;
 
 namespace Fly01.Core.ServiceBus

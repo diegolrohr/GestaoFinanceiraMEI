@@ -13,6 +13,7 @@ namespace Fly01.Faturamento.BL
         public SerieNotaFiscalBL(AppDataContextBase context, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL) : base(context)
         {
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
+            MustConsumeMessageServiceBus = true;
         }
 
         public override void Insert(SerieNotaFiscal entity)

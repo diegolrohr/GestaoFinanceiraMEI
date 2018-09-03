@@ -72,7 +72,7 @@ namespace Fly01.Compras.BL
         public OrdemCompraItemBL OrdemCompraItemBL => ordemCompraItemBL ?? (ordemCompraItemBL = new OrdemCompraItemBL(Context));
 
         private PedidoBL pedidoBL;
-        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL));
+        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL));
 
         private PedidoItemBL pedidoItemBL;
         public PedidoItemBL PedidoItemBL => pedidoItemBL ?? (pedidoItemBL = new PedidoItemBL(Context));
@@ -100,6 +100,43 @@ namespace Fly01.Compras.BL
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));
+
+        private ParametroTributarioBL parametroTributarioBL;
+        public ParametroTributarioBL ParametroTributarioBL => parametroTributarioBL ?? (parametroTributarioBL = new ParametroTributarioBL(Context, EntidadeBL));
+
+        private NotaFiscalInutilizadaBL notaFiscalInutilizadaBL;
+        public NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL => notaFiscalInutilizadaBL ?? (notaFiscalInutilizadaBL = new NotaFiscalInutilizadaBL(Context));
+
+        private EntidadeBL entidadeBL;
+        public EntidadeBL EntidadeBL => entidadeBL ?? (entidadeBL = new EntidadeBL(Context, EstadoBL));
+
+        private CertificadoDigitalBL certificadoDigitalBL;
+        public CertificadoDigitalBL CertificadoDigitalBL => certificadoDigitalBL ?? (certificadoDigitalBL = new CertificadoDigitalBL(Context, EstadoBL, ParametroTributarioBL));
+
+        private NotaFiscalEntradaBL notaFiscalEntradaBL;
+        public NotaFiscalEntradaBL NotaFiscalEntradaBL => notaFiscalEntradaBL ?? (notaFiscalEntradaBL = new NotaFiscalEntradaBL(Context, NFeEntradaBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
+
+        private NFeEntradaBL nfeEntradaBL;
+        public NFeEntradaBL NFeEntradaBL => nfeEntradaBL ?? (nfeEntradaBL = new NFeEntradaBL(Context, SerieNotaFiscalBL, NFeProdutoEntradaBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoEntradaBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+
+        private NFeProdutoEntradaBL nfeProdutoEntradaBL;
+        public NFeProdutoEntradaBL NFeProdutoEntradaBL => nfeProdutoEntradaBL ?? (nfeProdutoEntradaBL = new NFeProdutoEntradaBL(Context));
+
+        private SerieNotaFiscalBL serieNotaFiscalBL;
+        public SerieNotaFiscalBL SerieNotaFiscalBL => serieNotaFiscalBL ?? (serieNotaFiscalBL = new SerieNotaFiscalBL(Context, NotaFiscalInutilizadaBL));
+
+        private TotalTributacaoBL totalTributacaoBL;
+        public TotalTributacaoBL TotalTributacaoBL => totalTributacaoBL ?? (totalTributacaoBL = new TotalTributacaoBL(Context, PessoaBL, GrupoTributarioBL, ProdutoBL, SubstituicaoTributariaBL, ParametroTributarioBL, CertificadoDigitalBL, PedidoItemBL));
+
+        private NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL;
+        public NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL => notaFiscalItemTributacaoEntradaBL ?? (notaFiscalItemTributacaoEntradaBL = new NotaFiscalItemTributacaoEntradaBL(Context));
+
+        private NotaFiscalCartaCorrecaoEntradaBL notaFiscalCartaCorrecaoEntradaBL;
+        public NotaFiscalCartaCorrecaoEntradaBL NotaFiscalCartaCorrecaoEntradaBL => notaFiscalCartaCorrecaoEntradaBL ?? (notaFiscalCartaCorrecaoEntradaBL = new NotaFiscalCartaCorrecaoEntradaBL(Context, NotaFiscalEntradaBL, TotalTributacaoBL, CertificadoDigitalBL));
+
+        private MonitorNFBL monitorNFBL;
+        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeEntradaBL, NotaFiscalEntradaBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL));
+
         #endregion
     }
 }

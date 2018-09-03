@@ -12,8 +12,8 @@ namespace Fly01.Core.ServiceBus
         public static string Password => WebConfigurationManager.AppSettings["RabbitPassword"];
         public static string AppId => WebConfigurationManager.AppSettings["RabbitServiceQueueName"].ToLower();
         public static string AMQPExchange => WebConfigurationManager.AppSettings["RabbitAMQPExchangeName"];
-        public static string QueueName => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev"
-            ? Environment.MachineName + "_" + WebConfigurationManager.AppSettings["RabbitServiceQueueName"]
+        public static string QueueName => WebConfigurationManager.AppSettings["RabbitVirtualHostname"] == "dev" 
+            ? Environment.MachineName + "_" + WebConfigurationManager.AppSettings["RabbitServiceQueueName"] 
             : WebConfigurationManager.AppSettings["RabbitServiceQueueName"];
         public static string VirtualHostApps => WebConfigurationManager.AppSettings["RabbitVirtualHostApps"];
         public static string VirtualHostIntegracao => WebConfigurationManager.AppSettings["RabbitVirtualHostIntegracao"];

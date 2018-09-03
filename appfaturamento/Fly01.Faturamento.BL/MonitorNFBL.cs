@@ -80,6 +80,7 @@ namespace Fly01.Faturamento.BL
                             {
                                 nfe.Mensagem = null;
                                 nfe.Recomendacao = null;
+                                nfe.XML = null;
 
                                 nfe.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                 nfe.Mensagem = itemNF.Mensagem;
@@ -92,6 +93,7 @@ namespace Fly01.Faturamento.BL
                                 {
                                     nfse.Mensagem = null;
                                     nfse.Recomendacao = null;
+                                    nfse.XML = null;
 
                                     nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                     nfse.Mensagem = itemNF.Mensagem;

@@ -17,6 +17,7 @@
         var valorFrete = 0;
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('input#tipoVenda').val();
+        var tipoNfeComplementar = $('input#tipoNfeComplementar').val();
         var calculaFrete = (
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
@@ -35,7 +36,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoNfeComplementar: tipoNfeComplementar, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -151,6 +152,7 @@
     }
 
     function fnFormReadyOrcamento() {
+        fnIsNovoPedido();
         if ($("#categoriaDescricao").data("url-post"))
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
@@ -179,5 +181,17 @@
                 calculaTotalOrcamento();
             }
         });
+    }
+
+    $("#stepFinanceiro .step-actions button.next-step, #stepTransporte:not(.active) .step-title, #stepFinalizar .step-actions button.previous-step").on("click", () => {
+        if ($("#tipoFreteField .select-dropdown").val() == "Sem frete")
+            fnDisableInput();
+    });
+
+    function fnIsNovoPedido() {
+        if ($('#id').val() == "" || $('#id').val() == undefined) {
+            $('#tipoFreteField select#tipoFrete').val("SemFrete")
+            $("#tipoFreteField .select-dropdown").val("Sem frete");
+        }
     }
 </script>

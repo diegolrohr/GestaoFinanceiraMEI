@@ -41,7 +41,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<Pedido> model)
         {
-            if (model == null || key == default(Guid))
+            if (model == null || key == default(Guid) || key == null)
                 return BadRequest(ModelState);
 
             var entity = Find(key);
@@ -72,11 +72,11 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 if (!Exists(key))
                     return NotFound();
-
-                throw;
+                else
+                    throw;
             }
 
-            return Ok();
+            return Ok(); 
         }
 
         private double GetTotalPedidoItens(Pedido pedido)

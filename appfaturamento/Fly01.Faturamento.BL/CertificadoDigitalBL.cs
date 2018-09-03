@@ -36,6 +36,7 @@ namespace Fly01.Faturamento.BL
             ParametroTributarioBL = parametroTributarioBL;
             empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
+            MustConsumeMessageServiceBus = true;
         }
 
         public IQueryable<CertificadoDigital> Everything => repository.All.Where(x => x.Ativo);

@@ -4,15 +4,23 @@
             $("#chaveNFeReferenciada").rules("add", { required: true });
             $("#chaveNFeReferenciadaField").show();
 
-            $("div#clienteIdField").hide();
+            if (isCreate()) {
+                $("div#clienteIdField").hide();
+            }
 
             if (tipoVenda == "Devolucao") {
                 $("#grupoTributarioPadraoDescricao").rules("add", { required: true });
                 $("input#tipoCarteira").val("Despesa");
                 $("#nFeRefComplementarIsDevolucaoField").hide();
+                if (isCreate()) {
+                    $('select#tipoNfeComplementar').val("NaoComplementar");
+                    $('select#tipoNfeComplementar').material_select();
+                }
             } else {//complementar
-                $('select#tipoNfeComplementar').val("ComplPrecoQtd");
-                $('select#tipoNfeComplementar').material_select();
+                if (isCreate()) {
+                    $('select#tipoNfeComplementar').val("ComplPrecoQtd");
+                    $('select#tipoNfeComplementar').material_select();
+                }
 
                 $("#grupoTributarioPadraoDescricao").rules("remove", "required");
                 $("#grupoTributarioPadraoDescricao").removeClass("invalid")
@@ -20,7 +28,12 @@
                 $("#nFeRefComplementarIsDevolucaoField").show();
 
                 $("div#clienteIdField").hide();
-                $("input#tipoCarteira").val("Receita");
+                if($('#nFeRefComplementarIsDevolucao').is(':checked')) {
+                    $("input#tipoCarteira").val("Despesa");
+                }
+                else {
+                    $("input#tipoCarteira").val("Receita");
+                }
             }
         }
         else {
@@ -36,6 +49,10 @@
             $("#grupoTributarioPadraoDescricao").removeClass("invalid")
 
             $("input#tipoCarteira").val("Receita");
+            if (isCreate()) {
+                $('select#tipoNfeComplementar').val("NaoComplementar");
+                $('select#tipoNfeComplementar').material_select();
+            }
         }
     }
 

@@ -11,6 +11,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
@@ -18,6 +19,11 @@ namespace Fly01.Compras.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasOrcamentoPedido)]
     public class OrdemCompraController : BaseController<OrdemCompraVM>
     {
+        public OrdemCompraController()
+        {
+            ExpandProperties = "grupoTributarioPadrao($select=id,descricao,tipoTributacaoICMS),estadoPlacaVeiculo,condicaoParcelamento,formaPagamento,categoria";
+        }
+
         public override Func<OrdemCompraVM, object> GetDisplayData()
         {
             return x => new
@@ -29,12 +35,12 @@ namespace Fly01.Compras.Controllers
                 tipoOrdemCompraCssClass = EnumHelper.GetCSS(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
                 tipoOrdemCompraValue = EnumHelper.GetValue(typeof(TipoOrdemCompra), x.TipoOrdemCompra),
                 data = x.Data.ToString("dd/MM/yyyy"),
+                status = x.Status,
                 total = x.Total?.ToString("C", AppDefaults.CultureInfoDefault),
                 observacao = string.IsNullOrEmpty(x.Observacao) ? "" : x.Observacao.Substring(0, x.Observacao.Length <= 20 ? x.Observacao.Length : 20),
-                status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemCompra), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemCompra), x.Status),
-                statusValue = EnumHelper.GetValue(typeof(StatusOrdemCompra), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(StatusOrdemCompra), x.Status)
             };
         }
 
@@ -65,12 +71,16 @@ namespace Fly01.Compras.Controllers
 
             return new List<DataTableUIAction>
             {
-                new DataTableUIAction { OnClickFn = "fnVisualizarPedido", Label = "Visualizar", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" },
-                new DataTableUIAction { OnClickFn = "fnVisualizarOrcamento", Label = "Visualizar", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" },
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
+                new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "(row.status == 'Aberto')" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido' && row.geraNotaFiscal == false)" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
             };
         }
 
-        protected ContentUI OrdemCompraJson(UrlHelper url, string scheme, bool withSidebarUrl = false, string gridLoad = "GridLoad")
+        protected ContentUI OrdemCompraJson(UrlHelper url, string scheme, string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as compras";
             var buttonOnClick = "fnRemoveFilter";
@@ -81,7 +91,7 @@ namespace Fly01.Compras.Controllers
                 buttonOnClick = "fnAddFilter";
             }
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = url.Action("Index", "OrdemCompra") },
                 Header = new HtmlUIHeader
@@ -91,9 +101,6 @@ namespace Fly01.Compras.Controllers
                 },
                 UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns="
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = url.Action("Sidebar", "OrdemCompra", null, scheme);
 
             if (gridLoad == "GridLoad")
             {
@@ -144,36 +151,37 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnVisualizarOrcamento", Label = "Visualizar", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnEditarPedido", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnEditarOrcamento", Label = "Editar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido' && row.geraNotaFiscal == false)" },
+                new DataTableUIAction { OnClickFn = "fnFinalizarFaturarPedido", Label = "Finalizar e faturar", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirPedido", Label = "Excluir", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrcamento", Label = "Excluir", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" },
                 new DataTableUIAction { OnClickFn = "fnGerarPedidos", Label = "Gerar pedidos", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Orcamento')" },
-                new DataTableUIAction { OnClickFn = "fnFinalizarPedido", Label = "Finalizar pedido", ShowIf = "(row.status == 'Aberto' && row.tipoOrdemCompra == 'Pedido')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirPedido", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" },
-                new DataTableUIAction { OnClickFn = "fnImprimirOrcamento", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" }
+                new DataTableUIAction { OnClickFn = "fnImprimirOrcamento", Label = "Imprimir", ShowIf = "(row.tipoOrdemCompra == 'Orcamento')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailPedido", Label = "Enviar por e-mail", ShowIf = "(row.tipoOrdemCompra == 'Pedido')" },
             }));
+
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Type = "numbers" });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "status",
+                DisplayName = "Status",
+                Priority = 2,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemCompra))),
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
+            });
 
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "tipoOrdemCompra",
                 DisplayName = "Tipo",
-                Priority = 1,
+                Priority = 3,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOrdemCompra))),
                 RenderFn = "fnRenderEnum(full.tipoOrdemCompraCssClass, full.tipoOrdemCompraDescription)"
             });
-            config.Columns.Add(new DataTableUIColumn
-            {
-                DataField = "status",
-                DisplayName = "Status",
-                Priority = 5,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemCompra))),
-                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
-            });
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 2, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 4, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 3, Type = "currency" });
-
-            config.Columns.Add(new DataTableUIColumn { DataField = "observacao", DisplayName = "Observação", Priority = 6 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "total", DisplayName = "Total", Priority = 5, Type = "currency" });
 
             cfg.Content.Add(config);
 

@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.BL
         {
         }
 
-        public string ConvertToBase64(NFeVM entity, CRT CodigoRegimeTributario)
+        public string ConvertToXML(NFeVM entity, CRT CodigoRegimeTributario)
         {
             string result = string.Empty;
 
@@ -62,7 +62,7 @@ namespace Fly01.EmissaoNFE.BL
 
             xmlString = Base64Helper.RemoverAcentos(xmlString);
 
-            result = Base64Helper.CodificaBase64(xmlString);
+            result = xmlString;
 
             return result;
         }

@@ -42,6 +42,14 @@ namespace Fly01.Financeiro.API.Models.DAL
                 .Map<ContaPagar>(m => m.ToTable("ContaPagar"))
                 .Map<ContaReceber>(m => m.ToTable("ContaReceber"));
 
+            //What does principal end of an association means in relationship
+            //por causa da repeticaoPaiId, explicito via FluentAPI
+            builder.Entity<ContaFinanceira>()
+                .HasOptional(b => b.ContaFinanceiraParcelaPai)
+                .WithMany()
+                .HasForeignKey(b => b.ContaFinanceiraParcelaPaiId)
+                .WillCascadeOnDelete(false);
+
             builder.Entity<RenegociacaoContaFinanceira>()
                 .Map(m => m.ToTable("RenegociacaoContaFinanceira"))
                 .Map<RenegociacaoContaFinanceiraOrigem>(m => m.ToTable("RenegociacaoContaFinanceiraOrigem"))

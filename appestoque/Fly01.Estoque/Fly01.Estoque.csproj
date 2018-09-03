@@ -169,8 +169,6 @@
     <Content Include="Views\GrupoProduto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\Shared\Functions\_fnChangeGrupoProduto.cshtml" />
     <Content Include="Views\PosicaoAtual\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\InventarioItem\Functions\_fnChangeProdutoDesc.cshtml" />
-    <Content Include="Views\InventarioItem\Functions\_fnChangeProdutoCod.cshtml" />
     <Content Include="Views\InventarioItem\Functions\_fnAdicionaProduto.cshtml" />
     <Content Include="Views\Home\Functions\_fnPosicaoAtual.cshtml" />
     <Content Include="Views\Home\Functions\_fnAtualizarPeriodo.cshtml" />

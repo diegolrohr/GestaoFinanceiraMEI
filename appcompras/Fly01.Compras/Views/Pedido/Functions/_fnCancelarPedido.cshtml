@@ -1,7 +1,7 @@
 ﻿<script>
     function fnCancelarPedido() {
         var idRecord = $('form#fly01frm input#id').val();
-        if (onCancelMustDelete) {
+        if (onCancelMustDeletePedido) {
             fly01.loading.start();
             $.ajax({
                 type: "POST",
@@ -14,7 +14,7 @@
                         fly01.go("@Url.Action("List", "OrdemCompra")");
                     }
                     else {
-                        fly01.toast(data.message, "error");
+                        fly01.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {

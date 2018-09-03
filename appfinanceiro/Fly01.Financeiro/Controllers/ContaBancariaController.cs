@@ -58,7 +58,7 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
@@ -102,7 +102,7 @@ namespace Fly01.Financeiro.Controllers
 
         protected override ContentUI FormJson()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -174,7 +174,7 @@ namespace Fly01.Financeiro.Controllers
                     new LineUI()
                     {
                         Tag = "h6",
-                        Text = "Se esta conta emite boletos bacários é necessários prencher os dados abaixo.",
+                        Text = "Se esta conta emite boletos bancários é necessário preencher os dados abaixo.",
                     }
                 }
             });

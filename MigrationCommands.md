@@ -53,3 +53,13 @@ Update-Database -ProjectName Fly01.EmissaoNFE.DAL -StartUpProjectName Fly01.Emis
 ```PowerShell
 Add-Migration -ProjectName Fly01.EmissaoNFE.DAL -StartUpProjectName Fly01.EmissaoNFE.API -ConfigurationTypeName Fly01.EmissaoNFE.DAL.Migrations.Configuration -Name MigrationName
 ```
+
+# OrdemServico
+
+```PowerShell
+Update-Database -ProjectName Fly01.OrdemServico.DAL -StartUpProjectName Fly01.OrdemServico.API -ConfigurationTypeName Fly01.OrdemServico.DAL.Migrations.Configuration -Verbose
+```
+
+```PowerShell
+Add-Migration -ProjectName Fly01.OrdemServico.DAL -StartUpProjectName Fly01.OrdemServico.API -ConfigurationTypeName Fly01.OrdemServico.DAL.Migrations.Configuration -Name MigrationName
+```

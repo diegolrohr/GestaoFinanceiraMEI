@@ -49,17 +49,36 @@ namespace Fly01.Estoque.Controllers
 
         public override ContentResult List()
         {
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index"),
+                    WithParams = Url.Action("Edit")
+                },
                 Header = new HtmlUIHeader
                 {
                     Title = "Posição atual",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                Functions = new List<string> { "fnFormReady", "fnAjusteManual", "fnTotais" },
+                Functions = new List<string> { "fnFormReady", "fnAjusteManual", "fnTotais", "fnRenderEnum" },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
             };
+
+            DataTableUI config = new DataTableUI
+            {
+                Id = "fly01dtprodutos",
+                UrlGridLoad = Url.Action("GridLoadPos", "Produto"),
+                UrlFunctions = Url.Action("Functions", "Produto", null, Request.Url.Scheme) + "?fns=",
+                Options = new DataTableUIConfig { PageLength = 30 }
+
+            };
+
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
+            {
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
+            }));
 
             cfg.Content.Add(new CardUI
             {
@@ -100,13 +119,7 @@ namespace Fly01.Estoque.Controllers
                 }
             });
 
-            var config = new DataTableUI
-            {
-                Id = "fly01dtprodutos",
-                UrlGridLoad = Url.Action("GridLoadPos", "Produto"),
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Options = new DataTableUIConfig { PageLength = 30, WithoutRowMenu = true }
-            };
+            
 
             config.Columns.Add(new DataTableUIColumn { DataField = "codigoProduto", DisplayName = "Código", Priority = 1 });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
@@ -118,7 +131,6 @@ namespace Fly01.Estoque.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "vendaTotal", DisplayName = "Venda total", Priority = 8, Type = "currency", Searchable = false, Orderable = false });
 
             cfg.Content.Add(config);
-
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 

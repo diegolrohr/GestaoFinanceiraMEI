@@ -61,13 +61,12 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        protected override ContentUI HomeJson(bool withSidebarUrl = false)
+        protected override ContentUI HomeJson()
         {
 
             if (!UserCanPerformOperation(ResourceHashConst.ComprasComprasDashboard))
-                return new ContentUI();
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
-            //return DashboardJson(Url, Request.Url.Scheme, withSidebarUrl);
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -75,11 +74,9 @@ namespace Fly01.Compras.Controllers
                 {
                     Title = "Dashboard"
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = @Url.Action("Sidebar")
             };
-
-            if (withSidebarUrl)
-                cfg.SidebarUrl = Url.Action("Sidebar");
 
             cfg.Content.Add(new FormUI
             {
@@ -277,6 +274,7 @@ namespace Fly01.Compras.Controllers
                     {
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasComprasNotasFiscais, Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscalEntrada")}
                     }
                 },
                 new SidebarUIMenu()
@@ -294,6 +292,18 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosGrupoProdutos, Label = "Grupo de Produtos", OnClick = @Url.Action("List", "GrupoProduto")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosCategoria, Label = "Categoria", OnClick = @Url.Action("List", "Categoria")},
                         new LinkUI() { Class = ResourceHashConst.ComprasCadastrosSubstituicaoTributaria, Label = "Substituição Tributária", OnClick = @Url.Action("List", "SubstituicaoTributaria")}
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    Class = ResourceHashConst.ComprasConfiguracoes,
+                    Label = "Configurações",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesCertificadoDigital, Label = "Certificado Digital", OnClick = @Url.Action("Form", "CertificadoDigital") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesParametrosTributarios, Label = "Parâmetros Tributários", OnClick = @Url.Action("Form", "ParametroTributario") },
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesSerieNotasFiscais, Label = "Série de Notas Fiscais", OnClick = @Url.Action("List", "SerieNotaFiscal")},
+                        new LinkUI() { Class = ResourceHashConst.ComprasConfiguracoesNotasFiscaisInutilizadas, Label = "Notas Fiscais Inutilizadas", OnClick = @Url.Action("List", "NotaFiscalInutilizada") }
                     }
                 },
                 new SidebarUIMenu()
@@ -326,7 +336,7 @@ namespace Fly01.Compras.Controllers
             {
                 Conpass = new ConpassUI(),
                 Droz = new DrozUI(),
-                Zendesk = new ZendeskUI()
+                Zendesk = new ZendeskUI() 
                 {
                     AppName = "Fly01 Gestão",
                     AppTag = "chat_fly01_gestao",

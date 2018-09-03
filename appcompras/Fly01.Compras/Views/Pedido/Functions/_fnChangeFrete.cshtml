@@ -1,28 +1,55 @@
 ﻿<script>
-
     function noComma(e) {
         return e.replace(',', '.');
     }
 
     function fnChangeFrete() {
-        var valorFrete = parseFloat(noComma($('input#valorFrete').val()));
-        var valorTotal = parseFloat(noComma($('input#totalProdutos').val()));
-        
-        $('input#totalFrete').val(0);
-        $('input#valorFrete').removeAttr('disabled');
-        $('#transportadoraNome').rules("remove", "required");
-        $('#transportadoraNome').removeClass("invalid");
+        fnEnableInput();
+        var tipoFrete = $('select#tipoFrete').val();
+        var tipoCompra = $('#tipoCompra').val();
+        var calculaFrete = (
+                ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoCompra == "Devolucao") ||
+                ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoCompra == "Normal")
+            );
+        if (calculaFrete) {
+            $('input#transportadoraNome').rules("add", { required: true });
+        }
+        else {
+            $('input#transportadoraNome').rules("remove", "required");
+            $('input#transportadoraNome').removeClass("invalid");
 
-        if ($('select#tipoFrete').val() == "FOB" || $('select#tipoFrete').val() == "Destinatario") {
-            $('input#totalFrete').val(valorFrete);
-            valorTotal += valorFrete;
-            $('#transportadoraNome').rules("add", { required: true });
+            if (tipoFrete == "SemFrete") {
+                fnDisableInput();
+            }
+            
+            fly01.fn.updateTextFields();
         }
-        else if ($('select#tipoFrete').val() == "SemFrete") {
-            $('input#valorFrete').val(0);
-            $('input#valorFrete').attr('disabled', 'disabled');
-        }
-        $('input#totalPedido').val(valorTotal);
-        fly01.fn.updateTextFields();
+    }
+
+    function fnEnableInput() {
+        $('input#valorFrete').removeAttr('disabled');
+        $('input#transportadoraNome').removeAttr('disabled');
+        $('input#placaVeiculo').removeAttr('disabled');
+        $('input#estadoPlacaVeiculoNome').removeAttr('disabled');
+        $('input#marca').removeAttr('disabled');
+        $('input#pesoBruto').removeAttr('disabled');
+        $('input#pesoLiquido').removeAttr('disabled');
+        $('input#quantidadeVolumes').removeAttr('disabled');
+        $('#tipoEspecie').removeAttr('disabled');
+        $('input#numeracaoVolumesTrans').removeAttr('disabled');
+    }
+
+    function fnDisableInput() {
+        $('input#valorFrete').val(0);
+        $('input#valorFrete').attr('disabled', 'disabled');
+        $('input#transportadoraNome').attr('disabled', 'disabled');
+        $('input#placaVeiculo').attr('disabled', 'disabled');
+        $('input#estadoPlacaVeiculoNome').attr('disabled', 'disabled');
+        $('input#marca').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoBruto').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#pesoLiquido').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#quantidadeVolumes').attr('disabled', 'disabled').removeClass("invalid");
+        $('#tipoEspecie').attr('disabled', 'disabled').removeClass("invalid");
+        $('input#numeracaoVolumesTrans').attr('disabled', 'disabled').removeClass("invalid");
     }
 </script>

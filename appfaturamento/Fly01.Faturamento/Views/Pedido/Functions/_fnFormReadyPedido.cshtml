@@ -17,6 +17,8 @@
         var valorFrete = 0;
         var tipoFrete = $('select#tipoFrete').val();
         var tipoVenda = $('#tipoVenda').val();
+        var tipoNfeComplementar = $('#tipoNfeComplementar').val();
+
         var calculaFrete = (
                 ((tipoFrete == "CIF" || tipoFrete == "Remetente") && tipoVenda == "Normal") ||
                 ((tipoFrete == "FOB" || tipoFrete == "Destinatario") && tipoVenda == "Devolucao")
@@ -46,7 +48,7 @@
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
             type: "GET",
-            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoVenda: tipoVenda, tipoFrete: tipoFrete, valorFrete: valorFrete }
+            data: { id: idPedido, clienteId: idCliente, geraNotaFiscal: geraNotaFiscal, tipoNfeComplementar: tipoNfeComplementar, tipoFrete: tipoFrete, valorFrete: valorFrete }
         })
         .done(function (data) {
             if (data.success) {
@@ -75,7 +77,7 @@
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
             fly01.toast(err, "error");
             fly01.loading.stop();
-        });        
+        });
     }
 
     function getInformacoesComplementares() {
@@ -115,6 +117,7 @@
             $("#categoriaDescricao").data("url-post", "@Url.Action("NovaCategoria")?tipo=" + $("#tipoCarteira").val());
 
         var tipoVendaVal = $('#tipoVenda').val();
+        var tipoNfeComplementarVal = $('#tipoNfeComplementar').val();
 
         if (tipoVendaVal == "Devolucao" || tipoVendaVal == "Complementar") {
             $("#fly01btngrpFinalidade #btnNormal").hide();
@@ -127,6 +130,14 @@
             $("#nFeRefComplementarIsDevolucaoField").show();
             $('#stepTransporte').hide();
             $("#fly01btngrpFinalidade #btnDevolucao").hide();
+            if (tipoNfeComplementarVal == "ComplIcms") {
+                $('#stepFinanceiro').hide();
+                $("input#geraFinanceiro").prop("checked", false);
+            }
+            if (tipoNfeComplementarVal != "ComplPrecoQtd") {
+                $("input#movimentaEstoque").prop("checked", false);
+                $("#movimentaEstoqueField").hide();
+            }
         }
         else if (tipoVendaVal == "Normal") {
             $("#fly01btngrpFinalidade #btnDevolucao").hide();
@@ -174,6 +185,8 @@
 
             $('input#numero').removeAttr('disabled');
             $('input#chaveNFeReferenciada').removeAttr('disabled');
+            $('select#tipoNfeComplementar').removeAttr('disabled');
+            $('select#tipoNfeComplementar').material_select();
 
             var jsonData = $(this).serializeObject();
             if ($('input#finalizarPedido:checked').val() == "true") {
@@ -182,6 +195,8 @@
 
             $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
+            $('select#tipoNfeComplementar').attr('disabled', 'disabled');
+            $('select#tipoNfeComplementar').material_select();
             fly01.fn.updateTextFields();
 
             var url;
@@ -258,14 +273,25 @@
         calculaTotalPedido();
     }
 
+    function fnTipoVendaClick() {
+        if ($('input#tipoVenda').val() == "Normal") {
+            $('#btnNormal').click();
+        }
+        else if ($('input#tipoVenda').val() == "Devolucao") {
+            $('#btnDevolucao').click();
+        } else {
+            $('#btnComplementar').click();
+        }
+    }
     function fnFormReadyPedido() {
         fnIsNovoPedido();
         fnClickComplementarIsDevolucao();
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
+        fly01.fn.updateActiveMenu("/OrdemVenda/List");
 
         if (isCreate()) {
-            $('#btnNormal').click();
+            fnTipoVendaClick();
             var today = new Date();
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
@@ -276,17 +302,10 @@
             fnBindStepsWizard();
         }
         else {
-            //setar o agrupamento com a opção escolhida
-            if ($('input#tipoVenda').val() == "Normal") {
-                $('#btnNormal').click();
-            }
-            else {
-                if ($('input#tipoVenda').val() == "Devolucao") {
-                    $('#btnDevolucao').click();
-                } else {
-                    $('#btnComplementar').click();
-                }
-            }
+            fnTipoVendaClick();
+            $('select#tipoNfeComplementar').attr('disabled', 'disabled');
+            $('select#tipoNfeComplementar').material_select();
+
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
             fly01._.dtOrdemVendaProdutos.refresh();
@@ -311,6 +330,12 @@
 
         $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
+                EstoqueNegativoETotal();
+            }
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplIcms") {
                 EstoqueNegativoETotal();
             }
         });

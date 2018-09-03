@@ -134,6 +134,10 @@
     <Compile Include="Migrations\201805152119147_AlterNCMInativo.Designer.cs">
       <DependentUpon>201805152119147_AlterNCMInativo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808161735410_AlterProdutoAddColumnObjetoDeManutencao.cs" />
+    <Compile Include="Migrations\201808161735410_AlterProdutoAddColumnObjetoDeManutencao.Designer.cs">
+      <DependentUpon>201808161735410_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -213,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805152119147_AlterNCMInativo.resx">
       <DependentUpon>201805152119147_AlterNCMInativo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808161735410_AlterProdutoAddColumnObjetoDeManutencao.resx">
+      <DependentUpon>201808161735410_AlterProdutoAddColumnObjetoDeManutencao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

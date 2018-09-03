@@ -509,10 +509,10 @@ namespace Fly01.Compras.BL
                     }
 
                     #region Fatura
-                    if (entity.GeraFinanceiro)
-                    {
-                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
-                    }
+                    //if (entity.GeraFinanceiro) //descomentar quando SEFAZ voltar
+                    //{
+                    //    itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
+                    //}
                     #endregion
 
                     #region Pagamento
@@ -593,67 +593,74 @@ namespace Fly01.Compras.BL
 
         public Cobranca ObterCobranca(int numNotaFiscal, TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
         {
-                var contas = ObterContasFinanceiras(tipoNota, contaFinanceiraParcelaPaiId);
-                if (contas != null && contas.Any())
+            var contas = ObterContasFinanceiras(tipoNota, contaFinanceiraParcelaPaiId);
+            if (contas != null && contas.Any())
+            {
+                var cobranca = new Cobranca()
                 {
-                    var cobranca = new Cobranca()
+                    Fatura = new Fatura()
                     {
-                        Fatura = new Fatura()
-                        {
-                            NumeroFatura = "NF:" + numNotaFiscal.ToString(),
-                            ValorOriginario = contas.Sum(x => x.ValorPrevisto),
-                            ValorLiquido = contas.Sum(x => x.ValorPrevisto),
-                            ValorDesconto = 0.0
-                        }
-                    };
-                    var num = 1;
-                    cobranca.Duplicatas = new List<Duplicata>();
-                    foreach (var item in contas.OrderBy(x => x.DataVencimento))
-                    {
-                        cobranca.Duplicatas.Add(
-                            new Duplicata()
-                            {
-                                Numero = num.ToString().PadLeft(3, '0'),
-                                ValorDuplicata = item.ValorPrevisto,
-                                Vencimento = item.DataVencimento
-                            });
-                        num++;
+                        NumeroFatura = "NF:" + numNotaFiscal.ToString(),
+                        ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                        ValorLiquido = contas.Sum(x => x.ValorPrevisto),
+                        ValorDesconto = 0.0
                     }
-                    return cobranca;
+                };
+                var num = 1;
+                cobranca.Duplicatas = new List<Duplicata>();
+                foreach (var item in contas.OrderBy(x => x.DataVencimento))
+                {
+                    cobranca.Duplicatas.Add(
+                        new Duplicata()
+                        {
+                            Numero = num.ToString().PadLeft(3, '0'),
+                            ValorDuplicata = item.ValorPrevisto,
+                            Vencimento = item.DataVencimento
+                        });
+                    num++;
                 }
+                return cobranca;
+            }
             return null;
         }
 
         public List<ContaFinanceira> ObterContasFinanceiras(TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
         {
-            var header = new Dictionary<string, string>()
+            try
             {
-                { "AppUser", AppUser  },
-                { "PlataformaUrl", PlataformaUrl }
-            };
-            var queryString = new Dictionary<string, string>()
-            {
+                var header = new Dictionary<string, string>()
                 {
-                    "contaFinanceiraParcelaPaiId",
-                        contaFinanceiraParcelaPaiId.HasValue
-                        ? contaFinanceiraParcelaPaiId.Value.ToString()
-                        : default(Guid).ToString()
+                    { "AppUser", AppUser  },
+                    { "PlataformaUrl", PlataformaUrl }
+                };
+                    var queryString = new Dictionary<string, string>()
+                {
+                    {
+                        "contaFinanceiraParcelaPaiId",
+                            contaFinanceiraParcelaPaiId.HasValue
+                            ? contaFinanceiraParcelaPaiId.Value.ToString()
+                            : default(Guid).ToString()
+                    }
+                };
+
+                var contas = new List<ContaFinanceira>();
+                if (tipoNota == TipoNota.Saida)
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
                 }
-            };
+                else
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                }
 
-            var contas = new List<ContaFinanceira>();
-            if (tipoNota == TipoNota.Saida)
-            {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                return contas;
             }
-            else
+            catch (Exception ex)
             {
-                var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
-                contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message);
             }
-
-            return contas;
         }
 
         public override void Insert(NFeEntrada entity)

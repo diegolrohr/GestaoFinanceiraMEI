@@ -218,6 +218,8 @@
     <Content Include="Views\OrdemServico\Functions\_fnCancelarOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConcluirOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnCancelarNovaOrdem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnConcluirGerarOrdem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnGerarOrdemVenda.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

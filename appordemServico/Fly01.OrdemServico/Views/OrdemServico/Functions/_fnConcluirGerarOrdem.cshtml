@@ -1,0 +1,36 @@
+﻿<script>
+    function fnConcluirGerarOrdem(idRecord) {
+        fly01.confirm("Confirmar Encerramento", "Deseja realmente concluir esta ordem e gerar uma ordem de Venda? Não será mais possível editar/excluir", "fnConcluirGerarOrdemConfirmed(\"" + idRecord + "\")");
+    }
+    function fnConcluirGerarOrdemConfirmed(idRecord) {
+        fly01.loading.start();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ConcluirOrdem", "OrdemServico", new { gerarOrdemVenda = true })",
+            dataType: 'json',
+            data: { id: idRecord, faturar: false },
+            success: function (data) {
+                fly01.loading.stop();
+                if (data.success) {
+                    fly01.toast("Ordem concluída com sucesso e ordem de venda gerada!", "success");
+                    fly01._.fly01dt.refresh();
+                }
+                else {
+                    try {
+                        var jsonMessage = JSON.parse(data.message);
+
+                        jsonMessage.innerMessage.filter(x => ((x.dataField || "") == "")).forEach(element => {
+                            fly01.toast(element.message, "error", 8000);
+                        });
+                    } catch (e) {
+                        fly01.toast(data.message, "error");
+                    }
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+</script>

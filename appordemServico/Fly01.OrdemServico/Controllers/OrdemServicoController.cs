@@ -161,7 +161,8 @@ namespace Fly01.OrdemServico.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemServico), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemServico), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusOrdemServico), x.Status),
-                cliente_nome = x.Cliente.Nome
+                cliente_nome = x.Cliente.Nome,
+                geraOrdemVenda = x.GeraOrdemVenda
             };
         }
 
@@ -276,7 +277,9 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
-                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
+                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.Concluido}' && !row.geraOrdemVenda)" },
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
@@ -721,21 +724,9 @@ namespace Fly01.OrdemServico.Controllers
 
         private JsonResult MudarStatus(string id, StatusOrdemServico status)
         {
-            try
-            {
-                dynamic pedido = new ExpandoObject();
-                pedido.status = status.ToString();
-
-                var resourceNamePut = $"OrdemServico/{id}";
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
-
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
+            dynamic pedido = new ExpandoObject();
+            pedido.status = status.ToString();
+            return ExecutePut(id, pedido);
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
@@ -749,6 +740,32 @@ namespace Fly01.OrdemServico.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult ConcluirOrdem(string id, bool faturar = false) => MudarStatus(id, StatusOrdemServico.Concluido);
+
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult GerarOrdem(string id)
+        {
+            dynamic pedido = new ExpandoObject();
+            pedido.geraOrdemServico = true;
+            return ExecutePut(id, pedido);
+        }
+
+        private static JsonResult ExecutePut(string id, object pedido)
+        {
+            try
+            {
+                var resourceNamePut = $"OrdemServico/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
 
         #region OnDemmand
         [HttpPost]

@@ -1,6 +1,8 @@
-﻿using Fly01.OrdemServico.BL;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.OrdemServico.BL;
 using System;
 using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,7 +16,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public OrdemServicoController()
         {
-            MustProduceMessageServiceBus = false; // TODO: Implementar envio a rabbit nas BL
+            MustProduceMessageServiceBus = false;
         }
 
         public override async Task<IHttpActionResult> Post(Core.Entities.Domains.Commons.OrdemServico entity)
@@ -43,9 +45,16 @@ namespace Fly01.OrdemServico.API.Controllers.Api
             if (entity == null || !entity.Ativo)
                 return NotFound();
 
+            var lastState = entity.Status;
+            var lastGera = entity.GeraOrdemVenda;
+            var changedProperties = model.GetChangedPropertyNames().ToList();
             ModelState.Clear();
             model.Patch(entity);
-            Update(entity);
+
+            if (changedProperties.Count == 1 && changedProperties[0] == "GeraOrdemVenda")
+                UnitOfWork.GetGenericBL<OrdemServicoBL>().GerarOrdemVenda(entity);
+            else
+                Update(entity);
 
             Validate(entity);
 
@@ -56,7 +65,8 @@ namespace Fly01.OrdemServico.API.Controllers.Api
             {
                 await UnitSave();
 
-                if (MustProduceMessageServiceBus)
+                if ((lastState != entity.Status && entity.Status == StatusOrdemServico.Concluido) ||
+                        (!lastGera && entity.GeraOrdemVenda))
                     AfterSave(entity);
             }
             catch (DbUpdateConcurrencyException)

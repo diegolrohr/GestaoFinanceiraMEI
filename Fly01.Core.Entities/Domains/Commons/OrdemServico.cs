@@ -26,6 +26,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool Aprovado { get; set; }
 
+        public bool GeraOrdemVenda { get; set; }
+
         [DataType(DataType.MultilineText)]
         public string Descricao { get; set; }
 

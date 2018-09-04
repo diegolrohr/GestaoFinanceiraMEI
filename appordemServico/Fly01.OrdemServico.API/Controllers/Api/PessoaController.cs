@@ -9,7 +9,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public PessoaController()
         {
-            MustProduceMessageServiceBus = false; // TODO: Implementar envio a rabbit nas BL
+            MustProduceMessageServiceBus = true;
         }
     }
 }

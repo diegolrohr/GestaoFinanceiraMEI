@@ -96,7 +96,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\ImprimirOrdemServicoVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />

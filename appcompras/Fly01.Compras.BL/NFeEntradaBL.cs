@@ -509,10 +509,10 @@ namespace Fly01.Compras.BL
                     }
 
                     #region Fatura
-                    //if (entity.GeraFinanceiro) //descomentar quando SEFAZ voltar
-                    //{
-                    //    itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
-                    //}
+                    if (entity.GeraFinanceiro)
+                    {
+                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
+                    }
                     #endregion
 
                     #region Pagamento

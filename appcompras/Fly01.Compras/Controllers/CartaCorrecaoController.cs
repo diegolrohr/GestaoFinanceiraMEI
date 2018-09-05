@@ -17,8 +17,8 @@ using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoFaturamentoNotasFiscais)]
-    public class CartaCorrecaoController : BaseController<NotaFiscalEntradaCartaCorrecaoVM>
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNotasFiscais)]
+    public class CartaCorrecaoController : BaseController<NotaFiscalCartaCorrecaoEntradaVM>
     {
         public CartaCorrecaoController()
         {
@@ -80,7 +80,7 @@ namespace Fly01.Compras.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "notaFiscalEntradaId", Value = id.ToString() });
+            config.Elements.Add(new InputHiddenUI { Id = "notaFiscalId", Value = id.ToString() });
             config.Elements.Add(new TextAreaUI { Id = "mensagemCorrecao", Class = "col s12", Label = "Mensagem Carta de Correção", MaxLength = 1000 });
 
             cfg.Content.Add(config);
@@ -169,7 +169,7 @@ namespace Fly01.Compras.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "notafiscalEntradaId" });
+            config.Elements.Add(new InputHiddenUI { Id = "notafiscalId" });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m4 l4", Label = "Data", Disabled = true });
             config.Elements.Add(new SelectUI
             {
@@ -192,20 +192,20 @@ namespace Fly01.Compras.Controllers
             return View(id);
         }
 
-        public override Func<NotaFiscalEntradaCartaCorrecaoVM, object> GetDisplayData()
+        public override Func<NotaFiscalCartaCorrecaoEntradaVM, object> GetDisplayData()
         {
             return x => new
             {
                 id = x.Id,
                 mensagemCorrecao = x.MensagemCorrecao.Substring(0, x.MensagemCorrecao.Length > 35 ? 35 : x.MensagemCorrecao.Length),
                 data = x.Data.ToString("dd/MM/yyyy"),
-                notaFiscalEntradaId = x.NotaFiscalEntradaId,
+                notaFiscalId = x.NotaFiscalId,
                 status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCartaCorrecao), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCartaCorrecao), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusCartaCorrecao), x.Status),
                 numero = x.Numero,
-                notaFiscal_numNotaFiscal = x.NotaFiscalEntrada.NumNotaFiscal
+                notaFiscal_numNotaFiscal = x.NotaFiscal.NumNotaFiscal
             };
         }
 
@@ -214,7 +214,7 @@ namespace Fly01.Compras.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("notaFiscalEntradaId eq", Request.QueryString["id"]);
+            filters.Add("notaFiscalId eq", Request.QueryString["id"]);
             return base.GridLoad(filters);
         }
 

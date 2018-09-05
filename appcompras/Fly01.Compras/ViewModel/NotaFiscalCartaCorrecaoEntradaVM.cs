@@ -5,10 +5,10 @@ using System;
 
 namespace Fly01.Compras.ViewModel
 {
-    public class NotaFiscalEntradaCartaCorrecaoVM : DomainBaseVM
+    public class NotaFiscalCartaCorrecaoEntradaVM : DomainBaseVM
     {
         [JsonProperty("notaFiscalId")]
-        public Guid NotaFiscalEntradaId { get; set; }
+        public Guid NotaFiscalId { get; set; }
 
         [JsonProperty("idRetorno")]
         public string IdRetorno { get; set; }
@@ -32,6 +32,6 @@ namespace Fly01.Compras.ViewModel
         public string XML { get; set; }
 
         [JsonProperty("notaFiscal")]
-        public virtual NotaFiscalEntrada NotaFiscalEntrada { get; set; }
+        public virtual NotaFiscalEntrada NotaFiscal { get; set; }
     }
 }

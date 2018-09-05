@@ -58,7 +58,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
             return UnitOfWork.GetGenericBL<TBL>().Find(id);
         }
 
-        protected void AfterSave(TEntity entity)
+        protected override void AfterSave(TEntity entity)
         {
             UnitOfWork.GetGenericBL<TBL>().AfterSave(entity);
         }

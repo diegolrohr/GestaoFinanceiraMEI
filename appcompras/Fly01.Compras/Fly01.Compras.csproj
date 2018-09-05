@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -60,6 +60,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MailTemplates\Templates\OrdemCompra.html" />
     <Content Include="Reports\ReportImprimirOrcamento.rdlc" />
     <Content Include="Reports\ReportImprimirPedido.rdlc" />
   </ItemGroup>
@@ -97,6 +98,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailFilesHelper.cs" />
     <Compile Include="Models\Reports\ReportImprimirOrcamento.cs" />
     <Compile Include="Models\Reports\ReportImprimirPedido.cs" />
     <Compile Include="Models\Reports\WebReportViewer.cs" />
@@ -303,11 +305,11 @@
     <Content Include="Views\OrdemCompra\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnNovoOrcamento.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirPedido.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnFormReadyVisualizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnFinalizarFaturarPedido.cshtml" />
-    <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailOrcamentoPedido.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnEnviarEmailPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarPedido.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnEditarOrcamento.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnGerarPedidos.cshtml" />
@@ -319,6 +321,7 @@
     <Content Include="Views\NFeEntrada\Functions\_fnFormReadyTransmitirNFe.cshtml" />
     <Content Include="Views\NFeEntrada\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFeEntrada\Index.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -500,6 +503,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{D3EE1325-9A1D-4620-853B-822D88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
+      <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
+      <Name>Fly01.Core.Mensageria</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Presentation\Fly01.Core.Presentation.csproj">
       <Project>{C285FE7E-0A0C-47CE-BAE9-7FCBDCEEE378}</Project>

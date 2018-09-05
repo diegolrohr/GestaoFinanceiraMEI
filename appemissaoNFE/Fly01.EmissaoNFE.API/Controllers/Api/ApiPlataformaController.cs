@@ -58,5 +58,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             return UnitOfWork.GetGenericBL<TBL>().Find(id);
         }
+
+        protected override void AfterSave(TEntity entity)
+        {
+            UnitOfWork.GetGenericBL<TBL>().AfterSave(entity);
+        }
     }
 }

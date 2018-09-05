@@ -106,7 +106,7 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 
-        [JsonProperty("OrdemCompraOrigem")]
+        [JsonProperty("ordemCompraOrigem")]
         public virtual OrdemCompraVM OrdemCompraOrigem { get; set; }
 
         [JsonProperty("fornecedor")]

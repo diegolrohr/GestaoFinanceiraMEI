@@ -8,7 +8,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid PedidoId { get; set; }
 
-        public Guid GrupoTributarioId { get; set; }
+        public Guid? GrupoTributarioId { get; set; }
 
         public double ValorCreditoICMS { get; set; }
 

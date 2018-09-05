@@ -40,7 +40,7 @@ namespace Fly01.Estoque.BL
                         {
                             QuantidadeMovimento = -diferenca,
                             ProdutoId = entity.ProdutoId,
-                            Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Faturamento",
+                            Observacao = @"Observação gerada pela entrada do estoque automática, evitando estoque negativo, referente ao pedido nº " + entity.PedidoNumero.ToString() + ", aplicativo Bemacash Compras",
                             UsuarioInclusao = entity.UsuarioInclusao,
                             PlataformaId = entity.PlataformaId
                         };

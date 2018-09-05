@@ -20,7 +20,10 @@ namespace Fly01.Core.API
         protected abstract void Insert(TEntity entity);
         protected abstract void Delete(TEntity primaryKey);
         protected abstract TEntity Find(object id);
+        protected abstract void AfterSave(TEntity entity);
+
         public bool MustProduceMessageServiceBus { get; set; }
+        public bool MustExecuteAfterSave { get; set; }
 
         [EnableQuery(PageSize = 50, MaxTop = 50, MaxExpansionDepth = 10)]
         public override IHttpActionResult Get()
@@ -61,6 +64,9 @@ namespace Fly01.Core.API
             if (MustProduceMessageServiceBus)
                 Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
 
+            if (MustExecuteAfterSave)
+                AfterSave(entity);
+
             return Created(entity);
         }
 
@@ -92,6 +98,9 @@ namespace Fly01.Core.API
 
                 if (MustProduceMessageServiceBus)
                     Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);
+
+                if (MustExecuteAfterSave)
+                    AfterSave(entity);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -127,6 +136,8 @@ namespace Fly01.Core.API
 
             if (MustProduceMessageServiceBus)
                 Producer<TEntity>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
+
+            
 
             return StatusCode(HttpStatusCode.NoContent);
         }

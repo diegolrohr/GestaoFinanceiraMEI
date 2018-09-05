@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -68,6 +68,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -119,6 +120,7 @@
     </Compile>
     <Compile Include="ViewModel\NFeEntradaVM.cs" />
     <Compile Include="ViewModel\NFeProdutoEntradaVM.cs" />
+    <Compile Include="ViewModel\NotaFiscalCartaCorrecaoEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalEntradaVM.cs" />
     <Compile Include="ViewModel\NotaFiscalItemEntradaVM.cs" />
     <Compile Include="ViewModel\OrcamentoItemVM.cs" />
@@ -322,6 +324,12 @@
     <Content Include="Views\NFeEntrada\Functions\_fnFormReadyVisualizarNFe.cshtml" />
     <Content Include="Views\NFeEntrada\Index.cshtml" />
     <Content Include="Views\OrdemCompra\Functions\_fnImprimirOrcamento.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnAtualizarStatusCartaCorrecao.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnCancelar.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnNovo.cshtml" />
+    <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
+    <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
+    <Content Include="Views\CartaCorrecao\Novo.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

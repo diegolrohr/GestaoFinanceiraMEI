@@ -1,0 +1,15 @@
+﻿<script>
+    function fnUpdateDataFinal() {
+        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        var firstDay = new Date(date.year, date.month, 1);
+        let lastDay = new Date(date.year, date.month + 1, 0);     
+        $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
+        $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
+        fly01._.fly01chart.refresh();
+        fly01._.dtGridTopProdutos.refresh();
+        fly01._.dtGridTopServicos.refresh();
+        var dataFinal = moment(lastDay).format('YYYY-MM-DD');
+        getSaldos(dataFinal);
+        fly01._.fly01chart.refresh();
+    }
+</script>

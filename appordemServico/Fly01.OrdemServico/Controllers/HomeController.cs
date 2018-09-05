@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Fly01.Core.Config;
+﻿using Fly01.Core.Config;
+using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
-using Newtonsoft.Json;
-using Fly01.uiJS.Defaults;
-using System.Configuration;
 using Fly01.uiJS.Classes.Widgets;
-using Fly01.Core.Rest;
-using Fly01.Core.ViewModels;
-using Fly01.uiJS.Enums;
-using Fly01.Core.Presentation;
+using Fly01.uiJS.Defaults;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
@@ -27,30 +24,252 @@ namespace Fly01.OrdemServico.Controllers
 
             var cfg = new ContentUI
             {
-                History = new ContentUIHistory
+                History = new ContentUIHistory { Default = Url.Action("Index") },
+                SidebarUrl = Url.Action("Sidebar"),
+                Header = new HtmlUIHeader()
                 {
-                    Default = Url.Action("Index")
+                    Title = "Visão Geral",
+                    Buttons = new List<HtmlUIButton>()
                 },
-                SidebarUrl = @Url.Action("Sidebar")
-                //    //Header = new HtmlUIHeader
-                //    //{
-                //    //    Title = "Fluxo de Caixa",
-                //    //    Buttons = new List<HtmlUIButton>
-                //    //    {
-                //    //        new HtmlUIButton { Id = "save", Label = "Atualizar", OnClickFn = "fnAtualizar", Position = HtmlUIButtonPosition.Main },
-                //    //        new HtmlUIButton { Id = "prnt", Label = "Imprimir", OnClickFn = "fnImprimirFluxoCaixa", Position = HtmlUIButtonPosition.Out }
-                //    //    }
-                //    //},
-                //    //UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                //    //Functions = new List<string> { "__format", "fnGetSaldos" }
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                Functions = new List<string> { "__format", "fnGetSaldos" }
             };
+            var dataInicialFiltroDefault = DateTime.Now.Date;
+
+            var dataFinal = DateTime.Now.AddMonths(1);
+            var dataFinalFiltroDefault = new DateTime(dataFinal.Year, dataFinal.Month, DateTime.DaysInMonth(dataFinal.Year, dataFinal.Month));
+
+            cfg.Content.Add(new FormUI
+            {
+                ReadyFn = "fnFormReady",
+                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                Class = "col s12",
+                Elements = new List<BaseUI>
+                {
+                    new PeriodPickerUI()
+                    {
+                        Label = "Selecione o período",
+                        Id = "mesPicker",
+                        Name = "mesPicker",
+                        Class = "col s12 m6 offset-m3 l4 offset-l4",
+                        DomEvents = new List<DomEventUI>()
+                        {
+                            new DomEventUI()
+                            {
+                                DomEvent = "change",
+                                Function = "fnUpdateDataFinal"
+                            }
+                        }
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+
+                    }
+                }
+            });
+
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "totvs-blue",
+                Id = "fly01cardAB",
+                Title = "Em Aberto",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "red",
+                Id = "fly01cardAN",
+                Title = "Em Andamento",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "green",
+                Id = "fly01cardCO",
+                Title = "Concluído",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+            cfg.Content.Add(new CardUI
+            {
+                Class = "col s12 m3",
+                Color = "teal",
+                Id = "fly01cardCA",
+                Title = "Cancelado",
+                Placeholder = "0/0",
+                Action = new LinkUI
+                {
+                    Label = "",
+                    OnClick = ""
+                }
+            });
+
+            cfg.Content.Add(new ChartUI
+            {
+                Options = new
+                {
+                    title = new
+                    {
+                        display = true,
+                        text = "Ordens de Serviço por dia",
+                        fontSize = 12,
+                        fontFamily = "Roboto",
+                        fontColor = "#555"
+                    },
+                    tooltips = new
+                    {
+                        mode = "label",
+                        bodySpacing = 10,
+                        cornerRadius = 0,
+                        titleMarginBottom = 15
+                    },
+                    legend = new { position = "bottom" },
+                    global = new
+                    {
+                        responsive = false,
+                        maintainAspectRatio = false
+                    },
+                    scales = new
+                    {
+                        xAxes = new object[] { new { stacked = true } },
+                        yAxes = new object[] { new { stacked = true, ticks = new { stepSize = 1 } } }
+                    }
+                },
+                UrlData = @Url.Action("LoadChart", "Dashboard"),
+                Class = "col s12",
+                Parameters = new List<ChartUIParameter>
+                {
+                    new ChartUIParameter { Id = "dataFinal" }
+                }
+            });
+
+            cfg.Content.Add(new DivUI
+            {
+                Elements = new List<BaseUI>
+                {
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" },
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" }
+                }
+            });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataFinal" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopServicos",
+                UrlGridLoad = Url.Action("DashboardTopServicos", "Dashboard"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataFinal" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
 
             return cfg;
         }
 
         public override ContentResult Sidebar()
         {
-            var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem Serviço", Parent = "header" };
+            var config = new SidebarUI() { Id = "nav-bar", AppName = "Ordem de Serviço", Parent = "header" };
 
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
@@ -58,11 +277,23 @@ namespace Fly01.OrdemServico.Controllers
                 new SidebarUIMenu()
                 {
                     //Class = ResourceHashConst.FinanceiroFinanceiro,
+                    Label = "Ordem de Serviço",
+                    Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Visão Geral", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Ordem de Serviço", OnClick = @Url.Action("List", "OrdemServico")},
+                    }
+                },
+                new SidebarUIMenu()
+                {
+                    //Class = ResourceHashConst.FinanceiroFinanceiro,
                     Label = "Cadastro",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu1", OnClick = @Url.Action("List", "Home")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "SubMenu2", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
                     }
                 },
                 new SidebarUIMenu()
@@ -71,7 +302,7 @@ namespace Fly01.OrdemServico.Controllers
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("List", "Home")}                        
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
                     }
                 },
                 new SidebarUIMenu()
@@ -119,4 +350,5 @@ namespace Fly01.OrdemServico.Controllers
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }
+
 }

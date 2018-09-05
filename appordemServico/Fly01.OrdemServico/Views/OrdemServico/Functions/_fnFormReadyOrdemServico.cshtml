@@ -1,0 +1,233 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    var justSaveOrdemToGoStepProdutos = false;
+    var onCancelMustDeleteOrdemServico = false;
+    var finalizarPreenchimento = true
+    var numeroOS = 0;
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+        
+        if (id.length == 0)
+        {
+            retornaDataEntregaParametro();
+            retornaResponsavelPadraoParametro();
+            return true;
+        }
+
+        return false;
+    }
+
+    function retornaResponsavelPadraoParametro() {
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
+            type: "GET",
+            success: function (data) {
+                $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
+                $("#responsavelPadraoId").val(data.responsavelPadraoId);
+                fly01.fn.updateTextFields();
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });
+
+    }
+
+    function retornaDataEntregaParametro() {
+        $.ajax({
+            url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
+            type: "GET",
+            success: function (data) {
+                if (data) {
+                    var today = new Date();
+                    var dataEntrega = new Date();
+                    dataEntrega.setDate(today.getDate() + data.diasPrazoEntrega);
+                    fly01._.dataEntrega.set(dataEntrega);
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.toast(data.message, 'error');
+            }
+        });   
+    }
+
+
+    function calculaTotalOrdemServico() {
+        var idOrdemServico = $("form#fly01frm input#id").val();
+        var idCliente = $("form#fly01frm input#clienteId").val();
+
+        fly01.loading.start();
+
+        $.ajax({
+            url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
+            type: "GET",
+            data: { id: idOrdemServico, clienteId: idCliente}
+        })
+            .done(function (data) {
+            if (data.success) {
+                $('input#totalProdutos').val(data.total.TotalProdutos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
+                $('input#totalOrdemServico').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val(data.total.QuantidadeItensCliente);
+                fly01.fn.updateTextFields();
+            }
+            else {
+                $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalOrdemServico').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#quantidadeItensCliente').val("0");
+                fly01.fn.submitErrorHandler(null, data.message);
+            }
+            fly01.loading.stop();
+        })
+        .fail(function (jqxhr, textStatus, error) {
+            var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
+            fly01.toast(err, "error");
+            fly01.loading.stop();
+        });        
+    }
+
+    function fnBindStepsWizard() {
+        function saveOrdemServico() {
+            if (isCreate() && ($("li#stepCadastro").hasClass("active"))) {   
+                justSaveOrdemToGoStepProdutos = true;
+                return $("form#fly01frm").submit();
+            }
+        }
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () { saveOrdemServico(); });
+        $('li#stepProdutos div.step-title').click(function () { saveOrdemServico(); });
+    }
+
+    function fnBindOverrideSubmit() {
+        
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            if (!$(this).valid()) return false;
+
+            fly01.loading.start();
+
+            $('input#numero').removeAttr('disabled');
+            
+
+            var jsonData = $(this).serializeObject();
+
+            $('input#numero').attr('disabled', 'disabled');
+            $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
+            fly01.fn.updateTextFields();
+
+            
+
+            var url;
+            if (isCreate()) {
+                url = '@Url.Action("Create", "OrdemServico")';
+            }
+            else {
+                url = '@Url.Action("Edit", "OrdemServico")';
+                if (finalizarPreenchimento && jsonData.status === 'EmPreenchimento') {
+                    jsonData.status = "EmAberto";
+                }
+            }
+
+            if (!jsonData.status || jsonData.status === '') {
+                jsonData.status = 'EmPreenchimento';
+            }
+
+            //No FIREFOX, o comando $("form#fly01frm input#numero").val não está pegando
+            //A atualização feita no success abiaxo do ajax, de forma que em um próximo
+            //passo de salvamento, o número gerado não é resgatado
+            if (numeroOS > 0) {
+                jsonData.numero = numeroOS;
+            }
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url,
+                data: JSON.stringify({ 'entityVM': jsonData }),
+                success: function success(data) {
+                    if (data.success) {
+                        fly01.loading.stop();
+                        var strMsg = "Cadastrado com sucesso.";
+                        if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
+                        //fica na página ou volta pra lista
+                        
+                        if (justSaveOrdemToGoStepProdutos) {
+                            onCancelMustDeleteOrdemServico= true;
+                            $("form#fly01frm input#id").val(data.id);
+                            $("form#fly01frm input#numero").val(numeroOS = data.numero);
+                            fly01._.dtOrdemServicoManutencao.refresh();
+                            fly01._.dtOrdemServicoItemProdutos.refresh();
+                            fly01._.dtOrdemServicoItemServicos.refresh();
+                            var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                            window.history.pushState({}, document.title, url);
+                            $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
+                            justSaveOrdemToGoStepProdutos = false;
+                        }
+                        else {
+                            fly01.toast(strMsg, "success");
+                            fly01.go("@Url.Action("List", "OrdemServico")");
+                        }
+                    } else {
+                        if (justSaveOrdemToGoStepProdutos) {
+                            $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
+                        }
+                        fly01.loading.stop();
+                        $("div#clienteIdField").show();
+                        fly01.fn.submitErrorHandler(null, data.message);
+                    }
+
+                    return data.success;
+                },
+                error: function error(jXHR, textStatus) {
+                    fly01.toast(textStatus, "error");
+                    fly01.loading.stop();
+                }
+            });
+        });
+    }
+
+    function fnSetInformacoes() {
+        $("#infoEstoqueNegativoField").text('O estoque não pode ficar negativo, portanto abaixo é exibido a relação dos produtos que ficarão com o estoque faltante. Marque a opção para ajustar automáticamente a quantidade negativa ou realize os ajustes '
+            + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
+    }
+
+    function fnFormReadyOrdemServico() {
+        if (isCreate()) {
+            $('#btnNormal').click();
+            var today = new Date();
+            fly01._.dataEmissao.set(today);
+            
+            fly01.fn.updateTextFields();
+            fnBindStepsWizard();
+        }
+        else {
+            //setar o agrupamento com a opção escolhida
+            if ($('input#tipoVenda').val() == "Normal") {
+                $('#btnNormal').click();
+            }
+            
+            if (!onCancelMustDeleteOrdemServico) { $('li#stepCadastro div.step-title').click(); }
+            fly01._.dtOrdemServicoManutencao.refresh();
+            fly01._.dtOrdemServicoItemProdutos.refresh();
+            fly01._.dtOrdemServicoItemServicos.refresh();
+        }
+
+        fnBindOverrideSubmit();
+
+        fnSetInformacoes();
+
+        function finalizarPreenchmento() {
+            if (!isCreate() && $("form#fly01frm").valid()) {
+                calculaTotalOrdemServico();
+                finalizarPreenchimento = true;
+            }
+        };
+        $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () { finalizarPreenchmento(); });
+        $('li#stepFinalizar div.step-title').click(function () { finalizarPreenchmento(); });
+    }
+
+</script>

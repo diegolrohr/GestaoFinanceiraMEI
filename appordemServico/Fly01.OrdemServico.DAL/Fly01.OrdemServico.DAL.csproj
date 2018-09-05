@@ -48,8 +48,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppDataContext.cs" />
+    <Compile Include="Migrations\201808161815580_Initial Migration.cs" />
+    <Compile Include="Migrations\201808161815580_Initial Migration.Designer.cs">
+      <DependentUpon>201808161815580_Initial Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808171504189_OrdemServico_Cliente.cs" />
+    <Compile Include="Migrations\201808171504189_OrdemServico_Cliente.Designer.cs">
+      <DependentUpon>201808171504189_OrdemServico_Cliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808202004112_Remoção ValorTotal.cs" />
+    <Compile Include="Migrations\201808202004112_Remoção ValorTotal.Designer.cs">
+      <DependentUpon>201808202004112_Remoção ValorTotal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808221420012_Nullable ResponsavelId.cs" />
+    <Compile Include="Migrations\201808221420012_Nullable ResponsavelId.Designer.cs">
+      <DependentUpon>201808221420012_Nullable ResponsavelId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808221442018_OrdemServicoManutencao.cs" />
+    <Compile Include="Migrations\201808221442018_OrdemServicoManutencao.Designer.cs">
+      <DependentUpon>201808221442018_OrdemServicoManutencao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs" />
+    <Compile Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.Designer.cs">
+      <DependentUpon>201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.cs" />
+    <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.Designer.cs">
+      <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer3.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer4.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
+    <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\EnquadramentoLegalIPIDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\NCMDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\UnidadeMedidaDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +123,29 @@
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201808161815580_Initial Migration.resx">
+      <DependentUpon>201808161815580_Initial Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808171504189_OrdemServico_Cliente.resx">
+      <DependentUpon>201808171504189_OrdemServico_Cliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808202004112_Remoção ValorTotal.resx">
+      <DependentUpon>201808202004112_Remoção ValorTotal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221420012_Nullable ResponsavelId.resx">
+      <DependentUpon>201808221420012_Nullable ResponsavelId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221442018_OrdemServicoManutencao.resx">
+      <DependentUpon>201808221442018_OrdemServicoManutencao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.resx">
+      <DependentUpon>201808221912316_DiasPadraoEntrega to DiasPrazoEntrega.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.resx">
+      <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

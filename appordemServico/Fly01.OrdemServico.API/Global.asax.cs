@@ -19,7 +19,6 @@ namespace Fly01.OrdemServico.API
                 ContainerName = "DefaultContainer"
             };
 
-            //exemplo builder.EntitySet<Estado>("estado");
             builder.EntitySet<Cidade>("cidade");
             builder.EntitySet<Estado>("estado");
             builder.EntitySet<GrupoProduto>("grupoproduto");

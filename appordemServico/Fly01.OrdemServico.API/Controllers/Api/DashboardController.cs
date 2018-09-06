@@ -3,7 +3,7 @@ using Fly01.OrdemServico.BL;
 using System;
 using System.Web.Http;
 
-namespace Fly01.Financeiro.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     [RoutePrefix("api/dashboard")]
     public class DashboardController : ApiBaseController

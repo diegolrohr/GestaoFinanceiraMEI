@@ -14,7 +14,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public OrdemServicoController()
         {
-            MustProduceMessageServiceBus = false; // TODO: Implementar envio a rabbit nas BL
+            MustExecuteAfterSave = false;
         }
 
         public override async Task<IHttpActionResult> Post(Core.Entities.Domains.Commons.OrdemServico entity)
@@ -56,7 +56,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
             {
                 await UnitSave();
 
-                if (MustProduceMessageServiceBus)
+                if (MustExecuteAfterSave)
                     AfterSave(entity);
             }
             catch (DbUpdateConcurrencyException)

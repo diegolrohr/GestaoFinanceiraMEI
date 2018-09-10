@@ -126,13 +126,14 @@
             }
             else {
                 url = '@Url.Action("Edit", "OrdemServico")';
-                if (finalizarPreenchimento && jsonData.status === 'EmPreenchimento') {
-                    jsonData.status = "EmAberto";
-                }
             }
 
             if (!jsonData.status || jsonData.status === '') {
                 jsonData.status = 'EmPreenchimento';
+            }
+
+            if (finalizarPreenchimento && jsonData.status === 'EmPreenchimento') {
+                jsonData.status = "EmAberto";
             }
 
             //No FIREFOX, o comando $("form#fly01frm input#numero").val não está pegando
@@ -223,8 +224,8 @@
         function finalizarPreenchmento() {
             if (!isCreate() && $("form#fly01frm").valid()) {
                 calculaTotalOrdemServico();
-                finalizarPreenchimento = true;
             }
+            finalizarPreenchimento = true;
         };
         $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () { finalizarPreenchmento(); });
         $('li#stepFinalizar div.step-title').click(function () { finalizarPreenchmento(); });

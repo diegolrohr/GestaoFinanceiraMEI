@@ -120,6 +120,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\NFSE001Prod\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\NFSE001\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\SPEDADMProd\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -353,6 +363,58 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="Web References\NFSE001Prod\MONITORNFSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\NFS5.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\NFSE001Prod\NFSE001.wsdl" />
+    <Content Include="Web References\NFSE001Prod\NFSE2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\NFSES4.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\NFSESID.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\SIAFLISTRETURN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001Prod\TSSCONSRPSNFSERETURN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\MONITORNFSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\NFS5.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\NFSE001\NFSE001.wsdl" />
+    <Content Include="Web References\NFSE001\NFSE2.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\NFSES4.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\NFSESID.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\NFSE001\SIAFLISTRETURN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\NFSE001\TSSCONSRPSNFSERETURN.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
     <None Include="Web References\SPEDADMProd\SPEDADM.wsdl" />
     <Content Include="Web References\SPEDADMProd\SPED_ENTIDADE.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -453,7 +515,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
@@ -532,6 +596,17 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="http://sped.homologacao.totvs.com.br:8087/nfe/NFSE001.apw%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\NFSE001\</RelPath>
+      <UpdateFromURL>http://sped.homologacao.totvs.com.br:8087/nfe/NFSE001.apw%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Fly01_EmissaoNFE_API_NFSE001_NFSE001</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://sped.homologacao.totvs.com.br:8087/nfe/SPEDADM.apw%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\SPEDADMProd\</RelPath>
@@ -553,6 +628,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Fly01_EmissaoNFE_API_SPEDCFGNFEProd_SPEDCFGNFE</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://tss5-cloud.totvs.com.br/nfe/NFSE001.apw%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\NFSE001Prod\</RelPath>
+      <UpdateFromURL>http://tss5-cloud.totvs.com.br/nfe/NFSE001.apw%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Fly01_EmissaoNFE_API_NFSE001Prod_NFSE001</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
@@ -636,6 +722,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.IO">
       <HintPath>..\..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
       <Private>True</Private>

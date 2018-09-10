@@ -18,7 +18,7 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
-        public ParametroOrdemServicoController():base()
+        public ParametroOrdemServicoController() : base()
         {
             ExpandProperties = "responsavelPadrao($select=id,nome,email)";
         }
@@ -70,17 +70,18 @@ namespace Fly01.OrdemServico.Controllers
 
         public string ResponsavelPadraoNome(Guid? idResponsvel)
         {
+            if (idResponsvel == null || idResponsvel.Value == Guid.Empty) return null;
+
             var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
             queryString.AddParam("$filter", $"id eq {idResponsvel.GetValueOrDefault().ToString()}");
-            queryString.AddParam("$select", "id,nome");
-            queryString.AddParam("$orderby", "nome");
+            queryString.AddParam("$select", "nome");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<PessoaVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, nome = item.Nome };
+                                select item.Nome;
 
-            return filterObjects.FirstOrDefault().nome;
+            return filterObjects.FirstOrDefault();
         }
 
         protected override ContentUI FormJson()
@@ -122,7 +123,7 @@ namespace Fly01.OrdemServico.Controllers
                 Required = false,
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
-                LabelName= "responsavelPadraoNome"
+                LabelName = "responsavelPadraoNome"
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
             #region Helpers 

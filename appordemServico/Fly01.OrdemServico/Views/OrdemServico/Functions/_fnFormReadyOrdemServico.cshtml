@@ -139,7 +139,7 @@
             //No FIREFOX, o comando $("form#fly01frm input#numero").val não está pegando
             //A atualização feita no success abaixo do ajax, de forma que em um próximo
             //passo de salvamento, o número gerado não é resgatado
-            if (numeroOS > 0) {
+            if (numeroOS > 0 && !jsonData.numero || jsonData.numero == 0) {
                 jsonData.numero = numeroOS;
             }
 

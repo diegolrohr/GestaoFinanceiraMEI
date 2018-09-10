@@ -76,9 +76,6 @@
     <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.Designer.cs">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
     </Compile>
-	<EmbeddedResource Include="Migrations\201809051446264_AlterPessoaComplemento.resx">
-      <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
-    </EmbeddedResource>
     <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.cs" />
     <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.Designer.cs">
       <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
@@ -152,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.resx">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
+    </EmbeddedResource>
+	<EmbeddedResource Include="Migrations\201809051446264_AlterPessoaComplemento.resx">
+      <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

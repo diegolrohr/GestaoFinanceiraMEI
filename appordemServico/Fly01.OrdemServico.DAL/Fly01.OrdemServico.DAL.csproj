@@ -150,7 +150,7 @@
     <EmbeddedResource Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.resx">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
     </EmbeddedResource>
-	<EmbeddedResource Include="Migrations\201809051446264_AlterPessoaComplemento.resx">
+    <EmbeddedResource Include="Migrations\201809051446264_AlterPessoaComplemento.resx">
       <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

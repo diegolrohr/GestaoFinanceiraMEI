@@ -4,7 +4,6 @@
     var justSaveOrdemToGoStepProdutos = false;
     var onCancelMustDeleteOrdemServico = false;
     var finalizarPreenchimento = true
-    var numeroOS = 0;
 
     function isCreate() {
         var id = $("form#fly01frm input#id").val();
@@ -108,13 +107,8 @@
             if (!$(this).valid()) return false;
 
             fly01.loading.start();
-
-            $('input#numero').removeAttr('disabled');
-            
-
             var jsonData = $(this).serializeObject();
 
-            $('input#numero').attr('disabled', 'disabled');
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
             fly01.fn.updateTextFields();
 
@@ -136,13 +130,6 @@
                 jsonData.status = "EmAberto";
             }
 
-            //No FIREFOX, o comando $("form#fly01frm input#numero").val não está pegando
-            //A atualização feita no success abaixo do ajax, de forma que em um próximo
-            //passo de salvamento, o número gerado não é resgatado
-            if (numeroOS > 0 && !jsonData.numero || jsonData.numero == 0) {
-                jsonData.numero = numeroOS;
-            }
-
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -159,7 +146,7 @@
                         if (justSaveOrdemToGoStepProdutos) {
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
-                            $("form#fly01frm input#numero").val(numeroOS = data.numero);
+                            $("form#fly01frm input#numero").val(data.numero);
                             fly01._.dtOrdemServicoManutencao.refresh();
                             fly01._.dtOrdemServicoItemProdutos.refresh();
                             fly01._.dtOrdemServicoItemServicos.refresh();

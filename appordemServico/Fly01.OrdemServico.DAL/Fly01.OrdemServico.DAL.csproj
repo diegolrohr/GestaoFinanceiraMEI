@@ -80,6 +80,10 @@
     <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.Designer.cs">
       <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809101600079_Gera Ordem Venda.cs" />
+    <Compile Include="Migrations\201809101600079_Gera Ordem Venda.Designer.cs">
+      <DependentUpon>201809101600079_Gera Ordem Venda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -152,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809051446264_AlterPessoaComplemento.resx">
       <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809101600079_Gera Ordem Venda.resx">
+      <DependentUpon>201809101600079_Gera Ordem Venda.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

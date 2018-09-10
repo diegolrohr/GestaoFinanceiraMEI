@@ -111,7 +111,7 @@ namespace Fly01.Financeiro.BL
                 Data = contaFinanceira.DataVencimento,
                 ContaFinanceiraId = contaFinanceira.Id,
                 ContaBancariaId = contaFinanceira.ContaBancariaId,
-                Valor = contaFinanceira.ValorPrevisto,
+                Valor = contaFinanceira.ValorPago.HasValue ? contaFinanceira.ValorPago.Value : contaFinanceira.ValorPrevisto,
                 Observacao = contaFinanceira.Descricao
             });
         }

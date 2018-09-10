@@ -16,7 +16,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public OrdemServicoController()
         {
-            MustProduceMessageServiceBus = false;
+            MustExecuteAfterSave = false;
         }
 
         public override async Task<IHttpActionResult> Post(Core.Entities.Domains.Commons.OrdemServico entity)
@@ -65,8 +65,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
             {
                 await UnitSave();
 
-                if ((lastState != entity.Status && entity.Status == StatusOrdemServico.Concluido) ||
-                        (!lastGera && entity.GeraOrdemVenda))
+                if (MustProduceMessageServiceBus)
                     AfterSave(entity);
             }
             catch (DbUpdateConcurrencyException)

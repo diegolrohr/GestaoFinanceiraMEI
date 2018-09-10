@@ -76,9 +76,9 @@
     <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.Designer.cs">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809031905141_GeraOrdemVenda.cs" />
-    <Compile Include="Migrations\201809031905141_GeraOrdemVenda.Designer.cs">
-      <DependentUpon>201809031905141_GeraOrdemVenda.cs</DependentUpon>
+    <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.cs" />
+    <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.Designer.cs">
+      <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
@@ -149,9 +149,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.resx">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809031905141_GeraOrdemVenda.resx">
-      <DependentUpon>201809031905141_GeraOrdemVenda.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,10 @@ namespace Fly01.OrdemServico.BL
 {
     public class ServicoBL : PlataformaBaseBL<Servico>
     {
-        public ServicoBL(AppDataContextBase context) : base(context) { }
+        public ServicoBL(AppDataContextBase context) : base(context)
+        {
+            MustConsumeMessageServiceBus = true;
+        }
 
         public override void ValidaModel(Servico entity)
         {

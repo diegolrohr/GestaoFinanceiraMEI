@@ -25,7 +25,7 @@ namespace Fly01.Compras.ViewModel
         public double ValorBCFCPSTRetidoAnterior { get; set; }
 
         [JsonProperty("grupoTributarioId")]
-        public Guid GrupoTributarioId { get; set; }
+        public Guid? GrupoTributarioId { get; set; }
 
         [JsonProperty("grupoTributario")]
         public virtual GrupoTributarioVM GrupoTributario { get; set; }

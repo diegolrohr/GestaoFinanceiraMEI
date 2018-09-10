@@ -8,7 +8,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     public class ProdutoController : ApiPlataformaController<Produto, ProdutoBL>
     {
         public ProdutoController()
-        {
+        {             
             MustProduceMessageServiceBus = true;
         }
     }

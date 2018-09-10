@@ -1,19 +1,17 @@
 ﻿<script>
-    @Html.Partial("Functions/_fnImprimir");
-
-    function fnImprimirOrcamentoPedido(idRecord) {
+    function fnEnviarEmailPedido(idRecord) {
         fly01.loading.start();
 
         $.ajax({
-            url: '@Url.Action("ImprimirOrcamentoPedido", "OrdemVenda")',
+            url: '@Url.Action("EnviaEmailPedido", "Pedido")',
             data: { id: idRecord },
-			type: "GET",
+			type: "POST",
 			success : function(data) {
 			    fly01.loading.stop();
-			    if (data.message) {
-			        fly01.fn.submitErrorHandler(null, data.message);
+			    if (data.success) {
+			        fly01.toast("Email enviado com sucesso.", "success");
 			    } else {
-			        fnImprimir(data.fileName);
+			        fly01.fn.submitErrorHandler(null, data.message);
 			    }
 			},
             error: function (jqxhr, textStatus, error) {

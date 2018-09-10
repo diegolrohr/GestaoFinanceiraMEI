@@ -343,6 +343,13 @@ namespace Fly01.Compras.BL
                                 detalhe.Imposto.ICMS.AliquotaICMS = Math.Round(itemTributacao.ICMSAliquota, 2);
                                 detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
                             }
+                            if (item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.TributadaSemPermissaoDeCreditoST
+                                || item.GrupoTributario.TipoTributacaoICMS == TipoTributacaoICMS.IsencaoParaFaixaDeReceitaBrutaST)
+                            {
+                                detalhe.Imposto.ICMS.ModalidadeBCST = ModalidadeDeterminacaoBCICMSST.MargemValorAgregado;
+                                detalhe.Imposto.ICMS.PercentualReducaoBCST = 0;
+                            }
                         }
                         if (itemTributacao.CalculaST)
                         {
@@ -501,6 +508,13 @@ namespace Fly01.Compras.BL
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
 
+                    #region Fatura
+                    if (entity.GeraFinanceiro)
+                    {
+                        itemTransmissao.Cobranca = ObterCobranca(entity.NumNotaFiscal.Value, itemTransmissao.Identificador.TipoDocumentoFiscal, entity.ContaFinanceiraParcelaPaiId);
+                    }
+                    #endregion
+
                     #region Pagamento
                     itemTransmissao.Pagamento = new Pagamento()
                     {
@@ -509,7 +523,7 @@ namespace Fly01.Compras.BL
                             new DetalhePagamento()
                             {
                                 TipoFormaPagamento = tipoFormaPagamento,
-                                ValorPagamento = itemTransmissao.Total.ICMSTotal.ValorTotalNF
+                                ValorPagamento = tipoFormaPagamento == TipoFormaPagamento.SemPagamento ? 0.0 : itemTransmissao.Total.ICMSTotal.ValorTotalNF
                             }
                         }
                     };
@@ -523,121 +537,194 @@ namespace Fly01.Compras.BL
                         };
                     }
 
-                var entidade = CertificadoDigitalBL.GetEntidade();
+                    var entidade = CertificadoDigitalBL.GetEntidade();
 
-                var notaFiscal = new TransmissaoVM()
-                {
-                    Homologacao = entidade.Homologacao,
-                    Producao = entidade.Producao,
-                    EntidadeAmbiente = entidade.EntidadeAmbiente,
-                    Item = new List<ItemTransmissaoVM>()
+                    var notaFiscal = new TransmissaoVM()
+                    {
+                        Homologacao = entidade.Homologacao,
+                        Producao = entidade.Producao,
+                        EntidadeAmbiente = entidade.EntidadeAmbiente,
+                        Item = new List<ItemTransmissaoVM>()
                         {
                             itemTransmissao
                         }
-                };
+                    };
 
-                var header = new Dictionary<string, string>()
+                    var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", PlataformaUrl }
                     };
 
-                entity.Mensagem = null;
-                entity.Recomendacao = null;
-                entity.XML = null;
-                entity.PDF = null;
+                    entity.Mensagem = null;
+                    entity.Recomendacao = null;
+                    entity.XML = null;
+                    entity.PDF = null;
 
-                var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
-                var retorno = response.Notas.FirstOrDefault();
-                if (retorno.Error != null)
-                {
-                    entity.Status = StatusNotaFiscal.FalhaTransmissao;
-                    var mensagens = "";
-                    foreach (var item in retorno.Error)
+                    var response = RestHelper.ExecutePostRequest<TransmissaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissao", JsonConvert.SerializeObject(notaFiscal, JsonSerializerSetting.Edit), null, header);
+                    var retorno = response.Notas.FirstOrDefault();
+                    if (retorno.Error != null)
                     {
-                        var schemaMensagens = "";
-                        foreach (var schema in item.SchemaMensagem)
+                        entity.Status = StatusNotaFiscal.FalhaTransmissao;
+                        var mensagens = "";
+                        foreach (var item in retorno.Error)
                         {
-                            schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            var schemaMensagens = "";
+                            foreach (var schema in item.SchemaMensagem)
+                            {
+                                schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                            }
+                            mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
                         }
-                        mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
+                        entity.Mensagem = mensagens;
                     }
-                    entity.Mensagem = mensagens;
+                    else
+                    {
+                        entity.SefazId = retorno.NotaId;
+                        entity.XML = retorno.XML;
+                    }
                 }
-                else
-                {
-                    entity.SefazId = retorno.NotaId;
-                }
-            }
             }
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
-    }
-}
+            }
+        }
 
-public override void Insert(NFeEntrada entity)
-{
-    entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
-    base.Insert(entity);
-}
+        public Cobranca ObterCobranca(int numNotaFiscal, TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
+        {
+            var contas = ObterContasFinanceiras(tipoNota, contaFinanceiraParcelaPaiId);
+            if (contas != null && contas.Any())
+            {
+                var cobranca = new Cobranca()
+                {
+                    Fatura = new Fatura()
+                    {
+                        NumeroFatura = "NF:" + numNotaFiscal.ToString(),
+                        ValorOriginario = contas.Sum(x => x.ValorPrevisto),
+                        ValorLiquido = contas.Sum(x => x.ValorPrevisto),
+                        ValorDesconto = 0.0
+                    }
+                };
+                var num = 1;
+                cobranca.Duplicatas = new List<Duplicata>();
+                foreach (var item in contas.OrderBy(x => x.DataVencimento))
+                {
+                    cobranca.Duplicatas.Add(
+                        new Duplicata()
+                        {
+                            Numero = num.ToString().PadLeft(3, '0'),
+                            ValorDuplicata = item.ValorPrevisto,
+                            Vencimento = item.DataVencimento
+                        });
+                    num++;
+                }
+                return cobranca;
+            }
+            return null;
+        }
 
-public override void Update(NFeEntrada entity)
-{
-    var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-    entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
-    entity.Fail(
-        previous.Status != StatusNotaFiscal.NaoTransmitida &&
-        entity.Status != StatusNotaFiscal.Transmitida &&
-        (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
-        , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
+        public List<ContaFinanceira> ObterContasFinanceiras(TipoNota tipoNota, Guid? contaFinanceiraParcelaPaiId)
+        {
+            try
+            {
+                var header = new Dictionary<string, string>()
+                {
+                    { "AppUser", AppUser  },
+                    { "PlataformaUrl", PlataformaUrl }
+                };
+                    var queryString = new Dictionary<string, string>()
+                {
+                    {
+                        "contaFinanceiraParcelaPaiId",
+                            contaFinanceiraParcelaPaiId.HasValue
+                            ? contaFinanceiraParcelaPaiId.Value.ToString()
+                            : default(Guid).ToString()
+                    }
+                };
 
-    ValidaModel(entity);
+                var contas = new List<ContaFinanceira>();
+                if (tipoNota == TipoNota.Saida)
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                }
+                else
+                {
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaPagar>>(AppDefaults.UrlFinanceiroApi, "contapagarparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+                }
 
-    if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
-    {
-        TransmitirNFe(entity);
-    }
+                return contas;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao tentar obter as contas financeiras parcelas. " + ex.Message);
+            }
+        }
 
-    base.Update(entity);
-}
+        public override void Insert(NFeEntrada entity)
+        {
+            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
+            base.Insert(entity);
+        }
 
-public override void Delete(NFeEntrada entityToDelete)
-{
-    var status = entityToDelete.Status;
-    entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
-    if (entityToDelete.IsValid())
-    {
-        base.Delete(entityToDelete);
-    }
-    else
-    {
-        throw new BusinessException(entityToDelete.Notification.Get());
-    }
-}
+        public override void Update(NFeEntrada entity)
+        {
+            var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
+            entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
+            entity.Fail(
+                previous.Status != StatusNotaFiscal.NaoTransmitida &&
+                entity.Status != StatusNotaFiscal.Transmitida &&
+                (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
+                , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
 
-public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
-{
-    var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
+            ValidaModel(entity);
 
-    var produtos = NFeProdutoEntradaBL.All.AsNoTracking().Where(x => x.NotaFiscalEntradaId == nfeId).ToList();
-    var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-    var totalImpostosProdutos = nfe.TotalImpostosProdutos;
-    var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
-    bool calculaFrete = (
-        ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
-        ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
-    );
+            if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
+            {
+                TransmitirNFe(entity);
+            }
 
-    var result = new TotalNotaFiscal()
-    {
-        TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
-        ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
-        TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
-        TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
-    };
+            base.Update(entity);
+        }
 
-    return result;
-}
+        public override void Delete(NFeEntrada entityToDelete)
+        {
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
+        }
+
+        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
+        {
+            var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
+
+            var produtos = NFeProdutoEntradaBL.All.AsNoTracking().Where(x => x.NotaFiscalEntradaId == nfeId).ToList();
+            var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
+            var totalImpostosProdutos = nfe.TotalImpostosProdutos;
+            var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
+            bool calculaFrete = (
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
+            );
+
+            var result = new TotalNotaFiscal()
+            {
+                TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
+                ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,
+                TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
+            };
+
+            return result;
+        }
     }
 }

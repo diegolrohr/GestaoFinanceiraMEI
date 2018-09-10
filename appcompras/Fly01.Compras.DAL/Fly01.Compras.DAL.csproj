@@ -216,6 +216,14 @@
     <Compile Include="Migrations\201808221449530_AlterGeraNotaFiscal.Designer.cs">
       <DependentUpon>201808221449530_AlterGeraNotaFiscal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808292134585_AlterTamanhoCampoComplemento.cs" />
+    <Compile Include="Migrations\201808292134585_AlterTamanhoCampoComplemento.Designer.cs">
+      <DependentUpon>201808292134585_AlterTamanhoCampoComplemento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808301946401_AlterPedidoItemGrupoTributarioOpcional.cs" />
+    <Compile Include="Migrations\201808301946401_AlterPedidoItemGrupoTributarioOpcional.Designer.cs">
+      <DependentUpon>201808301946401_AlterPedidoItemGrupoTributarioOpcional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -385,6 +393,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808221449530_AlterGeraNotaFiscal.resx">
       <DependentUpon>201808221449530_AlterGeraNotaFiscal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808292134585_AlterTamanhoCampoComplemento.resx">
+      <DependentUpon>201808292134585_AlterTamanhoCampoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808301946401_AlterPedidoItemGrupoTributarioOpcional.resx">
+      <DependentUpon>201808301946401_AlterPedidoItemGrupoTributarioOpcional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

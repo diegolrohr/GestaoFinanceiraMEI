@@ -31,7 +31,7 @@ namespace Fly01.Compras.BL
             entity.Fail((entity.Status == StatusOrdemCompra.Finalizado && !OrcamentoItemBL.All.Any(x => x.OrcamentoId == entity.Id)), new Error("Para finalizar o orçamento é necessário ao menos ter adicionado um produto"));
             entity.Fail(entity.TipoOrdemCompra != TipoOrdemCompra.Orcamento, new Error("Permitido somente tipo orçamento"));
             entity.Fail(entity.Numero < 1, new Error("Numero do orçamento inválido"));
-            entity.Fail(Everything.Any(x => x.Numero == entity.Numero && x.Id != entity.Id), new Error("Numero do orçamento duplicado"));
+            entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("Numero do orçamento já foi utilizado"));
 
             base.ValidaModel(entity);
         }
@@ -106,7 +106,7 @@ namespace Fly01.Compras.BL
 
             var numero = default(int);
             rpc = new RpcClient();
-            numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl.ToString()},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
+            numero = int.Parse(rpc.Call($"plataformaid={PlataformaUrl},tipoordemcompra={(int)TipoOrdemCompra.Orcamento}"));
             entity.Numero = numero;
             
             ValidaModel(entity);

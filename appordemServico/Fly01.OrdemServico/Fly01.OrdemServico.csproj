@@ -96,7 +96,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="ViewModel\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModel\ImprimirOrdemServicoVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\OrdemServicoItemProdutoVM.cs" />
@@ -189,6 +188,7 @@
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnChangeTotalServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnEditarOrdemServicoItemServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnExcluirOrdemServicoItemServico.cshtml" />
+	<Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
@@ -464,7 +464,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\ReportOrdemServico.rdlc" />
-    <Content Include="Reports\ReportOrdemServico1.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

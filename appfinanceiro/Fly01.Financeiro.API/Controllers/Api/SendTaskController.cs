@@ -33,7 +33,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     return BadRequest("Chamada Inválida");
 
                 Task.Factory.StartNew(action: () => {
-                    var messageDefault = "FLY01 Gestão Informa! Não há projeção de contas a pagar/receber para os próximos 7 dias.";
+                    var messageDefault = "Bemacash Gestão Informa! Não há projeção de contas a pagar/receber para os próximos 7 dias.";
 
                     using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                     {
@@ -79,7 +79,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         private string FormatTextSMS(FluxoCaixaProjecao fluxoCaixaProjecao)
         {
-            return $"FLY01 Gestão Informa! " +
+            return $"Bemacash Gestão Informa! " +
                 $"Projeção para os próximos 7 Dias. " +
                 $"Total Pagamentos: {fluxoCaixaProjecao.TotalPagamentos.ToString("C", AppDefaults.CultureInfoDefault)}. " +
                 $"Total Recebimentos: {fluxoCaixaProjecao.TotalRecebimentos.ToString("C", AppDefaults.CultureInfoDefault)}. " +

@@ -360,7 +360,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 4,
+                        Quantity = 5,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -453,10 +453,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m3", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m3", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m3", Label = "Total (produtos + serviços)", Readonly = true });
-
-
-
-
+            config.Elements.Add(new InputCheckboxUI { Id = "geraOrdemVenda", Class = "col s12 m3", Label = "Gerar Ordem de Venda" });
             #endregion
 
             cfg.Content.Add(config);

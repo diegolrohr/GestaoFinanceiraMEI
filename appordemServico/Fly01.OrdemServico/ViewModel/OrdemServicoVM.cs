@@ -32,7 +32,8 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 
-        public bool GeraOrdemVenda { get; internal set; }
+        [JsonProperty("geraOrdemVenda")]
+        public bool GeraOrdemVenda { get; set; }
 
         #region Navigation
         [JsonProperty("cliente")]

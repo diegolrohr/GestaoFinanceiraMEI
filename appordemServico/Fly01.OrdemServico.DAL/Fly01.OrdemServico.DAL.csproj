@@ -75,7 +75,7 @@
     <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.cs" />
     <Compile Include="Migrations\201808291510240_AlterObservacaoDescricaoOS.Designer.cs">
       <DependentUpon>201808291510240_AlterObservacaoDescricaoOS.cs</DependentUpon>
-    </Compile>
+    </Compile> 
     <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.cs" />
     <Compile Include="Migrations\201809051446264_AlterPessoaComplemento.Designer.cs">
       <DependentUpon>201809051446264_AlterPessoaComplemento.cs</DependentUpon>

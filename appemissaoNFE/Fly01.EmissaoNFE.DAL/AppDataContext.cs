@@ -44,6 +44,7 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<Estado> Estados { get; set; }
         public DbSet<TabelaIcms> TabelaIcms { get; set; }
         public DbSet<Ncm> Ncms { get; set; }
+        public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
         public DbSet<IbptNcm> IbptNcms { get; set; }
 

@@ -898,8 +898,9 @@ namespace Fly01.Faturamento.DAL.Migrations.DataInitializer
                 new Nbs() { Id = Guid.Parse("08f56600-6ee5-4d7c-b95c-ff894b7c93bf"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "1.1409.21.00", Descricao = "Serviços de consultoria ambiental"},
                 new Nbs() { Id = Guid.Parse("de6d3e33-5aeb-4469-8a34-ffbee061473e"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "1.0505.50.00", Descricao = "Serviços de transporte intermodal de mudanças domésticas, de mobília de escritório e de outros objetos"},
                 new Nbs() { Id = Guid.Parse("0ea601a9-6c55-4362-8545-ffe13e8ad061"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "1.0502.16.00", Descricao = "Serviços de transporte aquaviário de navegação de cabotagem e de longo curso de cargas especiais e de grande porte"},
-                new Nbs() { Id = Guid.Parse("75759a78-e81d-419e-9136-ffecab645549"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "1.1105.90.00", Descricao = "Licenciamento de outros direitos sobre a propriedade industrial"}
-            };
+                new Nbs() { Id = Guid.Parse("75759a78-e81d-419e-9136-ffecab645549"), DataInclusao = DateTime.Now, UsuarioInclusao = "SEED", Ativo = true, Codigo = "1.1105.90.00", Descricao = "Licenciamento de outros direitos sobre a propriedade industrial"}               
+
+                };
                 context.Nbss.AddOrUpdate(x => x.Id, lista.ToArray());
 
                 context.SaveChanges();

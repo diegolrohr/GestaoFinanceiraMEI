@@ -8,7 +8,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         public OrdemServicoController()
         {
-            MustExecuteAfterSave = false;
+            MustExecuteAfterSave = true;
         }
     }
 }

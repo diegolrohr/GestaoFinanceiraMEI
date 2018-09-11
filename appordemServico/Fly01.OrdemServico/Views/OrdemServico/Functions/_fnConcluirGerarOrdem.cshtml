@@ -6,9 +6,9 @@
         fly01.loading.start();
         $.ajax({
             type: "POST",
-            url: "@Url.Action("ConcluirOrdem", "OrdemServico", new { gerarOrdemVenda = true })",
+            url: "@Url.Action("ConcluirOrdem", "OrdemServico")",
             dataType: 'json',
-            data: { id: idRecord, faturar: false },
+            data: { id: idRecord, geraOrdemVenda: true },
             success: function (data) {
                 fly01.loading.stop();
                 if (data.success) {

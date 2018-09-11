@@ -140,9 +140,15 @@ namespace Fly01.OrdemServico.BL
 
             Send(new OrdemVenda
             {
+                Id = entity.Id,
                 Ativo = true,
                 ClienteId = entity.ClienteId,
                 Data = entity.DataEntrega,
+                TipoOrdemVenda = TipoOrdemVenda.Pedido,
+                TipoVenda = TipoVenda.Normal,
+                Status = StatusOrdemVenda.Aberto,
+                TipoFrete = TipoFrete.SemFrete,
+                TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,
                 PlataformaId = entity.PlataformaId
             });
 
@@ -151,6 +157,7 @@ namespace Fly01.OrdemServico.BL
                 Send(new OrdemVendaProduto
                 {
                     Ativo = true,
+                    OrdemVendaId = entity.Id,
                     PlataformaId = prodOS.PlataformaId,
                     ProdutoId = prodOS.ProdutoId,
                     Quantidade = prodOS.Quantidade,
@@ -165,6 +172,7 @@ namespace Fly01.OrdemServico.BL
                 Send(new OrdemVendaServico
                 {
                     Ativo = true,
+                    OrdemVendaId = entity.Id,
                     PlataformaId = servOS.PlataformaId,
                     ServicoId = servOS.ServicoId,
                     Quantidade = servOS.Quantidade,

@@ -719,10 +719,12 @@ namespace Fly01.OrdemServico.Controllers
             return reportViewer.Print(GetDadosOrcamentoPedido(ordemServico.Id.ToString(), ordemServico), SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private JsonResult MudarStatus(string id, StatusOrdemServico status)
+        private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
         {
             dynamic pedido = new ExpandoObject();
             pedido.status = status.ToString();
+            if (gerarOrdemVenda)
+                pedido.geraOrdemVenda = true;
             return ExecutePut(id, pedido);
         }
 
@@ -736,7 +738,7 @@ namespace Fly01.OrdemServico.Controllers
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
-        public JsonResult ConcluirOrdem(string id, bool faturar = false) => MudarStatus(id, StatusOrdemServico.Concluido);
+        public JsonResult ConcluirOrdem(string id, bool geraOrdemVenda = false) => MudarStatus(id, StatusOrdemServico.Concluido, geraOrdemVenda);
 
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]

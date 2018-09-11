@@ -138,6 +138,7 @@ namespace Fly01.OrdemServico.BL
                 Status = StatusOrdemVenda.Aberto,
                 TipoFrete = TipoFrete.SemFrete,
                 TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,
+                Observacao = $"Pedido gerado a partir da Ordem de Serviço número {entity.Numero}",
                 GeraFinanceiro = true,
                 GeraNotaFiscal = true,
                 PlataformaId = entity.PlataformaId

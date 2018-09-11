@@ -161,7 +161,8 @@ namespace Fly01.OrdemServico.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemServico), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemServico), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusOrdemServico), x.Status),
-                cliente_nome = x.Cliente.Nome
+                cliente_nome = x.Cliente.Nome,
+                geraOrdemVenda = x.GeraOrdemVenda
             };
         }
 
@@ -276,7 +277,8 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
-                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
+                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
@@ -357,7 +359,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 4,
+                        Quantity = 5,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -368,7 +370,7 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "status" });
-            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Disabled = true });
+            config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Readonly = true });
 
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
             config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
@@ -450,10 +452,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m3", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m3", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m3", Label = "Total (produtos + serviços)", Readonly = true });
-
-
-
-
+            config.Elements.Add(new InputCheckboxUI { Id = "geraOrdemVenda", Class = "col s12 m3", Label = "Gerar Ordem de Venda" });
             #endregion
 
             cfg.Content.Add(config);
@@ -719,23 +718,13 @@ namespace Fly01.OrdemServico.Controllers
             return reportViewer.Print(GetDadosOrcamentoPedido(ordemServico.Id.ToString(), ordemServico), SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private JsonResult MudarStatus(string id, StatusOrdemServico status)
+        private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
         {
-            try
-            {
-                dynamic pedido = new ExpandoObject();
-                pedido.status = status.ToString();
-
-                var resourceNamePut = $"OrdemServico/{id}";
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
-
-                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
+            dynamic pedido = new ExpandoObject();
+            pedido.status = status.ToString();
+            if (gerarOrdemVenda)
+                pedido.geraOrdemVenda = true;
+            return ExecutePut(id, pedido);
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
@@ -748,7 +737,33 @@ namespace Fly01.OrdemServico.Controllers
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
-        public JsonResult ConcluirOrdem(string id, bool faturar = false) => MudarStatus(id, StatusOrdemServico.Concluido);
+        public JsonResult ConcluirOrdem(string id, bool geraOrdemVenda = false) => MudarStatus(id, StatusOrdemServico.Concluido, geraOrdemVenda);
+
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult GerarOrdem(string id)
+        {
+            dynamic pedido = new ExpandoObject();
+            pedido.geraOrdemServico = true;
+            return ExecutePut(id, pedido);
+        }
+
+        private static JsonResult ExecutePut(string id, object pedido)
+        {
+            try
+            {
+                var resourceNamePut = $"OrdemServico/{id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
 
         #region OnDemmand
         [HttpPost]

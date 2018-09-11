@@ -42,6 +42,7 @@ namespace Fly01.Faturamento.BL
 
         public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
+            MustConsumeMessageServiceBus = true;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
             OrdemVendaServicoBL = ordemVendaServicoBL;
             NFeBL = nfeBL;
@@ -224,7 +225,7 @@ namespace Fly01.Faturamento.BL
                             Id = Guid.NewGuid(),
                             NotaFiscalId = NFe.Id,
                             ProdutoId = x.ProdutoId,
-                            GrupoTributarioId = x.GrupoTributarioId,
+                            GrupoTributarioId = x.GrupoTributarioId.Value,
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,
@@ -292,7 +293,7 @@ namespace Fly01.Faturamento.BL
                         {
                             NotaFiscalId = NFSe.Id,
                             ServicoId = x.ServicoId,
-                            GrupoTributarioId = x.GrupoTributarioId,
+                            GrupoTributarioId = x.GrupoTributarioId.Value,
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,

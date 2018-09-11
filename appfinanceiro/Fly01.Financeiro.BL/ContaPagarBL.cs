@@ -38,6 +38,9 @@ namespace Fly01.Financeiro.BL
 
             var repetir = RepeticaoValida(entity);
 
+            entity.ValorPrevisto = Math.Round(entity.ValorPrevisto,2);
+            entity.ValorPago = entity.ValorPago.HasValue ? Math.Round(entity.ValorPago.Value,2) : entity.ValorPago;
+
             //na nova Transação e quando status nao definido
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
                 entity.StatusContaBancaria = StatusContaBancaria.EmAberto;

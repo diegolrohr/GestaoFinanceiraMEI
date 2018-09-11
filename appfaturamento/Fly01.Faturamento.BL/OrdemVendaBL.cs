@@ -9,6 +9,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Helpers.Attribute;
+using System.Timers;
 
 namespace Fly01.Faturamento.BL
 {
@@ -42,6 +43,7 @@ namespace Fly01.Faturamento.BL
 
         public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
+            MustConsumeMessageServiceBus = true;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
             OrdemVendaServicoBL = ordemVendaServicoBL;
             NFeBL = nfeBL;
@@ -564,6 +566,7 @@ namespace Fly01.Faturamento.BL
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
                     };
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
+                    new Timer(1000);
                 }
 
                 if ((entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))

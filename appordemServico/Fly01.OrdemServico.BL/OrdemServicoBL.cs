@@ -63,17 +63,6 @@ namespace Fly01.OrdemServico.BL
 
         private int ObterProximoNumero() => (Everything.Max(x => (int?)x.Numero) ?? 0) + 1;
 
-        public void GerarOrdemVenda(Core.Entities.Domains.Commons.OrdemServico entity)
-        {
-            var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            var concluida = previous.Status == StatusOrdemServico.Concluido;
-            previous.Fail(!concluida, new Error("Apenas ordens de serviço concluídas podem gerar ordem de venda!"));
-            if (concluida)
-                previous.Fail(previous.GeraOrdemVenda, new Error("Ordem de Venda já foi gerada"));
-
-            base.Update(entity);
-        }
-
         public override void Update(Core.Entities.Domains.Commons.OrdemServico entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);

@@ -188,7 +188,7 @@
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnChangeTotalServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnEditarOrdemServicoItemServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnExcluirOrdemServicoItemServico.cshtml" />
-	<Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
@@ -219,7 +219,6 @@
     <Content Include="Views\OrdemServico\Functions\_fnConcluirOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnCancelarNovaOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConcluirGerarOrdem.cshtml" />
-    <Content Include="Views\OrdemServico\Functions\_fnGerarOrdemVenda.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

@@ -278,8 +278,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
                 new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
-                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" },
-                new DataTableUIAction { OnClickFn = "fnGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.Concluido}' && !row.geraOrdemVenda)" },
+                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });

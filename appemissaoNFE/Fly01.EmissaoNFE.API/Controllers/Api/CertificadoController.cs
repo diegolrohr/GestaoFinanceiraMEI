@@ -1,10 +1,10 @@
-﻿using System;
-using Fly01.Core.API;
-using System.Web.Http;
-using Fly01.EmissaoNFE.BL;
-using Fly01.EmissaoNFE.API.Model;
+﻿using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.API.Model;
+using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using System;
+using System.Web.Http;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -17,12 +17,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.CertificadoBL.ValidaModel(entity);
-                
+
                 try
                 {
                     EnviarCertificadoNFSe(entity);
+                    EnviarCertificadoNFe(entity);
 
-                    return Ok(EnviarCertificadoNFe(entity));
+                    return Ok(RetornarValidadeCertificado(entity));
                 }
                 catch (Exception ex)
                 {
@@ -32,11 +33,26 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     }
 
                     return InternalServerError(ex);
-                }            
+                }
             }
         }
 
-        private CertificadoRetornoVM EnviarCertificadoNFe(CertificadoVM entity)
+        public CertificadoRetornoVM RetornarValidadeCertificado(CertificadoVM entity) {
+
+            var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
+
+            return new CertificadoRetornoVM
+            {
+                Tipo = dados[0].CERTIFICATETYPE,
+                Emissor = Convert.ToBase64String(dados[0].ISSUER),
+                Pessoa = dados[0].SUBJECT,
+                DataEmissao = dados[0].VALIDFROM,
+                DataExpiracao = dados[0].VALIDTO,
+                Versao = dados[0].VERSION
+            };
+        }
+
+        private void EnviarCertificadoNFe(CertificadoVM entity)
         {
             var homolog = new SPEDCFGNFE.SPEDCFGNFE().CFGCERTIFICATEPFX(
                                     AppDefault.Token,
@@ -46,57 +62,30 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                 );
 
             var prod = new SPEDCFGNFEProd.SPEDCFGNFE().CFGCERTIFICATEPFX(
-                AppDefault.Token,
-                entity.Producao,
-                Convert.FromBase64String(entity.Certificado),
-                Convert.FromBase64String(entity.Senha)
-            );
-
-            var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
-
-            var response = new CertificadoRetornoVM
-            {
-                Tipo = dados[0].CERTIFICATETYPE,
-                Emissor = Convert.ToBase64String(dados[0].ISSUER),
-                Pessoa = dados[0].SUBJECT,
-                DataEmissao = dados[0].VALIDFROM,
-                DataExpiracao = dados[0].VALIDTO,
-                Versao = dados[0].VERSION
-            };
-            return response;
+                                    AppDefault.Token,
+                                    entity.Producao,
+                                    Convert.FromBase64String(entity.Certificado),
+                                    Convert.FromBase64String(entity.Senha)
+                                );
         }
 
-        private CertificadoRetornoVM EnviarCertificadoNFSe(CertificadoVM entity)
+        private void EnviarCertificadoNFSe(CertificadoVM entity)
         {
             var homolog = new NFSE001.NFSE001().CFGNFSECERTPFX(
-                AppDefault.Token,
-                entity.Homologacao,
-                Convert.FromBase64String(entity.Certificado),
-                Convert.FromBase64String(entity.Senha),
-                null//TODO
-            );
+                                    AppDefault.Token,
+                                    entity.Homologacao,
+                                    Convert.FromBase64String(entity.Certificado),
+                                    Convert.FromBase64String(entity.Senha),
+                                    null//TODO
+                                );
 
             var prod = new NFSE001Prod.NFSE001().CFGNFSECERTPFX(
-                AppDefault.Token,
-                entity.Producao,
-                Convert.FromBase64String(entity.Certificado),
-                Convert.FromBase64String(entity.Senha),
-                null//TODO
-            );
-
-            //TODO o retorno é na mesma chamada??
-            var dados = new SPEDCFGNFEProd.SPEDCFGNFE().CFGSTATUSCERTIFICATE(AppDefault.Token, entity.Producao, "");
-
-            var response = new CertificadoRetornoVM
-            {
-                Tipo = dados[0].CERTIFICATETYPE,
-                Emissor = Convert.ToBase64String(dados[0].ISSUER),
-                Pessoa = dados[0].SUBJECT,
-                DataEmissao = dados[0].VALIDFROM,
-                DataExpiracao = dados[0].VALIDTO,
-                Versao = dados[0].VERSION
-            };
-            return response;
+                                    AppDefault.Token,
+                                    entity.Producao,
+                                    Convert.FromBase64String(entity.Certificado),
+                                    Convert.FromBase64String(entity.Senha),
+                                    null//TODO
+                                );
         }
 
         [HttpGet]
@@ -105,7 +94,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.EntidadeBL.ValidaGet(entidade, tipoAmbiente);
-                     
+
                 try
                 {
                     CertificadoRetornoVM certificado;
@@ -139,7 +128,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         };
                     }
 
-                    return Ok( certificado );
+                    return Ok(certificado);
                 }
                 catch (Exception ex)
                 {

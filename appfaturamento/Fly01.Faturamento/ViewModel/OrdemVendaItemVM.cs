@@ -11,7 +11,7 @@ namespace Fly01.Faturamento.ViewModel
         public Guid OrdemVendaId { get; set; }
 
         [JsonProperty("grupoTributarioId")]
-        public Guid GrupoTributarioId { get; set; }
+        public Guid? GrupoTributarioId { get; set; }
 
         [JsonProperty("quantidade")]
         public double Quantidade { get; set; }

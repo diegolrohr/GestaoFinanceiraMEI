@@ -224,7 +224,7 @@ namespace Fly01.Faturamento.BL
                             Id = Guid.NewGuid(),
                             NotaFiscalId = NFe.Id,
                             ProdutoId = x.ProdutoId,
-                            GrupoTributarioId = x.GrupoTributarioId,
+                            GrupoTributarioId = x.GrupoTributarioId.Value,
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,
@@ -292,7 +292,7 @@ namespace Fly01.Faturamento.BL
                         {
                             NotaFiscalId = NFSe.Id,
                             ServicoId = x.ServicoId,
-                            GrupoTributarioId = x.GrupoTributarioId,
+                            GrupoTributarioId = x.GrupoTributarioId.Value,
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,

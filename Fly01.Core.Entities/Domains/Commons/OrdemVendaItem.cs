@@ -8,8 +8,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid OrdemVendaId { get; set; }
 
-        [Required]
-        public Guid GrupoTributarioId { get; set; }
+        public Guid? GrupoTributarioId { get; set; }
 
         //[Required]
         public double Quantidade { get; set; }

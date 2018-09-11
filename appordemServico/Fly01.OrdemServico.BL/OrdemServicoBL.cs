@@ -149,6 +149,8 @@ namespace Fly01.OrdemServico.BL
                 Status = StatusOrdemVenda.Aberto,
                 TipoFrete = TipoFrete.SemFrete,
                 TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,
+                GeraFinanceiro = true,
+                GeraNotaFiscal = true,
                 PlataformaId = entity.PlataformaId
             });
 

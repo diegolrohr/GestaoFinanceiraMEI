@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.BL
 
                 if (serieENumeroJaUsado || serieENumeroInutilizado)
                 {
-                    var sugestaoProximoNumNota = All.Max(x => x.NumNotaFiscal);
+                    var sugestaoProximoNumNota = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal)).Max(x => x.NumNotaFiscal);
                     if (!sugestaoProximoNumNota.HasValue)
                     {
                         sugestaoProximoNumNota = entity.NumNotaFiscal;

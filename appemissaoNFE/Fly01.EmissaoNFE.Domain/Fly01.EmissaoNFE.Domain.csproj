@@ -153,8 +153,11 @@
     <Compile Include="ViewModel\ItemTransmissaoRetornoVM.cs" />
     <Compile Include="Entities\Eventos\EnvelopeEvento.cs" />
     <Compile Include="ViewModel\ItemTransmissaoVM.cs" />
+    <Compile Include="ViewModel\ListMonitorNFSRetornoVM.cs" />
     <Compile Include="ViewModel\MonitorEventoVM.cs" />
     <Compile Include="ViewModel\MonitorEventoRetornoVM.cs" />
+    <Compile Include="ViewModel\MonitorNFSVM.cs" />
+    <Compile Include="ViewModel\MonitorNFSRetornoVM.cs" />
     <Compile Include="ViewModel\RegimeTributarioVM.cs" />
     <Compile Include="ViewModel\TransmissaoRetornoVM.cs" />
     <Compile Include="ViewModel\TransmissaoVM.cs" />

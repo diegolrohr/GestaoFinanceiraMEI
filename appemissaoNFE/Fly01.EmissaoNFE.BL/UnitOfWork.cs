@@ -113,6 +113,9 @@ namespace Fly01.EmissaoNFE.BL
         private MonitorBL monitorBL;
         public MonitorBL MonitorBL => monitorBL ?? (monitorBL = new MonitorBL(Context, EntidadeBL));
 
+        private MonitorNFSBL monitorNFSBL;
+        public MonitorNFSBL MonitorNFSBL => monitorNFSBL ?? (monitorNFSBL = new MonitorNFSBL(Context, EntidadeBL));
+
         private NFeBL nFeBL;
         public NFeBL NFeBL => nFeBL ?? (nFeBL = new NFeBL(Context));
 

@@ -8,8 +8,8 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
-    [RoutePrefix("configuracaoOK")]
-    public class ConfiguracaoOKController : ApiBaseController
+    [RoutePrefix("configuracaoOKNFS")]
+    public class ConfiguracaoOKNFSController : ApiBaseController
     {
         [HttpPost]
         public IHttpActionResult Post()
@@ -25,20 +25,21 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         }
 
         [HttpGet]
-        public IHttpActionResult Get(string entidade, TipoAmbiente tipoAmbiente)
+        public IHttpActionResult Get(string entidade, TipoAmbiente tipoAmbiente, string codigoMunicipio)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.EntidadeBL.ValidaGet(entidade, tipoAmbiente);
+                unitOfWork.CidadeBL.ValidaCodigoIBGEException(codigoMunicipio);
 
+                var sped = string.Empty;
                 try
                 {
-                    if ((int)tipoAmbiente == 2)
-                        new SPEDCFGNFE.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
+                    if (tipoAmbiente == TipoAmbiente.Homologacao)
+                        new NFSE001.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoMunicipio);
                     else
-                        new SPEDCFGNFEProd.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
-                    
-
+                        new NFSE001Prod.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoMunicipio);
+                   
                     return Ok(new { success = true });
                 }
                 catch (Exception ex)

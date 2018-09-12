@@ -21,11 +21,30 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "numerorps")]
         public int NumeroRPS { get; set; }
 
-        [XmlElement(ElementName = "tipo")]
-        public TipoNFs TipoNFs { get; set; } 
+        /// <summary>
+        /// O tipo é fixo, pois tanto ABRASF como DSFNET, utilizam esta tag como tipo RPS (1)
+        /// </summary>
+        [XmlElement(ElementName = "tipo")] //TipoNFs
+        public string TipoNFs {
+            get
+            {
+                 return "1";
+            }
+            set { }
+        }
 
+        /// <summary>
+        /// O tipo é fixo, pois tanto ABRASF como DSFNET, utilizam esta tag como Normal (1)
+        /// </summary>
         [XmlElement(ElementName = "situacaorps")]
-        public TipoSituacaoRPSNFs TipoSituacaoRPS { get; set; }
+        public string TipoSituacaoRPS
+        {
+            get
+            {
+                return "1";
+            }
+            set { }
+        }
 
         [XmlElement(ElementName = "tiporecolhe")]
         public TipoRecolhimentoNFs TipoRecolhimento { get; set; }

@@ -16,7 +16,7 @@ namespace Fly01.EmissaoNFE.BL
         
         public bool TSSException(Exception ex)
         {
-            if (ex.Message.Contains("TOTVS Service Soa") | ex.Message.Contains("TOTVS SPED Services"))
+            if (ex.Message.Contains("TOTVS Service Soa") || ex.Message.Contains("TOTVS SPED Services") || ex.Message.Contains("TSS"))
                     return true;
 
             return false;

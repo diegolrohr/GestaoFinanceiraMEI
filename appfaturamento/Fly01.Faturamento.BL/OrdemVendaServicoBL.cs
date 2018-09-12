@@ -9,6 +9,7 @@ namespace Fly01.Faturamento.BL
     {
         public OrdemVendaServicoBL(AppDataContextBase context) : base(context)
         {
+            MustConsumeMessageServiceBus = true;
         }
 
         public override void ValidaModel(OrdemVendaServico entity)

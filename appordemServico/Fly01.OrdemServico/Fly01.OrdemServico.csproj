@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -188,7 +188,7 @@
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnChangeTotalServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnEditarOrdemServicoItemServico.cshtml" />
     <Content Include="Views\OrdemServicoItemServico\Functions\_fnExcluirOrdemServicoItemServico.cshtml" />
-	<Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConverterParaPedido.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyVisualizarOrdemServico.cshtml" />
@@ -218,6 +218,8 @@
     <Content Include="Views\OrdemServico\Functions\_fnCancelarOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConcluirOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnCancelarNovaOrdem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnConcluirGerarOrdem.cshtml" />
+    <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnCarregarArquivo.cshtml" />
@@ -259,7 +261,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.7\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

@@ -76,11 +76,11 @@ namespace Fly01.Faturamento.BL
             {
                 if(GetProduto(item.ProdutoId) == null)
                 {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
                 }
-                if (GetGrupoTributario(item.GrupoTributarioId) == null)
+                if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
                 }
                 num++;
             }
@@ -217,8 +217,22 @@ namespace Fly01.Faturamento.BL
 
             double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
+            var num = 1;
             foreach (var itemProduto in tributacaoItens)
             {
+                var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                if(grupoTributario == null)
+                {
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                }
+                var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
+                if (produto == null)
+                {
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
+                }
+
+                num++;
+
                 var itemRetorno = new TributacaoProdutoRetorno()
                 {
                     FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
@@ -230,17 +244,6 @@ namespace Fly01.Faturamento.BL
                 tributacao.ValorBase = itemProduto.Total;
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
                 tributacao.SimplesNacional = true;
-
-                var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                if(grupoTributario == null)
-                {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
-                }
-                var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
-                if (produto == null)
-                {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
-                }
 
                 //ICMS
                 //refatorar para cada caso
@@ -382,7 +385,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -396,7 +399,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -410,7 +413,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -423,7 +426,7 @@ namespace Fly01.Faturamento.BL
                 Quantidade = x.Quantidade,
                 Desconto = x.Desconto,
                 Total = x.Total,
-                GrupoTributarioId = x.GrupoTributarioId,
+                GrupoTributarioId = x.GrupoTributarioId.Value,
                 GrupoTributario = x.GrupoTributario
             }).ToList(), clienteId);
         }
@@ -506,7 +509,7 @@ namespace Fly01.Faturamento.BL
 
     public class TributacaoProduto : TributacaoItem
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -516,7 +519,7 @@ namespace Fly01.Faturamento.BL
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

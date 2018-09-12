@@ -1,7 +1,9 @@
 ﻿using Fly01.Core.BL;
+using Fly01.Core.Entities.Domains;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
+using Fly01.Core.ServiceBus;
 using Fly01.OrdemServico.BL.Extension;
 using System;
 using System.Data.Entity;
@@ -98,9 +100,9 @@ namespace Fly01.OrdemServico.BL
         {
             var ordemServico = All.Where(x => x.Id == ordemServicoId).FirstOrDefault();
 
-            var produtos = OrdemServicoItemProdutoBL.All.Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var produtos = GetProdutos(ordemServicoId).ToList();
             var totalProdutos = produtos != null ? produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var servicos = OrdemServicoItemServicoBL.All.AsNoTracking().Where(x => x.OrdemServicoId == ordemServicoId).ToList();
+            var servicos = GetServicos(ordemServicoId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var itensCliente = OrdemServicoManutencaoBL.All.AsNoTracking().Where(x => x.OrdemServicoId == ordemServicoId).ToList();
             var qtdItensCliente = itensCliente != null ? itensCliente.Sum(x => ((x.Quantidade))) : 0;
@@ -113,5 +115,67 @@ namespace Fly01.OrdemServico.BL
 
             return result;
         }
+
+        private IQueryable<OrdemServicoItemServico> GetServicos(Guid ordemServicoId)
+            => OrdemServicoItemServicoBL.All.AsNoTracking().Where(x => x.OrdemServicoId == ordemServicoId);
+
+        private IQueryable<OrdemServicoItemProduto> GetProdutos(Guid ordemServicoId)
+            => OrdemServicoItemProdutoBL.All.Where(x => x.OrdemServicoId == ordemServicoId);
+
+        public override void AfterSave(Core.Entities.Domains.Commons.OrdemServico entity)
+        {
+            if (entity.Status != StatusOrdemServico.Concluido || !entity.GeraOrdemVenda)
+                return;
+
+            Send(new OrdemVenda
+            {
+                Id = entity.Id,
+                Ativo = true,
+                ClienteId = entity.ClienteId,
+                Data = entity.DataEntrega,
+                TipoOrdemVenda = TipoOrdemVenda.Pedido,
+                TipoVenda = TipoVenda.Normal,
+                Status = StatusOrdemVenda.Aberto,
+                TipoFrete = TipoFrete.SemFrete,
+                TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,
+                Observacao = $"Pedido gerado a partir da Ordem de Serviço número {entity.Numero}",
+                GeraFinanceiro = true,
+                GeraNotaFiscal = true,
+                PlataformaId = entity.PlataformaId
+            });
+
+            foreach (var prodOS in GetProdutos(entity.Id))
+            {
+                Send(new OrdemVendaProduto
+                {
+                    Ativo = true,
+                    OrdemVendaId = entity.Id,
+                    PlataformaId = prodOS.PlataformaId,
+                    ProdutoId = prodOS.ProdutoId,
+                    Quantidade = prodOS.Quantidade,
+                    Valor = prodOS.Valor,
+                    Desconto = prodOS.Desconto,
+                    Total = prodOS.Total
+                });
+            }
+
+            foreach (var servOS in GetServicos(entity.Id))
+            {
+                Send(new OrdemVendaServico
+                {
+                    Ativo = true,
+                    OrdemVendaId = entity.Id,
+                    PlataformaId = servOS.PlataformaId,
+                    ServicoId = servOS.ServicoId,
+                    Quantidade = servOS.Quantidade,
+                    Valor = servOS.Valor,
+                    Desconto = servOS.Desconto,
+                    Total = servOS.Total
+                });
+            }
+        }
+
+        private void Send<T>(T entity) where T : DomainBase
+            => Producer<T>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
     }
 }

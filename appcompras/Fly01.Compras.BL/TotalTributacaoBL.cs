@@ -71,16 +71,17 @@ namespace Fly01.Compras.BL
             var pessoa = GetPessoa(fornecedorId);
             var fornecedorUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
             var pedidoItens = GetPedidoItens(entity.Id);
+
             int num = 1;
             foreach (var item in pedidoItens)
             {
                 if (GetProduto(item.ProdutoId) == null)
                 {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
                 }
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
                 }
                 num++;
             }
@@ -187,10 +188,23 @@ namespace Fly01.Compras.BL
 
             double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
+            var num = 1;
             foreach (var itemProduto in tributacaoItens)
             {
                 if (itemProduto.GrupoTributarioId != default(Guid))
                 {
+                    var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                    if (grupoTributario == null)
+                    {
+                        throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                    }
+                    var produto = GetProduto(itemProduto.ProdutoId);
+                    if (produto == null)
+                    {
+                        throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
+                    }
+
+                    num++;
 
                     var itemRetorno = new TributacaoProdutoRetorno()
                     {
@@ -203,9 +217,6 @@ namespace Fly01.Compras.BL
                     tributacao.ValorBase = itemProduto.Total;
                     tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
                     tributacao.SimplesNacional = true;
-
-                    var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                    var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
 
                     //ICMS
                     if (grupoTributario.CalculaIcms)
@@ -455,7 +466,7 @@ namespace Fly01.Compras.BL
 
     public class TributacaoProduto : TributacaoItem
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -465,7 +476,7 @@ namespace Fly01.Compras.BL
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

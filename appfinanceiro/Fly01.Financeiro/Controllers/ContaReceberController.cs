@@ -241,6 +241,11 @@ namespace Fly01.Financeiro.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum", "fnImprimirBoleto" },
+                Options = new DataTableUIConfig
+                {
+                    OrderColumn = 1,
+                    OrderDir = "desc"
+                }
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()

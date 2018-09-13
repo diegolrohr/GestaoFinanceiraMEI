@@ -25,8 +25,7 @@
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
-            data: {
-                registro: $('#registroSimplificadoMT').is(":checked"),
+            data: {                
                 mensagem: $('#mensagemPadraoNota').val(),
                 simplesnacional: $("#aliquotaSimplesNacional").val(),
                 fcp: $("#aliquotaFCP").val(),

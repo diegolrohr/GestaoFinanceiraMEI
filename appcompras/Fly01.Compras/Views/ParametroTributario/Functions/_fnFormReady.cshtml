@@ -5,7 +5,6 @@
             url: '@Url.Action("CarregaParametro", "ParametroTributario")',
             type: "GET",
             success: function (data) {
-                $('#registroSimplificadoMT').attr('checked', data.registroSimplificadoMT);
                 $("input#aliquotaSimplesNacional").val(data.aliquotaSimplesNacional);
                 $("input#aliquotaFCP").val(data.aliquotaFCP);
                 $("input#aliquotaISS").val(data.aliquotaISS);

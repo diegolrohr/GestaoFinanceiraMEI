@@ -59,7 +59,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Json(new
             {
-                registroSimplificadoMT = parametroTributario.RegistroSimplificadoMT,
                 aliquotaSimplesNacional = parametroTributario.AliquotaSimplesNacional,
                 aliquotaISS = parametroTributario.AliquotaISS,
                 aliquotaPISPASEP = parametroTributario.AliquotaPISPASEP,
@@ -123,8 +122,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" , Disabled = true });
-
             cfg.Content.Add(form1);
 
             var form2 = new FormUI
@@ -132,7 +129,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
+                    new LabelSetUI { Id =  "labelSetAliquotasPadroes", Class = "col s12", Label = "Alíquotas Padrões"}
                 }
             };
 
@@ -183,7 +180,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
+                    new LabelSetUI { Id =  "labelSetParametrosNFe", Class = "col s12", Label = "Parâmetros de Transmissão NF-e"}
                 }
 
             };
@@ -246,11 +243,11 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 1000 });
+            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
 
             #region NFS
-            ////Paramentro NFS
-            //config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
+            //Paramentro NFS
+            form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
 
             //config.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12", Label = "Incentivo à Cultura" });
 
@@ -320,15 +317,8 @@ namespace Fly01.Core.Presentation.Controllers
 
             #endregion
 
-            #region Helpers 
-            form3.Helpers.Add(new TooltipUI
-            {
-                Id = "mensagemPadraoNota",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe | entre as palavras, para exibir quebra de linha(enter) na impressão da DANFE. Exemplo: TextoLinha1 | TextoLinha2 | TextoLinha3."
-                }
-            });
+            #region Helpers
+
             #endregion
             cfg.Content.Add(form3);
 
@@ -336,14 +326,13 @@ namespace Fly01.Core.Presentation.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
+        public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
         {
             try
             {
                 var dadosParametro = new
                 {
                     simplesNacional = "True",
-                    registroSimplificadoMT = registro == true ? "True" : "False",
                     aliquotaSimplesNacional = double.IsNaN(simplesNacional) ? 0 : simplesNacional,
                     aliquotaFCP = fcp,
                     aliquotaISS = double.IsNaN(iss) ? 0 : iss,

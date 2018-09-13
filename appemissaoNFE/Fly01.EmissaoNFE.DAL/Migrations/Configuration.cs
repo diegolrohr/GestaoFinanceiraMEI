@@ -29,6 +29,7 @@ namespace Fly01.EmissaoNFE.DAL.Migrations
                 new NcmDataInitializer().Initialize(context);
                 new TabelaIcmsDataInitializer().Initialize(context);
                 new CfopDataInitializer().Initialize(context);
+                new NBSDataInitializer().Initialize(context);
             }
             catch (DbEntityValidationException ex)
             {

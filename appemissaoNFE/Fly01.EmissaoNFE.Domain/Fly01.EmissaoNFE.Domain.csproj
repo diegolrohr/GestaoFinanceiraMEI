@@ -142,7 +142,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Tributacao.cs" />
     <Compile Include="Entities\NFs\Identificacao.cs" />
-    <Compile Include="ViewModelNFs\TransmissaoNfsVM.cs" />
+    <Compile Include="ViewModelNFs\TransmissaoNFSVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoRetornoVM.cs" />
     <Compile Include="ViewModel\InutilizarNFRetornoVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoVM.cs" />

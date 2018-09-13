@@ -91,6 +91,7 @@
     <Compile Include="Controllers\Api\TipoAmbienteController.cs" />
     <Compile Include="Controllers\Api\TipoFusoHorarioController.cs" />
     <Compile Include="Controllers\Api\MonitorController.cs" />
+    <Compile Include="Controllers\Api\TransmissaoNFSController.cs" />
     <Compile Include="Controllers\Api\VersaoController.cs" />
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />

@@ -85,11 +85,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public ListMonitorRetornoVM Homologacao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            var retorno = new ListMonitorRetornoVM();
-            retorno.Retornos = new List<MonitorRetornoVM>();
-
-
-            return retorno;
+            return new ListMonitorRetornoVM
+            {
+                Retornos = new List<MonitorRetornoVM>()
+            };
         }
     }
 }

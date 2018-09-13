@@ -70,6 +70,7 @@
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />
     <Compile Include="ParametroNfBL.cs" />
+    <Compile Include="TransmissaoNFSBL.cs" />
     <Compile Include="VersaoBL.cs" />
     <Compile Include="ModalidadeBL.cs" />
     <Compile Include="RegimeTributarioBL.cs" />

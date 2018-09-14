@@ -60,8 +60,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string TipoHorario { get; set; }
 
         #region NFS
-        //[JsonProperty("incentivoCultura")]
-        //public bool IncentivoCultura { get; set; }
+        [JsonProperty("incentivoCultura")]
+        public bool IncentivoCultura { get; set; }
 
         //[JsonProperty("tipoRegimeEspecialTrib")]
         //[APIEnum("TipoRegimeEspecialTrib")]
@@ -85,17 +85,17 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         //[APIEnum("TipoAmbienteNFS")]
         //public string TipoAmbienteNFS { get; set; }
 
-        //[JsonProperty("versao")]
-        //public string Versao { get; set; }
+        [JsonProperty("versaoNFSe")]
+        public string VersaoNFSe { get; set; }
 
-        //[JsonProperty("usuario")]
-        //public string Usuario { get; set; }
+        [JsonProperty("usuarioWebServer")]
+        public string UsuarioWebServer { get; set; }
 
-        //[JsonProperty("senha")]
-        //public string Senha { get; set; }
+        [JsonProperty("senhaWebServer")]
+        public string SenhaWebServer { get; set; }
 
-        //[JsonProperty("chaveAutenticacao")]
-        //public string ChaveAutenticacao { get; set; }
+        [JsonProperty("chaveAutenticacao")]
+        public string ChaveAutenticacao { get; set; }
         #endregion
     }
 }

@@ -24,6 +24,10 @@
                 $('select#horarioVerao').material_select();
                 $('select#tipoHorario').val(data.tipoHorario);
                 $('select#tipoHorario').material_select();
+                $('#versaoNFSe').val(data.versaoNFSe);
+                $('#usuarioWebServer').val(data.usuarioWebServer);
+                $('#senhaWebServer').val(data.senhaWebServer);
+                $('#chaveAutenticacao').val(data.chaveAutenticacao);
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

@@ -110,8 +110,6 @@ namespace Fly01.Core.Entities.Domains.Commons
         //    set { TipoLayoutNFSE = (TipoLayoutNFSE)System.Enum.Parse(typeof(TipoLayoutNFSE), value); }
         //}
 
-        //public string SIAFI { get; set; }
-
         //public string Usuario { get; set; }
 
         //public string Senha { get; set; }

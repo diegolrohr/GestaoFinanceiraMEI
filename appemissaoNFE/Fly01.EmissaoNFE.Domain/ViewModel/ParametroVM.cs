@@ -11,7 +11,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
 
         public bool SimplesNacional { get; set; }
 
-        public string VersaoNFSe { get; set; }
+        #region NF-e
 
         public string VersaoDPEC { get; set; }
 
@@ -72,5 +72,26 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
             get { return ((int)TipoHorario).ToString(); }
             set { TipoHorario = (TipoHorarioTSS)Enum.Parse(typeof(TipoHorarioTSS), value); }
         }
+
+        #endregion
+
+        #region NFS-e
+
+        [JsonProperty("versaoNFSe")]
+        public string VersaoNFSe { get; set; }
+
+        [JsonProperty("codigoIBGECidade")]
+        public string CodigoIBGECidade { get; set; }
+
+        [JsonProperty("usuarioWebServer")]
+        public string UsuarioWebServer { get; set; }
+
+        [JsonProperty("senhaWebServer")]
+        public string SenhaWebServer { get; set; }
+
+        [JsonProperty("chaveAutenticacao")]
+        public string ChaveAutenticacao { get; set; }
+
+        #endregion
     }
 }

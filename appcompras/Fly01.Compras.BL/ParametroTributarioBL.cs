@@ -70,7 +70,8 @@ namespace Fly01.Compras.BL
                         EnviaDanfe = false,
                         UsaEPEC = false,
                         HorarioVerao = parametroTributario.HorarioVerao,
-                        TipoHorario = parametroTributario.TipoHorario
+                        TipoHorario = parametroTributario.TipoHorario,
+                        SimplesNacional = true
                     };
 
                     var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,

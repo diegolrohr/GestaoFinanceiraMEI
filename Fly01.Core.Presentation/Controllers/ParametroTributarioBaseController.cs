@@ -54,7 +54,11 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaFCP = "0",
                     tipoPresencaComprador = "Presencial",
                     horarioVerao = "Nao",
-                    tipoHorario = "Brasilia"
+                    tipoHorario = "Brasilia",
+                    versaoNFSe = "0.00",
+                    usuarioWebServer = "",
+                    senhaWebServer = "",
+                    chaveAutenticacao = ""
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -71,7 +75,11 @@ namespace Fly01.Core.Presentation.Controllers
                 aliquotaFCP = parametroTributario.AliquotaFCP,
                 tipoPresencaComprador = parametroTributario.TipoPresencaComprador,
                 horarioVerao = parametroTributario.HorarioVerao,
-                tipoHorario = parametroTributario.TipoHorario
+                tipoHorario = parametroTributario.TipoHorario,
+                versaoNFSe = parametroTributario.VersaoNFSe,
+                usuarioWebServer = parametroTributario.UsuarioWebServer,
+                senhaWebServer = parametroTributario.SenhaWebServer,
+                chaveAutenticacao = parametroTributario.ChaveAutenticacao
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -130,7 +138,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Elements = new List<BaseUI>
                 {
                     new LabelSetUI { Id =  "labelSetAliquotasPadroes", Class = "col s12", Label = "Alíquotas Padrões"}
-                }
+                },
+                Id = "fly01frm2"
             };
 
             form2.Elements.Add(new InputCustommaskUI
@@ -181,7 +190,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Elements = new List<BaseUI>
                 {
                     new LabelSetUI { Id =  "labelSetParametrosNFe", Class = "col s12", Label = "Parâmetros de Transmissão NF-e"}
-                }
+                },
+                Id = "fly01frm3"
 
             };
 
@@ -231,7 +241,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoVersaoNFe",
                 Class = "col s6 m6 l3",
-                Label = "Versão NFe ",
+                Label = "Versão NF-e ",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
 
@@ -249,7 +259,22 @@ namespace Fly01.Core.Presentation.Controllers
             //Paramentro NFS
             form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
 
-            //config.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12", Label = "Incentivo à Cultura" });
+            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m4", Label = "É Incentivador à Cultura" });
+
+            form3.Elements.Add(new InputCustommaskUI
+            {
+                Id = "versaoNFSe",
+                Class = "col s12 m4",
+                Label = "Versão NFS-e",
+                MaxLength = 3,
+                Data = new { inputmask = "'mask':'9.99', 'showMaskOnHover': false, 'autoUnmask':true" }
+            });
+
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m4", Label = "Usuário Web Server" });
+
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server" });
+
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação" });
 
             //config.Elements.Add(new SelectUI
             //{
@@ -279,15 +304,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             //config.Elements.Add(new InputCheckboxUI { Id = "novoModeloUnicoXMLTSS", Class = "col s12 m6", Label = "Novo Modelo Único XML TSS" });
 
-            //config.Elements.Add(new InputCustommaskUI
-            //{
-            //    Id = "versao",
-            //    Class = "col s6 m3",
-            //    Label = "Versão",
-            //    MaxLength = 3,
-            //    Data = new { inputmask = "'mask':'9.99', 'showMaskOnHover': false, 'autoUnmask':true" }
-            //});
-
 
             //config.Elements.Add(new InputCustommaskUI
             //{
@@ -307,13 +323,7 @@ namespace Fly01.Core.Presentation.Controllers
             //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoAmbienteNFS", true, false))
             //});
 
-            ////config.Elements.Add(new InputTextUI { Id = "aEDFe", Class = "col s12 m6", Label = "AEDFe"});
-
-            //config.Elements.Add(new InputTextUI { Id = "usuario", Class = "col s12 m4", Label = "Usuário" });
-
-            //config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m4", Label = "Senha" });
-
-            //config.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticacao" });
+            ////config.Elements.Add(new InputTextUI { Id = "aEDFe", Class = "col s12 m6", Label = "AEDFe"});            
 
             #endregion
 
@@ -326,7 +336,9 @@ namespace Fly01.Core.Presentation.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
+        public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
+            string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
+            string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao)
         {
             try
             {
@@ -346,6 +358,10 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoPresencaComprador = tipoPresencaComprador,
                     horarioVerao = horarioVerao,
                     tipoHorario = tipoHorario
+                    //versaoNFSe = versaoNFSe,
+                    //usuarioWebServer = usuarioWebServer,
+                    //senhaWebServer = senhaWebServer,
+                    //chaveAutenticacao = chaveAutenticacao
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

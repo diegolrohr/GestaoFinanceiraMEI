@@ -19,9 +19,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    Homologacao(entity);
-                    
-                    Producao(entity);
+                    EnviarParametrosNFe(entity);
+                    EnviarParametrosNFSe(entity);
 
                     return Ok(new { success = true });
                 }
@@ -37,6 +36,18 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }
 
+        private void EnviarParametrosNFSe(ParametroVM entity)
+        {
+            HomologacaoNFSe(entity);
+            ProducaoNFSe(entity);
+        }
+
+        private void EnviarParametrosNFe(ParametroVM entity)
+        {
+            HomologacaoNFe(entity);
+            ProducaoNFe(entity);
+        }
+
         [HttpGet]
         public IHttpActionResult Get()
         {
@@ -50,7 +61,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }
 
-        public void Producao(ParametroVM entity)
+        public void ProducaoNFe(ParametroVM entity)
         {
             var sped = new SPEDCFGNFEProd.SPEDCFGNFE().CFGPARAMSPED(
                 AppDefault.Token,
@@ -96,7 +107,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             );
         }
 
-        public void Homologacao(ParametroVM entity)
+        public void HomologacaoNFe(ParametroVM entity)
         {
             var sped = new SPEDCFGNFE.SPEDCFGNFE().CFGPARAMSPED(
                 AppDefault.Token,
@@ -139,6 +150,56 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 "0",
                 "0",
                 "0"
+            );
+        }
+
+        public void ProducaoNFSe(ParametroVM entity)
+        {
+            //TODO confirmar com Machado
+            var cfgNFS = new NFSE001Prod.NFSE001().CFGAMBNFSE001(
+                AppDefault.Token,
+                entity.Producao,
+                entity.TipoAmbiente,
+                "",//MODNFSE
+                entity.VersaoNFSe,
+                entity.CodigoIBGECidade,
+                "",//CODSIAFI
+                null,//uso
+                null,//MAXLOTE
+                null,//CNPJAUT
+                null,//ENVSINC
+                entity.UsuarioWebServer,
+                Convert.FromBase64String(entity.SenhaWebServer),
+                null, //AUTORIZACAO
+                entity.ChaveAutenticacao,
+                null, //TOKENID
+                null, //CLIENTID
+                null //CLIENTSECRET
+            );
+        }
+
+        public void HomologacaoNFSe(ParametroVM entity)
+        {
+            //TODO confirmar com Machado
+            var cfgNFS = new NFSE001.NFSE001().CFGAMBNFSE001(
+                AppDefault.Token,
+                entity.Homologacao,
+                entity.TipoAmbiente,
+                "",//MODNFSE
+                entity.VersaoNFSe,
+                entity.CodigoIBGECidade,
+                "",//CODSIAFI
+                null,//uso
+                null,//MAXLOTE
+                null,//CNPJAUT
+                null,//ENVSINC
+                entity.UsuarioWebServer,
+                Convert.FromBase64String(entity.SenhaWebServer),
+                null, //AUTORIZACAO
+                entity.ChaveAutenticacao,
+                null, //TOKENID
+                null, //CLIENTID
+                null //CLIENTSECRET
             );
         }
     }

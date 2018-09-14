@@ -47,6 +47,7 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
         public DbSet<IbptNcm> IbptNcms { get; set; }
+        public DbSet<Siafi> Siafis { get; set; }
 
     }
 }

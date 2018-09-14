@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201809111857151_AddTableNBS.Designer.cs">
       <DependentUpon>201809111857151_AddTableNBS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809141718494_CreateSiafi.cs" />
+    <Compile Include="Migrations\201809141718494_CreateSiafi.Designer.cs">
+      <DependentUpon>201809141718494_CreateSiafi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -200,6 +204,7 @@
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NcmDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\SiafiDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\TabelaIcmsDataInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -318,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809111857151_AddTableNBS.resx">
       <DependentUpon>201809111857151_AddTableNBS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809141718494_CreateSiafi.resx">
+      <DependentUpon>201809141718494_CreateSiafi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

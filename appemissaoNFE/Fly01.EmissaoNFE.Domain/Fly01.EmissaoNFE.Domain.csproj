@@ -44,6 +44,7 @@
     <Compile Include="Entities\Eventos\Eventos.cs" />
     <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
+    <Compile Include="Entities\Siafi.cs" />
     <Compile Include="Entities\Ipi.cs" />
     <Compile Include="Entities\NFe\Autorizados.cs" />
     <Compile Include="Entities\NFe\DetalhePagamento.cs" />

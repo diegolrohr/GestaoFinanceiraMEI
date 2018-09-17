@@ -129,8 +129,6 @@ namespace Fly01.Faturamento.BL
             {
                 throw new BusinessException(ex.Message);
             }
-
-            throw new NotImplementedException();
         }
 
         private void TransmitirNotaFiscalDeServico(NFSe entity, TransmissaoNFSVM transmissaoVM)

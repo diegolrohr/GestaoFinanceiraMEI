@@ -76,7 +76,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     entity.Homologacao,
                                     Convert.FromBase64String(entity.Certificado),
                                     Convert.FromBase64String(entity.Senha),
-                                    null//TODO
+                                    "NFSE"
                                 );
 
             var prod = new NFSE001Prod.NFSE001().CFGNFSECERTPFX(
@@ -84,7 +84,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                                     entity.Producao,
                                     Convert.FromBase64String(entity.Certificado),
                                     Convert.FromBase64String(entity.Senha),
-                                    null//TODO
+                                    "NFSE"
                                 );
         }
 

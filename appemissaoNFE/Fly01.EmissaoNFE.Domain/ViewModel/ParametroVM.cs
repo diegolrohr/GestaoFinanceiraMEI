@@ -92,6 +92,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         [JsonProperty("chaveAutenticacao")]
         public string ChaveAutenticacao { get; set; }
 
+        [JsonProperty("autorizacao")]
+        public string Autorizacao { get; set; }
+
         #endregion
     }
 }

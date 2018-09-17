@@ -160,21 +160,21 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 AppDefault.Token,
                 entity.Producao,
                 entity.TipoAmbiente,
-                "",//MODNFSE
+                "0",
                 entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
-                "",//CODSIAFI
-                null,//uso
-                null,//MAXLOTE
-                null,//CNPJAUT
-                null,//ENVSINC
+                "",//CODSIAFI recuperar conforme ibge
+                null,
+                null,
+                null,
+                null,
                 entity.UsuarioWebServer,
                 Convert.FromBase64String(entity.SenhaWebServer),
-                null, //AUTORIZACAO
-                entity.ChaveAutenticacao,
-                null, //TOKENID
-                null, //CLIENTID
-                null //CLIENTSECRET
+                Convert.FromBase64String(entity.Autorizacao),
+                entity.ChaveAutenticacao, //250
+                null,
+                null,
+                null
             );
         }
 
@@ -185,21 +185,21 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 AppDefault.Token,
                 entity.Homologacao,
                 entity.TipoAmbiente,
-                "",//MODNFSE
+                "0",
                 entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
-                "",//CODSIAFI
-                null,//uso
-                null,//MAXLOTE
-                null,//CNPJAUT
-                null,//ENVSINC
+                "",//CODSIAFI recuperar conforme ibge
+                null,
+                null,
+                null,
+                null,
                 entity.UsuarioWebServer,
                 Convert.FromBase64String(entity.SenhaWebServer),
-                null, //AUTORIZACAO
+                Convert.FromBase64String(entity.Autorizacao),
                 entity.ChaveAutenticacao,
-                null, //TOKENID
-                null, //CLIENTID
-                null //CLIENTSECRET
+                null,
+                null,
+                null
             );
         }
     }

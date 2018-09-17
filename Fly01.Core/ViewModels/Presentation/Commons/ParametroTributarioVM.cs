@@ -60,33 +60,15 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string TipoHorario { get; set; }
 
         #region NFS
-        [JsonProperty("incentivoCultura")]
-        public bool IncentivoCultura { get; set; }
-
-        //[JsonProperty("tipoRegimeEspecialTrib")]
-        //[APIEnum("TipoRegimeEspecialTrib")]
-        //public string TipoRegimeEspecialTrib { get; set; }
-
-        //[JsonProperty("tipoMensagemNFSE")]
-        //[APIEnum("TipoMensagemNFSE")]
-        //public string TipoMensagemNFSE { get; set; }
-
-        //[JsonProperty("tipoLayoutNFSE")]
-        //[APIEnum("TipoLayoutNFSE")]
-        //public string TipoLayoutNFSE { get; set; }
-
-        //[JsonProperty("novoModeloUnicoXMLTSS")]
-        //public bool NovoModeloUnicoXMLTSS { get; set; }
-
-        //[JsonProperty("siafi")]
-        //public string SIAFI { get; set; }
-
-        //[JsonProperty("tipoAmbienteNFS")]
-        //[APIEnum("TipoAmbienteNFS")]
-        //public string TipoAmbienteNFS { get; set; }
-
         [JsonProperty("versaoNFSe")]
         public string VersaoNFSe { get; set; }
+
+        [JsonProperty("tipoAmbienteNFS")]
+        [APIEnum("TipoAmbiente")]
+        public string TipoAmbienteNFS { get; set; }
+
+        [JsonProperty("incentivoCultura")]
+        public bool IncentivoCultura { get; set; }
 
         [JsonProperty("usuarioWebServer")]
         public string UsuarioWebServer { get; set; }
@@ -96,6 +78,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("chaveAutenticacao")]
         public string ChaveAutenticacao { get; set; }
+
+        [JsonProperty("autorizacao")]
+        public string Autorizacao { get; set; }
         #endregion
     }
 }

@@ -54,6 +54,18 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             var retorno = new ListMonitorRetornoVM();
             retorno.Retornos = new List<MonitorRetornoVM>();
+            //REMESSANFSE001
+            //    só codigo municipio
+            //    id = serie+numeronfs
+            //xml e demais null
+            // REPROC = 1 so o de fora
+
+            //MONITORX
+            //tipomonitor 1 fixo
+            //ids serie+numero
+            //dd/mm/yyyy
+            //00:00:00
+            //tempo 0 demais null
 
             //var monitor = new NFSE001Prod.NFSE001().MONITORX(
             //    AppDefault.Token,

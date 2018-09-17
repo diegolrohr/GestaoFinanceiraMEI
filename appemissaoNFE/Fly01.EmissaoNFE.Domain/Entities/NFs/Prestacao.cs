@@ -19,7 +19,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         public string NumeroEndereco { get; set; }
 
         [XmlElement(ElementName = "codmunibge")]
-        public int CodigoMunicipioIBGE { get; set; }
+        public string CodigoMunicipioIBGE { get; set; }
 
         [XmlElement(ElementName = "codmunibgeinc")]
         public int CodigoMunicipioIBGEInc { get; set; }

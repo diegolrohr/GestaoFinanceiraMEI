@@ -1,7 +1,11 @@
 ﻿using Fly01.Core.API;
+using Fly01.Core.Helpers;
+using Fly01.EmissaoNFE.API.Model;
 using Fly01.EmissaoNFE.BL;
+using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
@@ -25,21 +29,142 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 catch (Exception ex)
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
+                    {
                         unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
-                    
+                    }
+
                     return InternalServerError(ex);
                 }
             }
         }
 
-        private object Producao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
+        private TransmissaoNFSRetornoVM Producao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            //Serializando a nota 
+            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+
+            //Validar base 64
+            var notaSchema = new NFSE001Prod.NF
+            {
+                NOTAS = new NFSE001Prod.NF001[]
+                {
+                    new NFSE001Prod.NF001
+                    {
+                        ID = entity.NotaId, // Confirmar com o Machado
+                        XML = Convert.FromBase64String(xmlBase64)
+                    }
+                }
+            };
+            
+            var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, "", notaSchema, false, false);
+            var response = new TransmissaoNFSRetornoVM()
+            {
+                NotaId = entity.NotaId,
+                XML = xmlString
+            };
+
+            if (validacao.Length > 0)
+            {
+                var schema = new SchemaXMLNFSRetornoVM
+                {
+                    NotaId = validacao[0].ID,
+                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
+                    XML = Convert.ToBase64String(validacao[0].XML)
+                };
+                response.Error = schema;
+            }
+            else
+            {
+                var NFSE = new NFSE001Prod.NFSE() {
+                    NOTAS = new NFSE001Prod.NFSES1 [] {
+                        new NFSE001Prod.NFSES1()
+                        {
+                            ID = entity.NotaId,
+                            CODMUN = entity.Prestacao.CodigoMunicipioIBGE,
+                            XML = Convert.FromBase64String(xmlBase64)
+                        }
+                    }
+                };
+
+                new NFSE001Prod.NFSE001().REMESSANFSE001(
+                    AppDefault.Token,
+                    entity.Producao,
+                    NFSE,
+                    entity.Prestador.CodigoMunicipalIBGE,
+                    true,
+                    true,
+                    false,
+                    false
+                );
+            }
+
+            return response;
         }
 
         private object Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            //Serializando a nota 
+            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+
+            //Validar base 64
+            var notaSchema = new NFSE001.NF
+            {
+                NOTAS = new NFSE001.NF001[]
+                {
+                    new NFSE001.NF001
+                    {
+                        ID = entity.NotaId, // Confirmar com o Machado
+                        XML = Convert.FromBase64String(xmlBase64)
+                    }
+                }
+            };
+
+            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, "", notaSchema, false, false);
+            var response = new TransmissaoNFSRetornoVM()
+            {
+                NotaId = entity.NotaId,
+                XML = xmlString
+            };
+
+            if (validacao.Length > 0)
+            {
+                var schema = new SchemaXMLNFSRetornoVM
+                {
+                    NotaId = validacao[0].ID,
+                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
+                    XML = Convert.ToBase64String(validacao[0].XML)
+                };
+                response.Error = schema;
+            }
+            else
+            {
+                var NFSE = new NFSE001.NFSE()
+                {
+                    NOTAS = new NFSE001.NFSES1[] {
+                        new NFSE001.NFSES1()
+                        {
+                            ID = entity.NotaId,
+                            CODMUN = entity.Prestacao.CodigoMunicipioIBGE,
+                            XML = Convert.FromBase64String(xmlBase64)
+                        }
+                    }
+                };
+
+                new NFSE001.NFSE001().REMESSANFSE001(
+                    AppDefault.Token,
+                    entity.Producao,
+                    NFSE,
+                    entity.Prestador.CodigoMunicipalIBGE,
+                    true,
+                    true,
+                    false,
+                    false
+                );
+            }
+
+            return response;
         }
     }
 }

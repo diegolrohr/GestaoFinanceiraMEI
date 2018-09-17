@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         public string NomeFantasia { get; set; }
 
         [XmlElement(ElementName = "codmunibge")]
-        public int CodigoMunicipalIBGE { get; set; }
+        public string CodigoMunicipalIBGE { get; set; }
 
         [XmlElement(ElementName = "cidade")]
         public string Cidade { get; set; }

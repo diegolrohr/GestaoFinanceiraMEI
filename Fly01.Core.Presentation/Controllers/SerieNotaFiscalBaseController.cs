@@ -138,8 +138,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Label = "Série",
                 Required = true,
                 MinLength = 3,
-                MaxLength = 3,
-                //Data = new { inputmask = "'regex': '[0-9]*'" }
+                MaxLength = 3
             });
 
             config.Elements.Add(new SelectUI
@@ -147,7 +146,15 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal))),
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI()
+                    {
+                        DomEvent = "change",
+                        Function = "fnChangeTipoOperacao"
+                    }
+                }
             });
 
             config.Elements.Add(new InputCustommaskUI
@@ -166,7 +173,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "serie",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Para NF-e informe somente números."
+                    Text = "Se necessário, preencha com zeros a esquerda."
                 }
             });
             #endregion

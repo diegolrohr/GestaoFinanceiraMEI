@@ -154,8 +154,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         }
 
         public void ProducaoNFSe(ParametroVM entity)
-        {
-            //TODO confirmar com Machado
+        {             
             var cfgNFS = new NFSE001Prod.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Producao,
@@ -180,7 +179,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public void HomologacaoNFSe(ParametroVM entity)
         {
-            //TODO confirmar com Machado
             var cfgNFS = new NFSE001.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Homologacao,

@@ -1,0 +1,11 @@
+﻿<script>
+    function fnChangeTipoOperacao() {
+        $('#serie').inputmask('remove');
+        if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFe") {
+            $('#serie').inputmask('999');
+        }
+        else if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFSe") {
+            $('#serie').val('RPS');
+        }
+    }
+</script>

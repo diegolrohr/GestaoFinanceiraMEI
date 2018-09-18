@@ -26,13 +26,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarSerieRPC(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Identificacao.SerieRPS), new Error("Série RPC é um dado obrigatório."));
-            entity.Fail(entity.Identificacao.SerieRPS.Length > 3, new Error("Série RPC não pode ter mais que 3 caracteres."));            
+            entity.Fail(string.IsNullOrEmpty(entity.Identificacao.SerieRPS), new Error("Série RPC é um dado obrigatório.", "SerieRPS"));
+            entity.Fail(entity.Identificacao.SerieRPS.Length > 3, new Error("Série RPC não pode ter mais que 3 caracteres.", "SerieRPS"));            
         }
 
         private static void ValidarDataHoraEmissao(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Identificacao.DataHoraEmissaoString), new Error("Data de emissão é um dado obrigatório."));
+            entity.Fail(string.IsNullOrEmpty(entity.Identificacao.DataHoraEmissaoString), new Error("Data de emissão é um dado obrigatório.", "DataHoraEmissao"));
         }
     }
 }

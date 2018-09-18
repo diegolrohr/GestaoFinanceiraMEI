@@ -30,7 +30,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         /// O tipo é fixo como RPS (1)
         /// </summary>
         [XmlElement(ElementName = "tipo")] //TipoNFs
-        public TipoSimNao TipoNFs {
+        public TipoSimNao TipoNFs
+        {
             get
             {
                  return TipoSimNao.Sim;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 
@@ -12,6 +13,20 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             ValidarSerieRPC(entity);
             ValidarNumeroRPC(entity);
             ValidarTipoTributacao(entity);
+            ValidarCodigoIBGEPrestador(entity, entitiesBLToValidateNFS);
+            ValidarCompetenciaRPS(entity);
+        }
+
+        private static void ValidarCodigoIBGEPrestador(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
+        {
+            entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.Identificacao.CodigoIBGEPrestador.ToUpper()),
+                    new Error("Código de município do prestador, informado na identificação é inválido.", "CodigoIBGEPrestador"));
+        }
+
+        private static void ValidarCompetenciaRPS(TransmissaoNFSVM entity)
+        {
+            entity.Fail(entity.Identificacao.CodigoIBGEPrestador == "3205309" && string.IsNullOrEmpty(entity.Identificacao.CompetenciaRPSString),
+                    new Error("Informe a data de competência para o município Vitória(3205309) - ES.", "CompetenciaRPSString"));
         }
 
         private static void ValidarTipoTributacao(TransmissaoNFSVM entity)

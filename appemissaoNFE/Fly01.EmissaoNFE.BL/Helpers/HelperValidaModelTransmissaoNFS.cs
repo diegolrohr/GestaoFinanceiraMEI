@@ -29,7 +29,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers
             ValidaValores.ExecutaValidaValores(_entity, _entitiesBLToValidateNFS); 
             ValidaInformacoesComplementares.ExecutaValidaInformacoesCompleme(_entity, _entitiesBLToValidateNFS);
 
-
             foreach (var item in _entity.Servicos)
             {
                 ValidaServicos.ExecutaValidaServicos(item, _entitiesBLToValidateNFS);

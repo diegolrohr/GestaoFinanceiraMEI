@@ -61,5 +61,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
 
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }
+
     }
 }

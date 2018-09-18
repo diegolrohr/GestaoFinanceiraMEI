@@ -32,7 +32,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "telefone")]
         public string Telefone { get; set; }
 
-
         /// <summary>
         /// O tipo é fixo sim, pois só atendemos ao regime Simples Nacional
         /// </summary>

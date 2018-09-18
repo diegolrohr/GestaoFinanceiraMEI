@@ -1,28 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFs
 {
     public class Prestacao
     {
+        /// <summary>
+        /// O tipo é fixo conforme códigos First
+        /// </summary>
         [XmlElement(ElementName = "serieprest")]
-        public string SeriePrestacao { get; set; }
+        public string SeriePrestacao
+        {
+            get
+            {
+                return "99";
+            }
+        }
 
         [XmlElement(ElementName = "logradouro")]
         public string Logradouro { get; set; }
 
+        /// <summary>
+        /// Informe o Número ou SN
+        /// </summary>
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
 
         [XmlElement(ElementName = "codmunibge")]
         public string CodigoMunicipioIBGE { get; set; }
 
+        /// <summary>
+        /// Código Municipio Incidência, mesmo código Municipio IBGE
+        /// </summary>
         [XmlElement(ElementName = "codmunibgeinc")]
-        public int CodigoMunicipioIBGEInc { get; set; }
+        public string CodigoMunicipioIBGEIncidencia
+        {
+            get
+            {
+                return CodigoMunicipioIBGE;
+            }
+        }
 
         [XmlElement(ElementName = "municipio")]
         public string Municipio { get; set; }

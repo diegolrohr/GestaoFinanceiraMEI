@@ -28,7 +28,9 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(SerieNotaFiscal entity)
         {
+            entity.Serie = entity.Serie.ToUpper();
             entity.Serie.PadLeft(3, '0');
+            entity.Fail(string.IsNullOrEmpty(entity.Serie) || (!string.IsNullOrEmpty(entity.Serie) && entity.Serie.Length != 3), new Error("Série deve ser informada com 3 caracteres.", "serie"));
             entity.Fail(All.Any(x => x.Id != entity.Id && x.Serie.ToUpper() == entity.Serie.ToUpper() && (x.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || entity.TipoOperacaoSerieNotaFiscal == TipoOperacaoSerieNotaFiscal.Ambas || x.TipoOperacaoSerieNotaFiscal == entity.TipoOperacaoSerieNotaFiscal)), SerieRepetida);            
             entity.Fail(NotaFiscalInutilizadaBL.All.Any(x => x.Serie.ToUpper() == entity.Serie.ToUpper() && x.NumNotaFiscal == entity.NumNotaFiscal), NumNotaFiscalInutilizada);
 

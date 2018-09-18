@@ -67,30 +67,37 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             //00:00:00
             //tempo 0 demais null
 
-            //var monitor = new NFSE001Prod.NFSE001().MONITORX(
-            //    AppDefault.Token,
-            //    entity.Producao,
-            //    entity.NotaInicial,
-            //    entity.NotaFinal,
-            //    ""
-            //);
+            var monitor = new NFSE001Prod.NFSE001().MONITORX(
+                AppDefault.Token,
+                entity.Producao,
+                "1",
+                entity.NotaInicial,
+                entity.NotaFinal,
+                entity.DataInicial,
+                entity.DataFinal,
+                "00:00:00",
+                "00:00:00",
+                "0",
+                null,
+                null,
+                null
+            );
 
-            //if (monitor.Length > 0)
-            //{
-            //    foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
-            //    {
-            //        var nota = new MonitorRetornoVM();
-            //        nota.NotaId = nfse.ID;
-            //        nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.ERRO[nfse.ERRO.Length - 1].CODRETnfse, nfse.RECOMENDACAO);
-            //        nota.Modalidade = nfse.MODALIDADE;
-            //        nota.Recomendacao = nfse.RECOMENDACAO;
-            //        nota.Mensagem = nfse.ERRO[nfse.ERRO.Length - 1].MSGRETnfse;
-            //        nota.Data = nfse.ERRO[nfse.ERRO.Length - 1].DATALOTE;
-            //        nota.Hora = nfse.ERRO[nfse.ERRO.Length - 1].HORALOTE;
+            if (monitor.Length > 0)
+            {
+                foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
+                {
+                    var nota = new MonitorRetornoVM();
+                    nota.NotaId = nfse.ID;
+                    //nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.ERRO[nfse.ERRO.Length - 1].CODIGO, nfse.RECOMENDACAO);
+                    nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.STATUS, nfse.RECOMENDACAO);
+                    nota.Modalidade = nfse.MODALIDADE;
+                    nota.Recomendacao = nfse.RECOMENDACAO;
+                    nota.Mensagem = nfse.ERRO[nfse.ERRO.Length - 1].MENSAGEM;
 
-            //        retorno.Retornos.Add(nota);
-            //    }
-            //}
+                    retorno.Retornos.Add(nota);
+                }
+            }
 
             return retorno;
         }

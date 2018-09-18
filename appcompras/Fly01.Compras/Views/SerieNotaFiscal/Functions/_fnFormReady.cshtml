@@ -1,8 +1,18 @@
 ﻿<script>
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
     function fnFormReady() {
-        if ($('input#id').val() != "") {
+        if (!isCreate()) {
             $("select#tipoOperacaoSerieNotaFiscal option:not(:selected)").attr("disabled", "disabled");
             $('select#tipoOperacaoSerieNotaFiscal').material_select();
         }
+        fnChangeTipoOperacao();
     }
 </script>

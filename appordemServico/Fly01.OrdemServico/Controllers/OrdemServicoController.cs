@@ -278,7 +278,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
                 new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
-                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Ordem de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
+                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Pedido de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
             });
 
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
@@ -378,7 +378,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "responsavelPadraoId",
-                Class = "col s12 m3",
+                Class = "col s12",
                 Label = "Responsável padrão",
                 Required = false,
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
@@ -452,7 +452,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m3", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m3", Label = "Total serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemServico", Class = "col s12 m3", Label = "Total (produtos + serviços)", Readonly = true });
-            config.Elements.Add(new InputCheckboxUI { Id = "geraOrdemVenda", Class = "col s12 m3", Label = "Gerar Ordem de Venda" });
+            config.Elements.Add(new InputCheckboxUI { Id = "geraOrdemVenda", Class = "col s12 m3", Label = "Gerar Pedido de Venda" });
             #endregion
 
             cfg.Content.Add(config);

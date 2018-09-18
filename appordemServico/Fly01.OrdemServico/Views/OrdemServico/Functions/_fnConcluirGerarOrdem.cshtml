@@ -1,6 +1,6 @@
 ﻿<script>
     function fnConcluirGerarOrdem(idRecord) {
-        fly01.confirm("Confirmar Encerramento", "Deseja realmente concluir esta ordem e gerar uma ordem de Venda? Não será mais possível editar/excluir", "fnConcluirGerarOrdemConfirmed(\"" + idRecord + "\")");
+        fly01.confirm("Confirmar Encerramento", "Deseja realmente concluir esta ordem e gerar uma Pedido de Venda? Não será mais possível editar/excluir", "fnConcluirGerarOrdemConfirmed(\"" + idRecord + "\")");
     }
     function fnConcluirGerarOrdemConfirmed(idRecord) {
         fly01.loading.start();
@@ -12,7 +12,7 @@
             success: function (data) {
                 fly01.loading.stop();
                 if (data.success) {
-                    fly01.toast("Ordem concluída com sucesso e ordem de venda gerada!", "success");
+                    fly01.toast("Ordem concluída com sucesso e Pedido de Venda gerada!", "success");
                     fly01._.fly01dt.refresh();
                 }
                 else {

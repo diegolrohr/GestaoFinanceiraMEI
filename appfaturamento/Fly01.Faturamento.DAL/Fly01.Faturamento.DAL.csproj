@@ -344,6 +344,10 @@
     <Compile Include="Migrations\201809111413253_AlterOrdemVendaItemGrupoTributario.Designer.cs">
       <DependentUpon>201809111413253_AlterOrdemVendaItemGrupoTributario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.cs" />
+    <Compile Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.Designer.cs">
+      <DependentUpon>201809191828119_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -595,6 +599,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809111413253_AlterOrdemVendaItemGrupoTributario.resx">
       <DependentUpon>201809111413253_AlterOrdemVendaItemGrupoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.resx">
+      <DependentUpon>201809191828119_AlterPessoaTamanhoCampos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

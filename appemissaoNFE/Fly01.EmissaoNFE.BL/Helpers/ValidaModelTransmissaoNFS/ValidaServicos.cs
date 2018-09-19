@@ -11,11 +11,18 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         {
             ValidarCodigoServico(entity);
             ValidarDiscriminacaoServico(entity);
+            ValidarCodigoTributacao(entity);
+        }
+
+        private static void ValidarCodigoTributacao(Servico entity)
+        {
+            entity.Fail(entity.CodigoTributario.ToString().Length > 20, new Error("O código da tributação não pode ter mais que 20 caracteres."));
         }
 
         private static void ValidarDiscriminacaoServico(Servico entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.Discriminacao), new Error("Discrimonação é um dado obrigatório."));
+            entity.Fail(entity.Discriminacao.Length > 9, new Error("O código do serviço não pode ter mais que 9 caracteres."));
         }
 
         private static void ValidarCodigoServico(Servico entity)

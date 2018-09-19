@@ -1,10 +1,12 @@
 ﻿using Fly01.EmissaoNFE.Domain.Entities.NFs;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
 {
+    [Serializable]
     [XmlRoot(ElementName = "rps")]
     public class TransmissaoNFSVM : EntidadeVM
     {
@@ -18,9 +20,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
             {
                 return Identificacao.SerieRPS + ":" + Identificacao.NumeroRPS;
             }
-            set
-            {
-            }
         }
 
         /// <summary>
@@ -32,9 +31,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
             get
             {
                 return "2.00";
-            }
-            set
-            {
             }
         }
 
@@ -53,7 +49,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
-        [XmlElement(ElementName = "servicos")]
+        //[XmlElement(ElementName = "servicos")]
+        //[XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
+        [XmlArray("servicos")]
         public List<Servico> Servicos { get; set; }
 
         [XmlElement(ElementName = "valores")]

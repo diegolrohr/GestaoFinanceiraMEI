@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFs
 {
+    [XmlRoot(ElementName = "rps")]
     public class Identificacao
     {
         [XmlIgnore]

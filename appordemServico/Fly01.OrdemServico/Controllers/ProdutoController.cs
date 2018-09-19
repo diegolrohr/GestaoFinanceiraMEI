@@ -185,15 +185,24 @@ namespace Fly01.Estoque.Controllers
                 ReadyFn = "fnFormReady"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
+            AddElements(config.Elements, config.Helpers, null);
 
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
-            config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
+            cfg.Content.Add(config);
 
-            config.Elements.Add(new InputHiddenUI { Id = "tipoProduto", Value = "0" });
+            return cfg;
+        }
 
-            config.Elements.Add(new AutoCompleteUI
+        private void AddElements(List<BaseUI> elements, List<HelperUI> helpers, bool? objetoDeManutencao)
+        {
+            elements.Add(new InputHiddenUI { Id = "id" });
+            elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
+
+            elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
+            elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
+
+            elements.Add(new InputHiddenUI { Id = "tipoProduto", Value = "0" });
+
+            elements.Add(new AutoCompleteUI
             {
                 Id = "unidadeMedidaId",
                 Class = "col s12 m3",
@@ -203,25 +212,47 @@ namespace Fly01.Estoque.Controllers
                 LabelId = "unidadeMedidaDescricao"
             });
 
-            config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
+            elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
 
-            config.Elements.Add(new InputCheckboxUI
+            if (objetoDeManutencao.HasValue)
+                elements.Add(new InputHiddenUI { Id = "objetoDeManutencao", Value = objetoDeManutencao.Value.ToString() });
+            else
+                elements.Add(new InputCheckboxUI
+                {
+                    Id = "objetoDeManutencao",
+                    Class = "col s12 m6 l3",
+                    Label = "Objeto de Manutenção",
+                });
+
+            elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+
+            helpers.AddRange(GetHelpers());
+        }
+
+        public ContentResult FormModalProduto() => FormModal(false, "Adicionar produto");
+        public ContentResult FormModalObjetoDeManutencao() => FormModal(true, "Adicionar Objeto de manutenção");
+
+        private ContentResult FormModal(bool objetoDeManutencao, string title)
+        {
+            ModalUIForm config = new ModalUIForm()
             {
-                Id = "objetoDeManutencao",
-                Class = "col s12 m6 l3",
-                Label = "Objeto de Manutenção",
-            });
+                Title = title,
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                },
+                Id = "fly01mdlfrmProduto",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnFormReadyModal"
+            };
 
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
+            AddElements(config.Elements, config.Helpers, objetoDeManutencao);
 
-            List<TooltipUI> tooltips = GetHelpers();
-
-            if (tooltips != null)
-                config.Helpers.AddRange(tooltips);
-
-            cfg.Content.Add(config);
-
-            return cfg;
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
         public override List<TooltipUI> GetHelpers()

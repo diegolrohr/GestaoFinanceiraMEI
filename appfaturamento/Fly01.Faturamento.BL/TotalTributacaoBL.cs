@@ -107,7 +107,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public bool ConfiguracaoTSSOK(string plataformaId = null)
+        public bool ConfiguracaoTSSOK(string plataformaId = null, string resourceOK = "configuracaoOK")
         {
             try
             {
@@ -122,7 +122,7 @@ namespace Fly01.Faturamento.BL
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+                    var resourceById = $"{resourceOK}?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
                 }

@@ -14,8 +14,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "razao")]
         public string RazaoSocial { get; set; }
 
+        /// <summary>
+        /// O tipo é fixo conforme código FIRST
+        /// </summary>
         [XmlElement(ElementName = "tipologr")]
-        public TipoLogradouroNFs TipoLogradouro { get; set; }
+        public string TipoLogradouro
+        {
+            get
+            {
+                return "2";
+            }
+        }
 
         [XmlElement(ElementName = "logradouro")]
         public string Logradouro { get; set; }
@@ -23,14 +32,31 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
 
+        /// <summary>
+        /// O tipo é fixo conforme código FIRST
+        /// </summary>
         [XmlElement(ElementName = "tipobairro")]
-        public TipoBairroNFs TipoBairro { get; set; }
+        public string TipoBairro
+        {
+            get
+            {
+                return "1";
+            }
+        }
 
         [XmlElement(ElementName = "bairro")]
         public string Bairro { get; set; }
 
         [XmlElement(ElementName = "codmunibge")]
-        public int CodigoMunicipioIBGE { get; set; }
+        public string CodigoMunicipioIBGE { get; set; }
+
+        [XmlElement(ElementName = "codmunsiafi")]
+        public string CodigoMunicipioSIAFI { get; set; }
+
+        public bool ShouldSerializeCodigoMunicipioSIAFI()
+        {
+            return !string.IsNullOrEmpty(CodigoMunicipioSIAFI);
+        }
 
         [XmlElement(ElementName = "cidade")]
         public string Cidade { get; set; }
@@ -44,30 +70,61 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "email")]
         public string Email { get; set; }
 
+        public bool ShouldSerializeEmail()
+        {
+            return !string.IsNullOrEmpty(Email);
+        }
+
         [XmlElement(ElementName = "ddd")]
         public string DDD { get; set; }
 
         [XmlElement(ElementName = "telefone")]
         public string Telefone { get; set; }
 
+        /// <summary>
+        /// Fixo Brasil, se precisar outros paises importar tabela ibge e realizar demais validações
+        /// </summary>
         [XmlElement(ElementName = "codpais")]
-        public int CodigoPais { get; set; }
+        public string CodigoPais
+        {
+            get
+            {
+                return "1058";
+            }
+        }
 
         [XmlElement(ElementName = "nomepais")]
-        public string NomePais { get; set; }
+        public string NomePais
+        {
+            get
+            {
+                return "BRASIL";
+            }
+        }
 
         [XmlElement(ElementName = "estrangeiro")]
-        public EstrangeiroNFs EstrangeiroNFs { get; set; }
+        public TipoSimNao EstrangeiroNFs
+        {
+            get
+            {
+                return TipoSimNao.Nao;
+            }
+        }
 
         [XmlElement(ElementName = "notificatomador")]
-        public NotificaTomadorNFs NotificaTomado { get; set; }
+        public TipoSimNao NotificaTomado
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Email) ? TipoSimNao.Nao : TipoSimNao.Sim;
+            }
+        }
 
         [XmlElement(ElementName = "inscest")]
-        public string InscricapCest { get; set; }
+        public string InscricaoEstadual { get; set; }
 
         [XmlElement(ElementName = "situacaoespecial")]
-        public string SituacaoEspecial { get; set; }
-        
-
+        public TipoSituacaoEspecialNFS SituacaoEspecial { get; set; }
+       
     }
 }

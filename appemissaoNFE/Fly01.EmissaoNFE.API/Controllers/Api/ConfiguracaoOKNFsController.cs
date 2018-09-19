@@ -25,20 +25,19 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         }
 
         [HttpGet]
-        public IHttpActionResult Get(string entidade, TipoAmbiente tipoAmbiente, string codigoMunicipio)
+        public IHttpActionResult Get(string entidade, TipoAmbiente tipoAmbiente, string codigoIBGEMunicipio)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.EntidadeBL.ValidaGet(entidade, tipoAmbiente);
-                unitOfWork.CidadeBL.ValidaCodigoIBGEException(codigoMunicipio);
+                unitOfWork.CidadeBL.ValidaCodigoIBGEException(codigoIBGEMunicipio);
 
-                var sped = string.Empty;
                 try
                 {
                     if (tipoAmbiente == TipoAmbiente.Homologacao)
-                        new NFSE001.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoMunicipio);
+                        new NFSE001.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoIBGEMunicipio);
                     else
-                        new NFSE001Prod.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoMunicipio);
+                        new NFSE001Prod.NFSE001().CFGREADYX(AppDefault.Token, entidade, codigoIBGEMunicipio);
                    
                     return Ok(new { success = true });
                 }

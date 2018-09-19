@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fly01.Core.BL;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Helpers;
-using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
+using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 
 namespace Fly01.EmissaoNFE.BL
 {

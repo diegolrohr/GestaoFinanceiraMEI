@@ -176,7 +176,7 @@ namespace Fly01.OrdemServico.Controllers
             //if (UserCanWrite)
             //{
             target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "imprimirOS", Label = "Imprimir", Position = HtmlUIButtonPosition.In/*, OnClickFn = "fnImprimir"*/ });
+            target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
 
             //}
 
@@ -397,7 +397,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataUrlPost = Url.Action("PostCliente")
             }, ResourceHashConst.FaturamentoCadastrosClientes));
 
-            config.Elements.Add(new TextAreaUI { Id = "descricao", Class = "col s12", Label = "Descrição", MaxLength = 200 });
+            config.Elements.Add(new TextAreaUI { Id = "descricao", Class = "col s12", Label = "Descrição", MaxLength = 1000 });
 
 
             #endregion

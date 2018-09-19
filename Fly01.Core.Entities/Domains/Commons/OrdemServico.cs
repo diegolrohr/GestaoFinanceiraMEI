@@ -29,6 +29,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool GeraOrdemVenda { get; set; }
 
         [DataType(DataType.MultilineText)]
+        [MaxLength(1000)]
         public string Descricao { get; set; }
 
         #region Navigation

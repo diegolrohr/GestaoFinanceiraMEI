@@ -162,7 +162,7 @@
               </TextRun>
             </TextRuns>
             <Style>
-              <TextAlign>Left</TextAlign>
+              <TextAlign>Center</TextAlign>
             </Style>
           </Paragraph>
         </Paragraphs>
@@ -192,6 +192,7 @@
                 <Style>
                   <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
+                  <Color>Orange</Color>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -214,6 +215,7 @@
             <Style>Solid</Style>
             <Width>1.5pt</Width>
           </TopBorder>
+          <BackgroundColor>Black</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -653,6 +655,7 @@
                   <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                   <TextDecoration>None</TextDecoration>
+                  <Color>Orange</Color>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -677,7 +680,7 @@
             <Style>Solid</Style>
             <Width>1.5pt</Width>
           </BottomBorder>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>Black</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>

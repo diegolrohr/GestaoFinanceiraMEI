@@ -76,9 +76,10 @@ namespace Fly01.OrdemServico.Controllers
                 Label = "Produto do cliente",
                 Required = true,
                 DataUrl = Url.Action("ItemManutencao", "AutoComplete"),
-                DataUrlPostModal = Url.Action("FormModal", "Produto"),
+                DataUrlPostModal = Url.Action("FormModalObjetoDeManutencao", "Produto"),
                 DataPostField = "descricao",
                 LabelId = "produtoCliente",
+                LabelName = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeManutencao" } }
             }, ResourceHashConst.FaturamentoCadastrosProdutos));
 

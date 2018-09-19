@@ -4,7 +4,7 @@ using System.Web.OData.Routing;
 
 namespace Fly01.OrdemServico.API.Controllers.Api
 {
-    [ODataRoutePrefix("ordemservicoitemservico")]
+    [ODataRoutePrefix("ordemservicomanutencao")]
     public class OrdemServicoManutencaoController : ApiPlataformaController<OrdemServicoManutencao, OrdemServicoManutencaoBL>
     {
     }

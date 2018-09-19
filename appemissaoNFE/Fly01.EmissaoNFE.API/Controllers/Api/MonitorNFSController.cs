@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -20,7 +21,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
+                    var retorno = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
 

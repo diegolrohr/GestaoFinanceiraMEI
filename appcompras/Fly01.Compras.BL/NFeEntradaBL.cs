@@ -402,9 +402,8 @@ namespace Fly01.Compras.BL
 
                         if (itemTributacao.CalculaPIS)
                         {
-                            //adValorem =  01|02, AliqEspecifica = 03
-                            var tributaveis = "01|02|03";
-                            if (tributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
+                            var NaoTributaveis = "04||05||06||07||08||09";
+                            if (!NaoTributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
                             {
                                 detalhe.Imposto.PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
                                 detalhe.Imposto.PIS.PercentualPIS = parametros.AliquotaPISPASEP;
@@ -429,9 +428,8 @@ namespace Fly01.Compras.BL
 
                         if (itemTributacao.CalculaCOFINS)
                         {
-                            //adValorem =  01|02, AliqEspecifica = 03
-                            var tributaveis = "01|02|03";
-                            if (tributaveis.Contains(((int)detalhe.Imposto.COFINS.CodigoSituacaoTributaria).ToString()))
+                            var NaoTributaveis = "04||05||06||07||08||09";
+                            if (!NaoTributaveis.Contains(((int)detalhe.Imposto.COFINS.CodigoSituacaoTributaria).ToString()))
                             {
                                 detalhe.Imposto.COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
                                 detalhe.Imposto.COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);

@@ -4,10 +4,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransmissao
 {
@@ -27,9 +24,9 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
 
         private static void ValidarPIS_IsNotOnlyCST(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
-            var OnlyCST = "04||05||06||07||08||09";
+            var NaoTributaveis = "04||05||06||07||08||09";
 
-            if (!OnlyCST.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
+            if (!NaoTributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
             {
                 entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()),
                     new Error("A base de cálculo do PIS é obrigatória, para o CST informado Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Imposto.PIS.ValorBCDoPIS"));

@@ -63,7 +63,7 @@ namespace Fly01.OrdemServico.Controllers
                 Label = "Produto",
                 Required = true,
                 DataUrl = Url.Action("ProdutoVenda", "AutoComplete"),
-                DataUrlPostModal = Url.Action("FormModal", "Produto"),
+                DataUrlPostModal = Url.Action("FormModalProduto", "Produto"),
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }

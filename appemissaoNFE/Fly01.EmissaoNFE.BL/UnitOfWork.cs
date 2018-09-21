@@ -77,6 +77,9 @@ namespace Fly01.EmissaoNFE.BL
         private CancelarFaixaBL cancelarFaixaBL;
         public CancelarFaixaBL CancelarFaixaBL => cancelarFaixaBL ?? (cancelarFaixaBL = new CancelarFaixaBL(Context, EntidadeBL));
 
+        private CancelarNFSBL cancelarNFSBL;
+        public CancelarNFSBL CancelarNFSBL => cancelarNFSBL ?? (cancelarNFSBL = new CancelarNFSBL(Context, EntidadeBL, CidadeBL));
+
         private InutilizarNFBL inutilizarNFBL;
         public InutilizarNFBL InutilizarNFBL => inutilizarNFBL ?? (inutilizarNFBL = new InutilizarNFBL(Context, EntidadeBL, EstadoBL, EmpresaBL));
 

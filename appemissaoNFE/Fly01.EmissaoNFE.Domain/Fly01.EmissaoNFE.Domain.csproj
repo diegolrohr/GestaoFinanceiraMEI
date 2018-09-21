@@ -138,6 +138,8 @@
     <Compile Include="ViewModelNFs\TransmissaoNFSRetornoVM.cs" />
     <Compile Include="ViewModelNFs\SchemaXMLNFSRetornoVM.cs" />
     <Compile Include="ViewModelNFs\TransmissaoNFSVM.cs" />
+    <Compile Include="ViewModel\CancelarNFSRetornoVM.cs" />
+    <Compile Include="ViewModel\CancelarNFSVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoRetornoVM.cs" />
     <Compile Include="ViewModel\InutilizarNFRetornoVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoVM.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Entities.NFs
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
     public class Valores
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {

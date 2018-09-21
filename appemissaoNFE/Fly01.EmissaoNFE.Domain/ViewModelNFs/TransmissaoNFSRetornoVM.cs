@@ -1,7 +1,4 @@
-﻿using Fly01.EmissaoNFE.Domain.ViewModelNfs;
-using System.Collections.Generic;
-
-namespace Fly01.EmissaoNFE.Domain.ViewModel
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 {
     public class TransmissaoNFSRetornoVM
     {

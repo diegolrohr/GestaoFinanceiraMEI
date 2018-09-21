@@ -1,11 +1,5 @@
 ﻿using Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 namespace Fly01.EmissaoNFE.BL.Helpers
 {
     public class HelperValidaModelTransmissaoNFS
@@ -26,13 +20,11 @@ namespace Fly01.EmissaoNFE.BL.Helpers
             ValidaPrestador.ExecutaValidaPrestador(_entity, _entitiesBLToValidateNFS);
             ValidaPrestacao.ExecutaValidaPrestacao(_entity, _entitiesBLToValidateNFS);
             ValidaTomador.ExecutaValidaTomador(_entity, _entitiesBLToValidateNFS);
-            ValidaValores.ExecutaValidaValores(_entity, _entitiesBLToValidateNFS); 
-            ValidaInformacoesComplementares.ExecutaValidaInformacoesCompleme(_entity, _entitiesBLToValidateNFS);
+           // ValidaValores.ExecutaValidaValores(_entity, _entitiesBLToValidateNFS); 
+            //ValidaInformacoesComplementares.ExecutaValidaInformacoesCompleme(_entity, _entitiesBLToValidateNFS);
 
-            foreach (var item in _entity.Servicos)
-            {
-                ValidaServicos.ExecutaValidaServicos(item, _entitiesBLToValidateNFS);
-            }
+            ValidaServicos.ExecutaValidaServicos(_entitiesBLToValidateNFS, _entity);
+            
         }
     }
 }

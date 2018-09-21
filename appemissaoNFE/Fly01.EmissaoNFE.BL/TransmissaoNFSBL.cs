@@ -1,11 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.BL.Helpers;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.EmissaoNFE.BL
 {

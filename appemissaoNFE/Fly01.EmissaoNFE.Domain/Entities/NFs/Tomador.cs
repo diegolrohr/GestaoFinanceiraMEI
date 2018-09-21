@@ -1,7 +1,7 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Entities.NFs
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
     public class Tomador
     {
@@ -24,6 +24,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return "2";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "logradouro")]
@@ -42,6 +43,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return "1";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "bairro")]
@@ -91,6 +93,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return "1058";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "nomepais")]
@@ -100,6 +103,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return "BRASIL";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "estrangeiro")]
@@ -109,6 +113,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return TipoSimNao.Nao;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "notificatomador")]
@@ -118,6 +123,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return string.IsNullOrEmpty(Email) ? TipoSimNao.Nao : TipoSimNao.Sim;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "inscest")]

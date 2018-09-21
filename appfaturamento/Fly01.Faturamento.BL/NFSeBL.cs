@@ -7,7 +7,7 @@ using System.Linq;
 using System;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Faturamento.BL.Helpers;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.Faturamento.BL
 {
@@ -131,7 +131,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        private void TransmitirNotaFiscalDeServico(NFSe entity, TransmissaoNFSVM transmissaoVM)
+        private void TransmitirNotaFiscalDeServico(NFSe entity, ItemTransmissaoNFSVM transmissaoVM)
         {
             throw new NotImplementedException();
         }

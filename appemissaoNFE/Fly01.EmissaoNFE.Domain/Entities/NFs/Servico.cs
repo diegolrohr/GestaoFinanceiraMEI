@@ -2,10 +2,10 @@
 using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Entities.NFs
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
     [XmlRoot(ElementName = "servico")]
-    public class Servico : PlataformaBase
+    public class Servico
     {
         [XmlElement(ElementName = "codigo")]
         public int Codigo { get; set; }

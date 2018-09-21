@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Fly01.Core.Notifications;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {
@@ -10,21 +10,29 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static string msgError;
         internal static void ExecutaValidaTomador(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            ValidarInscricaoMunicipal(entity);
-            ValidarCpfCnpj(entity, entitiesBLToValidateNFS);
-            ValidarRazaoSocial(entity);
-            ValidarLogradouro(entity);
-            ValidarBairro(entity);
-            ValidarCodigoMunicipioIBGE(entity, entitiesBLToValidateNFS);
-            ValidarCidade(entity);
-            ValidarUF(entity, entitiesBLToValidateNFS);
-            ValidarCEP(entity, entitiesBLToValidateNFS);
-            ValidarInscricaoEstadual(entity, entitiesBLToValidateNFS);
+            if (entity.ItemTransmissaoNFSVM.Tomador == null)
+            {
+                entity.Fail(true, new Error("A entidade tomador não pode ser nula"));
+            }
+            else
+            {
+                ValidarInscricaoMunicipal(entity);
+                ValidarCpfCnpj(entity, entitiesBLToValidateNFS);
+                ValidarRazaoSocial(entity);
+                ValidarLogradouro(entity);
+                ValidarBairro(entity);
+                ValidarCodigoMunicipioIBGE(entity, entitiesBLToValidateNFS);
+                ValidarCidade(entity);
+                ValidarUF(entity, entitiesBLToValidateNFS);
+                ValidarCEP(entity, entitiesBLToValidateNFS);
+                ValidarInscricaoEstadual(entity, entitiesBLToValidateNFS);
+            }
+
         }
 
         private static void ValidarInscricaoEstadual(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            if (!EmpresaBL.ValidaIE(entity.Tomador.UF, entity.Tomador.InscricaoEstadual, out msgError))
+            if (!EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
             {
                 switch (msgError)
                 {
@@ -51,61 +59,61 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCEP(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.CEP), new Error("CEP do tomador é um dado obrigatório.", "CEP"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.CEP), new Error("CEP do tomador é um dado obrigatório.", "CEP"));
 
-            entity.Fail(entity.Tomador.CEP != null && !entitiesBLToValidateNFS._empresaBL.ValidaCEP(entity.Tomador.CEP),
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.CEP != null && !entitiesBLToValidateNFS._empresaBL.ValidaCEP(entity.ItemTransmissaoNFSVM.Tomador.CEP),
                     new Error("CEP do tomador inválido.", "CEP"));
         }
 
         private static void ValidarUF(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            entity.Fail(entitiesBLToValidateNFS._estadoBL.All.Any(x => x.Sigla.ToUpper() == entity.Tomador.UF.ToUpper()), new Error("UF do tomador é um dado obrigatório.", "UF"));
+            entity.Fail(!entitiesBLToValidateNFS._estadoBL.All.Any(x => x.Sigla.ToUpper() == entity.ItemTransmissaoNFSVM.Tomador.UF.ToUpper()), new Error("UF do tomador é um dado obrigatório.", "UF"));
         }
 
         private static void ValidarCidade(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.Cidade), new Error("Cidade é obrigatório.", "Cidade"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Cidade), new Error("Cidade é obrigatório.", "Cidade"));
         }
 
         private static void ValidarCodigoMunicipioIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge == entity.Tomador.CodigoMunicipioIBGE.ToString()),
+            entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge == entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioIBGE.ToString()),
                                 new Error("Código de município do tomador inválido.", "CodigoMunicipioIBGE"));
         }
 
         private static void ValidarBairro(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.Bairro), new Error("Bairro do tomador é um dado obrigatório.", "Bairro"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Bairro), new Error("Bairro do tomador é um dado obrigatório.", "Bairro"));
         }
 
         private static void ValidarLogradouro(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.Logradouro), new Error("Logradouro do tomador é um dado obrigatório.", "Logradouro"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Logradouro), new Error("Logradouro do tomador é um dado obrigatório.", "Logradouro"));
         }
 
         private static void ValidarRazaoSocial(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.RazaoSocial), new Error("Razão social do tomador é obrigatório.", "RazaoSocial"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.RazaoSocial), new Error("Razão social do tomador é obrigatório.", "RazaoSocial"));
         }
 
         private static void ValidarCpfCnpj(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            entity.Fail(entity.Tomador.CpfCnpj == null,new Error("Informe o CPF ou CNPJ do tomador.", "CpfCnpj"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj == null,new Error("Informe o CPF ou CNPJ do tomador.", "CpfCnpj"));
 
-            if (entity.Tomador.CpfCnpj.Length == 11)
-                entity.Fail(entity.Tomador.CpfCnpj != null && (!entitiesBLToValidateNFS._empresaBL.ValidaCPF(entity.Tomador.CpfCnpj)),
+            if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length == 11)
+                entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && (!entitiesBLToValidateNFS._empresaBL.ValidaCPF(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj)),
                             new Error("CPF do emitente inválido.", "CpfCnpj"));
-            else if (entity.Tomador.CpfCnpj.Length == 14)
-                entity.Fail((!entitiesBLToValidateNFS._empresaBL.ValidaCNPJ(entity.Tomador.CpfCnpj)),
+            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length == 14)
+                entity.Fail((!entitiesBLToValidateNFS._empresaBL.ValidaCNPJ(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj)),
                             new Error("CNPJ do emitente inválido.", "CpfCnpj"));
-            else if (entity.Tomador.CpfCnpj != null && entity.Tomador.CpfCnpj.Length < 11 || entity.Tomador.CpfCnpj.Length > 14)
+            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length < 11 || entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length > 14)
                 entity.Fail((true),
                             new Error("CPF ou CNPJ do Prestador é invalido. Informe 11 ou 14 digítos.", "CpfCnpj"));
         }
 
         private static void ValidarInscricaoMunicipal(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.Tomador.InscricaoMunicipal.ToString()), new Error("Inscrição municipal é um dado obrigatório.", "InscricaoMunicipal"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoMunicipal.ToString()), new Error("Inscrição municipal é um dado obrigatório.", "InscricaoMunicipal"));
         }
     }
 }

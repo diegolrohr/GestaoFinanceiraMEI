@@ -2,11 +2,9 @@
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.API.Model;
 using Fly01.EmissaoNFE.BL;
-using Fly01.EmissaoNFE.Domain.ViewModel;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
+using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -18,7 +16,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-              //  unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+               unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
 
                 try
                 {
@@ -51,7 +49,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001Prod.NF001
                     {
-                        ID = entity.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
@@ -60,7 +58,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, "", notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.NotaId,
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XML = xmlString
             };
 
@@ -115,16 +113,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001.NF001
                     {
-                        ID = entity.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
             };
 
-            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, "3552502", notaSchema, false, false);
+            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, "3550308", notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.NotaId,
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XML = xmlString
             };
 

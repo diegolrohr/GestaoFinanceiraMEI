@@ -88,6 +88,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
                 {
+                    //1 2 3                     
+                    //exibir a lista de erros
+                    //Com a regrinha que te falei... se o _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
+                    //salvar o XMLRETTSS que é o xml final
                     var nota = new MonitorRetornoVM();
                     nota.NotaId = nfse.ID;
                     //nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.ERRO[nfse.ERRO.Length - 1].CODIGO, nfse.RECOMENDACAO);

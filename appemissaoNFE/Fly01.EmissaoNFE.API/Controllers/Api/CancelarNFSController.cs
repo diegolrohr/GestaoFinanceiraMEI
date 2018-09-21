@@ -63,7 +63,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 );
 
             var CodigosIBGE = municipiosHomologados.Split('-').ToList();
-            if(CodigosIBGE.Any(x => x.Equals(entity.CodigoIBGE.ToUpper(), StringComparison.InvariantCultureIgnoreCase)))
+            if (CodigosIBGE.Any(x => x.Equals(entity.CodigoIBGE.ToUpper(), StringComparison.InvariantCultureIgnoreCase)))
             {
                 var base64 = Base64Helper.CodificaBase64(entity.XMLString);
 
@@ -71,12 +71,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     NOTAS = new NFSE001Prod.NFSES1[]
                     {
-                    new NFSE001Prod.NFSES1()
-                    {
-                        ID = entity.IdNotaFiscal,
-                        CODMUN = entity.CodigoIBGE,
-                        XML = Convert.FromBase64String(base64)
-                    }
+                        new NFSE001Prod.NFSES1()
+                        {
+                            ID = entity.IdNotaFiscal,
+                            CODMUN = entity.CodigoIBGE,
+                            CODCANC = "",
+                            XML = Convert.FromBase64String(base64)//xml unico
+                        }
                     }
                 };
 
@@ -103,7 +104,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public CancelarNFSRetornoVM Homologacao(CancelarNFSVM entity)
         {
             var response = new CancelarNFSRetornoVM();
-            var municipiosHomologados = new NFSE001.NFSE001().RETMUNCANC(
+            var municipiosHomologados = new NFSE001Prod.NFSE001().RETMUNCANC(
                     AppDefault.Token
                 );
 
@@ -116,12 +117,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     NOTAS = new NFSE001.NFSES1[]
                     {
-                    new NFSE001.NFSES1()
-                    {
-                        ID = entity.IdNotaFiscal,
-                        CODMUN = entity.CodigoIBGE,
-                        XML = Convert.FromBase64String(base64)
-                    }
+                        new NFSE001.NFSES1()
+                        {
+                            ID = entity.IdNotaFiscal,
+                            CODMUN = entity.CodigoIBGE,
+                            CODCANC = "",
+                            XML = Convert.FromBase64String(base64)
+                        }
                     }
                 };
 
@@ -136,6 +138,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     response.Nota = cancelamento.ID[0];
                 }
+            }
+            else
+            {
+                throw new BusinessException(string.Format("Cancelamento para o município ({0}) não esta homologado via TSS, somente via portal da prefeitura.", entity.CodigoIBGE));
             }
 
             return response;

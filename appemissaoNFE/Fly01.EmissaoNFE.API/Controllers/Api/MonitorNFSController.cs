@@ -51,22 +51,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }
 
-        public ListMonitorRetornoVM Producao(MonitorNFSVM entity, UnitOfWork unitOfWork)
+        public ListMonitorNFSRetornoVM Producao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            var retorno = new ListMonitorRetornoVM();
-            retorno.Retornos = new List<MonitorRetornoVM>();
+            var retorno = new ListMonitorNFSRetornoVM();
+            retorno.Retornos = new List<MonitorNFSRetornoVM>();
             //REMESSANFSE001
             //    só codigo municipio
             //    id = serie+numeronfs
             //xml e demais null
             // REPROC = 1 so o de fora
-
-            //MONITORX
-            //tipomonitor 1 fixo
-            //ids serie+numero
-            //dd/mm/yyyy
-            //00:00:00
-            //tempo 0 demais null
 
             var monitor = new NFSE001Prod.NFSE001().MONITORX(
                 AppDefault.Token,
@@ -90,15 +83,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     //1 2 3                     
                     //exibir a lista de erros
-                    //Com a regrinha que te falei... se o _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
-                    //salvar o XMLRETTSS que é o xml final
-                    var nota = new MonitorRetornoVM();
-                    nota.NotaId = nfse.ID;
-                    //nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.ERRO[nfse.ERRO.Length - 1].CODIGO, nfse.RECOMENDACAO);
-                    nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.STATUS, nfse.RECOMENDACAO);
+                    var nota = new MonitorNFSRetornoVM();
+                    nota.NotaFiscalId = nfse.ID;
+                    nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
                     nota.Modalidade = nfse.MODALIDADE;
                     nota.Recomendacao = nfse.RECOMENDACAO;
-                    nota.Mensagem = nfse.ERRO[nfse.ERRO.Length - 1].MENSAGEM;
+                    nota.Protocolo = nfse.PROTOCOLO;
+                    nota.XML = nfse.XMLRETTSS;
+                    //se tem ERRO new ErrosNFSVM 
+                    //foreach add de new ErroNFSVM {codigo = erro[i].codigo
 
                     retorno.Retornos.Add(nota);
                 }

@@ -5,12 +5,12 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
 {
     public class MonitorNFSRetornoVM
     {
-        public string NotaId { get; set; }
+        public string NotaFiscalId { get; set; }
         public StatusNotaFiscal Status { get; set; }
         public string Modalidade { get; set; }
-        public string Mensagem { get; set; }
+        public string Protocolo { get; set; }
+        public string XML { get; set; }
         public string Recomendacao { get; set; }
-        public DateTime Data { get; set; }
-        public string Hora { get; set; }
+        //LIST<ErroNFSVM> ErrosNFSVM
     }
 }

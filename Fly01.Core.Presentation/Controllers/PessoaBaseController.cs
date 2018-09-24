@@ -189,17 +189,26 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCpfcnpjUI { Id = "cpfcnpj", Class = "col s12 l4", Label = "CPF / CNPJ", MaxLength = 18 });
             config.Elements.Add(new InputTextUI { Id = "nome", Class = "col s12 l8", Label = "Razão Social / Nome Completo", Required = true, MaxLength = 180 });
 
-            config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l6", Label = "Nome Comercial", MaxLength = 180 });
-            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s7 l6", Label = "E-mail", MaxLength = 100 });
+            config.Elements.Add(new InputTextUI { Id = "nomeComercial", Class = "col s12 l5", Label = "Nome Comercial", MaxLength = 180 });
+            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 l4", Label = "E-mail", MaxLength = 100 });
 
-            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s5 l3", Label = "Pessoa de Contato", MaxLength = 60 });
-            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s4 l2", Label = "Celular", MaxLength = 15 });
-            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s4 l2", Label = "Telefone", MaxLength = 15 });
+            config.Elements.Add(new SelectUI
+            {
+                Id = "situacaoEspecialNFS",
+                Class = "col s12 l3",
+                Label = "Tipo de Situação Especial",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
+                ConstrainWidth = true
+            }
+            );
+            config.Elements.Add(new InputTextUI { Id = "contato", Class = "col s6 l3", Label = "Pessoa de Contato", MaxLength = 60 });
+            config.Elements.Add(new InputTelUI { Id = "celular", Class = "col s6 l2", Label = "Celular", MaxLength = 15 });
+            config.Elements.Add(new InputTelUI { Id = "telefone", Class = "col s6 l2", Label = "Telefone", MaxLength = 15 });
 
             config.Elements.Add(new InputCepUI
             {
                 Id = "cep",
-                Class = "col s4 l2",
+                Class = "col s6 l2",
                 Label = "CEP",
                 MaxLength = 9,
                 DomEvents = new List<DomEventUI>() { new DomEventUI { DomEvent = "keyup", Function = "fnBuscaCEP" } }
@@ -208,7 +217,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoId",
-                Class = "col s6 l3",
+                Class = "col s12 l3",
                 Label = "Estado",
                 MaxLength = 35,
                 DataUrl = Url.Action("Estado", "AutoComplete"),
@@ -222,7 +231,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "cidadeId",
-                Class = "col s6 l3",
+                Class = "col s12 l3",
                 Label = "Cidade (Escolha o estado antes)",
                 MaxLength = 35,
                 DataUrl = Url.Action("Cidade", "AutoComplete"),
@@ -255,15 +264,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 500 });
 
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoSituacaoEspecial",
-                Class = "col s12 l3",
-                Label = "Tipo de Situação Especial",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
-                ConstrainWidth = true
-            }
-            );
 
             List<InputCheckboxUI> checkboxes = GetCheckBboxes();
             if (checkboxes != null)

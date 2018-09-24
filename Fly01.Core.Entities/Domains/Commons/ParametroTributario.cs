@@ -75,19 +75,21 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoHorarioTSS TipoHorario { get; set; }
 
         #region NFS
-        //public string VersaoNFSe { get; set; }
+        public string VersaoNFSe { get; set; }
 
-        //public TipoAmbiente TipoAmbienteNFS { get; set; }
+        public TipoAmbiente TipoAmbienteNFS { get; set; }
 
-        //public bool IncentivoCultura { get; set; }
+        public bool IncentivoCultura { get; set; }
 
-        //public string UsuarioWebServer { get; set; }
+        public string UsuarioWebServer { get; set; }
 
-        //public string SenhaWebServer { get; set; }
+        public string SenhaWebServer { get; set; }
 
-        //public string ChaveAutenticacao { get; set; }
+        public string ChaveAutenticacao { get; set; }
 
-        //public string Autorizacao { get; set; }
+        public string Autorizacao { get; set; }
+
+        public TipoTributacaoNFS TipoTributacaoNFS { get; set; }
         #endregion
     }
 }

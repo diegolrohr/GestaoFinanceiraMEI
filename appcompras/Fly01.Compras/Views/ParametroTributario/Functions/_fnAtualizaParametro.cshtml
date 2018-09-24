@@ -39,7 +39,14 @@
                 ambiente: $('#tipoAmbiente').val(),
                 tipoPresencaComprador: $('#tipoPresencaComprador').val(),
                 horarioVerao: $('#horarioVerao').val(),
-                tipoHorario: $('#tipoHorario').val()
+                tipoHorario: $('#tipoHorario').val(),
+                versaoNFSe = $('#versaoNFSe').val(),
+                usuarioWebServer = $('#usuarioWebServer').val(),
+                senhaWebServer = $('#senhaWebServer').val(),
+                chaveAutenticacao = $('#chaveAutenticacao').val(),
+                autorizacao = $('#autorizacao').val(),
+                tipoTributacaoNFS = $('#tipoTributacaoNFS').val(),
+                tipoAmbienteNFS = $('#tipoAmbienteNFS').val(),
             },
             success: function (response) {
                 if (response.success) {

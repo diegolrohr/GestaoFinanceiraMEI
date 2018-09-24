@@ -15,6 +15,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
+                unitOfWork.SiafiBL.RetornaSiafi(entity);
                 unitOfWork.ParametroNfBL.ValidaModel(entity);
 
                 try
@@ -162,7 +163,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 "0",
                 entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
-                "",//CODSIAFI recuperar conforme ibge
+                entity.Siafi,
                 null,
                 null,
                 null,
@@ -184,9 +185,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.Homologacao,
                 entity.TipoAmbiente,
                 "0",
-                entity.VersaoNFSe,
+                "2.00",//entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
-                "",//CODSIAFI recuperar conforme ibge
+                entity.Siafi,
                 null,
                 null,
                 null,

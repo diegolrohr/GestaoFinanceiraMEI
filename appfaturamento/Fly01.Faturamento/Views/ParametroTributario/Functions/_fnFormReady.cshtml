@@ -28,6 +28,11 @@
                 $('#usuarioWebServer').val(data.usuarioWebServer);
                 $('#senhaWebServer').val(data.senhaWebServer);
                 $('#chaveAutenticacao').val(data.chaveAutenticacao);
+                $('#autorizacao').val(data.autorizacao);
+                $('#tipoTributacaoNFS').val(data.tipoTributacaoNFS);
+                $('select#tipoTributacaoNFS').material_select();
+                $('#tipoAmbienteNFS').val(data.tipoAmbienteNFS);
+                $('select#tipoAmbienteNFS').material_select();
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

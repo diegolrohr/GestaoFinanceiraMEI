@@ -1,4 +1,5 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers.Attribute;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System;
@@ -95,6 +96,17 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         [JsonProperty("autorizacao")]
         public string Autorizacao { get; set; }
 
+        [JsonProperty("tipoAmbienteNFS")]
+        public TipoAmbiente TipoAmbienteNFS { get; set; }
+
+        [JsonProperty("incentivoCultura")]
+        public bool IncentivoCultura { get; set; }
+
+        [JsonProperty("tipoTributacaoNFS")]
+        public TipoTributacaoNFS TipoTributacaoNFS { get; set; }
+
+        [JsonProperty("siafi")]
+        public string Siafi { get; set; }
         #endregion
     }
 }

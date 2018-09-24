@@ -81,6 +81,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("autorizacao")]
         public string Autorizacao { get; set; }
+
+        [JsonProperty("tipoTributacaoNFS")]
+        [APIEnum("TipoTributacaoNFS")]
+        public string TipoTributacaoNFS { get; set; }
         #endregion
     }
 }

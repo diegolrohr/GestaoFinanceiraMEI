@@ -21,7 +21,6 @@
         if ($("#aliquotaFCP").val() == "" || $("#aliquotaFCP").val() == null) {
             $("#aliquotaFCP").val("0");
         }
-
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
@@ -42,7 +41,11 @@
                 versaoNFSe: $('#versaoNFSe').val(),
                 usuarioWebServer: $('#usuarioWebServer').val(),
                 senhaWebServer: $('#senhaWebServer').val(),
-                chaveAutenticacao: $('#chaveAutenticacao').val()
+                chaveAutenticacao: $('#chaveAutenticacao').val(),
+                autorizacao : $('#autorizacao').val(),
+                tipoTributacaoNFS : $('#tipoTributacaoNFS').val(),
+                tipoAmbienteNFS : $('#tipoAmbienteNFS').val(),
+
             },
             success: function (response) {
                 if (response.success) {

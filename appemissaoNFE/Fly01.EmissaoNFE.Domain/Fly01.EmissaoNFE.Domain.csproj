@@ -130,9 +130,7 @@
     <Compile Include="Enums\FormaPagamentoEmissaoNFE.cs" />
     <Compile Include="Enums\TipoRegimeTributario.cs" />
     <Compile Include="Enums\TipoFusoHorario.cs" />
-    <Compile Include="Enums\TipoSimplesNacionalNFs.cs" />
     <Compile Include="Enums\TipoSituacaoEspecialNFS.cs" />
-    <Compile Include="Enums\TipoTributacaoNFS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Tributacao.cs" />
     

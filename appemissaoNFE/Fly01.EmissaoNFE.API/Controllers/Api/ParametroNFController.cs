@@ -162,7 +162,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var cfgNFS = new NFSE001Prod.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Producao,
-                entity.TipoAmbiente,
+                entity.TipoAmbienteNFS,
                 "0",
                 entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
@@ -188,7 +188,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var cfgNFS = new NFSE001.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Homologacao,
-                entity.TipoAmbiente,
+                entity.TipoAmbienteNFS,
                 "0",
                 entity.VersaoNFSe,
                 entity.CodigoIBGECidade,

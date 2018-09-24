@@ -79,7 +79,7 @@ namespace Fly01.Faturamento.BL
                         SenhaWebServer = parametroTributario.SenhaWebServer,
                         ChaveAutenticacao = parametroTributario.ChaveAutenticacao,
                         Autorizacao = parametroTributario.Autorizacao,
-                        TipoAmbienteNFS = parametroTributario.TipoAmbienteNFS,
+                        TipoAmbienteNFS = parametroTributario.TipoAmbienteNFSRest,
                         IncentivoCultura = parametroTributario.IncentivoCultura,
                         TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS
                     };

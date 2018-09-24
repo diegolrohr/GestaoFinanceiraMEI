@@ -4,6 +4,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
 using System;
 using System.Web.Http;
+using Fly01.Core.Helpers;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -72,7 +73,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.TipoAmbiente,
                 entity.TipoModalidade,
                 entity.VersaoNFe,
-                entity.VersaoNFSe,
+                "0.00",
                 entity.VersaoDPEC,
                 "9.99",
                 "",
@@ -118,7 +119,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.TipoAmbiente,
                 entity.TipoModalidade,
                 entity.VersaoNFe,
-                entity.VersaoNFSe,
+                "0.00",
                 entity.VersaoDPEC,
                 "9.99",
                 "",
@@ -155,7 +156,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         }
 
         public void ProducaoNFSe(ParametroVM entity)
-        {             
+        {
+            var AutorizacaoEncode = Base64Helper.CodificaBase64(entity.Autorizacao);
+
             var cfgNFS = new NFSE001Prod.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Producao,
@@ -165,13 +168,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 entity.CodigoIBGECidade,
                 entity.Siafi,
                 null,
-                null,
+                "1",
                 null,
                 null,
                 entity.UsuarioWebServer,
                 Convert.FromBase64String(entity.SenhaWebServer),
-                Convert.FromBase64String(entity.Autorizacao),
-                entity.ChaveAutenticacao, //250
+                Convert.FromBase64String(AutorizacaoEncode),
+                entity.ChaveAutenticacao,
                 null,
                 null,
                 null
@@ -180,21 +183,23 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public void HomologacaoNFSe(ParametroVM entity)
         {
+            var AutorizacaoEncode = Base64Helper.CodificaBase64(entity.Autorizacao);
+
             var cfgNFS = new NFSE001.NFSE001().CFGAMBNFSE001(
                 AppDefault.Token,
                 entity.Homologacao,
                 entity.TipoAmbiente,
                 "0",
-                "2.00",//entity.VersaoNFSe,
+                entity.VersaoNFSe,
                 entity.CodigoIBGECidade,
                 entity.Siafi,
                 null,
-                null,
+                "1",
                 null,
                 null,
                 entity.UsuarioWebServer,
                 Convert.FromBase64String(entity.SenhaWebServer),
-                Convert.FromBase64String(entity.Autorizacao),
+                Convert.FromBase64String(AutorizacaoEncode),
                 entity.ChaveAutenticacao,
                 null,
                 null,

@@ -65,7 +65,6 @@ namespace Fly01.Faturamento.BL
                         EntidadeAmbiente = parametroTributario.TipoAmbiente,
                         TipoAmbiente = parametroTributario.TipoAmbienteRest,
                         VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.00",
-                        //VersaoNFSe = "0.00",
                         VersaoDPEC = "1.01",
                         TipoModalidade = parametroTributario.TipoModalidadeRest,
                         NumeroRetornoNF = string.IsNullOrEmpty(parametroTributario.NumeroRetornoNF) ? string.Empty : parametroTributario.NumeroRetornoNF,
@@ -108,6 +107,8 @@ namespace Fly01.Faturamento.BL
         {
             entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
             entity.Fail(empresa.Cidade == null, new Error("Seu estado e cidade precisam estar cadastros no menu de Empresa."));
+            if (string.IsNullOrEmpty(entity.VersaoNFSe))
+                entity.VersaoNFSe = "0.00";
             base.ValidaModel(entity);
         }
     }

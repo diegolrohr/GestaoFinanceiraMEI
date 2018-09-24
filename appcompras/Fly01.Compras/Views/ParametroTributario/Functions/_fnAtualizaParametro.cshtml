@@ -21,12 +21,10 @@
         if ($("#aliquotaFCP").val() == "" || $("#aliquotaFCP").val() == null) {
             $("#aliquotaFCP").val("0");
         }
-
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
-            data: {
-                registro: $('#registroSimplificadoMT').is(":checked"),
+            data: {                
                 mensagem: $('#mensagemPadraoNota').val(),
                 simplesnacional: $("#aliquotaSimplesNacional").val(),
                 fcp: $("#aliquotaFCP").val(),
@@ -40,13 +38,14 @@
                 tipoPresencaComprador: $('#tipoPresencaComprador').val(),
                 horarioVerao: $('#horarioVerao').val(),
                 tipoHorario: $('#tipoHorario').val(),
-                versaoNFSe = $('#versaoNFSe').val(),
-                usuarioWebServer = $('#usuarioWebServer').val(),
-                senhaWebServer = $('#senhaWebServer').val(),
-                chaveAutenticacao = $('#chaveAutenticacao').val(),
-                autorizacao = $('#autorizacao').val(),
-                tipoTributacaoNFS = $('#tipoTributacaoNFS').val(),
-                tipoAmbienteNFS = $('#tipoAmbienteNFS').val(),
+                versaoNFSe: $('#versaoNFSe').val(),
+                usuarioWebServer: $('#usuarioWebServer').val(),
+                senhaWebServer: $('#senhaWebServer').val(),
+                chaveAutenticacao: $('#chaveAutenticacao').val(),
+                autorizacao : $('#autorizacao').val(),
+                tipoTributacaoNFS : $('#tipoTributacaoNFS').val(),
+                tipoAmbienteNFS : $('#tipoAmbienteNFS').val(),
+
             },
             success: function (response) {
                 if (response.success) {

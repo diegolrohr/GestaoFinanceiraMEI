@@ -264,8 +264,6 @@
     <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
@@ -331,6 +329,8 @@
     <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
     <Content Include="Views\CartaCorrecao\Novo.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

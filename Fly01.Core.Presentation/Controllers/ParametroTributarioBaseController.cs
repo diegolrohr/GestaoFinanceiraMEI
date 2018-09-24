@@ -60,7 +60,7 @@ namespace Fly01.Core.Presentation.Controllers
                     senhaWebServer = "",
                     chaveAutenticacao = "",
                     autorizacao = "",
-                    tipoTributacaoNFS = "recolheIss",
+                    tipoTributacaoNFS = "RecolheIss",
                     tipoAmbienteNFS = "Producao"
                 }, JsonRequestBehavior.AllowGet);
 
@@ -247,7 +247,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoAmbiente",
                 Class = "col s6 m6 l3",
-                Label = "Ambiente",
+                Label = "Ambiente NF-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
@@ -264,18 +264,18 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "versaoNFSe",
                 Class = "col s12 m2",
                 Label = "Versão NFS-e",
-                MaxLength = 3,
-                Data = new { inputmask = "'mask':'9.99', 'showMaskOnHover': false, 'autoUnmask':true" }
+                MaxLength = 4,
+                Value = "0.00"
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m6", Label = "Usuário Web Server" });
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m6", Label = "Usuário Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server" });
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação" });
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação", MaxLength = 200 });
 
 
-            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização" });
+            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização", MaxLength = 200 });
 
             form3.Elements.Add(new SelectUI
             {
@@ -290,9 +290,11 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoAmbienteNFS",
                 Class = "col s12 m6",
-                Label = "Ambiente NFS",
+                Label = "Ambiente NFS-e",
                 Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
+                .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value))
+                )
             });
             #endregion
 
@@ -312,6 +314,9 @@ namespace Fly01.Core.Presentation.Controllers
         {
             try
             {
+
+
+
                 var dadosParametro = new
                 {
                     simplesNacional = "True",
@@ -330,7 +335,7 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoHorario = tipoHorario,
                     versaoNFSe = versaoNFSe,
                     usuarioWebServer = usuarioWebServer,
-                    senhaWebServer = senhaWebServer,
+                    senhaWebServer = Base64Helper.CodificaBase64(senhaWebServer),
                     chaveAutenticacao = chaveAutenticacao,
                     autorizacao = autorizacao,
                     tipoTributacaoNFS = tipoTributacaoNFS,

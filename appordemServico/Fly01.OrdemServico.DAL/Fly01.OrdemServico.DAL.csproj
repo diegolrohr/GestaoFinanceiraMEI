@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201809191833296_AlterPessoaTamanhoCampos.Designer.cs">
       <DependentUpon>201809191833296_AlterPessoaTamanhoCampos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809241957488_AlterPessoaAddTipoSituacaoEspecial.cs" />
+    <Compile Include="Migrations\201809241957488_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
+      <DependentUpon>201809241957488_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -173,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809191833296_AlterPessoaTamanhoCampos.resx">
       <DependentUpon>201809191833296_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809241957488_AlterPessoaAddTipoSituacaoEspecial.resx">
+      <DependentUpon>201809241957488_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

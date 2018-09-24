@@ -144,7 +144,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         new NFSE001.NFSES1()
                         {
                             ID = entity.ItemTransmissaoNFSVM.NotaId,
-                            CODMUN = entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE,
+                            CODMUN = entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
                             XML = Convert.FromBase64String(xmlBase64)
                         }
                     }

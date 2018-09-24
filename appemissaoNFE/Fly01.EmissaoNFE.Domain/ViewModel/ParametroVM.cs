@@ -96,8 +96,15 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         [JsonProperty("autorizacao")]
         public string Autorizacao { get; set; }
 
+        [JsonIgnore]
+        public TipoAmbiente AmbienteNFS { get; set; }
+
         [JsonProperty("tipoAmbienteNFS")]
-        public TipoAmbiente TipoAmbienteNFS { get; set; }
+        public string TipoAmbienteNFS
+        {
+            get { return ((int)AmbienteNFS).ToString(); }
+            set { AmbienteNFS = (TipoAmbiente)Enum.Parse(typeof(TipoAmbiente), value); }
+        }
 
         [JsonProperty("incentivoCultura")]
         public bool IncentivoCultura { get; set; }

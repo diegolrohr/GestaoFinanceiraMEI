@@ -204,6 +204,10 @@
     <Compile Include="Migrations\201808292112401_AlterTamanhoCampoComplemento.Designer.cs">
       <DependentUpon>201808292112401_AlterTamanhoCampoComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809191954549_AlterPessoaTamanhoCampos.cs" />
+    <Compile Include="Migrations\201809191954549_AlterPessoaTamanhoCampos.Designer.cs">
+      <DependentUpon>201809191954549_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808292112401_AlterTamanhoCampoComplemento.resx">
       <DependentUpon>201808292112401_AlterTamanhoCampoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191954549_AlterPessoaTamanhoCampos.resx">
+      <DependentUpon>201809191954549_AlterPessoaTamanhoCampos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

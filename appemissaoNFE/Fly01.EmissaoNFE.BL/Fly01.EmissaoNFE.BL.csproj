@@ -39,6 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
     <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidateNFS.cs" />
     <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidate.cs" />

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
@@ -11,7 +8,19 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
     {
         internal static void ExecutaValidaAtividade(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            throw new NotImplementedException();
+            ValidarCodigoAtividade(entity);
+            ValidarAliquota(entity);
+        }
+        
+        //TODO revisar com Wilson
+        private static void ValidarAliquota(TransmissaoNFSVM entity)
+        {
+            entity.Fail(entity.Atividade.AliquotaICMS <= 0, new Error("Alíquota ICMS deve ser superior a zero.", "AliquotaICMS"));
+        }
+
+        private static void ValidarCodigoAtividade(TransmissaoNFSVM entity)
+        {
+            entity.Fail(string.IsNullOrEmpty(entity.Atividade.CodigoCNAE.ToString()), new Error("Código atividade é um dado obrigatório.", "CodigoCNAE"));
         }
     }
 }

@@ -61,6 +61,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Api\CancelarNFSController.cs" />
     <Compile Include="Controllers\Api\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\Api\ConfiguracaoOKNFSController.cs" />
     <Compile Include="Controllers\Api\InutilizarNFController.cs" />
@@ -540,6 +541,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
       <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
       <Name>Fly01.Core.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core\Fly01.Core.csproj">
       <Project>{D848BBBD-61A9-4843-A16D-14A2B6EBEC85}</Project>

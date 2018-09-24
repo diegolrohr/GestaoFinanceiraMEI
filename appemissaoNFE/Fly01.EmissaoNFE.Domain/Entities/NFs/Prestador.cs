@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         public string NomeFantasia { get; set; }
 
         [XmlElement(ElementName = "codmunibge")]
-        public string CodigoMunicipalIBGE { get; set; }
+        public string CodigoMunicipioIBGE { get; set; }
 
         [XmlElement(ElementName = "cidade")]
         public string Cidade { get; set; }
@@ -32,14 +32,32 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
         [XmlElement(ElementName = "telefone")]
         public string Telefone { get; set; }
 
+        /// <summary>
+        /// O tipo é fixo sim, pois só atendemos ao regime Simples Nacional
+        /// </summary>
         [XmlElement(ElementName = "simpnac")]
-        public TipoSimplesNacionalNFs TipoSimplesNacional { get; set; }
+        public TipoSimNao EhSimplesNacional
+        {
+            get
+            {
+                return TipoSimNao.Sim;
+            }
+        }
 
         [XmlElement(ElementName = "incentcult")]
-        public TipoIcentivoCulturalNFs TipoIcentivoCultural { get; set; }
+        public TipoSimNao TipoIcentivoCultural { get; set; }
 
+        /// <summary>
+        /// Enviar vazio para TSS
+        /// </summary>
         [XmlElement(ElementName = "numproc")]
-        public int NumeroProcedimento { get; set; }
+        public string NumeroProcedimento
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
 
         [XmlElement(ElementName = "logradouro")]
         public string Logradouro { get; set; }

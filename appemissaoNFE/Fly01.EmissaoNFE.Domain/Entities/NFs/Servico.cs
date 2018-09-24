@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains;
+using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFs
 {
-    public class Servico
+    public class Servico : PlataformaBase
     {
         [XmlElement(ElementName = "codigo")]
         public int Codigo { get; set; }

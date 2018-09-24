@@ -39,9 +39,20 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
+    <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidateNFS.cs" />
     <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidate.cs" />
     <Compile Include="Helpers\HelperValidaModelTransmissao.cs" />
+    <Compile Include="Helpers\HelperValidaModelTransmissaoNFS.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaAtividade.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaIdentificacao.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaInformacoesComplementares.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaPrestacao.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaPrestador.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaServicos.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaTomador.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaValores.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaAutorizados.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaDestinatario.cs" />
     <Compile Include="Helpers\ValidaModelTransmissao\ValidaDetalheImposto.cs" />
@@ -65,10 +76,13 @@
     <Compile Include="CceBL.cs" />
     <Compile Include="FcpStBL.cs" />
     <Compile Include="IbptNcmBL.cs" />
+    <Compile Include="MonitorNFSBL.cs" />
     <Compile Include="MonitorEventoBL.cs" />
+    <Compile Include="SiafiBL.cs" />
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />
     <Compile Include="ParametroNfBL.cs" />
+    <Compile Include="TransmissaoNFSBL.cs" />
     <Compile Include="VersaoBL.cs" />
     <Compile Include="ModalidadeBL.cs" />
     <Compile Include="RegimeTributarioBL.cs" />

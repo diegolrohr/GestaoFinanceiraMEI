@@ -240,8 +240,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
             if (itemTributacao.CalculaPIS)
             {
-                var tributaveis = "01|02|03";
-                if (tributaveis.Contains(((int)PIS.CodigoSituacaoTributaria).ToString()))
+                var NaoTributaveis = "04||05||06||07||08||09";
+                if (!NaoTributaveis.Contains(((int)PIS.CodigoSituacaoTributaria).ToString()))
                 {
                     PIS.ValorPIS = Math.Round(itemTributacao.PISValor, 2);
                     PIS.PercentualPIS = ParametrosTributarios.AliquotaPISPASEP;
@@ -262,8 +262,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
 
             if (itemTributacao.CalculaCOFINS)
             {
-                var tributaveis = "01|02|03";
-                if (tributaveis.Contains(((int)COFINS.CodigoSituacaoTributaria).ToString()))
+                var NaoTributaveis = "04||05||06||07||08||09";
+                if (!NaoTributaveis.Contains(((int)COFINS.CodigoSituacaoTributaria).ToString()))
                 {
                     COFINS.ValorCOFINS = Math.Round(itemTributacao.COFINSValor, 2);
                     COFINS.ValorBC = Math.Round(itemTributacao.COFINSBase, 2);

@@ -47,6 +47,8 @@ namespace Fly01.Compras.BL
             parametroTributario.UF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             parametroTributario.InscricaoEstadual = empresa.InscricaoEstadual;
 
+            var ibge = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : string.Empty;
+            
             #endregion
 
             var consultaEntidade = EntidadeBL.GetEntidade();
@@ -63,14 +65,23 @@ namespace Fly01.Compras.BL
                         EntidadeAmbiente = parametroTributario.TipoAmbiente,
                         TipoAmbiente = parametroTributario.TipoAmbienteRest,
                         VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.00",
-                        VersaoNFSe = "0.00",
                         VersaoDPEC = "1.01",
                         TipoModalidade = parametroTributario.TipoModalidadeRest,
                         NumeroRetornoNF = string.IsNullOrEmpty(parametroTributario.NumeroRetornoNF) ? string.Empty : parametroTributario.NumeroRetornoNF,
                         EnviaDanfe = false,
                         UsaEPEC = false,
                         HorarioVerao = parametroTributario.HorarioVerao,
-                        TipoHorario = parametroTributario.TipoHorario
+                        TipoHorario = parametroTributario.TipoHorario,
+                        SimplesNacional = true,
+                        VersaoNFSe = parametroTributario.VersaoNFSe,
+                        CodigoIBGECidade = ibge,
+                        UsuarioWebServer = parametroTributario.UsuarioWebServer,
+                        SenhaWebServer = parametroTributario.SenhaWebServer,
+                        ChaveAutenticacao = parametroTributario.ChaveAutenticacao,
+                        Autorizacao = parametroTributario.Autorizacao,
+                        TipoAmbienteNFS = parametroTributario.TipoAmbienteNFSRest,
+                        IncentivoCultura = parametroTributario.IncentivoCultura,
+                        TipoTributacaoNFS = parametroTributario.TipoTributacaoNFS
                     };
 
                     var response = RestHelper.ExecutePostRequest<ParametroVM>(AppDefaults.UrlEmissaoNfeApi,
@@ -94,6 +105,9 @@ namespace Fly01.Compras.BL
         public override void ValidaModel(ParametroTributario entity)
         {
             entity.Fail(entity.TipoVersaoNFe != TipoVersaoNFe.v4, new Error("Permitido somente a versão 4.00."));
+            if (string.IsNullOrEmpty(entity.VersaoNFSe))
+                entity.VersaoNFSe = "0.00";
+
             base.ValidaModel(entity);
         }
     }

@@ -2,10 +2,10 @@
 
 namespace Fly01.Core.Entities.Domains.Enum
 {
-    public enum TipoRegimeEspecialTrib
+    public enum TipoRegimeEspecialTributacao
     {
-        [Subtitle("MicroempresaMunicipal", "Microempresa Municipal")]
-        MicroempresaMunicipal = 1,
+        [Subtitle("MicroEmpresaMunicipal", "Micro Empresa Municipal")]
+        MicroEmpresaMunicipal = 1,
 
         [Subtitle("MEI", "Microempresário Individual (MEI)")]
         MEI = 2,
@@ -16,10 +16,10 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("SociedadeProfissionais", "Sociedade de Profissionais")]
         SociedadeProfissionais = 4,
 
-        [Subtitle("Imune", "Cooperativa")]
+        [Subtitle("Imune", "Imune Cooperativa")]
         Imune = 5,
 
-        [Subtitle("ForaMunicípio", "Estimativa")]
-        ForaMunicípio = 6,
+        [Subtitle("ForaMunicipio", "Fora Município Estimativa")]
+        ForaMunicipio = 6,
     }
 }

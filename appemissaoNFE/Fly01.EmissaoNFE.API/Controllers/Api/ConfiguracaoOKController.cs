@@ -34,13 +34,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 try
                 {
                     if ((int)tipoAmbiente == 2)
-                    {
-                        var sped = new SPEDCFGNFE.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
-                    }
+                        new SPEDCFGNFE.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
                     else
-                    {
-                        var sped = new SPEDCFGNFEProd.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
-                    }
+                        new SPEDCFGNFEProd.SPEDCFGNFE().CFGREADYEX(AppDefault.Token, entidade);
+                    
 
                     return Ok(new { success = true });
                 }

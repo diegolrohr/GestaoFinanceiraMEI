@@ -60,42 +60,31 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string TipoHorario { get; set; }
 
         #region NFS
-        //[JsonProperty("incentivoCultura")]
-        //public bool IncentivoCultura { get; set; }
+        [JsonProperty("versaoNFSe")]
+        public string VersaoNFSe { get; set; }
 
-        //[JsonProperty("tipoRegimeEspecialTrib")]
-        //[APIEnum("TipoRegimeEspecialTrib")]
-        //public string TipoRegimeEspecialTrib { get; set; }
+        [JsonProperty("tipoAmbienteNFS")]
+        [APIEnum("TipoAmbiente")]
+        public string TipoAmbienteNFS { get; set; }
 
-        //[JsonProperty("tipoMensagemNFSE")]
-        //[APIEnum("TipoMensagemNFSE")]
-        //public string TipoMensagemNFSE { get; set; }
+        [JsonProperty("incentivoCultura")]
+        public bool IncentivoCultura { get; set; }
 
-        //[JsonProperty("tipoLayoutNFSE")]
-        //[APIEnum("TipoLayoutNFSE")]
-        //public string TipoLayoutNFSE { get; set; }
+        [JsonProperty("usuarioWebServer")]
+        public string UsuarioWebServer { get; set; }
 
-        //[JsonProperty("novoModeloUnicoXMLTSS")]
-        //public bool NovoModeloUnicoXMLTSS { get; set; }
+        [JsonProperty("senhaWebServer")]
+        public string SenhaWebServer { get; set; }
 
-        //[JsonProperty("siafi")]
-        //public string SIAFI { get; set; }
+        [JsonProperty("chaveAutenticacao")]
+        public string ChaveAutenticacao { get; set; }
 
-        //[JsonProperty("tipoAmbienteNFS")]
-        //[APIEnum("TipoAmbienteNFS")]
-        //public string TipoAmbienteNFS { get; set; }
+        [JsonProperty("autorizacao")]
+        public string Autorizacao { get; set; }
 
-        //[JsonProperty("versao")]
-        //public string Versao { get; set; }
-
-        //[JsonProperty("usuario")]
-        //public string Usuario { get; set; }
-
-        //[JsonProperty("senha")]
-        //public string Senha { get; set; }
-
-        //[JsonProperty("chaveAutenticacao")]
-        //public string ChaveAutenticacao { get; set; }
+        [JsonProperty("tipoTributacaoNFS")]
+        [APIEnum("TipoTributacaoNFS")]
+        public string TipoTributacaoNFS { get; set; }
         #endregion
     }
 }

@@ -51,6 +51,12 @@ namespace Fly01.Core.BL
                 repository.AttachForUpdate(entity);
         }
 
+        public virtual void ValidaModel(TEntity entity)
+        {
+            if (!entity.IsValid())
+                throw new BusinessException(entity.Notification.Get());
+        }
+
         public virtual bool Exists(object primaryKey) => repository.Exists(primaryKey);
 
         public virtual void DetachEntity(TEntity entityToDetach) => repository.DetachEntity(entityToDetach);

@@ -6,6 +6,7 @@ using Fly01.Core.ViewModels;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
@@ -29,6 +30,20 @@ namespace Fly01.OrdemServico.Controllers
                 produto_descricao = x.Produto.Descricao,
                 quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault)
             };
+        }
+
+        protected List<TooltipUI> GetHelpers()
+        {
+            return new List<TooltipUI> {
+               new TooltipUI
+               {
+                   Id = "produtoId",
+                   Tooltip = new HelperUITooltip()
+                   {
+                       Text = "Informe o produto do cliente que receberá o serviço. Apenas produtos marcados como objetos de manutenção podem ser selecionados"
+                   }
+               }
+           };
         }
 
         public ContentResult Modal()
@@ -61,9 +76,10 @@ namespace Fly01.OrdemServico.Controllers
                 Label = "Produto do cliente",
                 Required = true,
                 DataUrl = Url.Action("ItemManutencao", "AutoComplete"),
-                DataUrlPostModal = Url.Action("FormModal", "Produto"),
+                DataUrlPostModal = Url.Action("FormModalObjetoDeManutencao", "Produto"),
                 DataPostField = "descricao",
                 LabelId = "produtoCliente",
+                LabelName = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeManutencao" } }
             }, ResourceHashConst.FaturamentoCadastrosProdutos));
 
@@ -76,6 +92,8 @@ namespace Fly01.OrdemServico.Controllers
                 Value = "1",
                 Required = false
             });
+
+            config.Helpers.AddRange(GetHelpers());
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

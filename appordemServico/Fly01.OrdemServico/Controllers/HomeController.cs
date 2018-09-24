@@ -1,4 +1,6 @@
 ﻿using Fly01.Core.Config;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -78,9 +80,9 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "totvs-blue",
+                Color = GetColor(StatusOrdemServico.EmAberto),
                 Id = "fly01cardAB",
-                Title = "Em Aberto",
+                Title = GetDescription(StatusOrdemServico.EmAberto),
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
@@ -91,9 +93,9 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "red",
+                Color = GetColor(StatusOrdemServico.EmAndamento),
                 Id = "fly01cardAN",
-                Title = "Em Andamento",
+                Title = GetDescription(StatusOrdemServico.EmAndamento),
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
@@ -104,9 +106,9 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "green",
+                Color = GetColor(StatusOrdemServico.Concluido),
                 Id = "fly01cardCO",
-                Title = "Concluído",
+                Title = GetDescription(StatusOrdemServico.Concluido),
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
@@ -117,9 +119,9 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new CardUI
             {
                 Class = "col s12 m3",
-                Color = "teal",
+                Color = GetColor(StatusOrdemServico.Cancelado),
                 Id = "fly01cardCA",
-                Title = "Cancelado",
+                Title = GetDescription(StatusOrdemServico.Cancelado),
                 Placeholder = "0/0",
                 Action = new LinkUI
                 {
@@ -266,6 +268,9 @@ namespace Fly01.OrdemServico.Controllers
 
             return cfg;
         }
+
+        private static string GetColor(StatusOrdemServico statusOrdem) => EnumHelper.GetCSS(typeof(StatusOrdemServico), statusOrdem.ToString());
+        private static string GetDescription(StatusOrdemServico statusOrdem) => EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
 
         public override ContentResult Sidebar()
         {

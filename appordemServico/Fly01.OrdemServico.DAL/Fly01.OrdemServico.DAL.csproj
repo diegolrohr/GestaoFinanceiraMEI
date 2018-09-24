@@ -84,6 +84,14 @@
     <Compile Include="Migrations\201809101600079_Gera Ordem Venda.Designer.cs">
       <DependentUpon>201809101600079_Gera Ordem Venda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809191057001_Descricao_1000.cs" />
+    <Compile Include="Migrations\201809191057001_Descricao_1000.Designer.cs">
+      <DependentUpon>201809191057001_Descricao_1000.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809191833296_AlterPessoaTamanhoCampos.cs" />
+    <Compile Include="Migrations\201809191833296_AlterPessoaTamanhoCampos.Designer.cs">
+      <DependentUpon>201809191833296_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -159,6 +167,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809101600079_Gera Ordem Venda.resx">
       <DependentUpon>201809101600079_Gera Ordem Venda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191057001_Descricao_1000.resx">
+      <DependentUpon>201809191057001_Descricao_1000.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191833296_AlterPessoaTamanhoCampos.resx">
+      <DependentUpon>201809191833296_AlterPessoaTamanhoCampos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

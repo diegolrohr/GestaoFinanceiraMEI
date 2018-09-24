@@ -141,6 +141,7 @@
     <Compile Include="ViewModel\CancelarNFSRetornoVM.cs" />
     <Compile Include="ViewModel\CancelarNFSVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoRetornoVM.cs" />
+    <Compile Include="ViewModel\ErroNFSVM.cs" />
     <Compile Include="ViewModel\InutilizarNFRetornoVM.cs" />
     <Compile Include="ViewModel\CartaCorrecaoVM.cs" />
     <Compile Include="ViewModel\InutilizarNFVM.cs" />

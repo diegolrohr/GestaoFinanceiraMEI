@@ -6,7 +6,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Prestador
     {
         [XmlElement(ElementName = "inscmun")]
-        public int InscricaoMunicipal { get; set; }
+        public int InscricaoMunicipalPrestador { get; set; }
 
         [XmlElement(ElementName = "cpfcnpj")]
         public string CpfCnpj { get; set; }
@@ -42,6 +42,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             {
                 return TipoSimNao.Sim;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "incentcult")]
@@ -57,6 +58,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             {
                 return string.Empty;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "logradouro")]

@@ -39,6 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             {
                 return CodigoMunicipioIBGE;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "municipio")]

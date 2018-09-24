@@ -62,6 +62,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             {
                 return TipoSimNao.Sim;
             }
+            set { }
         }
 
 

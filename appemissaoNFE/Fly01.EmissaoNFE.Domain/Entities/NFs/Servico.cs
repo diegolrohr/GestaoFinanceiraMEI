@@ -8,7 +8,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Servico
     {
         [XmlElement(ElementName = "codigo")]
-        public int Codigo { get; set; }
+        public string Codigo { get; set; }
 
         [XmlElement(ElementName = "aliquota")]
         public double Aliquota { get; set; }

@@ -18,7 +18,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// O tipo é fixo conforme código FIRST
         /// </summary>
         [XmlElement(ElementName = "tipologr")]
-        public string TipoLogradouro
+        private string TipoLogradouro
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// O tipo é fixo conforme código FIRST
         /// </summary>
         [XmlElement(ElementName = "tipobairro")]
-        public string TipoBairro
+        private string TipoBairro
         {
             get
             {

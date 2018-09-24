@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 {
-    [Serializable]
     [XmlRoot(ElementName = "rps")]
     public class ItemTransmissaoNFSVM
     {
@@ -17,8 +16,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         {
             get
             {
-                return Identificacao.SerieRPS + ":" + Identificacao.NumeroRPS;
+                return Identificacao.SerieRPS.ToLower() + ":" + Identificacao.NumeroRPS;
             }
+            set { }
         }
 
         /// <summary>
@@ -31,6 +31,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
             {
                 return "2.00";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "assinatura")]
@@ -53,7 +54,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 
         //[XmlElement(ElementName = "servicos")]
         //[XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
-        [XmlArray("servicos")]
+        [XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
         public List<Servico> Servicos { get; set; }
 
         [XmlElement(ElementName = "valores")]

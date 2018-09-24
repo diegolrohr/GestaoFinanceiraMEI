@@ -65,9 +65,9 @@ namespace Fly01.EmissaoNFE.BL
             };
 
             var writer = XmlWriter.Create(memoryStream, settings);
-            var xmlSerializer = new XmlSerializer(typeof(TransmissaoNFSVM));
+            var xmlSerializer = new XmlSerializer(typeof(ItemTransmissaoNFSVM));
 
-            xmlSerializer.Serialize(writer, entity, nameSpaces);
+            xmlSerializer.Serialize(writer, entity.ItemTransmissaoNFSVM, nameSpaces);
 
             memoryStream.Flush();
             memoryStream.Seek(0, SeekOrigin.Begin);

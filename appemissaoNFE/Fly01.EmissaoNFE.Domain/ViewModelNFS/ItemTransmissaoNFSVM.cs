@@ -21,6 +21,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
             set { }
         }
 
+
+
+        private string versao = "2.00";
         /// <summary>
         /// Versão TSS
         /// </summary>
@@ -29,9 +32,12 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         {
             get
             {
-                return "2.00";
+                return versao;
             }
-            set { }
+            set
+            {
+                versao = value;
+            }
         }
 
         [XmlElement(ElementName = "assinatura")]

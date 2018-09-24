@@ -86,5 +86,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string EstadoCodigoIbge { get; set; }
 
         public string CidadeCodigoIbge { get; set; }
+
+        public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
     }
 }

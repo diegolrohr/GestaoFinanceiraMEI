@@ -1,7 +1,7 @@
 ﻿using Fly01.Core.Helpers.Attribute;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Enums
+namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoSituacaoEspecialNFS
     {
@@ -21,13 +21,13 @@ namespace Fly01.EmissaoNFE.Domain.Enums
         [XmlEnum(Name = "3")]
         Bancos = 3,
 
-        [Subtitle("comercio_industria", "comercio/industria", "comercio/industria")]
+        [Subtitle("ComercioIndustria", "Comércio/Indústria", "Comércio/Indústria")]
         [XmlEnum(Name = "4")]
-        Comercio_industria = 4,
+        ComercioIndustria = 4,
 
-        [Subtitle("legislativo_Judiciario", "Legislativo/Judiciario", "Legislativo/Judiciario")]
+        [Subtitle("LegislativoJudiciario", "Legislativo/Judiciário", "Legislativo/Judiciário")]
         [XmlEnum(Name = "5")]
-        Legislativo_Judiciario = 5
+        LegislativoJudiciario = 5
         
     }
 }

@@ -53,8 +53,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         public ListMonitorNFSRetornoVM Producao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            var retorno = new ListMonitorNFSRetornoVM();
-            retorno.Retornos = new List<MonitorNFSRetornoVM>();
+            var result = new ListMonitorNFSRetornoVM();
+            result.Retornos = new List<MonitorNFSRetornoVM>();
             //REMESSANFSE001
             //    só codigo municipio
             //    id = serie+numeronfs
@@ -81,45 +81,36 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
                 {
-                    //1 2 3                     
-                    //exibir a lista de erros
-                    var nota = new MonitorNFSRetornoVM();
-                    nota.NotaFiscalId = nfse.ID;
-                    nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
-                    nota.Modalidade = nfse.MODALIDADE;
-                    nota.Recomendacao = nfse.RECOMENDACAO;
-                    nota.Protocolo = nfse.PROTOCOLO;
-                    nota.XML = nfse.XMLRETTSS;
+                    var retorno = new MonitorNFSRetornoVM();
+                    retorno.NotaFiscalId = nfse.ID;
+                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
+                    retorno.Modalidade = nfse.MODALIDADE;
+                    retorno.Recomendacao = nfse.RECOMENDACAO;
+                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)
                     {
                         foreach (NFSE001Prod.ERROSLOTE erro in nfse.ERRO)
                         {
-                            nota.Erros.Add(new ErroNFSVM()
+                            retorno.Erros.Add(new ErroNFSVM()
                             {
                                 Codigo = erro.CODIGO,
-                                mensagem = erro.MENSAGEM
+                                Mensagem = erro.MENSAGEM
                             });
                         }
                     }
-                    //se tem ERRO new ErrosNFSVM 
-                    //foreach add de new ErroNFSVM {codigo = erro[i].codigo
 
-                    retorno.Retornos.Add(nota);
+                    result.Retornos.Add(retorno);
                 }
             }
 
-            return retorno;
+            return result;
         }
 
         public ListMonitorNFSRetornoVM Homologacao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            var retorno = new ListMonitorNFSRetornoVM();
-            retorno.Retornos = new List<MonitorNFSRetornoVM>();
-            //REMESSANFSE001
-            //    só codigo municipio
-            //    id = serie+numeronfs
-            //xml e demais null
-            // REPROC = 1 so o de fora
+            var result = new ListMonitorNFSRetornoVM();
+            result.Retornos = new List<MonitorNFSRetornoVM>();
 
             var monitor = new NFSE001.NFSE001().MONITORX(
                 AppDefault.Token,
@@ -140,34 +131,30 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             if (monitor.Length > 0)
             {
                 foreach (NFSE001.MONITORNFSE nfse in monitor)
-                {
-                    //1 2 3                     
-                    //exibir a lista de erros
-                    var nota = new MonitorNFSRetornoVM();
-                    nota.NotaFiscalId = nfse.ID;
-                    nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
-                    nota.Modalidade = nfse.MODALIDADE;
-                    nota.Recomendacao = nfse.RECOMENDACAO;
-                    nota.Protocolo = nfse.PROTOCOLO;
-                    nota.XML = nfse.XMLRETTSS;
+                { 
+                    var retorno = new MonitorNFSRetornoVM();
+                    retorno.NotaFiscalId = nfse.ID;
+                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
+                    retorno.Modalidade = nfse.MODALIDADE;
+                    retorno.Recomendacao = nfse.RECOMENDACAO;
+                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)
                     {
                         foreach (NFSE001.ERROSLOTE erro in nfse.ERRO)
                         {
-                            nota.Erros.Add(new ErroNFSVM()
+                            retorno.Erros.Add(new ErroNFSVM()
                             {
                                 Codigo = erro.CODIGO,
-                                mensagem = erro.MENSAGEM
+                                Mensagem = erro.MENSAGEM
                             });
                         }
                     }
-                    //se tem ERRO new ErrosNFSVM 
-                    //foreach add de new ErroNFSVM {codigo = erro[i].codigo
 
-                    retorno.Retornos.Add(nota);
+                    result.Retornos.Add(retorno);
                 }
             }
-            return retorno;
+            return result;
         }
     }
 }

@@ -29,7 +29,6 @@ namespace Fly01.EmissaoNFE.BL
         public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior)
         {
             //Com a regrinha que te falei... se o _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
-
             //TODO ver códigos e novo enum de status
             StatusNotaFiscal statusNFSe;
 

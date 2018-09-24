@@ -273,7 +273,7 @@ namespace Fly01.OrdemServico.Controllers
         private static string GetDescription(StatusOrdemServico statusOrdem)
         {
             var result = EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
-            return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1)}";
+            return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1).ToLower()}";
         }
 
         public override ContentResult Sidebar()

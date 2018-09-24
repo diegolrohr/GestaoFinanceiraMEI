@@ -112,5 +112,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("cidadeCodigoIbge")]
         public string CidadeCodigoIbge { get; set; }
+
+        [JsonProperty("tipoSituacaoEspecial")]
+        public string TipoSituacaoEspecial { get; set; }
     }
 }

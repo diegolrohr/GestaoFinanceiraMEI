@@ -255,6 +255,15 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 500 });
 
+            config.Elements.Add(new SelectUI
+            {
+                Id = "tipoSituacaoEspecial",
+                Class = "col s12 l3",
+                Label = "Tipo de Situação Especial",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
+                ConstrainWidth = true
+            }
+            );
 
             List<InputCheckboxUI> checkboxes = GetCheckBboxes();
             if (checkboxes != null)

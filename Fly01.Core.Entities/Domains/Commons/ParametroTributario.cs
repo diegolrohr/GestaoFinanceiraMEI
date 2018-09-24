@@ -77,7 +77,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         #region NFS
         public string VersaoNFSe { get; set; }
 
+        [JsonIgnore]
         public TipoAmbiente TipoAmbienteNFS { get; set; }
+
+        [NotMapped]
+        [JsonProperty("tipoAmbienteNFS")]
+        public string TipoAmbienteNFSRest
+        {
+            get { return ((int)TipoAmbienteNFS).ToString(); }
+            set { TipoAmbienteNFS = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), value); }
+        }
 
         public bool IncentivoCultura { get; set; }
 

@@ -27,7 +27,7 @@ namespace Fly01.EmissaoNFE.BL
             entity.Fail(string.IsNullOrEmpty(entity.CodigoIBGE), new Error("Código IBGE é um campo obrigatório.", "CodigoIBGE"));
             entity.Fail(!string.IsNullOrEmpty(entity.CodigoIBGE) && !codigoIBGEValido, new Error("Código IBGE do município informado é inválido.", "CodigoIBGE"));
             entity.Fail(string.IsNullOrEmpty(entity.IdNotaFiscal), new Error("Id da nota fiscal é um campo obrigatório.", "IdNotaFiscal"));
-            entity.Fail(string.IsNullOrEmpty(entity.XMLString), new Error("XML é um campo obrigatório.", "XMLString"));
+            entity.Fail(string.IsNullOrEmpty(entity.XMLUnicoTSSString), new Error("XML é um campo obrigatório.", "XMLString"));
 
             base.ValidaModel(entity);
         }

@@ -65,7 +65,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var CodigosIBGE = municipiosHomologados.Split('-').ToList();
             if (CodigosIBGE.Any(x => x.Equals(entity.CodigoIBGE.ToUpper(), StringComparison.InvariantCultureIgnoreCase)))
             {
-                var base64 = Base64Helper.CodificaBase64(entity.XMLString);
+                var base64 = Base64Helper.CodificaBase64(entity.XMLUnicoTSSString);
 
                 var NFSE = new NFSE001Prod.NFSE()
                 {
@@ -111,7 +111,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var CodigosIBGE = municipiosHomologados.Split('-').ToList();
             if (CodigosIBGE.Any(x => x.Equals(entity.CodigoIBGE.ToUpper(), StringComparison.InvariantCultureIgnoreCase)))
             {
-                var base64 = Base64Helper.CodificaBase64(entity.XMLString);
+                var base64 = Base64Helper.CodificaBase64(entity.XMLUnicoTSSString);
 
                 var NFSE = new NFSE001.NFSE()
                 {

@@ -4,6 +4,6 @@
     {
         public string CodigoIBGE { get; set; }
         public string IdNotaFiscal { get; set; }
-        public string XMLString { get; set; }
+        public string XMLUnicoTSSString { get; set; }
     }
 }

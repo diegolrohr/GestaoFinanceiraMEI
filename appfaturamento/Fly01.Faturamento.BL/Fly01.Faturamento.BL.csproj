@@ -62,7 +62,9 @@
     <Compile Include="Helpers\Factory\TransmissaoNFeDevolucao.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeNormal.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFe.cs" />
+    <Compile Include="Helpers\TransmissaoNFS.cs" />
     <Compile Include="MonitorNFBL.cs" />
+    <Compile Include="NotaFiscalItemBL.cs" />
     <Compile Include="NotaFiscalCartaCorrecaoBL.cs" />
     <Compile Include="NotaFiscalItemTributacaoBL.cs" />
     <Compile Include="NFSeServicoBL.cs" />

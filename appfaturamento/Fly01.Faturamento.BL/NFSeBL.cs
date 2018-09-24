@@ -6,6 +6,8 @@ using System.Data.Entity;
 using System.Linq;
 using System;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Faturamento.BL.Helpers;
+using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 
 namespace Fly01.Faturamento.BL
 {
@@ -98,7 +100,40 @@ namespace Fly01.Faturamento.BL
                 (entity.SerieNotaFiscalId != previous.SerieNotaFiscalId || entity.NumNotaFiscal != previous.NumNotaFiscal)
                 , new Error("Para alterar série e número, somente notas fiscais que ainda não foram transmitidas", "status"));
 
+
+            if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue && entity.IsValid())
+            {
+                TransmitirNFS(entity);
+            }
+
             base.Update(entity);
+        }
+
+        private void TransmitirNFS(NFSe entity)
+        {
+            try
+            {
+                var resourceOK = "configuracaoOKNFS";
+                if (!TotalTributacaoBL.ConfiguracaoTSSOK(null, resourceOK))
+                {
+                    throw new BusinessException("Configuração inválida para comunicação com TSS");
+                }
+                else
+                {
+                    var transmisao = new TransmissaoNFS();
+                    var transmissaoVM = transmisao.ObterTransmissaoNFSVM();
+                    TransmitirNotaFiscalDeServico(entity, transmissaoVM);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        private void TransmitirNotaFiscalDeServico(NFSe entity, TransmissaoNFSVM transmissaoVM)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Delete(NFSe entityToDelete)

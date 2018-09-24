@@ -82,5 +82,43 @@ namespace Fly01.EmissaoNFE.API.Properties {
                 return ((string)(this["Fly01_EmissaoNFE_API_NFESBRAProd_NFESBRA"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/NFSE001.apw")]
+        public string Fly01_EmissaoNFE_API_NFSE001 {
+            get {
+                return ((string)(this["Fly01_EmissaoNFE_API_NFSE001"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://tss5-cloud.totvs.com.br/nfe/NFSE001.apw")]
+        public string Fly01_EmissaoNFE_API_NFSE001Prod {
+            get {
+                return ((string)(this["Fly01_EmissaoNFE_API_NFSE001Prod"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://tss5-cloud.totvs.com.br/nfe/NFSE001.apw")]
+        public string Fly01_EmissaoNFE_API_NFSE001Prod_NFSE001 {
+            get {
+                return ((string)(this["Fly01_EmissaoNFE_API_NFSE001Prod_NFSE001"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://sped.homologacao.totvs.com.br:8087/nfe/NFSE001.apw")]
+        public string Fly01_EmissaoNFE_API_NFSE001_NFSE001 {
+            get {
+                return ((string)(this["Fly01_EmissaoNFE_API_NFSE001_NFSE001"]));
+            }
+        }
     }
 }

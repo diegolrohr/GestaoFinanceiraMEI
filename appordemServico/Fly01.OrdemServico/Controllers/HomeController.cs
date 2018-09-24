@@ -180,8 +180,8 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s6",
-                Id = "dtGridTopProdutos",
-                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
+                Id = "dtGridTopServicos",
+                UrlGridLoad = Url.Action("DashboardTopServicos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
                         new DataTableUIParameter { Id = "dataFinal" }
@@ -224,8 +224,8 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new DataTableUI
             {
                 Class = "col s6",
-                Id = "dtGridTopServicos",
-                UrlGridLoad = Url.Action("DashboardTopServicos", "Dashboard"),
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
                 Parameters = new List<DataTableUIParameter>
                     {
                         new DataTableUIParameter { Id = "dataFinal" }
@@ -270,7 +270,11 @@ namespace Fly01.OrdemServico.Controllers
         }
 
         private static string GetColor(StatusOrdemServico statusOrdem) => EnumHelper.GetCSS(typeof(StatusOrdemServico), statusOrdem.ToString());
-        private static string GetDescription(StatusOrdemServico statusOrdem) => EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+        private static string GetDescription(StatusOrdemServico statusOrdem)
+        {
+            var result = EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+            return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1)}";
+        }
 
         public override ContentResult Sidebar()
         {

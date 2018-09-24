@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Entities.NFs
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
     public class Prestacao
     {
@@ -14,6 +14,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return "99";
             }
+            set { }
         }
 
         [XmlElement(ElementName = "logradouro")]
@@ -38,6 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return CodigoMunicipioIBGE;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "municipio")]

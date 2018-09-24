@@ -3,8 +3,9 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using System;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Entities.NFs
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
+    [XmlRoot(ElementName = "rps")]
     public class Identificacao
     {
         [XmlIgnore]
@@ -36,6 +37,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                  return TipoSimNao.Sim;
             }
+            set { }
         }
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return TipoSimNao.Sim;
             }
+            set { }
         }
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return TipoSimNao.Sim;
             }
+            set { }
         }
 
 
@@ -73,6 +77,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return TipoSimNao.Sim;
             }
+            set { }
         }
 
         [XmlElement(ElementName = "tipotrib")]
@@ -87,6 +92,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             {
                 return TipoTributacao == TipoTributacaoNFS.CreditaZonaFrancaManaus ? "1" : "2";
             }
+            set { }
         }
 
         /// <summary>
@@ -98,7 +104,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFs
             get
             {
                 return TipoSimNao.Sim;
-            }   
+            }
+            set { }
         }
 
         /// <summary>

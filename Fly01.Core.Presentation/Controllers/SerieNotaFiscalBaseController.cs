@@ -10,6 +10,7 @@ using Fly01.Core.Presentation.Commons;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -130,14 +131,14 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputCustommaskUI
+            config.Elements.Add(new InputTextUI
             {
                 Id = "serie",
                 Class = "col s12 m4",
                 Label = "Série",
                 Required = true,
-                MaxLength = 3,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
+                MinLength = 3,
+                MaxLength = 3
             });
 
             config.Elements.Add(new SelectUI
@@ -145,7 +146,15 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoOperacaoSerieNotaFiscal",
                 Class = "col s12 m4",
                 Label = "Tipo de Operação",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)))
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal))),
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI()
+                    {
+                        DomEvent = "change",
+                        Function = "fnChangeTipoOperacao"
+                    }
+                }
             });
 
             config.Elements.Add(new InputCustommaskUI
@@ -157,6 +166,17 @@ namespace Fly01.Core.Presentation.Controllers
                 MaxLength = 8,
                 Data = new { inputmask = "'regex': '[0-9]*'" }
             });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "serie",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se necessário, preencha com zeros a esquerda."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

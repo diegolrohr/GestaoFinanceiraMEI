@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -264,8 +264,6 @@
     <Content Include="Views\CertificadoDigital\Functions\_fnGetStatusCertificado.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnAtualizarStatusInutilizada.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnVisualizarRetornoSefaz.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
-    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Shared\Functions\_fnNotaFiscalInutilizadaList.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnCancelarPedido.cshtml" />
@@ -330,6 +328,9 @@
     <Content Include="Views\CartaCorrecao\Functions\_fnVisualizarCartaCorrecao.cshtml" />
     <Content Include="Views\CartaCorrecao\NotaFiscal.cshtml" />
     <Content Include="Views\CartaCorrecao\Novo.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -5,6 +5,7 @@ using Fly01.Core.API;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -20,7 +21,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
+                    var retorno = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
 
@@ -50,45 +51,110 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
         }
 
-        public ListMonitorRetornoVM Producao(MonitorNFSVM entity, UnitOfWork unitOfWork)
+        public ListMonitorNFSRetornoVM Producao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            var retorno = new ListMonitorRetornoVM();
-            retorno.Retornos = new List<MonitorRetornoVM>();
+            var result = new ListMonitorNFSRetornoVM();
+            result.Retornos = new List<MonitorNFSRetornoVM>();
+            //REMESSANFSE001
+            //    só codigo municipio
+            //    id = serie+numeronfs
+            //xml e demais null
+            // REPROC = 1 so o de fora
 
-            //var monitor = new NFSE001Prod.NFSE001().MONITORX(
-            //    AppDefault.Token,
-            //    entity.Producao,
-            //    entity.NotaInicial,
-            //    entity.NotaFinal,
-            //    ""
-            //);
+            var monitor = new NFSE001Prod.NFSE001().MONITORX(
+                AppDefault.Token,
+                entity.Producao,
+                "1",
+                entity.NotaInicial,
+                entity.NotaFinal,
+                entity.DataInicial,
+                entity.DataFinal,
+                "00:00:00",
+                "00:00:00",
+                "0",
+                null,
+                null,
+                null
+            );
 
-            //if (monitor.Length > 0)
-            //{
-            //    foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
-            //    {
-            //        var nota = new MonitorRetornoVM();
-            //        nota.NotaId = nfse.ID;
-            //        nota.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.ERRO[nfse.ERRO.Length - 1].CODRETnfse, nfse.RECOMENDACAO);
-            //        nota.Modalidade = nfse.MODALIDADE;
-            //        nota.Recomendacao = nfse.RECOMENDACAO;
-            //        nota.Mensagem = nfse.ERRO[nfse.ERRO.Length - 1].MSGRETnfse;
-            //        nota.Data = nfse.ERRO[nfse.ERRO.Length - 1].DATALOTE;
-            //        nota.Hora = nfse.ERRO[nfse.ERRO.Length - 1].HORALOTE;
+            if (monitor.Length > 0)
+            {
+                foreach (NFSE001Prod.MONITORNFSE nfse in monitor)
+                {
+                    var retorno = new MonitorNFSRetornoVM();
+                    retorno.NotaFiscalId = nfse.ID;
+                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
+                    retorno.Modalidade = nfse.MODALIDADE;
+                    retorno.Recomendacao = nfse.RECOMENDACAO;
+                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.XML = nfse.XMLRETTSS;
+                    if (nfse.ERRO.Length != 0)
+                    {
+                        foreach (NFSE001Prod.ERROSLOTE erro in nfse.ERRO)
+                        {
+                            retorno.Erros.Add(new ErroNFSVM()
+                            {
+                                Codigo = erro.CODIGO,
+                                Mensagem = erro.MENSAGEM
+                            });
+                        }
+                    }
 
-            //        retorno.Retornos.Add(nota);
-            //    }
-            //}
+                    result.Retornos.Add(retorno);
+                }
+            }
 
-            return retorno;
+            return result;
         }
 
-        public ListMonitorRetornoVM Homologacao(MonitorNFSVM entity, UnitOfWork unitOfWork)
+        public ListMonitorNFSRetornoVM Homologacao(MonitorNFSVM entity, UnitOfWork unitOfWork)
         {
-            return new ListMonitorRetornoVM
+            var result = new ListMonitorNFSRetornoVM();
+            result.Retornos = new List<MonitorNFSRetornoVM>();
+
+            var monitor = new NFSE001.NFSE001().MONITORX(
+                AppDefault.Token,
+                entity.Producao,
+                "1",
+                entity.NotaInicial,
+                entity.NotaFinal,
+                entity.DataInicial,
+                entity.DataFinal,
+                "00:00:00",
+                "00:00:00",
+                "0",
+                null,
+                null,
+                null
+            );
+
+            if (monitor.Length > 0)
             {
-                Retornos = new List<MonitorRetornoVM>()
-            };
+                foreach (NFSE001.MONITORNFSE nfse in monitor)
+                { 
+                    var retorno = new MonitorNFSRetornoVM();
+                    retorno.NotaFiscalId = nfse.ID;
+                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
+                    retorno.Modalidade = nfse.MODALIDADE;
+                    retorno.Recomendacao = nfse.RECOMENDACAO;
+                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.XML = nfse.XMLRETTSS;
+                    if (nfse.ERRO.Length != 0)
+                    {
+                        foreach (NFSE001.ERROSLOTE erro in nfse.ERRO)
+                        {
+                            retorno.Erros.Add(new ErroNFSVM()
+                            {
+                                Codigo = erro.CODIGO,
+                                Mensagem = erro.MENSAGEM
+                            });
+                        }
+                    }
+
+                    result.Retornos.Add(retorno);
+                }
+            }
+            return result;
         }
     }
 }

@@ -54,12 +54,18 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaFCP = "0",
                     tipoPresencaComprador = "Presencial",
                     horarioVerao = "Nao",
-                    tipoHorario = "Brasilia"
+                    tipoHorario = "Brasilia",
+                    versaoNFSe = "0.00",
+                    usuarioWebServer = "",
+                    senhaWebServer = "",
+                    chaveAutenticacao = "",
+                    autorizacao = "",
+                    tipoTributacaoNFS = "RecolheIss",
+                    tipoAmbienteNFS = "Producao"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
             {
-                registroSimplificadoMT = parametroTributario.RegistroSimplificadoMT,
                 aliquotaSimplesNacional = parametroTributario.AliquotaSimplesNacional,
                 aliquotaISS = parametroTributario.AliquotaISS,
                 aliquotaPISPASEP = parametroTributario.AliquotaPISPASEP,
@@ -72,7 +78,14 @@ namespace Fly01.Core.Presentation.Controllers
                 aliquotaFCP = parametroTributario.AliquotaFCP,
                 tipoPresencaComprador = parametroTributario.TipoPresencaComprador,
                 horarioVerao = parametroTributario.HorarioVerao,
-                tipoHorario = parametroTributario.TipoHorario
+                tipoHorario = parametroTributario.TipoHorario,
+                versaoNFSe = parametroTributario.VersaoNFSe,
+                usuarioWebServer = parametroTributario.UsuarioWebServer,
+                senhaWebServer = parametroTributario.SenhaWebServer,
+                chaveAutenticacao = parametroTributario.ChaveAutenticacao,
+                autorizacao = parametroTributario.Autorizacao,
+                tipoTributacaoNFS = parametroTributario.TipoTributacaoNFS,
+                tipoAmbienteNFS = parametroTributario.TipoAmbienteNFS
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -123,8 +136,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             form1.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            form1.Elements.Add(new InputCheckboxUI { Id = "registroSimplificadoMT", Class = "col s12", Label = "Registro Simplificado de MT" , Disabled = true });
-
             cfg.Content.Add(form1);
 
             var form2 = new FormUI
@@ -132,8 +143,9 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Alíquotas Padrões"}
-                }
+                    new LabelSetUI { Id =  "labelSetAliquotasPadroes", Class = "col s12", Label = "Alíquotas Padrões"}
+                },
+                Id = "fly01frm2"
             };
 
             form2.Elements.Add(new InputCustommaskUI
@@ -183,19 +195,12 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id =  "sss", Class = "col s12", Label = "Parâmetros de Transmissão"}
-                }
+                    new LabelSetUI { Id =  "labelSetParametrosNFe", Class = "col s12", Label = "Parâmetros de Transmissão NF-e"}
+                },
+                Id = "fly01frm3"
 
             };
 
-            //form3.Elements.Add(new InputCustommaskUI
-            //{
-            //    Id = "numeroRetornoNF",
-            //    Class = "col s12 m3",
-            //    Label = "Número de Retorno da NF",
-            //    MaxLength = 20,
-            //    Data = new { inputmask = "'regex': '[0-9]*'" }
-            //});
             form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF" });
 
             form3.Elements.Add(new SelectUI
@@ -234,7 +239,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoVersaoNFe",
                 Class = "col s6 m6 l3",
-                Label = "Versão NFe ",
+                Label = "Versão NF-e ",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
 
@@ -242,93 +247,59 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoAmbiente",
                 Class = "col s6 m6 l3",
-                Label = "Ambiente",
+                Label = "Ambiente NF-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Mensagem Padrão na Nota", MaxLength = 1000 });
+            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
 
             #region NFS
-            ////Paramentro NFS
-            //config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Parâmentros NF Serviço" });
 
-            //config.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12", Label = "Incentivo à Cultura" });
+            form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
 
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoRegimeEspecialTrib",
-            //    Class = "col s12 m6",
-            //    Label = "Regime Especial Tributário",
-            //    Required = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoRegimeEspecialTrib", true, false))
-            //});
+            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m4", Label = "É Incentivador à Cultura" });
 
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoMensagemNFSE",
-            //    Class = "col s12 m6",
-            //    Label = "Tipo Mensagem NFS-e",
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoMensagemNFSE", true, false))
-            //});
+            form3.Elements.Add(new InputCustommaskUI
+            {
+                Id = "versaoNFSe",
+                Class = "col s12 m2",
+                Label = "Versão NFS-e",
+                MaxLength = 4,
+                Value = "0.00"
+            });
 
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoLayoutNFSE",
-            //    Class = "col s12",
-            //    Label = "Tipo Layout NFS-e",
-            //    Required = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoLayoutNFSE", true, false))
-            //});
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m6", Label = "Usuário Web Server", MaxLength = 200 });
 
-            //config.Elements.Add(new InputCheckboxUI { Id = "novoModeloUnicoXMLTSS", Class = "col s12 m6", Label = "Novo Modelo Único XML TSS" });
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server", MaxLength = 200 });
 
-            //config.Elements.Add(new InputCustommaskUI
-            //{
-            //    Id = "versao",
-            //    Class = "col s6 m3",
-            //    Label = "Versão",
-            //    MaxLength = 3,
-            //    Data = new { inputmask = "'mask':'9.99', 'showMaskOnHover': false, 'autoUnmask':true" }
-            //});
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação", MaxLength = 200 });
 
 
-            //config.Elements.Add(new InputCustommaskUI
-            //{
-            //    Id = "siafi",
-            //    Class = "col s6 m3",
-            //    Label = "SIAFI",
-            //    MaxLength = 4,
-            //    Data = new { inputmask = "'regex': '[0-9]*'" }
-            //});
+            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização", MaxLength = 200 });
 
-            //config.Elements.Add(new SelectUI
-            //{
-            //    Id = "tipoAmbienteNFS",
-            //    Class = "col s12 m6",
-            //    Label = "Tipo Ambiente NFS",
-            //    Required = true,
-            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase("TipoAmbienteNFS", true, false))
-            //});
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "tipoTributacaoNFS",
+                Class = "col s6 m6",
+                Required = true,
+                Label = "Tipo Tributação NFS",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoNFS)))
+            });
 
-            ////config.Elements.Add(new InputTextUI { Id = "aEDFe", Class = "col s12 m6", Label = "AEDFe"});
-
-            //config.Elements.Add(new InputTextUI { Id = "usuario", Class = "col s12 m4", Label = "Usuário" });
-
-            //config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m4", Label = "Senha" });
-
-            //config.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticacao" });
-
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "tipoAmbienteNFS",
+                Class = "col s12 m6",
+                Label = "Ambiente NFS-e",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
+                .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value))
+                )
+            });
             #endregion
 
-            #region Helpers 
-            form3.Helpers.Add(new TooltipUI
-            {
-                Id = "mensagemPadraoNota",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe | entre as palavras, para exibir quebra de linha(enter) na impressão da DANFE. Exemplo: TextoLinha1 | TextoLinha2 | TextoLinha3."
-                }
-            });
+            #region Helpers
+
             #endregion
             cfg.Content.Add(form3);
 
@@ -336,14 +307,19 @@ namespace Fly01.Core.Presentation.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public JsonResult ImportaParametro(string mensagem, bool registro, double simplesNacional, double fcp, double iss, double pispasep, double cofins, string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao, string tipoHorario)
+        public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
+            string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
+            string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
+              string  tipoTributacaoNFS, string tipoAmbienteNFS)
         {
             try
             {
+
+
+
                 var dadosParametro = new
                 {
                     simplesNacional = "True",
-                    registroSimplificadoMT = registro == true ? "True" : "False",
                     aliquotaSimplesNacional = double.IsNaN(simplesNacional) ? 0 : simplesNacional,
                     aliquotaFCP = fcp,
                     aliquotaISS = double.IsNaN(iss) ? 0 : iss,
@@ -356,7 +332,14 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoAmbiente = ambiente,
                     tipoPresencaComprador = tipoPresencaComprador,
                     horarioVerao = horarioVerao,
-                    tipoHorario = tipoHorario
+                    tipoHorario = tipoHorario,
+                    versaoNFSe = versaoNFSe,
+                    usuarioWebServer = usuarioWebServer,
+                    senhaWebServer = Base64Helper.CodificaBase64(senhaWebServer),
+                    chaveAutenticacao = chaveAutenticacao,
+                    autorizacao = autorizacao,
+                    tipoTributacaoNFS = tipoTributacaoNFS,
+                    tipoAmbienteNFS = tipoAmbienteNFS
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

@@ -98,6 +98,9 @@ namespace Fly01.Faturamento.BL
         private NotaFiscalBL notaFiscalBL;
         public NotaFiscalBL NotaFiscalBL => notaFiscalBL ?? (notaFiscalBL = new NotaFiscalBL(Context, NFeBL, NFSeBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
 
+        private NotaFiscalItemBL notaFiscalItemBL;
+        public NotaFiscalItemBL NotaFiscalItemBL => notaFiscalItemBL ?? (notaFiscalItemBL = new NotaFiscalItemBL(Context));
+
         private NFeBL nfeBL;
         public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
 
@@ -132,7 +135,7 @@ namespace Fly01.Faturamento.BL
         public EntidadeBL EntidadeBL => entidadeBL ?? (entidadeBL = new EntidadeBL(Context, EstadoBL));
 
         private NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL;
-        public NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL => notaFiscalItemTributacaoBL ?? (notaFiscalItemTributacaoBL = new NotaFiscalItemTributacaoBL(Context));
+        public NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL => notaFiscalItemTributacaoBL ?? (notaFiscalItemTributacaoBL = new NotaFiscalItemTributacaoBL(Context, NotaFiscalItemBL));
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));

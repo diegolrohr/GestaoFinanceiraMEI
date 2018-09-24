@@ -26,46 +26,34 @@ namespace Fly01.EmissaoNFE.BL
         public static Error NotaInicialInvalida = new Error("Nota inicial inválida", "NotaInicial");
         public static Error NotaFinalInvalida = new Error("Nota final inválida", "NotaFinal");
 
-        public StatusNotaFiscal ValidaStatus(string status, string recomendacao)
+        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior)
         {
-            var transmitida = "103/104/105";
-            var autorizada = "100/150";
-            var autorizadaDPEC = "124";
-            var cancelada = "101/151/15";
-            var denegada = "110/301/302/303/999";
-            var inutilizada = "30/102";
-            var falhaCancelamento = "026";
-
-            var FalhaSchema = recomendacao.Substring(0, 3) == "002";
-            var NaoAssinada = recomendacao.Substring(0, 3) == "003";
-            var EmCancelamento = recomendacao.Substring(0, 3) == "025";
-            var CanceladaForaPrazo = recomendacao.Substring(0, 3) == "036";
-
+            //Com a regrinha que te falei... se o _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
             //TODO ver códigos e novo enum de status
-            StatusNotaFiscal statusNFe;
+            StatusNotaFiscal statusNFSe;
 
-            if ((string.IsNullOrEmpty(status) | string.IsNullOrWhiteSpace(status) | transmitida.Contains(status) | NaoAssinada) && !FalhaSchema)
-                statusNFe = StatusNotaFiscal.Transmitida;
-            else if (EmCancelamento)
-                statusNFe = StatusNotaFiscal.EmCancelamento;
-            else if (CanceladaForaPrazo)
-                statusNFe = StatusNotaFiscal.CanceladaForaPrazo;
-            else if (FalhaSchema)
-                statusNFe = StatusNotaFiscal.FalhaTransmissao;
-            else if (inutilizada.Contains(status))
-                statusNFe = StatusNotaFiscal.Inutilizada;
-            else if (autorizada.Contains(status) | autorizadaDPEC.Contains(status))
-                statusNFe = StatusNotaFiscal.Autorizada;
-            else if (falhaCancelamento.Contains(status))
-                statusNFe = StatusNotaFiscal.FalhaNoCancelamento;
-            else if (cancelada.Contains(status))
-                statusNFe = StatusNotaFiscal.Cancelada;
-            else if (denegada.Contains(status))
-                statusNFe = StatusNotaFiscal.UsoDenegado;
+            if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            {
+                statusNFSe = StatusNotaFiscal.NaoAutorizada;
+            }
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            {
+                statusNFSe = StatusNotaFiscal.Autorizada;
+            }
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            {
+                statusNFSe = StatusNotaFiscal.FalhaNoCancelamento;
+            }
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            {
+                statusNFSe = StatusNotaFiscal.Cancelada;
+            }
             else
-                statusNFe = StatusNotaFiscal.NaoAutorizada;
-
-            return statusNFe;
+            {
+                statusNFSe = statusAnterior;
+            }
+            
+            return statusNFSe;
         }
     }
 }

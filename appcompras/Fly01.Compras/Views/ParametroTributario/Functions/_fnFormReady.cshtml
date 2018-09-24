@@ -4,8 +4,7 @@
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroTributario")',
             type: "GET",
-            success: function (data) {
-                $('#registroSimplificadoMT').attr('checked', data.registroSimplificadoMT);
+            success: function (data) {                
                 $("input#aliquotaSimplesNacional").val(data.aliquotaSimplesNacional);
                 $("input#aliquotaFCP").val(data.aliquotaFCP);
                 $("input#aliquotaISS").val(data.aliquotaISS);
@@ -25,6 +24,15 @@
                 $('select#horarioVerao').material_select();
                 $('select#tipoHorario').val(data.tipoHorario);
                 $('select#tipoHorario').material_select();
+                $('#versaoNFSe').val(data.versaoNFSe);
+                $('#usuarioWebServer').val(data.usuarioWebServer);
+                $('#senhaWebServer').val(data.senhaWebServer);
+                $('#chaveAutenticacao').val(data.chaveAutenticacao);
+                $('#autorizacao').val(data.autorizacao);
+                $('#tipoTributacaoNFS').val(data.tipoTributacaoNFS);
+                $('select#tipoTributacaoNFS').material_select();
+                $('#tipoAmbienteNFS').val(data.tipoAmbienteNFS);
+                $('select#tipoAmbienteNFS').material_select();
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

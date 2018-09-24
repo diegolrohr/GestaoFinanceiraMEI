@@ -39,6 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
     <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidateNFS.cs" />
     <Compile Include="Helpers\EntitiesHelper\EntitiesBLToValidate.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="IbptNcmBL.cs" />
     <Compile Include="MonitorNFSBL.cs" />
     <Compile Include="MonitorEventoBL.cs" />
+    <Compile Include="SiafiBL.cs" />
     <Compile Include="TransmissaoBL.cs" />
     <Compile Include="MonitorBL.cs" />
     <Compile Include="ParametroNfBL.cs" />

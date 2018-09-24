@@ -5,12 +5,12 @@ using Fly01.Core.Helpers;
 
 namespace Fly01.Faturamento.API.Controllers.Api
 {
-    [RoutePrefix("tiporegimeespecialtrib")]
-    public class TipoRegimeEspecialTribController : ApiBaseController
+    [RoutePrefix("tiporegimeespecialtributacao")]
+    public class TipoRegimeEspecialTributacaoController : ApiBaseController
     {
         public IHttpActionResult Get()
         {
-            return Ok(EnumHelper.GetDataEnumValues(typeof(TipoRegimeEspecialTrib)));
+            return Ok(EnumHelper.GetDataEnumValues(typeof(TipoRegimeEspecialTributacao)));
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             return response;
         }
 
-        private object Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
+        private TransmissaoNFSRetornoVM Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
             //Serializando a nota 
             var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);

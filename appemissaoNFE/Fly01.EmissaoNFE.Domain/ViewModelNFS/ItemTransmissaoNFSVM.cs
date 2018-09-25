@@ -58,8 +58,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
-        //[XmlElement(ElementName = "servicos")]
-        //[XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
         [XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
         public List<Servico> Servicos { get; set; }
 

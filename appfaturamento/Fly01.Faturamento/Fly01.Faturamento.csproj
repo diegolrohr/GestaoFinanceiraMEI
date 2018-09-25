@@ -116,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ISSVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />

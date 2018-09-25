@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.Controllers
 
         public ServicoController()
         {
-            ExpandProperties = "nbs($select=id,descricao)";
+            ExpandProperties = "nbs($select=id,descricao),iss";
             SelectProperties = "id,codigoServico,descricao,registroFixo";
 
             GetDisplayDataSelect = x => new
@@ -153,6 +153,18 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoTributacaoMunicipal", Class = "col l3 m3 s12", Label = "Código Tributação Municipal", MaxLength = 20 });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "issId",
+                Class = "col l9 m9 s12",
+                Label = "ISS",
+                DataUrl = @Url.Action("Iss", "AutoComplete"),
+                LabelId = "issDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
+            });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
 

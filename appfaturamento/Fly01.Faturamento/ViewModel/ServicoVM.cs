@@ -20,6 +20,12 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("tipoTributacaoISS")]
         public string TipoTributacaoISS { get; set; }
 
+        [JsonProperty("issId")]
+        public Guid? IssId { get; set; }
+
+        [JsonProperty("codigoTributacaoMunicipal")]
+        public string CodigoTributacaoMunicipal { get; set; }
+
         [APIEnum("TipoPagamentoImpostoISS")]
         [JsonProperty("tipoPagamentoImpostoISS")]
         public string TipoPagamentoImpostoISS { get; set; }
@@ -29,6 +35,9 @@ namespace Fly01.Faturamento.ViewModel
 
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
+
+        [JsonProperty("iss")]
+        public virtual ISSVM Iss { get; set; }
 
         [JsonProperty("nbs")]
         public virtual NBSVM Nbs { get; set; }

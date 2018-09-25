@@ -352,6 +352,10 @@
     <Compile Include="Migrations\201809241238557_ParametroTributarioNFS.Designer.cs">
       <DependentUpon>201809241238557_ParametroTributarioNFS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs" />
+    <Compile Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
+      <DependentUpon>201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -609,6 +613,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809241238557_ParametroTributarioNFS.resx">
       <DependentUpon>201809241238557_ParametroTributarioNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.resx">
+      <DependentUpon>201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

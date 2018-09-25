@@ -1,4 +1,4 @@
-﻿namespace Fly01.EmissaoNFE.Domain.ViewModelNfs
+﻿namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 {
     public class SchemaXMLNFSRetornoVM
     {

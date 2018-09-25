@@ -6,7 +6,6 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
-using Fly01.EmissaoNFE.Domain.ViewModelNfs;
 
 namespace Fly01.EmissaoNFE.BL
 {

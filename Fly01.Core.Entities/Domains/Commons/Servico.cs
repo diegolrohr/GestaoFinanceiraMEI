@@ -15,6 +15,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? NbsId { get; set; }
 
+        public Guid? IssId { get; set; }
+
+        [MaxLength(20)]
+        public string CodigoTributacaoMunicipal { get; set; }
+
         public double ValorServico { get; set; }
 
         [StringLength(200, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
@@ -43,5 +48,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         }
 
         public virtual Nbs Nbs { get; set; }
+
+        public virtual Iss Iss { get; set; }
     }
 }

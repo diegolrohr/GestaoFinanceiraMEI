@@ -50,6 +50,9 @@ namespace Fly01.Faturamento.BL
         private NCMBL ncmBL;
         public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
 
+        private ISSBL issBL;
+        public ISSBL ISSBL => issBL ?? (issBL = new ISSBL(Context));
+
         private NBSBL nbsBL;
         public NBSBL NBSBL => nbsBL ?? (nbsBL = new NBSBL(Context));
 

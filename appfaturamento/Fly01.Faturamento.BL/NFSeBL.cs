@@ -194,9 +194,12 @@ namespace Fly01.Faturamento.BL
             entity.PDF = null;
 
             var response = RestHelper.ExecutePostRequest<TransmissaoNFSRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissaoNFS", JsonConvert.SerializeObject(transmissaoNFS, JsonSerializerSetting.Edit), null, header);
+            if (response.Error != null)
+            {
+                entity.Status = StatusNotaFiscal.FalhaTransmissao;
 
-
-            throw new NotImplementedException();
+                entity.Mensagem = response.Error.Mensagem;
+            }
         }
 
         public override void Delete(NFSe entityToDelete)

@@ -16,11 +16,12 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+                var entityNFS = unitOfWork.TransmissaoNFSBL.MontaValores(entity);
+                unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
 
                 try
                 {
-                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
+                    var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);
 
                     return Ok(retorno);
                 }
@@ -28,7 +29,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
                     {
-                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
+                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entityNFS);
                     }
 
                     return InternalServerError(ex);

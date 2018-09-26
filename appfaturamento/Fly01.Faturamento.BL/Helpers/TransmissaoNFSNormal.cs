@@ -89,6 +89,7 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private Valores ObterValores()
         {
+            //TODO preencher só as aliquotas. Para preencher esses dados, é necessario incluir os novos impostos nos parametros tributarios
             throw new NotImplementedException();
         }
 

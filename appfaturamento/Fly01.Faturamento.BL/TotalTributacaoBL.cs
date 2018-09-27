@@ -142,7 +142,7 @@ namespace Fly01.Faturamento.BL
         {
             try
             {
-                var codigoIBGEMunicipio = ApiEmpresaManager.GetEmpresa(plataformaId);
+                var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
 
                 var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
 
@@ -155,7 +155,7 @@ namespace Fly01.Faturamento.BL
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={codigoIBGEMunicipio}";
+                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge?? ""}";
 
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;

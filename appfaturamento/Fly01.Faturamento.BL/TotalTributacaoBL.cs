@@ -138,10 +138,12 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public bool ConfiguracaoTSSOKNFS(string plataformaId = null, string codigoIBGEMunicipio = null)
+        public bool ConfiguracaoTSSOKNFS(string plataformaId = null)
         {
             try
             {
+                var codigoIBGEMunicipio = ApiEmpresaManager.GetEmpresa(plataformaId);
+
                 var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
 
                 if (retorno != null)

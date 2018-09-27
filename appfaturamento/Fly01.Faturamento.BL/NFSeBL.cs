@@ -162,8 +162,7 @@ namespace Fly01.Faturamento.BL
         {
             try
             {
-                var Empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-                if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl, Empresa.Cidade?.CodigoIbge ?? ""))
+                if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
                 {
                     throw new BusinessException("Configuração inválida para comunicação com TSS");
                 }

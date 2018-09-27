@@ -55,7 +55,7 @@ namespace Fly01.Faturamento.BL
                         continue;
 
 
-                    if (TotalTributacaoBL.ConfiguracaoTSSOK(dadosPlataforma.plataformaId))
+                    if (TotalTributacaoBL.ConfiguracaoTSSOKNFS(dadosPlataforma.plataformaId))
                     {
                         var monitorVM = new MonitorNFSVM()
                         {
@@ -66,7 +66,7 @@ namespace Fly01.Faturamento.BL
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
                         };
 
-                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitor", JsonConvert.SerializeObject(monitorVM), null, header);
+                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorNFS", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
                             continue;
 

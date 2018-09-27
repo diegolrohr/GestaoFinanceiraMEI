@@ -33,7 +33,6 @@ namespace Fly01.Faturamento.BL.Helpers
                 Cliente = TransmissaoNFSBLs.TotalTributacaoBL.GetPessoa(entity.ClienteId);
         }
 
-
         public TransmissaoNFSVM ObterTransmissaoNFSVM()
         {
             var itemTransmissaoNFS = ObterCabecalhoTransmissaoNFS();
@@ -82,8 +81,8 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new InformacoesComplementares()
             {
-                Descricao = Cliente.Complemento?? "",
-                Observacao = Cliente.Observacao ?? ""
+                Descricao = NFSe.MensagemPadraoNota?? "",
+                Observacao =  ""
             };
         }
 

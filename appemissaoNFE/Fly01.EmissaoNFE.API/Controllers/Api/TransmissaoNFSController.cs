@@ -16,7 +16,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var entityNFS = unitOfWork.TransmissaoNFSBL.MontaValores(entity);
+                var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
                 unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
 
                 try

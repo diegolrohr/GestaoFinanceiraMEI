@@ -27,7 +27,7 @@ namespace Fly01.EmissaoNFE.BL
             EstadoBL = estadoBL;
         }
 
-        public TransmissaoNFSVM MontaValores(TransmissaoNFSVM entity)
+        public TransmissaoNFSVM MontarValores(TransmissaoNFSVM entity)
         {
             if (entity.ItemTransmissaoNFSVM.Servicos != null)
             {

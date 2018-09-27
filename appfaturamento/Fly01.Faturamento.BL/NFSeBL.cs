@@ -199,6 +199,7 @@ namespace Fly01.Faturamento.BL
                 entity.Status = StatusNotaFiscal.FalhaTransmissao;
 
                 entity.Mensagem = response.Error.Mensagem;
+                entity.XML = response.Error.XML;
             }
         }
 

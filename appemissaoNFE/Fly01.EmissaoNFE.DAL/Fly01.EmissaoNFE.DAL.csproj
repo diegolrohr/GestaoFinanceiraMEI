@@ -361,6 +361,33 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Migrations\SQLScripts\IBPT_AC.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_AL.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_AM.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_AP.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_BA.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_CE.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_DF.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_ES.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_GO.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_MA.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_MG.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_MS.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_MT.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_PA.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_PB.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_PE.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_PI.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_PR.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_RJ.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_RN.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_RO.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_RR.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_RS.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_SC.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_SE.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_SP.sql" />
+    <Content Include="Migrations\SQLScripts\IBPT_TO.sql" />
     <Content Include="Migrations\SQLScripts\Insert_IBPT_Alagoas.sql" />
     <Content Include="Migrations\SQLScripts\Insert_IBPT_Acre.sql" />
     <Content Include="Migrations\SQLScripts\Insert_IBPT_Amapa.sql" />

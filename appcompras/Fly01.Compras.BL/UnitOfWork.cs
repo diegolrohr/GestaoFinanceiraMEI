@@ -135,7 +135,7 @@ namespace Fly01.Compras.BL
         public NotaFiscalCartaCorrecaoEntradaBL NotaFiscalCartaCorrecaoEntradaBL => notaFiscalCartaCorrecaoEntradaBL ?? (notaFiscalCartaCorrecaoEntradaBL = new NotaFiscalCartaCorrecaoEntradaBL(Context, NotaFiscalEntradaBL, TotalTributacaoBL, CertificadoDigitalBL));
 
         private MonitorNFBL monitorNFBL;
-        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeEntradaBL, NotaFiscalEntradaBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL));
+        public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeEntradaBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL));
 
         #endregion
     }

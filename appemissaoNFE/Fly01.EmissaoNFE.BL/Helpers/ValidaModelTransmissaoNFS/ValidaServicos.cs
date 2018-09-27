@@ -25,6 +25,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item)
         {
+            entity.Fail(string.IsNullOrEmpty(item.CodigoTributario.ToString()), new Error("Código tributário do serviço é um dado obrigatório."));
             entity.Fail(item.CodigoTributario.ToString().Length > 20, new Error("O código da tributação não pode ter mais que 20 caracteres."));
         }
 

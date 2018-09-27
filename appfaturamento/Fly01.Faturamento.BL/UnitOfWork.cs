@@ -111,7 +111,7 @@ namespace Fly01.Faturamento.BL
         public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));
 
         private NFSeBL nfseBL;
-        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL));
+        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL, PessoaBL, CertificadoDigitalBL));
 
         private NFSeServicoBL nfseServicoBL;
         public NFSeServicoBL NFSeServicoBL => nfseServicoBL ?? (nfseServicoBL = new NFSeServicoBL(Context));

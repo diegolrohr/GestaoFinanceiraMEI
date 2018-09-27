@@ -8,5 +8,8 @@ namespace Fly01.Faturamento.ViewModel
     {
         [JsonProperty("totalImpostosServicos")]
         public double TotalImpostosServicos { get; set; }
+
+        [JsonProperty("xmlUnicoTSS")]
+        public string XMLUnicoTSS { get; set; }
     }
 }

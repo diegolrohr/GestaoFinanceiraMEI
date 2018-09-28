@@ -364,6 +364,10 @@
     <Compile Include="Migrations\201809251903596_AlterServicoNFS.Designer.cs">
       <DependentUpon>201809251903596_AlterServicoNFS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.cs" />
+    <Compile Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.Designer.cs">
+      <DependentUpon>201809271346378_AlterNFSAddColumnXmlUnico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -630,6 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809251903596_AlterServicoNFS.resx">
       <DependentUpon>201809251903596_AlterServicoNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.resx">
+      <DependentUpon>201809271346378_AlterNFSAddColumnXmlUnico.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

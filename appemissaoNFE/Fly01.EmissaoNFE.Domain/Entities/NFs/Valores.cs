@@ -84,6 +84,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public double ValorPercapitaTributacao { get; set; }
 
         [XmlElement(ElementName = "valfoncartri")]
-        public double ValorFonCarTributacao { get; set; }
+        public string ValorFonCarTributacao
+        {
+            get { return "IBPT"; }
+            set { }
+        }
     }
 }

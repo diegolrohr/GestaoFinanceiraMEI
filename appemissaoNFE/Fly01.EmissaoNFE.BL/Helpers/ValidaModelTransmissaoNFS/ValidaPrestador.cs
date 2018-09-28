@@ -90,7 +90,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarInscricaoMunucipal(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.InscricaoMunicipalPrestador.ToString()), 
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.InscricaoMunicipalPrestador), 
                 new Error("Inscrição municipal é obrigatório.", "InscricaoMunicipal"));
         }
     }

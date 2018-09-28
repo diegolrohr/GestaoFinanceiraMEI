@@ -246,7 +246,6 @@ namespace Fly01.Faturamento.BL
                 CodigoIBGE = empresa.Cidade?.CodigoIbge ?? "",
                 IdNotaFiscal = "",
                 XMLUnicoTSSString = notaFiscal.XMLUnicoTSS
-
             };
 
             RestHelper.ExecutePostRequest<List<CancelarNFSRetornoVM>>(AppDefaults.UrlEmissaoNfeApi, "cancelarNFS", JsonConvert.SerializeObject(cancelar), null, header);

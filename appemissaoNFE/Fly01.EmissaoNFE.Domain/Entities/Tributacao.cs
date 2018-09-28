@@ -21,5 +21,13 @@ namespace Fly01.EmissaoNFE.Domain
         public Fcp Fcp { get; set; }
 
         public FcpSt FcpSt { get; set; }
+
+        public Pis Pis { get; set; }
+
+        public Cofins Cofins { get; set; }
+
+        public Inss Inss { get; set; }
+
+        public ImpostoRenda ImpostoRenda { get; set; }
     }
 }

@@ -18,8 +18,8 @@ namespace Fly01.EmissaoNFE.BL
             {
                 Base = valorBase,
                 Aliquota = entity.Cofins.Aliquota,
-                Valor = Math.Round(valorBase / 100 * entity.Cofins.Aliquota, 2),
-                ValorRetencao = entity.Cofins.AplicaRetencao ? Math.Round(valorBase / 100 * entity.Cofins.Aliquota, 2) : 0,
+                Valor = entity.Cofins.CalculaCofins ? Math.Round(valorBase / 100 * entity.Cofins.Aliquota, 2) : 0,
+                ValorRetencao = entity.Cofins.RetemCofins ? Math.Round(valorBase / 100 * entity.Cofins.Aliquota, 2) : 0,
                 AgregaTotalNota = false
             };
         }

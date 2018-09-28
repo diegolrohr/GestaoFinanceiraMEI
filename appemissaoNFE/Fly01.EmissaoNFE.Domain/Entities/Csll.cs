@@ -3,6 +3,7 @@
     public class Csll
     {
         public double Aliquota { get; set; }
-        public bool AplicaRetencao { get; set; }
+        public bool RetemCsll { get; set; }
+        public bool CalculaCsll { get; set; }
     }
 }

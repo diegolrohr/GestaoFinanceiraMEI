@@ -382,21 +382,55 @@ namespace Fly01.Faturamento.BL
                     }
                 }
                 //COFINS
-                if (grupoTributario.CalculaCofins && tipoVenda != TipoVenda.Complementar)
+                if ((grupoTributario.CalculaCofins || grupoTributario.RetemCofins) && tipoVenda != TipoVenda.Complementar)
                 {
                     tributacao.Cofins = new Cofins()
                     {
                         Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
-                        FreteNaBase = grupoTributario.AplicaFreteBaseCofins
+                        FreteNaBase = grupoTributario.AplicaFreteBaseCofins,
+                        CalculaCofins = grupoTributario.CalculaCofins,
+                        RetemCofins = grupoTributario.RetemCofins
                     };
-                }
+                }                
                 //PIS
-                if (grupoTributario.CalculaPis && tipoVenda != TipoVenda.Complementar)
+                if ((grupoTributario.CalculaPis || grupoTributario.RetemPis) && tipoVenda != TipoVenda.Complementar)
                 {
                     tributacao.Pis = new Pis()
                     {
                         Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
-                        FreteNaBase = grupoTributario.AplicaFreteBasePis
+                        FreteNaBase = grupoTributario.AplicaFreteBasePis,
+                        CalculaPis = grupoTributario.CalculaPis,
+                        RetemPis = grupoTributario.RetemPis
+                    };
+                }
+                //CSLL
+                if ((grupoTributario.CalculaCSLL || grupoTributario.RetemCSLL) && tipoVenda != TipoVenda.Complementar)
+                {
+                    tributacao.Csll = new Csll()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        CalculaCsll = grupoTributario.CalculaCSLL,
+                        RetemCsll = grupoTributario.RetemCSLL
+                    };
+                }
+                //INSS
+                if ((grupoTributario.CalculaINSS || grupoTributario.RetemINSS) && tipoVenda != TipoVenda.Complementar)
+                {
+                    tributacao.Inss = new Inss()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        CalculaInss = grupoTributario.CalculaINSS,
+                        RetemInss = grupoTributario.RetemINSS
+                    };
+                }
+                //ImpostoRenda
+                if ((grupoTributario.CalculaImpostoRenda || grupoTributario.RetemImpostoRenda) && tipoVenda != TipoVenda.Complementar)
+                {
+                    tributacao.ImpostoRenda = new ImpostoRenda()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        CalculaImpostoRenda = grupoTributario.CalculaImpostoRenda,
+                        RetemImpostoRenda = grupoTributario.RetemImpostoRenda
                     };
                 }
 
@@ -442,12 +476,35 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.PISBase = responseTributacao.Pis.Base;
                     itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
                     itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                    //itemRetorno.PISValorRetencao = responseTributacao.Pis.ValorRetencao;
                 }
                 if (responseTributacao.Cofins != null)
                 {
                     itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
                     itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
                     itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                    //itemRetorno.COFINSValorRetencao = responseTributacao.Cofins.ValorRetencao;
+                }
+                if (responseTributacao.Csll != null)
+                {
+                    //itemRetorno.CSLLAliquota = responseTributacao.Csll.Base;
+                    //itemRetorno.CSLLAliquota = responseTributacao.Csll.Aliquota;
+                    //itemRetorno.CSLLValor = responseTributacao.Csll.Valor;
+                    //itemRetorno.CSLLValorRetencao = responseTributacao.Csll.ValorRetencao;
+                }
+                if (responseTributacao.Inss != null)
+                {
+                    //itemRetorno.INSSAliquota = responseTributacao.Inss.Base;
+                    //itemRetorno.INSSAliquota = responseTributacao.Inss.Aliquota;
+                    //itemRetorno.INSSValor = responseTributacao.Inss.Valor;
+                    //itemRetorno.INSSValorRetencao = responseTributacao.Inss.ValorRetencao;
+                }
+                if (responseTributacao.ImpostoRenda != null)
+                {
+                    //itemRetorno.ImpostoRendaAliquota = responseTributacao.ImpostoRenda.Base;
+                    //itemRetorno.ImpostoRendaAliquota = responseTributacao.ImpostoRenda.Aliquota;
+                    //itemRetorno.ImpostoRendaValor = responseTributacao.ImpostoRenda.Valor;
+                    //itemRetorno.ImpostoRendaValorRetencao = responseTributacao.ImpostoRenda.ValorRetencao;
                 }
 
                 result.Add(itemRetorno);

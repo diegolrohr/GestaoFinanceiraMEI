@@ -67,6 +67,9 @@ namespace Fly01.EmissaoNFE.BL
         private InssBL inssBL;
         public InssBL InssBL => inssBL ?? (inssBL = new InssBL(Context));
 
+        private CsllBL csll;
+        public CsllBL CsllBL => csll ?? (csll = new CsllBL(Context));
+
         private ImpostoRendaBL impostoRendaBL;
         public ImpostoRendaBL ImpostoRendaBL => impostoRendaBL ?? (impostoRendaBL = new ImpostoRendaBL(Context));
 
@@ -77,8 +80,7 @@ namespace Fly01.EmissaoNFE.BL
         public TabelaIcmsBL TabelaIcmsBL => tabelaIcmsBL ?? (tabelaIcmsBL = new TabelaIcmsBL(Context));
         
         private TributacaoBL tributacaoBL;
-        public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL, PisBL, CofinsBL, InssBL, ImpostoRendaBL));
-
+        public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL, PisBL, CofinsBL, InssBL, ImpostoRendaBL, CsllBL));
 
         #endregion
 

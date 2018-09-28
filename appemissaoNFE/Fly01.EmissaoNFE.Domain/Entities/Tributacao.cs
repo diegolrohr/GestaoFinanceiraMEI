@@ -28,6 +28,8 @@ namespace Fly01.EmissaoNFE.Domain
 
         public Inss Inss { get; set; }
 
+        public Csll Csll { get; set; }
+
         public ImpostoRenda ImpostoRenda { get; set; }
     }
 }

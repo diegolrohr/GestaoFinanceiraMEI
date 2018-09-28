@@ -20,9 +20,10 @@ namespace Fly01.EmissaoNFE.BL
         protected CofinsBL CofinsBL;
         protected InssBL InssBL;
         protected ImpostoRendaBL ImpostoRendaBL;
+        protected CsllBL CsllBL;
 
         public TributacaoBL(AppDataContextBase context, TabelaIcmsBL tabelaIcmsBL, NcmBL ncmBL, IcmsBL icmsBL, DifalBL difalBL, SubstituicaoTributariaBL substituicaoTributariaBL,
-            IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL, PisBL pisBL, CofinsBL cofinsBL, InssBL inssBL, ImpostoRendaBL impostoRendaBL) : base(context)
+            IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL, PisBL pisBL, CofinsBL cofinsBL, InssBL inssBL, ImpostoRendaBL impostoRendaBL, CsllBL csllBL) : base(context)
         {
             TabelaIcmsBL = tabelaIcmsBL;
             IcmsBL = icmsBL;
@@ -36,6 +37,7 @@ namespace Fly01.EmissaoNFE.BL
             CofinsBL = cofinsBL;
             InssBL = inssBL;
             ImpostoRendaBL = impostoRendaBL;
+            CsllBL = csllBL;
         }
         
         public TributacaoRetornoVM GeraImpostos(Tributacao entity)
@@ -75,6 +77,9 @@ namespace Fly01.EmissaoNFE.BL
 
             if (entity.ImpostoRenda != null)
                 retorno.ImpostoRenda = ImpostoRendaBL.ImpostoRenda(entity);
+
+            if (entity.Csll != null)
+                retorno.Csll = CsllBL.Csll(entity);
 
             return retorno;
         }
@@ -142,6 +147,10 @@ namespace Fly01.EmissaoNFE.BL
 
             #region Validações Entity.ImpostoRenda
             entity.Fail(entity.ImpostoRenda != null && entity.ImpostoRenda.Aliquota < 0, new Error("Alíquota do Imposto de Renda inválida.", "ImpostoRenda.Aliquota"));
+            #endregion
+
+            #region Validações Entity.Csll
+            entity.Fail(entity.Csll != null && entity.Csll.Aliquota < 0, new Error("Alíquota do CSLL inválida.", "Csll.Aliquota"));
             #endregion
 
             base.ValidaModel(entity);

@@ -27,6 +27,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     }
 
                     unitOfWork.MonitorNFBL.AtualizaStatusTSS(PlataformaUrl);
+                    unitOfWork.MonitorNFSBL.AtualizaStatusTSS(PlataformaUrl);
                     await unitOfWork.Save();
                 }
 

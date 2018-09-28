@@ -35,7 +35,7 @@ namespace Fly01.Faturamento.BL.Helpers
 
         public TransmissaoNFSVM ObterTransmissaoNFSVM()
         {
-            var itemTransmissaoNFS = ObterCabecalhoTransmissaoNFS();
+            var itemTransmissaoNFS = ObterTransmissaoNFS();
             // falta Obter serviço e valores
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
         }
@@ -63,7 +63,7 @@ namespace Fly01.Faturamento.BL.Helpers
             }
         }
 
-        private ItemTransmissaoNFSVM ObterCabecalhoTransmissaoNFS()
+        private ItemTransmissaoNFSVM ObterTransmissaoNFS()
         {
             return new ItemTransmissaoNFSVM()
             {

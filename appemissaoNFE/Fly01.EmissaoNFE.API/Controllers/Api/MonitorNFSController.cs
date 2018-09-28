@@ -9,7 +9,7 @@ using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
-    [RoutePrefix("monitornfs")]
+    [RoutePrefix("monitorNFS")]
     public class MonitorNFSController : ApiBaseController
     {
         [HttpPost]

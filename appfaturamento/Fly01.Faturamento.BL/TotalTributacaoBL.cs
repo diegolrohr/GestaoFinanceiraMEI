@@ -135,7 +135,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public bool ConfiguracaoTSSOK(string plataformaId = null, string resourceOK = "configuracaoOK")
+        public bool ConfiguracaoTSSOK(string plataformaId = null)
         {
             try
             {
@@ -143,14 +143,48 @@ namespace Fly01.Faturamento.BL
 
                 if (retorno != null)
                 {
-                    string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"{resourceOK}?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+                    var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+
+                    var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
+                    return true;
+                }
+                else
+                {
+                    throw new BusinessException("Para transmitir, cadastre o seu Certificado Digital em Configurações");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public bool ConfiguracaoTSSOKNFS(string plataformaId = null)
+        {
+            try
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
+
+                var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
+
+                if (retorno != null)
+                {
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
+
+                    var header = new Dictionary<string, string>()
+                    {
+                        { "AppUser", AppUser },
+                        { "PlataformaUrl", entidade }
+                    };
+                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge?? ""}";
+
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
                 }
@@ -350,16 +384,20 @@ namespace Fly01.Faturamento.BL
                 //COFINS
                 if (grupoTributario.CalculaCofins && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
-                    itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
+                    tributacao.Cofins = new Cofins()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBaseCofins
+                    };
                 }
                 //PIS
                 if (grupoTributario.CalculaPis && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
-                    itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
+                    tributacao.Pis = new Pis()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBasePis
+                    };
                 }
 
                 var json = JsonConvert.SerializeObject(tributacao);
@@ -399,6 +437,19 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
                     itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
                 }
+                if (responseTributacao.Pis != null)
+                {
+                    itemRetorno.PISBase = responseTributacao.Pis.Base;
+                    itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
+                    itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                }
+                if (responseTributacao.Cofins != null)
+                {
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
+                    itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                }
+
                 result.Add(itemRetorno);
             }
             return result;

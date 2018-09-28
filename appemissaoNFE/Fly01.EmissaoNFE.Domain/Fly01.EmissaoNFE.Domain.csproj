@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\ImpostoRenda.cs" />
+    <Compile Include="Entities\Csll.cs" />
     <Compile Include="Entities\Inss.cs" />
     <Compile Include="Entities\Eventos\CartaCorrecaoEvento.cs" />
     <Compile Include="Entities\Eventos\DetalheEvento.cs" />

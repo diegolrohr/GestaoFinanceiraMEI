@@ -384,16 +384,20 @@ namespace Fly01.Faturamento.BL
                 //COFINS
                 if (grupoTributario.CalculaCofins && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
-                    itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
+                    tributacao.Cofins = new Cofins()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBaseCofins
+                    };
                 }
                 //PIS
                 if (grupoTributario.CalculaPis && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
-                    itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
+                    tributacao.Pis = new Pis()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBasePis
+                    };
                 }
 
                 var json = JsonConvert.SerializeObject(tributacao);
@@ -433,6 +437,19 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
                     itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
                 }
+                if (responseTributacao.Pis != null)
+                {
+                    itemRetorno.PISBase = responseTributacao.Pis.Base;
+                    itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
+                    itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                }
+                if (responseTributacao.Cofins != null)
+                {
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
+                    itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                }
+
                 result.Add(itemRetorno);
             }
             return result;

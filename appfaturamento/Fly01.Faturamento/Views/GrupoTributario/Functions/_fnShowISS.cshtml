@@ -2,6 +2,7 @@
     function fnShowISS() {
         //Se ha calculo de ISS (checked), habilite os campos relacionados
         if ($('#calculaIss:checked').val() == "true") {
+            $('input#retemISS').removeAttr('disabled');
             $('select#tipoTributacaoISS').removeAttr('disabled');
             $('select#tipoTributacaoISS').material_select();
             $('select#tipoPagamentoImpostoISS').removeAttr('disabled');
@@ -20,6 +21,7 @@
         }
         else {
             //Se nao ha calculo de ISS, desabilite os campos relacionados
+            $('input#retemISS').attr('disabled', 'disabled');
             $('select#tipoTributacaoISS').attr('disabled', 'disabled');
             $('select#tipoTributacaoISS').material_select();
             $('select#tipoPagamentoImpostoISS').attr('disabled', 'disabled');

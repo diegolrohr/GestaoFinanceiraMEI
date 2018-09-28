@@ -114,6 +114,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool CalculaIss { get; set; }
 
+        public bool RetemISS { get; set; }
+
         [JsonIgnore]
         public TipoTributacaoISS? TipoTributacaoISS { get; set; }
 
@@ -169,6 +171,18 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool AplicaDespesaBaseST { get; set; }
 
         public bool AplicaIpiBaseST { get; set; }
+
+        public bool CalculaCSLL { get; set; }
+
+        public bool RetemCSLL { get; set; }
+
+        public bool CalculaINSS { get; set; }
+
+        public bool RetemINSS { get; set; }
+
+        public bool CalculaImpostoRenda { get; set; }
+
+        public bool RetemImpostoRenda { get; set; }
 
         public virtual Cfop Cfop { get; set; }
     }

@@ -227,8 +227,8 @@ namespace Fly01.Compras.BL
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                             Difal = grupoTributario.CalculaIcmsDifal,
                             FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                            EstadoDestino = fornecedor.Estado.Sigla,
-                            EstadoOrigem = estadoOrigem,
+                            EstadoOrigem = (tipoCompra != TipoVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem),//na devolução inverte
+                            EstadoDestino = (tipoCompra != TipoVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla),
                             CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                         };
                         if (produto.AliquotaIpi > 0)
@@ -254,11 +254,11 @@ namespace Fly01.Compras.BL
                     //ST
                     if (grupoTributario.CalculaSubstituicaoTributaria)
                     {
-                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                             x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                             x.CestId == produto.CestId.Value &
-                            x.EstadoOrigem.Sigla == estadoOrigem &
-                            x.EstadoDestinoId == fornecedor.EstadoId &
+                            x.EstadoOrigem.Sigla == (tipoCompra != TipoVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem) &
+                            x.EstadoDestino.Sigla == (tipoCompra != TipoVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla) &
                             x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
                             ).FirstOrDefault();
 
@@ -266,8 +266,8 @@ namespace Fly01.Compras.BL
                         {
                             tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                             {
-                                EstadoDestino = fornecedor.Estado.Sigla,
-                                EstadoOrigem = estadoOrigem,
+                                EstadoOrigem = fornecedor.Estado.Sigla,
+                                EstadoDestino = estadoOrigem,
                                 FreteNaBase = grupoTributario.AplicaFreteBaseST,
                                 DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                                 Mva = st.Mva,

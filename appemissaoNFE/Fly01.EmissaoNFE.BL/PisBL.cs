@@ -12,12 +12,13 @@ namespace Fly01.EmissaoNFE.BL
         }
         
         public TributacaoRetornoBaseVM Pis(Tributacao entity)
-        {            
+        {
+            var valorBase = entity.ValorBase + (entity.Pis.FreteNaBase ? entity.ValorFrete : 0);
             return new TributacaoRetornoBaseVM
             {
-                Base = entity.ValorBase,
+                Base = valorBase,
                 Aliquota = entity.Pis.Aliquota,
-                Valor = Math.Round(entity.ValorBase / 100 * entity.Pis.Aliquota, 2),
+                Valor = Math.Round(valorBase / 100 * entity.Pis.Aliquota, 2),
                 AgregaTotalNota = false
             };
         }

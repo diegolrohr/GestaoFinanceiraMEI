@@ -81,7 +81,7 @@ namespace Fly01.Compras.BL
                 }
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
                 num++;
             }
@@ -196,7 +196,7 @@ namespace Fly01.Compras.BL
                     var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
                     if (grupoTributario == null)
                     {
-                        throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                        throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                     }
                     var produto = GetProduto(itemProduto.ProdutoId);
                     if (produto == null)

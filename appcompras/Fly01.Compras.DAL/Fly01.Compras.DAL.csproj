@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201809241954115_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
       <DependentUpon>201809241954115_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.cs" />
+    <Compile Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.Designer.cs">
+      <DependentUpon>201809281654351_AddNovosImpostosGrupoTributario.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -420,6 +424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809241954115_AlterPessoaAddTipoSituacaoEspecial.resx">
       <DependentUpon>201809241954115_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.resx">
+      <DependentUpon>201809281654351_AddNovosImpostosGrupoTributario.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

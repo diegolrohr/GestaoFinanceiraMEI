@@ -18,6 +18,7 @@ namespace Fly01.EmissaoNFE.BL
                 Base = entity.ValorBase,
                 Aliquota = entity.ImpostoRenda.Aliquota,
                 Valor = Math.Round(entity.ValorBase / 100 * entity.ImpostoRenda.Aliquota, 2),
+                ValorRetencao = entity.ImpostoRenda.AplicaRetencao ? Math.Round(entity.ValorBase / 100 * entity.ImpostoRenda.Aliquota, 2) : 0,
                 AgregaTotalNota = false
             };
         }

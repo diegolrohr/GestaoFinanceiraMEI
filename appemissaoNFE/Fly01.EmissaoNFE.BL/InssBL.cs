@@ -18,6 +18,7 @@ namespace Fly01.EmissaoNFE.BL
                 Base = entity.ValorBase,
                 Aliquota = entity.Inss.Aliquota,
                 Valor = Math.Round(entity.ValorBase / 100 * entity.Inss.Aliquota, 2),
+                ValorRetencao = entity.Inss.AplicaRetencao ? Math.Round(entity.ValorBase / 100 * entity.Inss.Aliquota, 2) : 0,
                 AgregaTotalNota = false
             };
         }

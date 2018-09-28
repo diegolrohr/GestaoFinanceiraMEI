@@ -192,6 +192,14 @@
     <Compile Include="Migrations\201809141718494_CreateSiafi.Designer.cs">
       <DependentUpon>201809141718494_CreateSiafi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809281733162_DeleteIBPT_2018.cs" />
+    <Compile Include="Migrations\201809281733162_DeleteIBPT_2018.Designer.cs">
+      <DependentUpon>201809281733162_DeleteIBPT_2018.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809281736205_InsertIBPT_2019_1.cs" />
+    <Compile Include="Migrations\201809281736205_InsertIBPT_2019_1.Designer.cs">
+      <DependentUpon>201809281736205_InsertIBPT_2019_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CfopDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -326,6 +334,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809141718494_CreateSiafi.resx">
       <DependentUpon>201809141718494_CreateSiafi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809281733162_DeleteIBPT_2018.resx">
+      <DependentUpon>201809281733162_DeleteIBPT_2018.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809281736205_InsertIBPT_2019_1.resx">
+      <DependentUpon>201809281736205_InsertIBPT_2019_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,7 @@
     <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ISSController.cs" />
+    <Compile Include="Controllers\Api\MonitorNFSController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalConfiguracaoGrupoTributarioController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />

@@ -135,7 +135,7 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public bool ConfiguracaoTSSOK(string plataformaId = null, string resourceOK = "configuracaoOK")
+        public bool ConfiguracaoTSSOK(string plataformaId = null)
         {
             try
             {
@@ -143,14 +143,48 @@ namespace Fly01.Faturamento.BL
 
                 if (retorno != null)
                 {
-                    string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"{resourceOK}?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+                    var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+
+                    var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
+                    return true;
+                }
+                else
+                {
+                    throw new BusinessException("Para transmitir, cadastre o seu Certificado Digital em Configurações");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public bool ConfiguracaoTSSOKNFS(string plataformaId = null)
+        {
+            try
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
+
+                var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
+
+                if (retorno != null)
+                {
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
+
+                    var header = new Dictionary<string, string>()
+                    {
+                        { "AppUser", AppUser },
+                        { "PlataformaUrl", entidade }
+                    };
+                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge?? ""}";
+
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
                 }

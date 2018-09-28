@@ -15,18 +15,16 @@ namespace Fly01.Compras.BL
     {
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NFeEntradaBL NFeEntradaBL { get; set; }
-        protected NotaFiscalEntradaBL NotaFiscalEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
         protected NotaFiscalCartaCorrecaoEntradaBL NotaFiscalCartaCorrecaoEntradaBL { get; set; }
 
         public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeEntradaBL nFeEntradaBL,
-            NotaFiscalEntradaBL notaFiscalEntradaBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL notaFiscalCartaCorrecaoEntradaBL)
+            CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL notaFiscalCartaCorrecaoEntradaBL)
             : base(context)
         {
             TotalTributacaoBL = totalTributacao;
             NFeEntradaBL = nFeEntradaBL;
-            NotaFiscalEntradaBL = notaFiscalEntradaBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
             NotaFiscalCartaCorrecaoEntradaBL = notaFiscalCartaCorrecaoEntradaBL;
@@ -34,8 +32,8 @@ namespace Fly01.Compras.BL
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NotaFiscalEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
-                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
+            var notasFiscaisByPlataforma = (from nf in NFeEntradaBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
 

@@ -22,6 +22,7 @@ namespace Fly01.EmissaoNFE.BL
             entity.SubstituicaoTributaria.Aliquota = aliquotaIntraEstadual;
             entity.SubstituicaoTributaria.Base = (100 + entity.SubstituicaoTributaria.Mva) / 100 * valorBase;
 
+
             var valorIntraEstadual = Math.Round(entity.SubstituicaoTributaria.Base / 100 * aliquotaIntraEstadual, 2);
             var valorInterEstadual = Math.Round(valorBase / 100 * aliquotaInterEstadual, 2);
 

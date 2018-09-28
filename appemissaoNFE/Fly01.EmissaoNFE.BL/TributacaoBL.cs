@@ -16,8 +16,13 @@ namespace Fly01.EmissaoNFE.BL
         protected NcmBL NcmBL;
         protected FcpBL FcpBL;
         protected FcpStBL FcpStBL;
+        protected PisBL PisBL;
+        protected CofinsBL CofinsBL;
+        protected InssBL InssBL;
+        protected ImpostoRendaBL ImpostoRendaBL;
 
-        public TributacaoBL(AppDataContextBase context, TabelaIcmsBL tabelaIcmsBL, NcmBL ncmBL, IcmsBL icmsBL, DifalBL difalBL, SubstituicaoTributariaBL substituicaoTributariaBL, IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL) : base(context)
+        public TributacaoBL(AppDataContextBase context, TabelaIcmsBL tabelaIcmsBL, NcmBL ncmBL, IcmsBL icmsBL, DifalBL difalBL, SubstituicaoTributariaBL substituicaoTributariaBL,
+            IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL, PisBL pisBL, CofinsBL cofinsBL, InssBL inssBL, ImpostoRendaBL impostoRendaBL) : base(context)
         {
             TabelaIcmsBL = tabelaIcmsBL;
             IcmsBL = icmsBL;
@@ -27,6 +32,10 @@ namespace Fly01.EmissaoNFE.BL
             NcmBL = ncmBL;
             FcpBL = fcpBL;
             FcpStBL = fcpStBL;
+            PisBL = pisBL;
+            CofinsBL = cofinsBL;
+            InssBL = inssBL;
+            ImpostoRendaBL = impostoRendaBL;
         }
         
         public TributacaoRetornoVM GeraImpostos(Tributacao entity)
@@ -55,13 +64,25 @@ namespace Fly01.EmissaoNFE.BL
                     retorno.Fcp = FcpBL.Fcp(entity);
             }
 
+            if (entity.Pis != null)
+                retorno.Pis = PisBL.Pis(entity);
+
+            if (entity.Cofins != null)
+                retorno.Cofins = CofinsBL.Cofins(entity);
+
+            if (entity.Inss != null)
+                retorno.Inss = InssBL.Inss(entity);
+
+            if (entity.ImpostoRenda != null)
+                retorno.ImpostoRenda = ImpostoRendaBL.ImpostoRenda(entity);
+
             return retorno;
         }
         
         public override void ValidaModel(Tributacao entity)
         {
             #region Validações Entity
-            //entity.Fail(entity.ValorBase <= 0, ValorBaseInvalido);
+            entity.Fail(entity.ValorBase < 0, ValorBaseInvalido);
             entity.Fail(!string.IsNullOrEmpty(entity.ValorDespesa.ToString()) && entity.ValorDespesa < 0, ValorDespesaNegativo);
             entity.Fail(!string.IsNullOrEmpty(entity.ValorFrete.ToString()) && entity.ValorFrete < 0, ValorFreteNegativo);
             #endregion
@@ -107,11 +128,27 @@ namespace Fly01.EmissaoNFE.BL
             entity.Fail(entity.FcpSt != null && entity.FcpSt.Aliquota < 0, AliquotaFcpStInvalida);
             #endregion
 
+            #region Validações Entity.Pis
+            entity.Fail(entity.Pis != null && entity.Pis.Aliquota < 0, new Error("Alíquota de PIS inválida.", "Pis.Aliquota"));
+            #endregion
+
+            #region Validações Entity.Cofins
+            entity.Fail(entity.Cofins != null && entity.Cofins.Aliquota < 0, new Error("Alíquota de COFINS inválida.", "Cofins.Aliquota"));
+            #endregion
+
+            #region Validações Entity.Inss
+            entity.Fail(entity.Inss != null && entity.Inss.Aliquota < 0, new Error("Alíquota de INSS inválida.", "Inss.Aliquota"));
+            #endregion
+
+            #region Validações Entity.ImpostoRenda
+            entity.Fail(entity.ImpostoRenda != null && entity.ImpostoRenda.Aliquota < 0, new Error("Alíquota do Imposto de Renda inválida.", "ImpostoRenda.Aliquota"));
+            #endregion
+
             base.ValidaModel(entity);
         }
 
         #region ErrorMessages Entity
-        public static Error ValorBaseInvalido = new Error("Valor base deve ser maior que zero.", "ValorBase");
+        public static Error ValorBaseInvalido = new Error("Valor base deve ser maior ou igual a zero.", "ValorBase");
         public static Error ValorDespesaNegativo = new Error("Valor de despesas deve ser maior ou igual a zero.", "ValorDespesa");
         public static Error ValorFreteNegativo = new Error("Valor de frete deve ser maior ou igual a zero.", "ValorFrete");
         #endregion

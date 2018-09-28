@@ -23,22 +23,26 @@ namespace Fly01.Faturamento.BL
         protected PessoaBL PessoaBL { get; set; }
         protected GrupoTributarioBL GrupoTributarioBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }
+        protected ServicoBL ServicoBL { get; set; }
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected ParametroTributarioBL ParametroTributarioBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected OrdemVendaProdutoBL OrdemVendaProdutoBL { get; set; }
+        protected OrdemVendaServicoBL OrdemVendaServicoBL { get; set; }
 
-        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL) : base(context)
+        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, ServicoBL servicoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL) : base(context)
         {
             PessoaBL = pessoaBL;
             GrupoTributarioBL = grupoTributarioBL;
             ProdutoBL = produtoBL;
+            ServicoBL = servicoBL;
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
+            OrdemVendaServicoBL = ordemVendaServicoBL;
         }
 
         public GrupoTributario GetGrupoTributario(Guid grupoTributarioId)
@@ -56,23 +60,34 @@ namespace Fly01.Faturamento.BL
             return ProdutoBL.All.Where(x => x.Id == produtoId).AsNoTracking().FirstOrDefault();
         }
 
+        public Servico GetServico(Guid servicoId)
+        {
+            return ServicoBL.All.Where(x => x.Id == servicoId).AsNoTracking().FirstOrDefault();
+        }
+
         public ParametroTributario GetParametrosTributarios()
         {
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
         }
 
-        public List<OrdemVendaProduto> GetOrdemVendaItens(Guid ordemVendaId)
+        public List<OrdemVendaProduto> GetOrdemVendaProdutos(Guid ordemVendaId)
         {
             return OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
+        }
+
+        public List<OrdemVendaServico> GetOrdemVendaServicos(Guid ordemVendaId)
+        {
+            return OrdemVendaServicoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
         }
 
         public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)
         {
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
-            var ordemVendaItens = GetOrdemVendaItens(entity.Id);
+            var ordemVendaProdutos = GetOrdemVendaProdutos(entity.Id);
+            var ordemVendaServicos = GetOrdemVendaServicos(entity.Id);
             int num = 1;
-            foreach (var item in ordemVendaItens)
+            foreach (var item in ordemVendaProdutos)
             {
                 if(GetProduto(item.ProdutoId) == null)
                 {
@@ -80,7 +95,20 @@ namespace Fly01.Faturamento.BL
                 }
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                }
+                num++;
+            }
+            num = 1;
+            foreach (var item in ordemVendaServicos)
+            {
+                if (GetServico(item.ServicoId) == null)
+                {
+                    throw new BusinessException(string.Format("Serviço informado no item {0}, inexistente ou excluído.", num));
+                }
+                if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
+                {
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no serviço {0}.", num));
                 }
                 num++;
             }
@@ -223,7 +251,7 @@ namespace Fly01.Faturamento.BL
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
                 if(grupoTributario == null)
                 {
-                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no item {0}.", num));
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
                 var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
                 if (produto == null)
@@ -256,8 +284,8 @@ namespace Fly01.Faturamento.BL
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                        EstadoDestino = cliente.Estado.Sigla,
-                        EstadoOrigem = estadoOrigem,
+                        EstadoOrigem = (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla),//inverte na devolução
+                        EstadoDestino = (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem),
                         CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                     };
                     if (produto.AliquotaIpi > 0)
@@ -289,11 +317,11 @@ namespace Fly01.Faturamento.BL
                     var isSaida = (tipoVenda == TipoVenda.Normal)
                         || (tipoVenda == TipoVenda.Complementar && !nFeRefIsDevolucao);
 
-                    var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                    var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                         x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                         x.CestId == produto.CestId.Value &
-                        x.EstadoOrigem.Sigla == estadoOrigem &
-                        x.EstadoDestinoId == cliente.EstadoId &
+                        x.EstadoOrigem.Sigla == (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla) & //inverte na devolução
+                        x.EstadoDestino.Sigla == (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem) &
                         x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                         ).FirstOrDefault();
 
@@ -301,8 +329,8 @@ namespace Fly01.Faturamento.BL
                     {
                         tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                         {
-                            EstadoDestino = cliente.Estado.Sigla,
-                            EstadoOrigem = estadoOrigem,
+                            EstadoDestino = (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem),
+                            EstadoOrigem = (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla),
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,

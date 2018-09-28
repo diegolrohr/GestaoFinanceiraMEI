@@ -132,6 +132,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlElement(ElementName = "situacaoespecial")]
         public TipoSituacaoEspecialNFS SituacaoEspecial { get; set; }
-       
+
+        [XmlIgnore]
+        public bool ConsumidorFinal { get; set; }
+
     }
 }

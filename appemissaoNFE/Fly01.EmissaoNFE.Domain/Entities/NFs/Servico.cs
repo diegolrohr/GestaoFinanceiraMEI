@@ -129,6 +129,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "cst")]
         public double CST { get; set; }
 
+        [XmlIgnore]
+        public string CodigoNBS { get; set; }
 
         [XmlIgnore]
         public double ValorRepasse { get; set; }

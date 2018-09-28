@@ -340,6 +340,7 @@
     <Content Include="Views\Pedido\Functions\_fnClickComplementarIsDevolucao.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLUnicoNFSe.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

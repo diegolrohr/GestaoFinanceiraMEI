@@ -15,20 +15,16 @@ namespace Fly01.Faturamento.BL
     {
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NFeBL NFeBL { get; set; }
-        protected NFSeBL NFSeBL { get; set; }
-        protected NotaFiscalBL NotaFiscalBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
         protected NotaFiscalCartaCorrecaoBL NotaFiscalCartaCorrecaoBL { get; set; }
 
-        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, NFSeBL nFSeBL,
-            NotaFiscalBL notaFiscalBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL)
+        public MonitorNFBL(AppDataContextBase context, TotalTributacaoBL totalTributacao, NFeBL nFeBL, 
+            CertificadoDigitalBL certificadoDigitalBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoBL notaFiscalCartaCorrecaoBL)
             : base(context)
         {
             TotalTributacaoBL = totalTributacao;
             NFeBL = nFeBL;
-            NFSeBL = nFSeBL;
-            NotaFiscalBL = notaFiscalBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
             NotaFiscalCartaCorrecaoBL = notaFiscalCartaCorrecaoBL;
@@ -36,8 +32,8 @@ namespace Fly01.Faturamento.BL
 
         public void AtualizaStatusTSS(string plataformaUrl)
         {
-            var notasFiscaisByPlataforma = (from nf in NotaFiscalBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
-                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl
+            var notasFiscaisByPlataforma = (from nf in NFeBL.Everything.Where(x => (x.Status == StatusNotaFiscal.Transmitida || x.Status == StatusNotaFiscal.EmCancelamento))
+                                            where string.IsNullOrEmpty(plataformaUrl) || nf.PlataformaId == plataformaUrl && nf.TipoNotaFiscal == TipoNotaFiscal.NFe
                                             group nf by nf.PlataformaId into g
                                             select new { plataformaId = g.Key, notaInicial = g.Min(x => x.SefazId), notaFinal = g.Max(x => x.SefazId) });
 
@@ -85,20 +81,6 @@ namespace Fly01.Faturamento.BL
                                 nfe.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
                                 nfe.Mensagem = itemNF.Mensagem;
                                 nfe.Recomendacao = itemNF.Recomendacao;
-                            }
-                            else
-                            {
-                                var nfse = NFSeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
-                                if (nfse != null)
-                                {
-                                    nfse.Mensagem = null;
-                                    nfse.Recomendacao = null;
-                                    nfse.XML = null;
-
-                                    nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
-                                    nfse.Mensagem = itemNF.Mensagem;
-                                    nfse.Recomendacao = itemNF.Recomendacao;
-                                }
                             }
                         }
                     }

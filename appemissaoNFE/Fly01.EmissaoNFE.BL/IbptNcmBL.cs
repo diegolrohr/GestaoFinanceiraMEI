@@ -83,10 +83,10 @@ namespace Fly01.EmissaoNFE.BL
 
         public void CalculaImpostoIBPTNBS(TransmissaoNFSVM entityNFS)
         {
+            double totalimpostos = 0;
+
             foreach (var servico in entityNFS.ItemTransmissaoNFSVM.Servicos)
             {
-                double totalimpostos = 0;
-
                 var empresaUF = entityNFS.ItemTransmissaoNFSVM.Prestador.UF;
                 double impostoFederal = 0;
                 double impostoEstadual = 0;
@@ -131,10 +131,9 @@ namespace Fly01.EmissaoNFE.BL
 
                     totalimpostos = impostoFederal + impostoEstadual + impostoMunicipal;
 
-                    entityNFS.ItemTransmissaoNFSVM.Servicos.FirstOrDefault().Discriminacao += InformacoesIBPT;
-
-                    entityNFS.ItemTransmissaoNFSVM.Valores.ValorCarTributacao = totalimpostos;
+                    servico.Discriminacao += InformacoesIBPT;
                 }
+                entityNFS.ItemTransmissaoNFSVM.Valores.ValorCarTributacao = totalimpostos;
             }
         }
     }

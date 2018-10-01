@@ -3,6 +3,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
@@ -300,6 +301,17 @@ namespace Fly01.Core.Presentation.Controllers
                 Label = "Calcula Imposto de Renda"
             });
             config.Elements.Add(new InputCheckboxUI { Id = "retemImpostoRenda", Class = "col s12 m6 l6", Label = "Retém Imposto de Renda" });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "calculaSubstituicaoTributaria",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Necessário estar cadastrado no menu de Substituição Tributária, de acordo com a situação do estado origem e destino."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

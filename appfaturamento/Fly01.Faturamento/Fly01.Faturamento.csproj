@@ -341,6 +341,9 @@
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLUnicoNFSe.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowCSLL.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowINSS.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowImpostoRenda.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

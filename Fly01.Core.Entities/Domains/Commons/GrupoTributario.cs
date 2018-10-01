@@ -68,6 +68,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool CalculaPis { get; set; }
 
+        public bool RetemPis { get; set; }
+
         [JsonIgnore]
         public TipoTributacaoPISCOFINS? TipoTributacaoPIS { get; set; }
 
@@ -90,6 +92,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [Required]
         public bool CalculaCofins { get; set; }
+
+        public bool RetemCofins { get; set; }
 
         [JsonIgnore]
         public TipoTributacaoPISCOFINS? TipoTributacaoCOFINS { get; set; }

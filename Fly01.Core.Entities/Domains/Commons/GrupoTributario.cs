@@ -68,6 +68,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool CalculaPis { get; set; }
 
+        public bool RetemPis { get; set; }
+
         [JsonIgnore]
         public TipoTributacaoPISCOFINS? TipoTributacaoPIS { get; set; }
 
@@ -91,6 +93,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public bool CalculaCofins { get; set; }
 
+        public bool RetemCofins { get; set; }
+
         [JsonIgnore]
         public TipoTributacaoPISCOFINS? TipoTributacaoCOFINS { get; set; }
 
@@ -113,6 +117,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [Required]
         public bool CalculaIss { get; set; }
+
+        public bool RetemISS { get; set; }
 
         [JsonIgnore]
         public TipoTributacaoISS? TipoTributacaoISS { get; set; }
@@ -169,6 +175,18 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool AplicaDespesaBaseST { get; set; }
 
         public bool AplicaIpiBaseST { get; set; }
+
+        public bool CalculaCSLL { get; set; }
+
+        public bool RetemCSLL { get; set; }
+
+        public bool CalculaINSS { get; set; }
+
+        public bool RetemINSS { get; set; }
+
+        public bool CalculaImpostoRenda { get; set; }
+
+        public bool RetemImpostoRenda { get; set; }
 
         public virtual Cfop Cfop { get; set; }
     }

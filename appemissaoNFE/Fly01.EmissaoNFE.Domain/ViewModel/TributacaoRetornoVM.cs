@@ -21,5 +21,7 @@
         public TributacaoRetornoBaseVM Inss { get; set; }
 
         public TributacaoRetornoBaseVM ImpostoRenda { get; set; }
+
+        public TributacaoRetornoBaseVM Csll { get; set; }
     }
 }

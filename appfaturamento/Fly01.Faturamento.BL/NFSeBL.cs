@@ -162,8 +162,7 @@ namespace Fly01.Faturamento.BL
         {
             try
             {
-                var resourceOK = "configuracaoOKNFS";
-                if (!TotalTributacaoBL.ConfiguracaoTSSOK(null, resourceOK))
+                if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
                 {
                     throw new BusinessException("Configuração inválida para comunicação com TSS");
                 }
@@ -199,7 +198,7 @@ namespace Fly01.Faturamento.BL
                 entity.Status = StatusNotaFiscal.FalhaTransmissao;
 
                 entity.Mensagem = response.Error.Mensagem;
-                entity.XML = response.Error.XML;
+                entity.XMLUnicoTSS = response.Error.XML;
             }
         }
 

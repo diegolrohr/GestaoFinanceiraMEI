@@ -42,6 +42,7 @@
     <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
     <Compile Include="ImpostoRendaBL.cs" />
+    <Compile Include="CsllBL.cs" />
     <Compile Include="InssBL.cs" />
     <Compile Include="CofinsBL.cs" />
     <Compile Include="PisBL.cs" />

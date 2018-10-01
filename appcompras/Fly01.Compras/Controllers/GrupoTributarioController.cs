@@ -34,6 +34,9 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "calculaPis", Value = "false" });
             config.Elements.Add(new InputHiddenUI { Id = "calculaCofins", Value = "false" });
             config.Elements.Add(new InputHiddenUI { Id = "calculaIss", Value = "false" });
+            config.Elements.Add(new InputHiddenUI { Id = "calculaCSLL", Value = "false" });
+            config.Elements.Add(new InputHiddenUI { Id = "calculaINSS", Value = "false" });
+            config.Elements.Add(new InputHiddenUI { Id = "calculaImpostoRenda", Value = "false" });
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l12", Label = "Descrição", Required = true, MaxLength = 40 });
 

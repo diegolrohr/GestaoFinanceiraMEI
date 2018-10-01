@@ -380,6 +380,10 @@
     <Compile Include="Migrations\201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.Designer.cs">
       <DependentUpon>201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.cs" />
+    <Compile Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.Designer.cs">
+      <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -658,6 +662,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.resx">
       <DependentUpon>201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.resx">
+      <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

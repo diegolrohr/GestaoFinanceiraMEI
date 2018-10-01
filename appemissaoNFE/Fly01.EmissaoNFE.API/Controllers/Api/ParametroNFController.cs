@@ -16,13 +16,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                unitOfWork.SiafiBL.RetornaSiafi(entity);
+                //TODO: diego comentado para liberar em prod
+                //unitOfWork.SiafiBL.RetornaSiafi(entity);
                 unitOfWork.ParametroNfBL.ValidaModel(entity);
 
                 try
                 {
                     EnviarParametrosNFe(entity);
-                    EnviarParametrosNFSe(entity);
+                    //TODO: diego comentado para liberar em prod
+                    //EnviarParametrosNFSe(entity);
 
                     return Ok(new { success = true });
                 }

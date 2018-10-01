@@ -20,7 +20,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    EnviarCertificadoNFSe(entity);
+                    //TODO: diego comentado para liberar em prod
+                    //EnviarCertificadoNFSe(entity);
                     EnviarCertificadoNFe(entity);
 
                     return Ok(RetornarValidadeCertificado(entity));

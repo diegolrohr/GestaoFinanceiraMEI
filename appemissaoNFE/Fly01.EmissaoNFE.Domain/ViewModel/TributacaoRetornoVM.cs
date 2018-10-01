@@ -18,6 +18,8 @@
 
         public TributacaoRetornoBaseVM Cofins { get; set; }
 
+        public TributacaoRetornoBaseVM Iss { get; set; }
+
         public TributacaoRetornoBaseVM Inss { get; set; }
 
         public TributacaoRetornoBaseVM ImpostoRenda { get; set; }

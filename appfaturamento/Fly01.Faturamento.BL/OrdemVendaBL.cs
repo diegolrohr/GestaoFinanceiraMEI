@@ -286,7 +286,9 @@ namespace Fly01.Faturamento.BL
             if (servicos != null & servicos.Any())
             {
                 var NFSe = (NFSe)GetNotaFiscal(entity, TipoNotaFiscal.NFSe);
-                var totalImpostosServicos = TotalTributacaoBL.TotalSomaOrdemVendaServicos(servicos, entity.ClienteId);
+                var tributacoesServicos = TotalTributacaoBL.TributacoesOrdemVendaServicos(servicos, entity.ClienteId);
+                var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
+                var totalImpostosServicoesNaoAgrega = TotalTributacaoBL.TributacaoServicoNaoAgregaNota(tributacoesServicos);
 
                 var nfseServicos = servicos.Select(
                         x => new NFSeServico
@@ -301,8 +303,10 @@ namespace Fly01.Faturamento.BL
                         }).ToList();
 
 
-                NFSe.TotalImpostosServicos = totalImpostosServicos;
-                entity.TotalImpostosServicos = totalImpostosServicos;
+                NFSe.TotalRetencoesServicos = totalRetencoesServicos;
+                NFSe.TotalImpostosServicosNaoAgrega = totalImpostosServicoesNaoAgrega;
+                entity.TotalRetencoesServicos = totalRetencoesServicos;
+                entity.TotalImpostosServicosNaoAgrega = totalImpostosServicoesNaoAgrega;
 
                 NFSeBL.Insert(NFSe);
 

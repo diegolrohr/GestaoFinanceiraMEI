@@ -89,7 +89,7 @@ namespace Fly01.Faturamento.BL
             int num = 1;
             foreach (var item in ordemVendaProdutos)
             {
-                if(GetProduto(item.ProdutoId) == null)
+                if (GetProduto(item.ProdutoId) == null)
                 {
                     throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
                 }
@@ -183,7 +183,7 @@ namespace Fly01.Faturamento.BL
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidade }
                     };
-                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge?? ""}";
+                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge ?? ""}";
 
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
@@ -218,6 +218,32 @@ namespace Fly01.Faturamento.BL
             return total;
         }
 
+        public double TributacaoServicoNaoAgregaNota(List<TributacaoServicoRetorno> tributacaoServicosRetorno)
+        {
+            var total = 0.0;
+            total += tributacaoServicosRetorno.Sum(x => x.ISSValor);
+            total += tributacaoServicosRetorno.Sum(x => x.PISValor);
+            total += tributacaoServicosRetorno.Sum(x => x.COFINSValor);
+            total += tributacaoServicosRetorno.Sum(x => x.CSLLValor);
+            total += tributacaoServicosRetorno.Sum(x => x.INSSValor);
+            total += tributacaoServicosRetorno.Sum(x => x.ImpostoRendaValor);
+
+            return total;
+        }
+
+        public double TributacaoServicoRetencao(List<TributacaoServicoRetorno> tributacaoServicosRetorno)
+        {
+            var total = 0.0;
+            total += tributacaoServicosRetorno.Sum(x => x.ISSValorRetencao);
+            total += tributacaoServicosRetorno.Sum(x => x.PISValorRetencao);
+            total += tributacaoServicosRetorno.Sum(x => x.COFINSValorRetencao);
+            total += tributacaoServicosRetorno.Sum(x => x.CSLLValorRetencao);
+            total += tributacaoServicosRetorno.Sum(x => x.INSSValorRetencao);
+            total += tributacaoServicosRetorno.Sum(x => x.ImpostoRendaValorRetencao);
+
+            return total;
+        }
+
         public double TotalSomaTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoNfeComplementar tipoNfeComplementar, TipoFrete tipoFrete, bool nFeRefIsDevolucao, double? valorFrete = 0)
         {
             return TributacaoItemAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete).ToList<TributacaoItemRetorno>());
@@ -228,9 +254,14 @@ namespace Fly01.Faturamento.BL
             return TributacaoItemNaoAgregaNota(TotalTributacaoProduto(tributacaoItens, clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete).ToList<TributacaoItemRetorno>());
         }
 
-        public double TotalSomaTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
+        public double TotalSomaTributacaoServicoNaoAgrega(List<TributacaoServico> tributacaoItens, Guid clienteId)
         {
-            return TributacaoItemAgregaNota(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoItemRetorno>());
+            return TributacaoServicoNaoAgregaNota(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoServicoRetorno>());
+        }
+
+        public double TotalSomaRetencaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
+        {
+            return TributacaoServicoRetencao(TotalTributacaoServico(tributacaoItens, clienteId).ToList<TributacaoServicoRetorno>());
         }
 
         public List<TributacaoServicoRetorno> TotalTributacaoServico(List<TributacaoServico> tributacaoItens, Guid clienteId)
@@ -239,16 +270,158 @@ namespace Fly01.Faturamento.BL
             var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             var estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
-            var result = new List<TributacaoServicoRetorno>()
+            var result = new List<TributacaoServicoRetorno>();
+
+            var header = new Dictionary<string, string>()
+                {
+                    { "AppUser", AppUser },
+                    { "PlataformaUrl", PlataformaUrl }
+                };
+
+
+            var num = 1;
+            foreach (var itemServico in tributacaoItens)
             {
-                new TributacaoServicoRetorno()
-            };
+                if (itemServico.GrupoTributarioId != default(Guid))
+                {
+                    var grupoTributario = GetGrupoTributario(itemServico.GrupoTributarioId);
+                    if (grupoTributario == null)
+                    {
+                        throw new BusinessException(string.Format("Informe um Grupo Tributário válido no serviço {0}.", num));
+                    }
+                    var servico = GetServico(itemServico.ServicoId);
+                    if (servico == null)
+                    {
+                        throw new BusinessException(string.Format("Serviço informado no item {0}, inexistente ou excluído.", num));
+                    }
 
-            //TODO: ver Jamal
-            //var parametros = ParametroTributarioBL.All.FirstOrDefault();
-            //var somaPercentuais = parametros != null ? ((parametros.AliquotaSimplesNacional + parametros.AliquotaISS + parametros.AliquotaPISPASEP + parametros.AliquotaCOFINS) / 100) : 0;
+                    num++;
 
-            //return somaPercentuais > 0 ? (tributacaoServicos.Sum(x => x.Total) * somaPercentuais) : 0;
+                    var itemRetorno = new TributacaoServicoRetorno()
+                    {
+                        ServicoId = itemServico.ServicoId,
+                        GrupoTributarioId = itemServico.GrupoTributarioId
+
+                    };
+                    var tributacao = new Tributacao();
+                    tributacao.ValorBase = itemServico.Total;
+                    tributacao.SimplesNacional = true;
+                    
+                    //ISS
+                    if (grupoTributario.CalculaIss || grupoTributario.RetemISS)
+                    {
+                        tributacao.Iss = new EmissaoNFE.Domain.Iss()
+                        {
+                            Aliquota = parametros != null ? parametros.AliquotaISS : 0,
+                            CalculaIss = grupoTributario.CalculaIss,
+                            RetemIss = grupoTributario.RetemISS
+                        };
+                    }
+                    //COFINS
+                    if (grupoTributario.CalculaCofins || grupoTributario.RetemCofins)
+                    {
+                        tributacao.Cofins = new Cofins()
+                        {
+                            Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
+                            CalculaCofins = grupoTributario.CalculaCofins,
+                            RetemCofins = grupoTributario.RetemCofins
+                        };
+                    }
+                    //PIS
+                    if (grupoTributario.CalculaPis || grupoTributario.RetemPis)
+                    {
+                        tributacao.Pis = new Pis()
+                        {
+                            Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                            CalculaPis = grupoTributario.CalculaPis,
+                            RetemPis = grupoTributario.RetemPis
+                        };
+                    }
+                    //CSLL
+                    if (grupoTributario.CalculaCSLL || grupoTributario.RetemCSLL)
+                    {
+                        tributacao.Csll = new Csll()
+                        {
+                            //TODO: add as aliquotas
+                            //Aliquota = parametros != null ? parametros.AliquotaCSLL : 0,
+                            CalculaCsll = grupoTributario.CalculaCSLL,
+                            RetemCsll = grupoTributario.RetemCSLL
+                        };
+                    }
+                    //INSS
+                    if (grupoTributario.CalculaINSS || grupoTributario.RetemINSS)
+                    {
+                        tributacao.Inss = new Inss()
+                        {
+                            //TODO: Aliquota = parametros != null ? parametros.AliquotaINSS : 0,
+                            CalculaInss = grupoTributario.CalculaINSS,
+                            RetemInss = grupoTributario.RetemINSS
+                        };
+                    }
+                    //ImpostoRenda
+                    if (grupoTributario.CalculaImpostoRenda || grupoTributario.RetemImpostoRenda)
+                    {
+                        tributacao.ImpostoRenda = new ImpostoRenda()
+                        {
+                            //TODO: Aliquota = parametros != null ? parametros.AliquotaImpostoRenda : 0,
+                            CalculaImpostoRenda = grupoTributario.CalculaImpostoRenda,
+                            RetemImpostoRenda = grupoTributario.RetemImpostoRenda
+                        };
+                    }
+
+                    var json = JsonConvert.SerializeObject(tributacao);
+                    var responseTributacao = RestHelper.ExecutePostRequest<TributacaoRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "tributacao", json, null, header);
+
+                    if (responseTributacao.Iss != null)
+                    {
+                        itemRetorno.ISSBase = responseTributacao.Iss.Base;
+                        itemRetorno.ISSAliquota = responseTributacao.Iss.Aliquota;
+                        itemRetorno.ISSValor = responseTributacao.Iss.Valor;
+                        itemRetorno.ISSValorRetencao = responseTributacao.Iss.ValorRetencao;
+                    }
+                    if (responseTributacao.Pis != null)
+                    {
+                        itemRetorno.PISBase = responseTributacao.Pis.Base;
+                        itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
+                        itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                        itemRetorno.PISValorRetencao = responseTributacao.Pis.ValorRetencao;
+                    }
+                    if (responseTributacao.Cofins != null)
+                    {
+                        itemRetorno.COFINSBase = responseTributacao.Cofins.Base;
+                        itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
+                        itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                        itemRetorno.COFINSValorRetencao = responseTributacao.Cofins.ValorRetencao;
+                    }
+                    if (responseTributacao.Csll != null)
+                    {
+                        itemRetorno.CSLLBase = responseTributacao.Csll.Base;
+                        itemRetorno.CSLLAliquota = responseTributacao.Csll.Aliquota;
+                        itemRetorno.CSLLValor = responseTributacao.Csll.Valor;
+                        itemRetorno.CSLLValorRetencao = responseTributacao.Csll.ValorRetencao;
+                    }
+                    if (responseTributacao.Inss != null)
+                    {
+                        itemRetorno.INSSBase = responseTributacao.Inss.Base;
+                        itemRetorno.INSSAliquota = responseTributacao.Inss.Aliquota;
+                        itemRetorno.INSSValor = responseTributacao.Inss.Valor;
+                        itemRetorno.INSSValorRetencao = responseTributacao.Inss.ValorRetencao;
+                    }
+                    if (responseTributacao.ImpostoRenda != null)
+                    {
+                        itemRetorno.ImpostoRendaBase = responseTributacao.Inss.Base;
+                        itemRetorno.ImpostoRendaAliquota = responseTributacao.Inss.Aliquota;
+                        itemRetorno.ImpostoRendaValor = responseTributacao.Inss.Valor;
+                        itemRetorno.ImpostoRendaValorRetencao = responseTributacao.Inss.ValorRetencao;
+                    }
+
+                    result.Add(itemRetorno);
+                }
+                else
+                {
+                    throw new BusinessException("Para calcular tributações de um pedido que gera nota fiscal, informe o grupo tributário nos serviços.");
+                }
+            }
 
             return result;
         }
@@ -256,7 +429,7 @@ namespace Fly01.Faturamento.BL
         public List<TributacaoProdutoRetorno> TotalTributacaoProduto(List<TributacaoProduto> tributacaoItens, Guid clienteId, TipoVenda tipoVenda, TipoNfeComplementar tipoNfeComplementar, TipoFrete tipoFrete, bool nFeRefIsDevolucao, double? valorFrete = 0)
         {
             var result = new List<TributacaoProdutoRetorno>();
-            if(tipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+            if (tipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
             {
                 return result;
             }
@@ -265,7 +438,7 @@ namespace Fly01.Faturamento.BL
             var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             string estadoOrigem = empresa.Cidade.Estado.Sigla;
             var parametros = GetParametrosTributarios();
-            
+
             var header = new Dictionary<string, string>()
                 {
                     { "AppUser", AppUser },
@@ -283,7 +456,7 @@ namespace Fly01.Faturamento.BL
             foreach (var itemProduto in tributacaoItens)
             {
                 var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                if(grupoTributario == null)
+                if (grupoTributario == null)
                 {
                     throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
@@ -368,6 +541,8 @@ namespace Fly01.Faturamento.BL
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,
+                            //AliquotaIntraEstadual = st.AliquotaIntraEstadual,
+                            //AliquotaInterEstadual = st.AliquotaInterEstadual,
                         };
                         if (produto.AliquotaIpi > 0)
                         {
@@ -391,7 +566,7 @@ namespace Fly01.Faturamento.BL
                         CalculaCofins = grupoTributario.CalculaCofins,
                         RetemCofins = grupoTributario.RetemCofins
                     };
-                }                
+                }
                 //PIS
                 if ((grupoTributario.CalculaPis || grupoTributario.RetemPis) && tipoVenda != TipoVenda.Complementar)
                 {
@@ -401,36 +576,6 @@ namespace Fly01.Faturamento.BL
                         FreteNaBase = grupoTributario.AplicaFreteBasePis,
                         CalculaPis = grupoTributario.CalculaPis,
                         RetemPis = grupoTributario.RetemPis
-                    };
-                }
-                //CSLL
-                if ((grupoTributario.CalculaCSLL || grupoTributario.RetemCSLL) && tipoVenda != TipoVenda.Complementar)
-                {
-                    tributacao.Csll = new Csll()
-                    {
-                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
-                        CalculaCsll = grupoTributario.CalculaCSLL,
-                        RetemCsll = grupoTributario.RetemCSLL
-                    };
-                }
-                //INSS
-                if ((grupoTributario.CalculaINSS || grupoTributario.RetemINSS) && tipoVenda != TipoVenda.Complementar)
-                {
-                    tributacao.Inss = new Inss()
-                    {
-                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
-                        CalculaInss = grupoTributario.CalculaINSS,
-                        RetemInss = grupoTributario.RetemINSS
-                    };
-                }
-                //ImpostoRenda
-                if ((grupoTributario.CalculaImpostoRenda || grupoTributario.RetemImpostoRenda) && tipoVenda != TipoVenda.Complementar)
-                {
-                    tributacao.ImpostoRenda = new ImpostoRenda()
-                    {
-                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
-                        CalculaImpostoRenda = grupoTributario.CalculaImpostoRenda,
-                        RetemImpostoRenda = grupoTributario.RetemImpostoRenda
                     };
                 }
 
@@ -476,35 +621,14 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.PISBase = responseTributacao.Pis.Base;
                     itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
                     itemRetorno.PISValor = responseTributacao.Pis.Valor;
-                    //itemRetorno.PISValorRetencao = responseTributacao.Pis.ValorRetencao;
+                    itemRetorno.PISValorRetencao = responseTributacao.Pis.ValorRetencao;
                 }
                 if (responseTributacao.Cofins != null)
                 {
                     itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
                     itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
                     itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
-                    //itemRetorno.COFINSValorRetencao = responseTributacao.Cofins.ValorRetencao;
-                }
-                if (responseTributacao.Csll != null)
-                {
-                    //itemRetorno.CSLLAliquota = responseTributacao.Csll.Base;
-                    //itemRetorno.CSLLAliquota = responseTributacao.Csll.Aliquota;
-                    //itemRetorno.CSLLValor = responseTributacao.Csll.Valor;
-                    //itemRetorno.CSLLValorRetencao = responseTributacao.Csll.ValorRetencao;
-                }
-                if (responseTributacao.Inss != null)
-                {
-                    //itemRetorno.INSSAliquota = responseTributacao.Inss.Base;
-                    //itemRetorno.INSSAliquota = responseTributacao.Inss.Aliquota;
-                    //itemRetorno.INSSValor = responseTributacao.Inss.Valor;
-                    //itemRetorno.INSSValorRetencao = responseTributacao.Inss.ValorRetencao;
-                }
-                if (responseTributacao.ImpostoRenda != null)
-                {
-                    //itemRetorno.ImpostoRendaAliquota = responseTributacao.ImpostoRenda.Base;
-                    //itemRetorno.ImpostoRendaAliquota = responseTributacao.ImpostoRenda.Aliquota;
-                    //itemRetorno.ImpostoRendaValor = responseTributacao.ImpostoRenda.Valor;
-                    //itemRetorno.ImpostoRendaValorRetencao = responseTributacao.ImpostoRenda.ValorRetencao;
+                    itemRetorno.COFINSValorRetencao = responseTributacao.Cofins.ValorRetencao;
                 }
 
                 result.Add(itemRetorno);
@@ -523,6 +647,19 @@ namespace Fly01.Faturamento.BL
                 ProdutoId = x.ProdutoId,
                 GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
+        }
+
+        public List<TributacaoServicoRetorno> TributacoesOrdemVendaServicos(List<OrdemVendaServico> ordemVendaServicos, Guid clienteId)
+        {
+            return TotalTributacaoServico(ordemVendaServicos.Select(x => new TributacaoServico()
+            {
+                Valor = x.Valor,
+                Quantidade = x.Quantidade,
+                Desconto = x.Desconto,
+                Total = x.Total,
+                ServicoId = x.ServicoId,
+                GrupoTributarioId = x.GrupoTributarioId.Value
+            }).ToList(), clienteId);
         }
 
         public double TotalSomaOrdemVendaProdutos(List<OrdemVendaProduto> ordemVendaProdutos, Guid clienteId, TipoVenda tipoVenda, TipoNfeComplementar tipoNfeComplementar, TipoFrete tipoFrete, bool nFeRefIsDevolucao, double? valorFrete = 0)
@@ -553,10 +690,24 @@ namespace Fly01.Faturamento.BL
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
-        public double TotalSomaOrdemVendaServicos(List<OrdemVendaServico> ordemVendaServicos, Guid clienteId)
+        public double TotalSomaOrdemVendaServicosNaoAgrega(List<OrdemVendaServico> ordemVendaServicos, Guid clienteId)
         {
             //Transforma para a classe auxiliar
-            return TotalSomaTributacaoServico(ordemVendaServicos.Select(x => new TributacaoServico()
+            return TotalSomaTributacaoServicoNaoAgrega(ordemVendaServicos.Select(x => new TributacaoServico()
+            {
+                Valor = x.Valor,
+                Quantidade = x.Quantidade,
+                Desconto = x.Desconto,
+                Total = x.Total,
+                ServicoId = x.ServicoId,
+                GrupoTributarioId = x.GrupoTributarioId.Value
+            }).ToList(), clienteId);
+        }
+
+        public double TotalSomaRetencaoOrdemVendaServicos(List<OrdemVendaServico> ordemVendaServicos, Guid clienteId)
+        {
+            //Transforma para a classe auxiliar
+            return TotalSomaRetencaoServico(ordemVendaServicos.Select(x => new TributacaoServico()
             {
                 Valor = x.Valor,
                 Quantidade = x.Quantidade,
@@ -626,14 +777,18 @@ namespace Fly01.Faturamento.BL
 
         public double COFINSValor { get; set; }
 
+        public double COFINSValorRetencao { get; set; }
+
         public double PISBase { get; set; }
 
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
 
+        public double PISValorRetencao { get; set; }
+
         public double FCPSTBase { get; set; }
-               
+
         public double FCPSTAliquota { get; set; }
 
         public double FCPSTValor { get; set; }
@@ -647,20 +802,52 @@ namespace Fly01.Faturamento.BL
     {
         public Guid ProdutoId { get; set; }
     }
-    //se necessário mudar
+
     public class TributacaoServico : TributacaoItem
     {
-
+        public Guid ServicoId { get; set; }
     }
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
         public Guid ProdutoId { get; set; }
     }
-    //se necessário mudar
+
     public class TributacaoServicoRetorno : TributacaoItemRetorno
     {
+        public Guid ServicoId { get; set; }
 
+        public double ISSBase { get; set; }
+
+        public double ISSAliquota { get; set; }
+
+        public double ISSValor { get; set; }
+
+        public double ISSValorRetencao { get; set; }
+
+        public double CSLLBase { get; set; }
+
+        public double CSLLAliquota { get; set; }
+
+        public double CSLLValor { get; set; }
+
+        public double CSLLValorRetencao { get; set; }
+
+        public double INSSBase { get; set; }
+
+        public double INSSAliquota { get; set; }
+
+        public double INSSValor { get; set; }
+
+        public double INSSValorRetencao { get; set; }
+
+        public double ImpostoRendaBase { get; set; }
+
+        public double ImpostoRendaAliquota { get; set; }
+
+        public double ImpostoRendaValor { get; set; }
+
+        public double ImpostoRendaValorRetencao { get; set; }
     }
     #endregion
 

@@ -11,7 +11,10 @@ namespace Fly01.Core.Entities.Domains.Commons
             TipoNotaFiscal = TipoNotaFiscal.NFSe;
         }
 
-        public double TotalImpostosServicos { get; set; }
+        //TODO: migration
+        public double TotalRetencoesServicos { get; set; }
+
+        public double TotalImpostosServicosNaoAgrega { get; set; }
 
         [Column(TypeName = "varchar(MAX)")]
         [MaxLength(int.MaxValue)]

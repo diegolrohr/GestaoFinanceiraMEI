@@ -12,5 +12,7 @@
         public bool IpiNaBase { get; set; }
         public bool FreteNaBase { get; set; }
         public bool DespesaNaBase { get; set; }
+        public double AliquotaIntraEstadual { get; set; }
+        public double AliquotaInterEstadual { get; set; }
     }
 }

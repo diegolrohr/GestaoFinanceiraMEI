@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
+    <Compile Include="IssBL.cs" />
     <Compile Include="ImpostoRendaBL.cs" />
     <Compile Include="CsllBL.cs" />
     <Compile Include="InssBL.cs" />

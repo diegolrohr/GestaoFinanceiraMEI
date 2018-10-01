@@ -16,12 +16,14 @@ namespace Fly01.EmissaoNFE.BL
         {
             var valorBase = ObterValorBase(entity);
 
-            var aliquotaIntraEstadual = ObterAliquotaIntraEstadual(entity, TabelaIcmsBL);
-            var aliquotaInterEstadual = ObterAliquotaInterEstadual(entity, TabelaIcmsBL);
+            //se informado terá prioridade à tabela padrão
+            var aliquotaIntraEstadual = entity.SubstituicaoTributaria.AliquotaIntraEstadual > 0 ?
+                                        entity.SubstituicaoTributaria.AliquotaIntraEstadual : ObterAliquotaIntraEstadual(entity, TabelaIcmsBL);
+            var aliquotaInterEstadual = entity.SubstituicaoTributaria.AliquotaInterEstadual > 0 ?
+                                        entity.SubstituicaoTributaria.AliquotaInterEstadual : ObterAliquotaInterEstadual(entity, TabelaIcmsBL);
 
             entity.SubstituicaoTributaria.Aliquota = aliquotaIntraEstadual;
             entity.SubstituicaoTributaria.Base = (100 + entity.SubstituicaoTributaria.Mva) / 100 * valorBase;
-
 
             var valorIntraEstadual = Math.Round(entity.SubstituicaoTributaria.Base / 100 * aliquotaIntraEstadual, 2);
             var valorInterEstadual = Math.Round(valorBase / 100 * aliquotaInterEstadual, 2);

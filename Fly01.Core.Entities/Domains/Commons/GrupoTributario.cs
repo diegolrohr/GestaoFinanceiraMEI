@@ -188,10 +188,6 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool RetemImpostoRenda { get; set; }
 
-        public bool RetemPis { get; set; }
-
-        public bool RetemCofins { get; set; }
-
         public virtual Cfop Cfop { get; set; }
     }
 }

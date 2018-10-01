@@ -23,6 +23,15 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("aliquotaCOFINS")]
         public double AliquotaCOFINS { get; set; }
 
+        [JsonProperty("aliquotaCSLL")]
+        public double AliquotaCSLL { get; set; }
+
+        [JsonProperty("aliquotaINSS")]
+        public double AliquotaINSS { get; set; }
+
+        [JsonProperty("aliquotaImpostoRenda")]
+        public double AliquotaImpostoRenda { get; set; }
+
         [JsonProperty("registroSimplificadoMT")]
         public bool RegistroSimplificadoMT { get; set; }
 

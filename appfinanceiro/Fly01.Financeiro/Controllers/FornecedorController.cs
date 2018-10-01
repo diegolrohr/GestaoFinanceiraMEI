@@ -28,7 +28,8 @@ namespace Fly01.Financeiro.Controllers
             {
                 Nome = term,
                 Fornecedor = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
+                SituacaoEspecialNFS = "Outro"
             };
 
             NormarlizarEntidade(ref entity);

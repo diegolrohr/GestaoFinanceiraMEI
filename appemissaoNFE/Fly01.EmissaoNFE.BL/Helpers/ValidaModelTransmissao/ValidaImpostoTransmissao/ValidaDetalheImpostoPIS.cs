@@ -25,7 +25,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao.ValidaImpostoTransm
         private static void ValidarPIS_IsNotOnlyCST(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
             var NaoTributaveis = "04||05||06||07||08||09";
-
             if (!NaoTributaveis.Contains(((int)detalhe.Imposto.PIS.CodigoSituacaoTributaria).ToString()))
             {
                 entity.Fail(string.IsNullOrEmpty(detalhe.Imposto.PIS.ValorBCDoPIS.ToString()),

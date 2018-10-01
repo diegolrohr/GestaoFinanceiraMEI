@@ -39,15 +39,15 @@ namespace Fly01.Financeiro.BL
             entity.ContaFinanceiraId = contaFinanceira.Id;
 
             entity.Fail(!contaBancariaBL.All.Any(x => x.Id == entity.ContaBancariaId), ContaInvalida);
-            entity.Fail(Math.Round(entity.Valor,2) > Math.Round(contaFinanceira.ValorPrevisto,2), ValorPagoInvalido);
-            entity.Fail(Math.Round((valorPagoConta + entity.Valor),2) > Math.Round(contaFinanceira.ValorPrevisto,2), SomaValoresInvalida);
+            entity.Fail(Math.Round(entity.Valor, 2) > Math.Round(contaFinanceira.ValorPrevisto, 2), ValorPagoInvalido);
+            entity.Fail(Math.Round((valorPagoConta + entity.Valor), 2) > Math.Round(contaFinanceira.ValorPrevisto, 2), SomaValoresInvalida);
 
             base.Insert(entity);
 
             valorPagoConta += entity.Valor;
 
             contaFinanceira.ValorPago = valorPagoConta;
-            if (Math.Round(contaFinanceira.ValorPago.GetValueOrDefault(0),2) < Math.Round(contaFinanceira.ValorPrevisto,2))
+            if (Math.Round(contaFinanceira.ValorPago.GetValueOrDefault(0), 2) < Math.Round(contaFinanceira.ValorPrevisto, 2))
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.BaixadoParcialmente;
             else
                 contaFinanceira.StatusContaBancaria = StatusContaBancaria.Pago;

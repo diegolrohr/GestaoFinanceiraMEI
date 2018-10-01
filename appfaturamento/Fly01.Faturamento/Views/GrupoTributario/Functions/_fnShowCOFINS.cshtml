@@ -2,7 +2,6 @@
     function fnShowCOFINS() {
         //Se ha calculo de COFINS (checked), habilite os campos relacionados
         if ($('#calculaCofins:checked').val() == "true") {
-            $('input#retemCofins').removeAttr('disabled');
             $('input#aplicaFreteBaseCofins').removeAttr('disabled');
             $('input#aplicaDespesaBaseCofins').removeAttr('disabled');
             if ($('select#tipoTributacaoCOFINS').val() == null) {// Garante sempre um valor ao habilitar campo
@@ -11,7 +10,6 @@
         }
         else {
             //Se nao ha calculo de COFINS, desabilite os campos relacionados
-            $('input#retemCofins').attr('disabled', 'disabled');
             $('input#aplicaFreteBaseCofins').attr('disabled', 'disabled');
             $('input#aplicaDespesaBaseCofins').attr('disabled', 'disabled');
         }

@@ -169,12 +169,12 @@ namespace Fly01.Core.Presentation.Application
                 }
                 else if (Request.AppRelativeCurrentExecutionFilePath.Equals("~/") && Request.QueryString["t"] != null)
                 {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}?t={Request.QueryString["t"]}';</script>");
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{FormsAuthentication.LoginUrl}?t={Request.QueryString["t"]}';</script>");
                     Response.End();
                 }
                 else
                 {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+                    Response.Write($"<script type=\"text/javascript\">top.location.href='{FormsAuthentication.LoginUrl}';</script>");
                     Response.End();
                 }
             }

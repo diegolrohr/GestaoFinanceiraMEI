@@ -5,7 +5,7 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        private static string cdnVersion = "1.1.6";
+        private static string cdnVersion = "1.1.5";
 
         //private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; private static string complJs = ".min"; private static string libName = "mpnui"; /*
         private static string serverUrl = $"https://cdnfly01.azureedge.net/fly/{cdnVersion}"; private static string complJs = ".min"; private static string libName = "fly01ui"; /*

@@ -71,16 +71,17 @@ namespace Fly01.Compras.BL
             var pessoa = GetPessoa(fornecedorId);
             var fornecedorUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
             var pedidoItens = GetPedidoItens(entity.Id);
+
             int num = 1;
             foreach (var item in pedidoItens)
             {
                 if (GetProduto(item.ProdutoId) == null)
                 {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
                 }
                 if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
                 }
                 num++;
             }
@@ -187,10 +188,23 @@ namespace Fly01.Compras.BL
 
             double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
+            var num = 1;
             foreach (var itemProduto in tributacaoItens)
             {
                 if (itemProduto.GrupoTributarioId != default(Guid))
                 {
+                    var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                    if (grupoTributario == null)
+                    {
+                        throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                    }
+                    var produto = GetProduto(itemProduto.ProdutoId);
+                    if (produto == null)
+                    {
+                        throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
+                    }
+
+                    num++;
 
                     var itemRetorno = new TributacaoProdutoRetorno()
                     {
@@ -204,9 +218,6 @@ namespace Fly01.Compras.BL
                     tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
                     tributacao.SimplesNacional = true;
 
-                    var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                    var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
-
                     //ICMS
                     if (grupoTributario.CalculaIcms)
                     {
@@ -216,8 +227,8 @@ namespace Fly01.Compras.BL
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                             Difal = grupoTributario.CalculaIcmsDifal,
                             FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                            EstadoDestino = fornecedor.Estado.Sigla,
-                            EstadoOrigem = estadoOrigem,
+                            EstadoOrigem = (tipoCompra != TipoVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem),//na devolução inverte
+                            EstadoDestino = (tipoCompra != TipoVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla),
                             CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                         };
                         if (produto.AliquotaIpi > 0)
@@ -243,23 +254,28 @@ namespace Fly01.Compras.BL
                     //ST
                     if (grupoTributario.CalculaSubstituicaoTributaria)
                     {
-                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                        var isEntrada = (tipoCompra == TipoVenda.Normal)
+                            || (tipoCompra == TipoVenda.Complementar);
+
+                        var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                             x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                             x.CestId == produto.CestId.Value &
-                            x.EstadoOrigem.Sigla == estadoOrigem &
-                            x.EstadoDestinoId == fornecedor.EstadoId &
-                            x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
+                            x.EstadoOrigem.Sigla == (tipoCompra != TipoVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem) &
+                            x.EstadoDestino.Sigla == (tipoCompra != TipoVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla) &
+                            x.TipoSubstituicaoTributaria == (isEntrada ? TipoSubstituicaoTributaria.Entrada : TipoSubstituicaoTributaria.Saida)
                             ).FirstOrDefault();
 
                         if (st != null)
                         {
                             tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                             {
-                                EstadoDestino = fornecedor.Estado.Sigla,
-                                EstadoOrigem = estadoOrigem,
+                                EstadoOrigem = fornecedor.Estado.Sigla,
+                                EstadoDestino = estadoOrigem,
                                 FreteNaBase = grupoTributario.AplicaFreteBaseST,
                                 DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                                 Mva = st.Mva,
+                                AliquotaIntraEstadual = st.AliquotaIntraEstadual,
+                                AliquotaInterEstadual = st.AliquotaInterEstadual,
                             };
                             if (produto.AliquotaIpi > 0)
                             {
@@ -276,16 +292,20 @@ namespace Fly01.Compras.BL
                     //COFINS
                     if (grupoTributario.CalculaCofins)
                     {
-                        itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
-                        itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
-                        itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
+                        tributacao.Cofins = new Cofins()
+                        {
+                            Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
+                            FreteNaBase = grupoTributario.AplicaFreteBaseCofins
+                        };
                     }
                     //PIS
                     if (grupoTributario.CalculaPis)
                     {
-                        itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
-                        itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
-                        itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
+                        tributacao.Pis = new Pis()
+                        {
+                            Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                            FreteNaBase = grupoTributario.AplicaFreteBasePis
+                        };
                     }
 
                     var json = JsonConvert.SerializeObject(tributacao);
@@ -325,6 +345,19 @@ namespace Fly01.Compras.BL
                         itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
                         itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
                     }
+                    if (responseTributacao.Pis != null)
+                    {
+                        itemRetorno.PISBase = responseTributacao.Pis.Base;
+                        itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
+                        itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                    }
+                    if (responseTributacao.Cofins != null)
+                    {
+                        itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
+                        itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
+                        itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                    }
+
                     result.Add(itemRetorno);
                 }
                 else
@@ -455,7 +488,7 @@ namespace Fly01.Compras.BL
 
     public class TributacaoProduto : TributacaoItem
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -465,7 +498,7 @@ namespace Fly01.Compras.BL
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

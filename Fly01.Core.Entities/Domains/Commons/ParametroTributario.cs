@@ -19,6 +19,12 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double AliquotaCOFINS { get; set; }
 
+        public double AliquotaCSLL { get; set; }
+
+        public double AliquotaINSS { get; set; }
+
+        public double AliquotaImpostoRenda { get; set; }
+
         public bool RegistroSimplificadoMT { get; set; }
 
         [MaxLength(5000)]
@@ -75,50 +81,30 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoHorarioTSS TipoHorario { get; set; }
 
         #region NFS
-        //public bool IncentivoCultura { get; set; }
+        public string VersaoNFSe { get; set; }
 
-        //[JsonIgnore]
-        //public TipoRegimeEspecialTrib TipoRegimeEspecialTrib { get; set; }
+        [JsonIgnore]
+        public TipoAmbiente TipoAmbienteNFS { get; set; }
 
-        //[NotMapped]
-        //[JsonProperty("tipoRegimeEspecialTrib")]
-        //public string TipoRegimeEspecialTribRest
-        //{
-        //    get { return ((int)TipoRegimeEspecialTrib).ToString(); }
-        //    set { TipoRegimeEspecialTrib = (TipoRegimeEspecialTrib)System.Enum.Parse(typeof(TipoRegimeEspecialTrib), value); }
-        //}
+        [NotMapped]
+        [JsonProperty("tipoAmbienteNFS")]
+        public string TipoAmbienteNFSRest
+        {
+            get { return ((int)TipoAmbienteNFS).ToString(); }
+            set { TipoAmbienteNFS = (TipoAmbiente)System.Enum.Parse(typeof(TipoAmbiente), value); }
+        }
 
-        //[JsonIgnore]
-        //public TipoMensagemNFSE? TipoMensagemNFSE { get; set; }
+        public bool IncentivoCultura { get; set; }
 
-        //[NotMapped]
-        //[JsonProperty("tipoMensagemNFSE")]
-        //public string TipoMensagemNFSERest
-        //{
-        //    get { return ((int)TipoMensagemNFSE).ToString(); }
-        //    set { TipoMensagemNFSE = (TipoMensagemNFSE)System.Enum.Parse(typeof(TipoMensagemNFSE), value); }
-        //}
+        public string UsuarioWebServer { get; set; }
 
-        //[JsonIgnore]
-        //public TipoLayoutNFSE? TipoLayoutNFSE { get; set; }
+        public string SenhaWebServer { get; set; }
 
-        //[NotMapped]
-        //[JsonProperty("tipoLayoutNFSE")]
-        //public string TipoLayoutNFSERest
-        //{
-        //    get { return ((int)TipoLayoutNFSE).ToString(); }
-        //    set { TipoLayoutNFSE = (TipoLayoutNFSE)System.Enum.Parse(typeof(TipoLayoutNFSE), value); }
-        //}
+        public string ChaveAutenticacao { get; set; }
 
-        //public bool NovoModeloUnicoXMLTSS { get; set; }
+        public string Autorizacao { get; set; }
 
-        //public string SIAFI { get; set; }
-
-        //public string Usuario { get; set; }
-
-        //public string Senha { get; set; }
-
-        //public string ChaveAutenticacao { get; set; }
+        public TipoTributacaoNFS TipoTributacaoNFS { get; set; }
         #endregion
     }
 }

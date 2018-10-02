@@ -1,10 +1,10 @@
-﻿using Fly01.EmissaoNFE.Domain;
-using Fly01.Core.Base;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
+﻿using Fly01.Core.Base;
 using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.EmissaoNFE.Domain;
 using Fly01.EmissaoNFE.Domain.Entities.NFe.IBPT;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Fly01.EmissaoNFE.DAL
 {
@@ -44,8 +44,10 @@ namespace Fly01.EmissaoNFE.DAL
         public DbSet<Estado> Estados { get; set; }
         public DbSet<TabelaIcms> TabelaIcms { get; set; }
         public DbSet<Ncm> Ncms { get; set; }
+        public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Cfop> Cfops { get; set; }
         public DbSet<IbptNcm> IbptNcms { get; set; }
+        public DbSet<Siafi> Siafis { get; set; }
 
     }
 }

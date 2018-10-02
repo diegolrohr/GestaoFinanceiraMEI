@@ -10,6 +10,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -133,25 +134,46 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "mva",
-                Class = "col m2 s6",
+                Class = "col m3 s12",
                 Label = "MVA",
                 Required = true,
+                Value = "0",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "fcp",
-                Class = "col m2 s6",
+                Class = "col m3 s12",
                 Label = "FCP",
                 Value = "0",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaIntraEstadual",
+                Class = "col m3 s12",
+                Label = "Alíquota IntraEstadual",
+                Value = "0",
+                Required = true,
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaInterEstadual",
+                Class = "col m3 s12",
+                Label = "Alíquota InterEstadual",
+                Value = "0",
+                Required = true,
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
             });
 
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoOrigemId",
-                Class = "col m4 s12",
+                Class = "col m6 s12",
                 Label = "Origem",
                 Required = true,
                 DataUrl = @Url.Action("Estado", "AutoComplete"),
@@ -162,13 +184,32 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "estadoDestinoId",
-                Class = "col m4 s12",
+                Class = "col m6 s12",
                 Label = "Destino",
                 Required = true,
                 DataUrl = @Url.Action("Estado", "AutoComplete"),
                 LabelId = "estadoDestinoNome",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
             });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "aliquotaIntraEstadual",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será utilizada este valor, se informado alíquota superior a zero, caso contrário, será utilizado a tabela padrão de ICMS entre estado origem e destino."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "aliquotaInterEstadual",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Será utilizada este valor, se informado alíquota superior a zero, caso contrário, será utilizado a tabela padrão de ICMS entre estado origem e destino."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

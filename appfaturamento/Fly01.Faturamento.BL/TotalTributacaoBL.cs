@@ -23,22 +23,26 @@ namespace Fly01.Faturamento.BL
         protected PessoaBL PessoaBL { get; set; }
         protected GrupoTributarioBL GrupoTributarioBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }
+        protected ServicoBL ServicoBL { get; set; }
         protected SubstituicaoTributariaBL SubstituicaoTributariaBL { get; set; }
         protected ParametroTributarioBL ParametroTributarioBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected OrdemVendaProdutoBL OrdemVendaProdutoBL { get; set; }
+        protected OrdemVendaServicoBL OrdemVendaServicoBL { get; set; }
 
-        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL) : base(context)
+        public TotalTributacaoBL(AppDataContextBase context, PessoaBL pessoaBL, GrupoTributarioBL grupoTributarioBL, ProdutoBL produtoBL, ServicoBL servicoBL, SubstituicaoTributariaBL substituicaoTributariaBL, ParametroTributarioBL parametroTributarioBL, CertificadoDigitalBL certificadoDigitalBL, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL) : base(context)
         {
             PessoaBL = pessoaBL;
             GrupoTributarioBL = grupoTributarioBL;
             ProdutoBL = produtoBL;
+            ServicoBL = servicoBL;
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
             empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
+            OrdemVendaServicoBL = ordemVendaServicoBL;
         }
 
         public GrupoTributario GetGrupoTributario(Guid grupoTributarioId)
@@ -56,31 +60,55 @@ namespace Fly01.Faturamento.BL
             return ProdutoBL.All.Where(x => x.Id == produtoId).AsNoTracking().FirstOrDefault();
         }
 
+        public Servico GetServico(Guid servicoId)
+        {
+            return ServicoBL.All.Where(x => x.Id == servicoId).AsNoTracking().FirstOrDefault();
+        }
+
         public ParametroTributario GetParametrosTributarios()
         {
             return ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
         }
 
-        public List<OrdemVendaProduto> GetOrdemVendaItens(Guid ordemVendaId)
+        public List<OrdemVendaProduto> GetOrdemVendaProdutos(Guid ordemVendaId)
         {
             return OrdemVendaProdutoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
+        }
+
+        public List<OrdemVendaServico> GetOrdemVendaServicos(Guid ordemVendaId)
+        {
+            return OrdemVendaServicoBL.All.Where(x => x.OrdemVendaId == ordemVendaId).ToList();
         }
 
         public void DadosValidosCalculoTributario(OrdemVenda entity, Guid clienteId, bool onList = true)
         {
             var pessoa = GetPessoa(clienteId);
             var clienteUF = pessoa != null ? (pessoa.Estado != null ? pessoa.Estado.Sigla : "") : "";
-            var ordemVendaItens = GetOrdemVendaItens(entity.Id);
+            var ordemVendaProdutos = GetOrdemVendaProdutos(entity.Id);
+            var ordemVendaServicos = GetOrdemVendaServicos(entity.Id);
             int num = 1;
-            foreach (var item in ordemVendaItens)
+            foreach (var item in ordemVendaProdutos)
             {
                 if(GetProduto(item.ProdutoId) == null)
                 {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
                 }
-                if (GetGrupoTributario(item.GrupoTributarioId) == null)
+                if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
                 {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                }
+                num++;
+            }
+            num = 1;
+            foreach (var item in ordemVendaServicos)
+            {
+                if (GetServico(item.ServicoId) == null)
+                {
+                    throw new BusinessException(string.Format("Serviço informado no item {0}, inexistente ou excluído.", num));
+                }
+                if (GetGrupoTributario(item.GrupoTributarioId ?? default(Guid)) == null)
+                {
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no serviço {0}.", num));
                 }
                 num++;
             }
@@ -115,7 +143,7 @@ namespace Fly01.Faturamento.BL
 
                 if (retorno != null)
                 {
-                    string entidade = (int)retorno.EntidadeAmbiente == 1 ? retorno.Producao : retorno.Homologacao;
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {
@@ -123,6 +151,40 @@ namespace Fly01.Faturamento.BL
                         { "PlataformaUrl", entidade }
                     };
                     var resourceById = $"configuracaoOK?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}";
+
+                    var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
+                    return true;
+                }
+                else
+                {
+                    throw new BusinessException("Para transmitir, cadastre o seu Certificado Digital em Configurações");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public bool ConfiguracaoTSSOKNFS(string plataformaId = null)
+        {
+            try
+            {
+                var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
+
+                var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
+
+                if (retorno != null)
+                {
+                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
+
+                    var header = new Dictionary<string, string>()
+                    {
+                        { "AppUser", AppUser },
+                        { "PlataformaUrl", entidade }
+                    };
+                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge?? ""}";
+
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;
                 }
@@ -217,8 +279,22 @@ namespace Fly01.Faturamento.BL
 
             double freteFracionado = calculaFrete && valorFrete.HasValue ? valorFrete.Value / tributacaoItens.Sum(x => x.Quantidade) : 0;
 
+            var num = 1;
             foreach (var itemProduto in tributacaoItens)
             {
+                var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
+                if(grupoTributario == null)
+                {
+                    throw new BusinessException(string.Format("Informe um Grupo Tributário válido no produto {0}.", num));
+                }
+                var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
+                if (produto == null)
+                {
+                    throw new BusinessException(string.Format("Produto informado no item {0}, inexistente ou excluído.", num));
+                }
+
+                num++;
+
                 var itemRetorno = new TributacaoProdutoRetorno()
                 {
                     FreteValorFracionado = (freteFracionado * itemProduto.Quantidade),
@@ -231,17 +307,6 @@ namespace Fly01.Faturamento.BL
                 tributacao.ValorFrete = itemRetorno.FreteValorFracionado;
                 tributacao.SimplesNacional = true;
 
-                var grupoTributario = GetGrupoTributario(itemProduto.GrupoTributarioId);
-                if(grupoTributario == null)
-                {
-                    throw new BusinessException("Grupo Tributário informado no item, inexistente ou excluído.");
-                }
-                var produto = ProdutoBL.All.AsNoTracking().Where(x => x.Id == itemProduto.ProdutoId).FirstOrDefault();
-                if (produto == null)
-                {
-                    throw new BusinessException("Produto informado no item, inexistente ou excluído.");
-                }
-
                 //ICMS
                 //refatorar para cada caso
                 if ((grupoTributario.CalculaIcms && tipoVenda != TipoVenda.Complementar)
@@ -253,8 +318,8 @@ namespace Fly01.Faturamento.BL
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
-                        EstadoDestino = cliente.Estado.Sigla,
-                        EstadoOrigem = estadoOrigem,
+                        EstadoOrigem = (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla),//inverte na devolução
+                        EstadoDestino = (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem),
                         CSOSN = grupoTributario.TipoTributacaoICMS != null ? grupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.Outros,
                     };
                     if (produto.AliquotaIpi > 0)
@@ -286,11 +351,11 @@ namespace Fly01.Faturamento.BL
                     var isSaida = (tipoVenda == TipoVenda.Normal)
                         || (tipoVenda == TipoVenda.Complementar && !nFeRefIsDevolucao);
 
-                    var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem).AsNoTracking().Where(x =>
+                    var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                         x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                         x.CestId == produto.CestId.Value &
-                        x.EstadoOrigem.Sigla == estadoOrigem &
-                        x.EstadoDestinoId == cliente.EstadoId &
+                        x.EstadoOrigem.Sigla == (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla) & //inverte na devolução
+                        x.EstadoDestino.Sigla == (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem) &
                         x.TipoSubstituicaoTributaria == (isSaida ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                         ).FirstOrDefault();
 
@@ -298,11 +363,13 @@ namespace Fly01.Faturamento.BL
                     {
                         tributacao.SubstituicaoTributaria = new EmissaoNFE.Domain.SubstituicaoTributaria()
                         {
-                            EstadoDestino = cliente.Estado.Sigla,
-                            EstadoOrigem = estadoOrigem,
+                            EstadoDestino = (tipoVenda != TipoVenda.Devolucao ? cliente.Estado.Sigla : estadoOrigem),
+                            EstadoOrigem = (tipoVenda != TipoVenda.Devolucao ? estadoOrigem : cliente.Estado.Sigla),
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,
+                            AliquotaIntraEstadual = st.AliquotaIntraEstadual,
+                            AliquotaInterEstadual = st.AliquotaInterEstadual,
                         };
                         if (produto.AliquotaIpi > 0)
                         {
@@ -319,16 +386,20 @@ namespace Fly01.Faturamento.BL
                 //COFINS
                 if (grupoTributario.CalculaCofins && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.COFINSBase = itemProduto.Total + (grupoTributario.AplicaFreteBaseCofins ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.COFINSAliquota = parametros != null ? parametros.AliquotaCOFINS : 0;
-                    itemRetorno.COFINSValor = Math.Round(itemRetorno.COFINSBase / 100 * itemRetorno.COFINSAliquota, 2);
+                    tributacao.Cofins = new Cofins()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaCOFINS : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBaseCofins
+                    };
                 }
                 //PIS
                 if (grupoTributario.CalculaPis && tipoVenda != TipoVenda.Complementar)
                 {
-                    itemRetorno.PISBase = itemProduto.Total + (grupoTributario.AplicaFreteBasePis ? itemRetorno.FreteValorFracionado : 0);
-                    itemRetorno.PISAliquota = parametros != null ? parametros.AliquotaPISPASEP : 0;
-                    itemRetorno.PISValor = Math.Round(itemRetorno.PISBase / 100 * itemRetorno.PISAliquota, 2);
+                    tributacao.Pis = new Pis()
+                    {
+                        Aliquota = parametros != null ? parametros.AliquotaPISPASEP : 0,
+                        FreteNaBase = grupoTributario.AplicaFreteBasePis
+                    };
                 }
 
                 var json = JsonConvert.SerializeObject(tributacao);
@@ -368,6 +439,19 @@ namespace Fly01.Faturamento.BL
                     itemRetorno.FCPSTValor = responseTributacao.FcpSt.Valor;
                     itemRetorno.FCPSTAgregaTotal = responseTributacao.FcpSt.AgregaTotalNota;
                 }
+                if (responseTributacao.Pis != null)
+                {
+                    itemRetorno.PISBase = responseTributacao.Pis.Base;
+                    itemRetorno.PISAliquota = responseTributacao.Pis.Aliquota;
+                    itemRetorno.PISValor = responseTributacao.Pis.Valor;
+                }
+                if (responseTributacao.Cofins != null)
+                {
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Base;
+                    itemRetorno.COFINSAliquota = responseTributacao.Cofins.Aliquota;
+                    itemRetorno.COFINSValor = responseTributacao.Cofins.Valor;
+                }
+
                 result.Add(itemRetorno);
             }
             return result;
@@ -382,7 +466,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -396,7 +480,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -410,7 +494,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId
+                GrupoTributarioId = x.GrupoTributarioId.Value
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -423,7 +507,7 @@ namespace Fly01.Faturamento.BL
                 Quantidade = x.Quantidade,
                 Desconto = x.Desconto,
                 Total = x.Total,
-                GrupoTributarioId = x.GrupoTributarioId,
+                GrupoTributarioId = x.GrupoTributarioId.Value,
                 GrupoTributario = x.GrupoTributario
             }).ToList(), clienteId);
         }
@@ -506,7 +590,7 @@ namespace Fly01.Faturamento.BL
 
     public class TributacaoProduto : TributacaoItem
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServico : TributacaoItem
@@ -516,7 +600,7 @@ namespace Fly01.Faturamento.BL
 
     public class TributacaoProdutoRetorno : TributacaoItemRetorno
     {
-        public Guid? ProdutoId { get; set; }
+        public Guid ProdutoId { get; set; }
     }
     //se necessário mudar
     public class TributacaoServicoRetorno : TributacaoItemRetorno

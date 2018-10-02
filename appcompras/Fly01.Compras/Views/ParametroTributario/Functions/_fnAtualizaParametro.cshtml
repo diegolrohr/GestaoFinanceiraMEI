@@ -22,11 +22,21 @@
             $("#aliquotaFCP").val("0");
         }
 
+        if ($("#aliquotaCSLL").val() == "" || $("#aliquotaCSLL").val() == null) {
+            $("#aliquotaCSLL").val("0");
+        }
+
+        if ($("#aliquotaINSS").val() == "" || $("#aliquotaINSS").val() == null) {
+            $("#aliquotaINSS").val("0");
+        }
+
+        if ($("#aliquotaImpostoRenda").val() == "" || $("#aliquotaImpostoRenda").val() == null) {
+            $("#aliquotaImpostoRenda").val("0");
+        }
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
-            data: {
-                registro: $('#registroSimplificadoMT').is(":checked"),
+            data: {                
                 mensagem: $('#mensagemPadraoNota').val(),
                 simplesnacional: $("#aliquotaSimplesNacional").val(),
                 fcp: $("#aliquotaFCP").val(),
@@ -39,7 +49,18 @@
                 ambiente: $('#tipoAmbiente').val(),
                 tipoPresencaComprador: $('#tipoPresencaComprador').val(),
                 horarioVerao: $('#horarioVerao').val(),
-                tipoHorario: $('#tipoHorario').val()
+                tipoHorario: $('#tipoHorario').val(),
+                versaoNFSe: $('#versaoNFSe').val(),
+                usuarioWebServer: $('#usuarioWebServer').val(),
+                senhaWebServer: $('#senhaWebServer').val(),
+                chaveAutenticacao: $('#chaveAutenticacao').val(),
+                autorizacao : $('#autorizacao').val(),
+                tipoTributacaoNFS : $('#tipoTributacaoNFS').val(),
+                tipoAmbienteNFS: $('#tipoAmbienteNFS').val(),
+                csll: $("#aliquotaCSLL").val(),
+                inss: $("#aliquotaINSS").val(),
+                impostoRenda: $("#aliquotaImpostoRenda").val(),
+
             },
             success: function (response) {
                 if (response.success) {

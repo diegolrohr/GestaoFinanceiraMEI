@@ -4,13 +4,13 @@ namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum TipoOperacaoSerieNotaFiscal
     {
-        [Subtitle("NFe", "NFe")]
+        [Subtitle("NFe", "NFe", "NFe", "green")]
         NFe = 1,
 
-        [Subtitle("NFSe", "NFSe")]
+        [Subtitle("NFSe", "NFSe", "NFSe", "blue")]
         NFSe = 2,
 
-        [Subtitle("Ambas", "Ambas")]
+        [Subtitle("Ambas", "Ambas", "Ambas", "gray")]
         Ambas = 3
     }
 }

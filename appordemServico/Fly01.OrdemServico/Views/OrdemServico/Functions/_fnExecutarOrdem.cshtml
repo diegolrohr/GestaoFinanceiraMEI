@@ -1,0 +1,25 @@
+﻿<script>
+    function fnExecutarOrdem(idRecord) {
+        fly01.loading.start();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ExecutarOrdem", "OrdemServico")",
+            dataType: 'json',
+            data: { id: idRecord, faturar: false },
+            success: function (data) {
+                fly01.loading.stop();
+                if (data.success) {
+                    fly01.toast("A ordem agora está em andamento!", "success");
+                    fly01._.fly01dt.refresh();
+                }
+                else {
+                    fly01.fn.submitErrorHandler(null, data.message);
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
+                fly01.toast(textStatus, "error");
+            }
+        });
+    }
+</script>

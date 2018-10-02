@@ -1,20 +1,20 @@
-﻿using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation;
-using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -266,6 +266,27 @@ namespace Fly01.Faturamento.Controllers
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public ActionResult BaixarXMLUnico(Guid id)
+        {
+            try
+            {
+                var response = base.Get(id);
+
+                string fileName = "NFSe" + response.NumNotaFiscal + ".xml";
+                string xml = response.XMLUnicoTSS;
+                xml = xml.Replace("\\", "");
+                Session.Add(fileName, xml);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLString", new { fileName }) });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }

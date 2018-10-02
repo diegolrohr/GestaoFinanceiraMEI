@@ -58,6 +58,9 @@
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
     <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\Api\ISSController.cs" />
+    <Compile Include="Controllers\Api\MonitorNFSController.cs" />
+    <Compile Include="Controllers\Api\NotaFiscalConfiguracaoGrupoTributarioController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\MonitorNFCartaCorrecaoController.cs" />
@@ -200,6 +203,10 @@
     <ProjectReference Include="..\Fly01.Faturamento.BL\Fly01.Faturamento.BL.csproj">
       <Project>{8f8627d2-ef0f-4765-bc89-84541d207a22}</Project>
       <Name>Fly01.Faturamento.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fly01.Faturamento\Fly01.Faturamento.csproj">
+      <Project>{2CAB2D20-F8DA-4349-8DC4-1818CF874E84}</Project>
+      <Name>Fly01.Faturamento</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

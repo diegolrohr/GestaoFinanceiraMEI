@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Fly01.Core.Entities.Domains.Enum;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Fly01.Core.Entities.Domains.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -14,6 +14,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string Descricao { get; set; }
 
         public Guid? NbsId { get; set; }
+
+        public Guid? IssId { get; set; }
+
+        [MaxLength(20)]
+        public string CodigoTributacaoMunicipal { get; set; }
 
         public double ValorServico { get; set; }
 
@@ -27,7 +32,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonProperty("tipoTributacaoISS")]
         public string TipoTributacaoISSRest
         {
-            get { return ((int)TipoTributacaoISS).ToString(); }
+            get { return TipoTributacaoISS.HasValue ? ((int)TipoTributacaoISS).ToString() : null; }
             set { TipoTributacaoISS = (TipoTributacaoISS)System.Enum.Parse(typeof(TipoTributacaoISS), value); }
         }
 
@@ -38,10 +43,12 @@ namespace Fly01.Core.Entities.Domains.Commons
         [JsonProperty("tipoPagamentoImpostoISS")]
         public string TipoPagamentoImpostoISSRest
         {
-            get { return ((int)TipoPagamentoImpostoISS).ToString(); }
+            get { return TipoPagamentoImpostoISS.HasValue ? ((int)TipoPagamentoImpostoISS).ToString() : null; }
             set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)System.Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
         }
 
         public virtual Nbs Nbs { get; set; }
+
+        public virtual Iss Iss { get; set; }
     }
 }

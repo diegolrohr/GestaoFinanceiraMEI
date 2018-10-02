@@ -73,7 +73,7 @@
         }
 
         var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
-                num = v.toFixed(Math.max(0, ~~n));
+            num = v.toFixed(Math.max(0, ~~n));
         return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ''));
     }
 
@@ -108,14 +108,14 @@
                 var newDate = new Date(parseInt(val.substr(6)));
                 obj.val(FormatDate(newDate));
             }
-                //else if (!isNaN(val) && typeof val === 'number') { // && (val.toString().indexOf('.') > 0 || val.toString().indexOf(',') > 0)) {
-                //    if (obj.is('span')) {
-                //        obj.text(formatDecimal(GetStringValue(val, obj.val())));
-                //    }
-                //    else {
-                //        obj.val(formatDecimal(GetStringValue(val, obj.val())));
-                //    }
-                //}
+            //else if (!isNaN(val) && typeof val === 'number') { // && (val.toString().indexOf('.') > 0 || val.toString().indexOf(',') > 0)) {
+            //    if (obj.is('span')) {
+            //        obj.text(formatDecimal(GetStringValue(val, obj.val())));
+            //    }
+            //    else {
+            //        obj.val(formatDecimal(GetStringValue(val, obj.val())));
+            //    }
+            //}
             else {
                 if (obj.is('span')) {
                     obj.text(formatDecimal(GetStringValue(val, obj.val())));
@@ -166,4 +166,31 @@
         }
         return retValue;
     }
+
+    // integer n: length of decimal
+    // integer x: length of whole part
+    // mixed   s: sections delimiter
+    // mixed   c: decimal delimiter
+    //
+    Number.prototype.formatMoneyMask = function (n, x, s, c) {
+        var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+            num = this.toFixed(Math.max(0, ~~n));
+
+
+        return (c ? num.replace('.', c) : num.replace('.', ',')).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
+    };
+
+    String.prototype.removeMoneyMask = function () {
+        var e = this;
+        if (!e)
+            return 0;
+
+        var noDots = e.replace('.', '');
+        var noCoin = noDots.replace('R$', '').replace('R$', '');
+        var noSpace = noCoin.replace(' ', '');
+        var valFloat = parseFloat(noSpace.replace(',', '.'));
+
+        return valFloat;
+    }
+
 </script>

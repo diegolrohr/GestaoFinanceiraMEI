@@ -58,6 +58,21 @@ namespace Fly01.EmissaoNFE.BL
         private NcmBL ncmBL;
         public NcmBL NcmBL => ncmBL ?? (ncmBL = new NcmBL(Context));
 
+        private PisBL pisBL;
+        public PisBL PisBL => pisBL ?? (pisBL = new PisBL(Context));
+
+        private CofinsBL cofinsBL;
+        public CofinsBL CofinsBL => cofinsBL ?? (cofinsBL = new CofinsBL(Context));
+
+        private InssBL inssBL;
+        public InssBL InssBL => inssBL ?? (inssBL = new InssBL(Context));
+
+        private CsllBL csll;
+        public CsllBL CsllBL => csll ?? (csll = new CsllBL(Context));
+
+        private ImpostoRendaBL impostoRendaBL;
+        public ImpostoRendaBL ImpostoRendaBL => impostoRendaBL ?? (impostoRendaBL = new ImpostoRendaBL(Context));
+
         private SubstituicaoTributariaBL substituicaoTributariaBL;
         public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context));
 
@@ -65,8 +80,7 @@ namespace Fly01.EmissaoNFE.BL
         public TabelaIcmsBL TabelaIcmsBL => tabelaIcmsBL ?? (tabelaIcmsBL = new TabelaIcmsBL(Context));
         
         private TributacaoBL tributacaoBL;
-        public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL));
-
+        public TributacaoBL TributacaoBL => tributacaoBL ?? (tributacaoBL = new TributacaoBL(Context, TabelaIcmsBL, NcmBL, IcmsBL, DifalBL, SubstituicaoTributariaBL, IpiBL, FcpBL, FcpStBL, PisBL, CofinsBL, InssBL, ImpostoRendaBL, CsllBL));
 
         #endregion
 
@@ -76,6 +90,9 @@ namespace Fly01.EmissaoNFE.BL
 
         private CancelarFaixaBL cancelarFaixaBL;
         public CancelarFaixaBL CancelarFaixaBL => cancelarFaixaBL ?? (cancelarFaixaBL = new CancelarFaixaBL(Context, EntidadeBL));
+
+        private CancelarNFSBL cancelarNFSBL;
+        public CancelarNFSBL CancelarNFSBL => cancelarNFSBL ?? (cancelarNFSBL = new CancelarNFSBL(Context, EntidadeBL, CidadeBL));
 
         private InutilizarNFBL inutilizarNFBL;
         public InutilizarNFBL InutilizarNFBL => inutilizarNFBL ?? (inutilizarNFBL = new InutilizarNFBL(Context, EntidadeBL, EstadoBL, EmpresaBL));
@@ -113,6 +130,12 @@ namespace Fly01.EmissaoNFE.BL
         private MonitorBL monitorBL;
         public MonitorBL MonitorBL => monitorBL ?? (monitorBL = new MonitorBL(Context, EntidadeBL));
 
+        private MonitorNFSBL monitorNFSBL;
+        public MonitorNFSBL MonitorNFSBL => monitorNFSBL ?? (monitorNFSBL = new MonitorNFSBL(Context, EntidadeBL));
+
+        private SiafiBL siafiBL;
+        public SiafiBL SiafiBL => siafiBL ?? (siafiBL = new SiafiBL(Context));
+
         private NFeBL nFeBL;
         public NFeBL NFeBL => nFeBL ?? (nFeBL = new NFeBL(Context));
 
@@ -124,7 +147,10 @@ namespace Fly01.EmissaoNFE.BL
         
         private TransmissaoBL transmissaoBL;
         public TransmissaoBL TransmissaoBL => transmissaoBL ?? (transmissaoBL = new TransmissaoBL(Context, CfopBL, ChaveBL, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL, NFeBL));
-        
+
+        private TransmissaoNFSBL transmissaoNFSBL;
+        public TransmissaoNFSBL TransmissaoNFSBL => transmissaoNFSBL ?? (transmissaoNFSBL = new TransmissaoNFSBL(Context, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL));
+
         private VersaoBL versaoBL;
         public VersaoBL VersaoBL => versaoBL ?? (versaoBL = new VersaoBL(Context, EntidadeBL));
 

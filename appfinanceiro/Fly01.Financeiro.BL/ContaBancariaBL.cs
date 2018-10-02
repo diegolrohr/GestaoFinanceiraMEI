@@ -36,7 +36,6 @@ namespace Fly01.Financeiro.BL
             if(banco != null && banco.Codigo != "999")
             {
                 var dadosAgenciaContaInvalid = string.IsNullOrWhiteSpace(entity.Agencia) ||
-                    string.IsNullOrWhiteSpace(entity.DigitoAgencia) ||
                     string.IsNullOrWhiteSpace(entity.Conta) ||
                     string.IsNullOrWhiteSpace(entity.DigitoConta);
 

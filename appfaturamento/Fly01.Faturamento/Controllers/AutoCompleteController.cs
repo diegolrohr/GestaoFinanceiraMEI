@@ -39,6 +39,26 @@ namespace Fly01.Faturamento.Controllers
             return GetJson(filterObjects);
         }
 
+        public JsonResult Iss(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ISSVM));
+
+            var queryString = AppDefaults.GetQueryStringDefault();
+            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigo, '{term}')");
+            queryString.AddParam("$select", "id,codigo,descricao");
+            queryString.AddParam("$orderby", "codigo");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ISSVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Descricao,
+                                    detail = string.Format("Código {0}", item.Codigo)
+                                };
+
+            return GetJson(filterObjects);
+        }
+
         public JsonResult Servico(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ServicoVM));

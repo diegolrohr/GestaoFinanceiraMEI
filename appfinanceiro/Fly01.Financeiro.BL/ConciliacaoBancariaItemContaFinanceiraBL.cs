@@ -197,7 +197,7 @@ namespace Fly01.Financeiro.BL
                 throw new BusinessException("Necessário informar as contas financeiras a serem conciliadas");
             else
             {
-                double somaConciliados = Math.Round(entity.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado),2);
+                double somaConciliados = Math.Round(entity.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado), 2);
 
                 if (somaConciliados > Math.Round(Math.Abs(conciliacaoBancariaItem.Valor),2))
                     throw new BusinessException("A soma dos valores conciliados não pode ser superior ao valor do lançamento");

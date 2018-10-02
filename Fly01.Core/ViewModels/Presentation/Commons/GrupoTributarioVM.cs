@@ -51,6 +51,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("calculaPis")]
         public bool CalculaPis { get; set; }
 
+        [JsonProperty("retemPis")]
+        public bool RetemPis { get; set; }
+
         [JsonProperty("tipoTributacaoPIS")]
         [APIEnum("TipoTributacaoPISCOFINS")]
         public string TipoTributacaoPIS { get; set; }
@@ -65,6 +68,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         //COFINS
         [JsonProperty("calculaCofins")]
         public bool CalculaCofins { get; set; }
+
+        [JsonProperty("retemCofins")]
+        public bool RetemCofins { get; set; }
 
         [JsonProperty("tipoTributacaoCOFINS")]
         [APIEnum("TipoTributacaoPISCOFINS")]
@@ -81,6 +87,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("calculaIss")]
         public bool CalculaIss { get; set; }
 
+        [JsonProperty("retemISS")]
+        public bool RetemISS { get; set; }
+
         [JsonProperty("tipoTributacaoISS")]
         [APIEnum("TipoTributacaoISS")]
         public string TipoTributacaoISS { get; set; }
@@ -93,7 +102,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [APIEnum("TipoCFPS")]
         public string TipoCFPS { get; set; }
         
-        //ST
+        //ST - Substituicao tributaria
         [JsonProperty("calculaSubstituicaoTributaria")]
         public bool CalculaSubstituicaoTributaria { get; set; }
 
@@ -105,6 +114,27 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("aplicaIpiBaseST")]
         public bool AplicaIpiBaseST { get; set; }
+
+        //CSLL
+        [JsonProperty("calculaCSLL")]
+        public bool CalculaCSLL { get; set; }
+
+        [JsonProperty("retemCSLL")]
+        public bool RetemCSLL { get; set; }
+
+        //INSS
+        [JsonProperty("calculaINSS")]
+        public bool CalculaINSS { get; set; }
+
+        [JsonProperty("retemINSS")]
+        public bool RetemINSS { get; set; }
+
+        //IR - Imposto de Renda
+        [JsonProperty("calculaImpostoRenda")]
+        public bool CalculaImpostoRenda { get; set; }
+
+        [JsonProperty("retemImpostoRenda")]
+        public bool RetemImpostoRenda { get; set; }
 
         [JsonProperty("cfop")]
         public virtual CfopVM Cfop { get; set; }

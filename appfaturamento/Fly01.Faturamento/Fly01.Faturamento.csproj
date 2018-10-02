@@ -116,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ISSVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />
@@ -338,6 +339,8 @@
     <Content Include="Views\Pedido\Functions\_fnToggleMovimentaEstoque.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnClickComplementarIsDevolucao.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
+    <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLUnicoNFSe.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -358,7 +361,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.2.7\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

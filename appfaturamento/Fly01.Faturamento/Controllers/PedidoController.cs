@@ -598,7 +598,8 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Cliente = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
+                SituacaoEspecialNFS = "Outro"
             };
 
             NormarlizarEntidade(ref entity);
@@ -644,7 +645,8 @@ namespace Fly01.Faturamento.Controllers
             {
                 Nome = term,
                 Transportadora = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
+                SituacaoEspecialNFS = "Outro"
             };
 
             NormarlizarEntidade(ref entity);

@@ -340,6 +340,50 @@
     <Compile Include="Migrations\201808292124589_AlterTamanhoCampoComplemento.Designer.cs">
       <DependentUpon>201808292124589_AlterTamanhoCampoComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809111413253_AlterOrdemVendaItemGrupoTributario.cs" />
+    <Compile Include="Migrations\201809111413253_AlterOrdemVendaItemGrupoTributario.Designer.cs">
+      <DependentUpon>201809111413253_AlterOrdemVendaItemGrupoTributario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.cs" />
+    <Compile Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.Designer.cs">
+      <DependentUpon>201809191828119_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809241238557_ParametroTributarioNFS.cs" />
+    <Compile Include="Migrations\201809241238557_ParametroTributarioNFS.Designer.cs">
+      <DependentUpon>201809241238557_ParametroTributarioNFS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs" />
+    <Compile Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
+      <DependentUpon>201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251837231_DeleteIss.cs" />
+    <Compile Include="Migrations\201809251837231_DeleteIss.Designer.cs">
+      <DependentUpon>201809251837231_DeleteIss.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809251903596_AlterServicoNFS.cs" />
+    <Compile Include="Migrations\201809251903596_AlterServicoNFS.Designer.cs">
+      <DependentUpon>201809251903596_AlterServicoNFS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.cs" />
+    <Compile Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.Designer.cs">
+      <DependentUpon>201809271346378_AlterNFSAddColumnXmlUnico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809281649335_AddNovosImpostosGrupoTributario.cs" />
+    <Compile Include="Migrations\201809281649335_AddNovosImpostosGrupoTributario.Designer.cs">
+      <DependentUpon>201809281649335_AddNovosImpostosGrupoTributario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809282003184_AddGrupoTributarioRetemPisCofins.cs" />
+    <Compile Include="Migrations\201809282003184_AddGrupoTributarioRetemPisCofins.Designer.cs">
+      <DependentUpon>201809282003184_AddGrupoTributarioRetemPisCofins.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.cs" />
+    <Compile Include="Migrations\201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.Designer.cs">
+      <DependentUpon>201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.cs" />
+    <Compile Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.Designer.cs">
+      <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -588,6 +632,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808292124589_AlterTamanhoCampoComplemento.resx">
       <DependentUpon>201808292124589_AlterTamanhoCampoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809111413253_AlterOrdemVendaItemGrupoTributario.resx">
+      <DependentUpon>201809111413253_AlterOrdemVendaItemGrupoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809191828119_AlterPessoaTamanhoCampos.resx">
+      <DependentUpon>201809191828119_AlterPessoaTamanhoCampos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809241238557_ParametroTributarioNFS.resx">
+      <DependentUpon>201809241238557_ParametroTributarioNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809241956133_AlterPessoaAddTipoSituacaoEspecial.resx">
+      <DependentUpon>201809241956133_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251837231_DeleteIss.resx">
+      <DependentUpon>201809251837231_DeleteIss.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809251903596_AlterServicoNFS.resx">
+      <DependentUpon>201809251903596_AlterServicoNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809271346378_AlterNFSAddColumnXmlUnico.resx">
+      <DependentUpon>201809271346378_AlterNFSAddColumnXmlUnico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809281649335_AddNovosImpostosGrupoTributario.resx">
+      <DependentUpon>201809281649335_AddNovosImpostosGrupoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809282003184_AddGrupoTributarioRetemPisCofins.resx">
+      <DependentUpon>201809282003184_AddGrupoTributarioRetemPisCofins.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.resx">
+      <DependentUpon>201810011728365_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.resx">
+      <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

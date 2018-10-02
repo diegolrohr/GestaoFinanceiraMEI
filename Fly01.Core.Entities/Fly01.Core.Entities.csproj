@@ -66,6 +66,15 @@
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemBase.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
+    <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
+    <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
+    <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServico.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
+    <Compile Include="Domains\Commons\OrdemServicoItemProduto.cs" />
     <Compile Include="Domains\Enum\TipoEspecie.cs" />
     <Compile Include="Domains\Enum\TipoNfeComplementar.cs" />
     <Compile Include="Domains\Commons\NFeEntrada.cs" />
@@ -74,6 +83,8 @@
     <Compile Include="Domains\Commons\NotaFiscalEntrada.cs" />
     <Compile Include="Domains\Commons\NotaFiscalItemEntrada.cs" />
     <Compile Include="Domains\Commons\NotaFiscalItemTributacaoEntrada.cs" />
+    <Compile Include="Domains\Enum\TipoSituacaoEspecialNFS.cs" />
+    <Compile Include="Domains\Enum\TipoTributacaoNFS.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
     <Compile Include="Domains\Commons\ArquivoRemessa.cs" />
     <Compile Include="Domains\Commons\Banco.cs" />
@@ -229,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domains\NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

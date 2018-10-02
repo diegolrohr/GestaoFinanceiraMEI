@@ -8,7 +8,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Pessoa : PlataformaBase
     {
         [Required]
-        [StringLength(100, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(180, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Nome { get; set; }
 
         [StringLength(1, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
@@ -20,16 +20,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(8, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string CEP { get; set; }
 
-        [StringLength(80, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(180, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Endereco { get; set; }
 
         [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Numero { get; set; }
 
-        [StringLength(150, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(200, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Complemento { get; set; }
 
-        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(200, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Bairro { get; set; }
 
         public Guid? CidadeId { get; set; }
@@ -42,16 +42,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(15, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Celular { get; set; }
 
-        [StringLength(45, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Contato { get; set; }
 
         [StringLength(500, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Observacao { get; set; }
 
-        [StringLength(70, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(100, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Email { get; set; }
 
-        [StringLength(100, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(180, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string NomeComercial { get; set; }
 
         [StringLength(18, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
@@ -86,5 +86,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string EstadoCodigoIbge { get; set; }
 
         public string CidadeCodigoIbge { get; set; }
+
+        public TipoSituacaoEspecialNFS SituacaoEspecialNFS { get; set; }
     }
 }

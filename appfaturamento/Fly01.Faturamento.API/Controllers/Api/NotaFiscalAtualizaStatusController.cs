@@ -27,6 +27,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
                     }
 
                     unitOfWork.MonitorNFBL.AtualizaStatusTSS(PlataformaUrl);
+                    //TODO: Diego comentado para liberar em prod
+                    //unitOfWork.MonitorNFSBL.AtualizaStatusTSS(PlataformaUrl);
                     await unitOfWork.Save();
                 }
 

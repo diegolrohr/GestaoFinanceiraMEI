@@ -1,0 +1,18 @@
+﻿<script>
+    function noComma(e) {
+        return e.replace(',', '.');
+    }
+
+    function handleNegativeValuesManutencao() {        
+        var formOrdemServico = 'form#fly01mdlfrmOrdemServicoManutencao ';
+        
+        if (parseFloat($(formOrdemServico + 'input#quantidade').val()) < 0) {
+            $(formOrdemServico + 'input#quantidade').val(function () { return (parseFloat(noComma(this.value)) * -1) });
+        }        
+    }
+
+
+    function fnChangeTotalManutencao() {
+        handleNegativeValuesManutencao();
+    }
+</script>

@@ -28,6 +28,12 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("fcp")]
         public double Fcp { get; set; }
 
+        [JsonProperty("aliquotaIntraEstadual")]
+        public double AliquotaIntraEstadual { get; set; }
+
+        [JsonProperty("aliquotaInterEstadual")]
+        public double AliquotaInterEstadual { get; set; }
+
         [JsonProperty("ncm")]
         public virtual NcmVM Ncm { get; set; }
 

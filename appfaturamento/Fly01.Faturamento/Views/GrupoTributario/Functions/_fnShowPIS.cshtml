@@ -2,7 +2,6 @@
     function fnShowPIS() {
         //Se ha calculo de PIS (checked), habilite os campos relacionados
         if ($('#calculaPis:checked').val() == "true") {
-            $('input#retemPis').removeAttr('disabled');
             $('input#aplicaFreteBasePis').removeAttr('disabled');
             $('input#aplicaDespesaBasePis').removeAttr('disabled');
             if ($('select#tipoTributacaoPIS').val() == null) {// Garante sempre um valor ao habilitar campo
@@ -11,7 +10,6 @@
         }
         else {
             //Se nao ha calculo de PIS, desabilite os campos relacionados
-            $('input#retemPis').attr('disabled', 'disabled');
             $('input#aplicaFreteBasePis').attr('disabled', 'disabled');
             $('input#aplicaDespesaBasePis').attr('disabled', 'disabled');
         }

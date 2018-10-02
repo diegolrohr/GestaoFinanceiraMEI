@@ -21,6 +21,18 @@
         if ($("#aliquotaFCP").val() == "" || $("#aliquotaFCP").val() == null) {
             $("#aliquotaFCP").val("0");
         }
+
+        if ($("#aliquotaCSLL").val() == "" || $("#aliquotaCSLL").val() == null) {
+            $("#aliquotaCSLL").val("0");
+        }
+
+        if ($("#aliquotaINSS").val() == "" || $("#aliquotaINSS").val() == null) {
+            $("#aliquotaINSS").val("0");
+        }
+
+        if ($("#aliquotaImpostoRenda").val() == "" || $("#aliquotaImpostoRenda").val() == null) {
+            $("#aliquotaImpostoRenda").val("0");
+        }
         $.ajax({
             url: '@Url.Action("ImportaParametro", "ParametroTributario")',
             type: "POST",
@@ -44,7 +56,10 @@
                 chaveAutenticacao: $('#chaveAutenticacao').val(),
                 autorizacao : $('#autorizacao').val(),
                 tipoTributacaoNFS : $('#tipoTributacaoNFS').val(),
-                tipoAmbienteNFS : $('#tipoAmbienteNFS').val(),
+                tipoAmbienteNFS: $('#tipoAmbienteNFS').val(),
+                csll: $("#aliquotaCSLL").val(),
+                inss: $("#aliquotaINSS").val(),
+                impostoRenda: $("#aliquotaImpostoRenda").val(),
 
             },
             success: function (response) {

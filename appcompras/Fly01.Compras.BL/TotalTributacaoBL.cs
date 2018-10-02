@@ -254,12 +254,15 @@ namespace Fly01.Compras.BL
                     //ST
                     if (grupoTributario.CalculaSubstituicaoTributaria)
                     {
+                        var isEntrada = (tipoCompra == TipoVenda.Normal)
+                            || (tipoCompra == TipoVenda.Complementar);
+
                         var st = SubstituicaoTributariaBL.AllIncluding(y => y.EstadoOrigem, y => y.EstadoDestino).AsNoTracking().Where(x =>
                             x.NcmId == (produto.NcmId.HasValue ? produto.NcmId.Value : Guid.NewGuid()) &
                             x.CestId == produto.CestId.Value &
                             x.EstadoOrigem.Sigla == (tipoCompra != TipoVenda.Devolucao ? fornecedor.Estado.Sigla : estadoOrigem) &
                             x.EstadoDestino.Sigla == (tipoCompra != TipoVenda.Devolucao ? estadoOrigem : fornecedor.Estado.Sigla) &
-                            x.TipoSubstituicaoTributaria == TipoSubstituicaoTributaria.Saida
+                            x.TipoSubstituicaoTributaria == (isEntrada ? TipoSubstituicaoTributaria.Entrada : TipoSubstituicaoTributaria.Saida)
                             ).FirstOrDefault();
 
                         if (st != null)
@@ -271,6 +274,8 @@ namespace Fly01.Compras.BL
                                 FreteNaBase = grupoTributario.AplicaFreteBaseST,
                                 DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                                 Mva = st.Mva,
+                                AliquotaIntraEstadual = st.AliquotaIntraEstadual,
+                                AliquotaInterEstadual = st.AliquotaInterEstadual,
                             };
                             if (produto.AliquotaIpi > 0)
                             {

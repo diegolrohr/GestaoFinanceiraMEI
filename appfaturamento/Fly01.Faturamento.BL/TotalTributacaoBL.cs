@@ -541,8 +541,8 @@ namespace Fly01.Faturamento.BL
                             FreteNaBase = grupoTributario.AplicaFreteBaseST,
                             DespesaNaBase = grupoTributario.AplicaDespesaBaseST,
                             Mva = st.Mva,
-                            //AliquotaIntraEstadual = st.AliquotaIntraEstadual,
-                            //AliquotaInterEstadual = st.AliquotaInterEstadual,
+                            AliquotaIntraEstadual = st.AliquotaIntraEstadual,
+                            AliquotaInterEstadual = st.AliquotaInterEstadual,
                         };
                         if (produto.AliquotaIpi > 0)
                         {

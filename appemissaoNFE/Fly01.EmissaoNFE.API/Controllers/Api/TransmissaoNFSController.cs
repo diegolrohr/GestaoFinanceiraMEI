@@ -19,6 +19,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
                 unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
 
+                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);
+
                 try
                 {
                     var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);

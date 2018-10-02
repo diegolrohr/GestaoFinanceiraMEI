@@ -37,6 +37,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public double Fcp { get; set; }
 
+        public double AliquotaIntraEstadual { get; set; }
+
+        public double AliquotaInterEstadual { get; set; }
+
         public virtual Ncm Ncm { get; set; }
         public virtual Estado EstadoOrigem { get; set; }
         public virtual Estado EstadoDestino { get; set; }

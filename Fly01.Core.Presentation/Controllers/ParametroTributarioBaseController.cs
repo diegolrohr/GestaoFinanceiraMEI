@@ -42,6 +42,7 @@ namespace Fly01.Core.Presentation.Controllers
             if (parametroTributario == null)
                 return Json(new
                 {
+                    id = default(Guid).ToString(),
                     aliquotaSimplesNacional = "0",
                     aliquotaISS = "5",
                     aliquotaPISPASEP = "0,65",
@@ -69,6 +70,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Json(new
             {
+                id = parametroTributario.Id,
                 aliquotaSimplesNacional = parametroTributario.AliquotaSimplesNacional,
                 aliquotaISS = parametroTributario.AliquotaISS,
                 aliquotaPISPASEP = parametroTributario.AliquotaPISPASEP,
@@ -351,9 +353,6 @@ namespace Fly01.Core.Presentation.Controllers
         {
             try
             {
-
-
-
                 var dadosParametro = new
                 {
                     simplesNacional = "True",

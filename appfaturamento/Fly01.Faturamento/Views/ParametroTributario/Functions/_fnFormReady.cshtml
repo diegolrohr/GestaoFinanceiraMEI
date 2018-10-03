@@ -4,7 +4,8 @@
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroTributario")',
             type: "GET",
-            success: function (data) {                
+            success: function (data) {
+                $("input#id").val(data.id);
                 $("input#aliquotaSimplesNacional").val(data.aliquotaSimplesNacional);
                 $("input#aliquotaFCP").val(data.aliquotaFCP);
                 $("input#aliquotaISS").val(data.aliquotaISS);

@@ -280,6 +280,10 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total impostos produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido", Readonly = true });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraNotaFiscal",
@@ -290,9 +294,6 @@ namespace Fly01.Faturamento.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnClickGeraNotaFiscal" }
                 }
             });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido(produtos + serviços + impostos + frete)", Readonly = true });
 
             #endregion
 
@@ -307,10 +308,10 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "totalImpostosServicos",
+                Id = "totalRetencoesServicos",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações ajustadas no cadastro dos parâmetros tributários."
+                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações de retenção do grupo tributário informado em cada serviço."
                 }
             });
             config.Helpers.Add(new TooltipUI

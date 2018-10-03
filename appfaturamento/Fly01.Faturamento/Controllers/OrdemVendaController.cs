@@ -652,7 +652,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m6", Label = "Total impostos produtos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m6", Label = "Total impostos serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m6", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12", Label = "Total (produtos + serviços + impostos + frete)", Readonly = true });
             config.Elements.Add(new InputCheckboxUI { Id = "movimentaEstoque", Class = "col s12 m4", Label = "Movimenta estoque", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "geraNotaFiscal", Class = "col s12 m4", Label = "Faturar", Disabled = true });

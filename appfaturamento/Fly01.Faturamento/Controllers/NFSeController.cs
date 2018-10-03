@@ -124,8 +124,9 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços - retenções)", Readonly = true });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetServicos", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
@@ -196,8 +197,9 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true, Name = "totalNotaFiscal" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutoCompleteUI
             {

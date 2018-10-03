@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.BL
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
-                entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && servicos.Any(), new Error("Finalidade de devolução não pode conter serviços, somente produtos"));
+                entity.Fail(entity.TipoVenda != TipoVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")

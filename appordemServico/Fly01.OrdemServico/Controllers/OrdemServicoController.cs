@@ -2,11 +2,13 @@
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
+using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.OrdemServico.Helpers;
 using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
@@ -17,6 +19,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -275,6 +278,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailOS", Label = "Enviar por e-mail", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
                 new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
@@ -297,6 +301,49 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult EnviaEmail(string id)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+                var ordem = Get(Guid.Parse(id));
+
+                var ResponseError = ValidarDadosEmail(id, empresa, ordem);
+                if (ResponseError != null) return ResponseError; // tem que arrumar uma solução para o retorno nulo
+
+                MailSend(empresa, ordem);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult ValidarDadosEmail(string id, ManagerEmpresaVM empresa, OrdemServicoVM pedido)
+        {
+
+            if (pedido.Cliente == null) return JsonResponseStatus.GetFailure("Nenhum Cliente foi encontrado.");
+            if (string.IsNullOrEmpty(pedido.Cliente.Email)) return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este Cliente.");
+            if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+
+            return null;
+        }
+
+        private void MailSend(ManagerEmpresaVM empresa, OrdemServicoVM ordem)
+        {
+            var anexo = File(GetPDFFile(ordem), "application/pdf");
+            var mensagemPrincipal = "VOCÊ ESTÁ RECEBENDO UMA CÓPIA DA SUA ORDEM DE SERVIÇO.";
+            var tituloEmail = $"{empresa.NomeFantasia} ORDEM DE SERVIÇO - Nº {ordem.Numero}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemCompra.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+            var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), anexo.ContentType);
+
+            Mail.Send(empresa.NomeFantasia, ordem.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
         }
 
         public ContentUI FormOrdemServico(bool isEdit = false)

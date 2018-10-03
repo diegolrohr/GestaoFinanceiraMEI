@@ -384,6 +384,10 @@
     <Compile Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.Designer.cs">
       <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.cs" />
+    <Compile Include="Migrations\201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.Designer.cs">
+      <DependentUpon>201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -665,6 +669,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810011823511_AlterSTAddAliquotaIntraInter.resx">
       <DependentUpon>201810011823511_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.resx">
+      <DependentUpon>201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

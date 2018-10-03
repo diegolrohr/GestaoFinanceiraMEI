@@ -1,6 +1,6 @@
 ﻿<script>
     function fnFormReady() {
-
+        fly01.loading.start();
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroTributario")',
             type: "GET",
@@ -37,8 +37,10 @@
                 $("input#aliquotaINSS").val(data.aliquotaINSS);
                 $("input#aliquotaImpostoRenda").val(data.aliquotaImpostoRenda);
                 fly01.fn.updateTextFields();
+                fly01.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
                 fly01.toast(data.message, 'error');
             }
         });

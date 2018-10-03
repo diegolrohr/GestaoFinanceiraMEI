@@ -97,7 +97,7 @@
     <Compile Include="ViewModels\Presentation\Commons\ResponseSimulacaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\SerieNotaFiscalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\SubstituicaoTributariaVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\TotalOrdemVendaCompraVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\TotalPedidoNotaFiscalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UnidadeMedidaVM.cs" />
     <Compile Include="ViewModels\Presentation\FileVM.cs" />
     <Compile Include="ViewModels\Presentation\KeyValueVM.cs" />

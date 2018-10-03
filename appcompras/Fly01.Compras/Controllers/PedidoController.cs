@@ -839,7 +839,7 @@ namespace Fly01.Compras.Controllers
             try
             {
                 var resource = string.Format("CalculaTotalOrdemCompra?&ordemCompraId={0}&fornecedorId={1}&geraNotaFiscal={2}&tipoCompra={3}&tipoFrete={4}&valorFrete={5}&onList={6}", id, fornecedorId, geraNotaFiscal.ToString(), tipoCompra, tipoFrete, valorFrete.ToString().Replace(",", "."), false);
-                var response = RestHelper.ExecuteGetRequest<TotalOrdemVendaCompraVM>(resource, queryString: null);
+                var response = RestHelper.ExecuteGetRequest<TotalPedidoNotaFiscalVM>(resource, queryString: null);
 
                 return Json(
                     new { success = true, total = response },

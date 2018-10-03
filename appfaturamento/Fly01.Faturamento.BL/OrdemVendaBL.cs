@@ -541,15 +541,15 @@ namespace Fly01.Faturamento.BL
                 {
                     if (entity.TipoVenda == TipoVenda.Normal || entity.TipoVenda == TipoVenda.Devolucao)
                     {
-                        totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.OutrasRetencoes));
                     }
                 }
 
-                double totalImpostosServicos = 0;
+                double totalRetencoesServicos = servicos != null && entity.TotalRetencoesServicos.HasValue ? entity.TotalRetencoesServicos.Value : 0; ;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
 
                 double valorPrevistoProdutos = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
-                double valorPrevistoServicos = totalServicos + (entity.GeraNotaFiscal ? totalImpostosServicos : 0);
+                double valorPrevistoServicos = totalServicos - (entity.GeraNotaFiscal ? totalRetencoesServicos : 0);
 
                 if (pagaFrete)
                 {
@@ -723,7 +723,7 @@ namespace Fly01.Faturamento.BL
             return produtos;
         }
 
-        public TotalOrdemVenda CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
         {             
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
@@ -756,7 +756,6 @@ namespace Fly01.Faturamento.BL
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
-
             var totalImpostosProdutosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
@@ -764,8 +763,10 @@ namespace Fly01.Faturamento.BL
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalRetencoesServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
                 : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaRetencaoOrdemVendaServicos(servicos, clienteId) : 0.0);
+            var totalImpostosServicosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosServicosNaoAgrega
+                : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaServicosNaoAgrega(servicos, clienteId) : 0.0);
 
-            var result = new TotalOrdemVenda()
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
@@ -773,6 +774,7 @@ namespace Fly01.Faturamento.BL
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
                 TotalRetencoesServicos = Math.Round(totalRetencoesServicos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosServicosNaoAgrega = Math.Round(totalImpostosServicosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 
             return result;

@@ -8,6 +8,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid ServicoId { get; set; }
 
+        public double OutrasRetencoes { get; set; }
+
         public virtual Servico Servico { get; set; }
     }
 }

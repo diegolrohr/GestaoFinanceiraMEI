@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Fly01.Compras.ViewModel
+namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
-    public class TotalNotaFiscalVM
+    public class TotalPedidoNotaFiscalVM
     {
         [JsonProperty("totalProdutos")]
         public double? TotalProdutos { get; set; }
@@ -18,8 +18,11 @@ namespace Fly01.Compras.ViewModel
         [JsonProperty("totalServicos")]
         public double? TotalServicos { get; set; }
 
-        [JsonProperty("totalImpostosServicos")]
-        public double? TotalImpostosServicos { get; set; }
+        [JsonProperty("totalRetencoesServicos")]
+        public double? TotalRetencoesServicos { get; set; }
+
+        [JsonProperty("totalImpostosServicosNaoAgrega")]
+        public double? TotalImpostosServicosNaoAgrega { get; set; }
 
         [JsonProperty("valorFrete")]
         public double? ValorFrete { get; set; }

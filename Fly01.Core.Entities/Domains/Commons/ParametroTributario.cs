@@ -19,6 +19,12 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double AliquotaCOFINS { get; set; }
 
+        public double AliquotaCSLL { get; set; }
+
+        public double AliquotaINSS { get; set; }
+
+        public double AliquotaImpostoRenda { get; set; }
+
         public bool RegistroSimplificadoMT { get; set; }
 
         [MaxLength(5000)]

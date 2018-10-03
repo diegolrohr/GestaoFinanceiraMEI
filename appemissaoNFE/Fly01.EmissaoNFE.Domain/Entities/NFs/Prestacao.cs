@@ -7,14 +7,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// <summary>
         /// O tipo é fixo conforme códigos First
         /// </summary>
+        /// 
+        private string seriePrestacao = "99";
+
         [XmlElement(ElementName = "serieprest")]
         public string SeriePrestacao
         {
             get
             {
-                return "99";
+                return seriePrestacao;
             }
-            set { }
+            set
+            {
+                seriePrestacao = value;
+            }
         }
 
         [XmlElement(ElementName = "logradouro")]

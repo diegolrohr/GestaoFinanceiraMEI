@@ -51,6 +51,7 @@
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="Helpers\Entities\TransmissaoNFSBLs.cs" />
     <Compile Include="Helpers\Entities\TransmissaoBLs.cs" />
     <Compile Include="Helpers\Entities\TransmissaoCabecalho.cs" />
     <Compile Include="Helpers\Factory\ConcreteTransmissaoFactory.cs" />
@@ -62,8 +63,10 @@
     <Compile Include="Helpers\Factory\TransmissaoNFeDevolucao.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFeNormal.cs" />
     <Compile Include="Helpers\Factory\TransmissaoNFe.cs" />
-    <Compile Include="Helpers\TransmissaoNFS.cs" />
+    <Compile Include="Helpers\TransmissaoNFSNormal.cs" />
+    <Compile Include="MonitorNFSBL.cs" />
     <Compile Include="MonitorNFBL.cs" />
+    <Compile Include="ISSBL.cs" />
     <Compile Include="NotaFiscalItemBL.cs" />
     <Compile Include="NotaFiscalCartaCorrecaoBL.cs" />
     <Compile Include="NotaFiscalItemTributacaoBL.cs" />

@@ -3,6 +3,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
@@ -160,7 +161,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaFreteBaseIcms", Class = "col s12 m6 l6", Label = "Aplica FRETE na base de cálculo", Disabled = true });
             config.Elements.Add(new InputCheckboxUI { Id = "aplicaDespesaBaseIcms", Class = "col s12 m6 l6", Label = "Aplica DESPESAS na base de cálculo", Disabled = true });
 
-            //Aba IPI
+            //IPI
             config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "IPI" });
             config.Elements.Add(new InputCheckboxUI
             {
@@ -189,13 +190,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaPis",
-                Class = "col s12 l12",
+                Class = "col s12 m6 l6",
                 Label = "Calcula PIS",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnShowPIS" }
                 }
             });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemPis", Class = "col s12 m6 l6", Label = "Retém PIS"});
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoPIS",
@@ -212,13 +214,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaCofins",
-                Class = "col s12 l12",
+                Class = "col s12 m6 l6",
                 Label = "Calcula COFINS",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnShowCOFINS" }
                 }
             });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemCofins", Class = "col s12 m6 l6", Label = "Retém COFINS"});
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoCOFINS",
@@ -235,13 +238,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "calculaIss",
-                Class = "col s12 l12",
+                Class = "col s12 m6 l6",
                 Label = "Calcula ISS",
                 DomEvents = new List<DomEventUI>()
                 {
                     new DomEventUI() { DomEvent = "change", Function = "fnShowISS" }
                 }
             });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemISS", Class = "col s12 m6 l6", Label = "Retém ISS"});
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoISS",
@@ -267,6 +271,47 @@ namespace Fly01.Core.Presentation.Controllers
                 Disabled = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCFPS)))
             });
+
+            //CSLL
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "CSLL" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaCSLL",
+                Class = "col s12 m6 l6",
+                Label = "Calcula CSLL"
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemCSLL", Class = "col s12 m6 l6", Label = "Retém CSLL"});
+
+            //INSS
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "INSS" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaINSS",
+                Class = "col s12 m6 l6",
+                Label = "Calcula INSS"
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemINSS", Class = "col s12 m6 l6", Label = "Retém INSS"});
+
+            //Imposto de Renda
+            config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Imposto de Renda" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "calculaImpostoRenda",
+                Class = "col s12 m6 l6",
+                Label = "Calcula Imposto de Renda"
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemImpostoRenda", Class = "col s12 m6 l6", Label = "Retém Imposto de Renda" });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "calculaSubstituicaoTributaria",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Necessário estar cadastrado no menu de Substituição Tributária, de acordo com a situação do estado origem e destino."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

@@ -236,6 +236,22 @@
     <Compile Include="Migrations\201809241954115_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
       <DependentUpon>201809241954115_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.cs" />
+    <Compile Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.Designer.cs">
+      <DependentUpon>201809281654351_AddNovosImpostosGrupoTributario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809282004353_AddGrupoTributarioRetemPisCofins.cs" />
+    <Compile Include="Migrations\201809282004353_AddGrupoTributarioRetemPisCofins.Designer.cs">
+      <DependentUpon>201809282004353_AddGrupoTributarioRetemPisCofins.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810011731118_AddParametroTributarioAliquotaCSLLeINSSeIR.cs" />
+    <Compile Include="Migrations\201810011731118_AddParametroTributarioAliquotaCSLLeINSSeIR.Designer.cs">
+      <DependentUpon>201810011731118_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810011824594_AlterSTAddAliquotaIntraInter.cs" />
+    <Compile Include="Migrations\201810011824594_AlterSTAddAliquotaIntraInter.Designer.cs">
+      <DependentUpon>201810011824594_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -420,6 +436,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809241954115_AlterPessoaAddTipoSituacaoEspecial.resx">
       <DependentUpon>201809241954115_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809281654351_AddNovosImpostosGrupoTributario.resx">
+      <DependentUpon>201809281654351_AddNovosImpostosGrupoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809282004353_AddGrupoTributarioRetemPisCofins.resx">
+      <DependentUpon>201809282004353_AddGrupoTributarioRetemPisCofins.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810011731118_AddParametroTributarioAliquotaCSLLeINSSeIR.resx">
+      <DependentUpon>201810011731118_AddParametroTributarioAliquotaCSLLeINSSeIR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810011824594_AlterSTAddAliquotaIntraInter.resx">
+      <DependentUpon>201810011824594_AlterSTAddAliquotaIntraInter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

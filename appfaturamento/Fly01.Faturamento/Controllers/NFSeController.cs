@@ -1,20 +1,20 @@
-﻿using Fly01.Faturamento.ViewModel;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
-using Fly01.Core;
-using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Core.Presentation;
-using Fly01.Core.ViewModels;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -124,8 +124,9 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços - retenções)", Readonly = true });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetServicos", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
@@ -196,8 +197,9 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true, Name = "totalNotaFiscal" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -266,6 +268,27 @@ namespace Fly01.Faturamento.Controllers
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public ActionResult BaixarXMLUnico(Guid id)
+        {
+            try
+            {
+                var response = base.Get(id);
+
+                string fileName = "NFSe" + response.NumNotaFiscal + ".xml";
+                string xml = response.XMLUnicoTSS;
+                xml = xml.Replace("\\", "");
+                Session.Add(fileName, xml);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLString", new { fileName }) });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }

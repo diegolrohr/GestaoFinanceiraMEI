@@ -66,7 +66,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         }
 
         [XmlElement(ElementName = "issretido")]
-        public string ISSRetido { get; set; }
+        public double ISSRetido { get; set; }
 
         [XmlElement(ElementName = "valdedu")]
         public double ValorDeduzido { get; set; }
@@ -129,6 +129,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "cst")]
         public double CST { get; set; }
 
+        [XmlIgnore]
+        public string CodigoNBS { get; set; }
 
         [XmlIgnore]
         public double ValorRepasse { get; set; }

@@ -51,6 +51,7 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<NotaFiscalItemTributacao>("notafiscalitemtributacao");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
             builder.EntitySet<NotaFiscalCartaCorrecao>("notafiscalcartacorrecao");
+            builder.EntitySet<Iss>("iss");
 
             builder.EnableLowerCamelCase();
 

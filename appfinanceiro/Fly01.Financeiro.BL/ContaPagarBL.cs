@@ -38,8 +38,8 @@ namespace Fly01.Financeiro.BL
 
             var repetir = RepeticaoValida(entity);
 
-            entity.ValorPrevisto = Math.Round(entity.ValorPrevisto,2);
-            entity.ValorPago = entity.ValorPago.HasValue ? Math.Round(entity.ValorPago.Value,2) : entity.ValorPago;
+            entity.ValorPrevisto = Math.Round(entity.ValorPrevisto, 2);
+            entity.ValorPago = entity.ValorPago.HasValue ? Math.Round(entity.ValorPago.Value, 2) : entity.ValorPago;
 
             //na nova Transação e quando status nao definido
             if (entity.StatusContaBancaria == default(StatusContaBancaria))
@@ -52,7 +52,7 @@ namespace Fly01.Financeiro.BL
             if (!string.IsNullOrEmpty(entity.DescricaoParcela))
             {
                 //post bemacash ignorando condicao parcelamento
-                entity.Id = Guid.NewGuid();
+                if (entity.Id == default(Guid)) entity.Id = Guid.NewGuid();
 
                 rpc = new RpcClient();
                 numero = int.Parse(rpc.Call($"plataformaid={entity.PlataformaId},tipocontafinanceira={(int)TipoContaFinanceira.ContaPagar}"));

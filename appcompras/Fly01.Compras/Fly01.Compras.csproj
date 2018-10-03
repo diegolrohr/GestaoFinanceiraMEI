@@ -130,7 +130,6 @@
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
     <Compile Include="ViewModel\PedidoItemVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
-    <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

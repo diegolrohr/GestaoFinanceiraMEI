@@ -194,7 +194,7 @@ namespace Fly01.Financeiro.Controllers
                 }
                 else
                 {
-                    double somaConciliados = conciliacaoBancariaItem.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado);
+                    double somaConciliados = Math.Round(conciliacaoBancariaItem.ConciliacaoBancariaItemContasFinanceiras.Sum(x => x.ValorConciliado), 2);
                     if (somaConciliados > Math.Abs(conciliacaoBancariaItem.Valor))
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados não pode ser superior ao valor do lançamento");
@@ -203,7 +203,7 @@ namespace Fly01.Financeiro.Controllers
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser superior a zero");
                     }
-                    else if (!(somaConciliados == Math.Abs(conciliacaoBancariaItem.Valor)))
+                    else if (!(somaConciliados == Math.Round(Math.Abs(conciliacaoBancariaItem.Valor), 2)))
                     {
                         return JsonResponseStatus.GetFailure("A soma dos valores conciliados deve ser igual ao valor do lançamento no extrato");
                     }
@@ -649,7 +649,7 @@ namespace Fly01.Financeiro.Controllers
                 Required = true,
                 DataUrl = @Url.Action("Categoria" + actionCreate, "AutoComplete"),
                 LabelId = "categoriaDescricao",
-                DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa"): Url.Action("NovaCategoriaReceita")
+                DataUrlPost = tipoConta == "ContaPagar" ? Url.Action("NovaCategoriaDespesa") : Url.Action("NovaCategoriaReceita")
             }, ResourceHashConst.FinanceiroCadastrosCategoria));
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");

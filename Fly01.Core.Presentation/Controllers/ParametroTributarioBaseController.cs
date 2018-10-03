@@ -61,7 +61,10 @@ namespace Fly01.Core.Presentation.Controllers
                     chaveAutenticacao = "",
                     autorizacao = "",
                     tipoTributacaoNFS = "RecolheIss",
-                    tipoAmbienteNFS = "Producao"
+                    tipoAmbienteNFS = "Producao",
+                    aliquotaCSLL = "0",
+                    aliquotaINSS = "0",
+                    aliquotaImpostoRenda = "0"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -85,7 +88,10 @@ namespace Fly01.Core.Presentation.Controllers
                 chaveAutenticacao = parametroTributario.ChaveAutenticacao,
                 autorizacao = parametroTributario.Autorizacao,
                 tipoTributacaoNFS = parametroTributario.TipoTributacaoNFS,
-                tipoAmbienteNFS = parametroTributario.TipoAmbienteNFS
+                tipoAmbienteNFS = parametroTributario.TipoAmbienteNFS,
+                aliquotaCSLL = parametroTributario.AliquotaCSLL,
+                aliquotaINSS = parametroTributario.AliquotaINSS,
+                aliquotaImpostoRenda = parametroTributario.AliquotaImpostoRenda
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -151,7 +157,7 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaSimplesNacional",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "ICMS Simples Nacional",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -159,7 +165,7 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaFCP",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Fundo de Combate à Pobreza",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -167,7 +173,7 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaISS",
-                Class = "col s12 m2",
+                Class = "col s12 m4",
                 Label = "Imposto Sobre Serviço",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -185,6 +191,30 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "aliquotaCOFINS",
                 Class = "col s12 m2",
                 Label = "COFINS",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form2.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaCSLL",
+                Class = "col s12 m2",
+                Label = "CSLL",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form2.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaINSS",
+                Class = "col s12 m2",
+                Label = "INSS",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form2.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaImpostoRenda",
+                Class = "col s12 m4",
+                Label = "Imposto de Renda",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
@@ -310,7 +340,7 @@ namespace Fly01.Core.Presentation.Controllers
         public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string  tipoTributacaoNFS, string tipoAmbienteNFS)
+              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda)
         {
             try
             {
@@ -339,7 +369,10 @@ namespace Fly01.Core.Presentation.Controllers
                     chaveAutenticacao = chaveAutenticacao,
                     autorizacao = autorizacao,
                     tipoTributacaoNFS = tipoTributacaoNFS,
-                    tipoAmbienteNFS = tipoAmbienteNFS
+                    tipoAmbienteNFS = tipoAmbienteNFS,
+                    aliquotaCSLL = double.IsNaN(csll) ? 0 : csll,
+                    aliquotaINSS = double.IsNaN(inss) ? 0 : inss,
+                    aliquotaImpostoRenda = double.IsNaN(impostoRenda) ? 0 : impostoRenda
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

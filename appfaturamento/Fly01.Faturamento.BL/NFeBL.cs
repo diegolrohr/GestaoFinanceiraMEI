@@ -1,19 +1,19 @@
 ﻿using Fly01.Core;
 using Fly01.Core.BL;
+using Fly01.Core.Defaults;
+using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
-using Fly01.Core.Defaults;
 using Fly01.EmissaoNFE.Domain.ViewModel;
+using Fly01.Faturamento.BL.Helpers.EntitiesBL;
+using Fly01.Faturamento.BL.Helpers.Factory;
 using Fly01.Faturamento.DAL;
-using Fly01.Core.Entities.Domains.Commons;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Fly01.Faturamento.BL.Helpers.Factory;
-using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 
 namespace Fly01.Faturamento.BL
 {
@@ -225,20 +225,20 @@ namespace Fly01.Faturamento.BL
         }
 
         public override void Delete(NFe entityToDelete)
-{
-    var status = entityToDelete.Status;
-    entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
-    if (entityToDelete.IsValid())
-    {
-        base.Delete(entityToDelete);
-    }
-    else
-    {
-        throw new BusinessException(entityToDelete.Notification.Get());
-    }
-}
+        {
+            var status = entityToDelete.Status;
+            entityToDelete.Fail(status != StatusNotaFiscal.NaoAutorizada && status != StatusNotaFiscal.NaoTransmitida && status != StatusNotaFiscal.FalhaTransmissao, new Error("Só é possível deletar NF-e com status Não Autorizada, Não Transmitida ou Falha na Transmissão", "status"));
+            if (entityToDelete.IsValid())
+            {
+                base.Delete(entityToDelete);
+            }
+            else
+            {
+                throw new BusinessException(entityToDelete.Notification.Get());
+            }
+        }
 
-        public TotalNotaFiscal CalculaTotalNFe(Guid nfeId)
+        public TotalPedidoNotaFiscal CalculaTotalNFe(Guid nfeId)
         {
             var nfe = All.Where(x => x.Id == nfeId).AsNoTracking().FirstOrDefault();
 
@@ -268,7 +268,7 @@ namespace Fly01.Faturamento.BL
                 ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
             );
 
-            var result = new TotalNotaFiscal()
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = (calculaFrete && nfe.ValorFrete.HasValue) ? Math.Round(nfe.ValorFrete.Value, 2, MidpointRounding.AwayFromZero) : 0,

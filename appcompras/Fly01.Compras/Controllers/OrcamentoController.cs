@@ -447,7 +447,8 @@ namespace Fly01.Compras.Controllers
             {
                 Nome = term,
                 Fornecedor = true,
-                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento"
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
+                SituacaoEspecialNFS = "Outro"
             };
 
             NormarlizarEntidade(ref entity);

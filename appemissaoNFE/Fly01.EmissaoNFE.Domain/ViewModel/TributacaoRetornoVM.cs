@@ -13,5 +13,17 @@
         public TributacaoRetornoBaseVM FcpSt { get; set; }
 
         public DifalRetornoVM Difal { get; set; }
+
+        public TributacaoRetornoBaseVM Pis { get; set; }
+
+        public TributacaoRetornoBaseVM Cofins { get; set; }
+
+        public TributacaoRetornoBaseVM Iss { get; set; }
+
+        public TributacaoRetornoBaseVM Inss { get; set; }
+
+        public TributacaoRetornoBaseVM ImpostoRenda { get; set; }
+
+        public TributacaoRetornoBaseVM Csll { get; set; }
     }
 }

@@ -39,9 +39,15 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\Iss.cs" />
+    <Compile Include="Entities\ImpostoRenda.cs" />
+    <Compile Include="Entities\Csll.cs" />
+    <Compile Include="Entities\Inss.cs" />
     <Compile Include="Entities\Eventos\CartaCorrecaoEvento.cs" />
     <Compile Include="Entities\Eventos\DetalheEvento.cs" />
     <Compile Include="Entities\Eventos\Eventos.cs" />
+    <Compile Include="Entities\Cofins.cs" />
+    <Compile Include="Entities\Pis.cs" />
     <Compile Include="Entities\FcpSt.cs" />
     <Compile Include="Entities\Fcp.cs" />
     <Compile Include="Entities\Siafi.cs" />

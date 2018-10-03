@@ -16,11 +16,14 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+                var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+                unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
+
+                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);
 
                 try
                 {
-                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
+                    var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);
 
                     return Ok(retorno);
                 }
@@ -28,7 +31,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
                     {
-                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
+                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entityNFS);
                     }
 
                     return InternalServerError(ex);
@@ -55,7 +58,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 }
             };
             
-            var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, "", notaSchema, false, false);
+            var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
@@ -74,33 +77,34 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             }
             else
             {
-                //var NFSE = new NFSE001Prod.NFSE() {
-                //    NOTAS = new NFSE001Prod.NFSES1 [] {
-                //        new NFSE001Prod.NFSES1()
-                //        {
-                //            ID = entity.NotaId,
-                //            CODMUN = entity.Prestacao.CodigoMunicipioIBGE,
-                //            XML = Convert.FromBase64String(xmlBase64)
-                //        }
-                //    }
-                //};
+                var NFSE = new NFSE001Prod.NFSE()
+                {
+                    NOTAS = new NFSE001Prod.NFSES1[] {
+                        new NFSE001Prod.NFSES1()
+                        {
+                            ID = entity.ItemTransmissaoNFSVM.NotaId,
+                            CODMUN = entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
+                            XML = Convert.FromBase64String(xmlBase64)
+                        }
+                    }
+                };
 
-                //new NFSE001Prod.NFSE001().REMESSANFSE001(
-                //    AppDefault.Token,
-                //    entity.Producao,
-                //    NFSE,
-                //    entity.Prestador.CodigoMunicipioIBGE,
-                //    true,
-                //    true,
-                //    false,
-                //    false
-                //);
+                new NFSE001Prod.NFSE001().REMESSANFSE001(
+                    AppDefault.Token,
+                    entity.Producao,
+                    NFSE,
+                    entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE,
+                    true,
+                    true,
+                    false,
+                    false
+                );
             }
 
             return response;
         }
 
-        private object Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
+        private TransmissaoNFSRetornoVM Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
             //Serializando a nota 
             var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
@@ -113,13 +117,13 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId, 
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
             };
 
-            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, "3550308", notaSchema, false, false);
+            var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,

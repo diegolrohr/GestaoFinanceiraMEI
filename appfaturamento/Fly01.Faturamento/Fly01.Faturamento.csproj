@@ -116,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ISSVM.cs" />
     <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />
@@ -130,7 +131,6 @@
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
-    <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -339,6 +339,7 @@
     <Content Include="Views\Pedido\Functions\_fnClickComplementarIsDevolucao.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
+    <Content Include="Views\NotaFiscal\Functions\_fnBaixarXMLUnicoNFSe.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

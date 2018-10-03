@@ -6,7 +6,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Prestador
     {
         [XmlElement(ElementName = "inscmun")]
-        public int InscricaoMunicipalPrestador { get; set; }
+        public string InscricaoMunicipalPrestador { get; set; }
 
         [XmlElement(ElementName = "cpfcnpj")]
         public string CpfCnpj { get; set; }

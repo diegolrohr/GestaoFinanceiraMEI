@@ -56,7 +56,8 @@
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(data.total.TotalImpostosProdutosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));
-                $('input#totalImpostosServicos').val(data.total.TotalImpostosServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalRetencoesServicos').val(data.total.TotalRetencoesServicos.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicosNaoAgrega').val(data.total.TotalImpostosServicosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.updateTextFields();
@@ -66,7 +67,8 @@
                 $('input#totalImpostosProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalImpostosProdutosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
-                $('input#totalImpostosServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalRetencoesServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
+                $('input#totalImpostosServicosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
                 fly01.fn.submitErrorHandler(null, data.message);

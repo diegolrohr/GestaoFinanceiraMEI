@@ -19,10 +19,9 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
         }
         
-        //TODO revisar com Wilson
         private static void ValidarAliquota(TransmissaoNFSVM entity)
         {
-            entity.Fail(entity.ItemTransmissaoNFSVM.Atividade.AliquotaICMS <= 0, new Error("Alíquota ICMS deve ser superior a zero.", "AliquotaICMS"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Atividade.AliquotaIss <= 0, new Error("Alíquota Iss deve ser superior ou igual a zero.", "AliquotaICMS"));
         }
 
         private static void ValidarCodigoAtividade(TransmissaoNFSVM entity)

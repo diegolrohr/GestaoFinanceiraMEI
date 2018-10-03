@@ -33,6 +33,9 @@
                 $('select#tipoTributacaoNFS').material_select();
                 $('#tipoAmbienteNFS').val(data.tipoAmbienteNFS);
                 $('select#tipoAmbienteNFS').material_select();
+                $("input#aliquotaCSLL").val(data.aliquotaCSLL);
+                $("input#aliquotaINSS").val(data.aliquotaINSS);
+                $("input#aliquotaImpostoRenda").val(data.aliquotaImpostoRenda);
                 fly01.fn.updateTextFields();
             },
             error: function (jXHR, textStatus, errorThrown) {

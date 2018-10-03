@@ -50,30 +50,21 @@ namespace Fly01.OrdemServico.DAL
 
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<Estado> Estados { get; set; }
-
         public DbSet<Cest> Cests { get; set; }
-
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
-
         public DbSet<GrupoProduto> GruposProduto { get; set; }
-
         public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Ncm> Ncms { get; set; }
-
         public DbSet<Pessoa> Pessoas { get; set; }
-
         public DbSet<Produto> Produtos { get; set; }
-
         public DbSet<Core.Entities.Domains.Commons.OrdemServico> OrdensServico { get; set; }
         public DbSet<OrdemServicoItem> OrdemServicoItens { get; set; }
         public DbSet<OrdemServicoItemProduto> OrdemServicoItensProduto { get; set; }
         public DbSet<OrdemServicoItemServico> OrdemServicoItensServico { get; set; }
         public DbSet<OrdemServicoManutencao> OrdemServicoManutencao { get; set; }
-
         public DbSet<ParametroOrdemServico> ParametrosOrdemServico { get; set; }
-
         public DbSet<Servico> Servicos { get; set; }
-
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
+        public DbSet<Iss> Isss { get; internal set; }
     }
 }

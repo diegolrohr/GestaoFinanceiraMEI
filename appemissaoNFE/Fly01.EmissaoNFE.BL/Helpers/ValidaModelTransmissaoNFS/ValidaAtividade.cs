@@ -19,7 +19,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
         }
         
-        //TODO revisar com Wilson
         private static void ValidarAliquota(TransmissaoNFSVM entity)
         {
             entity.Fail(entity.ItemTransmissaoNFSVM.Atividade.AliquotaIss <= 0, new Error("Alíquota Iss deve ser superior ou igual a zero.", "AliquotaICMS"));

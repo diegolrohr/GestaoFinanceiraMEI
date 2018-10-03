@@ -11,7 +11,6 @@ namespace Fly01.Core.Entities.Domains.Commons
             TipoNotaFiscal = TipoNotaFiscal.NFSe;
         }
 
-        //TODO: migration
         public double TotalRetencoesServicos { get; set; }
 
         public double TotalImpostosServicosNaoAgrega { get; set; }

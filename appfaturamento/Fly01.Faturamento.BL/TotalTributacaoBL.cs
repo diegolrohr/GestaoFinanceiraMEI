@@ -341,9 +341,8 @@ namespace Fly01.Faturamento.BL
                     if (grupoTributario.CalculaCSLL || grupoTributario.RetemCSLL)
                     {
                         tributacao.Csll = new Csll()
-                        {
-                            //TODO: add as aliquotas
-                            //Aliquota = parametros != null ? parametros.AliquotaCSLL : 0,
+                        {                             
+                            Aliquota = parametros != null ? parametros.AliquotaCSLL : 0,
                             CalculaCsll = grupoTributario.CalculaCSLL,
                             RetemCsll = grupoTributario.RetemCSLL
                         };
@@ -353,7 +352,7 @@ namespace Fly01.Faturamento.BL
                     {
                         tributacao.Inss = new Inss()
                         {
-                            //TODO: Aliquota = parametros != null ? parametros.AliquotaINSS : 0,
+                            Aliquota = parametros != null ? parametros.AliquotaINSS : 0,
                             CalculaInss = grupoTributario.CalculaINSS,
                             RetemInss = grupoTributario.RetemINSS
                         };
@@ -363,7 +362,7 @@ namespace Fly01.Faturamento.BL
                     {
                         tributacao.ImpostoRenda = new ImpostoRenda()
                         {
-                            //TODO: Aliquota = parametros != null ? parametros.AliquotaImpostoRenda : 0,
+                            Aliquota = parametros != null ? parametros.AliquotaImpostoRenda : 0,
                             CalculaImpostoRenda = grupoTributario.CalculaImpostoRenda,
                             RetemImpostoRenda = grupoTributario.RetemImpostoRenda
                         };

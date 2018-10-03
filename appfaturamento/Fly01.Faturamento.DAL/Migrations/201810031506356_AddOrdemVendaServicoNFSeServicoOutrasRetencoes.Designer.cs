@@ -13,7 +13,7 @@ namespace Fly01.Faturamento.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201810031245211_AddOrdemVendaServicoNFSeServicoOutrasRetencoes"; }
+            get { return "201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes"; }
         }
         
         string IMigrationMetadata.Source

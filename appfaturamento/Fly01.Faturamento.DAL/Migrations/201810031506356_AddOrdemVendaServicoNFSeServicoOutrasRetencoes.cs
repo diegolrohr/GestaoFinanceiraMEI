@@ -7,9 +7,9 @@ namespace Fly01.Faturamento.DAL.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.NFSeServico", "ValorOutrasRetencoes", c => c.Double());
+            AddColumn("dbo.NFSeServico", "ValorOutrasRetencoes", c => c.Double(nullable: false));
             AddColumn("dbo.NFSeServico", "DescricaoOutrasRetencoes", c => c.String(maxLength: 200, unicode: false));
-            AddColumn("dbo.OrdemVendaServico", "ValorOutrasRetencoes", c => c.Double());
+            AddColumn("dbo.OrdemVendaServico", "ValorOutrasRetencoes", c => c.Double(nullable: false));
             AddColumn("dbo.OrdemVendaServico", "DescricaoOutrasRetencoes", c => c.String(maxLength: 200, unicode: false));
         }
         

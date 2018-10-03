@@ -304,7 +304,6 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "tipoTributacaoNFS",
                 Class = "col s12 m4",
-                Required = true,
                 Label = "Tipo Tributação NFS",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoNFS)))
             });
@@ -314,7 +313,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "tipoAmbienteNFS",
                 Class = "col s12 m2",
                 Label = "Ambiente NFS-e",
-                Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
                 .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value))
                 )

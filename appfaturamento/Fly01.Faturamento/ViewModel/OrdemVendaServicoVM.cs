@@ -10,7 +10,7 @@ namespace Fly01.Faturamento.ViewModel
         public Guid ServicoId { get; set; }
 
         [JsonProperty("valorOutrasRetencoes")]
-        public double? ValorOutrasRetencoes { get; set; }
+        public double ValorOutrasRetencoes { get; set; }
 
         [JsonProperty("descricaoOutrasRetencoes")]
         public string DescricaoOutrasRetencoes { get; set; }

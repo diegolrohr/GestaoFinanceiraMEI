@@ -541,7 +541,7 @@ namespace Fly01.Faturamento.BL
                 {
                     if (entity.TipoVenda == TipoVenda.Normal || entity.TipoVenda == TipoVenda.Devolucao)
                     {
-                        totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.OutrasRetencoes));
+                        totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.ValorOutrasRetencoes));
                     }
                 }
 

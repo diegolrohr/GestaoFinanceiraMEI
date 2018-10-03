@@ -218,19 +218,19 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId)
+        public TotalPedidoNotaFiscal CalculaTotalNFSe(Guid nfseId)
         {
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
             var servicos = NFSeServicoBL.All.Where(x => x.NotaFiscalId == nfseId).ToList();
-            var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var totalImpostosServicos = nfse.TotalImpostosServicos;
+            var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.ValorOutrasRetencoes)) : 0.0;
 
-            var result = new TotalNotaFiscal()
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = 0,
-                TotalImpostosServicos = Math.Round(totalImpostosServicos, 2, MidpointRounding.AwayFromZero),
+                TotalRetencoesServicos = Math.Round(nfse.TotalRetencoesServicos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosServicosNaoAgrega = Math.Round(nfse.TotalImpostosServicosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 
             return result;

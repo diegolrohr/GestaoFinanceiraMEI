@@ -153,7 +153,7 @@ namespace Fly01.Faturamento.BL.Helpers
             return new Atividade()
             {
                 CodigoCNAE = Empresa.CNAE,
-                AliquotaICMS = ParametrosTributarios.AliquotaISS,//TODO Tem que verificar IIS
+                AliquotaIss = ParametrosTributarios.AliquotaISS,
             };
         }
 

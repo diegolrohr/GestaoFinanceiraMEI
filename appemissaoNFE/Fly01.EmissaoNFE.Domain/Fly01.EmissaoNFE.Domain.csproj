@@ -39,6 +39,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\Iss.cs" />
     <Compile Include="Entities\ImpostoRenda.cs" />
     <Compile Include="Entities\Csll.cs" />
     <Compile Include="Entities\Inss.cs" />

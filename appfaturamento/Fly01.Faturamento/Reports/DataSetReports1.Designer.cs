@@ -1083,7 +1083,7 @@ namespace Fly01.Faturamento.Reports {
             
             private global::System.Data.DataColumn columnTotalServicos;
             
-            private global::System.Data.DataColumn columnTotalImpostosServicos;
+            private global::System.Data.DataColumn columnTotalRetencoesServicos;
             
             private global::System.Data.DataColumn columnValorFreteTotal;
             
@@ -1356,9 +1356,9 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TotalImpostosServicosColumn {
+            public global::System.Data.DataColumn TotalRetencoesServicosColumn {
                 get {
-                    return this.columnTotalImpostosServicos;
+                    return this.columnTotalRetencoesServicos;
                 }
             }
             
@@ -1476,7 +1476,7 @@ namespace Fly01.Faturamento.Reports {
                         double TotalProdutos, 
                         double TotalImpostosProdutos, 
                         double TotalServicos, 
-                        double TotalImpostosServicos, 
+                        double TotalRetencoesServicos, 
                         double ValorFreteTotal, 
                         double Total, 
                         string Marca, 
@@ -1513,7 +1513,7 @@ namespace Fly01.Faturamento.Reports {
                         TotalProdutos,
                         TotalImpostosProdutos,
                         TotalServicos,
-                        TotalImpostosServicos,
+                        TotalRetencoesServicos,
                         ValorFreteTotal,
                         Total,
                         Marca,
@@ -1570,7 +1570,7 @@ namespace Fly01.Faturamento.Reports {
                 this.columnTotalProdutos = base.Columns["TotalProdutos"];
                 this.columnTotalImpostosProdutos = base.Columns["TotalImpostosProdutos"];
                 this.columnTotalServicos = base.Columns["TotalServicos"];
-                this.columnTotalImpostosServicos = base.Columns["TotalImpostosServicos"];
+                this.columnTotalRetencoesServicos = base.Columns["TotalRetencoesServicos"];
                 this.columnValorFreteTotal = base.Columns["ValorFreteTotal"];
                 this.columnTotal = base.Columns["Total"];
                 this.columnMarca = base.Columns["Marca"];
@@ -1638,8 +1638,8 @@ namespace Fly01.Faturamento.Reports {
                 base.Columns.Add(this.columnTotalImpostosProdutos);
                 this.columnTotalServicos = new global::System.Data.DataColumn("TotalServicos", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalServicos);
-                this.columnTotalImpostosServicos = new global::System.Data.DataColumn("TotalImpostosServicos", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTotalImpostosServicos);
+                this.columnTotalRetencoesServicos = new global::System.Data.DataColumn("TotalRetencoesServicos", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalRetencoesServicos);
                 this.columnValorFreteTotal = new global::System.Data.DataColumn("ValorFreteTotal", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnValorFreteTotal);
                 this.columnTotal = new global::System.Data.DataColumn("Total", typeof(double), null, global::System.Data.MappingType.Element);
@@ -1661,7 +1661,7 @@ namespace Fly01.Faturamento.Reports {
                 this.columnTotalProdutos.DefaultValue = ((double)(0D));
                 this.columnTotalImpostosProdutos.DefaultValue = ((double)(0D));
                 this.columnTotalServicos.DefaultValue = ((double)(0D));
-                this.columnTotalImpostosServicos.DefaultValue = ((double)(0D));
+                this.columnTotalRetencoesServicos.DefaultValue = ((double)(0D));
                 this.columnValorFreteTotal.DefaultValue = ((double)(0D));
                 this.columnTotal.DefaultValue = ((double)(0D));
             }
@@ -3169,18 +3169,18 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double TotalImpostosServicos {
+            public double TotalRetencoesServicos {
                 get {
                     try {
-                        return ((double)(this[this.tableOrcamentoPedido.TotalImpostosServicosColumn]));
+                        return ((double)(this[this.tableOrcamentoPedido.TotalRetencoesServicosColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TotalImpostosServicos\' in table \'OrcamentoPedido\' is DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalRetencoesServicos\' in table \'OrcamentoPedido\' is DBNul" +
+                                "l.", e);
                     }
                 }
                 set {
-                    this[this.tableOrcamentoPedido.TotalImpostosServicosColumn] = value;
+                    this[this.tableOrcamentoPedido.TotalRetencoesServicosColumn] = value;
                 }
             }
             
@@ -3619,14 +3619,14 @@ namespace Fly01.Faturamento.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTotalImpostosServicosNull() {
-                return this.IsNull(this.tableOrcamentoPedido.TotalImpostosServicosColumn);
+            public bool IsTotalRetencoesServicosNull() {
+                return this.IsNull(this.tableOrcamentoPedido.TotalRetencoesServicosColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTotalImpostosServicosNull() {
-                this[this.tableOrcamentoPedido.TotalImpostosServicosColumn] = global::System.Convert.DBNull;
+            public void SetTotalRetencoesServicosNull() {
+                this[this.tableOrcamentoPedido.TotalRetencoesServicosColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

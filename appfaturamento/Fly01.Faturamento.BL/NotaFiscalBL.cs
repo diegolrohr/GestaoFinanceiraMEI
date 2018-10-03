@@ -50,7 +50,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(true, new Error("Não é possível deletar, somente em NFe ou NFSe"));
         }
 
-        public TotalNotaFiscal CalculaTotalNotaFiscal(Guid notaFiscalId)
+        public TotalPedidoNotaFiscal CalculaTotalNotaFiscal(Guid notaFiscalId)
         {
             if (All.Where(x => x.Id == notaFiscalId).FirstOrDefault().TipoNotaFiscal == TipoNotaFiscal.NFe)
             {

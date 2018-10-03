@@ -34,7 +34,7 @@ namespace Fly01.Faturamento.Models.ViewModel
         public string ItemNome { get; set; }
         public double Total { get; set; }
         public double ValorFreteTotal { get; set; }
-        public double TotalImpostosServicos { get; set; }
+        public double TotalRetencoesServicos { get; set; }
         public double TotalServicos { get; set; }
         public double TotalImpostosProdutos { get; set; }
         public double TotalProdutos { get; set; }

@@ -168,8 +168,7 @@
     <Compile Include="Domains\Commons\Servico.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
     <Compile Include="Domains\Commons\TipoMovimento.cs" />
-    <Compile Include="Domains\Commons\TotalNotaFiscal.cs" />
-    <Compile Include="Domains\Commons\TotalOrdemVenda.cs" />
+    <Compile Include="Domains\Commons\TotalPedidoNotaFiscal.cs" />
     <Compile Include="Domains\Commons\TotalTributacao.cs" />
     <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />

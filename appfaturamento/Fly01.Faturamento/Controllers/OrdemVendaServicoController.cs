@@ -31,6 +31,7 @@ namespace Fly01.Faturamento.Controllers
                 quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
+                valorOutrasRetencoes = x.ValorOutrasRetencoes.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
             };
         }
@@ -112,6 +113,20 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Required = true, Disabled = true });
+
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "descricaoOutrasRetencoes",
+                Class = "col s12 l6",
+                Label = "Descrição Outras Retenções"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorOutrasRetencoes",
+                Class = "col s12 l6 numeric",
+                Label = "Outras Retenções"
+            });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

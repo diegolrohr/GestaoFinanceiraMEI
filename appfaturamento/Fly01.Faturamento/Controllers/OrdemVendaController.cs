@@ -300,6 +300,7 @@ namespace Fly01.Faturamento.Controllers
             dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
             dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
             dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+            dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorOutrasRetencoes", DisplayName = "Outras Retenções", Priority = 7, Type = "currency", Searchable = false, Orderable = false });
             dtOrdemVendaServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
 
             return dtOrdemVendaServicosCfg;
@@ -687,6 +688,7 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Quant.", Value = "1"},
                     new OptionUI { Label = "Valor",Value = "2"},
                     new OptionUI { Label = "Desconto",Value = "3"},
+                    new OptionUI { Label = "Outras Retenções",Value = "5"},
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });

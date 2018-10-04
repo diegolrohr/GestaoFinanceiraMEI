@@ -13,7 +13,7 @@ namespace Fly01.OrdemServico.BL
 {
     public class OrdemServicoBL : PlataformaBaseBL<Core.Entities.Domains.Commons.OrdemServico>
     {
-        public const int MaxLengthObservacao = 200;
+        public const int MaxLengthObservacao = 1000;
         private readonly ParametroOrdemServicoBL _parametroBL;
         private readonly PessoaBL _pessoaBL;
         protected OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL { get; set; }
@@ -33,7 +33,7 @@ namespace Fly01.OrdemServico.BL
 
         public override void ValidaModel(Core.Entities.Domains.Commons.OrdemServico entity)
         {
-            entity.Fail(entity.Descricao != null && entity.Descricao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
+            entity.Fail(entity.Descricao != null && entity.Descricao.Length > MaxLengthObservacao, new Error($"A observação não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             if (entity.DataEntrega == DateTime.MinValue)
                 entity.DataEntrega = entity.DataEmissao.AddDays(_parametroBL.ParametroPlataforma.DiasPrazoEntrega);
             else

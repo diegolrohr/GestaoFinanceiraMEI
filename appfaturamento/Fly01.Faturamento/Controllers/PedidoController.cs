@@ -147,7 +147,7 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Finalizar",
                         Id = "stepFinalizar",
-                        Quantity = 16,
+                        Quantity = 18,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -367,8 +367,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCurrencyUI { Id = "totalProdutos", Class = "col s12 m4", Label = "Total produtos", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutos", Class = "col s12 m4", Label = "Total de impostos incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosProdutosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m6", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalFrete", Class = "col s12 m6", Label = "Frete a pagar", Readonly = true });
             config.Elements.Add(new InputCurrencyUI { Id = "totalOrdemVenda", Class = "col s12 m6", Label = "Total pedido", Readonly = true });
@@ -458,13 +458,20 @@ namespace Fly01.Faturamento.Controllers
                     Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que agregam no total, como IPI e Substituição Tributária."
                 }
             });
-            //TODO: fazer para não agrega de serviços
             config.Helpers.Add(new TooltipUI
             {
                 Id = "totalImpostosProdutosNaoAgrega",
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada produto. Impostos que não agregam no total, como ICMS, COFINS, PIS e FCP."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "totalImpostosServicosNaoAgrega",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será calculado de acordo com as configurações do grupo tributário informado em cada serviço. Impostos que não agregam no total, como ISS, COFINS, PIS, CSLL, INSS e IR."
                 }
             });
             config.Helpers.Add(new TooltipUI

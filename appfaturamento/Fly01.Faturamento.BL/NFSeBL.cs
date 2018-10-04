@@ -23,10 +23,12 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
-        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, PessoaBL pessoaBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL,
+            NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, PessoaBL pessoaBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
             NFSeServicoBL = nfseServicoBL;
@@ -34,6 +36,7 @@ namespace Fly01.Faturamento.BL
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
             PessoaBL = pessoaBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
         }
 
         public IQueryable<NFSe> Everything => repository.All.Where(x => x.Ativo);
@@ -70,7 +73,7 @@ namespace Fly01.Faturamento.BL
             }
 
             base.ValidaModel(entity);
-        } // Valida Model OK
+        }
 
         private void ObterProximoNumeroSerieValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)
         {
@@ -223,6 +226,7 @@ namespace Fly01.Faturamento.BL
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
             var servicos = NFSeServicoBL.All.Where(x => x.NotaFiscalId == nfseId).ToList();
+            //TODO: Diego ver o ValorOutrasRetencoes considerar no total
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.ValorOutrasRetencoes)) : 0.0;
 
             var result = new TotalPedidoNotaFiscal()
@@ -246,7 +250,7 @@ namespace Fly01.Faturamento.BL
                 PlataformaUrl = PlataformaUrl,
                 PessoaBL = PessoaBL,
                 CertificadoDigitalBL = CertificadoDigitalBL,
-                NotaFiscalInutilizadaBL = NotaFiscalInutilizadaBL,
+                NotaFiscalItemTributacaoBL = NotaFiscalItemTributacaoBL,
                 AppUser = AppUser
             };
         }

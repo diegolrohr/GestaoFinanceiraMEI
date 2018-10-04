@@ -473,7 +473,7 @@ namespace Fly01.Compras.BL
             return produtos.Where(x => x.SaldoEstoque < 0).ToList();
         }
 
-        public TotalOrdemVenda CalculaTotalOrdemCompra(Guid ordemCompraId, Guid fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        public TotalPedidoNotaFiscal CalculaTotalOrdemCompra(Guid ordemCompraId, Guid fornecedorId, bool geraNotaFiscal, string tipoCompra, string tipoFrete, double? valorFrete = 0, bool onList = false)
         {
             var tipoVendaEnum = (TipoVenda)Enum.Parse(typeof(TipoVenda), tipoCompra, true);
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
@@ -493,7 +493,7 @@ namespace Fly01.Compras.BL
             var totalImpostosProdutosNaoAgrega = ordemCompra.Status == StatusOrdemCompra.Finalizado ? ordemCompra.TotalImpostosProdutosNaoAgrega
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemCompraProdutosNaoAgrega(produtos, fornecedorId, tipoVendaEnum, tipoFreteEnum, valorFrete) : 0.0);
 
-            var result = new TotalOrdemVenda()
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = Math.Round(valorFrete.Value, 2, MidpointRounding.AwayFromZero),

@@ -1,5 +1,4 @@
-﻿using Fly01.Core.Entities.Domains;
-using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
@@ -10,20 +9,27 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "codigo")]
         public string Codigo { get; set; }
 
+        [XmlIgnore]
+        public double AliquotaIss { get; set; }
+
         [XmlElement(ElementName = "aliquota")]
-        public double Aliquota { get; set; }
+        public string AliquotaIssString
+        {
+            get { return AliquotaIss.ToString("0.0000").Replace(",", "."); }
+            set { AliquotaIss = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlElement(ElementName = "idcnae")]
-        public int IdCNAE { get; set; }
+        public string IdCNAE { get; set; }
 
         [XmlElement(ElementName = "cnae")]
-        public int CNAE { get; set; }
+        public string CNAE { get; set; }
 
         [XmlElement(ElementName = "codtrib")]
-        public int CodigoTributario { get; set; }
+        public string CodigoTributario { get; set; }
 
         [XmlElement(ElementName = "discr")]
-        public string Discriminacao { get; set; }
+        public string Descricao { get; set; }
 
         [XmlIgnore]
         public double Quantidade { get; set; }
@@ -66,10 +72,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         }
 
         [XmlElement(ElementName = "issretido")]
-        public double ISSRetido { get; set; }
+        public TipoSimNao ISSRetido
+        {
+            get
+            {
+                return TipoSimNao.Sim;
+            }
+            set { }
+        }
 
         [XmlElement(ElementName = "valdedu")]
-        public double ValorDeduzido { get; set; }
+        public double ValorDeducoes { get; set; }
 
         [XmlElement(ElementName = "valpis")]
         public double ValorPIS { get; set; }
@@ -108,10 +121,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         }
 
         [XmlElement(ElementName = "outrasret")]
-        public double OutrasRetencoes { get; set; }
+        public double ValorOutrasRetencoes { get; set; }
 
+        /// <summary>
+        /// valtotal - valIssRet - outrasret(valor do título financeiro)
+        /// </summary>
         [XmlIgnore]
-        public double ValorLiquido { get; set; }
+        public double ValorLiquido
+        {
+            get { return ValorTotal - ValorISSRetido - ValorOutrasRetencoes; }
+            set { }
+        }
 
         [XmlElement(ElementName = "valliq")]
         public string ValorLiquidoString
@@ -126,20 +146,35 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "descinc")]
         public double DescontoIncondicional { get; set; }
 
+        /// <summary>
+        /// Fixo 0, Origem Nacional, conforme FIRST
+        /// </summary>
         [XmlElement(ElementName = "cst")]
-        public double CST { get; set; }
+        public string CST
+        {
+            get { return "0"; }
+            set { }
+        }
 
         [XmlIgnore]
         public string CodigoNBS { get; set; }
 
         [XmlIgnore]
-        public double ValorRepasse { get; set; }
+        public string CodigoIBGEPrestador { get; set; }
 
+        /// <summary>
+        /// Preencher com 0.00 para ibge específicos, senão nem mandar a tag
+        /// </summary>
         [XmlElement(ElementName = "valrepasse")]
         public string ValorRepasseString
         {
-            get { return ValorRepasse.ToString("0.00").Replace(",", "."); }
-            set { ValorRepasse = double.Parse(value.Replace(".", ",")); }
+            get { return 0.ToString("0.00").Replace(",", "."); }
+            set { }
+        }
+
+        private bool ShouldSerializeValorRepasseString()
+        {
+            return ("3143302||4303103||4208450||3524006".Contains(CodigoIBGEPrestador));
         }
     }
 }

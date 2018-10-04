@@ -1829,17 +1829,16 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Valor Impostos Serviços R$: </Value>
+                              <Value>Valor Retenções Serviços R$: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00</Format>
                               </Style>
                             </TextRun>
                             <TextRun>
-                              <Value>=Fields!TotalImpostosServicos.Value</Value>
+                              <Value>=Fields!TotalRetencoesServicos.Value</Value>
                               <Style>
                                 <Format>#,0.00</Format>
-                                <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -2337,8 +2336,8 @@
           <DataField>TotalServicos</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="TotalImpostosServicos">
-          <DataField>TotalImpostosServicos</DataField>
+        <Field Name="TotalRetencoesServicos">
+          <DataField>TotalRetencoesServicos</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="ValorFreteTotal">

@@ -24,7 +24,6 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             try
             {
-                //TODO tem que alterar as plataformas URLs
                 var validsPlataformaUrl = new List<string>()
                 {
                     "schedulerAzure3D587913-4BB8-4135-B40B-8177DE7F99F8.fly01dev.com.br",

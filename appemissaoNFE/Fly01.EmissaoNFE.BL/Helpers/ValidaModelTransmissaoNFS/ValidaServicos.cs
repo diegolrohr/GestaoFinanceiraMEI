@@ -31,7 +31,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarDiscriminacaoServico(TransmissaoNFSVM entity, Servico item)
         {
-            entity.Fail(string.IsNullOrEmpty(item.Discriminacao), new Error("Discrimonação é um dado obrigatório."));
+            entity.Fail(string.IsNullOrEmpty(item.Descricao), new Error("Descrição é um dado obrigatório."));
         }
 
         private static void ValidarCodigoServico(TransmissaoNFSVM entity, Servico item)

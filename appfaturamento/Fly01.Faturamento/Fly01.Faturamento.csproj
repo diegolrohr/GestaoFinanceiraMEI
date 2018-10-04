@@ -131,7 +131,6 @@
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
     <Compile Include="ViewModel\ServicoVM.cs" />
-    <Compile Include="ViewModel\TotalNotaFiscalVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

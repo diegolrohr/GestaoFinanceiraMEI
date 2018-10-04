@@ -388,6 +388,14 @@
     <Compile Include="Migrations\201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.Designer.cs">
       <DependentUpon>201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810031715493_AlterOrdemVendaNotaFiscalImpostosServicos.cs" />
+    <Compile Include="Migrations\201810031715493_AlterOrdemVendaNotaFiscalImpostosServicos.Designer.cs">
+      <DependentUpon>201810031715493_AlterOrdemVendaNotaFiscalImpostosServicos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810041448454_AlterNotaFiscalItemTributacaoAddImpostosNFS.cs" />
+    <Compile Include="Migrations\201810041448454_AlterNotaFiscalItemTributacaoAddImpostosNFS.Designer.cs">
+      <DependentUpon>201810041448454_AlterNotaFiscalItemTributacaoAddImpostosNFS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -672,6 +680,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.resx">
       <DependentUpon>201810031506356_AddOrdemVendaServicoNFSeServicoOutrasRetencoes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810031715493_AlterOrdemVendaNotaFiscalImpostosServicos.resx">
+      <DependentUpon>201810031715493_AlterOrdemVendaNotaFiscalImpostosServicos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810041448454_AlterNotaFiscalItemTributacaoAddImpostosNFS.resx">
+      <DependentUpon>201810041448454_AlterNotaFiscalItemTributacaoAddImpostosNFS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

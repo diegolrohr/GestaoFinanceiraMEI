@@ -33,7 +33,7 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
-        
+
         private readonly string descricaoVenda = @"Venda nº: {0} de {1}";
         private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} de {1} : {2}";
         private readonly string routePrefixNameMovimentoOrdemVenda = @"MovimentoOrdemVenda";
@@ -106,7 +106,7 @@ namespace Fly01.Faturamento.BL
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
-                entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && servicos.Any(), new Error("Finalidade de devolução não pode conter serviços, somente produtos"));
+                entity.Fail(entity.TipoVenda != TipoVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
@@ -137,7 +137,7 @@ namespace Fly01.Faturamento.BL
             }
             else
             {
-                notaFiscal = new NFSe();                
+                notaFiscal = new NFSe();
             }
 
             if (entity.TipoVenda == TipoVenda.Complementar)
@@ -182,7 +182,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.Observacao = entity.Observacao;
             notaFiscal.NaturezaOperacao = entity.NaturezaOperacao;
             notaFiscal.GeraFinanceiro = entity.GeraFinanceiro;
-            notaFiscal.MensagemPadraoNota = (mensagemComplementar + " "+ entity.MensagemPadraoNota ?? "").Trim();
+            notaFiscal.MensagemPadraoNota = (mensagemComplementar + " " + entity.MensagemPadraoNota ?? "").Trim();
             notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
             notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
             return notaFiscal;
@@ -246,33 +246,50 @@ namespace Fly01.Faturamento.BL
                         new NotaFiscalItemTributacao
                         {
                             NotaFiscalItemId = nfeProduto.Id,
+                            FreteValorFracionado = x.FreteValorFracionado,
+                            #region ICMS
                             CalculaICMS = grupoTributario.CalculaIcms,
                             ICMSBase = x.ICMSBase,
                             ICMSAliquota = x.ICMSAliquota,
                             ICMSValor = x.ICMSValor,
+                            #endregion
+                            #region IPI
                             CalculaIPI = grupoTributario.CalculaIpi,
                             IPIBase = x.IPIBase,
                             IPIAliquota = x.IPIAliquota,
                             IPIValor = x.IPIValor,
+                            #endregion
+                            #region ST
                             CalculaST = grupoTributario.CalculaSubstituicaoTributaria,
                             STBase = x.STBase,
                             STAliquota = x.STAliquota,
                             STValor = x.STValor,
+                            #endregion
+                            #region COFINS
                             CalculaCOFINS = grupoTributario.CalculaCofins,
                             COFINSBase = x.COFINSBase,
                             COFINSAliquota = x.COFINSAliquota,
                             COFINSValor = x.COFINSValor,
+                            RetemCOFINS = grupoTributario.RetemCofins,
+                            COFINSValorRetencao = x.COFINSValorRetencao,
+                            #endregion
+                            #region PIS
                             CalculaPIS = grupoTributario.CalculaPis,
                             PISBase = x.PISBase,
                             PISAliquota = x.PISAliquota,
                             PISValor = x.PISValor,
-                            FreteValorFracionado = x.FreteValorFracionado,
+                            RetemPIS = grupoTributario.RetemPis,
+                            #endregion
+                            #region FCPST
                             FCPSTBase = x.FCPBase,
                             FCPSTAliquota = x.FCPAliquota,
                             FCPSTValor = x.FCPValor,
+                            #endregion
+                            #region FCP
                             FCPBase = x.FCPBase,
                             FCPAliquota = x.FCPAliquota,
-                            FCPValor = x.FCPValor,
+                            FCPValor = x.FCPValor
+                            #endregion
                         });
                 }
 
@@ -286,7 +303,14 @@ namespace Fly01.Faturamento.BL
             if (servicos != null & servicos.Any())
             {
                 var NFSe = (NFSe)GetNotaFiscal(entity, TipoNotaFiscal.NFSe);
-                var totalImpostosServicos = TotalTributacaoBL.TotalSomaOrdemVendaServicos(servicos, entity.ClienteId);
+                var tributacoesServicos = TotalTributacaoBL.TributacoesOrdemVendaServicos(servicos, entity.ClienteId);
+                var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
+                var totalImpostosServicoesNaoAgrega = TotalTributacaoBL.TributacaoServicoNaoAgregaNota(tributacoesServicos);
+
+                NFSe.TotalRetencoesServicos = totalRetencoesServicos;
+                NFSe.TotalImpostosServicosNaoAgrega = totalImpostosServicoesNaoAgrega;
+                entity.TotalRetencoesServicos = totalRetencoesServicos;
+                entity.TotalImpostosServicosNaoAgrega = totalImpostosServicoesNaoAgrega;
 
                 var nfseServicos = servicos.Select(
                         x => new NFSeServico
@@ -297,12 +321,71 @@ namespace Fly01.Faturamento.BL
                             Quantidade = x.Quantidade,
                             Valor = x.Valor,
                             Desconto = x.Desconto,
-                            Observacao = x.Observacao
+                            Observacao = x.Observacao,
+                            ValorOutrasRetencoes = x.ValorOutrasRetencoes,
+                            DescricaoOutrasRetencoes = x.DescricaoOutrasRetencoes
                         }).ToList();
 
+                var nfeServicosTributacao = new List<NotaFiscalItemTributacao>();
 
-                NFSe.TotalImpostosServicos = totalImpostosServicos;
-                entity.TotalImpostosServicos = totalImpostosServicos;
+                foreach (var x in tributacoesServicos)
+                {
+                    var nfseServico = nfseServicos.Where(y => y.ServicoId == x.ServicoId && y.GrupoTributarioId == x.GrupoTributarioId).FirstOrDefault();
+                    var grupoTributario = TotalTributacaoBL.GetGrupoTributario(nfseServico.GrupoTributarioId);
+                    NotaFiscalItemTributacaoBL.Insert(
+                        new NotaFiscalItemTributacao
+                        {
+                            NotaFiscalItemId = nfseServico.Id,
+                            #region COFINS
+                            CalculaCOFINS = grupoTributario.CalculaCofins,
+                            COFINSBase = x.COFINSBase,
+                            COFINSAliquota = x.COFINSAliquota,
+                            COFINSValor = x.COFINSValor,
+                            RetemCOFINS = grupoTributario.RetemCofins,
+                            COFINSValorRetencao = x.COFINSValorRetencao,
+                            #endregion
+                            #region PIS
+                            CalculaPIS = grupoTributario.CalculaPis,
+                            PISBase = x.PISBase,
+                            PISAliquota = x.PISAliquota,
+                            PISValor = x.PISValor,
+                            RetemPIS = grupoTributario.RetemPis,
+                            PISValorRetencao = x.PISValorRetencao,
+                            #endregion
+                            #region CSLL
+                            CalculaCSLL = grupoTributario.CalculaCSLL,
+                            CSLLBase = x.CSLLBase,
+                            CSLLAliquota = x.CSLLAliquota,
+                            CSLLValor = x.CSLLValor,
+                            RetemCSLL = grupoTributario.RetemCSLL,
+                            CSLLValorRetencao = x.CSLLValorRetencao,
+                            #endregion
+                            #region ISS
+                            CalculaISS = grupoTributario.CalculaIss,
+                            ISSBase = x.ISSBase,
+                            ISSAliquota = x.ISSAliquota,
+                            ISSValor = x.ISSValor,
+                            RetemISS = grupoTributario.RetemISS,
+                            ISSValorRetencao = x.ISSValorRetencao,
+                            #endregion
+                            #region INSS
+                            CalculaINSS = grupoTributario.CalculaINSS,
+                            INSSBase = x.INSSBase,
+                            INSSAliquota = x.INSSAliquota,
+                            INSSValor = x.INSSValor,
+                            RetemINSS = grupoTributario.RetemINSS,
+                            INSSValorRetencao = x.INSSValorRetencao,
+                            #endregion
+                            #region ImpostoRenda
+                            CalculaImpostoRenda = grupoTributario.CalculaImpostoRenda,
+                            ImpostoRendaBase = x.ImpostoRendaBase,
+                            ImpostoRendaAliquota = x.ImpostoRendaAliquota,
+                            ImpostoRendaValor = x.ImpostoRendaValor,
+                            RetemImpostoRenda = grupoTributario.RetemImpostoRenda,
+                            ImpostoRendaValorRetencao = x.ImpostoRendaValorRetencao,
+                            #endregion
+                        });
+                }
 
                 NFSeBL.Insert(NFSe);
 
@@ -377,7 +460,7 @@ namespace Fly01.Faturamento.BL
                                     //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                                 }
-                                else if(entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                                else if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
                                 {
                                     //na nfe de complemento de preço zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
@@ -533,19 +616,23 @@ namespace Fly01.Faturamento.BL
                 }
 
                 double totalServicos = 0.0;
-                if(servicos != null)
+                double totalOutrasRetencoesServicos = 0.0;
+                if (servicos != null)
                 {
-                    if (entity.TipoVenda == TipoVenda.Normal || entity.TipoVenda == TipoVenda.Devolucao)
+                    if (entity.TipoVenda == TipoVenda.Normal)
                     {
                         totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
+                        totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
                     }
                 }
 
-                double totalImpostosServicos = 0;
+                double totalRetencoesServicos = servicos != null && entity.TotalRetencoesServicos.HasValue ? entity.TotalRetencoesServicos.Value : 0; ;
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
 
                 double valorPrevistoProdutos = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
-                double valorPrevistoServicos = totalServicos + (entity.GeraNotaFiscal ? totalImpostosServicos : 0);
+                //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
+                double valorPrevistoServicos = totalServicos - (entity.GeraNotaFiscal ? (totalRetencoesServicos + totalOutrasRetencoesServicos) : 0);
 
                 if (pagaFrete)
                 {
@@ -569,7 +656,7 @@ namespace Fly01.Faturamento.BL
 
                 if ((entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))
                 {
-                    if(valorPrevistoProdutos > 0)
+                    if (valorPrevistoProdutos > 0)
                     {
                         GeraContaReceber(TipoItem.Produtos, valorPrevistoProdutos, entity);
                     }
@@ -678,7 +765,7 @@ namespace Fly01.Faturamento.BL
         }
 
         private void GeraContaPagar(TipoItem tipoItem, double valorPrevisto, OrdemVenda entity)
-        { 
+        {
             var contaPagar = new ContaPagar()
             {
                 Id = GetContaFinanceiraParcelaId(tipoItem, entity),
@@ -702,7 +789,7 @@ namespace Fly01.Faturamento.BL
             var produtos = new List<PedidoProdutoEstoqueNegativo>();
             if (tipoNfeComplementar == "NaoComplementar" || tipoNfeComplementar == "ComplPrecoQtd")
             {
-                var result  = OrdemVendaProdutoBL.AllIncluding(p => p.Produto).Where(x => x.OrdemVendaId == pedidoId)
+                var result = OrdemVendaProdutoBL.AllIncluding(p => p.Produto).Where(x => x.OrdemVendaId == pedidoId)
                     .GroupBy(x => x.ProdutoId).Select(y => new PedidoProdutoEstoqueNegativo()
                     {
                         ProdutoId = y.Key,
@@ -719,8 +806,8 @@ namespace Fly01.Faturamento.BL
             return produtos;
         }
 
-        public TotalOrdemVenda CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
-        {             
+        public TotalPedidoNotaFiscal CalculaTotalOrdemVenda(Guid ordemVendaId, Guid clienteId, bool geraNotaFiscal, string tipoNfeComplementar, string tipoFrete, double? valorFrete = 0, bool onList = false)
+        {
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
@@ -738,7 +825,7 @@ namespace Fly01.Faturamento.BL
                 {
                     totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                 }
-                else if(ordemVenda.TipoVenda == TipoVenda.Complementar && tipoNfeComplementarEnum == TipoNfeComplementar.ComplPrecoQtd)
+                else if (ordemVenda.TipoVenda == TipoVenda.Complementar && tipoNfeComplementarEnum == TipoNfeComplementar.ComplPrecoQtd)
                 {
                     //quando complemento de impostos, não considerar o totalProdutos
                     totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
@@ -752,23 +839,30 @@ namespace Fly01.Faturamento.BL
             //se esta salvo não recalcula
             var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
-
             var totalImpostosProdutosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var totalImpostosServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosServicos.HasValue) ? ordemVenda.TotalImpostosServicos.Value
-                : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaServicos(servicos, clienteId) : 0.0);
+            var totalOutrasRetencoesServicos = servicos != null ? servicos.Sum(x => x.ValorOutrasRetencoes) : 0.0;
+            //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
+            var totalRetencoesServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
+                : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaRetencaoOrdemVendaServicos(servicos, clienteId) : 0.0);
 
-            var result = new TotalOrdemVenda()
+            totalRetencoesServicos += totalOutrasRetencoesServicos;
+
+            var totalImpostosServicosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosServicosNaoAgrega
+                : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaServicosNaoAgrega(servicos, clienteId) : 0.0);
+
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalProdutos = Math.Round(totalProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = Math.Round(valorFrete.Value, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutos = Math.Round(totalImpostosProdutos, 2, MidpointRounding.AwayFromZero),
                 TotalImpostosProdutosNaoAgrega = Math.Round(totalImpostosProdutosNaoAgrega, 2, MidpointRounding.AwayFromZero),
-                TotalImpostosServicos = Math.Round(totalImpostosServicos, 2, MidpointRounding.AwayFromZero),
+                TotalRetencoesServicos = Math.Round(totalRetencoesServicos, 2, MidpointRounding.AwayFromZero),
+                TotalImpostosServicosNaoAgrega = Math.Round(totalImpostosServicosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 
             return result;

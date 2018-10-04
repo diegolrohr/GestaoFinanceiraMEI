@@ -173,52 +173,8 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" },
-                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" }
-                }
-            });
-            cfg.Content.Add(new DataTableUI
-            {
-                Class = "col s6",
-                Id = "dtGridTopProdutos",
-                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
-                Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
-                Options = new DataTableUIConfig()
-                {
-                    PageLength = 10,
-                    WithoutRowMenu = true
-                },
-                Columns = new List<DataTableUIColumn>{
-                    new DataTableUIColumn
-                    {
-                        DataField = "descricao",
-                        DisplayName = "Descrição",
-                        Priority = 2,
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "quantidade",
-                        DisplayName = "Quantidade",
-                        Class = "dt-right",
-                        Priority = 4,
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "valorTotal",
-                        DisplayName = "Total",
-                        Priority = 5,
-                        Type = "currency",
-                        Orderable = false,
-                        Searchable = false
-                    },
-
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" },
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" }
                 }
             });
             cfg.Content.Add(new DataTableUI
@@ -265,12 +221,60 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataFinal" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
 
             return cfg;
         }
 
         private static string GetColor(StatusOrdemServico statusOrdem) => EnumHelper.GetCSS(typeof(StatusOrdemServico), statusOrdem.ToString());
-        private static string GetDescription(StatusOrdemServico statusOrdem) => EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+        private static string GetDescription(StatusOrdemServico statusOrdem)
+        {
+            var result = EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+            return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1).ToLower()}";
+        }
 
         public override ContentResult Sidebar()
         {

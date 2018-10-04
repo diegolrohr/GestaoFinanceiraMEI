@@ -20,31 +20,26 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             cAssinatura += itemVM.Identificacao.NumeroRPS.ToString().Trim().PadLeft(12, '0').ToLower().Trim();
             cAssinatura += itemVM.Identificacao.DataHoraEmissao.ToString("yyyyMMdd").Trim();
 
-            cAssinatura += itemVM.Prestador.EhSimplesNacional == TipoSimNao.Sim ? "H" : "E";//Verificar se esta correto
-
             //Verificar as nossas tags e qual é o vdd
             switch (itemVM.Identificacao.TipoTributacao)
             {
-                case TipoTributacaoNFS.CreditaZonaFrancaManaus:
-                    cAssinatura += "C";
-                    break;
-                case TipoTributacaoNFS.RecolheIss:
-                    cAssinatura += "F";
+                case TipoTributacaoNFS.ForaMunicipio:
+                    cAssinatura += "H ";
                     break;
                 case TipoTributacaoNFS.Isencao:
-                    cAssinatura += "K";
+                    cAssinatura += "C ";
                     break;
                 case TipoTributacaoNFS.Imune:
-                    cAssinatura += "K";
-                    break;
-                case TipoTributacaoNFS.ExibilidadeProcessoADM:
-                    cAssinatura += "N";
+                    cAssinatura += "F ";
                     break;
                 case TipoTributacaoNFS.ExibilidadeSuspeJudicial:
-                    cAssinatura += "M";
+                    cAssinatura += "K ";
+                    break;
+                case TipoTributacaoNFS.ExibilidadeProcessoADM:
+                    cAssinatura += "K ";
                     break;
                 default:
-                    cAssinatura += "T";
+                    cAssinatura += "T ";
                     break;
             }
 

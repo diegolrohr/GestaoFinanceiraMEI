@@ -42,6 +42,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double COFINSValor { get; set; }
 
+        public double COFINSValorRetencao { get; set; }
+
         public bool CalculaPIS { get; set; }
 
         public double PISBase { get; set; }
@@ -49,6 +51,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
+
+        public double PISValorRetencao { get; set; }
 
         #region FCP
 
@@ -74,7 +78,42 @@ namespace Fly01.Core.Entities.Domains.Commons
         /// Valor do FCP retido por Substituição Tributária
         /// </summary>
         public double FCPSTValor { get; set; }
-                        
+
+        #endregion
+
+        #region NFS
+        //TODO: migrations
+        public double ISSBase { get; set; }
+
+        public double ISSAliquota { get; set; }
+
+        public double ISSValor { get; set; }
+
+        public double ISSValorRetencao { get; set; }
+
+        public double CSLLBase { get; set; }
+
+        public double CSLLAliquota { get; set; }
+
+        public double CSLLValor { get; set; }
+
+        public double CSLLValorRetencao { get; set; }
+
+        public double INSSBase { get; set; }
+
+        public double INSSAliquota { get; set; }
+
+        public double INSSValor { get; set; }
+
+        public double INSSValorRetencao { get; set; }
+
+        public double ImpostoRendaBase { get; set; }
+
+        public double ImpostoRendaAliquota { get; set; }
+
+        public double ImpostoRendaValor { get; set; }
+
+        public double ImpostoRendaValorRetencao { get; set; }
         #endregion
 
         public virtual NotaFiscalItem NotaFiscalItem { get; set; }

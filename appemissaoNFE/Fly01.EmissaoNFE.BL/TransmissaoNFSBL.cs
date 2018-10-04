@@ -6,8 +6,8 @@ using System.Xml.Serialization;
 using Fly01.Core.BL;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.BL.Helpers;
-using Fly01.EmissaoNFE.Domain.Entities.NFS;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.EmissaoNFE.Domain.Entities.NFS;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -31,29 +31,23 @@ namespace Fly01.EmissaoNFE.BL
         {
             if (entity.ItemTransmissaoNFSVM.Servicos != null)
             {
+                if(entity.ItemTransmissaoNFSVM.Valores == null)
+                {
+                    entity.ItemTransmissaoNFSVM.Valores = new Valores();
+                }
+
                 entity.ItemTransmissaoNFSVM.Valores.ISS = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorISS);
-                entity.ItemTransmissaoNFSVM.Valores.ISSRetido = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ISSRetido);
-                entity.ItemTransmissaoNFSVM.Valores.OutrasRetencoes = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.OutrasRetencoes);
+                entity.ItemTransmissaoNFSVM.Valores.ISSRetido = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorISSRetido);
+                entity.ItemTransmissaoNFSVM.Valores.OutrasRetencoes = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorOutrasRetencoes);
                 entity.ItemTransmissaoNFSVM.Valores.PIS = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorPIS);
                 entity.ItemTransmissaoNFSVM.Valores.COFINS = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorCofins);
                 entity.ItemTransmissaoNFSVM.Valores.INSS = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorINSS);
                 entity.ItemTransmissaoNFSVM.Valores.IR = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorIR);
                 entity.ItemTransmissaoNFSVM.Valores.CSLL = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorCSLL);
                 entity.ItemTransmissaoNFSVM.Valores.ValorTotalDocumento = entity.ItemTransmissaoNFSVM.Servicos.Sum(x => x.ValorTotal);
-                entity.ItemTransmissaoNFSVM.Valores.ValorCarTributacao = 0;
-                entity.ItemTransmissaoNFSVM.Valores.ValorPercapitaTributacao = CalcularValorPercapitaTributacao(entity);
             }
 
             return entity;
-        }
-
-        private double CalcularValorPercapitaTributacao(TransmissaoNFSVM entity)
-        {
-            var valorCargaTributaria = entity.ItemTransmissaoNFSVM.Valores.ValorCarTributacao;
-            var ValorTotalDocumento = entity.ItemTransmissaoNFSVM.Valores.ValorTotalDocumento;
-            var result = (valorCargaTributaria / ValorTotalDocumento) * 100;
-
-            return result;
         }
 
         public override void ValidaModel(TransmissaoNFSVM entity)

@@ -16,7 +16,10 @@
     }
 
     function fnHaveToShow() {
-        return fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0 && $('#movimentaEstoque').is(':checked')
-            && ($('#tipoVenda').val() == "Normal" || ($('#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplPrecoQtd"));
+        return (
+                (fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0) &&
+                $('#movimentaEstoque').is(':checked') &&
+                ($('#tipoVenda').val() == "Normal" || ($('#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplPrecoQtd"))
+            );
     }
 </script>

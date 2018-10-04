@@ -11,6 +11,7 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
+using ServicoEmissao = Fly01.EmissaoNFE.Domain.Entities.NFS.Servico;
 
 namespace Fly01.Faturamento.BL.Helpers
 {
@@ -36,8 +37,15 @@ namespace Fly01.Faturamento.BL.Helpers
         public TransmissaoNFSVM ObterTransmissaoNFSVM()
         {
             var itemTransmissaoNFS = ObterTransmissaoNFS();
-            // falta Obter serviço e valores
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
+        }
+
+        public IQueryable<NFSeServico> ObterNFSeServicos()
+        {
+            return TransmissaoNFSBLs.NFSeServicoBL.AllIncluding(
+                x => x.GrupoTributario.Cfop,
+                x => x.Servico.Nbs,
+                x => x.Servico.Iss).AsNoTracking().Where(x => x.NotaFiscalId == NFSe.Id);
         }
 
         private EntidadeVM ObterEntidade() => TransmissaoNFSBLs.CertificadoDigitalBL.GetEntidade();
@@ -72,7 +80,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 Prestador = ObterPrestador(),
                 Prestacao = ObterPrestacao(),
                 Tomador = ObterTomador(),
-                Valores = ObterValores(),
+                Servicos = ObterServicos(),
                 InformacoesComplementares = ObterInformacoesComplementares()
             };
         }
@@ -86,10 +94,58 @@ namespace Fly01.Faturamento.BL.Helpers
             };
         }
 
-        private Valores ObterValores()
+        private List<ServicoEmissao> ObterServicos()
         {
-            //TODO preencher só as aliquotas. Para preencher esses dados, é necessario incluir os novos impostos nos parametros tributarios
-            throw new NotImplementedException();
+            //TODO: ver a questao de ter vários serviços em 1 só
+            //foreach 
+            var NFSeServicos = ObterNFSeServicos();
+            var NFSeServico = NFSeServicos.FirstOrDefault();
+
+            var somaOutrasRetencoes = NFSeServicos.Sum(x => x.ValorOutrasRetencoes);
+            var itemTributacao = new NotaFiscalItemTributacao();
+            itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
+            var somaRetencoes =
+                itemTributacao.PISValorRetencao +
+                itemTributacao.COFINSValorRetencao +
+                itemTributacao.CSLLValorRetencao +
+                itemTributacao.INSSValorRetencao +
+                itemTributacao.ImpostoRendaValorRetencao +
+                somaOutrasRetencoes;
+
+            return new List<ServicoEmissao>()
+            {
+                new ServicoEmissao()
+                {
+                    Codigo = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    AliquotaIss = itemTributacao.ISSAliquota,
+                    IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    CNAE = Empresa.CNAE,
+                    CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    Descricao = string.Concat
+                    (
+                        NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "" ,
+                        " ",
+                        NFSeServico.DescricaoOutrasRetencoes
+                    ),
+                    Quantidade = NFSeServico.Quantidade,//TODO: ver quantidade
+                    ValorUnitario = NFSeServico.Valor,
+                    ValorTotal = (NFSeServico.Quantidade * NFSeServico.Valor),
+                    BaseCalculo = (NFSeServico.Quantidade * NFSeServico.Valor),
+                    ISSRetido = TipoSimNao.Sim,
+                    ValorDeducoes = 0.0,//Fixo
+                    ValorPIS = itemTributacao.PISValor,
+                    ValorCofins = itemTributacao.COFINSValor,
+                    ValorINSS = itemTributacao.INSSValor,
+                    ValorIR = itemTributacao.ImpostoRendaValor,
+                    ValorCSLL = itemTributacao.CSLLValor,
+                    ValorISS = itemTributacao.ISSValor,
+                    ValorISSRetido = itemTributacao.ISSValorRetencao,
+                    ValorOutrasRetencoes = somaRetencoes,
+                    DescontoCondicional = 0.00, //TODO: confirmar
+                    DescontoIncondicional = NFSeServico.Desconto,
+                    CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge?? ""
+                }
+            };
         }
 
         private Tomador ObterTomador()

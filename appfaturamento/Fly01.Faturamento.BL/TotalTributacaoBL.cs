@@ -289,8 +289,7 @@ namespace Fly01.Faturamento.BL
                     {
                         throw new BusinessException(string.Format("Informe um Grupo Tributário válido no serviço {0}.", num));
                     }
-                    var servico = GetServico(itemServico.ServicoId);
-                    if (servico == null)
+                    if (GetServico(itemServico.ServicoId) == null)
                     {
                         throw new BusinessException(string.Format("Serviço informado no item {0}, inexistente ou excluído.", num));
                     }
@@ -713,7 +712,7 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 GrupoTributarioId = x.GrupoTributarioId.Value,
-                GrupoTributario = x.GrupoTributario
+                ServicoId = x.ServicoId
             }).ToList(), clienteId);
         }
     }

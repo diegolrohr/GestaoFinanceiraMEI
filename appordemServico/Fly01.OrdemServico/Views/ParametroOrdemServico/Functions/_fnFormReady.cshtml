@@ -1,5 +1,6 @@
 ﻿<script>
     function fnFormReady() {
+        fly01.loading.start();
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
@@ -8,8 +9,10 @@
                 $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
                 $("#responsavelPadraoId").val(data.responsavelPadraoId);
                 fly01.fn.updateTextFields();
+                fly01.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
                 fly01.toast(data.message, 'error');
             }
         });

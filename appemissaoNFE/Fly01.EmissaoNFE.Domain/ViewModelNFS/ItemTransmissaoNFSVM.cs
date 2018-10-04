@@ -39,7 +39,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
                 versao = value;
             }
         }
-
+        /// <summary>
+        /// Gerado pelo sistema na serialização do xml
+        /// </summary>
         [XmlElement(ElementName = "assinatura")]
         public string Assinatura { get; set; }
 
@@ -61,6 +63,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
         public List<Servico> Servicos { get; set; }
 
+        /// <summary>
+        /// Gerado pelo sistema na serialização do xml
+        /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
 

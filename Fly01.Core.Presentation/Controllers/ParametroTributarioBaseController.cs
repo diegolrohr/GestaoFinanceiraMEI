@@ -42,6 +42,7 @@ namespace Fly01.Core.Presentation.Controllers
             if (parametroTributario == null)
                 return Json(new
                 {
+                    id = default(Guid).ToString(),
                     aliquotaSimplesNacional = "0",
                     aliquotaISS = "5",
                     aliquotaPISPASEP = "0,65",
@@ -69,6 +70,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             return Json(new
             {
+                id = parametroTributario.Id,
                 aliquotaSimplesNacional = parametroTributario.AliquotaSimplesNacional,
                 aliquotaISS = parametroTributario.AliquotaISS,
                 aliquotaPISPASEP = parametroTributario.AliquotaPISPASEP,
@@ -157,31 +159,15 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaSimplesNacional",
-                Class = "col s12 m4",
+                Class = "col s12 m3",
                 Label = "ICMS Simples Nacional",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
             form2.Elements.Add(new InputCustommaskUI
             {
-                Id = "aliquotaFCP",
-                Class = "col s12 m4",
-                Label = "Fundo de Combate à Pobreza",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-
-            form2.Elements.Add(new InputCustommaskUI
-            {
-                Id = "aliquotaISS",
-                Class = "col s12 m4",
-                Label = "Imposto Sobre Serviço",
-                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
-            });
-
-            form2.Elements.Add(new InputCustommaskUI
-            {
                 Id = "aliquotaPISPASEP",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "PIS/PASEP",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             }); ;
@@ -189,15 +175,31 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaCOFINS",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "COFINS",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
             form2.Elements.Add(new InputCustommaskUI
             {
+                Id = "aliquotaFCP",
+                Class = "col s12 m3",
+                Label = "Fundo de Combate à Pobreza",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form2.Elements.Add(new InputCustommaskUI
+            {
+                Id = "aliquotaISS",
+                Class = "col s12 m3",
+                Label = "Imposto Sobre Serviço",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            form2.Elements.Add(new InputCustommaskUI
+            {
                 Id = "aliquotaCSLL",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "CSLL",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -205,7 +207,7 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaINSS",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "INSS",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -213,7 +215,7 @@ namespace Fly01.Core.Presentation.Controllers
             form2.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaImpostoRenda",
-                Class = "col s12 m4",
+                Class = "col s12 m3",
                 Label = "Imposto de Renda",
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
@@ -287,31 +289,21 @@ namespace Fly01.Core.Presentation.Controllers
 
             form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
 
-            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m4", Label = "É Incentivador à Cultura" });
+            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m3", Label = "É Incentivador à Cultura" });
 
             form3.Elements.Add(new InputCustommaskUI
             {
                 Id = "versaoNFSe",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "Versão NFS-e",
                 MaxLength = 4,
                 Value = "0.00"
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m6", Label = "Usuário Web Server", MaxLength = 200 });
-
-            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server", MaxLength = 200 });
-
-            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação", MaxLength = 200 });
-
-
-            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização", MaxLength = 200 });
-
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoNFS",
-                Class = "col s6 m6",
-                Required = true,
+                Class = "col s12 m4",
                 Label = "Tipo Tributação NFS",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoNFS)))
             });
@@ -319,17 +311,32 @@ namespace Fly01.Core.Presentation.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoAmbienteNFS",
-                Class = "col s12 m6",
+                Class = "col s12 m2",
                 Label = "Ambiente NFS-e",
-                Required = true,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
                 .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value))
                 )
             });
+
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m3", Label = "Usuário Web Server", MaxLength = 200 });
+
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m3", Label = "Senha Web Server", MaxLength = 200 });
+
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m3", Label = "Chave de Autenticação", MaxLength = 200 });
+
+            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m3", Label = "Autorização", MaxLength = 200 });
+
             #endregion
 
             #region Helpers
-
+            form3.Helpers.Add(new TooltipUI
+            {
+                Id = "versaoNFSe",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Conforme a lista de municípios homologados pelo TSS. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
+                }
+            });
             #endregion
             cfg.Content.Add(form3);
 
@@ -344,9 +351,6 @@ namespace Fly01.Core.Presentation.Controllers
         {
             try
             {
-
-
-
                 var dadosParametro = new
                 {
                     simplesNacional = "True",

@@ -85,8 +85,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         #endregion
 
-        #region NFS
-        //TODO: migrations
+        #region NFS        
         public bool CalculaISS { get; set; }
 
         public double ISSBase { get; set; }

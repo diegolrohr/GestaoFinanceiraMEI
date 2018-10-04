@@ -42,6 +42,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double COFINSValor { get; set; }
 
+        public bool RetemCOFINS { get; set; }
+
         public double COFINSValorRetencao { get; set; }
 
         public bool CalculaPIS { get; set; }
@@ -51,6 +53,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double PISAliquota { get; set; }
 
         public double PISValor { get; set; }
+
+        public bool RetemPIS { get; set; }
 
         public double PISValorRetencao { get; set; }
 
@@ -83,13 +87,19 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         #region NFS
         //TODO: migrations
+        public bool CalculaISS { get; set; }
+
         public double ISSBase { get; set; }
 
         public double ISSAliquota { get; set; }
 
         public double ISSValor { get; set; }
 
+        public bool RetemISS { get; set; }
+
         public double ISSValorRetencao { get; set; }
+
+        public bool CalculaCSLL { get; set; }
 
         public double CSLLBase { get; set; }
 
@@ -97,7 +107,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double CSLLValor { get; set; }
 
+        public bool RetemCSLL { get; set; }
+
         public double CSLLValorRetencao { get; set; }
+
+        public bool CalculaINSS { get; set; }
 
         public double INSSBase { get; set; }
 
@@ -105,13 +119,19 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double INSSValor { get; set; }
 
+        public bool RetemINSS { get; set; }
+
         public double INSSValorRetencao { get; set; }
+
+        public bool CalculaImpostoRenda { get; set; }
 
         public double ImpostoRendaBase { get; set; }
 
         public double ImpostoRendaAliquota { get; set; }
 
         public double ImpostoRendaValor { get; set; }
+
+        public bool RetemImpostoRenda { get; set; }
 
         public double ImpostoRendaValorRetencao { get; set; }
         #endregion

@@ -101,7 +101,7 @@ namespace Fly01.Faturamento.BL.Helpers
             var NFSeServicos = ObterNFSeServicos();
             var NFSeServico = NFSeServicos.FirstOrDefault();
 
-            var somaOutrasRetencoes = NFSeServicos.Sum(x => x.ValorOutrasRetencoes);
+            var somaOutrasRetencoesServicos = NFSeServicos.Sum(x => x.ValorOutrasRetencoes);
             var itemTributacao = new NotaFiscalItemTributacao();
             itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
             var somaRetencoes =
@@ -110,7 +110,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 itemTributacao.CSLLValorRetencao +
                 itemTributacao.INSSValorRetencao +
                 itemTributacao.ImpostoRendaValorRetencao +
-                somaOutrasRetencoes;
+                somaOutrasRetencoesServicos;
 
             return new List<ServicoEmissao>()
             {

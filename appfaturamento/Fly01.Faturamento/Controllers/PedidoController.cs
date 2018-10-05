@@ -479,7 +479,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "totalRetencoesServicos",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se marcar Faturar, será calculado de acordo com as configurações de retenção do grupo tributário informado em cada serviço."
+                    Text = "Se marcar Calcular Tributação, será calculado de acordo com as configurações de retenção do grupo tributário, além das outras retenções informadas em cada serviço"
                 }
             });
             config.Helpers.Add(new TooltipUI

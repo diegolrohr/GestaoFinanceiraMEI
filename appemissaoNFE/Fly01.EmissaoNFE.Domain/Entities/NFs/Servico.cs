@@ -119,7 +119,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             get { return ValorISSRetido.ToString("0.00").Replace(",", "."); }
             set { ValorISSRetido = double.Parse(value.Replace(".", ",")); }
         }
-
+        /// <summary>
+        /// OutrasRetenções + retenções de cada imposto(PIS, COFINS, CSLL, INSS, IR)
+        /// </summary>
         [XmlElement(ElementName = "outrasret")]
         public double ValorOutrasRetencoes { get; set; }
 

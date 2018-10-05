@@ -12,6 +12,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -53,7 +54,9 @@ namespace Fly01.Core.Presentation.Controllers
                             success = true,
                             color = "red",
                             mainInfo = "Seu certificado digital venceu em " + dtExpStr + ".",
-                            subInfo = "Atualize o certificado digital."
+                            subInfo = "Atualize o certificado digital.",
+                            entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
+                            entidadeProducao = certificadoDigital.EntidadeProducao,
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else if (certificadoDigital.DataExpiracao.Date.CompareTo(DateTime.Now.AddDays(-30).Date) < 1)
@@ -63,7 +66,9 @@ namespace Fly01.Core.Presentation.Controllers
                             success = true,
                             color = "totvs-blue",
                             mainInfo = "Seu certificado digital irá vencer em " + dtExpStr + ".",
-                            subInfo = "Providêncie a atualização do seu certificado digital."
+                            subInfo = "Providêncie a atualização do seu certificado digital.",
+                            entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
+                            entidadeProducao = certificadoDigital.EntidadeProducao,
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else
@@ -72,7 +77,9 @@ namespace Fly01.Core.Presentation.Controllers
                         {
                             success = true,
                             color = "green",
-                            mainInfo = "O certificado digital atual é válido até " + dtExpStr + "."
+                            mainInfo = "O certificado digital atual é válido até " + dtExpStr + ".",
+                            entidadeHomologacao = certificadoDigital.EntidadeHomologacao,
+                            entidadeProducao = certificadoDigital.EntidadeProducao,
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
@@ -82,7 +89,9 @@ namespace Fly01.Core.Presentation.Controllers
                     success = true,
                     color = "blue",
                     mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui certificado digital cadastrado.",
-                    subInfo = "Envie o arquivo e informe a senha de um certificado digital válido."
+                    subInfo = "Envie o arquivo e informe a senha de um certificado digital válido.",
+                    entidadeHomologacao = "",
+                    entidadeProducao = "",
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -94,6 +103,8 @@ namespace Fly01.Core.Presentation.Controllers
                     color = "blue",
                     mainInfo = "O CNPJ (" + empresa.CNPJ + ") não possui Certificado digital cadastrado.",
                     subInfo = "Envie o arquivo e informe a senha de um certificado válido.",
+                    entidadeHomologacao = "",
+                    entidadeProducao = "",
                     message = error.Message
                 };
 
@@ -154,6 +165,29 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputFileUI { Id = "certificado", Class = "col s12 m6", Label = "Arquivo do Certificado Digital (.pfx)", Required = true, Accept = ".pfx" });
 
             config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6", Label = "Senha do Certificado", Required = true });
+
+            config.Elements.Add(new InputTextUI { Id = "entidadeHomologacao", Class = "col s12 m6", Label = "Entidade TSS Homologação", Readonly = true });
+
+            config.Elements.Add(new InputTextUI { Id = "entidadeProducao", Class = "col s12 m6", Label = "Entidade TSS Produção", Readonly = true });
+
+            #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "entidadeHomologacao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "entidadeProducao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico."
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

@@ -65,6 +65,7 @@ namespace Fly01.Compras.Controllers
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 3, Type = "float", Searchable = false, Orderable = false });
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 4, Type = "currency", Searchable = false, Orderable = false });
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "desconto", DisplayName = "Desconto", Priority = 5, Type = "currency", Searchable = false, Orderable = false });
+            dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorOutrasRetencoes", DisplayName = "Outras Retenções", Priority = 7, Type = "currency", Searchable = false, Orderable = false });
             dtOrcamentoItensCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 6, Type = "currency", Searchable = false, Orderable = false });
 
             return dtOrcamentoItensCfg;
@@ -310,6 +311,7 @@ namespace Fly01.Compras.Controllers
                     new OptionUI { Label = "Quant.", Value = "2"},
                     new OptionUI { Label = "Valor",Value = "3"},
                     new OptionUI { Label = "Desconto",Value = "4"},
+                    new OptionUI { Label = "Outras Retenções",Value = "5"},
                     new OptionUI { Label = "Total",Value = "5"},
                 }
             });

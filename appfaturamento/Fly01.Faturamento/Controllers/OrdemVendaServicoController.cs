@@ -114,6 +114,20 @@ namespace Fly01.Faturamento.Controllers
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Required = true, Disabled = true });
 
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "descricaoOutrasRetencoes",
+                Class = "col s12 l6",
+                Label = "Descrição Outras Retenções"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorOutrasRetencoes",
+                Class = "col s12 l6 numeric",
+                Label = "Outras Retenções"
+            });
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 

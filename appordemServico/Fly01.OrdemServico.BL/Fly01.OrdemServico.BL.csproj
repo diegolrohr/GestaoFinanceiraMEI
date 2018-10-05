@@ -48,8 +48,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Base\OrdemServicoItemBaseBL.cs" />
+    <Compile Include="CestBL.cs" />
     <Compile Include="DashboardBL.cs" />
     <Compile Include="CidadeBL.cs" />
+    <Compile Include="EnquadramentoLegalIPIBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />

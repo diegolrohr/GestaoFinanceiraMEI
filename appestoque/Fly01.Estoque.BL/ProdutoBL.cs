@@ -10,11 +10,59 @@ namespace Fly01.Estoque.BL
     public class ProdutoBL : PlataformaBaseBL<Produto>
     {
         protected GrupoProdutoBL GrupoProdutoBL;
+        protected NCMBL NCMBL;
+        protected UnidadeMedidaBL UnidadeMedidaBL;
+        protected CestBL CestBL;
+        protected EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL;
 
-        public ProdutoBL(AppDataContextBase context, GrupoProdutoBL grupoProdutoBL) : base(context)
+        public ProdutoBL(AppDataContextBase context, GrupoProdutoBL grupoProdutoBL, NCMBL ncmBL, UnidadeMedidaBL unidadeMedidaBL, CestBL cestBL, EnquadramentoLegalIPIBL enquadramentoLegalIPIBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
             GrupoProdutoBL = grupoProdutoBL;
+            NCMBL = ncmBL;
+            UnidadeMedidaBL = unidadeMedidaBL;
+            CestBL = cestBL;
+            EnquadramentoLegalIPIBL = enquadramentoLegalIPIBL;
+    }
+
+        public void GetIdNCM(Produto entity)
+        {
+            if (!entity.NcmId.HasValue && !string.IsNullOrEmpty(entity.CodigoNcm))
+            {
+                var dadosNCM = NCMBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
+                if (dadosNCM != null)
+                    entity.NcmId = dadosNCM.Id;
+            }
+        }
+
+        public void GetIdUnidadeMedida(Produto entity)
+        {
+            if (!entity.UnidadeMedidaId.HasValue && !string.IsNullOrEmpty(entity.AbreviacaoUnidadeMedida))
+            {
+                var dadosUnidadeMedida = UnidadeMedidaBL.All.FirstOrDefault(x => x.Abreviacao == entity.AbreviacaoUnidadeMedida);
+                if (dadosUnidadeMedida != null)
+                    entity.UnidadeMedidaId = dadosUnidadeMedida.Id;
+            }
+        }
+
+        public void GetIdCest(Produto entity)
+        {
+            if (!entity.CestId.HasValue && !string.IsNullOrEmpty(entity.CodigoCest) && entity.NcmId.HasValue)
+            {
+                var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest && x.NcmId == entity.NcmId);
+                if (dadosCest != null)
+                    entity.CestId = dadosCest.Id;
+            }
+        }
+
+        public void GetIdEnquadramentoLegalIPIBL(Produto entity)
+        {
+            if (!entity.EnquadramentoLegalIPIId.HasValue && !string.IsNullOrEmpty(entity.CodigoEnquadramentoLegalIPI))
+            {
+                var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
+                if (dadosEnquadramentoLegalIPI != null)
+                    entity.CestId = dadosEnquadramentoLegalIPI.Id;
+            }
         }
 
         public override void ValidaModel(Produto entity)
@@ -34,6 +82,11 @@ namespace Fly01.Estoque.BL
 
         public void Insert(Produto entity, bool MustProduceMessageServiceBus)
         {
+            GetIdNCM(entity);
+            GetIdCest(entity);
+            GetIdUnidadeMedida(entity);
+            GetIdEnquadramentoLegalIPIBL(entity);
+
             base.Insert(entity);
             if(entity.IsValid() && MustProduceMessageServiceBus)
                Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
@@ -41,6 +94,11 @@ namespace Fly01.Estoque.BL
 
         public void Update(Produto entity, bool MustProduceMessageServiceBus)
         {
+            GetIdNCM(entity);
+            GetIdCest(entity);
+            GetIdUnidadeMedida(entity);
+            GetIdEnquadramentoLegalIPIBL(entity);
+
             base.Update(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
                 Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.PUT);

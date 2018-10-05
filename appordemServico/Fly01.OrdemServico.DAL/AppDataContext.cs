@@ -46,6 +46,10 @@ namespace Fly01.OrdemServico.DAL
 
             builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
             builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
+            builder.Entity<Produto>().Ignore(m => m.CodigoNcm);
+            builder.Entity<Produto>().Ignore(m => m.CodigoCest);
+            builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
+            builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
         }
 
         public DbSet<Cidade> Cidades { get; set; }

@@ -45,7 +45,7 @@ namespace Fly01.Faturamento.BL
         public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
 
         private ProdutoBL produtoBL;
-        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL, NCMBL, UnidadeMedidaBL, CestBL, EnquadramentoLegalIPIBL));
 
         private NCMBL ncmBL;
         public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));

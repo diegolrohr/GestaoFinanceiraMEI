@@ -36,6 +36,11 @@ namespace Fly01.Estoque.DAL
 
             builder.Properties<string>()
                 .Configure(x => x.HasColumnType("varchar"));
+
+            builder.Entity<Produto>().Ignore(m => m.CodigoNcm);
+            builder.Entity<Produto>().Ignore(m => m.CodigoCest);
+            builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
+            builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
         }
 
         public DbSet<Estado> Estados { get; set; }

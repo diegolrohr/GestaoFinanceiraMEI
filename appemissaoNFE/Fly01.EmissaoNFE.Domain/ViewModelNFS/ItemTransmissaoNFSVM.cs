@@ -43,7 +43,20 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         /// Gerado pelo sistema na serialização do xml
         /// </summary>
         [XmlElement(ElementName = "assinatura")]
-        public string Assinatura { get; set; }
+        public string AssinaturaHash
+        {
+            get
+            {
+                return Assinatura.GeraAssinatura(this);
+            }
+            set
+            {
+                AssinaturaHash = value;
+            }
+        }
+
+        [XmlIgnore]
+        public Assinatura Assinatura { get; set; }
 
         [XmlElement(ElementName = "identificacao")]
         public Identificacao Identificacao { get; set; }

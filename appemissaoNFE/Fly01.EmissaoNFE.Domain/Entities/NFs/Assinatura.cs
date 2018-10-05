@@ -23,9 +23,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             //Verificar as nossas tags e qual é o vdd
             switch (itemVM.Identificacao.TipoTributacao)
             {
-                case TipoTributacaoNFS.ForaMunicipio:
-                    cAssinatura += "H ";
-                    break;
+                //Descomentar quando subir as mudanças no enum
+                //case TipoTributacaoNFS.ForaMunicipio:
+                //    cAssinatura += "H ";
+                //    break;
                 case TipoTributacaoNFS.Isencao:
                     cAssinatura += "C ";
                     break;

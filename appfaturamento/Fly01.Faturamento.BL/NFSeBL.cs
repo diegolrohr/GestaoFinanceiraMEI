@@ -195,15 +195,22 @@ namespace Fly01.Faturamento.BL
             entity.Mensagem = null;
             entity.Recomendacao = null;
             entity.XML = null;
+            entity.XMLUnicoTSS = null;
             entity.PDF = null;
 
             var response = RestHelper.ExecutePostRequest<TransmissaoNFSRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissaoNFS", JsonConvert.SerializeObject(transmissaoNFS, JsonSerializerSetting.Edit), null, header);
             if (response.Error != null)
             {
                 entity.Status = StatusNotaFiscal.FalhaTransmissao;
-
+                entity.SefazId = response.NotaId;
+                entity.XMLUnicoTSS = response.XMLUnicoTSS;
+                entity.XML = response.Error.XML;
                 entity.Mensagem = response.Error.Mensagem;
-                entity.XMLUnicoTSS = response.Error.XML;
+            }
+            else
+            {
+                entity.SefazId = response.NotaId;
+                entity.XMLUnicoTSS = response.XMLUnicoTSS;
             }
         }
 

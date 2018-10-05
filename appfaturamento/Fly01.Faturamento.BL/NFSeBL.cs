@@ -226,8 +226,8 @@ namespace Fly01.Faturamento.BL
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
             var servicos = NFSeServicoBL.All.Where(x => x.NotaFiscalId == nfseId).ToList();
-            //TODO: Diego ver o ValorOutrasRetencoes considerar no total
-            var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto - x.ValorOutrasRetencoes)) : 0.0;
+            
+            var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
 
             var result = new TotalPedidoNotaFiscal()
             {

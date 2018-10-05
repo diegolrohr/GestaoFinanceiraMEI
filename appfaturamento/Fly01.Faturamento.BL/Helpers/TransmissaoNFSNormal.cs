@@ -127,7 +127,7 @@ namespace Fly01.Faturamento.BL.Helpers
                         " ",
                         NFSeServico.DescricaoOutrasRetencoes
                     ),
-                    Quantidade = NFSeServico.Quantidade,//TODO: ver quantidade
+                    Quantidade = NFSeServico.Quantidade,
                     ValorUnitario = NFSeServico.Valor,
                     ValorTotal = (NFSeServico.Quantidade * NFSeServico.Valor),
                     BaseCalculo = (NFSeServico.Quantidade * NFSeServico.Valor),
@@ -141,7 +141,7 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorISS = itemTributacao.ISSValor,
                     ValorISSRetido = itemTributacao.ISSValorRetencao,
                     ValorOutrasRetencoes = somaRetencoes,
-                    DescontoCondicional = 0.00, //TODO: confirmar
+                    DescontoCondicional = 0.00,
                     DescontoIncondicional = NFSeServico.Desconto,
                     CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge?? ""
                 }

@@ -140,11 +140,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             set { ValorLiquido = double.Parse(value.Replace(".", ",")); }
         }
 
+        /// <summary>
+        /// Se Ibge 3106200 inverter as informações das Tags
+        /// </summary>
         [XmlElement(ElementName = "desccond")]
-        public double DescontoCondicional { get; set; }
+        public double DescontoCondicional
+        {
+            get { return CodigoIBGEPrestador == "3106200" ? DescontoIncondicional : DescontoCondicional; }
+            set { DescontoCondicional = value; }
+        }
 
         [XmlElement(ElementName = "descinc")]
-        public double DescontoIncondicional { get; set; }
+        public double DescontoIncondicional
+        {
+            get { return CodigoIBGEPrestador != "3106200" ? DescontoIncondicional : DescontoCondicional; }
+            set { DescontoIncondicional = value; }
+        }
 
         /// <summary>
         /// Fixo 0, Origem Nacional, conforme FIRST

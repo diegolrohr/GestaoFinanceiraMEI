@@ -3,6 +3,9 @@ using System.Xml.Serialization;
 
 namespace Fly01.Core.Entities.Domains.Enum
 {
+    /// <summary>
+    /// Valores de acordo com o esperado no XML ùnico do TSS
+    /// </summary>
     public enum TipoTributacaoNFS
     {
         [XmlEnum(Name = "6")]

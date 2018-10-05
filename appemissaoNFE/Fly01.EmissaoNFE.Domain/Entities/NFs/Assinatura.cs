@@ -14,19 +14,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         {
             string cAssinatura = "";
 
-            //Adiciona a inscricao municipal
             cAssinatura += itemVM.Prestador.InscricaoMunicipalPrestador.ToString().PadLeft(11, '0').ToLower().Trim();
             cAssinatura += "NF   ";
             cAssinatura += itemVM.Identificacao.NumeroRPS.ToString().Trim().PadLeft(12, '0').ToLower().Trim();
             cAssinatura += itemVM.Identificacao.DataHoraEmissao.ToString("yyyyMMdd").Trim();
-
-            //Verificar as nossas tags e qual é o vdd
+            
             switch (itemVM.Identificacao.TipoTributacao)
-            {
-                //Descomentar quando subir as mudanças no enum
-                //case TipoTributacaoNFS.ForaMunicipio:
-                //    cAssinatura += "H ";
-                //    break;
+            {                 
+                case TipoTributacaoNFS.ForaMunicipio:
+                    cAssinatura += "H ";
+                    break;
                 case TipoTributacaoNFS.Isencao:
                     cAssinatura += "C ";
                     break;

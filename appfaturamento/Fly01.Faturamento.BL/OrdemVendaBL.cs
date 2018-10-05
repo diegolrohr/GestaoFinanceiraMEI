@@ -622,7 +622,6 @@ namespace Fly01.Faturamento.BL
                     if (entity.TipoVenda == TipoVenda.Normal)
                     {
                         totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
-                        //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
                         totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
                     }
                 }
@@ -631,7 +630,6 @@ namespace Fly01.Faturamento.BL
                 double totalImpostosProdutos = produtos != null && entity.TotalImpostosProdutos.HasValue ? entity.TotalImpostosProdutos.Value : 0;
 
                 double valorPrevistoProdutos = totalProdutos + (entity.GeraNotaFiscal ? totalImpostosProdutos : 0);
-                //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
                 double valorPrevistoServicos = totalServicos - (entity.GeraNotaFiscal ? (totalRetencoesServicos + totalOutrasRetencoesServicos) : 0);
 
                 if (pagaFrete)
@@ -845,7 +843,7 @@ namespace Fly01.Faturamento.BL
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalOutrasRetencoesServicos = servicos != null ? servicos.Sum(x => x.ValorOutrasRetencoes) : 0.0;
-            //TODO: Diego ver esse esquema das outras retencoes na base de cálculo dos impostos
+
             var totalRetencoesServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
                 : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaRetencaoOrdemVendaServicos(servicos, clienteId) : 0.0);
 

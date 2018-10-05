@@ -100,6 +100,10 @@
     <Compile Include="Migrations\201809252114487_AlterServico.Designer.cs">
       <DependentUpon>201809252114487_AlterServico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810051758282_AlterProdutoTamanhoDescricao.cs" />
+    <Compile Include="Migrations\201810051758282_AlterProdutoTamanhoDescricao.Designer.cs">
+      <DependentUpon>201810051758282_AlterProdutoTamanhoDescricao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -187,6 +191,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809252114487_AlterServico.resx">
       <DependentUpon>201809252114487_AlterServico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810051758282_AlterProdutoTamanhoDescricao.resx">
+      <DependentUpon>201810051758282_AlterProdutoTamanhoDescricao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

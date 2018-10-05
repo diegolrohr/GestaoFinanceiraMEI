@@ -54,7 +54,7 @@ namespace Fly01.Estoque.BL
         public InventarioBL InventarioBL => inventarioBL ?? (inventarioBL = new InventarioBL(Context, InventarioItemBL));
 
         private ProdutoBL produtoBL;
-        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL, NCMBL, UnidadeMedidaBL, CestBL, EnquadramentoLegalIPIBL));
 
         private PosicaoAtualBL posicaoAtualBL;
         public PosicaoAtualBL PosicaoAtualBL => posicaoAtualBL ?? (posicaoAtualBL = new PosicaoAtualBL(Context, ProdutoBL));

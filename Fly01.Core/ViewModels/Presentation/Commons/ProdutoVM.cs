@@ -49,6 +49,18 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("cestId")]
         public Guid? CestId { get; set; }
 
+        [JsonProperty("codigoNcm")]
+        public string CodigoNcm { get; set; }
+
+        [JsonProperty("codigoCest")]
+        public string CodigoCest { get; set; }
+
+        [JsonProperty("abreviacaoUnidadeMedida")]
+        public string AbreviacaoUnidadeMedida { get; set; }
+
+        [JsonProperty("codigoEnquadramentoLegalIPI")]
+        public string CodigoEnquadramentoLegalIPI { get; set; }
+
         [JsonProperty("enquadramentoLegalIPIId")]
         public Guid? EnquadramentoLegalIPIId { get; set; }
 

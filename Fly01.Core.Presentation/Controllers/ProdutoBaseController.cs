@@ -30,7 +30,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 id = x.Id,
                 codigoProduto = x.CodigoProduto,
-                descricao = x.Descricao,
+                descricao = x.Descricao.Substring(0, x.Descricao.Length <= 60 ? x.Descricao.Length : 60),
                 grupoProdutoId = x.GrupoProdutoId,
                 grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
                 tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),

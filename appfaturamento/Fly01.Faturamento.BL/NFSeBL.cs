@@ -233,7 +233,7 @@ namespace Fly01.Faturamento.BL
             {
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = 0,
-                TotalRetencoesServicos = Math.Round((nfse.TotalRetencoesServicos - totalOutrasRetencoesServicos), 2, MidpointRounding.AwayFromZero),
+                TotalRetencoesServicos = Math.Round((nfse.TotalRetencoesServicos + totalOutrasRetencoesServicos), 2, MidpointRounding.AwayFromZero),
                 TotalImpostosServicosNaoAgrega = Math.Round(nfse.TotalImpostosServicosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 

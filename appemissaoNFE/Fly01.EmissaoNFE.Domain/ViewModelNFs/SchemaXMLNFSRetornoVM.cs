@@ -2,7 +2,7 @@
 {
     public class SchemaXMLNFSRetornoVM
     {
-        public string NotaId { get; set; }
+        public string Id { get; set; }
         public string Mensagem { get; set; }
         public string XML { get; set; }
     }

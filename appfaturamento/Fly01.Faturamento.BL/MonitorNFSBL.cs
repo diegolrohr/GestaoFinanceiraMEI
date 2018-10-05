@@ -80,7 +80,7 @@ namespace Fly01.Faturamento.BL
                                 nfse.Recomendacao = null;
                                 nfse.XML = null;
 
-                                nfse.Status = (StatusNotaFiscal)System.Enum.Parse(typeof(StatusNotaFiscal), itemNF.Status.ToString());
+                                nfse.Status = itemNF.Status;
                                 nfse.Mensagem = itemNF.Mensagem;
                                 nfse.Recomendacao = itemNF.Recomendacao;
                             }

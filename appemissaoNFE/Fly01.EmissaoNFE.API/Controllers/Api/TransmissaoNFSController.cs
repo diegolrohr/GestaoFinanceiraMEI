@@ -42,8 +42,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         private TransmissaoNFSRetornoVM Producao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
             //Serializando a nota 
-            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
-            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+            var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
             //Validar base 64
             var notaSchema = new NFSE001Prod.NF
@@ -61,15 +61,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XML = xmlString
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId.Replace(":", ""),
+                XMLUnicoTSS = xmlUnicoTssString
             };
 
             if (validacao.Length > 0)
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
-                    NotaId = validacao[0].ID,
+                    Id = validacao[0].ID,
                     Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
                     XML = Convert.ToBase64String(validacao[0].XML)
                 };
@@ -107,8 +107,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         private TransmissaoNFSRetornoVM Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
             //Serializando a nota 
-            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
-            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+            var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
             //Validar base 64
             var notaSchema = new NFSE001.NF
@@ -126,15 +126,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XML = xmlString
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId.Replace(":", ""),
+                XMLUnicoTSS = xmlUnicoTssString
             };
 
             if (!string.IsNullOrEmpty(validacao[0].MENSAGEM))
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
-                    NotaId = validacao[0].ID,
+                    Id = validacao[0].ID,
                     Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
                     XML = Convert.ToBase64String(validacao[0].XML)
                 };

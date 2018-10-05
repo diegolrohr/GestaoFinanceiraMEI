@@ -16,16 +16,16 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("ForaMunicipio", "Fora Município")]
         ForaMunicipio = 8,
 
-        [XmlEnum(Name = "6")]
+        [XmlEnum(Name = "1")]
         [Subtitle("Isencao", "Isenção")]
-        Isencao = 6,
+        Isencao = 1,
 
         [XmlEnum(Name = "3")]
         [Subtitle("Imune", "Imune")]
         Imune = 3,
 
         [XmlEnum(Name = "4")]
-        [Subtitle("ExibilidadeSuspeJudicial", "Exibilidade Suspesa via Judicial")]
+        [Subtitle("ExibilidadeSuspeJudicial", "Exibilidade Suspensa via Judicial")]
         ExibilidadeSuspeJudicial = 4,
 
         [XmlEnum(Name = "12")]

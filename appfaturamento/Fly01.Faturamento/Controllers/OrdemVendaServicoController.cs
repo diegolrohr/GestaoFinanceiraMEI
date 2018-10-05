@@ -10,6 +10,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -127,6 +128,17 @@ namespace Fly01.Faturamento.Controllers
                 Class = "col s12 l6 numeric",
                 Label = "Outras Retenções"
             });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorOutrasRetencoes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será descontado do valor total, junto as demais retenções, de acordo com as configurações do grupo tributário informado."
+                }
+            });
+            #endregion
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

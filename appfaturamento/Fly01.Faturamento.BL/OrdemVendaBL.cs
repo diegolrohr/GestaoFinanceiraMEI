@@ -97,6 +97,16 @@ namespace Fly01.Faturamento.BL
                 if (entity.GeraNotaFiscal)
                 {
                     TotalTributacaoBL.DadosValidosCalculoTributario(entity, entity.ClienteId);
+
+                    if (servicos != null)
+                    {
+                        var totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
+                        var totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
+                        var tributacoesServicos = TotalTributacaoBL.TributacoesOrdemVendaServicos(servicos, entity.ClienteId);
+                        var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
+                        entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
+                    }
+                    
                     entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
@@ -315,6 +325,7 @@ namespace Fly01.Faturamento.BL
                 var nfseServicos = servicos.Select(
                         x => new NFSeServico
                         {
+                            Id = Guid.NewGuid(),
                             NotaFiscalId = NFSe.Id,
                             ServicoId = x.ServicoId,
                             GrupoTributarioId = x.GrupoTributarioId.Value,
@@ -842,7 +853,7 @@ namespace Fly01.Faturamento.BL
 
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var totalOutrasRetencoesServicos = servicos != null ? servicos.Sum(x => x.ValorOutrasRetencoes) : 0.0;
+            var totalOutrasRetencoesServicos = (servicos != null && geraNotaFiscal) ? servicos.Sum(x => x.ValorOutrasRetencoes) : 0.0;
 
             var totalRetencoesServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
                 : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaRetencaoOrdemVendaServicos(servicos, clienteId) : 0.0);

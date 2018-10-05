@@ -240,37 +240,42 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "calculaIss",
                 Class = "col s12 m6 l6",
                 Label = "Calcula ISS",
-                DomEvents = new List<DomEventUI>()
-                {
-                    new DomEventUI() { DomEvent = "change", Function = "fnShowISS" }
-                }
+                //DomEvents = new List<DomEventUI>()
+                //{
+                //    new DomEventUI() { DomEvent = "change", Function = "fnShowISS" }
+                //}
             });
             config.Elements.Add(new InputCheckboxUI { Id = "retemISS", Class = "col s12 m6 l6", Label = "Retém ISS"});
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoTributacaoISS",
-                Class = "col s12 l12",
-                Label = "Situação Tributária",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS))),
-                ConstrainWidth = true
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoPagamentoImpostoISS",
-                Class = "col s12 l6",
-                Label = "Pagamento de Imposto",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
-            });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoCFPS",
-                Class = "col s12 l6",
-                Label = "Tipo CFPS",
-                Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCFPS)))
-            });
+
+            config.Elements.Add(new InputHiddenUI() { Id = "tipoTributacaoISS", Value = "T00" });
+            config.Elements.Add(new InputHiddenUI() { Id = "tipoPagamentoImpostoISS", Value = "DentroMunicipio" });
+            config.Elements.Add(new InputHiddenUI() { Id = "tipoCFPS", Value = "Tomador" });
+
+            //config.Elements.Add(new SelectUI ?? Jamal add, não usamos ainda
+            //{
+            //    Id = "tipoTributacaoISS",
+            //    Class = "col s12 l12",
+            //    Label = "Situação Tributária",
+            //    Disabled = true,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS))),
+            //    ConstrainWidth = true
+            //});
+            //config.Elements.Add(new SelectUI
+            //{
+            //    Id = "tipoPagamentoImpostoISS",
+            //    Class = "col s12 l6",
+            //    Label = "Pagamento de Imposto",
+            //    Disabled = true,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
+            //});
+            //config.Elements.Add(new SelectUI
+            //{
+            //    Id = "tipoCFPS",
+            //    Class = "col s12 l6",
+            //    Label = "Tipo CFPS",
+            //    Disabled = true,
+            //    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCFPS)))
+            //});
 
             //CSLL
             config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "CSLL" });

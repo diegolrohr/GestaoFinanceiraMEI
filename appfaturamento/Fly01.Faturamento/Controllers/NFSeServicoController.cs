@@ -26,6 +26,7 @@ namespace Fly01.Faturamento.Controllers
                 quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
+                valorOutrasRetencoes = x.ValorOutrasRetencoes.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
             };
         }

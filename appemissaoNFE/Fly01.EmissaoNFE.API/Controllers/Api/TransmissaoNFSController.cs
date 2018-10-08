@@ -17,6 +17,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+                var entityNFSTesteJenkins = entityNFS;
                 unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
 
                 unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);

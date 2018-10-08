@@ -1,11 +1,23 @@
 ﻿<script>
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length == 0)
+            return true;
+
+        return false;
+    }
+
     function fnChangeTipoOperacao() {
         $('#serie').inputmask('remove');
         if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFe") {
             $('#serie').inputmask('999');
         }
         else if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFSe") {
-            $('#serie').val('RPS');
+            if (isCreate()){
+                $('#serie').val('RPS');
+                fly01.fn.updateTextFields();
+            }    
         }
     }
 </script>

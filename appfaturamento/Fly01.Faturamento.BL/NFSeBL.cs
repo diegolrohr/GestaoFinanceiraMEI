@@ -142,8 +142,6 @@ namespace Fly01.Faturamento.BL
 
         public override void Update(NFSe entity)
         {
-            entity.Fail(entity.Status == StatusNotaFiscal.Transmitida, new Error("Ainda não é possível transmitir notas de serviço, aguarde a atualização do sistema", "status"));
-
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
 
             entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));

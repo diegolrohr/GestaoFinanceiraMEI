@@ -149,14 +149,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public double DescontoCondicional
         {
             get { return CodigoIBGEPrestador == "3106200" ? DescontoIncondicional : DescontoCondicional; }
-            set { DescontoCondicional = value; }
+            set { }
         }
 
         [XmlElement(ElementName = "descinc")]
         public double DescontoIncondicional
         {
             get { return CodigoIBGEPrestador != "3106200" ? DescontoIncondicional : DescontoCondicional; }
-            set { DescontoIncondicional = value; }
+            set { }
         }
 
         /// <summary>

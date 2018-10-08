@@ -197,10 +197,10 @@ namespace Fly01.Faturamento.Controllers
                 LabelName = "clienteNome"
             });
 
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m4", Label = "Total de impostos não incidentes", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m4", Label = "Total retenções serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m6", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m6", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutoCompleteUI
             {

@@ -53,7 +53,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCidade(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.Cidade), new Error("Cidade é obrigatório.", "Cidade"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.Cidade), new Error("Cidade do prestador é obrigatório.", "Cidade"));
         }
 
         private static void ValidarCodigoMunicipioIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
@@ -64,7 +64,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarNomeFantasia(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.NomeFantasia), new Error("Nome Fantasia é obrigatório.", "NomeFantasia"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.NomeFantasia), new Error("Nome Fantasia do prestador é obrigatório.", "NomeFantasia"));
         }
 
         private static void ValidarRazaoSocial(TransmissaoNFSVM entity)
@@ -77,13 +77,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj == null,
                 new Error("Informe o CPF ou CNPJ do prestador.", "CpfCnpj"));
 
-            if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj.Length == 11)
-                entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj != null && (!entitiesBLToValidateNFS._empresaBL.ValidaCPF(entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj)),
-                            new Error("CPF do emitente inválido.", "CpfCnpj"));
-            else if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj.Length == 14)
+            if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj?.Length == 11)
+                entity.Fail(entity.ItemTransmissaoNFSVM.Prestador?.CpfCnpj != null && (!entitiesBLToValidateNFS._empresaBL.ValidaCPF(entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj)),
+                            new Error("CPF do prestador inválido.", "CpfCnpj"));
+            else if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj?.Length == 14)
                 entity.Fail((!entitiesBLToValidateNFS._empresaBL.ValidaCNPJ(entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj)),
-                            new Error("CNPJ do emitente inválido.", "CpfCnpj"));
-            else if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj.Length < 11 || entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj.Length > 14)
+                            new Error("CNPJ do prestador inválido.", "CpfCnpj"));
+            else if (entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj?.Length < 11 || entity.ItemTransmissaoNFSVM.Prestador.CpfCnpj?.Length > 14)
                 entity.Fail((true), 
                             new Error("CPF ou CNPJ do Prestador é invalido. Informe 11 ou 14 digítos.", "CpfCnpj"));
         }
@@ -91,7 +91,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarInscricaoMunucipal(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.InscricaoMunicipalPrestador), 
-                new Error("Inscrição municipal é obrigatório.", "InscricaoMunicipal"));
+                new Error("Inscrição municipal do prestador é obrigatório.", "InscricaoMunicipal"));
         }
     }
 }

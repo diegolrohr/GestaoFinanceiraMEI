@@ -7,7 +7,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Servico
     {
         [XmlElement(ElementName = "codigo")]
-        public string Codigo { get; set; }
+        public string CodigoIss { get; set; }
 
         [XmlIgnore]
         public double AliquotaIss { get; set; }
@@ -146,18 +146,18 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// Se Ibge 3106200 inverter as informações das Tags
         /// </summary>
         [XmlElement(ElementName = "desccond")]
-        public double DescontoCondicional
-        {
-            get { return CodigoIBGEPrestador == "3106200" ? DescontoIncondicional : DescontoCondicional; }
-            set { }
-        }
+        public double DescontoCondicional { get; set; }
+        //{
+        //    get { return CodigoIBGEPrestador == "3106200" ? DescontoIncondicional : DescontoCondicional; }
+        //    set { }
+        //}
 
         [XmlElement(ElementName = "descinc")]
-        public double DescontoIncondicional
-        {
-            get { return CodigoIBGEPrestador != "3106200" ? DescontoIncondicional : DescontoCondicional; }
-            set { }
-        }
+        public double DescontoIncondicional { get; set; }
+        //{
+        //    get { return CodigoIBGEPrestador != "3106200" ? DescontoIncondicional : DescontoCondicional; }
+        //    set { }
+        //}
 
         /// <summary>
         /// Fixo 0, Origem Nacional, conforme FIRST

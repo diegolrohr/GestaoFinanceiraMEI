@@ -6,11 +6,9 @@ using System.Text;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
-    public class Assinatura
+    public static class Assinatura
     {
-        public string CodigoIBGEPrestador { get; set; }
-
-        public string GeraAssinatura(ItemTransmissaoNFSVM itemVM)
+        public static string GeraAssinatura(ItemTransmissaoNFSVM itemVM)
         {
             string cAssinatura = "";
 
@@ -53,7 +51,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             return cAssinatura.Trim().ToLower();
         }
 
-        private string CalculateSHA1(string text)
+        private static string CalculateSHA1(string text)
         {
             try
             {

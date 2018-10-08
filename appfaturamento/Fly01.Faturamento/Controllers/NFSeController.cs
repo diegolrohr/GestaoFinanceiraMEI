@@ -280,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 var response = base.Get(id);
 
-                string fileName = "NFSe" + response.NumNotaFiscal + ".xml";
+                string fileName = "NFSeTSS" + response.NumNotaFiscal + ".xml";
                 string xml = response.XMLUnicoTSS;
                 xml = xml.Replace("\\", "");
                 Session.Add(fileName, xml);
@@ -358,6 +358,31 @@ namespace Fly01.Faturamento.Controllers
         protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public ContentResult FormRetornoValidacao()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem Validação",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NotaFiscal")
+                },
+                Id = "fly01mdlfrmVisualizarMensagemValidacao"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }
 }

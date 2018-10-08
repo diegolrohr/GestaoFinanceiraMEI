@@ -34,7 +34,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.CEP), new Error("CEP do local de prestação do serviço é um dado obrigatório.", "CEP"));
 
             entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.CEP != null && !entitiesBLToValidateNFS._empresaBL.ValidaCEP(entity.ItemTransmissaoNFSVM.Prestacao.CEP),
-                    new Error("CEP do emitente inválido.", "CEP"));
+                    new Error("CEP do local de prestação do serviço inválido.", "CEP"));
         }
 
         private static void ValidarBairro(TransmissaoNFSVM entity)
@@ -50,7 +50,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarCodigoMunicipalIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
             entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE.ToUpper()),
-                    new Error("Código de município do local de prestação do serviço é inválido.", "CodigoMunicipioIBGE"));
+                    new Error("Código IBGE do município do local de prestação do serviço é inválido.", "CodigoMunicipioIBGE"));
         }
 
         private static void ValidarLogradouro(TransmissaoNFSVM entity)

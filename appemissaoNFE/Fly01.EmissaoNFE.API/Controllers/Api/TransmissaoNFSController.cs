@@ -5,6 +5,7 @@ using Fly01.EmissaoNFE.BL;
 using System;
 using System.Web.Http;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.EmissaoNFE.Domain.Entities.NFS;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -16,15 +17,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
-                var entityNFSTesteJenkins = entityNFS;
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
+                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
 
-                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);
-
+                //TODO: aglutinar
+                entity = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+                entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
+                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
                 try
                 {
-                    var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);
+                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
                 }
@@ -32,7 +33,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
                     {
-                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entityNFS);
+                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
                     }
 
                     return InternalServerError(ex);

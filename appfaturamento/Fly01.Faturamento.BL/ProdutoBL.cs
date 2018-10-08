@@ -60,7 +60,7 @@ namespace Fly01.Faturamento.BL
             {
                 var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
                 if (dadosEnquadramentoLegalIPI != null)
-                    entity.CestId = dadosEnquadramentoLegalIPI.Id;
+                    entity.EnquadramentoLegalIPIId = dadosEnquadramentoLegalIPI.Id;
             }
         }
 

@@ -61,7 +61,7 @@ namespace Fly01.Estoque.BL
             {
                 var dadosEnquadramentoLegalIPI = EnquadramentoLegalIPIBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoEnquadramentoLegalIPI);
                 if (dadosEnquadramentoLegalIPI != null)
-                    entity.CestId = dadosEnquadramentoLegalIPI.Id;
+                    entity.EnquadramentoLegalIPIId = dadosEnquadramentoLegalIPI.Id;
             }
         }
 

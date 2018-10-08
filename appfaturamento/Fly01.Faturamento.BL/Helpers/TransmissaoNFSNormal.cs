@@ -113,9 +113,9 @@ namespace Fly01.Faturamento.BL.Helpers
                 {
                     CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,
-                    IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
-                    CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     Descricao = string.Concat
                     (
                         NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "",

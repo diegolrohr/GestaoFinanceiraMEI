@@ -6,6 +6,7 @@ using System;
 using System.Web.Http;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.EmissaoNFE.Domain.Entities.NFS;
+using System.Text;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -54,7 +55,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001Prod.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId, //TODO: Confirmar com o Machado
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
@@ -138,7 +139,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     Id = validacao[0].ID,
                     Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
-                    XML = Convert.ToBase64String(validacao[0].XML)
+                    XML = Encoding.UTF8.GetString(validacao[0].XML)
                 };
                 response.Error = schema;
             }

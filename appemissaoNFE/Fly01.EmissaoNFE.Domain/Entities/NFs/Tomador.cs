@@ -84,6 +84,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "telefone")]
         public string Telefone { get; set; }
 
+        public bool ShouldSerializeTelefone()
+        {
+            return !string.IsNullOrEmpty(Telefone);
+        }
+
         /// <summary>
         /// Fixo Brasil, se precisar outros paises importar tabela ibge e realizar demais validações
         /// </summary>

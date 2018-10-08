@@ -1,4 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain.Entities.NFS;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -42,21 +43,10 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         /// <summary>
         /// Gerado pelo sistema na serialização do xml
         /// </summary>
-        [XmlElement(ElementName = "assinatura")]
-        public string AssinaturaHash
-        {
-            get
-            {
-                return Assinatura.GeraAssinatura(this);
-            }
-            set
-            {
-                AssinaturaHash = value;
-            }
-        }
 
-        [XmlIgnore]
-        public Assinatura Assinatura { get; set; }
+        [JsonIgnore]
+        [XmlElement(ElementName = "assinatura")]
+        public string AssinaturaHash { get; set; }
 
         [XmlElement(ElementName = "identificacao")]
         public Identificacao Identificacao { get; set; }

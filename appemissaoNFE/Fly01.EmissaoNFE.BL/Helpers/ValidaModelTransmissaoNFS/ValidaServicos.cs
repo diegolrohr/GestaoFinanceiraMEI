@@ -10,7 +10,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         {
             if (entity.ItemTransmissaoNFSVM.Servicos == null)
             {
-                entity.Fail(true, new Error("A entidade servico não pode ser nula"));
+                entity.Fail(true, new Error("A entidade serviço não pode ser nula"));
             }
             else
             {
@@ -25,19 +25,19 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item)
         {
-            entity.Fail(string.IsNullOrEmpty(item.CodigoTributario.ToString()), new Error("Código tributário do serviço é um dado obrigatório."));
-            entity.Fail(item.CodigoTributario.ToString().Length > 20, new Error("O código da tributação não pode ter mais que 20 caracteres."));
+            //TODO: verificar obrigatoriedadeentity.Fail(string.IsNullOrEmpty(item.CodigoTributario), new Error("Código tributário municipal do serviço é um dado obrigatório."));
+            entity.Fail(item.CodigoTributario?.Length > 20, new Error("Código tributário municipal do serviço ter mais que 20 caracteres."));
         }
 
         private static void ValidarDiscriminacaoServico(TransmissaoNFSVM entity, Servico item)
         {
-            entity.Fail(string.IsNullOrEmpty(item.Descricao), new Error("Descrição é um dado obrigatório."));
+            entity.Fail(string.IsNullOrEmpty(item.Descricao), new Error("Descrição do serviço é um dado obrigatório."));
         }
 
         private static void ValidarCodigoServico(TransmissaoNFSVM entity, Servico item)
         {
-            entity.Fail(string.IsNullOrEmpty(item.Codigo.ToString()), new Error("Código do serviço é um dado obrigatório."));
-            entity.Fail(item.Codigo.ToString().Length > 9, new Error("O código do serviço não pode ter mais que 9 caracteres."));
+            entity.Fail(string.IsNullOrEmpty(item.CodigoIss), new Error("Código Iss do serviço é um dado obrigatório."));
+            entity.Fail(item.CodigoIss?.Length > 9, new Error("O código do serviço não pode ter mais que 9 caracteres."));
         }
     }
 }

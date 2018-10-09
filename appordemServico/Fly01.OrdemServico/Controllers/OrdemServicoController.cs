@@ -27,7 +27,7 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
-        private bool _novaOS;
+        //private bool _novaOS;
 
         public OrdemServicoController()
         {
@@ -190,10 +190,7 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            if (_novaOS)
-            {
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
-            }
+            target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
 
             return target;
         }
@@ -346,10 +343,14 @@ namespace Fly01.OrdemServico.Controllers
             Mail.Send(empresa.NomeFantasia, ordem.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
         }
 
-        public ContentUI FormOrdemServico(bool isEdit = false)
+        public ContentResult FormOrdemServico(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
+
+        public ContentUI FormOrdemServicoJson(bool isEdit = false)
         {
 
-            var cfg = new ContentUI
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -513,12 +514,12 @@ namespace Fly01.OrdemServico.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult FormNew()
         {
-            _novaOS = true;
+            // _novaOS = true;
             return Form();
         }
 
         protected override ContentUI FormJson()
-            => FormOrdemServico();
+            => FormOrdemServicoJson();
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
@@ -590,7 +591,7 @@ namespace Fly01.OrdemServico.Controllers
                 Id = "descricao",
                 Class = "col s12",
                 Label = "Descrição",
-                MaxLength = 200,
+                MaxLength = 1000,
                 Disabled = true
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetItensCliente", Class = "col s12", Label = "Itens do Cliente" });

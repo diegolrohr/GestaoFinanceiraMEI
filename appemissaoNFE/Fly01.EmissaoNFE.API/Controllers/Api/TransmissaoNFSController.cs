@@ -64,7 +64,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.ItemTransmissaoNFSVM.NotaId.Replace(":", ""),
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XMLUnicoTSS = xmlUnicoTssString
             };
 
@@ -129,7 +129,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var validacao = new NFSE001.NFSE001().SCHEMAX(AppDefault.Token, entity.Homologacao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
-                NotaId = entity.ItemTransmissaoNFSVM.NotaId.Replace(":", ""),
+                NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XMLUnicoTSS = xmlUnicoTssString
             };
 

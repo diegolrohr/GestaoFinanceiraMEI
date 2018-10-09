@@ -55,11 +55,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             var result = new ListMonitorNFSRetornoVM();
             result.Retornos = new List<MonitorNFSRetornoVM>();
-            //REMESSANFSE001
-            //    só codigo municipio
-            //    id = serie+numeronfs
-            //xml e demais null
-            // REPROC = 1 so o de fora
 
             var monitor = new NFSE001Prod.NFSE001().MONITORX(
                 AppDefault.Token,
@@ -83,19 +78,19 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     var retorno = new MonitorNFSRetornoVM();
                     retorno.NotaFiscalId = nfse.ID;
-                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
                     retorno.Modalidade = nfse.MODALIDADE;
                     retorno.Recomendacao = nfse.RECOMENDACAO;
-                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.Protocolo = nfse.PROTOCOLO.Trim();
                     retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)
                     {
+                        retorno.Erros = new List<ErroNFSVM>();
                         foreach (NFSE001Prod.ERROSLOTE erro in nfse.ERRO)
                         {
                             retorno.Erros.Add(new ErroNFSVM()
                             {
-                                Codigo = erro.CODIGO,
-                                Mensagem = erro.MENSAGEM
+                                Codigo = (!string.IsNullOrEmpty(erro.CODIGO) ? erro.CODIGO : ""),
+                                Mensagem = (!string.IsNullOrEmpty(erro.MENSAGEM) ? erro.MENSAGEM : "")
                             });
                         }
                     }
@@ -114,7 +109,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
             var monitor = new NFSE001.NFSE001().MONITORX(
                 AppDefault.Token,
-                entity.Producao,
+                entity.Homologacao,
                 "1",
                 entity.NotaInicial,
                 entity.NotaFinal,
@@ -134,19 +129,19 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 { 
                     var retorno = new MonitorNFSRetornoVM();
                     retorno.NotaFiscalId = nfse.ID;
-                    retorno.Status = unitOfWork.MonitorNFSBL.ValidaStatus(nfse.PROTOCOLO, entity.StatusNotaFiscalAnterior);
                     retorno.Modalidade = nfse.MODALIDADE;
                     retorno.Recomendacao = nfse.RECOMENDACAO;
-                    retorno.Protocolo = nfse.PROTOCOLO;
+                    retorno.Protocolo = nfse.PROTOCOLO.Trim();
                     retorno.XML = nfse.XMLRETTSS;
                     if (nfse.ERRO.Length != 0)
                     {
+                        retorno.Erros = new List<ErroNFSVM>();
                         foreach (NFSE001.ERROSLOTE erro in nfse.ERRO)
                         {
                             retorno.Erros.Add(new ErroNFSVM()
                             {
-                                Codigo = erro.CODIGO,
-                                Mensagem = erro.MENSAGEM
+                                Codigo = (!string.IsNullOrEmpty(erro.CODIGO) ? erro.CODIGO : ""),
+                                Mensagem = (!string.IsNullOrEmpty(erro.MENSAGEM) ? erro.MENSAGEM : "")
                             });
                         }
                     }

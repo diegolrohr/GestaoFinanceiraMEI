@@ -40,12 +40,17 @@ namespace Fly01.Faturamento.BL.Helpers
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
         }
 
+        /// <summary>
+        /// Ordenado por data de inclusão, pois na aglutinação dos serviço, as informações 
+        /// de código Iss, Nbs e CodMunicipal, vale do primeiro
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<NFSeServico> ObterNFSeServicos()
         {
             return TransmissaoNFSBLs.NFSeServicoBL.AllIncluding(
                 x => x.GrupoTributario.Cfop,
                 x => x.Servico.Nbs,
-                x => x.Servico.Iss).AsNoTracking().Where(x => x.NotaFiscalId == NFSe.Id);
+                x => x.Servico.Iss).AsNoTracking().Where(x => x.NotaFiscalId == NFSe.Id).OrderBy(x => x.DataInclusao);
         }
 
         private EntidadeVM ObterEntidade() => TransmissaoNFSBLs.CertificadoDigitalBL.GetEntidade();

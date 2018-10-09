@@ -81,6 +81,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             set { }
         }
 
+        /// <summary>
+        /// deixar zero
+        /// </summary>
         [XmlElement(ElementName = "valdedu")]
         public double ValorDeducoes { get; set; }
 

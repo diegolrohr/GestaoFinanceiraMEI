@@ -31,23 +31,23 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarTipoTributacao(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.TipoTributacao.ToString()), new Error("Tipo tributação é um dado o brigatório.", "TipoTributacao"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.TipoTributacao.ToString()), new Error("Tipo tributação da identificação é um dado o brigatório.", "TipoTributacao"));
         }
 
         private static void ValidarNumeroRPC(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.NumeroRPS.ToString()), new Error("Numero RPC é um dado obrigatório.", "NumeroRPS"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.NumeroRPS.ToString()), new Error("Numero RPC da identificação é um dado obrigatório.", "NumeroRPS"));
         }
 
         private static void ValidarSerieRPC(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.SerieRPS), new Error("Série RPC é um dado obrigatório.", "SerieRPS"));
-            entity.Fail(entity.ItemTransmissaoNFSVM.Identificacao.SerieRPS.Length > 3, new Error("Série RPC não pode ter mais que 3 caracteres.", "SerieRPS"));            
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.SerieRPS), new Error("Série RPC da identificação é um dado obrigatório.", "SerieRPS"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Identificacao?.SerieRPS?.Length > 3, new Error("Série RPC não pode ter mais que 3 caracteres.", "SerieRPS"));
         }
 
         private static void ValidarDataHoraEmissao(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.DataHoraEmissaoString), new Error("Data de emissão é um dado obrigatório.", "DataHoraEmissao"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Identificacao.DataHoraEmissaoString), new Error("Data de emissão da identificação é um dado obrigatório.", "DataHoraEmissao"));
         }
     }
 }

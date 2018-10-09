@@ -5,6 +5,8 @@ using Fly01.EmissaoNFE.BL;
 using System;
 using System.Web.Http;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.EmissaoNFE.Domain.Entities.NFS;
+using System.Text;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -16,14 +18,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
+                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
 
-                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);
-
+                //TODO: aglutinar
+                entity = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+                entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
+                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
                 try
                 {
-                    var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);
+                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
                 }
@@ -31,7 +34,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
                     {
-                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entityNFS);
+                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
                     }
 
                     return InternalServerError(ex);
@@ -52,7 +55,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001Prod.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId, //TODO: Confirmar com o Machado
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
@@ -136,7 +139,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     Id = validacao[0].ID,
                     Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
-                    XML = Convert.ToBase64String(validacao[0].XML)
+                    XML = Encoding.UTF8.GetString(validacao[0].XML)
                 };
                 response.Error = schema;
             }

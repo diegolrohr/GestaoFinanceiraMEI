@@ -75,7 +75,7 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new ItemTransmissaoNFSVM()
             {
-                Identificacao = ObterIdentificacao(), 
+                Identificacao = ObterIdentificacao(),
                 Atividade = ObterAtividade(),
                 Prestador = ObterPrestador(),
                 Prestacao = ObterPrestacao(),
@@ -89,41 +89,36 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new InformacoesComplementares()
             {
-                Descricao = NFSe.MensagemPadraoNota?? "",
-                Observacao =  ""
+                Descricao = NFSe.MensagemPadraoNota ?? "",
+                Observacao = NFSe.Observacao ?? ""
             };
         }
 
         private List<ServicoEmissao> ObterServicos()
         {
-            //TODO: ver a questao de ter vários serviços em 1 só
-            //foreach 
-            var NFSeServicos = ObterNFSeServicos();
-            var NFSeServico = NFSeServicos.FirstOrDefault();
-
-            var somaOutrasRetencoesServicos = NFSeServicos.Sum(x => x.ValorOutrasRetencoes);
-            var itemTributacao = new NotaFiscalItemTributacao();
-            itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
-            var somaRetencoes =
-                itemTributacao.PISValorRetencao +
-                itemTributacao.COFINSValorRetencao +
-                itemTributacao.CSLLValorRetencao +
-                itemTributacao.INSSValorRetencao +
-                itemTributacao.ImpostoRendaValorRetencao +
-                somaOutrasRetencoesServicos;
-
-            return new List<ServicoEmissao>()
+            var result = new List<ServicoEmissao>();
+            foreach (var NFSeServico in ObterNFSeServicos())
             {
-                new ServicoEmissao()
+                var itemTributacao = new NotaFiscalItemTributacao();
+                itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
+                var somaRetencoes =
+                    itemTributacao.PISValorRetencao +
+                    itemTributacao.COFINSValorRetencao +
+                    itemTributacao.CSLLValorRetencao +
+                    itemTributacao.INSSValorRetencao +
+                    itemTributacao.ImpostoRendaValorRetencao +
+                    NFSeServico.ValorOutrasRetencoes;
+
+                result.Add(new ServicoEmissao()
                 {
-                    Codigo = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,
-                    IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
-                    CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal,
+                    CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     Descricao = string.Concat
                     (
-                        NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "" ,
+                        NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "",
                         " ",
                         NFSeServico.DescricaoOutrasRetencoes
                     ),
@@ -143,30 +138,33 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorOutrasRetencoes = somaRetencoes,
                     DescontoCondicional = 0.00,
                     DescontoIncondicional = NFSeServico.Desconto,
-                    CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge?? ""
-                }
+                    CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
+                });
             };
+
+            return result;
         }
 
         private Tomador ObterTomador()
         {
             return new Tomador()
             {
-                InscricaoMunicipal = Cliente.InscricaoMunicipal?? "",
-                CpfCnpj = Cliente.CPFCNPJ?? "",
-                RazaoSocial = Cliente.Nome?? "",
-                Logradouro = Cliente.Endereco?? "",
-                NumeroEndereco = Cliente.Numero?? "",
-                Bairro = Cliente.Bairro?? "",
-                CodigoMunicipioIBGE = Cliente.CidadeCodigoIbge?? "",
-                Cidade = Cliente.Cidade?.Nome??"",
-                UF = Cliente.Cidade?.Estado?.Sigla?? "",
-                CEP = Cliente.CEP?? "",
-                Email = Cliente.Email?? "",
-                Telefone = Cliente.Telefone?? "",
-                InscricaoEstadual = Cliente.InscricaoEstadual?? "",
-                SituacaoEspecial = Cliente.SituacaoEspecialNFS
-
+                InscricaoMunicipal = Cliente.InscricaoMunicipal ?? "",
+                CpfCnpj = Cliente.CPFCNPJ ?? "",
+                RazaoSocial = Cliente.Nome ?? "",
+                Logradouro = Cliente.Endereco ?? "",
+                NumeroEndereco = Cliente.Numero ?? "",
+                Bairro = Cliente.Bairro ?? "",
+                CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
+                //CodigoMunicipioSIAFI = "",
+                Cidade = Cliente.Cidade?.Nome ?? "",
+                UF = Cliente.Estado?.Sigla ?? "",
+                CEP = Cliente.CEP ?? "",
+                Email = Cliente.Email ?? "",
+                Telefone = Cliente.Telefone ?? "",
+                InscricaoEstadual = Cliente.InscricaoEstadual ?? "",
+                SituacaoEspecial = Cliente.SituacaoEspecialNFS,
+                ConsumidorFinal = Cliente.ConsumidorFinal
             };
         }
 
@@ -174,13 +172,13 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new Prestacao()
             {
-                Logradouro = Cliente.Endereco?? "",
-                NumeroEndereco = Cliente.Numero?? "",
-                CodigoMunicipioIBGE = Cliente.CidadeCodigoIbge?? "",
-                Municipio = Cliente.Cidade?.Nome?? "",
-                Bairro = Cliente.Bairro?? "",
-                UF = Empresa.Cidade?.Estado?.Sigla?? "", 
-                CEP = Empresa.CEP?? ""
+                Logradouro = Cliente.Endereco ?? "",
+                NumeroEndereco = Cliente.Numero ?? "",
+                CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
+                Municipio = Cliente.Cidade?.Nome ?? "",
+                Bairro = Cliente.Bairro ?? "",
+                UF = Cliente.Estado?.Sigla ?? "",
+                CEP = Cliente.CEP ?? ""
             };
         }
 
@@ -188,19 +186,19 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new Prestador()
             {
-                InscricaoMunicipalPrestador = Empresa.InscricaoMunicipal?? "",
-                CpfCnpj = Empresa.CNPJ?? "",
-                RazaoSocial = Empresa.RazaoSocial?? "",
-                NomeFantasia= Empresa.NomeFantasia?? "",
-                CodigoMunicipioIBGE = Empresa.Cidade?.CodigoIbge?? "",
-                Cidade = Empresa.Cidade?.Nome?? "",
-                UF = Empresa.Cidade?.Estado?.Sigla?? "",
-                Telefone = Empresa.Telefone?? "",
+                InscricaoMunicipalPrestador = Empresa.InscricaoMunicipal ?? "",
+                CpfCnpj = Empresa.CNPJ ?? "",
+                RazaoSocial = Empresa.RazaoSocial ?? "",
+                NomeFantasia = Empresa.NomeFantasia ?? "",
+                CodigoMunicipioIBGE = Empresa.Cidade?.CodigoIbge ?? "",
+                Cidade = Empresa.Cidade?.Nome ?? "",
+                UF = Empresa.Cidade?.Estado?.Sigla ?? "",
+                Telefone = Empresa.Telefone ?? "",
                 TipoIcentivoCultural = ParametrosTributarios.IncentivoCultura ? TipoSimNao.Sim : TipoSimNao.Nao,
-                Logradouro = Empresa.Endereco?? "",
-                NumeroEndereco = Empresa.Numero?? "",
-                Bairro = Empresa.Bairro?? "",
-                CEP = Empresa.CEP?? ""
+                Logradouro = Empresa.Endereco ?? "",
+                NumeroEndereco = Empresa.Numero ?? "",
+                Bairro = Empresa.Bairro ?? "",
+                CEP = Empresa.CEP ?? ""
             };
         }
 
@@ -217,10 +215,12 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new Identificacao()
             {
+                TipoTributacao = ParametrosTributarios.TipoTributacaoNFS,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? "",
                 DataHoraEmissao = DateTime.Now,
-                SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().ToString(),//TODO: pode ser minusculo
+                SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),
                 NumeroRPS = NFSe.NumNotaFiscal.Value,
+                CompetenciaRPS = DateTime.Now
             };
         }
     }

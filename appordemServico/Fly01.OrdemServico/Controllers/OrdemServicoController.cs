@@ -27,7 +27,7 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
-        //private bool _novaOS;
+        private bool _novaOS;
 
         public OrdemServicoController()
         {
@@ -410,7 +410,7 @@ namespace Fly01.OrdemServico.Controllers
                         Quantity = 5,
                     }
                 },
-                Rule = isEdit ? "parallel" : "linear",
+                Rule = _novaOS ? "linear" : "parallel",
                 ShowStepNumbers = true
             };
 
@@ -514,7 +514,7 @@ namespace Fly01.OrdemServico.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public virtual ContentResult FormNew()
         {
-            // _novaOS = true;
+            _novaOS = true;
             return Form();
         }
 

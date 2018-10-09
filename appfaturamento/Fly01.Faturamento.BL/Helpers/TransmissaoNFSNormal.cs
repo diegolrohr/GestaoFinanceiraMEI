@@ -109,9 +109,11 @@ namespace Fly01.Faturamento.BL.Helpers
                     itemTributacao.ImpostoRendaValorRetencao +
                     NFSeServico.ValorOutrasRetencoes;
 
+
                 result.Add(new ServicoEmissao()
                 {
-                    CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    //CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    CodigoIss = "14.06",//TODO: ver formatação iss
                     AliquotaIss = itemTributacao.ISSAliquota,
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,

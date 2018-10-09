@@ -64,25 +64,40 @@ namespace Fly01.Faturamento.BL
                             EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
                             NotaInicial = dadosPlataforma.notaInicial.ToString(),
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
+                            DataInicial = dadosPlataforma.dataInicial,
+                            DataFinal = dadosPlataforma.dataFinal
                         };
 
-                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorNFS", JsonConvert.SerializeObject(monitorVM), null, header);
+                        var responseMonitor = RestHelper.ExecutePostRequest<ListMonitorNFSRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "monitorNFS", JsonConvert.SerializeObject(monitorVM), null, header);
                         if (responseMonitor == null)
                             continue;
 
-                        foreach (var itemNF in responseMonitor.Retornos)
+                        foreach (var retorno in responseMonitor.Retornos)
                         {
                             //Atualiza Status NF;
-                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == itemNF.NotaId).FirstOrDefault();
+                            var nfse = NFSeBL.Everything.Where(x => x.SefazId == retorno.NotaFiscalId).FirstOrDefault();
                             if (nfse != null)
                             {
-                                nfse.Mensagem = null;
+                                nfse.Mensagem = "";
                                 nfse.Recomendacao = null;
-                                nfse.XML = null;
 
-                                nfse.Status = itemNF.Status;
-                                nfse.Mensagem = itemNF.Mensagem;
-                                nfse.Recomendacao = itemNF.Recomendacao;
+                                nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status);
+
+                                if (nfse.Status == StatusNotaFiscal.Autorizada)
+                                {
+                                    nfse.XML = retorno.XML;
+                                }
+
+                                nfse.Recomendacao = retorno.Recomendacao;
+                                foreach (var erro in retorno.Erros)
+                                {
+                                    nfse.Mensagem += string.Format("\n Código: {0} Mensagem: {1} ", erro.Codigo, erro.Mensagem);
+                                };
+
+                                if (!string.IsNullOrEmpty(retorno.Protocolo))
+                                {
+                                    nfse.Mensagem += string.Format("\n Protocolo: {0} ", retorno.Protocolo);
+                                }
                             }
                         }
                     }
@@ -92,6 +107,36 @@ namespace Fly01.Faturamento.BL
                     continue;
                 }
             }
+        }
+
+        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior)
+        {
+            protocolo = protocolo.Trim();
+            //se _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
+            StatusNotaFiscal statusNFSe;
+
+            if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            {
+                statusNFSe = StatusNotaFiscal.NaoAutorizada;
+            }
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            {
+                statusNFSe = StatusNotaFiscal.Autorizada;
+            }
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            {
+                statusNFSe = StatusNotaFiscal.EmCancelamento;
+            }
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            {
+                statusNFSe = StatusNotaFiscal.FalhaNoCancelamento;
+            }
+            else
+            {
+                statusNFSe = statusAnterior;
+            }
+
+            return statusNFSe;
         }
 
     }

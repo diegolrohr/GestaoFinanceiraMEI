@@ -25,35 +25,5 @@ namespace Fly01.EmissaoNFE.BL
 
         public static Error NotaInicialInvalida = new Error("Nota inicial inválida", "NotaInicial");
         public static Error NotaFinalInvalida = new Error("Nota final inválida", "NotaFinal");
-
-        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior)
-        {
-            //Com a regrinha que te falei... se o _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
-            //TODO ver códigos e novo enum de status
-            StatusNotaFiscal statusNFSe;
-
-            if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
-            {
-                statusNFSe = StatusNotaFiscal.NaoAutorizada;
-            }
-            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
-            {
-                statusNFSe = StatusNotaFiscal.Autorizada;
-            }
-            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
-            {
-                statusNFSe = StatusNotaFiscal.FalhaNoCancelamento;
-            }
-            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
-            {
-                statusNFSe = StatusNotaFiscal.Cancelada;
-            }
-            else
-            {
-                statusNFSe = statusAnterior;
-            }
-            
-            return statusNFSe;
-        }
     }
 }

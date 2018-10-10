@@ -82,14 +82,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            if (UserCanWrite)
+            dtOrdemServicoManutencaoCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                dtOrdemServicoManutencaoCfg.Actions.AddRange(new List<DataTableUIAction>()
-                {
-                    new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
-                    new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
-                });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
+            }));
+            
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 3, Type = "float", Searchable = false, Orderable = false });
@@ -111,14 +109,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            if (UserCanWrite)
+            dtOrdemServicoItemProdutosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                dtOrdemServicoItemProdutosCfg.Actions.AddRange(new List<DataTableUIAction>()
-                {
-                    new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
-                    new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
-                });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
+            }));
+            
 
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -143,14 +139,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            if (UserCanWrite)
+            dtOrdemServicoItemServicosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                dtOrdemServicoItemServicosCfg.Actions.AddRange(new List<DataTableUIAction>()
-                {
-                    new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
-                    new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
-                });
-            }
+                new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
+            }));
+            
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "currency", Searchable = false, Orderable = false });
@@ -276,28 +270,18 @@ namespace Fly01.OrdemServico.Controllers
                 Functions = { "fnRenderEnum", "fnExecutarOrdem", "fnExecutarOrdem", "fnCancelarOrdem", "fnConcluirOrdem" }
             };
 
-            var actions = new List<DataTableUIAction>()
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" }
-            };
-
-            if (UserCanWrite)
-            {
-                actions.AddRange(new List<DataTableUIAction>()
-                {
-                    new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
-                    new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
-                    new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
-                    new DataTableUIAction { OnClickFn = "fnEnviarEmailOS", Label = "Enviar por e-mail", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
-                    new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
-                    new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
-                    new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
-                    new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Pedido de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
-                });
-            }
-
-            config.Actions.AddRange(actions);
-
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailOS", Label = "Enviar por e-mail", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
+                new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
+                new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
+                new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Pedido de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
+            }));
+            
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -801,7 +785,7 @@ namespace Fly01.OrdemServico.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult ConcluirOrdem(string id, bool geraOrdemVenda = false) => MudarStatus(id, StatusOrdemServico.Concluido, geraOrdemVenda);
-        
+
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult GerarOrdem(string id)

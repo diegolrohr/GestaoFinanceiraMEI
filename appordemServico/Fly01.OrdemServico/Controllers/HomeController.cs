@@ -285,7 +285,7 @@ namespace Fly01.OrdemServico.Controllers
             {
                 new SidebarUIMenu()
                 {
-                    Class = ResourceHashConst.OrdemServicoOrdemServico,
+                    Class = ResourceHashConst.OrdemServico,
                     Label = "Ordem de Serviço",
                     Items = new List<LinkUI>
                     {

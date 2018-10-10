@@ -18,8 +18,8 @@ namespace Fly01.OrdemServico.Controllers
     {
         protected override ContentUI HomeJson()
         {
-            //if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
-            //    return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
+            if (!UserCanPerformOperation(ResourceHashConst.OrdemServicoVisaoGeral))
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;

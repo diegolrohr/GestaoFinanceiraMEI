@@ -80,6 +80,7 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new ItemTransmissaoNFSVM()
             {
+                FormatarCodigoIssServico = ParametrosTributarios.FormatarCodigoISS,
                 Identificacao = ObterIdentificacao(),
                 Atividade = ObterAtividade(),
                 Prestador = ObterPrestador(),
@@ -237,17 +238,22 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private Valores ObterValores()
         {
-            var NFSeServico = ObterNFSeServicos().FirstOrDefault();
-            var itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
+            var itensTributacoes = new List<NotaFiscalItemTributacao>();
+            foreach (var NFSeServico in ObterNFSeServicos())
+            {
+                itensTributacoes.Add(TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault());
+            }
 
             return new Valores()
             {
-                AliquotasCOFINS = itemTributacao.COFINSAliquota,
-                AliquotasCSLL = itemTributacao.CSLLAliquota,
-                AliquotasINSS = itemTributacao.INSSAliquota,
-                AliquotasIR = itemTributacao.ImpostoRendaAliquota,
-                AliquotasISS = itemTributacao.ISSAliquota,
-                AliquotasPIS = itemTributacao.PISAliquota
+                //Podem ter impostos distintos em cada serviço
+                //mas na aglutinação será juntado em 1 serviço só os impostos
+                AliquotasCOFINS = itensTributacoes.Any(x => x.COFINSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.COFINSAliquota > 0).COFINSAliquota : 0,
+                AliquotasCSLL = itensTributacoes.Any(x => x.CSLLAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.CSLLAliquota > 0).CSLLAliquota : 0,
+                AliquotasINSS = itensTributacoes.Any(x => x.INSSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.INSSAliquota > 0).INSSAliquota : 0,
+                AliquotasIR = itensTributacoes.Any(x => x.ImpostoRendaAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.ImpostoRendaAliquota > 0).ImpostoRendaAliquota : 0,
+                AliquotasISS = itensTributacoes.Any(x => x.ISSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.ISSAliquota > 0).ISSAliquota : 0,
+                AliquotasPIS = itensTributacoes.Any(x => x.PISAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.PISAliquota > 0).PISAliquota : 0,
             };
         }
 

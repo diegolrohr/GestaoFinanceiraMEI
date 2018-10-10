@@ -65,7 +65,9 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoAmbienteNFS = "Producao",
                     aliquotaCSLL = "0",
                     aliquotaINSS = "0",
-                    aliquotaImpostoRenda = "0"
+                    aliquotaImpostoRenda = "0",
+                    incentivoCultura = false,
+                    formatarCodigoISS = false
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -93,7 +95,9 @@ namespace Fly01.Core.Presentation.Controllers
                 tipoAmbienteNFS = parametroTributario.TipoAmbienteNFS,
                 aliquotaCSLL = parametroTributario.AliquotaCSLL,
                 aliquotaINSS = parametroTributario.AliquotaINSS,
-                aliquotaImpostoRenda = parametroTributario.AliquotaImpostoRenda
+                aliquotaImpostoRenda = parametroTributario.AliquotaImpostoRenda,
+                incentivoCultura = parametroTributario.IncentivoCultura,
+                formatarCodigoISS = parametroTributario.FormatarCodigoISS
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -289,12 +293,13 @@ namespace Fly01.Core.Presentation.Controllers
 
             form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
 
-            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m3", Label = "É Incentivador à Cultura" });
+            form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m4", Label = "É Incentivador à Cultura" });
+            form3.Elements.Add(new InputCheckboxUI { Id = "formatarCodigoISS", Class = "col s12 m4", Label = "Formatar Código ISS" });
 
             form3.Elements.Add(new InputCustommaskUI
             {
                 Id = "versaoNFSe",
-                Class = "col s12 m3",
+                Class = "col s12 m4",
                 Label = "Versão NFS-e",
                 MaxLength = 4,
                 Value = "0.00"
@@ -311,20 +316,20 @@ namespace Fly01.Core.Presentation.Controllers
             form3.Elements.Add(new SelectUI
             {
                 Id = "tipoAmbienteNFS",
-                Class = "col s12 m2",
+                Class = "col s12 m4",
                 Label = "Ambiente NFS-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente))
                 .ToList().FindAll(x => "Producao,Homologacao".Contains(x.Value))
                 )
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m3", Label = "Usuário Web Server", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m4", Label = "Usuário Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m3", Label = "Senha Web Server", MaxLength = 200 });
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m3", Label = "Chave de Autenticação", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação", MaxLength = 200 });
 
-            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m3", Label = "Autorização", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização", MaxLength = 200 });
 
             #endregion
 
@@ -337,6 +342,14 @@ namespace Fly01.Core.Presentation.Controllers
                     Text = "Conforme versão da lista de municípios homologados pelo TSS. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
                 }
             });
+            form3.Helpers.Add(new TooltipUI
+            {
+                Id = "formatarCodigoISS",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Formatar o Código Iss dos serviços com pontuação ao gerar o XML, depende da configuração esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02"
+                }
+            });
             #endregion
             cfg.Content.Add(form3);
 
@@ -347,7 +360,7 @@ namespace Fly01.Core.Presentation.Controllers
         public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda)
+              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS)
         {
             try
             {
@@ -376,7 +389,9 @@ namespace Fly01.Core.Presentation.Controllers
                     tipoAmbienteNFS = tipoAmbienteNFS,
                     aliquotaCSLL = double.IsNaN(csll) ? 0 : csll,
                     aliquotaINSS = double.IsNaN(inss) ? 0 : inss,
-                    aliquotaImpostoRenda = double.IsNaN(impostoRenda) ? 0 : impostoRenda
+                    aliquotaImpostoRenda = double.IsNaN(impostoRenda) ? 0 : impostoRenda,
+                    incentivoCultura = incentivoCultura,
+                    formatarCodigoISS = formatarCodigoISS
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

@@ -145,10 +145,29 @@ namespace Fly01.EmissaoNFE.BL
                     descricaoAglutinada += (" | " + item.Descricao);
                 }
                 servicoAglutinado.Descricao = descricaoAglutinada;
-
+                                
                 entity.ItemTransmissaoNFSVM.Servicos.Clear();
                 entity.ItemTransmissaoNFSVM.Servicos.Add(servicoAglutinado);
             }
+
+            if(entity.ItemTransmissaoNFSVM.FormatarCodigoIssServico)
+            {
+                entity.ItemTransmissaoNFSVM.Servicos[0].CodigoIss = FormatarCodigoISS(entity.ItemTransmissaoNFSVM.Servicos[0].CodigoIss);
+            }
+        }
+
+        public string FormatarCodigoISS(string codigoISS = "")
+        {
+            if(codigoISS.Length == 3)
+            {
+                codigoISS = codigoISS.Insert(1,".");
+            }
+            else if(codigoISS.Length == 4)
+            {
+                codigoISS = codigoISS.Insert(2, ".");
+            }
+
+            return codigoISS;
         }
     }
 }

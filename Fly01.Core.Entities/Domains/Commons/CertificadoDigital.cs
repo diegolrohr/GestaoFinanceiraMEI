@@ -45,5 +45,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         [MaxLength(2)]
         public string UF { get; set; }
+
+        /// <summary>
+        /// NFS-e saiu depois de NF-e, então já tinha certificado salvo
+        /// mas precisa reenviar para outra rota do TSS
+        /// </summary>
+        public bool CertificadoValidoNFS { get; set; }
     }
 }

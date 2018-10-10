@@ -17,8 +17,8 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosProdutos)]
-    public class ProdutoController : BaseController<ProdutoVM>
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasCadastrosProdutos)]
+    public class ProdutoController : ProdutoBaseController<ProdutoVM>
     {
         protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
         protected string SelectProperties { get; set; }

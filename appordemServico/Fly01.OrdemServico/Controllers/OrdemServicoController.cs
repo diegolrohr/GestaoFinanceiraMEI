@@ -25,6 +25,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServico)]
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
         private bool _novaOS;

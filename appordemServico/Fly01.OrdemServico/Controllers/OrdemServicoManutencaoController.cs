@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServico)]
     public class OrdemServicoManutencaoController : BaseController<OrdemServicoManutencaoVM>
     {
         public OrdemServicoManutencaoController()
@@ -81,7 +82,7 @@ namespace Fly01.OrdemServico.Controllers
                 LabelId = "produtoCliente",
                 LabelName = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeManutencao" } }
-            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+            }, ResourceHashConst.OrdemServico));
 
             config.Elements.Add(new InputFloatUI
             {

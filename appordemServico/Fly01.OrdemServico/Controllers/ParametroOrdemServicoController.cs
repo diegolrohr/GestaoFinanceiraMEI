@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoConfiguracoesParametros)]
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
         public ParametroOrdemServicoController() : base()

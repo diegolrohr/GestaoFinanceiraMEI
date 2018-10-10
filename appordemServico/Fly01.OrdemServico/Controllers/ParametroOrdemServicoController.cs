@@ -27,7 +27,7 @@ namespace Fly01.OrdemServico.Controllers
         public override ContentResult List()
             => Form();
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override ContentResult Form() => base.Form();
 
         public ParametroOrdemServicoVM GetParametro()

@@ -101,8 +101,12 @@
                 return $("form#fly01frm").submit();
             }
         }
-        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () { saveOrdemServico(); });
-        $('li#stepProdutos div.step-title').click(function () { saveOrdemServico(); });
+        $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            saveOrdemServico();
+        });
+        $('li#stepProdutos div.step-title').click(function () {
+            saveOrdemServico();
+        });
     }
 
     function fnBindOverrideSubmit() {
@@ -188,6 +192,7 @@
     }
 
     function fnFormReadyOrdemServico() {
+        debugger;
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();

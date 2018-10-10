@@ -10,6 +10,5 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public string NotaFinal { get; set; }
         public DateTime DataInicial { get; set; }
         public DateTime DataFinal { get; set; }
-        public StatusNotaFiscal StatusNotaFiscalAnterior { get; set; }
     }
 }

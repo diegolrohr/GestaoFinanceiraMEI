@@ -4,7 +4,6 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Presentation.Controllers;
 using Fly01.OrdemServico.Enum;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
@@ -16,36 +15,44 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Fly01.Estoque.Controllers
+namespace Fly01.OrdemServico.Controllers
 {
     [OperationRole(ResourceKey = ResourceHashConst.EstoqueCadastrosProdutos)]
-    public class ProdutoController : ProdutoBaseController<ProdutoVM>
+    public class ProdutoController : BaseController<ProdutoVM>
     {
+        protected Func<ProdutoVM, object> GetDisplayDataSelect { get; set; }
+        protected string SelectProperties { get; set; }
+        private string GrupoProdutoResourceHash { get; set; }
+
         public ProdutoController()
-            : base(ResourceHashConst.EstoqueCadastrosGrupoProdutos)
         {
+            ExpandProperties = "grupoProduto($select=id,descricao),unidadeMedida($select=id,descricao)";
             SelectProperties = "id,codigoProduto,descricao,grupoProdutoId,tipoProduto,registroFixo,objetoDeManutencao";
             GetDisplayDataSelect = x => new
             {
                 id = x.Id,
                 codigoProduto = x.CodigoProduto,
                 descricao = x.Descricao,
-                grupoProdutoId = x.GrupoProdutoId,
-                grupoProduto_descricao = x.GrupoProduto != null ? x.GrupoProduto.Descricao : "",
                 tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
                 tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
                 tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
                 objetoDeManutencao = x.ObjetoDeManutencao,
                 manutencao_sn = x.ObjetoDeManutencao ? "Sim" : "Não",
-                registroFixo = x.RegistroFixo,
                 SimNaoCss = EnumHelper.GetCSS(typeof(BoolSimNao), x.ObjetoDeManutencao ? "Sim" : "Nao"),
+                registroFixo = x.RegistroFixo,
             };
         }
 
-        public override Func<ProdutoVM, object> GetDisplayData()
+        public override Dictionary<string, string> GetQueryStringDefaultGridLoad()
         {
-            return base.GetDisplayData();
+            var customFilters = base.GetQueryStringDefaultGridLoad();
+            customFilters.AddParam("$expand", ExpandProperties);
+            customFilters.AddParam("$select", SelectProperties);
+
+            return customFilters;
         }
+
+        public override Func<ProdutoVM, object> GetDisplayData() => GetDisplayDataSelect;
 
         [OperationRole(NotApply = true)]
         public JsonResult GridLoadPos(Dictionary<string, string> filters = null)
@@ -56,12 +63,10 @@ namespace Fly01.Estoque.Controllers
                 codigoProduto = x.CodigoProduto,
                 descricao = x.Descricao,
                 unidadeMedidaId = x.UnidadeMedidaId,
-                unidadeMedida_descricao = x.UnidadeMedida != null ? x.UnidadeMedida.Descricao : "",
-                valorCusto = x.ValorCusto.ToString("C", AppDefaults.CultureInfoDefault),
                 valorVenda = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault),
                 saldoProduto = x.SaldoProduto,
-                custoTotal = Convert.ToDouble(x.ValorCusto * x.SaldoProduto).ToString("C", AppDefaults.CultureInfoDefault),
-                vendaTotal = Convert.ToDouble(x.ValorVenda * x.SaldoProduto).ToString("C", AppDefaults.CultureInfoDefault)
+                vendaTotal = Convert.ToDouble(x.ValorVenda * x.SaldoProduto).ToString("C", AppDefaults.CultureInfoDefault),
+                registroFixo = x.RegistroFixo,
             };
 
             SelectProperties = "id,descricao,codigoProduto,unidadeMedidaId,valorVenda,valorCusto,saldoProduto";
@@ -199,8 +204,8 @@ namespace Fly01.Estoque.Controllers
 
             elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
             elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
-
-            elements.Add(new InputHiddenUI { Id = "tipoProduto", Value = "0" });
+            elements.Add(new InputHiddenUI { Id = "tipoProduto", Value = "2" });
+            elements.Add(new InputHiddenUI { Id = "registroFixo" });
 
             elements.Add(new AutoCompleteUI
             {
@@ -225,8 +230,6 @@ namespace Fly01.Estoque.Controllers
                 });
 
             elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
-
-            helpers.AddRange(GetHelpers());
         }
 
         public ContentResult FormModalProduto() => FormModal(false, "Adicionar produto");
@@ -253,20 +256,6 @@ namespace Fly01.Estoque.Controllers
             AddElements(config.Elements, config.Helpers, objetoDeManutencao);
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
-        }
-
-        public override List<TooltipUI> GetHelpers()
-        {
-            return new List<TooltipUI> {
-                new TooltipUI
-                {
-                    Id = "codigoBarras",
-                    Tooltip = new HelperUITooltip()
-                    {
-                        Text = "Informe códigos GTIN (8, 12, 13, 14), de acordo com o NCM e CEST. Para produtos que não possuem código de barras, informe o literal “SEM GTIN”, se utilizar este produto para emitir notas fiscais."
-                    }
-                }
-            };
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Fly01.OrdemServico.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"objetoDeManutencao eq true");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and objetoDeManutencao eq true");
             queryString.AddParam("$select", "id,descricao,codigoProduto,saldoProduto");
             queryString.AddParam("$orderby", "descricao");
 

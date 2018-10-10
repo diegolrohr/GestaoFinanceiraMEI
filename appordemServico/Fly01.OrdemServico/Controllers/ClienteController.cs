@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Fly01.Faturamento.Controllers
+namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosClientes)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastroClientes)]
     public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";

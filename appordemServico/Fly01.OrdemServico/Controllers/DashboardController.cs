@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasDashboard)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoVisaoGeral)]
     public class DashboardController : BaseController<DomainBaseVM>
     {
 

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoConfiguracoesParametros)]
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
         public ParametroOrdemServicoController() : base()
@@ -124,7 +125,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
                 LabelName = "responsavelPadraoNome"
-            }, ResourceHashConst.FaturamentoCadastrosClientes));
+            }, ResourceHashConst.OrdemServicoCadastroResponsaveis));
 
             #region Helpers 
             config.Helpers.Add(new TooltipUI

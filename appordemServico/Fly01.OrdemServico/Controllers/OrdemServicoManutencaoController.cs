@@ -82,7 +82,7 @@ namespace Fly01.OrdemServico.Controllers
                 LabelId = "produtoCliente",
                 LabelName = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeManutencao" } }
-            }, ResourceHashConst.OrdemServico));
+            }, ResourceHashConst.OrdemServicoCadastroProdutos));
 
             config.Elements.Add(new InputFloatUI
             {

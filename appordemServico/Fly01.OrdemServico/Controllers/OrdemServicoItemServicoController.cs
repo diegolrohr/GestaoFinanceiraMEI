@@ -68,7 +68,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataPostField = "descricao",
                 LabelId = "servicoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeServico" } }
-            }, ResourceHashConst.OrdemServico));
+            }, ResourceHashConst.OrdemServicoCadastroServicos));
 
 
             config.Elements.Add(new InputFloatUI

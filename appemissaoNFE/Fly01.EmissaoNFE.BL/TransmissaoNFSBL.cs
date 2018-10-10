@@ -144,6 +144,7 @@ namespace Fly01.EmissaoNFE.BL
                 {
                     descricaoAglutinada += (" | " + item.Descricao);
                 }
+                servicoAglutinado.Descricao = descricaoAglutinada;
 
                 entity.ItemTransmissaoNFSVM.Servicos.Clear();
                 entity.ItemTransmissaoNFSVM.Servicos.Add(servicoAglutinado);

@@ -334,7 +334,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "versaoNFSe",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Conforme a lista de municípios homologados pelo TSS. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
+                    Text = "Conforme versão da lista de municípios homologados pelo TSS. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
                 }
             });
             #endregion

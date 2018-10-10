@@ -86,6 +86,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 Prestacao = ObterPrestacao(),
                 Tomador = ObterTomador(),
                 Servicos = ObterServicos(),
+                Valores = ObterValores(),
                 InformacoesComplementares = ObterInformacoesComplementares()
             };
         }
@@ -117,8 +118,9 @@ namespace Fly01.Faturamento.BL.Helpers
 
                 result.Add(new ServicoEmissao()
                 {
-                    //CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
-                    CodigoIss = "14.06",//TODO: ver formatação iss
+                    CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
+                    //CodigoIss = "1406",//TODO: ver formatação iss
                     AliquotaIss = itemTributacao.ISSAliquota,
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
@@ -126,8 +128,8 @@ namespace Fly01.Faturamento.BL.Helpers
                     Descricao = string.Concat
                     (
                         NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "",
-                        " ",
-                        NFSeServico.DescricaoOutrasRetencoes
+                        " | ",
+                        (NFSeServico.DescricaoOutrasRetencoes ?? "").ToUpper()
                     ),
                     Quantidade = NFSeServico.Quantidade,
                     ValorUnitario = NFSeServico.Valor,
@@ -181,8 +183,10 @@ namespace Fly01.Faturamento.BL.Helpers
             {
                 Logradouro = Cliente.Endereco ?? "",
                 NumeroEndereco = Cliente.Numero ?? "",
-                CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
-                Municipio = Cliente.Cidade?.Nome ?? "",
+                //CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
+                //Municipio = Cliente.Cidade?.Nome ?? "",
+                CodigoMunicipioIBGE = "999",
+                Municipio = "Homologação",
                 Bairro = Cliente.Bairro ?? "",
                 UF = Cliente.Estado?.Sigla ?? "",
                 CEP = Cliente.CEP ?? ""
@@ -230,5 +234,22 @@ namespace Fly01.Faturamento.BL.Helpers
                 CompetenciaRPS = DateTime.Now
             };
         }
+
+        private Valores ObterValores()
+        {
+            var NFSeServico = ObterNFSeServicos().FirstOrDefault();
+            var itemTributacao = TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault();
+
+            return new Valores()
+            {
+                AliquotasCOFINS = itemTributacao.COFINSAliquota,
+                AliquotasCSLL = itemTributacao.CSLLAliquota,
+                AliquotasINSS = itemTributacao.INSSAliquota,
+                AliquotasIR = itemTributacao.ImpostoRendaAliquota,
+                AliquotasISS = itemTributacao.ISSAliquota,
+                AliquotasPIS = itemTributacao.PISAliquota
+            };
+        }
+
     }
 }

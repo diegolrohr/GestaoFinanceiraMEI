@@ -7,6 +7,7 @@
                 fly01._.cardCertificado.setColor(data.color);
                 fly01._.cardCertificado.info(`<h5>${data.mainInfo}</h5><small>${(data.subInfo || "")}</small>`)
 
+                fly01.fn.updateTextFields();
                 if (data.entidadeHomologacao != "" || data.entidadeProducao != "") {
                     $("input#entidadeHomologacao").val(data.entidadeHomologacao);
                     $("input#entidadeProducao").val(data.entidadeProducao);

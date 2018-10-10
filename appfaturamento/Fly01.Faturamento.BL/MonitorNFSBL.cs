@@ -81,7 +81,7 @@ namespace Fly01.Faturamento.BL
                                 nfse.Mensagem = "";
                                 nfse.Recomendacao = null;
 
-                                nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status);
+                                nfse.Status = ValidaStatus(retorno.Protocolo, nfse.Status, retorno.Recomendacao);
 
                                 if (nfse.Status == StatusNotaFiscal.Autorizada)
                                 {
@@ -89,10 +89,14 @@ namespace Fly01.Faturamento.BL
                                 }
 
                                 nfse.Recomendacao = retorno.Recomendacao;
-                                foreach (var erro in retorno.Erros)
+
+                                if(retorno.Erros != null)
                                 {
-                                    nfse.Mensagem += string.Format("\n Código: {0} Mensagem: {1} ", erro.Codigo, erro.Mensagem);
-                                };
+                                    foreach (var erro in retorno?.Erros)
+                                    {
+                                        nfse.Mensagem += string.Format("\n Código: {0} Mensagem: {1} ", erro.Codigo, erro.Mensagem);
+                                    };
+                                }
 
                                 if (!string.IsNullOrEmpty(retorno.Protocolo))
                                 {
@@ -109,13 +113,20 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior)
+        public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior, string recomendacao)
         {
             protocolo = protocolo.Trim();
             //se _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
             StatusNotaFiscal statusNFSe;
+            var enviando = (
+                recomendacao.Contains("Aguardando")
+            );
 
-            if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida)
+            if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida && enviando)
+            {
+                statusNFSe = StatusNotaFiscal.Transmitida;
+            }
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.Transmitida && !enviando)
             {
                 statusNFSe = StatusNotaFiscal.NaoAutorizada;
             }
@@ -123,13 +134,17 @@ namespace Fly01.Faturamento.BL
             {
                 statusNFSe = StatusNotaFiscal.Autorizada;
             }
-            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento && enviando)
             {
                 statusNFSe = StatusNotaFiscal.EmCancelamento;
             }
-            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            else if (string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento && !enviando)
             {
                 statusNFSe = StatusNotaFiscal.FalhaNoCancelamento;
+            }
+            else if (!string.IsNullOrEmpty(protocolo) && statusAnterior == StatusNotaFiscal.EmCancelamento)
+            {
+                statusNFSe = StatusNotaFiscal.Cancelada;
             }
             else
             {

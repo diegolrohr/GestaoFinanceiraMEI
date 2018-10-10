@@ -17,15 +17,18 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public IHttpActionResult Post(TransmissaoNFSVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
-
-                //TODO: aglutinar
-                entity = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
-                entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
-                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
+            {                
                 try
                 {
+                    unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+
+                    unitOfWork.TransmissaoNFSBL.AglutinarServicos(entity);
+                    unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+
+                    entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
+
+                    unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
+
                     var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);

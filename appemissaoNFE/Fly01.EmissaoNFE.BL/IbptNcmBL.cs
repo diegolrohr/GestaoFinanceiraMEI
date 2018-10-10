@@ -133,6 +133,7 @@ namespace Fly01.EmissaoNFE.BL
 
                     servico.Descricao += InformacoesIBPT;
                 }
+
                 entityNFS.ItemTransmissaoNFSVM.Valores.ValorCarTributacao = totalimpostos;
             }
         }

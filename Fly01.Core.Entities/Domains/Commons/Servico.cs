@@ -17,7 +17,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? IssId { get; set; }
 
-        [MaxLength(20)]
+        [StringLength(20)]
         public string CodigoTributacaoMunicipal { get; set; }
 
         public double ValorServico { get; set; }
@@ -25,27 +25,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(200, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Observacao { get; set; }
 
-        [JsonIgnore]
-        public TipoTributacaoISS? TipoTributacaoISS { get; set; }
-
-        [NotMapped]
-        [JsonProperty("tipoTributacaoISS")]
-        public string TipoTributacaoISSRest
-        {
-            get { return TipoTributacaoISS.HasValue ? ((int)TipoTributacaoISS).ToString() : null; }
-            set { TipoTributacaoISS = (TipoTributacaoISS)System.Enum.Parse(typeof(TipoTributacaoISS), value); }
-        }
-
-        [JsonIgnore]
-        public TipoPagamentoImpostoISS? TipoPagamentoImpostoISS { get; set; }
-
-        [NotMapped]
-        [JsonProperty("tipoPagamentoImpostoISS")]
-        public string TipoPagamentoImpostoISSRest
-        {
-            get { return TipoPagamentoImpostoISS.HasValue ? ((int)TipoPagamentoImpostoISS).ToString() : null; }
-            set { TipoPagamentoImpostoISS = (TipoPagamentoImpostoISS)System.Enum.Parse(typeof(TipoPagamentoImpostoISS), value); }
-        }
+        [StringLength(20)]
+        public string CodigoIssEspecifico { get; set; }
 
         public virtual Nbs Nbs { get; set; }
 

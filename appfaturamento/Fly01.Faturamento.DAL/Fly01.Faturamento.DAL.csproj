@@ -404,6 +404,10 @@
     <Compile Include="Migrations\201810102225363_AlterParametrosCertificadoValidoNFS.Designer.cs">
       <DependentUpon>201810102225363_AlterParametrosCertificadoValidoNFS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810112018121_AlterServicoAddCodIssEspecifico.cs" />
+    <Compile Include="Migrations\201810112018121_AlterServicoAddCodIssEspecifico.Designer.cs">
+      <DependentUpon>201810112018121_AlterServicoAddCodIssEspecifico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -700,6 +704,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810102225363_AlterParametrosCertificadoValidoNFS.resx">
       <DependentUpon>201810102225363_AlterParametrosCertificadoValidoNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810112018121_AlterServicoAddCodIssEspecifico.resx">
+      <DependentUpon>201810112018121_AlterServicoAddCodIssEspecifico.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

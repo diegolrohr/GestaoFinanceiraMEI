@@ -123,9 +123,6 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputTextUI { Id = "codigoServico", Class = "col l3 m3 s12", Label = "Código", Required = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
 
-            config.Elements.Add(new InputHiddenUI { Id = "tipoPagamentoImpostoISS" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoISS" });
-
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });

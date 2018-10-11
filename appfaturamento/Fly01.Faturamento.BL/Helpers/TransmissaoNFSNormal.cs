@@ -97,7 +97,6 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new ItemTransmissaoNFSVM()
             {
-                FormatarCodigoIssServico = ParametrosTributarios.FormatarCodigoISS,
                 Identificacao = ObterIdentificacao(),
                 Atividade = ObterAtividade(),
                 Prestador = ObterPrestador(),
@@ -133,10 +132,16 @@ namespace Fly01.Faturamento.BL.Helpers
                     itemTributacao.ImpostoRendaValorRetencao +
                     NFSeServico.ValorOutrasRetencoes;
 
+                //Codigo Iss especifico, se informado, prioritário a tabela padrão
+                var codigoIss = !string.IsNullOrEmpty(NFSeServico.Servico.CodigoIssEspecifico.Trim()) ?
+                        NFSeServico.Servico.CodigoIssEspecifico :
+                        (NFSeServico.Servico.Iss != null ?
+                            (ParametrosTributarios.FormatarCodigoISS ? FormatarCodigoISS(NFSeServico.Servico.Iss.Codigo) : NFSeServico.Servico.Iss.Codigo)
+                            : null);
 
                 result.Add(new ServicoEmissao()
                 {
-                    CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    CodigoIss = codigoIss,
                     CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
@@ -268,5 +273,18 @@ namespace Fly01.Faturamento.BL.Helpers
             };
         }
 
+        public string FormatarCodigoISS(string codigoISS = "")
+        {
+            if (codigoISS.Length == 3)
+            {
+                codigoISS = codigoISS.Insert(1, ".");
+            }
+            else if (codigoISS.Length == 4)
+            {
+                codigoISS = codigoISS.Insert(2, ".");
+            }
+
+            return codigoISS;
+        }
     }
 }

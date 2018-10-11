@@ -42,13 +42,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         /// Gerado pelo sistema na serialização do xml
         /// </summary>
 
-        /// <summary>
-        /// Formatar Código Iss do serviço com pontuação ao gerar o XML depende da configuração 
-        /// esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02
-        /// </summary>
-        [XmlIgnore]
-        public bool FormatarCodigoIssServico { get; set; }
-
         [JsonIgnore]
         [XmlElement(ElementName = "assinatura")]
         public string AssinaturaHash { get; set; }

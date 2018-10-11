@@ -15,7 +15,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliquota")]
         public string AliquotaIssString
         {
-            get { return AliquotaIss.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotaIss.ToString("0.00").Replace(",", "."); }
             set { AliquotaIss = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -71,6 +71,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             set { BaseCalculo = double.Parse(value.Replace(".", ",")); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         [XmlElement(ElementName = "issretido")]
         public TipoSimNao ISSRetido
         {
@@ -87,21 +90,55 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "valdedu")]
         public double ValorDeducoes { get; set; }
 
-        [XmlElement(ElementName = "valpis")]
+        [XmlIgnore]
         public double ValorPIS { get; set; }
 
-        [XmlElement(ElementName = "valcof")]
+        [XmlElement(ElementName = "valpis")]
+        public string ValorPISString
+        {
+            get { return ValorPIS.ToString("0.00").Replace(",", "."); }
+            set { ValorPIS = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double ValorCofins { get; set; }
 
-        [XmlElement(ElementName = "valinss")]
+        [XmlElement(ElementName = "valcof")]
+        public string ValorCofinsString
+        {
+            get { return ValorCofins.ToString("0.00").Replace(",", "."); }
+            set { ValorCofins = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double ValorINSS { get; set; }
 
-        [XmlElement(ElementName = "valir")]
+        [XmlElement(ElementName = "valinss")]
+        public string ValorINSSString
+        {
+            get { return ValorINSS.ToString("0.00").Replace(",", "."); }
+            set { ValorINSS = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double ValorIR { get; set; }
 
-        [XmlElement(ElementName = "valcsll")]
+        [XmlElement(ElementName = "valir")]
+        public string ValorIRString
+        {
+            get { return ValorIR.ToString("0.00").Replace(",", "."); }
+            set { ValorIR = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double ValorCSLL { get; set; }
 
+        [XmlElement(ElementName = "valcsll")]
+        public string ValorCSLLString
+        {
+            get { return ValorCSLL.ToString("0.00").Replace(",", "."); }
+            set { ValorCSLL = double.Parse(value.Replace(".", ",")); }
+        }
 
         [XmlIgnore]
         public double ValorISS { get; set; }

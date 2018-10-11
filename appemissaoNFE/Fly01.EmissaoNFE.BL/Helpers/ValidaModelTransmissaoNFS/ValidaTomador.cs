@@ -16,7 +16,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
             else
             {
-                ValidarInscricaoMunicipal(entity);
                 ValidarCpfCnpj(entity, entitiesBLToValidateNFS);
                 ValidarRazaoSocial(entity);
                 ValidarLogradouro(entity);
@@ -118,11 +117,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length < 11 || entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length > 14)
                 entity.Fail((true),
                             new Error("CPF ou CNPJ do tomador é invalido. Informe 11 ou 14 digítos.", "CpfCnpj"));
-        }
-
-        private static void ValidarInscricaoMunicipal(TransmissaoNFSVM entity)
-        {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoMunicipal.ToString()), new Error("Inscrição municipal do tomador é um dado obrigatório.", "InscricaoMunicipal"));
         }
     }
 }

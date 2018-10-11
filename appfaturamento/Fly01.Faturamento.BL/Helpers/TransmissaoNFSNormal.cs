@@ -142,17 +142,12 @@ namespace Fly01.Faturamento.BL.Helpers
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
                     CodigoTributario = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
-                    Descricao = string.Concat
-                    (
-                        NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "",
-                        " | ",
-                        (NFSeServico.DescricaoOutrasRetencoes ?? "").ToUpper()
-                    ),
+                    Descricao = NFSeServico.Servico.Descricao.ToUpper(),
                     Quantidade = NFSeServico.Quantidade,
                     ValorUnitario = NFSeServico.Valor,
                     ValorTotal = (NFSeServico.Quantidade * NFSeServico.Valor),
                     BaseCalculo = (NFSeServico.Quantidade * NFSeServico.Valor),
-                    ISSRetido = TipoSimNao.Sim,
+                    ISSRetido = itemTributacao.RetemISS ? TipoSimNao.Sim : TipoSimNao.Nao,//TODO: rever de acordo com a configuração
                     ValorDeducoes = 0.0,//Fixo
                     ValorPIS = itemTributacao.PISValor,
                     ValorCofins = itemTributacao.COFINSValor,
@@ -199,8 +194,10 @@ namespace Fly01.Faturamento.BL.Helpers
             {
                 Logradouro = Cliente.Endereco ?? "",
                 NumeroEndereco = Cliente.Numero ?? "",
-                CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
-                Municipio = Cliente.Cidade?.Nome ?? "",
+                //CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
+                //Municipio = Cliente.Cidade?.Nome ?? "",
+                CodigoMunicipioIBGE = "999",
+                Municipio = "Homologação",
                 Bairro = Cliente.Bairro ?? "",
                 UF = Cliente.Estado?.Sigla ?? "",
                 CEP = Cliente.CEP ?? ""
@@ -243,7 +240,8 @@ namespace Fly01.Faturamento.BL.Helpers
                 TipoTributacao = ParametrosTributarios.TipoTributacaoNFS,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? "",
                 DataHoraEmissao = DateTime.Now,
-                SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),
+                //SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),
+                SerieRPS = "8",
                 NumeroRPS = NFSe.NumNotaFiscal.Value,
                 CompetenciaRPS = DateTime.Now
             };

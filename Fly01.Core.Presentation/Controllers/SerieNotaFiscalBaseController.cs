@@ -30,7 +30,7 @@ namespace Fly01.Core.Presentation.Controllers
             return x => new
             {
                 id = x.Id,
-                serie = x.Serie.PadLeft(3, '0'),
+                serie = x.Serie,
                 tipoOperacaoSerieNotaFiscal = EnumHelper.GetValue(typeof(TipoOperacaoSerieNotaFiscal), x.TipoOperacaoSerieNotaFiscal),
                 numNotaFiscal = x.NumNotaFiscal.ToString().PadLeft(8, '0'),
             };
@@ -137,7 +137,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m4",
                 Label = "Série",
                 Required = true,
-                MinLength = 3,
                 MaxLength = 3
             });
 

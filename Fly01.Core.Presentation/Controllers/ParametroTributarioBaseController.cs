@@ -339,7 +339,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "versaoNFSe",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Conforme versão da lista de municípios homologados pelo TSS. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
+                    Text = "Conforme versão da lista de municípios homologados pelo TSS. Disponível do TDN ou em nossos manuais. http://tdn.totvs.com/pages/viewpage.action?pageId=239027743"
                 }
             });
             form3.Helpers.Add(new TooltipUI
@@ -348,6 +348,14 @@ namespace Fly01.Core.Presentation.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Formatar o Código Iss dos serviços com pontuação ao gerar o XML, depende da configuração esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02"
+                }
+            });
+            form3.Helpers.Add(new TooltipUI
+            {
+                Id = "tipoAmbienteNFSField",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se a sua prefeitura possui ambiente de homologação."
                 }
             });
             #endregion

@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoConfiguracoesParametros)]
     public class ParametroOrdemServicoController : BaseController<ParametroOrdemServicoVM>
     {
         public ParametroOrdemServicoController() : base()
@@ -26,7 +27,7 @@ namespace Fly01.OrdemServico.Controllers
         public override ContentResult List()
             => Form();
 
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override ContentResult Form() => base.Form();
 
         public ParametroOrdemServicoVM GetParametro()
@@ -124,7 +125,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
                 LabelName = "responsavelPadraoNome"
-            }, ResourceHashConst.FaturamentoCadastrosClientes));
+            }, ResourceHashConst.OrdemServicoCadastroResponsaveis));
 
             #region Helpers 
             config.Helpers.Add(new TooltipUI
@@ -155,8 +156,8 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            //if (UserCanWrite)
-            target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
+            if (UserCanWrite)
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Type = "submit" });
 
             return target;
         }

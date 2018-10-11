@@ -11,7 +11,7 @@
     function fnChangeTipoOperacao() {
         $('#serie').inputmask('remove');
         if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFe") {
-            $('#serie').inputmask('999');
+            $('#serie').inputmask('999',{'autoUnmask': true });
         }
         else if ($("select#tipoOperacaoSerieNotaFiscal").val() == "NFSe") {
             if (isCreate()){

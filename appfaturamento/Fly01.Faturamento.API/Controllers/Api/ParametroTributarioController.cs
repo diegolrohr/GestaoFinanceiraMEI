@@ -28,8 +28,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
                 if (model == null || key == default(Guid) || key == null)
                     return BadRequest(ModelState);
 
-                var entity = Find(key);
+                var entity = Find(key);                
 
+                entity.ParametroValidoNFS = true;
                 model.CopyChangedValues(entity);
 
                 unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
@@ -48,6 +49,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
                     unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                    entity.ParametroValidoNFS = true;
 
                     return await base.Post(entity);
                 }

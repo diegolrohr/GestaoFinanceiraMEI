@@ -69,10 +69,10 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private void ValidaParametrosTributarios()
         {
-            this.ParametrosTributarios = TransmissaoNFSBLs.TotalTributacaoBL.GetParametrosTributarios();
-            if (this.ParametrosTributarios == null)
+            ParametrosTributarios = TransmissaoNFSBLs.TotalTributacaoBL.GetParametrosTributarios();
+            if (ParametrosTributarios == null || (ParametrosTributarios != null && !ParametrosTributarios.ParametroValidoNFS))
             {
-                throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
+                throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão de NFS");
             }
         }
 

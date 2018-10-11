@@ -125,8 +125,8 @@ namespace Fly01.Faturamento.BL
                 if (string.IsNullOrEmpty(clienteUF))
                     entity.Notification.Errors.Add(new Error("Informe o estado no cadastro do cliente"));
 
-                if (parametros == null)
-                    entity.Notification.Errors.Add(new Error("Vá em Configurações e defina os seus parâmetros tributários"));
+                if (parametros == null || (ordemVendaServicos.Any() && (parametros != null && !parametros.ParametroValidoNFS)))
+                    entity.Notification.Errors.Add(new Error("Vá em Configurações e salve os seus parâmetros tributários"));
 
                 if (!onList)
                     entity.Notification.Errors.Add(new Error("Salve o orçamento/pedido para finalizá-lo após as alterações"));
@@ -172,18 +172,24 @@ namespace Fly01.Faturamento.BL
             {
                 var empresa = ApiEmpresaManager.GetEmpresa(plataformaId);
 
-                var retorno = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
+                var entidade = CertificadoDigitalBL.GetEntidade(plataformaId) ?? CertificadoDigitalBL.GetEntidade();
 
-                if (retorno != null)
+                if (entidade != null)
                 {
-                    string entidade = retorno.EntidadeAmbiente == TipoAmbiente.Producao ? retorno.Producao : retorno.Homologacao;
+                    var certificado = CertificadoDigitalBL.CertificadoAtualValido().FirstOrDefault(x => x.PlataformaId == plataformaId);
+                    if(certificado != null && !certificado.CertificadoValidoNFS)
+                    {
+                        throw new BusinessException("Para transmitir NFS, reenvie o seu Certificado Digital em Configurações");
+                    }
+
+                    string entidadeCodigo = entidade.EntidadeAmbiente == TipoAmbiente.Producao ? entidade.Producao : entidade.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
-                        { "PlataformaUrl", entidade }
+                        { "PlataformaUrl", entidadeCodigo }
                     };
-                    var resourceById = $"configuracaoOKNFS?entidade={entidade}&tipoAmbiente={retorno.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge ?? ""}";
+                    var resourceById = $"configuracaoOKNFS?entidade={entidadeCodigo}&tipoAmbiente={entidade.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge ?? ""}";
 
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;

@@ -75,14 +75,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// 
         /// </summary>
         [XmlElement(ElementName = "issretido")]
-        public TipoSimNao ISSRetido
-        {
-            get
-            {
-                return TipoSimNao.Sim;
-            }
-            set { }
-        }
+        public TipoSimNao ISSRetido { get; set; }
 
         /// <summary>
         /// deixar zero

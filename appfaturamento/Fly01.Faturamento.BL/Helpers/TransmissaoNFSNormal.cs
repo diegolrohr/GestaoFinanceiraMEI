@@ -131,7 +131,6 @@ namespace Fly01.Faturamento.BL.Helpers
                 {
                     CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
                     CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
-                    //CodigoIss = "1406",//TODO: ver formatação iss
                     AliquotaIss = itemTributacao.ISSAliquota,
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
@@ -193,10 +192,8 @@ namespace Fly01.Faturamento.BL.Helpers
             {
                 Logradouro = Cliente.Endereco ?? "",
                 NumeroEndereco = Cliente.Numero ?? "",
-                //CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
-                //Municipio = Cliente.Cidade?.Nome ?? "",
-                CodigoMunicipioIBGE = "999",
-                Municipio = "Homologação",
+                CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
+                Municipio = Cliente.Cidade?.Nome ?? "",
                 Bairro = Cliente.Bairro ?? "",
                 UF = Cliente.Estado?.Sigla ?? "",
                 CEP = Cliente.CEP ?? ""

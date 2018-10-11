@@ -32,7 +32,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarInscricaoEstadual(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            if (!EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
+            if (!string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual) &&
+                !EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
             {
                 switch (msgError)
                 {

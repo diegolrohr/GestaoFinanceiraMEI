@@ -133,8 +133,8 @@ namespace Fly01.Faturamento.BL.Helpers
                     NFSeServico.ValorOutrasRetencoes;
 
                 //Codigo Iss especifico, se informado, prioritário a tabela padrão
-                var codigoIss = !string.IsNullOrEmpty(NFSeServico.Servico.CodigoIssEspecifico.Trim()) ?
-                        NFSeServico.Servico.CodigoIssEspecifico :
+                var codigoIss = !string.IsNullOrEmpty(NFSeServico.Servico.CodigoIssEspecifico) ?
+                        NFSeServico.Servico.CodigoIssEspecifico.Trim() :
                         (NFSeServico.Servico.Iss != null ?
                             (ParametrosTributarios.FormatarCodigoISS ? FormatarCodigoISS(NFSeServico.Servico.Iss.Codigo) : NFSeServico.Servico.Iss.Codigo)
                             : null);

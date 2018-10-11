@@ -197,7 +197,7 @@ namespace Fly01.Core.Presentation.Controllers
                     new DomEventUI() { DomEvent = "change", Function = "fnShowPIS" }
                 }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemPis", Class = "col s12 m6 l6", Label = "Retém PIS"});
+            config.Elements.Add(new InputCheckboxUI { Id = "retemPis", Class = "col s12 m6 l6", Label = "Retém PIS", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoPIS",
@@ -221,7 +221,7 @@ namespace Fly01.Core.Presentation.Controllers
                     new DomEventUI() { DomEvent = "change", Function = "fnShowCOFINS" }
                 }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemCofins", Class = "col s12 m6 l6", Label = "Retém COFINS"});
+            config.Elements.Add(new InputCheckboxUI { Id = "retemCofins", Class = "col s12 m6 l6", Label = "Retém COFINS", Disabled = true });
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoTributacaoCOFINS",
@@ -240,12 +240,12 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "calculaIss",
                 Class = "col s12 m6 l6",
                 Label = "Calcula ISS",
-                //DomEvents = new List<DomEventUI>()
-                //{
-                //    new DomEventUI() { DomEvent = "change", Function = "fnShowISS" }
-                //}
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowISS" }
+                }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemISS", Class = "col s12 m6 l6", Label = "Retém ISS"});
+            config.Elements.Add(new InputCheckboxUI { Id = "retemISS", Class = "col s12 m6 l6", Label = "Retém ISS", Disabled = true });
 
             config.Elements.Add(new InputHiddenUI() { Id = "tipoTributacaoISS", Value = "T00" });
             config.Elements.Add(new InputHiddenUI() { Id = "tipoPagamentoImpostoISS", Value = "DentroMunicipio" });
@@ -283,9 +283,13 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "calculaCSLL",
                 Class = "col s12 m6 l6",
-                Label = "Calcula CSLL"
+                Label = "Calcula CSLL",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowCSLL" }
+                }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemCSLL", Class = "col s12 m6 l6", Label = "Retém CSLL"});
+            config.Elements.Add(new InputCheckboxUI { Id = "retemCSLL", Class = "col s12 m6 l6", Label = "Retém CSLL", Disabled = true });
 
             //INSS
             config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "INSS" });
@@ -293,9 +297,13 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "calculaINSS",
                 Class = "col s12 m6 l6",
-                Label = "Calcula INSS"
+                Label = "Calcula INSS",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowINSS" }
+                }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemINSS", Class = "col s12 m6 l6", Label = "Retém INSS"});
+            config.Elements.Add(new InputCheckboxUI { Id = "retemINSS", Class = "col s12 m6 l6", Label = "Retém INSS", Disabled = true });
 
             //Imposto de Renda
             config.Elements.Add(new LabelSetUI { Id = "simulatorLabel", Class = "col s12", Label = "Imposto de Renda" });
@@ -303,9 +311,13 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "calculaImpostoRenda",
                 Class = "col s12 m6 l6",
-                Label = "Calcula Imposto de Renda"
+                Label = "Calcula Imposto de Renda",
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI() { DomEvent = "change", Function = "fnShowImpostoRenda" }
+                }
             });
-            config.Elements.Add(new InputCheckboxUI { Id = "retemImpostoRenda", Class = "col s12 m6 l6", Label = "Retém Imposto de Renda" });
+            config.Elements.Add(new InputCheckboxUI { Id = "retemImpostoRenda", Class = "col s12 m6 l6", Label = "Retém Imposto de Renda", Disabled = true });
 
             #region Helpers
             config.Helpers.Add(new TooltipUI

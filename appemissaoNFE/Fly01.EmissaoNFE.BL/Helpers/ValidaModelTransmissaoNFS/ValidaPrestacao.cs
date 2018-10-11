@@ -49,9 +49,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoMunicipalIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            //TODO: descomentar
-            //entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE.ToUpper()),
-            //        new Error("Código IBGE do município do local de prestação do serviço é inválido.", "CodigoMunicipioIBGE"));
+            entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE.ToUpper()),
+                    new Error("Código IBGE do município do local de prestação do serviço é inválido.", "CodigoMunicipioIBGE"));
         }
 
         private static void ValidarLogradouro(TransmissaoNFSVM entity)

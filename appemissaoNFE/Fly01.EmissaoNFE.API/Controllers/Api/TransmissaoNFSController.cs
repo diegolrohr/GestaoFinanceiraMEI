@@ -47,7 +47,6 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         private TransmissaoNFSRetornoVM Producao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            //Serializando a nota 
             var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
             var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
@@ -58,7 +57,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001Prod.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, //TODO: Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId,
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
@@ -112,11 +111,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         private TransmissaoNFSRetornoVM Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            //Serializando a nota 
             var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
             var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
-            //Validar base 64
             var notaSchema = new NFSE001.NF
             {
                 NOTAS = new NFSE001.NF001[]

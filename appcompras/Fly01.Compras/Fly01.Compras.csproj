@@ -330,6 +330,9 @@
     <Content Include="Views\SerieNotaFiscal\Functions\_fnChangeTipoOperacao.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\ParametroTributario\Functions\_fnAtualizaParametro.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowCSLL.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowImpostoRenda.cshtml" />
+    <Content Include="Views\GrupoTributario\Functions\_fnShowINSS.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -18,14 +18,16 @@ namespace Fly01.EmissaoNFE.BL
         protected EmpresaBL EmpresaBL;
         protected EntidadeBL EntidadeBL;
         protected EstadoBL EstadoBL;
+        protected SiafiBL SiafiBL;
 
-        public TransmissaoNFSBL(AppDataContextBase context, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL)
+        public TransmissaoNFSBL(AppDataContextBase context, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, SiafiBL siafiBL)
             : base(context)
         {
             CidadeBL = cidadeBL;
             EmpresaBL = empresaBL;
             EntidadeBL = entidadeBL;
             EstadoBL = estadoBL;
+            SiafiBL = siafiBL;
         }
 
         public void MontarValores(TransmissaoNFSVM entity)
@@ -68,7 +70,8 @@ namespace Fly01.EmissaoNFE.BL
                 _cidadeBL = CidadeBL,
                 _empresaBL = EmpresaBL,
                 _entidadeBL = EntidadeBL,
-                _estadoBL = EstadoBL
+                _estadoBL = EstadoBL,
+                _siafiBL = SiafiBL
             };
         }
 

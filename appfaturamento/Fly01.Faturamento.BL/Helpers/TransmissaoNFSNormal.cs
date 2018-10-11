@@ -40,6 +40,16 @@ namespace Fly01.Faturamento.BL.Helpers
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
         }
 
+        public string SubstringTelefone(string telefone = "")
+        {
+            if(telefone != null && telefone.Length > 9)
+            {
+                telefone = telefone.Substring((telefone.Length - 9), (telefone.Length - 1));
+            }
+
+            return telefone;
+        }
+
         /// <summary>
         /// Ordenado por data de inclusão, pois na aglutinação dos serviço, as informações 
         /// de código Iss, Nbs e CodMunicipal, vale do primeiro
@@ -166,12 +176,11 @@ namespace Fly01.Faturamento.BL.Helpers
                 NumeroEndereco = Cliente.Numero ?? "",
                 Bairro = Cliente.Bairro ?? "",
                 CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
-                //CodigoMunicipioSIAFI = "",
                 Cidade = Cliente.Cidade?.Nome ?? "",
                 UF = Cliente.Estado?.Sigla ?? "",
                 CEP = Cliente.CEP ?? "",
                 Email = Cliente.Email ?? "",
-                Telefone = Cliente.Telefone ?? "",
+                Telefone = SubstringTelefone(Cliente.Telefone) ?? "",
                 InscricaoEstadual = Cliente.InscricaoEstadual ?? "",
                 SituacaoEspecial = Cliente.SituacaoEspecialNFS,
                 ConsumidorFinal = Cliente.ConsumidorFinal
@@ -205,7 +214,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 CodigoMunicipioIBGE = Empresa.Cidade?.CodigoIbge ?? "",
                 Cidade = Empresa.Cidade?.Nome ?? "",
                 UF = Empresa.Cidade?.Estado?.Sigla ?? "",
-                Telefone = Empresa.Telefone ?? "",
+                Telefone = SubstringTelefone(Empresa.Telefone) ?? "",
                 TipoIcentivoCultural = ParametrosTributarios.IncentivoCultura ? TipoSimNao.Sim : TipoSimNao.Nao,
                 Logradouro = Empresa.Endereco ?? "",
                 NumeroEndereco = Empresa.Numero ?? "",

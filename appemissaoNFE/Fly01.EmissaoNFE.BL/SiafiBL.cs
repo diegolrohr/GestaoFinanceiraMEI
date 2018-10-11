@@ -13,6 +13,11 @@ namespace Fly01.EmissaoNFE.BL
         {
             var siafi = All.Where(x => x.CodigoIbge == entity.CodigoIBGECidade).FirstOrDefault();
             entity.Siafi = siafi.CodigoSiafi;
-        } 
+        }
+
+        public string RetornaCodigoSiafiIbge(string codigoIbge)
+        {
+            return All.Where(x => x.CodigoIbge.ToUpper() == codigoIbge).FirstOrDefault()?.CodigoSiafi;
+        }
     }
 }

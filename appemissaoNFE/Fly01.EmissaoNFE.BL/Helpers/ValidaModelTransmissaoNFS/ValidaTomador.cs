@@ -22,6 +22,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
                 ValidarLogradouro(entity);
                 ValidarBairro(entity);
                 ValidarCodigoMunicipioIBGE(entity, entitiesBLToValidateNFS);
+                ValidarCodigoMunicipioSIAFI(entity, entitiesBLToValidateNFS);
                 ValidarCidade(entity);
                 ValidarUF(entity, entitiesBLToValidateNFS);
                 ValidarCEP(entity, entitiesBLToValidateNFS);
@@ -54,6 +55,14 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
                     default:
                         break;
                 }
+            }
+        }
+
+        private static void ValidarCodigoMunicipioSIAFI(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
+        {
+            if (string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioSIAFI))
+            {
+                entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioSIAFI = entitiesBLToValidateNFS._siafiBL.RetornaCodigoSiafiIbge(entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioIBGE ?? "");
             }
         }
 

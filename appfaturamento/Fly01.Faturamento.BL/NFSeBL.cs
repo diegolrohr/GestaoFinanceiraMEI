@@ -202,13 +202,14 @@ namespace Fly01.Faturamento.BL
                 entity.Status = StatusNotaFiscal.FalhaTransmissao;
                 entity.SefazId = response.NotaId;
                 entity.XMLUnicoTSS = response.XMLUnicoTSS;
-                entity.XML = response.Error.XML;
+                entity.XML = response.XMLGerado;
                 entity.Mensagem = response.Error.Mensagem;
             }
             else
             {
                 entity.SefazId = response.NotaId;
                 entity.XMLUnicoTSS = response.XMLUnicoTSS;
+                entity.XML = response.XMLGerado;
             }
         }
 

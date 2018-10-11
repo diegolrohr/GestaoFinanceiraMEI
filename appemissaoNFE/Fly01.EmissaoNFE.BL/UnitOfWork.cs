@@ -152,7 +152,7 @@ namespace Fly01.EmissaoNFE.BL
         public TransmissaoBL TransmissaoBL => transmissaoBL ?? (transmissaoBL = new TransmissaoBL(Context, CfopBL, ChaveBL, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL, NFeBL));
 
         private TransmissaoNFSBL transmissaoNFSBL;
-        public TransmissaoNFSBL TransmissaoNFSBL => transmissaoNFSBL ?? (transmissaoNFSBL = new TransmissaoNFSBL(Context, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL));
+        public TransmissaoNFSBL TransmissaoNFSBL => transmissaoNFSBL ?? (transmissaoNFSBL = new TransmissaoNFSBL(Context, CidadeBL, EmpresaBL, EntidadeBL, EstadoBL, SiafiBL));
 
         private VersaoBL versaoBL;
         public VersaoBL VersaoBL => versaoBL ?? (versaoBL = new VersaoBL(Context, EntidadeBL));

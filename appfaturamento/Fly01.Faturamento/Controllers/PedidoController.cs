@@ -401,7 +401,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
             #endregion
 
-            #region Helpers 
+            #region Helpers            
             config.Helpers.Add(new TooltipUI
             {
                 Id = "chaveNFeReferenciada",

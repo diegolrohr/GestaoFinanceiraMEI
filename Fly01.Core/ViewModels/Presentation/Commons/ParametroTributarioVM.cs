@@ -94,6 +94,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("tipoTributacaoNFS")]
         [APIEnum("TipoTributacaoNFS")]
         public string TipoTributacaoNFS { get; set; }
+
+        [JsonProperty("formatarCodigoISS")]
+        public bool FormatarCodigoISS { get; set; }
+
         #endregion
     }
 }

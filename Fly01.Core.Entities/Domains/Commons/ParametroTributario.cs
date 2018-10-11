@@ -104,6 +104,14 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string Autorizacao { get; set; }
 
+        public bool FormatarCodigoISS { get; set; }
+
+        /// <summary>
+        /// NFS-e saiu depois de NF-e, então já tinha parâmetro salvo
+        /// mas precisa reenviar para outra rota do TSS
+        /// </summary>
+        public bool ParametroValidoNFS { get; set; }
+
         public TipoTributacaoNFS TipoTributacaoNFS { get; set; }
         #endregion
     }

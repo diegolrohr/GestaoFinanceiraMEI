@@ -40,6 +40,16 @@ namespace Fly01.Faturamento.BL.Helpers
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
         }
 
+        public string SubstringTelefone(string telefone = "")
+        {
+            if(telefone != null && telefone.Length > 9)
+            {
+                telefone = telefone.Substring((telefone.Length - 9), (telefone.Length - 1));
+            }
+
+            return telefone;
+        }
+
         /// <summary>
         /// Ordenado por data de inclusão, pois na aglutinação dos serviço, as informações 
         /// de código Iss, Nbs e CodMunicipal, vale do primeiro
@@ -69,10 +79,10 @@ namespace Fly01.Faturamento.BL.Helpers
 
         private void ValidaParametrosTributarios()
         {
-            this.ParametrosTributarios = TransmissaoNFSBLs.TotalTributacaoBL.GetParametrosTributarios();
-            if (this.ParametrosTributarios == null)
+            ParametrosTributarios = TransmissaoNFSBLs.TotalTributacaoBL.GetParametrosTributarios();
+            if (ParametrosTributarios == null || (ParametrosTributarios != null && !ParametrosTributarios.ParametroValidoNFS))
             {
-                throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão");
+                throw new BusinessException("Acesse o menu Configurações > Parâmetros Tributários e salve as configurações para a transmissão de NFS");
             }
         }
 
@@ -80,12 +90,14 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new ItemTransmissaoNFSVM()
             {
+                FormatarCodigoIssServico = ParametrosTributarios.FormatarCodigoISS,
                 Identificacao = ObterIdentificacao(),
                 Atividade = ObterAtividade(),
                 Prestador = ObterPrestador(),
                 Prestacao = ObterPrestacao(),
                 Tomador = ObterTomador(),
                 Servicos = ObterServicos(),
+                Valores = ObterValores(),
                 InformacoesComplementares = ObterInformacoesComplementares()
             };
         }
@@ -117,8 +129,8 @@ namespace Fly01.Faturamento.BL.Helpers
 
                 result.Add(new ServicoEmissao()
                 {
-                    //CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
-                    CodigoIss = "14.06",//TODO: ver formatação iss
+                    CodigoIss = NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Codigo : null,
+                    CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,
                     IdCNAE = NFSeServico.Servico.CodigoTributacaoMunicipal ?? "",
                     CNAE = Empresa.CNAE,
@@ -126,8 +138,8 @@ namespace Fly01.Faturamento.BL.Helpers
                     Descricao = string.Concat
                     (
                         NFSeServico.Servico.Iss != null ? NFSeServico.Servico.Iss.Descricao.ToUpper() : "",
-                        " ",
-                        NFSeServico.DescricaoOutrasRetencoes
+                        " | ",
+                        (NFSeServico.DescricaoOutrasRetencoes ?? "").ToUpper()
                     ),
                     Quantidade = NFSeServico.Quantidade,
                     ValorUnitario = NFSeServico.Valor,
@@ -163,12 +175,11 @@ namespace Fly01.Faturamento.BL.Helpers
                 NumeroEndereco = Cliente.Numero ?? "",
                 Bairro = Cliente.Bairro ?? "",
                 CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
-                //CodigoMunicipioSIAFI = "",
                 Cidade = Cliente.Cidade?.Nome ?? "",
                 UF = Cliente.Estado?.Sigla ?? "",
                 CEP = Cliente.CEP ?? "",
                 Email = Cliente.Email ?? "",
-                Telefone = Cliente.Telefone ?? "",
+                Telefone = SubstringTelefone(Cliente.Telefone) ?? "",
                 InscricaoEstadual = Cliente.InscricaoEstadual ?? "",
                 SituacaoEspecial = Cliente.SituacaoEspecialNFS,
                 ConsumidorFinal = Cliente.ConsumidorFinal
@@ -200,7 +211,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 CodigoMunicipioIBGE = Empresa.Cidade?.CodigoIbge ?? "",
                 Cidade = Empresa.Cidade?.Nome ?? "",
                 UF = Empresa.Cidade?.Estado?.Sigla ?? "",
-                Telefone = Empresa.Telefone ?? "",
+                Telefone = SubstringTelefone(Empresa.Telefone) ?? "",
                 TipoIcentivoCultural = ParametrosTributarios.IncentivoCultura ? TipoSimNao.Sim : TipoSimNao.Nao,
                 Logradouro = Empresa.Endereco ?? "",
                 NumeroEndereco = Empresa.Numero ?? "",
@@ -230,5 +241,27 @@ namespace Fly01.Faturamento.BL.Helpers
                 CompetenciaRPS = DateTime.Now
             };
         }
+
+        private Valores ObterValores()
+        {
+            var itensTributacoes = new List<NotaFiscalItemTributacao>();
+            foreach (var NFSeServico in ObterNFSeServicos())
+            {
+                itensTributacoes.Add(TransmissaoNFSBLs.NotaFiscalItemTributacaoBL.All.Where(x => x.NotaFiscalItemId == NFSeServico.Id).FirstOrDefault());
+            }
+
+            return new Valores()
+            {
+                //Podem ter impostos distintos em cada serviço
+                //mas na aglutinação será juntado em 1 serviço só os impostos
+                AliquotasCOFINS = itensTributacoes.Any(x => x.COFINSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.COFINSAliquota > 0).COFINSAliquota : 0,
+                AliquotasCSLL = itensTributacoes.Any(x => x.CSLLAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.CSLLAliquota > 0).CSLLAliquota : 0,
+                AliquotasINSS = itensTributacoes.Any(x => x.INSSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.INSSAliquota > 0).INSSAliquota : 0,
+                AliquotasIR = itensTributacoes.Any(x => x.ImpostoRendaAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.ImpostoRendaAliquota > 0).ImpostoRendaAliquota : 0,
+                AliquotasISS = itensTributacoes.Any(x => x.ISSAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.ISSAliquota > 0).ISSAliquota : 0,
+                AliquotasPIS = itensTributacoes.Any(x => x.PISAliquota > 0) ? itensTributacoes.FirstOrDefault(x => x.PISAliquota > 0).PISAliquota : 0,
+            };
+        }
+
     }
 }

@@ -11,6 +11,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -167,6 +168,17 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "issId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se necessário, configure no menu de Parâmetros Tributários, para formatar o Código Iss dos serviços com pontuação ao gerar o XML, depende da configuração esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02"
+                }
+            });
+            #endregion
 
             cfg.Content.Add(config);
 

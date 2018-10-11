@@ -60,7 +60,8 @@
                 csll: $("#aliquotaCSLL").val(),
                 inss: $("#aliquotaINSS").val(),
                 impostoRenda: $("#aliquotaImpostoRenda").val(),
-
+                incentivoCultura: $("input#incentivoCultura").prop("checked"),
+                formatarCodigoISS: $("input#formatarCodigoISS").prop("checked")
             },
             success: function (response) {
                 if (response.success) {

@@ -28,6 +28,7 @@ namespace Fly01.Compras.API.Controllers.Api
                     return BadRequest(ModelState);
 
                 var entity = Find(key);
+                entity.CertificadoValidoNFS = true;
 
                 model.CopyChangedValues(entity);
 
@@ -47,6 +48,8 @@ namespace Fly01.Compras.API.Controllers.Api
                         throw new Exception("Já existe um certificado cadastrado para esta plataforma.");
 
                     entity = unitOfWork.CertificadoDigitalBL.ProcessEntity(entity);
+                    entity.CertificadoValidoNFS = true;
+
                     return await base.Post(entity);
                 }
             }

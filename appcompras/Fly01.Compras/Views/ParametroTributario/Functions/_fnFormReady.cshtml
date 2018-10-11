@@ -37,6 +37,8 @@
                 $("input#aliquotaCSLL").val(data.aliquotaCSLL);
                 $("input#aliquotaINSS").val(data.aliquotaINSS);
                 $("input#aliquotaImpostoRenda").val(data.aliquotaImpostoRenda);
+                $("input#incentivoCultura").prop("checked", data.incentivoCultura);
+                $("input#formatarCodigoISS").prop("checked", data.formatarCodigoISS);
                 fly01.fn.updateTextFields();
                 fly01.loading.stop();
             },

@@ -116,8 +116,8 @@ namespace Fly01.Faturamento.BL
         public StatusNotaFiscal ValidaStatus(string protocolo, StatusNotaFiscal statusAnterior, string recomendacao)
         {
             protocolo = protocolo.Trim();
-            //se _PROTOCOLO vier vazio é não transmitida, se vier preenchido, vc colocar Autorizada ou Cancelada, dependendo do tipo de envio.
             StatusNotaFiscal statusNFSe;
+            //1 processando, 5 não autorizou
             var enviando = (
                 recomendacao.Contains("Aguardando")
             );

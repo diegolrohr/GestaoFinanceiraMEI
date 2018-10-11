@@ -16,14 +16,6 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("nbsId")]
         public Guid? NbsId { get; set; }
 
-        [APIEnum("TipoTributacaoISS")]
-        [JsonProperty("tipoTributacaoISS")]
-        public string TipoTributacaoISS { get; set; }
-
-        [APIEnum("TipoPagamentoImpostoISS")]
-        [JsonProperty("tipoPagamentoImpostoISS")]
-        public string TipoPagamentoImpostoISS { get; set; }
-
         [JsonProperty("valorServico")]
         public double ValorServico { get; set; }
 

@@ -42,9 +42,16 @@ namespace Fly01.Faturamento.BL.Helpers
 
         public string SubstringTelefone(string telefone = "")
         {
-            if(telefone != null && telefone.Length > 9)
+            if (telefone != null)
             {
-                telefone = telefone.Substring((telefone.Length - 9), (telefone.Length - 1));
+                if (telefone.Length == 10)
+                {
+                    telefone = telefone.Substring((telefone.Length - 8), 8);
+                }
+                else if (telefone.Length > 10)
+                {
+                    telefone = telefone.Substring((telefone.Length - 9), 9);
+                }
             }
 
             return telefone;

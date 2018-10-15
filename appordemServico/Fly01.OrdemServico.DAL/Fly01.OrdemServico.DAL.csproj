@@ -120,6 +120,7 @@
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EnquadramentoLegalIPIDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\EstadoDataInitializer.cs" />
+    <Compile Include="Migrations\DataInitializer\ISSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NBSDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\NCMDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\UnidadeMedidaDataInitializer.cs" />

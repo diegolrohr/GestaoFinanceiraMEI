@@ -57,72 +57,38 @@ namespace Fly01.Faturamento.BL
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue)
             {
                 var serieENumeroJaUsado = All.AsNoTracking().Any(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal));
-                //varios numeros de uma mesma serie/tipo inutilizados
-                var serieENumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                    x.NumNotaFiscal == entity.NumNotaFiscal);
 
-                if (serieENumeroJaUsado || serieENumeroInutilizado)
+                if (serieENumeroJaUsado)
                 {
                     ObterProximoNumeroValido(entity, serieNotaFiscal);
                 }
                 else
                 {
-                    ObterProximoNumeroSerieValido(entity, serieNotaFiscal);
+                    SalvarProximoNumeroSerie(entity, serieNotaFiscal);
                 };
             }
 
             base.ValidaModel(entity);
         }
 
-        private void ObterProximoNumeroSerieValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)
+        private void SalvarProximoNumeroSerie(NFSe entity, SerieNotaFiscal serieNotaFiscal)
         {
-            var proximoNumNota = entity.NumNotaFiscal.Value + 1;
-            var ProximoNumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-            x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-            x.NumNotaFiscal == proximoNumNota);
-
-            if (ProximoNumeroInutilizado)
-            {
-                var proximoNumNotaOK = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal)).Max(x => x.NumNotaFiscal);
-                if (!proximoNumNotaOK.HasValue)
-                {
-                    proximoNumNotaOK = proximoNumNota;
-                }
-
-                do
-                {
-                    proximoNumNotaOK += 1;
-                }//enquanto incremento para próxima nota, possa estar na lista de inutilizadas
-                while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                    x.NumNotaFiscal == proximoNumNotaOK) || proximoNumNotaOK == entity.NumNotaFiscal);
-
-                proximoNumNota = proximoNumNotaOK.Value;
-            }
-
             var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
-            serie.NumNotaFiscal = proximoNumNota;
+            serie.NumNotaFiscal = entity.NumNotaFiscal.Value + 1;
             SerieNotaFiscalBL.Update(serie);
         }
 
         private void ObterProximoNumeroValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)
         {
-            var sugestaoProximoNumNota = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal)).Max(x => x.NumNotaFiscal);
+            var sugestaoProximoNumNota = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId)).Max(x => x.NumNotaFiscal);
             if (!sugestaoProximoNumNota.HasValue)
             {
                 sugestaoProximoNumNota = entity.NumNotaFiscal;
             }
 
-            do
-            {
-                sugestaoProximoNumNota += 1;
-            }//enquanto sugestão possa estar na lista de inutilizadas
-            while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                 x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                 x.NumNotaFiscal == sugestaoProximoNumNota) || sugestaoProximoNumNota == entity.NumNotaFiscal);
-
-            entity.Fail(true, new Error("Série e número já utilizados ou inutilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
+            sugestaoProximoNumNota += 1;
+            
+            entity.Fail(true, new Error("Série e número já utilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
         }
 
         private static void ValidarFrete(NFSe entity)

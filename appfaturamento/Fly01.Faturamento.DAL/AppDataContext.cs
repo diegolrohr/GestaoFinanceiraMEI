@@ -56,6 +56,10 @@ namespace Fly01.Faturamento.DAL
             builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
             builder.Entity<OrdemVendaItem>().Ignore(m => m.Total);
             builder.Entity<NotaFiscalItem>().Ignore(m => m.Total);
+            builder.Entity<Produto>().Ignore(m => m.CodigoNcm);
+            builder.Entity<Produto>().Ignore(m => m.CodigoCest);
+            builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
+            builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

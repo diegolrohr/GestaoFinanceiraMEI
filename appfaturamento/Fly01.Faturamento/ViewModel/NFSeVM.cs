@@ -6,8 +6,11 @@ namespace Fly01.Faturamento.ViewModel
     [Serializable]
     public class NFSeVM : NotaFiscalVM
     {
-        [JsonProperty("totalImpostosServicos")]
-        public double TotalImpostosServicos { get; set; }
+        [JsonProperty("totalImpostosServicosNaoAgrega")]
+        public double TotalImpostosServicosNaoAgrega { get; set; }
+
+        [JsonProperty("totalRetencoesServicos")]
+        public double TotalRetencoesServicos { get; set; }
 
         [JsonProperty("xmlUnicoTSS")]
         public string XMLUnicoTSS { get; set; }

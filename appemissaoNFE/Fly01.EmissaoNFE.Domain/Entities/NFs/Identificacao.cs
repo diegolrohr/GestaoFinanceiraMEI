@@ -90,7 +90,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string TipoRegimeEspecialTributacao {
             get
             {
-                return TipoTributacao == TipoTributacaoNFS.CreditaZonaFrancaManaus ? "1" : "2";
+                return TipoTributacao == TipoTributacaoNFS.DentroMunicipio ? "1" : "2";
             }
             set { }
         }

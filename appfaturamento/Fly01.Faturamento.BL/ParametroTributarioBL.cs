@@ -40,7 +40,6 @@ namespace Fly01.Faturamento.BL
         
         public void EnviaParametroTributario(ParametroTributario parametroTributario)
         {
-
             #region ResgataDadosEmpresa
 
             parametroTributario.Cnpj = empresa.CNPJ;

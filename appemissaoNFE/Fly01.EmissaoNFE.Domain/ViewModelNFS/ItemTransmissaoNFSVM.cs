@@ -1,4 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain.Entities.NFS;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -21,8 +22,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
             set { }
         }
 
-
-
         private string versao = "2.00";
         /// <summary>
         /// Versão TSS
@@ -39,9 +38,13 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
                 versao = value;
             }
         }
+        /// <summary>
+        /// Gerado pelo sistema na serialização do xml
+        /// </summary>
 
+        [JsonIgnore]
         [XmlElement(ElementName = "assinatura")]
-        public string Assinatura { get; set; }
+        public string AssinaturaHash { get; set; }
 
         [XmlElement(ElementName = "identificacao")]
         public Identificacao Identificacao { get; set; }
@@ -61,6 +64,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlArray("servicos"), XmlArrayItem(typeof(Servico), ElementName = "servico")]
         public List<Servico> Servicos { get; set; }
 
+        /// <summary>
+        /// Gerado pelo sistema na serialização do xml
+        /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
 

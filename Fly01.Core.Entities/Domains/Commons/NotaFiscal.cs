@@ -96,6 +96,11 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 
+        /// <summary>
+        /// Em NFe é a chave do sefaz gerada na transmissao
+        /// Em NFSe é a concatenação da serie + número
+        /// ambas utilizadas para o monitor dos status
+        /// </summary>
         [StringLength(44)]
         public string SefazId { get; set; }
 

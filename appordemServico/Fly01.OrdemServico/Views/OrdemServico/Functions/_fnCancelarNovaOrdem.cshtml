@@ -1,7 +1,7 @@
 ﻿<script>
     function fnCancelarNovaOrdem() {        
         var idRecord = $('form#fly01frm input#id').val();
-        if (idRecord) {
+        if (onCancelMustDeleteOrdemServico) {
             fly01.loading.start();
             $.ajax({
                 type: "POST",

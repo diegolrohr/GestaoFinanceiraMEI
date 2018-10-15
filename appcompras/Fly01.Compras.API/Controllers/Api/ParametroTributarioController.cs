@@ -30,6 +30,7 @@ namespace Fly01.Compras.API.Controllers.Api
 
                 var entity = Find(key);
 
+                entity.ParametroValidoNFS = true;
                 model.CopyChangedValues(entity);
 
                 unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
@@ -48,6 +49,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         return BadRequest("Ja existe Parametro Tributario cadastrado para esta plataforma.");
 
                     unitOfWork.ParametroTributarioBL.EnviaParametroTributario(entity);
+                    entity.ParametroValidoNFS = true;
 
                     return await base.Post(entity);
                 }

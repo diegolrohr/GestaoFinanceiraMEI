@@ -50,6 +50,10 @@ namespace Fly01.Compras.DAL
             builder.Entity<Pessoa>().Ignore(m => m.CidadeCodigoIbge);
             builder.Entity<Pessoa>().Ignore(m => m.EstadoCodigoIbge);
             builder.Entity<OrdemCompraItem>().Ignore(m => m.Total);
+            builder.Entity<Produto>().Ignore(m => m.CodigoNcm);
+            builder.Entity<Produto>().Ignore(m => m.CodigoCest);
+            builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
+            builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
 
             builder.Entity<NotaFiscalEntrada>()
                 .Map(m => m.ToTable("NotaFiscalEntrada"))

@@ -15,7 +15,7 @@ namespace Fly01.OrdemServico.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"objetoDeManutencao eq true");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and objetoDeManutencao eq true");
             queryString.AddParam("$select", "id,descricao,codigoProduto,saldoProduto");
             queryString.AddParam("$orderby", "descricao");
 
@@ -100,7 +100,7 @@ namespace Fly01.OrdemServico.Controllers
             queryString.AddParam("$orderby", "descricao");
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
-                                select new { id = item.Id, label = item.Descricao, detail = $"Código Produto: {item.CodigoProduto} - Código de Barras: {item.CodigoBarras}", valor = item.ValorVenda };
+                                select new { id = item.Id, label = item.Descricao, detail = $"Código Produto: {item.CodigoProduto}", valor = item.ValorVenda };
 
             return GetJson(filterObjects);
         }

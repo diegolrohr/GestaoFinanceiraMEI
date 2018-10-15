@@ -10,6 +10,7 @@ using Fly01.uiJS.Defaults;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels;
 using Fly01.Core.Presentation.Commons;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -31,6 +32,7 @@ namespace Fly01.Faturamento.Controllers
                 quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 desconto = x.Desconto.ToString("C", AppDefaults.CultureInfoDefault),
+                valorOutrasRetencoes = x.ValorOutrasRetencoes.ToString("C", AppDefaults.CultureInfoDefault),
                 total = x.Total.ToString("C", AppDefaults.CultureInfoDefault),
             };
         }
@@ -112,6 +114,39 @@ namespace Fly01.Faturamento.Controllers
             });
 
             config.Elements.Add(new InputCurrencyUI { Id = "total", Class = "col s12 l6", Label = "Total", Required = true, Disabled = true });
+
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "descricaoOutrasRetencoes",
+                Class = "col s12 l6",
+                Label = "Descrição Outras Retenções"
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorOutrasRetencoes",
+                Class = "col s12 l6 numeric",
+                Label = "Outras Retenções"
+            });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "servicoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao adicionar mais de 1 serviço e se o pedido Gerar Nota Fiscal, os serviços serão aglutinados em 1 único serviço, para o XML de transmissão, será concatenado as descrições, os valores e impostos somados; porém código Nbs, código Iss e Código Tributário Municipal, será considerado do primeiro serviço."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorOutrasRetencoes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Faturar, será descontado do valor total, junto as demais retenções, de acordo com as configurações do grupo tributário informado."
+                }
+            });
+            #endregion
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

@@ -21,9 +21,10 @@ namespace Fly01.EmissaoNFE.BL
         protected InssBL InssBL;
         protected ImpostoRendaBL ImpostoRendaBL;
         protected CsllBL CsllBL;
+        protected IssBL IssBL;
 
         public TributacaoBL(AppDataContextBase context, TabelaIcmsBL tabelaIcmsBL, NcmBL ncmBL, IcmsBL icmsBL, DifalBL difalBL, SubstituicaoTributariaBL substituicaoTributariaBL,
-            IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL, PisBL pisBL, CofinsBL cofinsBL, InssBL inssBL, ImpostoRendaBL impostoRendaBL, CsllBL csllBL) : base(context)
+            IpiBL ipiBL, FcpBL fcpBL, FcpStBL fcpStBL, PisBL pisBL, CofinsBL cofinsBL, InssBL inssBL, ImpostoRendaBL impostoRendaBL, CsllBL csllBL, IssBL issBL) : base(context)
         {
             TabelaIcmsBL = tabelaIcmsBL;
             IcmsBL = icmsBL;
@@ -38,6 +39,7 @@ namespace Fly01.EmissaoNFE.BL
             InssBL = inssBL;
             ImpostoRendaBL = impostoRendaBL;
             CsllBL = csllBL;
+            IssBL = issBL;
         }
         
         public TributacaoRetornoVM GeraImpostos(Tributacao entity)
@@ -80,6 +82,9 @@ namespace Fly01.EmissaoNFE.BL
 
             if (entity.Csll != null)
                 retorno.Csll = CsllBL.Csll(entity);
+
+            if (entity.Iss != null)
+                retorno.Iss = IssBL.Iss(entity);
 
             return retorno;
         }

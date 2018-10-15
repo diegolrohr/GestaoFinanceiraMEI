@@ -51,7 +51,7 @@ namespace Fly01.Compras.BL
         public FormaPagamentoBL FormaPagamentoBL => formaPagamentoBL ?? (formaPagamentoBL = new FormaPagamentoBL(Context));
 
         private ProdutoBL produtoBL;
-        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL, NCMBL, UnidadeMedidaBL, CestBL, EnquadramentoLegalIPIBL));
 
         private NCMBL ncmBL;
         public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));

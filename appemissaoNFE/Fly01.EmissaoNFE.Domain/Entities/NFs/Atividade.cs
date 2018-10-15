@@ -8,6 +8,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string CodigoCNAE { get; set; }
 
         [XmlElement(ElementName = "aliquota")]
-        public double AliquotaICMS { get; set; }
+        public double AliquotaIss { get; set; }
     }
 }

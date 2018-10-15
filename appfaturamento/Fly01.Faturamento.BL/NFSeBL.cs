@@ -23,10 +23,12 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
 
-        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, PessoaBL pessoaBL, CertificadoDigitalBL certificadoDigitalBL) : base(context)
+        public NFSeBL(AppDataContext context, SerieNotaFiscalBL serieNotaFiscalBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL,
+            NotaFiscalInutilizadaBL notaFiscalInutilizadaBL, PessoaBL pessoaBL, CertificadoDigitalBL certificadoDigitalBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
             NFSeServicoBL = nfseServicoBL;
@@ -34,6 +36,7 @@ namespace Fly01.Faturamento.BL
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
             PessoaBL = pessoaBL;
             CertificadoDigitalBL = certificadoDigitalBL;
+            NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
         }
 
         public IQueryable<NFSe> Everything => repository.All.Where(x => x.Ativo);
@@ -54,72 +57,38 @@ namespace Fly01.Faturamento.BL
             if (entity.Status == StatusNotaFiscal.Transmitida && entity.SerieNotaFiscalId.HasValue && entity.NumNotaFiscal.HasValue)
             {
                 var serieENumeroJaUsado = All.AsNoTracking().Any(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal));
-                //varios numeros de uma mesma serie/tipo inutilizados
-                var serieENumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                    x.NumNotaFiscal == entity.NumNotaFiscal);
 
-                if (serieENumeroJaUsado || serieENumeroInutilizado)
+                if (serieENumeroJaUsado)
                 {
                     ObterProximoNumeroValido(entity, serieNotaFiscal);
                 }
                 else
                 {
-                    ObterProximoNumeroSerieValido(entity, serieNotaFiscal);
+                    SalvarProximoNumeroSerie(entity, serieNotaFiscal);
                 };
             }
 
             base.ValidaModel(entity);
-        } // Valida Model OK
+        }
 
-        private void ObterProximoNumeroSerieValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)
+        private void SalvarProximoNumeroSerie(NFSe entity, SerieNotaFiscal serieNotaFiscal)
         {
-            var proximoNumNota = entity.NumNotaFiscal.Value + 1;
-            var ProximoNumeroInutilizado = NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-            x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-            x.NumNotaFiscal == proximoNumNota);
-
-            if (ProximoNumeroInutilizado)
-            {
-                var proximoNumNotaOK = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal)).Max(x => x.NumNotaFiscal);
-                if (!proximoNumNotaOK.HasValue)
-                {
-                    proximoNumNotaOK = proximoNumNota;
-                }
-
-                do
-                {
-                    proximoNumNotaOK += 1;
-                }//enquanto incremento para próxima nota, possa estar na lista de inutilizadas
-                while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                    x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                    x.NumNotaFiscal == proximoNumNotaOK) || proximoNumNotaOK == entity.NumNotaFiscal);
-
-                proximoNumNota = proximoNumNotaOK.Value;
-            }
-
             var serie = SerieNotaFiscalBL.All.Where(x => x.Id == entity.SerieNotaFiscalId).FirstOrDefault();
-            serie.NumNotaFiscal = proximoNumNota;
+            serie.NumNotaFiscal = entity.NumNotaFiscal.Value + 1;
             SerieNotaFiscalBL.Update(serie);
         }
 
         private void ObterProximoNumeroValido(NFSe entity, SerieNotaFiscal serieNotaFiscal)
         {
-            var sugestaoProximoNumNota = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId && x.NumNotaFiscal == entity.NumNotaFiscal)).Max(x => x.NumNotaFiscal);
+            var sugestaoProximoNumNota = All.AsNoTracking().Where(x => x.Id != entity.Id && (x.SerieNotaFiscalId == entity.SerieNotaFiscalId)).Max(x => x.NumNotaFiscal);
             if (!sugestaoProximoNumNota.HasValue)
             {
                 sugestaoProximoNumNota = entity.NumNotaFiscal;
             }
 
-            do
-            {
-                sugestaoProximoNumNota += 1;
-            }//enquanto sugestão possa estar na lista de inutilizadas
-            while (NotaFiscalInutilizadaBL.All.AsNoTracking().Any(x =>
-                 x.Serie.ToUpper() == serieNotaFiscal.Serie.ToUpper() &&
-                 x.NumNotaFiscal == sugestaoProximoNumNota) || sugestaoProximoNumNota == entity.NumNotaFiscal);
-
-            entity.Fail(true, new Error("Série e número já utilizados ou inutilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
+            sugestaoProximoNumNota += 1;
+            
+            entity.Fail(true, new Error("Série e número já utilizados, sugestão de número: " + sugestaoProximoNumNota.ToString(), "numNotaFiscal"));
         }
 
         private static void ValidarFrete(NFSe entity)
@@ -139,8 +108,6 @@ namespace Fly01.Faturamento.BL
 
         public override void Update(NFSe entity)
         {
-            entity.Fail(entity.Status == StatusNotaFiscal.Transmitida, new Error("Ainda não é possível transmitir notas de serviço, aguarde a atualização do sistema", "status"));
-
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
 
             entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
@@ -192,15 +159,23 @@ namespace Fly01.Faturamento.BL
             entity.Mensagem = null;
             entity.Recomendacao = null;
             entity.XML = null;
+            entity.XMLUnicoTSS = null;
             entity.PDF = null;
 
             var response = RestHelper.ExecutePostRequest<TransmissaoNFSRetornoVM>(AppDefaults.UrlEmissaoNfeApi, "transmissaoNFS", JsonConvert.SerializeObject(transmissaoNFS, JsonSerializerSetting.Edit), null, header);
             if (response.Error != null)
             {
                 entity.Status = StatusNotaFiscal.FalhaTransmissao;
-
+                entity.SefazId = response.NotaId;
+                entity.XMLUnicoTSS = response.XMLUnicoTSS;
+                entity.XML = response.XMLGerado;
                 entity.Mensagem = response.Error.Mensagem;
-                entity.XMLUnicoTSS = response.Error.XML;
+            }
+            else
+            {
+                entity.SefazId = response.NotaId;
+                entity.XMLUnicoTSS = response.XMLUnicoTSS;
+                entity.XML = response.XMLGerado;
             }
         }
 
@@ -218,19 +193,20 @@ namespace Fly01.Faturamento.BL
             }
         }
 
-        public TotalNotaFiscal CalculaTotalNFSe(Guid nfseId)
+        public TotalPedidoNotaFiscal CalculaTotalNFSe(Guid nfseId)
         {
             var nfse = All.Where(x => x.Id == nfseId).FirstOrDefault();
 
             var servicos = NFSeServicoBL.All.Where(x => x.NotaFiscalId == nfseId).ToList();
+            var totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
-            var totalImpostosServicos = nfse.TotalImpostosServicos;
 
-            var result = new TotalNotaFiscal()
+            var result = new TotalPedidoNotaFiscal()
             {
                 TotalServicos = Math.Round(totalServicos, 2, MidpointRounding.AwayFromZero),
                 ValorFrete = 0,
-                TotalImpostosServicos = Math.Round(totalImpostosServicos, 2, MidpointRounding.AwayFromZero),
+                TotalRetencoesServicos = Math.Round((nfse.TotalRetencoesServicos + totalOutrasRetencoesServicos), 2, MidpointRounding.AwayFromZero),
+                TotalImpostosServicosNaoAgrega = Math.Round(nfse.TotalImpostosServicosNaoAgrega, 2, MidpointRounding.AwayFromZero),
             };
 
             return result;
@@ -246,7 +222,7 @@ namespace Fly01.Faturamento.BL
                 PlataformaUrl = PlataformaUrl,
                 PessoaBL = PessoaBL,
                 CertificadoDigitalBL = CertificadoDigitalBL,
-                NotaFiscalInutilizadaBL = NotaFiscalInutilizadaBL,
+                NotaFiscalItemTributacaoBL = NotaFiscalItemTributacaoBL,
                 AppUser = AppUser
             };
         }

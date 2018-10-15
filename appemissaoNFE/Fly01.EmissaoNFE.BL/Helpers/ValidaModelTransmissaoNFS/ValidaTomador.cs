@@ -16,12 +16,12 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
             else
             {
-                ValidarInscricaoMunicipal(entity);
                 ValidarCpfCnpj(entity, entitiesBLToValidateNFS);
                 ValidarRazaoSocial(entity);
                 ValidarLogradouro(entity);
                 ValidarBairro(entity);
                 ValidarCodigoMunicipioIBGE(entity, entitiesBLToValidateNFS);
+                ValidarCodigoMunicipioSIAFI(entity, entitiesBLToValidateNFS);
                 ValidarCidade(entity);
                 ValidarUF(entity, entitiesBLToValidateNFS);
                 ValidarCEP(entity, entitiesBLToValidateNFS);
@@ -32,28 +32,37 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarInscricaoEstadual(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            if (!EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
+            if (!string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual) &&
+                !EmpresaBL.ValidaIE(entity.ItemTransmissaoNFSVM.Tomador.UF, entity.ItemTransmissaoNFSVM.Tomador.InscricaoEstadual, out msgError))
             {
                 switch (msgError)
                 {
                     case "1":
-                        entity.Fail(true, new Error("IE Tomador - Digito verificador inválido (para este estado).", "InscricaoEstadual"));
+                        entity.Fail(true, new Error("IE tomador - Digito verificador inválido (para este estado).", "InscricaoEstadual"));
                         break;
                     case "2":
-                        entity.Fail(true, new Error("IE Tomador - Quantidade de dígitos inválido (para este estado).", "InscricaoEstadual"));
+                        entity.Fail(true, new Error("IE tomador - Quantidade de dígitos inválido (para este estado).", "InscricaoEstadual"));
                         break;
                     case "3":
-                        entity.Fail(true, new Error("IE Tomador - Inscrição Estadual inválida (para este estado).", "InscricaoEstadual"));
+                        entity.Fail(true, new Error("IE tomador - Inscrição Estadual inválida (para este estado).", "InscricaoEstadual"));
                         break;
                     case "4":
-                        entity.Fail(true, new Error("UF do Tomador inválida.", "UF"));
+                        entity.Fail(true, new Error("UF do tomador inválida.", "UF"));
                         break;
                     case "5":
-                        entity.Fail(true, new Error("UF do Tomador é um dado obrigatório.", "UF"));
+                        entity.Fail(true, new Error("UF do tomador é um dado obrigatório.", "UF"));
                         break;
                     default:
                         break;
                 }
+            }
+        }
+
+        private static void ValidarCodigoMunicipioSIAFI(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
+        {
+            if (string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioSIAFI))
+            {
+                entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioSIAFI = entitiesBLToValidateNFS._siafiBL.RetornaCodigoSiafiIbge(entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioIBGE ?? "");
             }
         }
 
@@ -72,13 +81,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCidade(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Cidade), new Error("Cidade é obrigatório.", "Cidade"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Cidade), new Error("Cidade do tomador é obrigatório.", "Cidade"));
         }
 
         private static void ValidarCodigoMunicipioIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
             entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge == entity.ItemTransmissaoNFSVM.Tomador.CodigoMunicipioIBGE.ToString()),
-                                new Error("Código de município do tomador inválido.", "CodigoMunicipioIBGE"));
+                                new Error("Código IBGE do município do tomador inválido.", "CodigoMunicipioIBGE"));
         }
 
         private static void ValidarBairro(TransmissaoNFSVM entity)
@@ -100,20 +109,15 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         {
             entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj == null,new Error("Informe o CPF ou CNPJ do tomador.", "CpfCnpj"));
 
-            if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length == 11)
+            if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length == 11)
                 entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && (!entitiesBLToValidateNFS._empresaBL.ValidaCPF(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj)),
-                            new Error("CPF do emitente inválido.", "CpfCnpj"));
-            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length == 14)
+                            new Error("CPF do tomador inválido.", "CpfCnpj"));
+            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length == 14)
                 entity.Fail((!entitiesBLToValidateNFS._empresaBL.ValidaCNPJ(entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj)),
-                            new Error("CNPJ do emitente inválido.", "CpfCnpj"));
-            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length < 11 || entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj.Length > 14)
+                            new Error("CNPJ do tomador inválido.", "CpfCnpj"));
+            else if (entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj != null && entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length < 11 || entity.ItemTransmissaoNFSVM.Tomador.CpfCnpj?.Length > 14)
                 entity.Fail((true),
-                            new Error("CPF ou CNPJ do Prestador é invalido. Informe 11 ou 14 digítos.", "CpfCnpj"));
-        }
-
-        private static void ValidarInscricaoMunicipal(TransmissaoNFSVM entity)
-        {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.InscricaoMunicipal.ToString()), new Error("Inscrição municipal é um dado obrigatório.", "InscricaoMunicipal"));
+                            new Error("CPF ou CNPJ do tomador é invalido. Informe 11 ou 14 digítos.", "CpfCnpj"));
         }
     }
 }

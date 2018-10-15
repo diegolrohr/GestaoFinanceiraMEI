@@ -31,5 +31,7 @@ namespace Fly01.EmissaoNFE.Domain
         public Csll Csll { get; set; }
 
         public ImpostoRenda ImpostoRenda { get; set; }
+
+        public Iss Iss { get; set; }
     }
 }

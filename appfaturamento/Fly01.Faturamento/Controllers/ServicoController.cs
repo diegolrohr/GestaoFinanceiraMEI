@@ -11,6 +11,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -125,6 +126,22 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "codigoServico", Class = "col l3 m3 s12", Label = "Código", Required = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
 
+            config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l4 m4 s12", Label = "Valor Servico", Required = true });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoTributacaoMunicipal", Class = "col l4 m4 s12", Label = "Código Tributação Municipal", MaxLength = 20 });
+
+            config.Elements.Add(new InputTextUI { Id = "codigoIssEspecifico", Class = "col l4 m4 s12", Label = "Código Iss Específico", MaxLength = 20 });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "issId",
+                Class = "col l12 m12 s12",
+                Label = "ISS Tabela Padrão",
+                DataUrl = @Url.Action("Iss", "AutoComplete"),
+                LabelId = "issDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
+            });
+
             config.Elements.Add(new AutoCompleteUI
             {
                 Id = "nbsId",
@@ -135,38 +152,26 @@ namespace Fly01.Faturamento.Controllers
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
             });
 
-            config.Elements.Add(new SelectUI
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
             {
-                Id = "tipoPagamentoImpostoISS",
-                Class = "col l3 m3 s12",
-                Label = "Tipo Pagto ISS",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPagamentoImpostoISS)))
+                Id = "codigoIssEspecifico",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se informado, este código será prioritário ao Código Iss da Tabela Padrão, irá sair no XML da nota fiscal, exatamente como informado neste campo."
+                }
             });
-            config.Elements.Add(new SelectUI
-            {
-                Id = "tipoTributacaoISS",
-                Class = "col l6 m6 s12",
-                Label = "Tipo Tributação ISS",
-                Required = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoTributacaoISS)))
-            });
-
-            config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
-
-            config.Elements.Add(new InputTextUI { Id = "codigoTributacaoMunicipal", Class = "col l3 m3 s12", Label = "Código Tributação Municipal", MaxLength = 20 });
-
-            config.Elements.Add(new AutoCompleteUI
+            config.Helpers.Add(new TooltipUI
             {
                 Id = "issId",
-                Class = "col l9 m9 s12",
-                Label = "ISS",
-                DataUrl = @Url.Action("Iss", "AutoComplete"),
-                LabelId = "issDescricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect" } }
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se necessário, configure no menu de Parâmetros Tributários, para formatar este Código Iss da tabela padrão, com pontuação ao gerar o XML, depende da configuração esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02"
+                }
             });
-
-            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col l12 m12 s12", Label = "Observação", MaxLength = 200 });
+            #endregion
 
             cfg.Content.Add(config);
 

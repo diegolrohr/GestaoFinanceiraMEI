@@ -18,8 +18,8 @@ namespace Fly01.OrdemServico.Controllers
     {
         protected override ContentUI HomeJson()
         {
-            //if (!UserCanPerformOperation(ResourceHashConst.FinanceiroFinanceiroFluxoCaixa))
-            //    return new ContentUI{ SidebarUrl = @Url.Action("Sidebar") };
+            if (!UserCanPerformOperation(ResourceHashConst.OrdemServicoVisaoGeral))
+                return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
             //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
             //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
@@ -173,52 +173,8 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Elements = new List<BaseUI>
                 {
-                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" },
-                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" }
-                }
-            });
-            cfg.Content.Add(new DataTableUI
-            {
-                Class = "col s6",
-                Id = "dtGridTopProdutos",
-                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
-                Parameters = new List<DataTableUIParameter>
-                    {
-                        new DataTableUIParameter { Id = "dataFinal" }
-                    },
-                Options = new DataTableUIConfig()
-                {
-                    PageLength = 10,
-                    WithoutRowMenu = true
-                },
-                Columns = new List<DataTableUIColumn>{
-                    new DataTableUIColumn
-                    {
-                        DataField = "descricao",
-                        DisplayName = "Descrição",
-                        Priority = 2,
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "quantidade",
-                        DisplayName = "Quantidade",
-                        Class = "dt-right",
-                        Priority = 4,
-                        Orderable = false,
-                        Searchable = false
-                    },
-                    new DataTableUIColumn
-                    {
-                        DataField = "valorTotal",
-                        DisplayName = "Total",
-                        Priority = 5,
-                        Type = "currency",
-                        Orderable = false,
-                        Searchable = false
-                    },
-
+                    new LabelSetUI { Id = "t2", Class = "col s6", Label = "Os 10 serviços mais prestados" },
+                    new LabelSetUI { Id = "t1", Class = "col s6", Label = "Os 10 produtos mais vendidos" }
                 }
             });
             cfg.Content.Add(new DataTableUI
@@ -265,12 +221,60 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
+            cfg.Content.Add(new DataTableUI
+            {
+                Class = "col s6",
+                Id = "dtGridTopProdutos",
+                UrlGridLoad = Url.Action("DashboardTopProdutos", "Dashboard"),
+                Parameters = new List<DataTableUIParameter>
+                    {
+                        new DataTableUIParameter { Id = "dataFinal" }
+                    },
+                Options = new DataTableUIConfig()
+                {
+                    PageLength = 10,
+                    WithoutRowMenu = true
+                },
+                Columns = new List<DataTableUIColumn>{
+                    new DataTableUIColumn
+                    {
+                        DataField = "descricao",
+                        DisplayName = "Descrição",
+                        Priority = 2,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "quantidade",
+                        DisplayName = "Quantidade",
+                        Class = "dt-right",
+                        Priority = 4,
+                        Orderable = false,
+                        Searchable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "valorTotal",
+                        DisplayName = "Total",
+                        Priority = 5,
+                        Type = "currency",
+                        Orderable = false,
+                        Searchable = false
+                    },
+
+                }
+            });
 
             return cfg;
         }
 
         private static string GetColor(StatusOrdemServico statusOrdem) => EnumHelper.GetCSS(typeof(StatusOrdemServico), statusOrdem.ToString());
-        private static string GetDescription(StatusOrdemServico statusOrdem) => EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+        private static string GetDescription(StatusOrdemServico statusOrdem)
+        {
+            var result = EnumHelper.GetDescription(typeof(StatusOrdemServico), statusOrdem.ToString());
+            return string.IsNullOrEmpty(result) ? "" : $"{char.ToUpper(result[0])}{result.Substring(1).ToLower()}";
+        }
 
         public override ContentResult Sidebar()
         {
@@ -281,51 +285,48 @@ namespace Fly01.OrdemServico.Controllers
             {
                 new SidebarUIMenu()
                 {
-                    //Class = ResourceHashConst.FinanceiroFinanceiro,
+                    Class = ResourceHashConst.OrdemServico,
                     Label = "Ordem de Serviço",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Visão Geral", OnClick = @Url.Action("List", "Home")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Ordem de Serviço", OnClick = @Url.Action("List", "OrdemServico")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoOrdemServico, Label = "Ordem de Serviço", OnClick = @Url.Action("List", "OrdemServico")},
                     }
                 },
                 new SidebarUIMenu()
                 {
-                    //Class = ResourceHashConst.FinanceiroFinanceiro,
+                    Class = ResourceHashConst.OrdemServicoCadastros,
                     Label = "Cadastro",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastroProdutos, Label = "Produtos", OnClick = @Url.Action("List", "Produto")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastroServicos, Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastroClientes, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastroResponsaveis, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
                     }
                 },
                 new SidebarUIMenu()
                 {
-                    //Class = ResourceHashConst.FinanceiroConfiguracoes,
+                    Class = ResourceHashConst.OrdemServicoConfiguracoes,
                     Label = "Configurações",
                     Items = new List<LinkUI>
                     {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoConfiguracoesParametros, Label = "Parâmetros", OnClick = @Url.Action("List", "ParametroOrdemServico")}
                     }
                 },
                 new SidebarUIMenu()
                 {
-                    //Class = ResourceHashConst.FinanceiroAjuda,
+                    Class = ResourceHashConst.OrdemServicoAjuda,
                     Label = "Ajuda",
                     Items = new List<LinkUI>
                     {
-                        //new LinkUI() { Class = ResourceHashConst.OrdemServicoAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAjudaAssistenciaRemota, Label =  "Assistência Remota", Link = "https://secure.logmeinrescue.com/customer/code.aspx"}
                     }
                 },
-                //TODO: Ver permissoes new SidebarUIMenu() { Class = ResourceHashConst.OrdemServicoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
-                new SidebarUIMenu() { Class = "", Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
+                new SidebarUIMenu() { Class = ResourceHashConst.OrdemServicoAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
 
-            //config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
-            config.MenuItems.AddRange(menuItems);
+            config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items

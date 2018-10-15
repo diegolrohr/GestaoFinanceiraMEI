@@ -45,7 +45,7 @@ namespace Fly01.Faturamento.BL
         public CidadeBL CidadeBL => cidadeBL ?? (cidadeBL = new CidadeBL(Context));
 
         private ProdutoBL produtoBL;
-        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL));
+        public ProdutoBL ProdutoBL => produtoBL ?? (produtoBL = new ProdutoBL(Context, GrupoProdutoBL, NCMBL, UnidadeMedidaBL, CestBL, EnquadramentoLegalIPIBL));
 
         private NCMBL ncmBL;
         public NCMBL NCMBL => ncmBL ?? (ncmBL = new NCMBL(Context));
@@ -111,7 +111,7 @@ namespace Fly01.Faturamento.BL
         public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));
 
         private NFSeBL nfseBL;
-        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL, PessoaBL, CertificadoDigitalBL));
+        public NFSeBL NFSeBL => nfseBL ?? (nfseBL = new NFSeBL(Context, SerieNotaFiscalBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalInutilizadaBL, PessoaBL, CertificadoDigitalBL, NotaFiscalItemTributacaoBL));
 
         private NFSeServicoBL nfseServicoBL;
         public NFSeServicoBL NFSeServicoBL => nfseServicoBL ?? (nfseServicoBL = new NFSeServicoBL(Context));

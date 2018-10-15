@@ -10,34 +10,36 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         {
             if (entity.ItemTransmissaoNFSVM.Servicos == null)
             {
-                entity.Fail(true, new Error("A entidade servico não pode ser nula"));
+                entity.Fail(true, new Error("A entidade serviço não pode ser nula"));
             }
             else
             {
+                var count = 1;
                 foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)
                 {
-                    ValidarCodigoServico(entity, item);
-                    ValidarDiscriminacaoServico(entity, item);
-                    ValidarCodigoTributacao(entity, item);
+                    ValidarCodigoServico(entity, item, count);
+                    ValidarDiscriminacaoServico(entity, item, count);
+                    ValidarCodigoTributacao(entity, item, count);
+                    count++;
                 }
             }
         }
 
-        private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item)
+        private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item, int count)
         {
-            entity.Fail(string.IsNullOrEmpty(item.CodigoTributario.ToString()), new Error("Código tributário do serviço é um dado obrigatório."));
-            entity.Fail(item.CodigoTributario.ToString().Length > 20, new Error("O código da tributação não pode ter mais que 20 caracteres."));
+            //TODO: verificar obrigatoriedadeentity.Fail(string.IsNullOrEmpty(item.CodigoTributario), new Error("Código tributário municipal do serviço é um dado obrigatório."));
+            entity.Fail(item.CodigoTributario?.Length > 20, new Error(string.Format("Código tributário municipal do serviço {0} não pode ter mais que 20 caracteres.", count)));
         }
 
-        private static void ValidarDiscriminacaoServico(TransmissaoNFSVM entity, Servico item)
+        private static void ValidarDiscriminacaoServico(TransmissaoNFSVM entity, Servico item, int count)
         {
-            entity.Fail(string.IsNullOrEmpty(item.Discriminacao), new Error("Discrimonação é um dado obrigatório."));
+            entity.Fail(string.IsNullOrEmpty(item.Descricao), new Error(string.Format("Descrição do serviço {0} é um dado obrigatório.", count)));
         }
 
-        private static void ValidarCodigoServico(TransmissaoNFSVM entity, Servico item)
+        private static void ValidarCodigoServico(TransmissaoNFSVM entity, Servico item, int count)
         {
-            entity.Fail(string.IsNullOrEmpty(item.Codigo.ToString()), new Error("Código do serviço é um dado obrigatório."));
-            entity.Fail(item.Codigo.ToString().Length > 9, new Error("O código do serviço não pode ter mais que 9 caracteres."));
+            entity.Fail(string.IsNullOrEmpty(item.CodigoIss), new Error(string.Format("Código Iss do serviço {0} é um dado obrigatório.", count)));
+            entity.Fail(item.CodigoIss?.Length > 9, new Error(string.Format("O código do serviço {0} não pode ter mais que 9 caracteres.", count)));
         }
     }
 }

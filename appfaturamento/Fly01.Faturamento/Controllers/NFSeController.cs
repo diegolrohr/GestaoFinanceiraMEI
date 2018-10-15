@@ -123,9 +123,10 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6", Label = "Data Vencimento", Disabled = true });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTotais", Class = "col s12", Label = "Totais" });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m6", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscal", Class = "col s12 m6", Label = "Total (serviços - retenções)", Readonly = true });
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetServicos", Class = "col s12", Label = "Serviços" });
             config.Elements.Add(new TableUI
@@ -140,6 +141,7 @@ namespace Fly01.Faturamento.Controllers
                     new OptionUI { Label = "Quant.", Value = "1"},
                     new OptionUI { Label = "Valor",Value = "2"},
                     new OptionUI { Label = "Desconto",Value = "3"},
+                    new OptionUI { Label = "Outras Retenções",Value = "5"},
                     new OptionUI { Label = "Total",Value = "4"},
                 }
             });
@@ -195,9 +197,10 @@ namespace Fly01.Faturamento.Controllers
                 LabelName = "clienteNome"
             });
 
-            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m4", Label = "Total serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicos", Class = "col s12 m4", Label = "Total impostos serviços", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m4", Label = "Total (serviços + impostos)", Readonly = true, Name = "totalNotaFiscal" });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalServicos", Class = "col s12 m6", Label = "Total serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalRetencoesServicos", Class = "col s12 m6", Label = "Total retenções serviços", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalImpostosServicosNaoAgrega", Class = "col s12 m6", Label = "Total de impostos não incidentes", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "totalNotaFiscalNFSe", Class = "col s12 m6", Label = "Total (serviços - retenções)", Readonly = true, Name = "totalNotaFiscal" });
 
             config.Elements.Add(new AutoCompleteUI
             {
@@ -277,7 +280,7 @@ namespace Fly01.Faturamento.Controllers
             {
                 var response = base.Get(id);
 
-                string fileName = "NFSe" + response.NumNotaFiscal + ".xml";
+                string fileName = "NFSeTSS" + response.NumNotaFiscal + ".xml";
                 string xml = response.XMLUnicoTSS;
                 xml = xml.Replace("\\", "");
                 Session.Add(fileName, xml);
@@ -355,6 +358,31 @@ namespace Fly01.Faturamento.Controllers
         protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public ContentResult FormRetornoValidacao()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Mensagem Validação",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NotaFiscal")
+                },
+                Id = "fly01mdlfrmVisualizarMensagemValidacao"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12", Label = "Mensagem", Disabled = true });
+            config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }
 }

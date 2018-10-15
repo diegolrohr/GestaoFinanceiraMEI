@@ -2,11 +2,13 @@
 using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
+using Fly01.Core.Mensageria;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.OrdemServico.Helpers;
 using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
@@ -17,11 +19,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServico)]
     public class OrdemServicoController : BaseController<OrdemServicoVM>
     {
         private bool _novaOS;
@@ -78,12 +82,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            dtOrdemServicoManutencaoCfg.Actions.AddRange(new List<DataTableUIAction>()
+            dtOrdemServicoManutencaoCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
-            });
-
+            }));
+            
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 3, Type = "float", Searchable = false, Orderable = false });
@@ -105,11 +109,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            dtOrdemServicoItemProdutosCfg.Actions.AddRange(new List<DataTableUIAction>()
+            dtOrdemServicoItemProdutosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
-            });
+            }));
+            
 
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -134,12 +139,12 @@ namespace Fly01.OrdemServico.Controllers
                 }
             };
 
-            dtOrdemServicoItemServicosCfg.Actions.AddRange(new List<DataTableUIAction>()
+            dtOrdemServicoItemServicosCfg.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
-            });
-
+            }));
+            
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "currency", Searchable = false, Orderable = false });
@@ -173,12 +178,11 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            //if (UserCanWrite)
-            //{
-            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
-
-            //}
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
+            }
 
             return target;
         }
@@ -186,11 +190,8 @@ namespace Fly01.OrdemServico.Controllers
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
-
-            if (_novaOS)
-            {
+            if (UserCanWrite)
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
-            }
 
             return target;
         }
@@ -269,18 +270,18 @@ namespace Fly01.OrdemServico.Controllers
                 Functions = { "fnRenderEnum", "fnExecutarOrdem", "fnExecutarOrdem", "fnCancelarOrdem", "fnConcluirOrdem" }
             };
 
-            config.Actions.AddRange(new List<DataTableUIAction>()
+            config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
+                new DataTableUIAction { OnClickFn = "fnEnviarEmailOS", Label = "Enviar por e-mail", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExecutarOrdem", Label = "Executar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}')" },
                 new DataTableUIAction { OnClickFn = "fnCancelarOrdem", Label = "Cancelar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}')" },
                 new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
                 new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Pedido de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
-            });
-
+            }));
+            
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -299,10 +300,57 @@ namespace Fly01.OrdemServico.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public ContentUI FormOrdemServico(bool isEdit = false)
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public JsonResult EnviaEmail(string id)
+        {
+            try
+            {
+                var empresa = GetDadosEmpresa();
+                var ordem = Get(Guid.Parse(id));
+
+                var ResponseError = ValidarDadosEmail(id, empresa, ordem);
+                if (ResponseError != null) return ResponseError; // tem que arrumar uma solução para o retorno nulo
+
+                MailSend(empresa, ordem);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private JsonResult ValidarDadosEmail(string id, ManagerEmpresaVM empresa, OrdemServicoVM pedido)
         {
 
-            var cfg = new ContentUI
+            if (pedido.Cliente == null) return JsonResponseStatus.GetFailure("Nenhum Cliente foi encontrado.");
+            if (string.IsNullOrEmpty(pedido.Cliente.Email)) return JsonResponseStatus.GetFailure("Não foi encontrado um email válido para este Cliente.");
+            if (string.IsNullOrEmpty(empresa.Email)) return JsonResponseStatus.GetFailure("Você ainda não configurou um email válido para sua empresa.");
+
+            return null;
+        }
+
+        private void MailSend(ManagerEmpresaVM empresa, OrdemServicoVM ordem)
+        {
+            var anexo = File(GetPDFFile(ordem), "application/pdf");
+            var mensagemPrincipal = "VOCÊ ESTÁ RECEBENDO UMA CÓPIA DA SUA ORDEM DE SERVIÇO.";
+            var tituloEmail = $"{empresa.NomeFantasia} ORDEM DE SERVIÇO - Nº {ordem.Numero}".ToUpper();
+            var conteudoEmail = Mail.FormataMensagem(EmailFilesHelper.GetTemplate("Templates.OrdemServico.html").Value, tituloEmail, mensagemPrincipal, empresa.Email);
+            var arquivoAnexo = new FileStreamResult(new MemoryStream(anexo.FileContents), anexo.ContentType);
+
+            Mail.Send(empresa.NomeFantasia, ordem.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
+        }
+
+        public ContentResult FormOrdemServico(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
+
+        public ContentUI FormOrdemServicoJson(bool isEdit = false)
+        {
+
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
                 {
@@ -362,7 +410,7 @@ namespace Fly01.OrdemServico.Controllers
                         Quantity = 5,
                     }
                 },
-                Rule = isEdit ? "parallel" : "linear",
+                Rule = _novaOS ? "linear" : "parallel",
                 ShowStepNumbers = true
             };
 
@@ -471,7 +519,7 @@ namespace Fly01.OrdemServico.Controllers
         }
 
         protected override ContentUI FormJson()
-            => FormOrdemServico();
+            => FormOrdemServicoJson();
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
@@ -543,7 +591,7 @@ namespace Fly01.OrdemServico.Controllers
                 Id = "descricao",
                 Class = "col s12",
                 Label = "Descrição",
-                MaxLength = 200,
+                MaxLength = 1000,
                 Disabled = true
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetItensCliente", Class = "col s12", Label = "Itens do Cliente" });
@@ -702,7 +750,6 @@ namespace Fly01.OrdemServico.Controllers
 
                 Session.Add(fileName, fileBase64);
 
-
                 return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadPDF", new { fileName }) });
             }
             catch (Exception ex)
@@ -738,7 +785,6 @@ namespace Fly01.OrdemServico.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]
         public JsonResult ConcluirOrdem(string id, bool geraOrdemVenda = false) => MudarStatus(id, StatusOrdemServico.Concluido, geraOrdemVenda);
-
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         [HttpPost]

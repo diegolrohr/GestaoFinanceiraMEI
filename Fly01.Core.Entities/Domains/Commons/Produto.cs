@@ -9,7 +9,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Produto : PlataformaBase
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-        [StringLength(40, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(120, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Descricao { get; set; }
 
         public Guid? GrupoProdutoId { get; set; }
@@ -54,7 +54,15 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string Observacao { get; set; }
 
         public double AliquotaIpi { get; set; }
-        
+
+        public string CodigoNcm { get; set; }
+
+        public string CodigoCest { get; set; }
+
+        public string AbreviacaoUnidadeMedida { get; set; }
+
+        public string CodigoEnquadramentoLegalIPI { get; set; }
+
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
         public virtual Ncm Ncm { get; set; }

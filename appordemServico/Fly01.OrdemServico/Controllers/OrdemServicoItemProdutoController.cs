@@ -13,6 +13,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServico)]
     public class OrdemServicoItemProdutoController : BaseController<OrdemServicoItemProdutoVM>
     {
         public OrdemServicoItemProdutoController()
@@ -67,7 +68,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataPostField = "descricao",
                 LabelId = "produtoDescricao",
                 DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeProduto" } }
-            }, ResourceHashConst.FaturamentoCadastrosProdutos));
+            }, ResourceHashConst.OrdemServicoCadastroProdutos));
 
             config.Elements.Add(new InputFloatUI
             {

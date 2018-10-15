@@ -5,6 +5,8 @@ using Fly01.EmissaoNFE.BL;
 using System;
 using System.Web.Http;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.EmissaoNFE.Domain.Entities.NFS;
+using System.Text;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -15,15 +17,19 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public IHttpActionResult Post(TransmissaoNFSVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                var entityNFS = unitOfWork.TransmissaoNFSBL.MontarValores(entity);
-                unitOfWork.TransmissaoNFSBL.ValidaModel(entityNFS);
-
-                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entityNFS);
-
+            {                
                 try
                 {
-                    var retorno = (int)entityNFS.EntidadeAmbiente == 2 ? Homologacao(entityNFS, unitOfWork) : Producao(entityNFS, unitOfWork);
+                    unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+
+                    unitOfWork.TransmissaoNFSBL.AglutinarServicos(entity);
+                    unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+
+                    entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
+
+                    unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
+
+                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
                 }
@@ -31,7 +37,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     if (unitOfWork.EntidadeBL.TSSException(ex))
                     {
-                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entityNFS);
+                        unitOfWork.EntidadeBL.EmissaoNFeException(ex, entity);
                     }
 
                     return InternalServerError(ex);
@@ -41,9 +47,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         private TransmissaoNFSRetornoVM Producao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            //Serializando a nota 
-            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
-            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+            var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
             //Validar base 64
             var notaSchema = new NFSE001Prod.NF
@@ -52,7 +57,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001Prod.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, // Confirmar com o Machado
+                        ID = entity.ItemTransmissaoNFSVM.NotaId,
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }
@@ -62,16 +67,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XML = xmlString
+                XMLUnicoTSS = xmlUnicoTssString,
+                XMLGerado = Convert.ToBase64String(validacao[0].XML)
             };
 
             if (validacao.Length > 0)
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
-                    NotaId = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
-                    XML = Convert.ToBase64String(validacao[0].XML)
+                    Id = validacao[0].ID,
+                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "")
                 };
                 response.Error = schema;
             }
@@ -106,11 +111,9 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
         private TransmissaoNFSRetornoVM Homologacao(TransmissaoNFSVM entity, UnitOfWork unitOfWork)
         {
-            //Serializando a nota 
-            var xmlString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
-            var xmlBase64 = Base64Helper.CodificaBase64(xmlString);
+            var xmlUnicoTssString = unitOfWork.TransmissaoNFSBL.SerializeNotaNFS(entity);
+            var xmlBase64 = Base64Helper.CodificaBase64(xmlUnicoTssString);
 
-            //Validar base 64
             var notaSchema = new NFSE001.NF
             {
                 NOTAS = new NFSE001.NF001[]
@@ -127,16 +130,16 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             var response = new TransmissaoNFSRetornoVM()
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
-                XML = xmlString
+                XMLUnicoTSS = xmlUnicoTssString,
+                XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
             };
 
             if (!string.IsNullOrEmpty(validacao[0].MENSAGEM))
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
-                    NotaId = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", ""),
-                    XML = Convert.ToBase64String(validacao[0].XML)
+                    Id = validacao[0].ID,
+                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "")
                 };
                 response.Error = schema;
             }

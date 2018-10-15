@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.FaturamentoCadastrosServicos)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastroServicos)]
     public class ServicoController : BaseController<ServicoVM>
     {
         protected Func<ServicoVM, object> GetDisplayDataSelect { get; set; }
@@ -122,9 +122,6 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputTextUI { Id = "codigoServico", Class = "col l3 m3 s12", Label = "Código", Required = true });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col l9 m9 s12", Label = "Descrição", Required = true });
-
-            config.Elements.Add(new InputHiddenUI { Id = "tipoPagamentoImpostoISS" });
-            config.Elements.Add(new InputHiddenUI { Id = "tipoTributacaoISS" });
 
             config.Elements.Add(new InputCurrencyUI { Id = "valorServico", Class = "col l3 m3 s12", Label = "Valor Servico", Required = true });
 

@@ -168,8 +168,7 @@
     <Compile Include="Domains\Commons\Servico.cs" />
     <Compile Include="Domains\Commons\SubstituicaoTributaria.cs" />
     <Compile Include="Domains\Commons\TipoMovimento.cs" />
-    <Compile Include="Domains\Commons\TotalNotaFiscal.cs" />
-    <Compile Include="Domains\Commons\TotalOrdemVenda.cs" />
+    <Compile Include="Domains\Commons\TotalPedidoNotaFiscal.cs" />
     <Compile Include="Domains\Commons\TotalTributacao.cs" />
     <Compile Include="Domains\Commons\TransferenciaFinanceira.cs" />
     <Compile Include="Domains\Commons\UnidadeMedida.cs" />
@@ -241,9 +240,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domains\NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

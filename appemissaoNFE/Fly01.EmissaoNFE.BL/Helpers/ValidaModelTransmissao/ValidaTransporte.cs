@@ -28,11 +28,11 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                 {
                     entity.Fail(item.Transporte.Volume.Quantidade < 0,
                                     new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));
-                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Especie) && ((item.Transporte.Volume.Especie?.Length > 60) || (item.Transporte.Volume.Especie.Replace(" ", "").Length == 0)),
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Especie) && ((item.Transporte.Volume.Especie?.Length > 60) || (item.Transporte.Volume.Especie.Replace(" ", "")?.Length == 0)),
                                     new Error("Espécie de volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Especie"));
-                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Marca) && ((item.Transporte.Volume.Marca?.Length > 60) || (item.Transporte.Volume.Marca.Replace(" ", "").Length == 0)),
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Marca) && ((item.Transporte.Volume.Marca?.Length > 60) || (item.Transporte.Volume.Marca.Replace(" ", "")?.Length == 0)),
                                     new Error("Marca do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.marca"));
-                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Numeracao) && ((item.Transporte.Volume.Numeracao?.Length > 60) || (item.Transporte.Volume.Numeracao.Replace(" ", "").Length == 0)),
+                    entity.Fail(!string.IsNullOrEmpty(item.Transporte.Volume.Numeracao) && ((item.Transporte.Volume.Numeracao?.Length > 60) || (item.Transporte.Volume.Numeracao.Replace(" ", "")?.Length == 0)),
                                     new Error("Numeração do volume inválido. No máximo 60 caracteres ou vazio e sem espaços.", "Item.Transporte.Volume.Numeracao"));
                     entity.Fail(item.Transporte.Volume.PesoLiquido < 0,
                                     new Error("Peso líquido inválido", "Item.Transporte.Volume.PesoLiquido"));
@@ -46,7 +46,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             if (item.Transporte.Veiculo != null)
             {
-                entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.Placa) || item.Transporte.Veiculo.Placa.Length != 7,
+                entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.Placa) || item.Transporte.Veiculo.Placa?.Length != 7,
                                 new Error("Placa do veículo de transporte inválida", "Item.Transporte.Veiculo.Placa"));
                 entity.Fail(string.IsNullOrEmpty(item.Transporte.Veiculo.UF) || !entitiesBLToValidate._estadoBL.All.Any(x => x.Sigla == item.Transporte.Veiculo.UF),
                                 new Error("Estado do veículo de transporte inválido", "Item.Transporte.Veiculo.UF"));

@@ -131,8 +131,9 @@ namespace Fly01.EmissaoNFE.BL
 
                     totalimpostos = impostoFederal + impostoEstadual + impostoMunicipal;
 
-                    servico.Discriminacao += InformacoesIBPT;
+                    servico.Descricao += InformacoesIBPT;
                 }
+
                 entityNFS.ItemTransmissaoNFSVM.Valores.ValorCarTributacao = totalimpostos;
             }
         }

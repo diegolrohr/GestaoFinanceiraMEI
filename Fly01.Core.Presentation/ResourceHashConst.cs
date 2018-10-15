@@ -117,5 +117,29 @@
 
         public const string ComprasAvalieAplicativo = "8449632E-AB3B-4B9B-BD73-5DF043E40A6E";
         #endregion
+
+        #region Ordem Serviço Resources
+
+        public const string OrdemServico = "CB584FBE-BBE6-4F28-A62F-DF193FF4A3BF";
+        public const string OrdemServicoVisaoGeral = "A0801822-381D-47CB-8E03-DA6424221C46";
+        public const string OrdemServicoOrdemServico = "23BD19A4-6ECC-493A-AF9B-E5090312AD73";
+
+        public const string OrdemServicoCadastros = "53ADC54B-B949-4F41-8AB7-91CBB34435DE";
+        public const string OrdemServicoCadastroProdutos = "937C0526-60EE-4957-BE73-413083BF5D05";
+        public const string OrdemServicoCadastroServicos = "2F4F12B8-383F-40C9-805D-718B4BEC383C";
+        public const string OrdemServicoCadastroClientes = "DB7C28D1-0F67-4204-B95D-D176DCBAB1AD";
+        public const string OrdemServicoCadastroResponsaveis = "C748EFD3-5A45-4E05-BD4F-06F33B745A00";
+
+        public const string OrdemServicoConfiguracoes = "0DA692E7-7DB2-4556-8D60-F58B24476646";
+        public const string OrdemServicoConfiguracoesParametros = "B00703C3-34ED-44FF-B3EE-A13B9292F030";
+
+        public const string OrdemServicoAjuda = "816B3AC1-AFD1-49CE-BC5C-2B548850FEC0";
+        public const string OrdemServicoAjudaAssistenciaRemota = "545B7472-D38D-443B-8BE4-6707D32A6BBF";
+
+        public const string OrdemServicoAvalieAplicativo = "DD7C6A05-0690-497D-A573-6D84F8806196";
+
+
+
+        #endregion
     }
 }

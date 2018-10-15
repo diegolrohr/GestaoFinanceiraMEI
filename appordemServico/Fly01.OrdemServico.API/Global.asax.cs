@@ -33,6 +33,7 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Produto>("produto");
             builder.EntitySet<Servico>("servico");
             builder.EntitySet<UnidadeMedida>("unidademedida");
+            builder.EntitySet<Iss>("iss");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

@@ -69,6 +69,6 @@ namespace Fly01.OrdemServico.DAL
         public DbSet<ParametroOrdemServico> ParametrosOrdemServico { get; set; }
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
-        public DbSet<Iss> Isss { get; internal set; }
+        public DbSet<Iss> Isss { get; set; }
     }
 }

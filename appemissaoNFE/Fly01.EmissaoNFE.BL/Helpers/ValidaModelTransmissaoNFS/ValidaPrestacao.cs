@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {
@@ -49,8 +50,17 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoMunicipalIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE.ToUpper()),
+            if(entity.EntidadeAmbiente == TipoAmbiente.Homologacao && entity.ItemTransmissaoNFSVM?.Prestador.CodigoMunicipioIBGE == "3541000")
+            {
+                //configuração específica para este município
+                entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE = "999";
+                entity.ItemTransmissaoNFSVM.Prestacao.Municipio = "Homologação";
+            }
+            else
+            {
+                entity.Fail(!entitiesBLToValidateNFS._cidadeBL.All.Any(e => e.CodigoIbge.ToUpper() == entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE.ToUpper()),
                     new Error("Código IBGE do município do local de prestação do serviço é inválido.", "CodigoMunicipioIBGE"));
+            }
         }
 
         private static void ValidarLogradouro(TransmissaoNFSVM entity)

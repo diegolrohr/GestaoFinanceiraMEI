@@ -222,7 +222,7 @@ namespace Fly01.Faturamento.BL
 
         private void CancelarNFSe(Guid id)
         {
-            if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS())
+            if (!TotalTributacaoBL.ConfiguracaoTSSOKNFS(PlataformaUrl))
             {
                 throw new BusinessException("Configuração inválida para comunicação com TSS");
             }
@@ -244,7 +244,7 @@ namespace Fly01.Faturamento.BL
                 Producao = entidade.Producao,
                 EntidadeAmbiente = entidade.EntidadeAmbiente,
                 CodigoIBGE = empresa.Cidade?.CodigoIbge ?? "",
-                IdNotaFiscal = "",
+                IdNotaFiscal = notaFiscal.SefazId,
                 XMLUnicoTSSString = notaFiscal.XMLUnicoTSS
             };
 

@@ -90,7 +90,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqiss")]
         public string AliquotasISSString
         {
-            get { return AliquotasISS.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasISS.ToString("0.00").Replace(",", "."); }
             set { AliquotasISS = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -100,7 +100,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqpis")]
         public string AliquotasPISString
         {
-            get { return AliquotasPIS.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasPIS.ToString("0.00").Replace(",", "."); }
             set { AliquotasPIS = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -110,7 +110,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqcof")]
         public string AliquotasCOFINSString
         {
-            get { return AliquotasCOFINS.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasCOFINS.ToString("0.00").Replace(",", "."); }
             set { AliquotasCOFINS = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -120,7 +120,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqinss")]
         public string AliquotasINSSString
         {
-            get { return AliquotasINSS.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasINSS.ToString("0.00").Replace(",", "."); }
             set { AliquotasINSS = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -130,7 +130,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqir")]
         public string AliquotasIRString
         {
-            get { return AliquotasIR.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasIR.ToString("0.00").Replace(",", "."); }
             set { AliquotasIR = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -140,7 +140,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "aliqcsll")]
         public string AliquotasCSLLString
         {
-            get { return AliquotasCSLL.ToString("0.0000").Replace(",", "."); }
+            get { return AliquotasCSLL.ToString("0.00").Replace(",", "."); }
             set { AliquotasCSLL = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -150,7 +150,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "valtotdoc")]
         public string ValorTotalDocumentoString
         {
-            get { return ValorTotalDocumento.ToString("0.0000").Replace(",", "."); }
+            get { return ValorTotalDocumento.ToString("0.00").Replace(",", "."); }
             set { ValorTotalDocumento = double.Parse(value.Replace(".", ",")); }
         }
 
@@ -160,7 +160,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "valcartri")]
         public string ValorCarTributacaoString
         {
-            get { return ValorCarTributacao.ToString("0.0000").Replace(",", "."); }
+            get { return ValorCarTributacao.ToString("0.00").Replace(",", "."); }
             set { ValorCarTributacao = double.Parse(value.Replace(".", ",")); }
         }
 

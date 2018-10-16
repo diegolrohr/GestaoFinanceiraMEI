@@ -171,6 +171,14 @@ namespace Fly01.Faturamento.Controllers
                     Text = "Se necessário, configure no menu de Parâmetros Tributários, para formatar este Código Iss da tabela padrão, com pontuação ao gerar o XML, depende da configuração esperada pela prefeitura do município. Ex: 104 = 1.04, 2502 = 25.02"
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "nbsId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se informado NBS e o cliente do pedido for consumidor final e faturar este pedido, ao transmitir a nota fiscal, será gerada as informaçoes do IBPT."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

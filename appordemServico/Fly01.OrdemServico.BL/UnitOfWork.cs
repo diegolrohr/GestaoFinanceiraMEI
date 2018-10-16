@@ -83,6 +83,9 @@ namespace Fly01.OrdemServico.BL
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));
 
+        private ISSBL issBL;
+        public ISSBL ISSBL => issBL ?? (issBL = new ISSBL(Context));
+
         #endregion
     }
 }

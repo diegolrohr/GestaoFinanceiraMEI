@@ -55,6 +55,7 @@
     <Compile Include="EstadoBL.cs" />
     <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="ISSBL.cs" />
     <Compile Include="NBSBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />

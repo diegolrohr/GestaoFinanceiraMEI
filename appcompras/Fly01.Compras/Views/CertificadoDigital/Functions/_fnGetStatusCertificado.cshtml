@@ -1,5 +1,6 @@
 ﻿<script>
     function fnGetStatusCertificado() {
+        fly01.loading.start();
         $.ajax({
             url: '@Url.Action("StatusCard", "CertificadoDigital")',
             type: "GET",
@@ -11,19 +12,20 @@
                 if (data.entidadeHomologacao != "" || data.entidadeProducao != "") {
                     $("input#entidadeHomologacao").val(data.entidadeHomologacao);
                     $("input#entidadeProducao").val(data.entidadeProducao);
-                    $("input#entidadeHomologacao").show();
-                    $("input#entidadeProducao").show();
+                    $("#entidadeHomologacaoField").show();
+                    $("#entidadeProducaoField").show();
                     fly01.fn.updateTextFields();
                 }
                 else {
-                    $("input#entidadeHomologacao").hide();
-                    $("input#entidadeProducao").hide();
+                    $("#entidadeHomologacaoField").hide();
+                    $("#entidadeProducaoField").hide();
                 }
-                
+                fly01.loading.stop();
                 if (!data.success)
                     fly01.toast(data.message, 'error');
             },
             error: function (jXHR, textStatus, errorThrown) {
+                fly01.loading.stop();
                 fly01.toast(data.message, 'error');
             }
         });

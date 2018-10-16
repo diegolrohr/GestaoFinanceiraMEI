@@ -176,21 +176,35 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         }
 
         /// <summary>
-        /// Se Ibge 3106200 inverter as informações das Tags
+        /// Se Ibge 3106200 deixar desccond = 0 e inverter com DescontoIncondicional
         /// </summary>
-        [XmlElement(ElementName = "desccond")]
+        [XmlIgnore]
         public double DescontoCondicional { get; set; }
-        //{
-        //    get { return CodigoIBGEPrestador == "3106200" ? DescontoIncondicional : DescontoCondicional; }
-        //    set { }
-        //}
 
-        [XmlElement(ElementName = "descinc")]
+        [XmlElement(ElementName = "desccond")]
+        public string DescontoCondicionalString
+        {
+            get
+            {
+                return CodigoIBGEPrestador == "3106200" ? "0" : DescontoCondicional.ToString("0.00").Replace(",", ".");
+            }
+            set { DescontoCondicional = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double DescontoIncondicional { get; set; }
-        //{
-        //    get { return CodigoIBGEPrestador != "3106200" ? DescontoIncondicional : DescontoCondicional; }
-        //    set { }
-        //}
+        
+        [XmlElement(ElementName = "descinc")]
+        public string DescontoIncondicionalString
+        {
+            get
+            {
+                return CodigoIBGEPrestador == "3106200" ?
+                    DescontoCondicional.ToString("0.00").Replace(",", ".") :
+                    DescontoIncondicional.ToString("0.00").Replace(",", ".");
+            }
+            set { DescontoIncondicional = double.Parse(value.Replace(".", ",")); }
+        }
 
         /// <summary>
         /// Fixo 0, Origem Nacional, conforme FIRST

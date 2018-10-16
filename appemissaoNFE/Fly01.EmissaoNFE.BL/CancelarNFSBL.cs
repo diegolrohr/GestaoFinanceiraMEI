@@ -12,7 +12,7 @@ namespace Fly01.EmissaoNFE.BL
     {
         protected EntidadeBL EntidadeBL;
         protected CidadeBL CidadeBL;
-
+        
         public CancelarNFSBL(AppDataContextBase context, EntidadeBL entidadeBL, CidadeBL cidadeBL) : base(context)
         {
             EntidadeBL = entidadeBL;

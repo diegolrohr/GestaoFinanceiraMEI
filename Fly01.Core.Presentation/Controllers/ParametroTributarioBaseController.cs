@@ -355,7 +355,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "usuarioWebServer",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "De acordo com a configuração especificada pela prefeitura. Informe, se a sua prefeitura possui ambiente de homologação para NFS"
+                    Text = "De acordo com a configuração especificada pela prefeitura. Verifique, se a sua prefeitura possui ambiente de homologação para NFS"
                 }
             });
             #endregion

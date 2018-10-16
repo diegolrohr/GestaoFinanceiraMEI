@@ -92,6 +92,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     response.Nota = cancelamento.ID[0];
                 }
+                else
+                {
+                    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
+                }
             }
             else
             {
@@ -129,7 +133,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 var cancelamento = new NFSE001.NFSE001().CANCELANFSE001(
                     AppDefault.Token,
-                    entity.Producao,
+                    entity.Homologacao,
                     NFSE,
                     entity.CodigoIBGE
                 );
@@ -137,6 +141,10 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 if (cancelamento.ID.Length > 0)
                 {
                     response.Nota = cancelamento.ID[0];
+                }
+                else
+                {
+                    throw new BusinessException(string.Format("Cancelamento solicitado sem retorno do TSS"));
                 }
             }
             else

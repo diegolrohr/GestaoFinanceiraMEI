@@ -196,7 +196,7 @@ namespace Fly01.Core.Presentation.Controllers
             {
                 Id = "situacaoEspecialNFS",
                 Class = "col s12 l3",
-                Label = "Tipo de Situação Especial",
+                Label = "Situação Especial NFS-e",
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoSituacaoEspecialNFS))),
                 ConstrainWidth = true
             }

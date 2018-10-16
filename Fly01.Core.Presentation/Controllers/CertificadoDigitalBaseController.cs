@@ -176,7 +176,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "entidadeHomologacao",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico."
+                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico. Necessário envio do certificado digital."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -184,7 +184,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "entidadeProducao",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico."
+                    Text = "Código da empresa no TSS (Cnpj, Uf, Inscrição Estadual). Informação para suporte técnico. Necessário envio do certificado digital."
                 }
             });
             #endregion

@@ -61,7 +61,7 @@ namespace Fly01.Core.Presentation.Controllers
                     senhaWebServer = "",
                     chaveAutenticacao = "",
                     autorizacao = "",
-                    tipoTributacaoNFS = "RecolheIss",
+                    tipoTributacaoNFS = "DentroMunicipio",
                     tipoAmbienteNFS = "Producao",
                     aliquotaCSLL = "0",
                     aliquotaINSS = "0",
@@ -413,7 +413,7 @@ namespace Fly01.Core.Presentation.Controllers
                 var existeParametro = GetParametro();
 
                 if (existeParametro == null)
-                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
+                    parametroRetorno = RestHelper.ExecutePostRequest<ParametroTributarioVM>(ResourceName, JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Default));
                 else
                     parametroRetorno = RestHelper.ExecutePutRequest<ParametroTributarioVM>($"{ResourceName}/{existeParametro.Id}", JsonConvert.SerializeObject(dadosParametro, JsonSerializerSetting.Edit));
 

@@ -17,18 +17,17 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         public IHttpActionResult Post(TransmissaoNFSVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {                
+            {
+                unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
+
+                unitOfWork.TransmissaoNFSBL.AglutinarServicos(entity);
+                unitOfWork.TransmissaoNFSBL.MontarValores(entity);
+
+                entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
+                unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
+
                 try
                 {
-                    unitOfWork.TransmissaoNFSBL.ValidaModel(entity);
-
-                    unitOfWork.TransmissaoNFSBL.AglutinarServicos(entity);
-                    unitOfWork.TransmissaoNFSBL.MontarValores(entity);
-
-                    entity.ItemTransmissaoNFSVM.AssinaturaHash = Assinatura.GeraAssinatura(entity.ItemTransmissaoNFSVM);
-
-                    unitOfWork.IbptNcmBL.CalculaImpostoIBPTNBS(entity);
-
                     var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
@@ -62,7 +61,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     }
                 }
             };
-            
+
             var validacao = new NFSE001Prod.NFSE001().SCHEMAX(AppDefault.Token, entity.Producao, entity.ItemTransmissaoNFSVM.Prestador.CodigoMunicipioIBGE, notaSchema, false, false);
             var response = new TransmissaoNFSRetornoVM()
             {
@@ -120,7 +119,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 {
                     new NFSE001.NF001
                     {
-                        ID = entity.ItemTransmissaoNFSVM.NotaId, 
+                        ID = entity.ItemTransmissaoNFSVM.NotaId,
                         XML = Convert.FromBase64String(xmlBase64)
                     }
                 }

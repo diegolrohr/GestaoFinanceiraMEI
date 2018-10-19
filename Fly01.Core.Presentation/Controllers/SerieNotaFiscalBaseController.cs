@@ -131,15 +131,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "serie",
-                Class = "col s12 m4",
-                Label = "Série",
-                Required = true,
-                MaxLength = 3
-            });
-
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoOperacaoSerieNotaFiscal",
@@ -154,6 +145,15 @@ namespace Fly01.Core.Presentation.Controllers
                         Function = "fnChangeTipoOperacao"
                     }
                 }
+            });
+
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "serie",
+                Class = "col s12 m4",
+                Label = "Série",
+                Required = true,
+                MaxLength = 3
             });
 
             config.Elements.Add(new InputCustommaskUI

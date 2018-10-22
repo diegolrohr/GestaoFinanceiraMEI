@@ -26,7 +26,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoAtividade(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE.ToString()), new Error("Código atividade é um dado obrigatório.", "CodigoCNAE"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE), new Error("Código CNAE da atividadeCNAE é um dado obrigatório.", "CodigoCNAE"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Atividade.CodigoCNAE?.Length > 15, new Error("O código CNAE da atividade, não pode ter mais que 15 caracteres.", "CodigoCNAE"));
         }
     }
 }

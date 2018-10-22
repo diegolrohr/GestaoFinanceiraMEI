@@ -50,6 +50,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// Enviar vazio para TSS
+        /// Número do processo judicial ou administrativo de suspensão da exigibilidade
         /// </summary>
         [XmlElement(ElementName = "numproc")]
         public string NumeroProcedimento

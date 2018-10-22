@@ -74,8 +74,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarNumeroEndereco(TransmissaoNFSVM entity)
         {
-            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco), new Error("Número do local de prestação do serviço é um dado obrigatório.", "Logradouro"));
-            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco?.Length > 9, new Error("Número do local de prestação do serviço, não pode ter mais que 100 caracteres.", "Logradouro"));
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco), new Error("Número do local de prestação do serviço é um dado obrigatório.", "NumeroEndereco"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco?.Length > 9, new Error("Número do local de prestação do serviço, não pode ter mais que 100 caracteres.", "NumeroEndereco"));
         }
     }
 }

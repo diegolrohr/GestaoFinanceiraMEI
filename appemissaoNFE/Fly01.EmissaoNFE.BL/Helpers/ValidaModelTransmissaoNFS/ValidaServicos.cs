@@ -15,7 +15,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             }
             else
             {
-                entity.Fail(!entity.ItemTransmissaoNFSVM.Servicos.Any(x => x.IsServicoPrioritario), new Error("Defina um serviço prioritário para aglutinação."));
                 var count = 1;
                 foreach (var item in entity.ItemTransmissaoNFSVM.Servicos)
                 {

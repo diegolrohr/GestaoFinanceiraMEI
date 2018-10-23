@@ -8,7 +8,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Pagamento
     {
         [XmlElement(ElementName = "parcela")]
-        public string Parcela { get; set; }
+        public int NumeroParcela { get; set; }
 
         [XmlIgnore]
         public DateTime DataVencimento { get; set; }

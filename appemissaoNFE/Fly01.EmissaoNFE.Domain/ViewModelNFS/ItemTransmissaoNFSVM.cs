@@ -88,6 +88,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
             return Pagamentos != null && (Pagamentos.ListaPagamentos != null && Pagamentos.ListaPagamentos.Any());
         }
 
+        //TODO:tag deducoes
+        //TODO:tag construcao
+
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }
 

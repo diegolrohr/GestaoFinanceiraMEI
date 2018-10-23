@@ -7,7 +7,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     public class Fatura
     {
         [XmlElement(ElementName = "numero")]
-        public string Numero { get; set; }
+        public int Numero { get; set; }
 
         [XmlIgnore]
         public double Valor { get; set; }

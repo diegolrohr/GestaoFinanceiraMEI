@@ -142,12 +142,8 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "isServicoPrioritario",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Serviço prioritário",
-                //DomEvents = new List<DomEventUI>
-                //{
-                //    new DomEventUI { DomEvent = "change", Function = "fnChangeCheckButtonSMS" }
-                //}
             });
             config.Helpers.Add(new TooltipUI
             {

@@ -6,6 +6,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     [XmlRoot(ElementName = "servico")]
     public class Servico
     {
+        [XmlIgnore]
+        public bool IsServicoPrioritario { get; set; }
+
         [XmlElement(ElementName = "codigo")]
         public string CodigoIss { get; set; }
 

@@ -1,0 +1,25 @@
+﻿using Fly01.EmissaoNFE.Domain.Enums;
+using System.Xml.Serialization;
+
+namespace Fly01.EmissaoNFE.Domain.Entities.NFS
+{
+    [XmlRoot(ElementName = "fatura")]
+    public class Fatura
+    {
+        [XmlElement(ElementName = "numero")]
+        public string Numero { get; set; }
+
+        [XmlIgnore]
+        public double Valor { get; set; }
+
+        /// <summary>
+        /// Valor da fatura do documento, 15,4
+        /// </summary>
+        [XmlElement(ElementName = "valor")]
+        public string ValorString
+        {
+            get { return Valor.ToString("0.0000").Replace(",", "."); }
+            set { Valor = double.Parse(value.Replace(".", ",")); }
+        }
+    }
+}

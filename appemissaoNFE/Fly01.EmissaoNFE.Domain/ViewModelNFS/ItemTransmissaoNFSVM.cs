@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
@@ -69,6 +70,23 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
+
+        //TODO: ver faturas e pagamentos, repete a cada parcela nos 2? ou agrupado
+        [XmlArray("faturas"), XmlArrayItem(typeof(Fatura), ElementName = "fatura")]
+        public List<Fatura> Faturas { get; set; }
+
+        public bool ShouldSerializeFaturas()
+        {
+            return Faturas != null && Faturas.Any();
+        }
+
+        [XmlElement(ElementName = "pagamentos")]
+        public Pagamentos Pagamentos { get; set; }
+
+        public bool ShouldSerializePagamentos()
+        {
+            return Pagamentos != null && (Pagamentos.ListaPagamentos != null && Pagamentos.ListaPagamentos.Any());
+        }
 
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }

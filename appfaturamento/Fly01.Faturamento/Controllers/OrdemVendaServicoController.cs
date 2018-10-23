@@ -132,18 +132,29 @@ namespace Fly01.Faturamento.Controllers
             #region Helpers
             config.Helpers.Add(new TooltipUI
             {
-                Id = "servicoId",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Ao adicionar mais de 1 serviço e se o pedido Gerar Nota Fiscal, os serviços serão aglutinados em 1 único serviço para o XML de transmissão. Será concatenado as descrições, os valores e impostos somados; porém código Nbs, código Iss e Código Tributário Municipal, será considerado do primeiro serviço."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
                 Id = "valorOutrasRetencoes",
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Faturar, será descontado do valor total, junto as demais retenções, de acordo com as configurações do grupo tributário informado."
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "isServicoPrioritario",
+                Class = "col s12 m6",
+                Label = "Serviço prioritário",
+                //DomEvents = new List<DomEventUI>
+                //{
+                //    new DomEventUI { DomEvent = "change", Function = "fnChangeCheckButtonSMS" }
+                //}
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "isServicoPrioritario",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Só é permitido um serviço prioritário por pedido. Ao adicionar mais de 1 serviço e se o pedido gerar nota fiscal, os serviços serão agrupados em 1 único serviço para o XML de transmissão. Serão agrupados descrições e valores. Os impostos serão somados; porém, código Nbs, código Iss e Código Tributário Municipal, será considerado do serviço marcado como prioritário."
                 }
             });
             #endregion

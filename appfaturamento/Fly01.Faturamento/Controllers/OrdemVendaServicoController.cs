@@ -150,7 +150,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "isServicoPrioritario",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Só é permitido um serviço prioritário por pedido. Ao adicionar mais de 1 serviço e se o pedido gerar nota fiscal, os serviços serão agrupados em 1 único serviço para o XML de transmissão. Serão agrupados descrições e valores. Os impostos serão somados; porém, código Nbs, código Iss e Código Tributário Municipal, será considerado do serviço marcado como prioritário."
+                    Text = "Só é permitido um serviço prioritário por pedido. Ao adicionar mais de 1 serviço e se o pedido gerar nota fiscal, os serviços serão agrupados em 1 único serviço para o XML de transmissão. Serão agrupados descrições. Valores e impostos serão somados; porém, código Nbs, código Iss e Código Tributário Municipal, será considerado do serviço marcado como prioritário."
                 }
             });
             #endregion

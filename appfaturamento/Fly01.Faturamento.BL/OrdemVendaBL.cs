@@ -107,13 +107,13 @@ namespace Fly01.Faturamento.BL
                         entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
                     }
                     
-                    entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null, new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
+                    entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
-                entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
+                entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao) && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
                 entity.Fail(entity.TipoVenda != TipoVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));

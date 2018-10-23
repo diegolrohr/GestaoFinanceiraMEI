@@ -15,6 +15,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("descricaoOutrasRetencoes")]
         public string DescricaoOutrasRetencoes { get; set; }
 
+        [JsonProperty("isServicoPrioritario")]
+        public bool IsServicoPrioritario { get; set; }
+
         #region NavigationProperties
 
         [JsonProperty("servico")]

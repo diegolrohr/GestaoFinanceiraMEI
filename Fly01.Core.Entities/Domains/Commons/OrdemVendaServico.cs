@@ -11,6 +11,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double ValorOutrasRetencoes { get; set; }
 
         public string DescricaoOutrasRetencoes { get; set; }
+        
+        public bool IsServicoPrioritario { get; set; }
 
         public virtual Servico Servico { get; set; }
     }

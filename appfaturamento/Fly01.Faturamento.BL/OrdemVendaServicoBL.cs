@@ -22,7 +22,7 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.Total <= 0, new Error("O Total deve ser superior a zero", "total"));
 
             var jaExiste = All.Any(x => x.OrdemVendaId == entity.OrdemVendaId && x.ServicoId == entity.ServicoId && x.Id != entity.Id);
-            entity.Fail(jaExiste, new Error("Este serviço com este grupo tributário já está adicionado"));
+            entity.Fail(jaExiste, new Error("Este serviço já está adicionado"));
 
             var previusProritario = All.Where(x => x.OrdemVendaId == entity.OrdemVendaId && x.IsServicoPrioritario && x.Id != entity.Id).FirstOrDefault();
             if (entity.IsServicoPrioritario && previusProritario != null)

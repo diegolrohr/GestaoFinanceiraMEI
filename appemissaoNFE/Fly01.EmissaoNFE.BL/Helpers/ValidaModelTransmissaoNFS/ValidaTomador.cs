@@ -97,6 +97,11 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.Bairro?.Length > 50, new Error("Bairro do tomador, não pode ter mais que 50 caracteres.", "Bairro"));
         }
 
+        private static void ValidarComplemento(TransmissaoNFSVM entity)
+        {
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.ComplementoEndereco?.Length > 30, new Error("Complemento do tomador, não pode ter mais que 30 caracteres.", "ComplementoEndereco"));
+        }
+
         private static void ValidarLogradouro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Logradouro), new Error("Logradouro do tomador é um dado obrigatório.", "Logradouro"));

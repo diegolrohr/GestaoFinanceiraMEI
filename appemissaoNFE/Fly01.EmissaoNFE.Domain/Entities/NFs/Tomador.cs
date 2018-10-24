@@ -37,6 +37,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
 
+        [XmlElement(ElementName = "complend")]
+        public string ComplementoEndereco { get; set; }
+
         /// <summary>
         /// O tipo é fixo conforme código FIRST
         /// </summary>
@@ -53,6 +56,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "bairro")]
         public string Bairro { get; set; }
 
+        //TODO: revisar
         [XmlElement(ElementName = "codmunibge")]
         public string CodigoMunicipioIBGE { get; set; }
 

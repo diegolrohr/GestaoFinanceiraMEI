@@ -113,6 +113,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         public bool ParametroValidoNFS { get; set; }
 
         public TipoTributacaoNFS TipoTributacaoNFS { get; set; }
+
+        public TipoRegimeEspecialTributacao TipoRegimeEspecialTributacao { get; set; }
+
         #endregion
     }
 }

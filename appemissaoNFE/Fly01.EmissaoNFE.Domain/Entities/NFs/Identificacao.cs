@@ -34,7 +34,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// O tipo é fixo como RPS (1)
         /// 1 – RPS, 2 – Nota Fiscal Conjugada(Mista), 3 – Cupom., 4 - NFTS
         /// </summary>
-        [XmlElement(ElementName = "tipo")] //TipoNFs
+        [XmlElement(ElementName = "tipo")]
         public TipoSimNao TipoNFs
         {
             get
@@ -62,7 +62,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// O tipo é fixo pois sempre recolhe ISS
         /// 1 – A receber; 2 – Retido na fonte.
         /// </summary>
-        //TODO: ver regra apro[20] é fixo 2?
         [XmlElement(ElementName = "tiporecolhe")]
         public TipoSimNao TipoRecolhimento
         {
@@ -127,14 +126,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// Algumas descrições e/ou tipos de são específicos para o município de Nova Friburgo - RJ.
         /// </summary>
         [XmlElement(ElementName = "regimeesptrib")]
-        public string TipoRegimeEspecialTributacao
-        {
-            get
-            {
-                return TipoTributacao == TipoTributacaoNFS.DentroMunicipio ? "1" : "2";
-            }
-            set { }
-        }
+        public TipoRegimeEspecialTributacao TipoRegimeEspecialTributacao { get; set; }
 
         /// <summary>
         /// Forma de pagamento do documento. Tamanho 100
@@ -182,6 +174,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// </summary>
         //[XmlElement(ElementName = "codverificacao")]
         [XmlIgnore]//TODO: Ver com SP AIDF e ver sobre tag Substituicao
-        public DateTime CodigoVerificacao { get; set; }
+        public string CodigoVerificacao { get; set; }
     }
 }

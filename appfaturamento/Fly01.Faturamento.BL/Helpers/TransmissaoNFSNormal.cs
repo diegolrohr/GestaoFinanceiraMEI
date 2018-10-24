@@ -189,6 +189,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 RazaoSocial = Cliente.Nome ?? "",
                 Logradouro = Cliente.Endereco ?? "",
                 NumeroEndereco = Cliente.Numero ?? "",
+                ComplementoEndereco = Cliente.Complemento ?? "",
                 Bairro = Cliente.Bairro ?? "",
                 CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
                 Cidade = Cliente.Cidade?.Nome ?? "",
@@ -250,6 +251,7 @@ namespace Fly01.Faturamento.BL.Helpers
             return new Identificacao()
             {
                 TipoTributacao = ParametrosTributarios.TipoTributacaoNFS,
+                TipoRegimeEspecialTributacao = ParametrosTributarios.TipoRegimeEspecialTributacao,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? "",
                 DataHoraEmissao = DateTime.Now,
                 SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),

@@ -67,7 +67,8 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaINSS = "0",
                     aliquotaImpostoRenda = "0",
                     incentivoCultura = false,
-                    formatarCodigoISS = false
+                    formatarCodigoISS = false,
+                    tipoRegimeEspecialTributacao = "MicroEmpresaMunicipal"
                 }, JsonRequestBehavior.AllowGet);
 
             return Json(new
@@ -97,7 +98,8 @@ namespace Fly01.Core.Presentation.Controllers
                 aliquotaINSS = parametroTributario.AliquotaINSS,
                 aliquotaImpostoRenda = parametroTributario.AliquotaImpostoRenda,
                 incentivoCultura = parametroTributario.IncentivoCultura,
-                formatarCodigoISS = parametroTributario.FormatarCodigoISS
+                formatarCodigoISS = parametroTributario.FormatarCodigoISS,
+                tipoRegimeEspecialTributacao = parametroTributario.TipoRegimeEspecialTributacao,
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -323,13 +325,21 @@ namespace Fly01.Core.Presentation.Controllers
                 )
             });
 
-            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m4", Label = "Usuário Web Server", MaxLength = 200 });
+            form3.Elements.Add(new SelectUI
+            {
+                Id = "tipoRegimeEspecialTributacao",
+                Class = "col s12 m4",
+                Label = "Regime Especial Tributação",
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoRegimeEspecialTributacao)))
+            });
 
-            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m4", Label = "Senha Web Server", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "usuarioWebServer", Class = "col s12 m3", Label = "Usuário Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m4", Label = "Chave de Autenticação", MaxLength = 200 });
+            form3.Elements.Add(new InputPasswordUI { Id = "senhaWebServer", Class = "col s12 m3", Label = "Senha Web Server", MaxLength = 200 });
 
-            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m4", Label = "Autorização", MaxLength = 200 });
+            form3.Elements.Add(new InputTextUI { Id = "chaveAutenticacao", Class = "col s12 m3", Label = "Chave de Autenticação", MaxLength = 200 });
+
+            form3.Elements.Add(new InputTextUI { Id = "autorizacao", Class = "col s12 m3", Label = "Autorização", MaxLength = 200 });
 
             #endregion
 

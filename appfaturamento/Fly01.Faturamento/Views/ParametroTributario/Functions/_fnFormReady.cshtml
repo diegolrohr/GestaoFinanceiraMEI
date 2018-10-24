@@ -39,6 +39,8 @@
                 $("input#aliquotaImpostoRenda").val(data.aliquotaImpostoRenda);
                 $("input#incentivoCultura").prop("checked", data.incentivoCultura);
                 $("input#formatarCodigoISS").prop("checked", data.formatarCodigoISS);
+                $('#tipoRegimeEspecialTributacao').val(data.tipoRegimeEspecialTributacao);
+                $('select#tipoRegimeEspecialTributacao').material_select();
                 fly01.fn.updateTextFields();
                 fly01.loading.stop();
             },

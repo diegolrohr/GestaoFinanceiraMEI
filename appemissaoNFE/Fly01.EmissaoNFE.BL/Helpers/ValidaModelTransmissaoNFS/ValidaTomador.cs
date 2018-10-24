@@ -19,6 +19,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
                 ValidarCpfCnpj(entity, entitiesBLToValidateNFS);
                 ValidarRazaoSocial(entity);
                 ValidarLogradouro(entity);
+                ValidarNumeroEndereco(entity);
                 ValidarBairro(entity);
                 ValidarCodigoMunicipioIBGE(entity, entitiesBLToValidateNFS);
                 ValidarCodigoMunicipioSIAFI(entity, entitiesBLToValidateNFS);
@@ -93,16 +94,30 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarBairro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Bairro), new Error("Bairro do tomador é um dado obrigatório.", "Bairro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.Bairro?.Length > 50, new Error("Bairro do tomador, não pode ter mais que 50 caracteres.", "Bairro"));
+        }
+
+        private static void ValidarComplemento(TransmissaoNFSVM entity)
+        {
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.ComplementoEndereco?.Length > 30, new Error("Complemento do tomador, não pode ter mais que 30 caracteres.", "ComplementoEndereco"));
         }
 
         private static void ValidarLogradouro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.Logradouro), new Error("Logradouro do tomador é um dado obrigatório.", "Logradouro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.Logradouro?.Length > 100, new Error("Logradouro do tomador, não pode ter mais que 100 caracteres.", "Logradouro"));
+        }
+
+        private static void ValidarNumeroEndereco(TransmissaoNFSVM entity)
+        {
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.NumeroEndereco), new Error("Número do endereço do tomador é um dado obrigatório.", "NumeroEndereco"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.NumeroEndereco?.Length > 9, new Error("Número do endereço do tomador, não pode ter mais que 9 caracteres.", "NumeroEndereco"));
         }
 
         private static void ValidarRazaoSocial(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Tomador.RazaoSocial), new Error("Razão social do tomador é obrigatório.", "RazaoSocial"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Tomador.RazaoSocial?.Length > 120, new Error("Razão social do tomador, não pode ter mais de 120 caracteres.", "RazaoSocial"));
         }
 
         private static void ValidarCpfCnpj(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)

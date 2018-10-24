@@ -32,9 +32,10 @@ namespace Fly01.EmissaoNFE.BL
             var autorizada = "100/150";
             var autorizadaDPEC = "124";
             var cancelada = "101/151/15";
-            var denegada = "110/301/302/303/999";
+            var denegada = "110/301/302/303";
             var inutilizada = "30/102";
             var falhaCancelamento = "026";
+            //999 | Rejeição: Erro não catalogado(informar a mensagem de erro capturado no tratamento da exceção)
 
             var FalhaSchema = recomendacao.Substring(0, 3) == "002";
             var NaoAssinada = recomendacao.Substring(0, 3) == "003";

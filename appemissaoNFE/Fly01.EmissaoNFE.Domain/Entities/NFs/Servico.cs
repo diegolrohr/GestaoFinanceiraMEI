@@ -28,6 +28,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "cnae")]
         public string CNAE { get; set; }
 
+        /// <summary>
+        /// Código de tributação do serviço.
+        /// </summary>
         [XmlElement(ElementName = "codtrib")]
         public string CodigoTributario { get; set; }
 
@@ -37,6 +40,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double Quantidade { get; set; }
 
+        /// <summary>
+        /// 15,2
+        /// </summary>
         [XmlElement(ElementName = "quant")]
         public string QuantidadeString
         {
@@ -47,6 +53,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorUnitario { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valunit")]
         public string ValorUnitarioString
         {
@@ -57,6 +66,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorTotal { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valtotal")]
         public string ValorTotalString
         {
@@ -67,6 +79,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double BaseCalculo { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "basecalc")]
         public string BaseCalculoString
         {
@@ -89,6 +104,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorPIS { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valpis")]
         public string ValorPISString
         {
@@ -180,6 +198,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// Se Ibge 3106200 deixar desccond = 0 e inverter com DescontoIncondicional
+        /// Valor do desconto condicionado do serviço. 15,4
         /// </summary>
         [XmlIgnore]
         public double DescontoCondicional { get; set; }
@@ -196,7 +215,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlIgnore]
         public double DescontoIncondicional { get; set; }
-        
+
+        /// <summary>
+        /// Valor do desconto incondicionado do serviço. 15,4
+        /// </summary>
         [XmlElement(ElementName = "descinc")]
         public string DescontoIncondicionalString
         {
@@ -208,6 +230,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             }
             set { DescontoIncondicional = double.Parse(value.Replace(".", ",")); }
         }
+
+        //[XmlElement(ElementName = "cst")] //TODO: ver regra, quais valores?
+        [XmlIgnore]
+        public string UnidadeMedida { get; set; }
+
+        /// <summary>
+        /// Código fiscal de prestação de serviço.
+        /// </summary>
+        //[XmlElement(ElementName = "cfps")]//TODO: ver regra
+        [XmlIgnore]
+        public string CodigoFiscalPrestacao { get; set; }
 
         /// <summary>
         /// Fixo 0, Origem Nacional, conforme FIRST

@@ -62,6 +62,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// O tipo é fixo pois sempre recolhe ISS
         /// 1 – A receber; 2 – Retido na fonte.
         /// </summary>
+        //TODO: ver regra apro[20] é fixo 2?
         [XmlElement(ElementName = "tiporecolhe")]
         public TipoSimNao TipoRecolhimento
         {

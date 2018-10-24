@@ -408,6 +408,18 @@
     <Compile Include="Migrations\201810112018121_AlterServicoAddCodIssEspecifico.Designer.cs">
       <DependentUpon>201810112018121_AlterServicoAddCodIssEspecifico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810231755581_AlterOrdemVendaServicoAddIsServicoPrioritario.cs" />
+    <Compile Include="Migrations\201810231755581_AlterOrdemVendaServicoAddIsServicoPrioritario.Designer.cs">
+      <DependentUpon>201810231755581_AlterOrdemVendaServicoAddIsServicoPrioritario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810232027342_AlterNFSeServicoAddIsServicoPrioritario.cs" />
+    <Compile Include="Migrations\201810232027342_AlterNFSeServicoAddIsServicoPrioritario.Designer.cs">
+      <DependentUpon>201810232027342_AlterNFSeServicoAddIsServicoPrioritario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.cs" />
+    <Compile Include="Migrations\201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.Designer.cs">
+      <DependentUpon>201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -707,6 +719,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810112018121_AlterServicoAddCodIssEspecifico.resx">
       <DependentUpon>201810112018121_AlterServicoAddCodIssEspecifico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810231755581_AlterOrdemVendaServicoAddIsServicoPrioritario.resx">
+      <DependentUpon>201810231755581_AlterOrdemVendaServicoAddIsServicoPrioritario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810232027342_AlterNFSeServicoAddIsServicoPrioritario.resx">
+      <DependentUpon>201810232027342_AlterNFSeServicoAddIsServicoPrioritario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.resx">
+      <DependentUpon>201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

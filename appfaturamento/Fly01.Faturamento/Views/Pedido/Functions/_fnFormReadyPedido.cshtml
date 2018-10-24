@@ -31,7 +31,7 @@
         var idPedido = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-        if (geraNotaFiscal) {
+        if (geraNotaFiscal && fly01._.dtOrdemVendaProdutos.data(0).length > 0) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
             $('#mensagemPadraoNotaField').show();
@@ -285,6 +285,16 @@
             $('#btnComplementar').click();
         }
     }
+
+    function fnValidarCamposDeProdutos() {
+        if (fly01._.dtOrdemVendaProdutos.data(0).length == 0) {
+            $('#movimentaEstoque').prop('checked', false);
+            $('#movimentaEstoqueField').hide();
+        } else {
+            $('#movimentaEstoqueField').show();
+        }
+    }
+
     function fnFormReadyPedido() {
         fnIsNovoPedido();
         fnClickComplementarIsDevolucao();
@@ -320,23 +330,27 @@
         fnSetInformacoes();
 
         $('li#stepFinalizar div.step-title').click(function () {
+            fnValidarCamposDeProdutos();
             if (!isCreate() && $("form#fly01frm").valid()) {
                 EstoqueNegativoETotal();
             }
         });
         $('#stepTransporte > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            fnValidarCamposDeProdutos();
             if (!isCreate() && $("form#fly01frm").valid()) {
                 EstoqueNegativoETotal();
             }
         });
 
         $('#stepFinanceiro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            fnValidarCamposDeProdutos();
             if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar") {
                 EstoqueNegativoETotal();
             }
         });
 
         $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            fnValidarCamposDeProdutos();
             if (!isCreate() && $("form#fly01frm").valid() && $('input#tipoVenda').val() == "Complementar" && $('#tipoNfeComplementar').val() == "ComplIcms") {
                 EstoqueNegativoETotal();
             }

@@ -17,6 +17,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// O tipo é fixo conforme código FIRST
+        /// 1 – Avenida; 2 – Rua; 3 – Rodovia; 4 – Ruela; 5 – Rio; 6 – Sítio; 7 – Sup Quadra; 8 – Travessa; 9 – Vale;
+        /// 10 – Via; 11 – Viaduto; 12 – Viela; 13 – Vila 14 – Vargem 15– Alameda 16 – Praça 17 – Beco 18 – Travessa 19 – Via Elevada 20 – Parque
+        /// 21 – largo 22 – Viela Particular 23 – Pátio 24 – Viela Sanitária 25 – Ladeira 26 – Jardim 27 – Estrada 28 – Ponte 29 – Rua Particular 30 – Praia
         /// </summary>
         [XmlElement(ElementName = "tipologr")]
         private string TipoLogradouro
@@ -34,6 +37,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
 
+        [XmlElement(ElementName = "complend")]
+        public string ComplementoEndereco { get; set; }
+
         /// <summary>
         /// O tipo é fixo conforme código FIRST
         /// </summary>
@@ -50,6 +56,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "bairro")]
         public string Bairro { get; set; }
 
+        //TODO: revisar
         [XmlElement(ElementName = "codmunibge")]
         public string CodigoMunicipioIBGE { get; set; }
 
@@ -137,6 +144,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlElement(ElementName = "situacaoespecial")]
         public TipoSituacaoEspecialNFS SituacaoEspecial { get; set; }
+
+        /// <summary>
+        /// 1 – Comércio/Indústria 2 – Pessoa Física  3 – Prestação de Serviço  4 – Empressa pública 5 – Cooperado
+        /// </summary>
+        //[XmlElement(ElementName = "tipopessoa")]
+        [XmlIgnore]
+        public string TipoPessoa { get; set; }
 
         [XmlIgnore]
         public bool ConsumidorFinal { get; set; }

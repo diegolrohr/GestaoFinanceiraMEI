@@ -149,6 +149,7 @@ namespace Fly01.Faturamento.BL.Helpers
 
                 result.Add(new ServicoEmissao()
                 {
+                    IsServicoPrioritario = NFSeServico.IsServicoPrioritario,
                     CodigoIss = codigoIss,
                     CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,

@@ -334,7 +334,8 @@ namespace Fly01.Faturamento.BL
                             Desconto = x.Desconto,
                             Observacao = x.Observacao,
                             ValorOutrasRetencoes = x.ValorOutrasRetencoes,
-                            DescricaoOutrasRetencoes = x.DescricaoOutrasRetencoes
+                            DescricaoOutrasRetencoes = x.DescricaoOutrasRetencoes,
+                            IsServicoPrioritario = x.IsServicoPrioritario
                         }).ToList();
 
                 var nfeServicosTributacao = new List<NotaFiscalItemTributacao>();

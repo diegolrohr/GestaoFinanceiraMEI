@@ -42,7 +42,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions", "Feriado", null, Request.Url.Scheme) + "?fns="
             };
 
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "Feriado"), UrlFunctions = Url.Action("Functions", "Feriado", null, Request.Url.Scheme) + "?fns=" };
+            var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad", "Feriado"), UrlFunctions = Url.Action("Functions", "Feriado", null, Request.Url.Scheme) + "?fns=" };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {

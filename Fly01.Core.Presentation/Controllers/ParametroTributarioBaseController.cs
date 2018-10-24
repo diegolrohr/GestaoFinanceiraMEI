@@ -137,6 +137,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var form1 = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),

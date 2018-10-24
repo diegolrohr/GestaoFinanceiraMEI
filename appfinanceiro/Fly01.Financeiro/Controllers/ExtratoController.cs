@@ -277,6 +277,7 @@ namespace Fly01.Financeiro.Controllers
             });
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string> { "__format" },

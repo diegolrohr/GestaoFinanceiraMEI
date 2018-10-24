@@ -69,8 +69,9 @@ namespace Fly01.Core.Presentation.Controllers
                 SidebarUrl = @Url.Action("Sidebar")
             };
 
-            cfg.Content.Add(new FormUI()
+            cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 Elements = new List<BaseUI>()
                 {
                     new LabelSetUI()

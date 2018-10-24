@@ -106,6 +106,7 @@ namespace Fly01.Compras.Controllers
             {
                 var cfgForm = new FormUI
                 {
+                    Id = "fly01frm",
                     ReadyFn = "fnUpdateDataFinal",
                     UrlFunctions = url.Action("Functions", "OrdemCompra") + "?fns=",
                     Elements = new List<BaseUI>()
@@ -135,6 +136,7 @@ namespace Fly01.Compras.Controllers
 
             var config = new DataTableUI
             {
+                Id = "fly01dt",
                 UrlGridLoad = url.Action(gridLoad, "OrdemCompra"),
                 Parameters = new List<DataTableUIParameter>
                 {

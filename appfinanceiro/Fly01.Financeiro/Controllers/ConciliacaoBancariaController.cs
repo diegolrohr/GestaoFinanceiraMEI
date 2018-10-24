@@ -363,6 +363,7 @@ namespace Fly01.Financeiro.Controllers
 
             DataTableUI config = new DataTableUI
             {
+                Id = "fly01dt",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions", "ConciliacaoBancaria", null, Request.Url.Scheme) + "?fns="
             };
@@ -414,6 +415,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("CreateConciliacao"),
@@ -516,6 +518,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("BuscarExistentes"),

@@ -53,6 +53,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Class = "col s12",
@@ -79,6 +80,7 @@ namespace Fly01.Estoque.Controllers
 
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 Class = "col s12",
                 Elements = new List<BaseUI>
                 {

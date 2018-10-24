@@ -13,12 +13,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public double Valor { get; set; }
 
         /// <summary>
-        /// Valor da fatura do documento, 15,4
+        /// Valor da fatura do documento
         /// </summary>
         [XmlElement(ElementName = "valor")]
         public string ValorString
         {
-            get { return Valor.ToString("0.0000").Replace(",", "."); }
+            get { return Valor.ToString("0.00").Replace(",", "."); }
             set { Valor = double.Parse(value.Replace(".", ",")); }
         }
     }

@@ -378,7 +378,7 @@ namespace Fly01.Core.Presentation.Controllers
         public JsonResult ImportaParametro(string mensagem, double simplesNacional, double fcp, double iss, double pispasep, double cofins,
             string numeroRetorno, string modalidade, string versao, string ambiente, string tipoPresencaComprador, string horarioVerao,
             string tipoHorario, string versaoNFSe, string usuarioWebServer, string senhaWebServer, string chaveAutenticacao, string autorizacao,
-              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS)
+              string  tipoTributacaoNFS, string tipoAmbienteNFS, double csll, double inss, double impostoRenda, bool incentivoCultura, bool formatarCodigoISS, string tipoRegimeEspecialTributacao)
         {
             try
             {
@@ -409,7 +409,8 @@ namespace Fly01.Core.Presentation.Controllers
                     aliquotaINSS = double.IsNaN(inss) ? 0 : inss,
                     aliquotaImpostoRenda = double.IsNaN(impostoRenda) ? 0 : impostoRenda,
                     incentivoCultura = incentivoCultura,
-                    formatarCodigoISS = formatarCodigoISS
+                    formatarCodigoISS = formatarCodigoISS,
+                    tipoRegimeEspecialTributacao = tipoRegimeEspecialTributacao
                 };
 
                 if (dadosParametro.mensagemPadraoNota.Length > 4000)

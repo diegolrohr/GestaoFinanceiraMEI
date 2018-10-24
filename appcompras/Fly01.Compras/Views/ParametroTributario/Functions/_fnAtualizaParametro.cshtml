@@ -61,7 +61,8 @@
                 inss: $("#aliquotaINSS").val(),
                 impostoRenda: $("#aliquotaImpostoRenda").val(),
                 incentivoCultura: $("input#incentivoCultura").prop("checked"),
-                formatarCodigoISS: $("input#formatarCodigoISS").prop("checked")
+                formatarCodigoISS: $("input#formatarCodigoISS").prop("checked"),
+                tipoRegimeEspecialTributacao: $('#tipoRegimeEspecialTributacao').val()
             },
             success: function (response) {
                 if (response.success) {

@@ -59,20 +59,20 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Editado com sucesso.", "success");
+                        $$$.toast("Editado com sucesso.", "success");
                         var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
-                        fly01.go("@Url.Action("List", "ContaPagar")");
+                        $$$.go("@Url.Action("List", "ContaPagar")");
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
     }
 </script>

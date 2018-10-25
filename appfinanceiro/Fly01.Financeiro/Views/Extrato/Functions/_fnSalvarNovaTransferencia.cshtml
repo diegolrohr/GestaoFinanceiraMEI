@@ -9,7 +9,7 @@
             return false;
         }
         else if (contaOrigem == contaDestino) {
-            fly01.toast("Conta bancária de origem e destino, devem ser distintas.", "error");
+            $$$.toast("Conta bancária de origem e destino, devem ser distintas.", "error");
             return false;
         }
         else {
@@ -26,17 +26,17 @@
                     if (data.success) {
                         var strMsg = "Transferência realizada com sucesso.";
                         if (data.message !== "") strMsg = data.message;
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
                         fnAtualizar();
 
-                        fly01._.fly01frmNovaTransf.close();
+                        $$$._.fly01frmNovaTransf.close();
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                     $('body').addClass('loaded');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     $('body').addClass('loaded');
                 }
             });

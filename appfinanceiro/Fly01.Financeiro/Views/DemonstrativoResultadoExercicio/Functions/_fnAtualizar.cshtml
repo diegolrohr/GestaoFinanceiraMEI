@@ -17,10 +17,10 @@
             url: '@Url.Action("Total", "ReceitaPorCategoria")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardReceitas.info(data.total);
+                $$$._.fly01cardReceitas.info(data.total);
             },
             error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
+                $$$.toast(textStatus, 'error');
             }
         });
 
@@ -28,10 +28,10 @@
             url: '@Url.Action("Total", "DespesaPorCategoria")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardDespesas.info(data.total);
+                $$$._.fly01cardDespesas.info(data.total);
             },
             error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
+                $$$.toast(textStatus, 'error');
             }
         });
 
@@ -39,10 +39,10 @@
             url: '@Url.Action("Total", "DemonstrativoResultadoExercicio")' + '?dataInicial=' + dataInicial + "&dataFinal=" + dataFinal,
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardTotal.info(data.total);
+                $$$._.fly01cardTotal.info(data.total);
             },
             error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
+                $$$.toast(textStatus, 'error');
             }
         });
     }
@@ -66,14 +66,14 @@
     function fnAtualizar($event) {
         if (!datasValidas()) {
             if (!$event)
-                fly01.toast("Informe a data inicial e a data final.", 'error');
+                $$$.toast("Informe a data inicial e a data final.", 'error');
             else
                 return;
         }
         else {
             __getTotais();
-            fly01._.fly01dtreceitas.refresh();
-            fly01._.fly01dtdespesas.refresh();
+            $$$._.fly01dtreceitas.refresh();
+            $$$._.fly01dtdespesas.refresh();
         }
     }
 </script>

@@ -31,7 +31,7 @@
         var idPedido = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
-        if (geraNotaFiscal && fly01._.dtOrdemVendaProdutos.data(0).length > 0) {
+        if (geraNotaFiscal && $$$._.dtOrdemVendaProdutos.data(0).length > 0) {
             $("#naturezaOperacaoField").show();
             $("input#naturezaOperacao").rules("add", { required: true });
             $('#mensagemPadraoNotaField').show();
@@ -43,7 +43,7 @@
             $('#mensagemPadraoNotaField').hide();
         }
 
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
@@ -60,7 +60,7 @@
                 $('input#totalImpostosServicosNaoAgrega').val(data.total.TotalImpostosServicosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
@@ -71,19 +71,19 @@
                 $('input#totalImpostosServicosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 
     function getInformacoesComplementares() {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("GetInformacoesComplementares", "OrdemVenda")',
             type: "GET",
@@ -92,18 +92,18 @@
         .done(function (data) {
             if (data.success) {
                 $('#mensagemPadraoNota').val(data.infcomp);
-                fly01.fn.updateTextFields("fly01frm");
-                fly01.loading.stop();
+                $$$.fn.updateTextFields("fly01frm");
+                $$$.loading.stop();
             }
             else {
-                fly01.fn.submitErrorHandler(null, data.message);
-                fly01.loading.stop();
+                $$$.fn.submitErrorHandler(null, data.message);
+                $$$.loading.stop();
             }
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 
@@ -183,7 +183,7 @@
             e.preventDefault();
             if (!$(this).valid()) return false;
 
-            fly01.loading.start();
+            $$$.loading.start();
 
             $('input#numero').removeAttr('disabled');
             $('input#chaveNFeReferenciada').removeAttr('disabled');
@@ -199,7 +199,7 @@
             $('input#orcamentoOrigemNumero').attr('disabled', 'disabled');
             $('select#tipoNfeComplementar').attr('disabled', 'disabled');
             $('select#tipoNfeComplementar').material_select();
-            fly01.fn.updateTextFields();
+            $$$.fn.updateTextFields();
 
             var url;
             if (isCreate()) {
@@ -217,7 +217,7 @@
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
                     if (data.success) {
-                        fly01.loading.stop();
+                        $$$.loading.stop();
 
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeletePedido) strMsg = data.message;
@@ -228,8 +228,8 @@
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
 
-                            fly01._.dtOrdemVendaProdutos.refresh();
-                            fly01._.dtOrdemVendaServicos.refresh();
+                            $$$._.dtOrdemVendaProdutos.refresh();
+                            $$$._.dtOrdemVendaServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
@@ -237,7 +237,7 @@
                             if (jsonData.tipoVenda == "Devolucao" || jsonData.tipoVenda == "Complementar") {
                                 //preencher os campos
                                 $("div#clienteIdField").show();
-                                fly01._.fly01frm.refresh(data.id);
+                                $$$._.fly01frm.refresh(data.id);
                                 $('li#stepProdutos div.step-title').click();
                             }
                             getInformacoesComplementares();
@@ -245,21 +245,21 @@
                             return true;
                         }
                         else {
-                            fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List","OrdemVenda")");
+                            $$$.toast(strMsg, "success");
+                            $$$.go("@Url.Action("List","OrdemVenda")");
                         }
                     } else {
                         if (justSavePedidoToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
-                        fly01.loading.stop();
+                        $$$.loading.stop();
                         $("div#clienteIdField").show();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             });
         });
@@ -271,7 +271,7 @@
     }
 
     function EstoqueNegativoETotal() {
-        fly01._.dtProdutosEstoqueNegativo.refresh();
+        $$$._.dtProdutosEstoqueNegativo.refresh();
         calculaTotalPedido();
     }
 
@@ -287,7 +287,7 @@
     }
 
     function fnValidarCamposDeProdutos() {
-        if (fly01._.dtOrdemVendaProdutos.data(0).length == 0) {
+        if ($$$._.dtOrdemVendaProdutos.data(0).length == 0) {
             $('#movimentaEstoque').prop('checked', false);
             $('#movimentaEstoqueField').hide();
         } else {
@@ -300,7 +300,7 @@
         fnClickComplementarIsDevolucao();
         $("#naturezaOperacaoField").hide();
         $("#chaveNFeReferenciadaField").hide();
-        fly01.fn.updateActiveMenu("/OrdemVenda/List");
+        $$$.fn.updateActiveMenu("/OrdemVenda/List");
 
         if (isCreate()) {
             fnTipoVendaClick();
@@ -308,9 +308,9 @@
             $("input#geraFinanceiro").prop("checked", true);
             $("input#movimentaEstoque").prop("checked", true);
             $("input#geraNotaFiscal").prop("checked", true);
-            fly01._.data.set(today);
-            fly01._.dataVencimento.set(today);
-            fly01.fn.updateTextFields();
+            $$$._.data.set(today);
+            $$$._.dataVencimento.set(today);
+            $$$.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
@@ -320,8 +320,8 @@
 
             disableStepFinalidade();
             if (!onCancelMustDeletePedido) { $('li#stepCadastro div.step-title').click(); }
-            fly01._.dtOrdemVendaProdutos.refresh();
-            fly01._.dtOrdemVendaServicos.refresh();
+            $$$._.dtOrdemVendaProdutos.refresh();
+            $$$._.dtOrdemVendaServicos.refresh();
         }
 
         fnBindOverrideSubmit();

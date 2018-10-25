@@ -168,6 +168,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new ChartUI
             {
+                Id = "fly01chart",
                 Options = new
                 {
                     title = new

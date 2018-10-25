@@ -1,32 +1,32 @@
 ﻿<script>
     function fnGetStatusCertificado() {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("StatusCard", "CertificadoDigital")',
             type: "GET",
             success: function (data) {
-                fly01._.cardCertificado.setColor(data.color);
-                fly01._.cardCertificado.info(`<h5>${data.mainInfo}</h5><small>${(data.subInfo || "")}</small>`)
+                $$$._.cardCertificado.setColor(data.color);
+                $$$._.cardCertificado.info(`<h5>${data.mainInfo}</h5><small>${(data.subInfo || "")}</small>`)
 
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
                 if (data.entidadeHomologacao != "" || data.entidadeProducao != "") {
                     $("input#entidadeHomologacao").val(data.entidadeHomologacao);
                     $("input#entidadeProducao").val(data.entidadeProducao);
                     $("#entidadeHomologacaoField").show();
                     $("#entidadeProducaoField").show();
-                    fly01.fn.updateTextFields();
+                    $$$.fn.updateTextFields();
                 }
                 else {
                     $("#entidadeHomologacaoField").hide();
                     $("#entidadeProducaoField").hide();
                 }
-                fly01.loading.stop();
+                $$$.loading.stop();
                 if (!data.success)
-                    fly01.toast(data.message, 'error');
+                    $$$.toast(data.message, 'error');
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(data.message, 'error');
+                $$$.loading.stop();
+                $$$.toast(data.message, 'error');
             }
         });
     }

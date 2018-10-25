@@ -58,11 +58,11 @@
                     }
                     });
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }

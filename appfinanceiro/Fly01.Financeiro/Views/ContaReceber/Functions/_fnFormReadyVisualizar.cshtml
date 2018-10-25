@@ -101,7 +101,7 @@
                             $('#fly01mdlfrm #lblRenegociacaoOrigemField').show();
                         }
                         exibeCamposRenegociacao();
-                        fly01.fn.updateTextFields();
+                        $$$.fn.updateTextFields();
                         //posiciona os selects nos valores setados manualmente
                         $('select#tipoRenegociacaoValorDiferenca').material_select();
                         $('select#tipoRenegociacaoCalculo').material_select();
@@ -110,7 +110,7 @@
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }

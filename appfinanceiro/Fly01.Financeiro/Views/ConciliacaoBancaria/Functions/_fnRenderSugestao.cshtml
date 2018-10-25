@@ -48,16 +48,16 @@
                         var strMsg = "Sugestão vinculada com sucesso.";
                         if (data.message !== "")
                             strMsg = data.message;
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
                         that.loading("stop");
-                        fly01._.dtConciliacaoItens.refresh();
+                        $$$._.dtConciliacaoItens.refresh();
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                     that.loading("stop");
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     that.loading("stop");
                 }
             });

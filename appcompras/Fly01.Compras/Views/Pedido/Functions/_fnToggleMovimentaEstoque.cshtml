@@ -16,7 +16,7 @@
     }
 
     function fnHaveToShow() {
-        return fly01._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0 && $('#movimentaEstoque').is(':checked')
+        return $$$._.dtProdutosEstoqueNegativo.ajax.json().recordsTotal > 0 && $('#movimentaEstoque').is(':checked')
             && ($('#tipoCompra').val() == "Devolucao");
     }
 </script>

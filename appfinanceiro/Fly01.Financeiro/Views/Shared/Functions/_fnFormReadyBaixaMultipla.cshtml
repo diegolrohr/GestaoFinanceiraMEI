@@ -5,13 +5,13 @@
     var qtLimiteBaixaMultipla = 50;
 
     function setupGridSelectEvents() {
-        fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
+        $$$._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = parseFloat(getValorSomaSelecionados());
                 var rowsCount = 0;
 
                 indexes.forEach(function (element, index, array) {
-                    var rowData = fly01._.dtContasExistentes.row(element).data();
+                    var rowData = $$$._.dtContasExistentes.row(element).data();
                     $('#btnDeselectAll').removeAttr('disabled');
 
                     var index = $.inArray(rowData.id, rows_selected);
@@ -25,7 +25,7 @@
 
                 fnAtualizaCountSelecionados(rowsCount);
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
-                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+                $('input#contasFinanceirasGuids').val($$$._.dtContasExistentes.selected);
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
@@ -33,7 +33,7 @@
                 var rowsCount = 0;
 
                 indexes.forEach(function (element, index, array) {
-                    var rowData = fly01._.dtContasExistentes.row(element).data();
+                    var rowData = $$$._.dtContasExistentes.row(element).data();
 
                     var index = $.inArray(rowData.id, rows_selected);
                     if (index !== -1) {//se achou remove
@@ -49,7 +49,7 @@
                 }
                 fnAtualizaCountSelecionados(-rowsCount);
                 $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
-                $('input#contasFinanceirasGuids').val(fly01._.dtContasExistentes.selected);
+                $('input#contasFinanceirasGuids').val($$$._.dtContasExistentes.selected);
             }
         });
     }
@@ -68,7 +68,7 @@
         countAtual = countAtual + (parseInt(count));
         $('input#countContasSelecionadas').val(countAtual);
 
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
         $('input#countContasSelecionadas').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
@@ -92,7 +92,7 @@
             $('#countContasSelecionadas').css('color', 'red');
             $('#save').attr('disabled', 'disabled');
             $('#btnSelectAll').attr('disabled', 'disabled');
-            fly01.toast('Permitido selecionar até ' + qtLimiteBaixaMultipla + ' contas.', "error")
+            $$$.toast('Permitido selecionar até ' + qtLimiteBaixaMultipla + ' contas.', "error")
         }
     }
 

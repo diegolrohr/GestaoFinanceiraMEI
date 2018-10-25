@@ -10,10 +10,10 @@
     });
 
     function setupGridSelectEvents() {
-        fly01._.dtBoletos.on("select", function (e, dt, type, indexes) {
+        $$$._.dtBoletos.on("select", function (e, dt, type, indexes) {
             let indice = parseInt(indexes.toString());
 
-            if (fly01._.dtBoletos.rows().data()[indice].statusDescription != "BAIXADO") {
+            if ($$$._.dtBoletos.rows().data()[indice].statusDescription != "BAIXADO") {
                 if (type !== undefined) {
                     indexes.forEach(function (element, index, array) {
                         fnAtualizaCountSelecionados(1);
@@ -21,7 +21,7 @@
                 }
             }
             else {
-                $(fly01._.dtBoletos.rows().$("tr")[indice]).removeClass('selected');
+                $($$$._.dtBoletos.rows().$("tr")[indice]).removeClass('selected');
             }
         }).on('deselect', function (e, dt, type, indexes) {
             if (type !== undefined) {
@@ -37,7 +37,7 @@
         countAtual = countAtual + (parseInt(count));
         qtdItensSelecionados = countAtual;
 
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
         $('#btnGerarArqRemessa').attr('disabled', 'disabled');
 
         if (countAtual > 0 && countAtual <= 50) {

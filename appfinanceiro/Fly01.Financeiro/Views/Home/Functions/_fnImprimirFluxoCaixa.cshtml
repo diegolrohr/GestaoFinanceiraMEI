@@ -3,13 +3,13 @@
     function fnImprimirFluxoCaixa() {
         $("#prnt").loading("start");
         $("#dtGridFluxoCaixa").on('draw.dt', function () {
-            if (fly01._.dtGridFluxoCaixa.page.info().length == 500) {
+            if ($$$._.dtGridFluxoCaixa.page.info().length == 500) {
                 $("#dtGridFluxoCaixa").off('draw.dt');
                 $("#prnt").loading("stop");
                 window.print();
-                fly01._.dtGridFluxoCaixa.page.len(50).draw();
+                $$$._.dtGridFluxoCaixa.page.len(50).draw();
             }
         });
-        fly01._.dtGridFluxoCaixa.page.len(500).draw();
+        $$$._.dtGridFluxoCaixa.page.len(500).draw();
     }
 </script>

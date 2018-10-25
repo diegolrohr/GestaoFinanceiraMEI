@@ -1,6 +1,6 @@
 ﻿<script>
     function afterInsert() {
-        fly01._.dtInventarioItem.refresh();
+        $$$._.dtInventarioItem.refresh();
     }
 
     function fnOverrideSubmitItem() {
@@ -15,7 +15,7 @@
 
             e.preventDefault();
 
-            fly01.loading.start();
+            $$$.loading.start();
             
             var action = "@Url.Action("Create", "InventarioItem")";
             
@@ -33,18 +33,18 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
-                        fly01.toast(data.message, "success");
+                        $$$.toast(data.message, "success");
                         afterInsert();
                     } else {
-                        fly01.loading.stop();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
 
-                    fly01.loading.stop();
+                    $$$.loading.stop();
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             })
         });

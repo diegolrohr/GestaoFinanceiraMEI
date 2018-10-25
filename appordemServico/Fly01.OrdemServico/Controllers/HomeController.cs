@@ -133,6 +133,7 @@ namespace Fly01.OrdemServico.Controllers
 
             cfg.Content.Add(new ChartUI
             {
+                Id = "fly01chart",
                 Options = new
                 {
                     title = new

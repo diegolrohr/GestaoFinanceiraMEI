@@ -31,7 +31,7 @@
         var idCliente = $("form#fly01frm input#clienteId").val();
         var geraNotaFiscal = $('input#geraNotaFiscal:checked').val() == "true";
 
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemVenda", "OrdemVenda")',
@@ -48,7 +48,7 @@
                 $('input#totalImpostosServicosNaoAgrega').val(data.total.TotalImpostosServicosNaoAgrega.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
@@ -59,14 +59,14 @@
                 $('input#totalImpostosServicosNaoAgrega').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalFrete').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemVenda').val(0.0.formatMoneyMask(2, 3, '', ','));
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 
@@ -91,13 +91,13 @@
             e.preventDefault();
             if (!$(this).valid()) return false;
 
-            fly01.loading.start();
+            $$$.loading.start();
 
             $('input#numero').removeAttr('disabled');
             var jsonData = $(this).serializeObject();
             $('input#numero').attr('disabled', 'disabled');
 
-            fly01.fn.updateTextFields();
+            $$$.fn.updateTextFields();
 
             var url;
             if (isCreate()) {
@@ -115,7 +115,7 @@
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
                     if (data.success) {
-                        fly01.loading.stop();
+                        $$$.loading.stop();
 
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrcamento) strMsg = data.message;
@@ -125,8 +125,8 @@
                             onCancelMustDeleteOrcamento = true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
-                            fly01._.dtOrdemVendaProdutos.refresh();
-                            fly01._.dtOrdemVendaServicos.refresh();
+                            $$$._.dtOrdemVendaProdutos.refresh();
+                            $$$._.dtOrdemVendaServicos.refresh();
 
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
@@ -134,20 +134,20 @@
                             return true;
                         }
                         else {
-                            fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List","OrdemVenda")");
+                            $$$.toast(strMsg, "success");
+                            $$$.go("@Url.Action("List","OrdemVenda")");
                         }
                     } else {
                         if (justSaveOrcamentoToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
-                        fly01.loading.stop();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             });
         });
@@ -161,14 +161,14 @@
         if (isCreate()) {
             var today = new Date();
             $("input#geraNotaFiscal").prop("checked", true);
-            fly01._.dataVencimento.set(today);
-            fly01._.data.set(today);
-            fly01.fn.updateTextFields();
+            $$$._.dataVencimento.set(today);
+            $$$._.data.set(today);
+            $$$.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
-            fly01._.dtOrdemVendaProdutos.refresh();
-            fly01._.dtOrdemVendaServicos.refresh();
+            $$$._.dtOrdemVendaProdutos.refresh();
+            $$$._.dtOrdemVendaServicos.refresh();
         }
         fnBindOverrideSubmit();
         fnChangeFrete();

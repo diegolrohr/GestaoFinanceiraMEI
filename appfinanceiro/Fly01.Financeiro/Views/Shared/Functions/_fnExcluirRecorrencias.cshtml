@@ -42,20 +42,20 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Excluído com sucesso.", "success");
+                        $$$.toast("Excluído com sucesso.", "success");
                         var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
-                        fly01._[dtId].refresh();
+                        $$$._[dtId].refresh();
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
     }
 </script>

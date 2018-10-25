@@ -30,17 +30,17 @@
                         if (data.message !== "") {
                             strMsg = data.message;
                         }
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
                         $("#fly01mdlfrm.modal").modal("close");
                         var idRecord = $('input#conciliacaoBancariaItemId').val();
-                        fly01._.dtConciliacaoItens.refresh();
+                        $$$._.dtConciliacaoItens.refresh();
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                     $('body').addClass('loaded');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     $('body').addClass('loaded');
                 }
             });

@@ -9,7 +9,7 @@
             success: function success(result) {
                 if (result.success) {
                     if (result.data != null)
-                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + contaReceberId + "', '" + contaBancariaId + "')");
+                        $$$.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + contaReceberId + "', '" + contaBancariaId + "')");
                     else
                         fnSaveCnab(contaReceberId, contaBancariaId, true);
                 }
@@ -34,7 +34,7 @@
             data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reemprime},
             success: function success(data) {
                 if (data.success) {
-                    fly01.toast("Boleto emitido com sucesso.", "success");
+                    $$$.toast("Boleto emitido com sucesso.", "success");
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
@@ -45,14 +45,14 @@
                         }, 10);
                     }
                 } else {
-                    fly01.loading.stop();
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.loading.stop();
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
-                fly01.loading.stop();
+                $$$.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(textStatus, "error");
+                $$$.loading.stop();
+                $$$.toast(textStatus, "error");
             }
         });
     }

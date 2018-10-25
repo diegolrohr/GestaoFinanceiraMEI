@@ -1,6 +1,4 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain.Enums;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {

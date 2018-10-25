@@ -62,6 +62,11 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "intermediario")]
         public Intermediador Intermediador { get; set; }
 
+        public bool ShouldSerializeIntermediador()
+        {
+            return Intermediador != null;
+        }
+
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
@@ -93,10 +98,16 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         }
 
         //TODO:tag deducoes
-        //TODO:tag construcao
 
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }
 
+        [XmlElement(ElementName = "construcao")]
+        public Construcao Construcao { get; set; }
+
+        public bool ShouldSerializeConstrucao()
+        {
+            return Construcao != null;
+        }
     }
 }

@@ -420,6 +420,10 @@
     <Compile Include="Migrations\201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.Designer.cs">
       <DependentUpon>201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810251834142_AlterGrupoTributarioObrigatoriedadeCFOP.cs" />
+    <Compile Include="Migrations\201810251834142_AlterGrupoTributarioObrigatoriedadeCFOP.Designer.cs">
+      <DependentUpon>201810251834142_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -728,6 +732,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.resx">
       <DependentUpon>201810242043020_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810251834142_AlterGrupoTributarioObrigatoriedadeCFOP.resx">
+      <DependentUpon>201810251834142_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

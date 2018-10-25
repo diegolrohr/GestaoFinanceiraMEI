@@ -25,11 +25,11 @@
 				$('input#cestDescricao').removeAttr('disabled');
 			}
 			$('#aliquotaIpi').val(data.aliquotaIpi);
-			fly01.fn.updateTextFields();
+			$$$.fn.updateTextFields();
 		})
 		.fail(function (jqxhr, textStatus, error) {
 			var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-			fly01.toast(err, "error");
+			$$$.toast(err, "error");
 			$('body').addClass('loaded');
 		});
 	}

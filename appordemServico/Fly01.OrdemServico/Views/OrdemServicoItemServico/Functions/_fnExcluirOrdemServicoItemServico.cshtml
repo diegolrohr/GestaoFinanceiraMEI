@@ -1,6 +1,6 @@
 ﻿<script>
     function fnExcluirOrdemServicoItemServico(idRecord) {
-        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemServicoItemServicoConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemServicoItemServicoConfirmed(\"" + idRecord + "\")");
     }
     function fnExcluirOrdemServicoItemServicoConfirmed(idRecord) {
         $('body').removeClass('loaded');
@@ -12,16 +12,16 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Excluído com sucesso.", "success");
-                        fly01._.dtOrdemServicoItemServicos.refresh();
+                        $$$.toast("Excluído com sucesso.", "success");
+                        $$$._.dtOrdemServicoItemServicos.refresh();
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }

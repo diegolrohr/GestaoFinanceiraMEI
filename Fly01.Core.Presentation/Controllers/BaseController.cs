@@ -212,8 +212,9 @@ namespace Fly01.Core.Presentation
                 UrlFunctions = ""
             };
 
-            cfg.Content.Add(new FormUI()
+            cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 Elements = new List<BaseUI>()
                 {
                     new LabelSetUI()

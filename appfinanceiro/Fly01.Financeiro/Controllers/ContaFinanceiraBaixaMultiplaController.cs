@@ -58,6 +58,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = Url.Action("Create"),

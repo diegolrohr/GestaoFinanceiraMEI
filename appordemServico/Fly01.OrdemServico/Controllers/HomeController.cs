@@ -43,6 +43,7 @@ namespace Fly01.OrdemServico.Controllers
 
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12",
@@ -132,6 +133,7 @@ namespace Fly01.OrdemServico.Controllers
 
             cfg.Content.Add(new ChartUI
             {
+                Id = "fly01chart",
                 Options = new
                 {
                     title = new

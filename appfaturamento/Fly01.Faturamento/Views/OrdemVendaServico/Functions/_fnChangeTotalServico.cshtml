@@ -20,7 +20,7 @@
     function errTotalNegativoServico(total) {
         var formOrdemVenda = 'form#fly01mdlfrmOrdemVendaServico ';
 
-        fly01.fn.submitErrorHandler($formOrdemVenda.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
+        $$$.fn.submitErrorHandler($formOrdemVenda.validate(), "{\"innerMessage\": [{\"dataField\":\"input#desconto\",\"message\":\"O desconto não pode ser maior ou igual a R$ " + total + "\"}]}");
 
         $(formOrdemVenda + 'input#total').val(total);
         $(formOrdemVenda + 'input#desconto').val("");

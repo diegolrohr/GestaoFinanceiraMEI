@@ -42,7 +42,7 @@ function validaLimiteRepeticoes(repeticoes) {
     $('input#numeroRepeticoes').val(null);
 
     if ($('select#tipoPeriodicidade').val() == "Nenhuma") {
-        fly01.toast('Escolha a periodicidade', 'error');
+        $$$.toast('Escolha a periodicidade', 'error');
         return;
     }
     if ($('#repetir:checked').val() == "true" && repeticoes.toString() != '') {
@@ -52,10 +52,10 @@ function validaLimiteRepeticoes(repeticoes) {
                 $('input#numeroRepeticoes').val(repeticoes);
             }
             else if (repeticoes > limiteRepeticoesMensal) {
-                fly01.toast(msgLimite, 'error');
+                $$$.toast(msgLimite, 'error');
             }
             else {
-                fly01.toast(msgQtInvalida, 'error');
+                $$$.toast(msgQtInvalida, 'error');
             }
         }
         else if ($('select#tipoPeriodicidade').val() == "Anual") {
@@ -63,10 +63,10 @@ function validaLimiteRepeticoes(repeticoes) {
                 $('input#numeroRepeticoes').val(repeticoes);
             }
             else if (repeticoes > limiteRepeticoesAnual) {
-                fly01.toast(msgLimite, 'error');
+                $$$.toast(msgLimite, 'error');
             }
             else {
-                fly01.toast(msgQtInvalida, 'error');
+                $$$.toast(msgQtInvalida, 'error');
             }
         }
         else if ($('select#tipoPeriodicidade').val() == "Semanal") {
@@ -74,13 +74,13 @@ function validaLimiteRepeticoes(repeticoes) {
                 $('input#numeroRepeticoes').val(repeticoes);
             }
             else if (repeticoes > limiteRepeticoesSemanal) {
-                fly01.toast(msgLimite, 'error');
+                $$$.toast(msgLimite, 'error');
             }
             else {
-                fly01.toast(msgQtInvalida, 'error');
+                $$$.toast(msgQtInvalida, 'error');
             }
         }
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
         //setScheduledDateRange();
     }
 }
@@ -94,7 +94,7 @@ function calculaQuantidadeRepeticoes() {
         var dataFim = moment($('input#periodoFim').val(), "DD/MM/YYYY");
 
         if (!dataInicio.isValid() || !dataFim.isValid()) {
-            fly01.toast("Informe a data de vencimento e a data fim do período para calcular a recorrência.", "error");           
+            $$$.toast("Informe a data de vencimento e a data fim do período para calcular a recorrência.", "error");           
             return;
         }
 

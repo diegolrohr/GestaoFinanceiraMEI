@@ -1,28 +1,28 @@
 ﻿<script>
     function fnCancelarNFSe(idRecord) {
-        fly01.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta nota fiscal?", "fnCancelarNFSeConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta nota fiscal?", "fnCancelarNFSeConfirmed(\"" + idRecord + "\")");
     }
 
     function fnCancelarNFSeConfirmed(idRecord) {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("Cancelar", "NFSe")?id=' + idRecord,
             type: "POST"
         })
         .done(function (data) {
-            fly01.loading.stop();
+            $$$.loading.stop();
             if (!data.success) {
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
             else {
-                fly01.toast(data.message, "success");
-                fly01._.fly01dt.refresh();
+                $$$.toast(data.message, "success");
+                $$$._.fly01dt.refresh();
             }
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 </script>

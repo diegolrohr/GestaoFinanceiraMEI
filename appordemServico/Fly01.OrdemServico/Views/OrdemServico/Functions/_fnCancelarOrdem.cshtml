@@ -1,27 +1,27 @@
 ﻿<script>
     function fnCancelarOrdem(idRecord) {
-        fly01.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta ordem? Não será mais possível editar/excluir", "fnCancelarOrdemConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Cancelamento", "Deseja realmente cancelar esta ordem? Não será mais possível editar/excluir", "fnCancelarOrdemConfirmed(\"" + idRecord + "\")");
     }
     function fnCancelarOrdemConfirmed(idRecord) {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             type: "POST",
             url: "@Url.Action("CancelarOrdem", "OrdemServico")",
             dataType: 'json',
             data: { id: idRecord, faturar: false },
             success: function (data) {
-                fly01.loading.stop();
+                $$$.loading.stop();
                 if (data.success) {
-                    fly01.toast("Ordem cancelada com sucesso!", "success");
-                    fly01._.fly01dt.refresh();
+                    $$$.toast("Ordem cancelada com sucesso!", "success");
+                    $$$._.fly01dt.refresh();
                 }
                 else {
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(textStatus, "error");
+                $$$.loading.stop();
+                $$$.toast(textStatus, "error");
             }
         });
     }

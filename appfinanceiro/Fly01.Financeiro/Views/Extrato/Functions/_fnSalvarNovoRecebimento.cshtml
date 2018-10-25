@@ -19,16 +19,16 @@
                     if (data.success) {
                         var strMsg = "Recebimento cadastrado com sucesso.";
                         if (data.message !== "") strMsg = data.message;
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
                         fnAtualizar();
-                        fly01._.fly01frmNovoReceb.close();
+                        $$$._.fly01frmNovoReceb.close();
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                     $('body').addClass('loaded');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     $('body').addClass('loaded');
                 }
             });

@@ -1,13 +1,13 @@
 ﻿<script>
     function fnImportaCadastroFormReady() {
-        fly01._.cardDuvidas.info("Se preferir você pode baixar um arquivo modelo de importação.<br /><br />" +
+        $$$._.cardDuvidas.info("Se preferir você pode baixar um arquivo modelo de importação.<br /><br />" +
                                  "Dicas:<br />" +
                                  "Você deve editar o modelo com Notepad++ ou bloco de notas.<br />" +
                                  "Os dados contidos no exemplo são apenas exemplos, é preciso preencher as linhas com informações válidas.<br />" +
                                  "");
         $("#cardDuvidas h5").css({ "text-align": "left" });
         $("#observacao").closest("div").css("display", "none");
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
 
         $("#cardDuvidas a").on("click", function () {
             fnBaixarModelo();

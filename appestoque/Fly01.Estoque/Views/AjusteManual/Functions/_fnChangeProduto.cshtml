@@ -18,7 +18,7 @@
             .fail(function (jqxhr, textStatus, error) {
                 loadingDadosProduto("stop");
                 var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-                fly01.toast(err, "error");
+                $$$.toast(err, "error");
                 $('body').addClass('loaded');
         });
     }
@@ -28,7 +28,7 @@
         $("#codigoProduto").val(codigoProduto);
         $("#codigoBarras").val(codigoBarras);
         $("#saldoProduto").val(saldoProduto);
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
 
         fnChangeQuantidade();
     }

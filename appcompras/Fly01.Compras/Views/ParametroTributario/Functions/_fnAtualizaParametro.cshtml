@@ -1,6 +1,6 @@
 ﻿<script>
     function fnAtualizaParametro() {
-        fly01.loading.start();
+        $$$.loading.start();
 
         if ($("#aliquotaSimplesNacional").val() == "" || $("#aliquotaSimplesNacional").val() == null) {
             $("#aliquotaSimplesNacional").val("0");
@@ -66,14 +66,14 @@
             },
             success: function (response) {
                 if (response.success) {
-                    fly01.fn.updateTextFields();
-                    fly01.toast("Parâmetros Atualizados", 'success', '4000');
+                    $$$.fn.updateTextFields();
+                    $$$.toast("Parâmetros Atualizados", 'success', '4000');
                 }
                 else {
-                    fly01.fn.submitErrorHandler($('#fly01frm').validate(), response.message, 'error');
+                    $$$.fn.submitErrorHandler($('#fly01frm').validate(), response.message, 'error');
                 }
 
-                fly01.loading.stop();
+                $$$.loading.stop();
             },
         });
     }

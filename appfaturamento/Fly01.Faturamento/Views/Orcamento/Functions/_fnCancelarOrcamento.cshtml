@@ -2,29 +2,29 @@
     function fnCancelarOrcamento() {
         var idRecord = $('form#fly01frm input#id').val();
         if (onCancelMustDeleteOrcamento) {
-            fly01.loading.start();
+            $$$.loading.start();
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Delete", "Orcamento")",
                 data: { id: idRecord },
                 success: function (data) {
-                    fly01.loading.stop();
+                    $$$.loading.stop();
                     if (data.success) {
-                        fly01.toast("Cancelado com sucesso.", "success");
-                        fly01.go("@Url.Action("List", "OrdemVenda")");
+                        $$$.toast("Cancelado com sucesso.", "success");
+                        $$$.go("@Url.Action("List", "OrdemVenda")");
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
-                    fly01.loading.stop();
-                    fly01.toast(textStatus, "error");
+                    $$$.loading.stop();
+                    $$$.toast(textStatus, "error");
                 }
             });
         }
         else {
-            fly01.go("@Url.Action("List", "OrdemVenda")");
+            $$$.go("@Url.Action("List", "OrdemVenda")");
         }
     }
 </script>

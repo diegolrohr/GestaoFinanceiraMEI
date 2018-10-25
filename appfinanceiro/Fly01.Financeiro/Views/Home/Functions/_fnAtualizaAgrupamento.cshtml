@@ -24,11 +24,11 @@
 
         var calculateFinalDate = new Date(moment(finalDate).format('YYYY'), moment(finalDate).format('MM'), moment(finalDate).format('D'));
 
-        var selectedFinalDate = moment(fly01._.dataFinal.pickadate("picker").get(), 'DD/MM/YYYY');
+        var selectedFinalDate = moment($$$._.dataFinal.pickadate("picker").get(), 'DD/MM/YYYY');
         if (selectedFinalDate > finalDate)
-            fly01._.dataFinal.pickadate("picker").set('select', calculateFinalDate);
+            $$$._.dataFinal.pickadate("picker").set('select', calculateFinalDate);
 
-        fly01._.dataFinal.pickadate("picker").set('max', calculateFinalDate);
+        $$$._.dataFinal.pickadate("picker").set('max', calculateFinalDate);
     }
 
     function fnAtualizaAgrupamento(type) {

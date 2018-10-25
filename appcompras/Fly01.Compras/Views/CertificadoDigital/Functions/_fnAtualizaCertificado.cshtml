@@ -1,14 +1,14 @@
 ﻿<script>
     function fnAtualizaCertificado(input) {
         if ($("#senha").val() == "") {
-            fly01.toast('Informe a senha do certificado.', 'error');
+            $$$.toast('Informe a senha do certificado.', 'error');
             return;
         }
         $("#cardCertificado").loading("start");
         if (!window.FileReader) return; // Browser is not compatible
         if ($("#certificado")[0].files[0] == null) {
             $("#cardCertificado").loading("stop");
-            fly01.toast('Selecione um arquivo de certificado e informe a senha para atualizar', 'error');
+            $$$.toast('Selecione um arquivo de certificado e informe a senha para atualizar', 'error');
             return;
         }
         var reader = new FileReader();
@@ -33,12 +33,12 @@
             success: function (response) {
                 if (response.success) {
                     fnGetStatusCertificado();
-                    fly01.fn.updateTextFields();
-                    fly01.toast(response.message, "success");
+                    $$$.fn.updateTextFields();
+                    $$$.toast(response.message, "success");
                 }
                 else {
                     fnGetStatusCertificado();
-                    fly01.fn.submitErrorHandler(null, response.message);
+                    $$$.fn.submitErrorHandler(null, response.message);
                 }
             }
         });

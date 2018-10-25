@@ -19,26 +19,26 @@
     }
 
     function retornaResponsavelPadraoParametro() {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
             success: function (data) {
                 $("#responsavelPadraoNome").val(data.responsavelPadraoNome);
                 $("#responsavelPadraoId").val(data.responsavelPadraoId);
-                fly01.fn.updateTextFields();
-                fly01.loading.stop();
+                $$$.fn.updateTextFields();
+                $$$.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(data.message, 'error');
+                $$$.loading.stop();
+                $$$.toast(data.message, 'error');
             }
         });
 
     }
 
     function retornaDataEntregaParametro() {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroOrdemServico")',
             type: "GET",
@@ -47,13 +47,13 @@
                     var today = new Date();
                     var dataEntrega = new Date();
                     dataEntrega.setDate(today.getDate() + data.diasPrazoEntrega);
-                    fly01._.dataEntrega.set(dataEntrega);
-                    fly01.loading.stop();
+                    $$$._.dataEntrega.set(dataEntrega);
+                    $$$.loading.stop();
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(data.message, 'error');
+                $$$.loading.stop();
+                $$$.toast(data.message, 'error');
             }
         });   
     }
@@ -63,7 +63,7 @@
         var idOrdemServico = $("form#fly01frm input#id").val();
         var idCliente = $("form#fly01frm input#clienteId").val();
 
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
@@ -76,21 +76,21 @@
                 $('input#totalServicos').val(data.total.TotalServicos.formatMoneyMask(2, 3, '', ','));                
                 $('input#totalOrdemServico').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
                 $('input#quantidadeItensCliente').val(data.total.QuantidadeItensCliente);
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
             }
             else {
                 $('input#totalProdutos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalServicos').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#totalOrdemServico').val(0.0.formatMoneyMask(2, 3, '', ','));
                 $('input#quantidadeItensCliente').val("0");
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });        
     }
 
@@ -116,9 +116,9 @@
             e.preventDefault();
             if (!$(this).valid()) return false;
 
-            fly01.loading.start();
+            $$$.loading.start();
             var jsonData = $(this).serializeObject();
-            fly01.fn.updateTextFields();
+            $$$.fn.updateTextFields();
 
             
 
@@ -146,7 +146,7 @@
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
                     if (data.success) {
-                        fly01.loading.stop();
+                        $$$.loading.stop();
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
                         //fica na página ou volta pra lista
@@ -155,32 +155,32 @@
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
                             $("form#fly01frm input#numero").val(data.numero);
-                            fly01._.dtOrdemServicoManutencao.refresh();
-                            fly01._.dtOrdemServicoItemProdutos.refresh();
-                            fly01._.dtOrdemServicoItemServicos.refresh();
+                            $$$._.dtOrdemServicoManutencao.refresh();
+                            $$$._.dtOrdemServicoItemProdutos.refresh();
+                            $$$._.dtOrdemServicoItemServicos.refresh();
                             var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
                             justSaveOrdemToGoStepProdutos = false;
                         }
                         else {
-                            fly01.toast(strMsg, "success");
-                            fly01.go("@Url.Action("List", "OrdemServico")");
+                            $$$.toast(strMsg, "success");
+                            $$$.go("@Url.Action("List", "OrdemServico")");
                         }
                     } else {
                         if (justSaveOrdemToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
-                        fly01.loading.stop();
+                        $$$.loading.stop();
                         $("div#clienteIdField").show();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
 
                     return data.success;
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             });
         });
@@ -195,9 +195,9 @@
         if (isCreate()) {
             $('#btnNormal').click();
             var today = new Date();
-            fly01._.dataEmissao.set(today);
+            $$$._.dataEmissao.set(today);
             
-            fly01.fn.updateTextFields();
+            $$$.fn.updateTextFields();
             fnBindStepsWizard();
         }
         else {
@@ -207,9 +207,9 @@
             }
             
             if (!onCancelMustDeleteOrdemServico) { $('li#stepCadastro div.step-title').click(); }
-            fly01._.dtOrdemServicoManutencao.refresh();
-            fly01._.dtOrdemServicoItemProdutos.refresh();
-            fly01._.dtOrdemServicoItemServicos.refresh();
+            $$$._.dtOrdemServicoManutencao.refresh();
+            $$$._.dtOrdemServicoItemProdutos.refresh();
+            $$$._.dtOrdemServicoItemServicos.refresh();
         }
 
         fnBindOverrideSubmit();

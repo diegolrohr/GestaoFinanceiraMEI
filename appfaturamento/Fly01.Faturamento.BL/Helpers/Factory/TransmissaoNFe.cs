@@ -229,7 +229,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new EmissaoNFe.Produto()
             {
-                CFOP = item.GrupoTributario.Cfop.Codigo,
+                CFOP = item.GrupoTributario.Cfop?.Codigo,
                 Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop.Codigo.ToString()) : item.Produto.CodigoProduto,
                 Descricao = item.Produto.Descricao,
                 GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,

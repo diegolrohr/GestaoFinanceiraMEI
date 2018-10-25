@@ -12,7 +12,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public string Descricao { get; set; }
 
-        public Guid CfopId { get; set; }
+        public Guid? CfopId { get; set; }
 
         //ICMS
         [Required]

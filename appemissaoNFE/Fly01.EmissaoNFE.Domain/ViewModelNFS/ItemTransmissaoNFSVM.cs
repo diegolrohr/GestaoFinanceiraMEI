@@ -59,6 +59,9 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "prestacao")]
         public Prestacao Prestacao { get; set; }
 
+        [XmlElement(ElementName = "intermediario")]
+        public Intermediador Intermediador { get; set; }
+
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
@@ -67,6 +70,7 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 
         /// <summary>
         /// Gerado pelo sistema na serialização do xml
+        /// realizado aglutinação para posterior soma dos valores
         /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }

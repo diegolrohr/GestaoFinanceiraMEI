@@ -27,7 +27,7 @@ namespace Fly01.Core.Presentation.Controllers
                 id = x.Id,
                 descricao = x.Descricao,
                 cfopId = x.CfopId,
-                cfop_descricao = string.IsNullOrEmpty(x.Cfop.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
+                cfop_descricao = string.IsNullOrEmpty(x.Cfop?.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop?.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
                 registroFixo = x.RegistroFixo
             };
         }

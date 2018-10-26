@@ -231,16 +231,47 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             set { DescontoIncondicional = double.Parse(value.Replace(".", ",")); }
         }
 
-        //[XmlElement(ElementName = "cst")] //TODO: ver regra, quais valores?
-        [XmlIgnore]
-        public string UnidadeMedida { get; set; }
+        /// <summary>
+        /// SC SACO 
+        /// G GRAMA
+        /// AR ARROBA
+        /// FL FOLHAS
+        /// MG MILIGRAMA
+        /// M METRO
+        /// ML MILILITRO
+        /// CX CAIXA
+        /// KG QUILOGRAMA
+        /// UN UNIDADE
+        /// TN TONELADA
+        /// LB LIBRA
+        /// M2 METRO QUADRADO
+        /// GL GALAO
+        /// L LITRO
+        /// MM MILIMETRO
+        /// YD JARDA
+        /// HR HORA
+        /// PC PECA
+        /// M3 METRO CUBICO
+        /// MI MILHEIRO
+        /// </summary>
+        [XmlElement(ElementName = "unidmed")]
+        public string UnidadeMedidaSigla { get; set; }
+
+        private bool ShouldSerializeUnidadeMedidaSigla()
+        {
+            return !string.IsNullOrEmpty(UnidadeMedidaSigla);
+        }
 
         /// <summary>
         /// Código fiscal de prestação de serviço.
         /// </summary>
-        //[XmlElement(ElementName = "cfps")]//TODO: ver regra
-        [XmlIgnore]
+        [XmlElement(ElementName = "cfps")]
         public string CodigoFiscalPrestacao { get; set; }
+
+        private bool ShouldSerializeCodigoFiscalPrestacao()
+        {
+            return !string.IsNullOrEmpty(CodigoFiscalPrestacao);
+        }
 
         /// <summary>
         /// Fixo 0, Origem Nacional, conforme FIRST

@@ -1,8 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -28,8 +25,15 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(20)]
         public string CodigoIssEspecifico { get; set; }
 
+        [StringLength(5)]
+        public string CodigoFiscalPrestacao { get; set; }
+
+        public Guid? UnidadeMedidaId { get; set; }
+
         public virtual Nbs Nbs { get; set; }
 
         public virtual Iss Iss { get; set; }
+
+        public virtual UnidadeMedida UnidadeMedida { get; set; }
     }
 }

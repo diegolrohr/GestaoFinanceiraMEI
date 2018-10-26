@@ -31,11 +31,20 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("codigoIssEspecifico")]
         public string CodigoIssEspecifico { get; set; }
 
+        [JsonProperty("codigoFiscalPrestacao")]
+        public string CodigoFiscalPrestacao { get; set; }
+
+        [JsonProperty("unidadeMedidaId")]
+        public Guid? UnidadeMedidaId { get; set; }
+
         [JsonProperty("iss")]
         public virtual ISSVM Iss { get; set; }
 
         [JsonProperty("nbs")]
         public virtual NBSVM Nbs { get; set; }
+
+        [JsonProperty("unidadeMedida")]
+        public virtual UnidadeMedidaVM UnidadeMedida { get; set; }
 
         [JsonProperty("registroFixo")]
         public bool RegistroFixo { get; set; }

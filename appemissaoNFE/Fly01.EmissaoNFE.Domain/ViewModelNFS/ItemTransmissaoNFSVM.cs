@@ -80,7 +80,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
 
-        //TODO: ver faturas e pagamentos, repete a cada parcela nos 2? ou agrupado
         [XmlArray("faturas"), XmlArrayItem(typeof(Fatura), ElementName = "fatura")]
         public List<Fatura> Faturas { get; set; }
 
@@ -96,8 +95,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         {
             return Pagamentos != null && (Pagamentos.ListaPagamentos != null && Pagamentos.ListaPagamentos.Any());
         }
-
-        //TODO:tag deducoes
 
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }

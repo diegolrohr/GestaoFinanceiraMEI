@@ -13,7 +13,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "art")]
         public string ArtObra { get; set; }
 
-        //TODO: ver valores possiveis enum?
+        //ver valores possiveis enum? usado Protheus
         [XmlElement(ElementName = "tipoobra")]
         public string TipoObra { get; set; }
 

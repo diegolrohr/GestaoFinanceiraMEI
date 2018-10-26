@@ -71,6 +71,7 @@ namespace Fly01.Faturamento.BL.Helpers
             return TransmissaoNFSBLs.NFSeServicoBL.AllIncluding(
                 x => x.GrupoTributario.Cfop,
                 x => x.Servico.Nbs,
+                x => x.Servico.UnidadeMedida,
                 x => x.Servico.Iss).AsNoTracking().Where(x => x.NotaFiscalId == NFSe.Id).OrderBy(x => x.DataInclusao);
         }
 
@@ -161,7 +162,7 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorUnitario = NFSeServico.Valor,
                     ValorTotal = (NFSeServico.Quantidade * NFSeServico.Valor),
                     BaseCalculo = (NFSeServico.Quantidade * NFSeServico.Valor),
-                    ISSRetido = itemTributacao.RetemISS ? TipoSimNao.Sim : TipoSimNao.Nao,//TODO: rever de acordo com a configuração? 
+                    ISSRetido = itemTributacao.RetemISS ? TipoSimNao.Sim : TipoSimNao.Nao,
                     ValorDeducoes = 0.0,//Fixo
                     ValorPIS = itemTributacao.PISValor,
                     ValorCofins = itemTributacao.COFINSValor,
@@ -173,6 +174,7 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorOutrasRetencoes = somaRetencoes,
                     DescontoCondicional = 0.00,
                     DescontoIncondicional = NFSeServico.Desconto,
+                    UnidadeMedidaSigla = NFSeServico.Servico.UnidadeMedida != null ? NFSeServico.Servico.UnidadeMedida.Abreviacao : null,
                     CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
                 });
             };

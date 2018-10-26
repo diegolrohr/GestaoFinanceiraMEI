@@ -59,6 +59,14 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "prestacao")]
         public Prestacao Prestacao { get; set; }
 
+        [XmlElement(ElementName = "intermediario")]
+        public Intermediador Intermediador { get; set; }
+
+        public bool ShouldSerializeIntermediador()
+        {
+            return Intermediador != null;
+        }
+
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
@@ -67,11 +75,11 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 
         /// <summary>
         /// Gerado pelo sistema na serialização do xml
+        /// realizado aglutinação para posterior soma dos valores
         /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
 
-        //TODO: ver faturas e pagamentos, repete a cada parcela nos 2? ou agrupado
         [XmlArray("faturas"), XmlArrayItem(typeof(Fatura), ElementName = "fatura")]
         public List<Fatura> Faturas { get; set; }
 
@@ -88,11 +96,15 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
             return Pagamentos != null && (Pagamentos.ListaPagamentos != null && Pagamentos.ListaPagamentos.Any());
         }
 
-        //TODO:tag deducoes
-        //TODO:tag construcao
-
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }
 
+        [XmlElement(ElementName = "construcao")]
+        public Construcao Construcao { get; set; }
+
+        public bool ShouldSerializeConstrucao()
+        {
+            return Construcao != null;
+        }
     }
 }

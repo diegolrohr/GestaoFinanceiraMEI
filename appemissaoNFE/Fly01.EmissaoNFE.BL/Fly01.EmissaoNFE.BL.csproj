@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="CancelarNFSBL.cs" />
     <Compile Include="CartaCorrecaoBL.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaConstrucao.cs" />
+    <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaIntermediador.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaPagamentos.cs" />
     <Compile Include="Helpers\ValidaModelTransmissaoNFS\ValidaFaturas.cs" />
     <Compile Include="IssBL.cs" />

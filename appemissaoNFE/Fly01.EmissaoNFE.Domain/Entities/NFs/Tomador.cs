@@ -56,7 +56,6 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "bairro")]
         public string Bairro { get; set; }
 
-        //TODO: revisar
         [XmlElement(ElementName = "codmunibge")]
         public string CodigoMunicipioIBGE { get; set; }
 
@@ -145,15 +144,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "situacaoespecial")]
         public TipoSituacaoEspecialNFS SituacaoEspecial { get; set; }
 
-        /// <summary>
-        /// 1 – Comércio/Indústria 2 – Pessoa Física  3 – Prestação de Serviço  4 – Empressa pública 5 – Cooperado
-        /// </summary>
-        //[XmlElement(ElementName = "tipopessoa")]
-        [XmlIgnore]
-        public string TipoPessoa { get; set; }
-
         [XmlIgnore]
         public bool ConsumidorFinal { get; set; }
-
     }
 }

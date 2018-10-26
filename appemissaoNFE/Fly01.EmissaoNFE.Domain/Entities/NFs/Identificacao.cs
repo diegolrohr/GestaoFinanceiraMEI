@@ -172,8 +172,13 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         /// <summary>
         /// Código de validação da prénota. UsaAidfRps
         /// </summary>
-        //[XmlElement(ElementName = "codverificacao")]
-        [XmlIgnore]//TODO: Ver com SP AIDF e ver sobre tag Substituicao
+        [XmlElement(ElementName = "codverificacao")]
         public string CodigoVerificacao { get; set; }
+
+        public bool ShouldSerializeCodigoVerificacao()
+        {
+            return (!string.IsNullOrEmpty(CodigoVerificacao) &&
+                (CodigoIBGEPrestador.ToUpper() == "3134202") || (CodigoIBGEPrestador.ToUpper() == "3524006"));
+        }
     }
 }

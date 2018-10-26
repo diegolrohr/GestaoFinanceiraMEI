@@ -369,6 +369,7 @@ namespace Fly01.OrdemServico.Controllers
 
             var config = new FormWizardUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),

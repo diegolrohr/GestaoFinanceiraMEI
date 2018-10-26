@@ -115,7 +115,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "cfopId",
                 Class = "col s12",
                 Label = "Código Fiscal de Operação (CFOP)",
-                Required = true,
                 DataUrl = @Url.Action("Cfop", "AutoComplete"),
                 LabelId = "cfopDescricao"
             });

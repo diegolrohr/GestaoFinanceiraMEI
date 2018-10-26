@@ -109,6 +109,7 @@ namespace Fly01.Compras.Controllers
 
             var config = new FormWizardUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),

@@ -296,8 +296,8 @@ namespace Fly01.Compras.BL
 
                         var produtoNFe = new EmissaoNFE.Domain.Entities.NFe.Produto()
                         {
-                            CFOP = item.GrupoTributario.Cfop.Codigo,
-                            Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop.Codigo.ToString()) : item.Produto.CodigoProduto,
+                            CFOP = item.GrupoTributario.Cfop?.Codigo,
+                            Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop?.Codigo.ToString()) : item.Produto.CodigoProduto,
                             Descricao = item.Produto.Descricao,
                             GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
                             GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,

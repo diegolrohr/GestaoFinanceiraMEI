@@ -23,7 +23,6 @@ namespace Fly01.Core.Reports
             if (string.IsNullOrEmpty(platformUrl))
                 throw new ArgumentException("GetReportConfig: platformUrl argument is required.");
 
-            string logoBase64 = string.Empty;
             var empresaVM = ApiEmpresaManager.GetEmpresa(platformUrl);
 
             var headerDefault = new StringBuilder();
@@ -42,7 +41,7 @@ namespace Fly01.Core.Reports
             {
                 Header = headerDefault.ToString(),
                 Footer = string.Format("<h6>{0} emitido dia {1:dd/MM/yyyy} por {2}</h6>", reportTitle, DateTime.Now, userName),
-                LogoUrl = logoBase64,
+                LogoUrl = empresaVM.ReportLogo != null ? empresaVM.ReportLogo.Replace("data:image/png;base64,", "") : "", 
             };
         }
 

@@ -372,6 +372,7 @@
           <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
           <MIMEType>image/png</MIMEType>
           <Sizing>FitProportional</Sizing>
+          <Top>0.04294cm</Top>
           <Height>2.50472cm</Height>
           <Width>3.15422cm</Width>
           <Style>
@@ -398,9 +399,9 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Left>0.16279cm</Left>
+          <Left>3.15422cm</Left>
           <Height>2.50472cm</Height>
-          <Width>16.32557cm</Width>
+          <Width>13.29886cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -547,6 +548,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
+          <Top>0cm</Top>
           <Left>0.16279cm</Left>
           <Height>0.73201cm</Height>
           <Width>13.64919cm</Width>

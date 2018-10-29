@@ -35,7 +35,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarUnidadeMedida(TransmissaoNFSVM entity, Servico item, int count)
         {
-            entity.Fail(item.CodigoTributario?.Length > 2, new Error(string.Format("Sigla da unidade de medida do serviço {0} não pode ter mais que 2 caracteres.", count)));
+            entity.Fail(item.UnidadeMedidaSigla?.Length > 2, new Error(string.Format("Sigla da unidade de medida do serviço {0} não pode ter mais que 2 caracteres.", count)));
         }
 
         private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item, int count)

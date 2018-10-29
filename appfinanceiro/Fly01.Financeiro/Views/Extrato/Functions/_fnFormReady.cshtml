@@ -5,11 +5,11 @@
                 $(this).removeClass("selected");
             }
             else {
-                fly01._.contasBancariasList.$("tr.selected").removeClass('selected');
+                $$$._.contasBancariasList.$("tr.selected").removeClass('selected');
                 $(this).addClass("selected");
             }
 
-            var dataByRow = fly01._.contasBancariasList.row(this).data();
+            var dataByRow = $$$._.contasBancariasList.row(this).data();
             $("#contaBancariaId").val(dataByRow.contaBancariaId);
             fnAtualizar();
         });

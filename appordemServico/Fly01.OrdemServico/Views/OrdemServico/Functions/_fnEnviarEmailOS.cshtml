@@ -1,23 +1,23 @@
 ﻿<script>
     function fnEnviarEmailOS(idRecord) {
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("EnviaEmail", "OrdemServico")',
             data: { id: idRecord },
 			type: "POST",
 			success : function(data) {
-			    fly01.loading.stop();
+			    $$$.loading.stop();
 			    if (data.success) {
-			        fly01.toast("Email enviado com sucesso.", "success");
+			        $$$.toast("Email enviado com sucesso.", "success");
 			    } else {
-			        fly01.fn.submitErrorHandler(null, data.message);
+			        $$$.fn.submitErrorHandler(null, data.message);
 			    }
 			},
             error: function (jqxhr, textStatus, error) {
 				var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-				fly01.toast(err, "error");
-				fly01.loading.stop();
+				$$$.toast(err, "error");
+				$$$.loading.stop();
 			}
         });
     }

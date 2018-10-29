@@ -1,27 +1,27 @@
 ﻿<script>
     function fnConcluirGerarOrdem(idRecord) {
-        fly01.confirm("Confirmar Encerramento", "Deseja realmente concluir esta ordem e gerar uma Pedido de Venda? Não será mais possível editar/excluir", "fnConcluirGerarOrdemConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Encerramento", "Deseja realmente concluir esta ordem e gerar uma Pedido de Venda? Não será mais possível editar/excluir", "fnConcluirGerarOrdemConfirmed(\"" + idRecord + "\")");
     }
     function fnConcluirGerarOrdemConfirmed(idRecord) {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             type: "POST",
             url: "@Url.Action("ConcluirOrdem", "OrdemServico")",
             dataType: 'json',
             data: { id: idRecord, geraOrdemVenda: true },
             success: function (data) {
-                fly01.loading.stop();
+                $$$.loading.stop();
                 if (data.success) {
-                    fly01.toast("Ordem concluída com sucesso e Pedido de Venda gerada!", "success");
-                    fly01._.fly01dt.refresh();
+                    $$$.toast("Ordem concluída com sucesso e Pedido de Venda gerada!", "success");
+                    $$$._.fly01dt.refresh();
                 }
                 else {
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(textStatus, "error");
+                $$$.loading.stop();
+                $$$.toast(textStatus, "error");
             }
         });
     }

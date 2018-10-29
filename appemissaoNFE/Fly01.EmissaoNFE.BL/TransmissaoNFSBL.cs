@@ -121,7 +121,10 @@ namespace Fly01.EmissaoNFE.BL
                 var descricaoAglutinada = "";
 
                 //se necessário colocar alguma ordem antes do FirstOrDefault
-                var primeiroServico = entity.ItemTransmissaoNFSVM.Servicos.FirstOrDefault();
+                var primeiroServico = entity.ItemTransmissaoNFSVM.Servicos.Where(x => x.IsServicoPrioritario).First();
+                if (primeiroServico == null)
+                    primeiroServico = entity.ItemTransmissaoNFSVM.Servicos.FirstOrDefault();
+
                 entity.ItemTransmissaoNFSVM.Servicos.Remove(primeiroServico);
                 descricaoAglutinada = primeiroServico.Descricao;
 

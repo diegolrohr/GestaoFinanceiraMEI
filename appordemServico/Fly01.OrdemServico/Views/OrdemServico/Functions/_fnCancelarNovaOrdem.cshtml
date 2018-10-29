@@ -2,28 +2,28 @@
     function fnCancelarNovaOrdem() {        
         var idRecord = $('form#fly01frm input#id').val();
         if (onCancelMustDeleteOrdemServico) {
-            fly01.loading.start();
+            $$$.loading.start();
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Delete", "OrdemServico")",
                 data: { id: idRecord },
                 success: function (data) {
-                    fly01.loading.stop();
+                    $$$.loading.stop();
                     if (data.success) {                        
-                        fly01.go("@Url.Action("List", "OrdemServico")");
+                        $$$.go("@Url.Action("List", "OrdemServico")");
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
-                    fly01.loading.stop();
-                    fly01.toast(textStatus, "error");
+                    $$$.loading.stop();
+                    $$$.toast(textStatus, "error");
                 }
             });
         }
         else {
-            fly01.go("@Url.Action("List", "OrdemServico")");
+            $$$.go("@Url.Action("List", "OrdemServico")");
         }
     }
 </script>

@@ -1,6 +1,6 @@
 ﻿<script>
     function fnExcluirOrdemVendaProduto(idRecord) {
-        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemVendaProdutoConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrdemVendaProdutoConfirmed(\"" + idRecord + "\")");
     }
     function fnExcluirOrdemVendaProdutoConfirmed(idRecord) {
         $('body').removeClass('loaded');
@@ -12,16 +12,16 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Excluído com sucesso.", "success");
-                        fly01._.dtOrdemVendaProdutos.refresh();
+                        $$$.toast("Excluído com sucesso.", "success");
+                        $$$._.dtOrdemVendaProdutos.refresh();
                     }
                     else {
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }

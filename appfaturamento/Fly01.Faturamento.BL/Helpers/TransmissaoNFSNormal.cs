@@ -12,6 +12,7 @@ using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 using ServicoEmissao = Fly01.EmissaoNFE.Domain.Entities.NFS.Servico;
+using Fly01.Core;
 
 namespace Fly01.Faturamento.BL.Helpers
 {
@@ -22,6 +23,7 @@ namespace Fly01.Faturamento.BL.Helpers
         protected ManagerEmpresaVM Empresa { get; set; }
         protected Pessoa Cliente { get; set; }
         protected ParametroTributario ParametrosTributarios { get; set; }
+        protected List<ContaFinanceira> Contas { get; set; }
 
         public TransmissaoNFSNormal(TransmissaoNFSBLs transmissaoNFSBLs, NFSe entity)
         {
@@ -32,6 +34,8 @@ namespace Fly01.Faturamento.BL.Helpers
             Empresa = ApiEmpresaManager.GetEmpresa(TransmissaoNFSBLs.PlataformaUrl);
             if (entity != null)
                 Cliente = TransmissaoNFSBLs.TotalTributacaoBL.GetPessoa(entity.ClienteId);
+
+            Contas = ObterContasFinanceiras();
         }
 
         public TransmissaoNFSVM ObterTransmissaoNFSVM()
@@ -67,6 +71,7 @@ namespace Fly01.Faturamento.BL.Helpers
             return TransmissaoNFSBLs.NFSeServicoBL.AllIncluding(
                 x => x.GrupoTributario.Cfop,
                 x => x.Servico.Nbs,
+                x => x.Servico.UnidadeMedida,
                 x => x.Servico.Iss).AsNoTracking().Where(x => x.NotaFiscalId == NFSe.Id).OrderBy(x => x.DataInclusao);
         }
 
@@ -104,6 +109,8 @@ namespace Fly01.Faturamento.BL.Helpers
                 Tomador = ObterTomador(),
                 Servicos = ObterServicos(),
                 Valores = ObterValores(),
+                Pagamentos = ObterPagamentos(),
+                Faturas = ObterFaturas(),
                 InformacoesComplementares = ObterInformacoesComplementares()
             };
         }
@@ -143,6 +150,7 @@ namespace Fly01.Faturamento.BL.Helpers
 
                 result.Add(new ServicoEmissao()
                 {
+                    IsServicoPrioritario = NFSeServico.IsServicoPrioritario,
                     CodigoIss = codigoIss,
                     CodigoNBS = NFSeServico.Servico.Nbs != null ? NFSeServico.Servico.Nbs.Codigo : null,
                     AliquotaIss = itemTributacao.ISSAliquota,
@@ -154,7 +162,7 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorUnitario = NFSeServico.Valor,
                     ValorTotal = (NFSeServico.Quantidade * NFSeServico.Valor),
                     BaseCalculo = (NFSeServico.Quantidade * NFSeServico.Valor),
-                    ISSRetido = itemTributacao.RetemISS ? TipoSimNao.Sim : TipoSimNao.Nao,//TODO: rever de acordo com a configuração? 
+                    ISSRetido = itemTributacao.RetemISS ? TipoSimNao.Sim : TipoSimNao.Nao,
                     ValorDeducoes = 0.0,//Fixo
                     ValorPIS = itemTributacao.PISValor,
                     ValorCofins = itemTributacao.COFINSValor,
@@ -166,6 +174,7 @@ namespace Fly01.Faturamento.BL.Helpers
                     ValorOutrasRetencoes = somaRetencoes,
                     DescontoCondicional = 0.00,
                     DescontoIncondicional = NFSeServico.Desconto,
+                    UnidadeMedidaSigla = NFSeServico.Servico.UnidadeMedida != null ? NFSeServico.Servico.UnidadeMedida.Abreviacao : null,
                     CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? ""
                 });
             };
@@ -182,6 +191,7 @@ namespace Fly01.Faturamento.BL.Helpers
                 RazaoSocial = Cliente.Nome ?? "",
                 Logradouro = Cliente.Endereco ?? "",
                 NumeroEndereco = Cliente.Numero ?? "",
+                ComplementoEndereco = Cliente.Complemento ?? "",
                 Bairro = Cliente.Bairro ?? "",
                 CodigoMunicipioIBGE = Cliente.Cidade?.CodigoIbge ?? "",
                 Cidade = Cliente.Cidade?.Nome ?? "",
@@ -243,6 +253,7 @@ namespace Fly01.Faturamento.BL.Helpers
             return new Identificacao()
             {
                 TipoTributacao = ParametrosTributarios.TipoTributacaoNFS,
+                TipoRegimeEspecialTributacao = ParametrosTributarios.TipoRegimeEspecialTributacao,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? "",
                 DataHoraEmissao = DateTime.Now,
                 SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),
@@ -287,6 +298,87 @@ namespace Fly01.Faturamento.BL.Helpers
             }
 
             return codigoISS;
+        }
+
+        public Pagamentos ObterPagamentos()
+        {
+            if (NFSe.GeraFinanceiro)
+            {
+                if (Contas != null && Contas.Any())
+                {
+                    var pagamentos = new Pagamentos();
+
+                    var num = 1;
+                    pagamentos.ListaPagamentos = new List<Pagamento>();
+                    foreach (var item in Contas.OrderBy(x => x.DataVencimento))
+                    {
+                        pagamentos.ListaPagamentos.Add(
+                            new Pagamento()
+                            {
+                                NumeroParcela = num,
+                                DataVencimento = item.DataVencimento,
+                                Valor = item.ValorPrevisto
+                            });
+                        num++;
+                    }
+                    return pagamentos;
+                }
+            }
+            return null;
+        }
+
+        public List<Fatura> ObterFaturas()
+        {
+            if (NFSe.GeraFinanceiro)
+            {
+                if (Contas != null && Contas.Any())
+                {
+                    var faturas = new List<Fatura>();
+
+                    foreach (var item in Contas.OrderBy(x => x.DataVencimento))
+                    {
+                        faturas.Add(
+                            new Fatura()
+                            {
+                                Numero = item.Numero,
+                                Valor = item.ValorPrevisto
+                            });
+                    }
+                    return faturas;
+                }
+            }
+            return null;
+        }
+
+        public List<ContaFinanceira> ObterContasFinanceiras()
+        {
+            try
+            {
+                var header = new Dictionary<string, string>()
+                {
+                    { "AppUser", TransmissaoNFSBLs.AppUser  },
+                    { "PlataformaUrl", TransmissaoNFSBLs.PlataformaUrl }
+                };
+                var queryString = new Dictionary<string, string>()
+                {
+                    {
+                        "contaFinanceiraParcelaPaiId",
+                        NFSe.ContaFinanceiraParcelaPaiIdServicos.HasValue
+                            ? NFSe.ContaFinanceiraParcelaPaiIdServicos.Value.ToString()
+                            : default(Guid).ToString()
+                    }
+                };
+
+                var contas = new List<ContaFinanceira>();
+                    var response = RestHelper.ExecuteGetRequest<ResultBase<ContaReceber>>(AppDefaults.UrlFinanceiroApi, "contareceberparcelas", header, queryString);
+                    contas.AddRange(response.Data.Cast<ContaFinanceira>().ToList());
+
+                return contas;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao tentar obter as contas financeiras da NFS-e. " + ex.Message);
+            }
         }
     }
 }

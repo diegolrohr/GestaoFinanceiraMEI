@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Entities.NFS;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
+using System.Linq;
 
 namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 {
@@ -20,14 +21,25 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
                     ValidarCodigoServico(entity, item, count);
                     ValidarDiscriminacaoServico(entity, item, count);
                     ValidarCodigoTributacao(entity, item, count);
+                    ValidarUnidadeMedida(entity, item, count);
+                    ValidarCodigoFiscalPrestacao(entity, item, count);
                     count++;
                 }
             }
         }
 
+        private static void ValidarCodigoFiscalPrestacao(TransmissaoNFSVM entity, Servico item, int count)
+        {
+            entity.Fail(item.CodigoFiscalPrestacao?.Length > 5, new Error(string.Format("Código fiscal de prestação do serviço {0} não pode ter mais que 5 caracteres.", count)));
+        }
+
+        private static void ValidarUnidadeMedida(TransmissaoNFSVM entity, Servico item, int count)
+        {
+            entity.Fail(item.CodigoTributario?.Length > 2, new Error(string.Format("Sigla da unidade de medida do serviço {0} não pode ter mais que 2 caracteres.", count)));
+        }
+
         private static void ValidarCodigoTributacao(TransmissaoNFSVM entity, Servico item, int count)
         {
-            //TODO: verificar obrigatoriedadeentity.Fail(string.IsNullOrEmpty(item.CodigoTributario), new Error("Código tributário municipal do serviço é um dado obrigatório."));
             entity.Fail(item.CodigoTributario?.Length > 20, new Error(string.Format("Código tributário municipal do serviço {0} não pode ter mais que 20 caracteres.", count)));
         }
 

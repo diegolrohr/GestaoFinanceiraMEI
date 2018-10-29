@@ -15,10 +15,10 @@
             url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardSA.info(data.SaldoAtual);
-                fly01._.fly01cardCP.info(data.TotalPagamentos);
-                fly01._.fly01cardCR.info(data.TotalRecebimentos);
-                fly01._.fly01cardSC.info(data.SaldoProjetado);
+                $$$._.fly01cardSA.info(data.SaldoAtual);
+                $$$._.fly01cardCP.info(data.TotalPagamentos);
+                $$$._.fly01cardCR.info(data.TotalRecebimentos);
+                $$$._.fly01cardSC.info(data.SaldoProjetado);
 
                 lockSaldos("fly01cardSA", false);
                 lockSaldos("fly01cardCP", false);
@@ -26,7 +26,7 @@
                 lockSaldos("fly01cardSC", false);
             },
             error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
+                $$$.toast(textStatus, 'error');
             }
         });
     }

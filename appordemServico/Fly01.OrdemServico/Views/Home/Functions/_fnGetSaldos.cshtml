@@ -15,10 +15,10 @@
             url: "@Url.Action("LoadCards", "Dashboard")?dataFinal=" + final,
             type: "GET",
             success: function (data) {
-                fly01._.fly01cardAB.info(data.EmAberto);
-                fly01._.fly01cardAN.info(data.EmAndamento);
-                fly01._.fly01cardCO.info(data.Concluido);
-                fly01._.fly01cardCA.info(data.Cancelado);
+                $$$._.fly01cardAB.info(data.EmAberto);
+                $$$._.fly01cardAN.info(data.EmAndamento);
+                $$$._.fly01cardCO.info(data.Concluido);
+                $$$._.fly01cardCA.info(data.Cancelado);
 
                 lockSaldos("fly01cardAB", false);
                 lockSaldos("fly01cardAN", false);
@@ -26,7 +26,7 @@
                 lockSaldos("fly01cardCA", false);
             },
             error: function (jXHR, textStatus) {
-                fly01.toast(textStatus, 'error');
+                $$$.toast(textStatus, 'error');
             }
         });
     }

@@ -16,6 +16,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
             else
             {
                 ValidarLogradouro(entity);
+                ValidarNumeroEndereco(entity);
                 ValidarCodigoMunicipalIBGE(entity, entitiesBLToValidateNFS);
                 ValidarMunicipio(entity);
                 ValidarBairro(entity);
@@ -41,11 +42,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarBairro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.Bairro), new Error("Bairro do local de prestação do serviço é um dado obrigatório.", "Bairro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.Bairro?.Length > 50, new Error("Bairro do local de prestação do serviço, não pode ter mais que 50 caracteres.", "Bairro"));
         }
 
         private static void ValidarMunicipio(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.Municipio), new Error("Municipio do local de prestação do serviço é um dado obrigatório.", "Municipio"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.Municipio?.Length > 50, new Error("Municipio do local de prestação do serviço, não pode ter mais que 50 caracteres.", "Municipio"));
         }
 
         private static void ValidarCodigoMunicipalIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
@@ -66,7 +69,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarLogradouro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.Logradouro), new Error("Logradouro do local de prestação do serviço é um dado obrigatório.", "Logradouro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.Logradouro?.Length > 100, new Error("Logradouro do local de prestação do serviço, não pode ter mais que 100 caracteres.", "Logradouro"));
+        }
 
+        private static void ValidarNumeroEndereco(TransmissaoNFSVM entity)
+        {
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco), new Error("Número do local de prestação do serviço é um dado obrigatório.", "NumeroEndereco"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestacao.NumeroEndereco?.Length > 9, new Error("Número do local de prestação do serviço, não pode ter mais que 100 caracteres.", "NumeroEndereco"));
         }
     }
 }

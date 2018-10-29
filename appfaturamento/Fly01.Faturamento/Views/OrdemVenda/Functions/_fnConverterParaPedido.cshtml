@@ -1,27 +1,27 @@
 ﻿<script>
     function fnConverterParaPedido(idRecord) {
-        fly01.confirm("Confirmar Conversão", "Deseja realmente converter este orçamento em um pedido? O número continua o mesmo e será possível seguir o fluxo para movimentar o estoque, gerar financeiro e criar as notas fiscais.", "fnConverterParaPedidoConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Conversão", "Deseja realmente converter este orçamento em um pedido? O número continua o mesmo e será possível seguir o fluxo para movimentar o estoque, gerar financeiro e criar as notas fiscais.", "fnConverterParaPedidoConfirmed(\"" + idRecord + "\")");
     }
     function fnConverterParaPedidoConfirmed(idRecord) {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             type: "POST",
             url: "@Url.Action("ConverterParaPedido", "Orcamento")",
             dataType: 'json',
             data: { id: idRecord },
             success: function (data) {
-                fly01.loading.stop();
+                $$$.loading.stop();
                 if (data.success) {
-                    fly01.toast("Orçamento convertido em pedido com sucesso", "success");
-                    fly01._.fly01dt.refresh();
+                    $$$.toast("Orçamento convertido em pedido com sucesso", "success");
+                    $$$._.fly01dt.refresh();
                 }
                 else {
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(textStatus, "error");
+                $$$.loading.stop();
+                $$$.toast(textStatus, "error");
             }
         });
     }

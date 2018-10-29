@@ -98,6 +98,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("formatarCodigoISS")]
         public bool FormatarCodigoISS { get; set; }
 
+        [JsonProperty("tipoRegimeEspecialTributacao")]
+        [APIEnum("TipoRegimeEspecialTributacao")]
+        public string TipoRegimeEspecialTributacao { get; set; }
+
         #endregion
     }
 }

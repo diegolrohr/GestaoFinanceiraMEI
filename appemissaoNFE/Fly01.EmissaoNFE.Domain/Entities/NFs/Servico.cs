@@ -6,6 +6,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     [XmlRoot(ElementName = "servico")]
     public class Servico
     {
+        [XmlIgnore]
+        public bool IsServicoPrioritario { get; set; }
+
         [XmlElement(ElementName = "codigo")]
         public string CodigoIss { get; set; }
 
@@ -25,6 +28,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "cnae")]
         public string CNAE { get; set; }
 
+        /// <summary>
+        /// Código de tributação do serviço.
+        /// </summary>
         [XmlElement(ElementName = "codtrib")]
         public string CodigoTributario { get; set; }
 
@@ -34,6 +40,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double Quantidade { get; set; }
 
+        /// <summary>
+        /// 15,2
+        /// </summary>
         [XmlElement(ElementName = "quant")]
         public string QuantidadeString
         {
@@ -44,6 +53,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorUnitario { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valunit")]
         public string ValorUnitarioString
         {
@@ -54,6 +66,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorTotal { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valtotal")]
         public string ValorTotalString
         {
@@ -64,6 +79,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double BaseCalculo { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "basecalc")]
         public string BaseCalculoString
         {
@@ -86,6 +104,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlIgnore]
         public double ValorPIS { get; set; }
 
+        /// <summary>
+        /// 15,4
+        /// </summary>
         [XmlElement(ElementName = "valpis")]
         public string ValorPISString
         {
@@ -177,6 +198,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// Se Ibge 3106200 deixar desccond = 0 e inverter com DescontoIncondicional
+        /// Valor do desconto condicionado do serviço. 15,4
         /// </summary>
         [XmlIgnore]
         public double DescontoCondicional { get; set; }
@@ -193,7 +215,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlIgnore]
         public double DescontoIncondicional { get; set; }
-        
+
+        /// <summary>
+        /// Valor do desconto incondicionado do serviço. 15,4
+        /// </summary>
         [XmlElement(ElementName = "descinc")]
         public string DescontoIncondicionalString
         {
@@ -204,6 +229,48 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
                     DescontoIncondicional.ToString("0.00").Replace(",", ".");
             }
             set { DescontoIncondicional = double.Parse(value.Replace(".", ",")); }
+        }
+
+        /// <summary>
+        /// SC SACO 
+        /// G GRAMA
+        /// AR ARROBA
+        /// FL FOLHAS
+        /// MG MILIGRAMA
+        /// M METRO
+        /// ML MILILITRO
+        /// CX CAIXA
+        /// KG QUILOGRAMA
+        /// UN UNIDADE
+        /// TN TONELADA
+        /// LB LIBRA
+        /// M2 METRO QUADRADO
+        /// GL GALAO
+        /// L LITRO
+        /// MM MILIMETRO
+        /// YD JARDA
+        /// HR HORA
+        /// PC PECA
+        /// M3 METRO CUBICO
+        /// MI MILHEIRO
+        /// </summary>
+        [XmlElement(ElementName = "unidmed")]
+        public string UnidadeMedidaSigla { get; set; }
+
+        private bool ShouldSerializeUnidadeMedidaSigla()
+        {
+            return !string.IsNullOrEmpty(UnidadeMedidaSigla);
+        }
+
+        /// <summary>
+        /// Código fiscal de prestação de serviço.
+        /// </summary>
+        [XmlElement(ElementName = "cfps")]
+        public string CodigoFiscalPrestacao { get; set; }
+
+        private bool ShouldSerializeCodigoFiscalPrestacao()
+        {
+            return !string.IsNullOrEmpty(CodigoFiscalPrestacao);
         }
 
         /// <summary>

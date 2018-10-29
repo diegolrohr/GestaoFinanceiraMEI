@@ -57,6 +57,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -125,6 +126,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new DataTableUI
             {
+                Id = "fly01dt",
                 RowGroup = "tipoCarteira",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns=",

@@ -1,11 +1,11 @@
 ﻿<script>
     function fnFormReady() {
         $("#btnDia").click();
-        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        let date = $$$._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         let lastDay = new Date(date.year, date.month + 1, 0); 
         var dataFinal = moment(lastDay).format('YYYY-MM-DD');
         getSaldos(dataFinal);
-        fly01._.fly01chart.refresh();
+        $$$._.fly01chart.refresh();
     }
 </script>

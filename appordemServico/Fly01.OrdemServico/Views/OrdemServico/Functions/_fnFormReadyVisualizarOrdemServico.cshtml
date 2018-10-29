@@ -29,11 +29,11 @@
                         ]
                     });
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }
@@ -65,11 +65,11 @@
                         ]
                     });
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }
@@ -101,11 +101,11 @@
                         ]
                     });
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }
@@ -113,7 +113,7 @@
     function calculaTotalOrdemServico() {
         var idOrdemServico = $("form#fly01mdlfrmVisualizarOrdemServico input#id").val();
        
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalOrdemServico", "OrdemServico")',
@@ -124,17 +124,17 @@
             if (data.success) {
                 $('input#totalProdutos').val(data.total.TotalProdutos/*.formatMoneyMask(2, 3, '', ',')/**/);
                 $('input#totalServicos').val(data.total.TotalServicos/*.formatMoneyMask(2, 3, '', ',')/**/);
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
             }
             else {
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 

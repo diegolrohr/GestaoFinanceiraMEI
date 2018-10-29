@@ -21,7 +21,7 @@
 
             if (isCreate() && fileUpload.files.length == 0)
             {
-                fly01.toast("Arquivo do extrato não enviado", "error");
+                $$$.toast("Arquivo do extrato não enviado", "error");
                 $('body').addClass('loaded');
                 return;
             }
@@ -50,24 +50,24 @@
                     if (data.success) {
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "") strMsg = data.message;
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
 
                         var url = "@Url.Action("List", "ConciliacaoBancaria")";
                         if (isCreate()) {
-                            fly01.go(url);
+                            $$$.go(url);
                         } else {
-                            fly01._.dtConciliacaoItens.refresh();
+                            $$$._.dtConciliacaoItens.refresh();
                             $("#arquivo").val("");
                             $("#arquivoField .file-path").val("");
                         }
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
 
                     $('body').addClass('loaded');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     $('body').addClass('loaded');
                 }
             });
@@ -83,7 +83,7 @@
         else {
             $('#extratoLancamentosLabelField').show();
             $('#contaBancariaNomeConta').attr('disabled', 'disabled');
-            fly01._.dtConciliacaoItens.refresh();
+            $$$._.dtConciliacaoItens.refresh();
         }
     }
 </script>

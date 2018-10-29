@@ -23,6 +23,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
                 ValidarCidade(entity);
                 ValidarUF(entity, entitiesBLToValidateNFS);
                 ValidarLogradouro(entity);
+                ValidarNumeroEndereco(entity);
                 ValidarBairro(entity);
                 ValidarCEP(entity,entitiesBLToValidateNFS);
             }
@@ -31,6 +32,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarBairro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.Bairro), new Error("Bairro do prestador é um dado obrigatório.", "Bairro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.Bairro?.Length > 50, new Error("Bairro do prestador, não pode ter mais que 50 caracteres.", "Bairro"));
         }
 
         private static void ValidarCEP(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
@@ -44,6 +46,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarLogradouro(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.Logradouro), new Error("Logradouro do prestador é um dado obrigatório.", "Logradouro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.Logradouro?.Length > 100, new Error("Logradouro do prestador, não pode ter mais que 100 caracteres.", "Logradouro"));
+        }
+
+        private static void ValidarNumeroEndereco(TransmissaoNFSVM entity)
+        {
+            entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.NumeroEndereco), new Error("Número do endereço do prestador é um dado obrigatório.", "Logradouro"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.NumeroEndereco?.Length > 9, new Error("Número do endereço do prestador, não pode ter mais que 9 caracteres.", "Logradouro"));
         }
 
         private static void ValidarUF(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
@@ -65,11 +74,13 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         private static void ValidarNomeFantasia(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.NomeFantasia), new Error("Nome Fantasia do prestador é obrigatório.", "NomeFantasia"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.NomeFantasia?.Length > 60, new Error("Nome Fantasia do prestador é obrigatório.", "NomeFantasia"));
         }
 
         private static void ValidarRazaoSocial(TransmissaoNFSVM entity)
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.RazaoSocial), new Error("Razão social do prestador é obrigatório.", "RazaoSocial"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.RazaoSocial?.Length > 120, new Error("Razão social do prestador, não pode ter mais que 120 caracteres.", "RazaoSocial"));
         }
 
         private static void ValidarCpfCnpj(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
@@ -92,6 +103,8 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
         {
             entity.Fail(string.IsNullOrEmpty(entity.ItemTransmissaoNFSVM.Prestador.InscricaoMunicipalPrestador), 
                 new Error("Inscrição municipal do prestador é obrigatório.", "InscricaoMunicipal"));
+            entity.Fail(entity.ItemTransmissaoNFSVM.Prestador.InscricaoMunicipalPrestador?.Length > 20,
+                new Error("Inscrição municipal do prestador, não pode ter mais que 20 caracteres.", "InscricaoMunicipal"));
         }
     }
 }

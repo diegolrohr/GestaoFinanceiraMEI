@@ -61,7 +61,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
+            var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad", "SerieNotaFiscal"), UrlFunctions = Url.Action("Functions", "SerieNotaFiscal", null, Request.Url.Scheme) + "?fns=" };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
@@ -118,6 +118,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -130,15 +131,6 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "serie",
-                Class = "col s12 m4",
-                Label = "Série",
-                Required = true,
-                MaxLength = 3
-            });
 
             config.Elements.Add(new SelectUI
             {
@@ -154,6 +146,15 @@ namespace Fly01.Core.Presentation.Controllers
                         Function = "fnChangeTipoOperacao"
                     }
                 }
+            });
+
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "serie",
+                Class = "col s12 m4",
+                Label = "Série",
+                Required = true,
+                MaxLength = 3
             });
 
             config.Elements.Add(new InputCustommaskUI
@@ -200,16 +201,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "serie",
-                Class = "col s12 m4",
-                Label = "Série",
-                Required = true,
-                MaxLength = 3,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
-            });
-
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoOperacaoSerieNotaFiscal",
@@ -218,6 +209,16 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)).
                     ToList().FindAll(x => "Ambas,NFe".Contains(x.Value))),
                 Value = "1"
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "serie",
+                Class = "col s12 m4",
+                Label = "Série",
+                Required = true,
+                MaxLength = 3,
+                Data = new { inputmask = "'regex': '[0-9]*'" }
             });
 
             config.Elements.Add(new InputCustommaskUI
@@ -252,16 +253,6 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
 
-            config.Elements.Add(new InputCustommaskUI
-            {
-                Id = "serie",
-                Class = "col s12 m4",
-                Label = "Série",
-                Required = true,
-                MaxLength = 3,
-                Data = new { inputmask = "'regex': '[0-9]*'" }
-            });
-
             config.Elements.Add(new SelectUI
             {
                 Id = "tipoOperacaoSerieNotaFiscal",
@@ -270,6 +261,16 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoOperacaoSerieNotaFiscal)).
                     ToList().FindAll(x => "Ambas,NFSe".Contains(x.Value))),
                 Value = "2"
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "serie",
+                Class = "col s12 m4",
+                Label = "Série",
+                Required = true,
+                MaxLength = 3,
+                Value = "RPS"
             });
 
             config.Elements.Add(new InputCustommaskUI

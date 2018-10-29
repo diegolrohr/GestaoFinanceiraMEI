@@ -7,7 +7,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "codigo")]
         public string CodigoCNAE { get; set; }
 
-        [XmlElement(ElementName = "aliquota")]
+        [XmlIgnore]
         public double AliquotaIss { get; set; }
+
+        [XmlElement(ElementName = "aliquota")]
+        public string AliquotaIssString
+        {
+            get { return AliquotaIss.ToString("0.0000").Replace(",", "."); }
+            set { AliquotaIss = double.Parse(value.Replace(".", ",")); }
+        }
     }
 }

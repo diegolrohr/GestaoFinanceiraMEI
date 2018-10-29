@@ -648,7 +648,6 @@ namespace Fly01.Faturamento.BL
                 {
                     var contaPagarTransp = new ContaPagar()
                     {
-                        Id = GetContaFinanceiraParcelaId(TipoItem.Produtos, entity),
                         ValorPrevisto = entity.ValorFrete.HasValue ? entity.ValorFrete.Value : 0,
                         CategoriaId = entity.CategoriaId.Value,
                         CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,

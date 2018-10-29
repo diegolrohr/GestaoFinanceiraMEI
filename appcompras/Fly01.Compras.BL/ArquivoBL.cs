@@ -48,8 +48,7 @@ namespace Fly01.Compras.BL
                         try
                         {
                             if (!string.IsNullOrWhiteSpace(content[i]))
-                                PopularArquivo(arquivo, content, cols, cpf, cnpj, i);
-                            
+                                PopularArquivo(arquivo, content, cols, cpf, cnpj, i);   
                         }
                         catch
                         { }

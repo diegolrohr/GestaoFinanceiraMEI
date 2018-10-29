@@ -66,7 +66,7 @@ namespace Fly01.Faturamento.Controllers
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
                 Target = new LinkUI
                 {
-                    Go = Url.Action("List", "NotaFiscal", new { isEdit = "false", tipoVenda = "Normal" })
+                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
                 }
             });
 

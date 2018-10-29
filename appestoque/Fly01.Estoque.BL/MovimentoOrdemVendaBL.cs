@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Estoque.BL
 {
@@ -21,7 +22,7 @@ namespace Fly01.Estoque.BL
 
         public override void Insert(MovimentoOrdemVenda entity)
         {
-            var produto = ProdutoBL.All.FirstOrDefault(x => x.Id == entity.ProdutoId);
+            var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => x.Id == entity.ProdutoId);
 
             if (produto == null)
             {

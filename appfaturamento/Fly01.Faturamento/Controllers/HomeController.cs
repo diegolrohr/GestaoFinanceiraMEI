@@ -63,7 +63,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "nfsenormal",
                 Class = "col s12 m6 l3",
                 Title = "NFS-e Serviço",
-                Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
                 Target = new LinkUI
                 {
                     Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })

@@ -25,10 +25,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return ModalidadeBC.HasValue;
         }
 
-        [XmlElement(ElementName = "pRedBC", IsNullable = true)]
+        [XmlIgnore]
         public double? PercentualReducaoBC { get; set; }
 
-        public bool ShouldSerializePercentualReducaoBC()
+        [XmlElement(ElementName = "pRedBC", IsNullable = true)]
+        public string PercentualReducaoBCString
+        {
+            get
+            {
+                return PercentualReducaoBC.HasValue ? PercentualReducaoBC.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { PercentualReducaoBC = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializePercentualReducaoBCString()
         {
             return PercentualReducaoBC.HasValue;
         }
@@ -93,10 +103,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             set { PercentualMargemValorAdicionadoST = double.Parse(value); }
         }
 
-        [XmlElement(ElementName = "pRedBCST", IsNullable = true)]
+        [XmlIgnore]
         public double? PercentualReducaoBCST { get; set; }
 
-        public bool ShouldSerializePercentualReducaoBCST()
+        [XmlElement(ElementName = "pRedBCST", IsNullable = true)]
+        public string PercentualReducaoBCSTString
+        {
+            get
+            {
+                return PercentualReducaoBCST.HasValue ? PercentualReducaoBCST.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { PercentualReducaoBCST = double.Parse(value); }
+        }
+
+        public bool ShouldSerializePercentualReducaoBCSTString()
         {
             return PercentualReducaoBCST.HasValue;
         }
@@ -122,7 +142,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
             get
             {
-                return AliquotaICMSST.HasValue ? AliquotaICMSST.Value.ToString().Replace(",", ".") : "0.00";
+                return AliquotaICMSST.HasValue ? AliquotaICMSST.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
             set { AliquotaICMSST = double.Parse(value); }
         }
@@ -188,10 +208,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return ValorFCPST.HasValue && ValorFCPST.Value > 0 && AliquotaFCPST.Value > 0 && BaseFCPST.Value > 0;
         }
 
-        [XmlElement(ElementName = "pCredSN", IsNullable = true)]
+        [XmlIgnore]
         public double? AliquotaAplicavelCalculoCreditoSN { get; set; }
 
-        public bool ShouldSerializeAliquotaAplicavelCalculoCreditoSN()
+        [XmlElement(ElementName = "pCredSN", IsNullable = true)]
+        public string AliquotaAplicavelCalculoCreditoSNString
+        {
+            get
+            {
+                return AliquotaAplicavelCalculoCreditoSN.HasValue ? AliquotaAplicavelCalculoCreditoSN.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { AliquotaAplicavelCalculoCreditoSN = double.Parse(value); }
+        }
+
+        public bool ShouldSerializeAliquotaAplicavelCalculoCreditoSNSting()
         {
             return AliquotaAplicavelCalculoCreditoSN.HasValue;
         }
@@ -227,26 +257,56 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return ValorBCSTRetido.HasValue && ValorBCSTRetido.Value > 0;
         }
 
-        [XmlElement(ElementName = "vICMSSTRet", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorICMSSTRetido { get; set; }
 
-        public bool ShouldSerializeValorICMSSTRetido()
+        [XmlElement(ElementName = "vICMSSTRet", IsNullable = true)]
+        public string ValorICMSSTRetidoString
+        {
+            get
+            {
+                return ValorICMSSTRetido.HasValue ? ValorICMSSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorICMSSTRetidoString()
         {
             return ValorICMSSTRetido.HasValue && ValorICMSSTRetido.Value > 0;
         }
 
-        [XmlElement(ElementName = "vBCSTDest", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorBCSTDestino { get; set; }
 
-        public bool ShouldSerializeValorBCSTDestino()
+        [XmlElement(ElementName = "vBCSTDest", IsNullable = true)]
+        public string ValorBCSTDestinoString
+        {
+            get
+            {
+                return ValorBCSTDestino.HasValue ? ValorBCSTDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorBCSTDestino = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorBCSTDestinoString()
         {
             return ValorBCSTDestino.HasValue && ValorBCSTDestino.Value > 0;
         }
 
-        [XmlElement(ElementName = "vICMSSTDest", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorICMSSTUFDestino { get; set; }
 
-        public bool ShouldSerializeValorICMSSTUFDestino()
+        [XmlElement(ElementName = "vICMSSTDest", IsNullable = true)]
+        public string ValorICMSSTUFDestinoString
+        {
+            get
+            {
+                return ValorICMSSTUFDestino.HasValue ? ValorICMSSTUFDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { ValorICMSSTUFDestino = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorICMSSTUFDestinoString()
         {
             return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino.Value > 0;
         }
@@ -259,10 +319,20 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             return MotivoDesoneracaoICMS.HasValue;
         }
 
-        [XmlElement(ElementName = "pBCOp", IsNullable = true)]
+        [XmlIgnore]
         public double? PercentualBCop { get; set; }
 
-        public bool ShouldSerializePercentualBCop()
+        [XmlElement(ElementName = "pBCOp", IsNullable = true)]
+        public string PercentualBCopString
+        {
+            get
+            {
+                return PercentualBCop.HasValue ? PercentualBCop.Value.ToString("0.00").Replace(",", ".") : "0.00";
+            }
+            set { PercentualBCop = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializePercentualBCopString()
         {
             return PercentualBCop.HasValue;
         }

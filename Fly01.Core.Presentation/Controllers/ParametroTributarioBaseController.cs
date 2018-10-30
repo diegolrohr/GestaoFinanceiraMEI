@@ -137,8 +137,33 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+            var tabs = new TabsUI
+            {
+                Id = "fly01tabs",
+                Tabs = new List<TabsUIItem>()
+                {
+                    new TabsUIItem()
+                    {
+                        Id = "fly01frm",
+                        Title = "Alíquotas Padrões"
+                    },
+                    new TabsUIItem()
+                    {
+                        Id = "fly01frm2",
+                        Title = "Parâmetros de Transmissão NF-e"
+                    },
+                    new TabsUIItem()
+                    {
+                        Id = "fly01frm3",
+                        Title = "Parâmetros de Transmissão NFS-e"
+                    }
+                }
+            };      
+
             var form1 = new FormUI
             {
+                Class = "col s12",
+                Elements = new List<BaseUI>(),
                 Id = "fly01frm",
                 Action = new FormUIAction
                 {
@@ -149,21 +174,9 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            form1.Elements.Add(new InputHiddenUI { Id = "id" });
+            form1.Elements.Add(new InputHiddenUI { Id = "id" });            
 
-            cfg.Content.Add(form1);
-
-            var form2 = new FormUI
-            {
-                Class = "col s12",
-                Elements = new List<BaseUI>
-                {
-                    new LabelSetUI { Id =  "labelSetAliquotasPadroes", Class = "col s12", Label = "Alíquotas Padrões"}
-                },
-                Id = "fly01frm2"
-            };
-
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaSimplesNacional",
                 Class = "col s12 m3",
@@ -171,7 +184,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaPISPASEP",
                 Class = "col s12 m3",
@@ -179,7 +192,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             }); ;
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaCOFINS",
                 Class = "col s12 m3",
@@ -187,7 +200,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaFCP",
                 Class = "col s12 m3",
@@ -195,7 +208,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaISS",
                 Class = "col s12 m3",
@@ -203,7 +216,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaCSLL",
                 Class = "col s12 m3",
@@ -211,7 +224,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaINSS",
                 Class = "col s12 m3",
@@ -219,7 +232,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            form2.Elements.Add(new InputCustommaskUI
+            form1.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaImpostoRenda",
                 Class = "col s12 m3",
@@ -227,22 +240,16 @@ namespace Fly01.Core.Presentation.Controllers
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
-            cfg.Content.Add(form2);
-
-            var form3 = new FormUI
+            var form2 = new FormUI
             {
                 Class = "col s12",
-                Elements = new List<BaseUI>
-                {
-                    new LabelSetUI { Id =  "labelSetParametrosNFe", Class = "col s12", Label = "Parâmetros de Transmissão NF-e"}
-                },
-                Id = "fly01frm3"
-
+                Elements = new List<BaseUI>(),
+                Id = "fly01frm2"
             };
 
-            form3.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF" });
+            form2.Elements.Add(new InputHiddenUI { Id = "numeroRetornoNF" });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "tipoPresencaComprador",
                 Class = "col s12 m6",
@@ -250,7 +257,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoPresencaComprador)))
             });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "tipoModalidade",
                 Class = "col s12 m6",
@@ -258,7 +265,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoModalidade)))
             });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "horarioVerao",
                 Class = "col s12 m6 l3",
@@ -266,7 +273,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(HorarioVerao)))
             });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "tipoHorario",
                 Class = "col s12 m6 l3",
@@ -274,7 +281,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoHorarioTSS)))
             });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "tipoVersaoNFe",
                 Class = "col s6 m6 l3",
@@ -282,7 +289,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVersaoNFe)))
             });
 
-            form3.Elements.Add(new SelectUI
+            form2.Elements.Add(new SelectUI
             {
                 Id = "tipoAmbiente",
                 Class = "col s6 m6 l3",
@@ -290,11 +297,15 @@ namespace Fly01.Core.Presentation.Controllers
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoAmbiente)))
             });
 
-            form3.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
+            form2.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 1000 });
 
             #region NFS
-
-            form3.Elements.Add(new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" });
+            var form3 = new FormUI
+            {
+                Class = "col s12",
+                Elements = new List<BaseUI>(),
+                Id = "fly01frm3"
+            };
 
             form3.Elements.Add(new InputCheckboxUI { Id = "incentivoCultura", Class = "col s12 m4", Label = "É Incentivador à Cultura" });
             form3.Elements.Add(new InputCheckboxUI { Id = "formatarCodigoISS", Class = "col s12 m4", Label = "Formatar Código ISS" });
@@ -370,6 +381,10 @@ namespace Fly01.Core.Presentation.Controllers
                 }
             });
             #endregion
+
+            cfg.Content.Add(tabs);
+            cfg.Content.Add(form1);
+            cfg.Content.Add(form2);
             cfg.Content.Add(form3);
 
             return cfg;

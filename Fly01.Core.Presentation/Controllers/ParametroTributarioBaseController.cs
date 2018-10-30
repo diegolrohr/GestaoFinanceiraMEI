@@ -174,9 +174,7 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            form1.Elements.Add(new InputHiddenUI { Id = "id" });
-
-            //form1.Elements.Add(new LabelSetUI { Id = "labelSetAliquotasPadroes", Class = "col s12", Label = "Alíquotas Padrões" });
+            form1.Elements.Add(new InputHiddenUI { Id = "id" });            
 
             form1.Elements.Add(new InputCustommaskUI
             {
@@ -245,10 +243,7 @@ namespace Fly01.Core.Presentation.Controllers
             var form2 = new FormUI
             {
                 Class = "col s12",
-                Elements = new List<BaseUI>
-                {
-                    //new LabelSetUI { Id =  "labelSetParametrosNFe", Class = "col s12", Label = "Parâmetros de Transmissão NF-e"}
-                },
+                Elements = new List<BaseUI>(),
                 Id = "fly01frm2"
             };
 
@@ -308,10 +303,7 @@ namespace Fly01.Core.Presentation.Controllers
             var form3 = new FormUI
             {
                 Class = "col s12",
-                Elements = new List<BaseUI>
-                {
-                    //new LabelSetUI { Id = "labelSetParametrosNFSe", Class = "col s12", Label = "Parâmetros de Transmissão NFS-e" }
-                },
+                Elements = new List<BaseUI>(),
                 Id = "fly01frm3"
             };
 

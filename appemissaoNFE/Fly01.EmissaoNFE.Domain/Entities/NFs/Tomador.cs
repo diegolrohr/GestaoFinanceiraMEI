@@ -40,6 +40,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "complend")]
         public string ComplementoEndereco { get; set; }
 
+        public bool ShouldSerializeComplementoEndereco()
+        {
+            return !string.IsNullOrEmpty(ComplementoEndereco);
+        }
+
         /// <summary>
         /// O tipo é fixo conforme código FIRST
         /// </summary>

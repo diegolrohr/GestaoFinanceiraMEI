@@ -39,12 +39,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return AliquotaConsumidorFinal.ToString("0.00").Replace(",", ".");
             }
-            set { AliquotaConsumidorFinal = double.Parse(value); }
+            set { AliquotaConsumidorFinal = double.Parse(value.Replace(".", ",")); }
         }
 
-        [XmlElement("vICMSSTRet")]
+        [XmlIgnore]
         public double ValorICMSSTRetido { get; set; }
-        
+
+        [XmlElement("vICMSSTRet")]
+        public string ValorICMSSTRetidoString
+        {
+            get
+            {
+                return ValorICMSSTRetido.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ",")); }
+        }
+
         [XmlIgnore]
         public double? BaseFCPSTRetido { get; set; }
         [XmlElement(ElementName = "vBCFCPSTRet", IsNullable = true)]

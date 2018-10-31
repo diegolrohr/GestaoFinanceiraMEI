@@ -7,6 +7,7 @@ using System.Web.Http;
 using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.EmissaoNFE.Domain.Entities.NFS;
 using System.Text;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.EmissaoNFE.API.Controllers.Api
 {
@@ -28,7 +29,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
+                    var retorno = entity.EntidadeAmbienteNFS == TipoAmbiente.Homologacao ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);
 
                     return Ok(retorno);
                 }

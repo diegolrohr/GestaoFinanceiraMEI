@@ -84,7 +84,7 @@ namespace Fly01.Faturamento.BL.Helpers
             {
                 Homologacao = entidade.Homologacao,
                 Producao = entidade.Producao,
-                EntidadeAmbiente = entidade.EntidadeAmbiente,
+                EntidadeAmbienteNFS = entidade.EntidadeAmbienteNFS,
                 ItemTransmissaoNFSVM = itemTransmissaoNFS
             };
         }

@@ -328,6 +328,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Homologacao = entidade.Homologacao,
                 Producao = entidade.Producao,
                 EntidadeAmbiente = entidade.EntidadeAmbiente,
+                EntidadeAmbienteNFS = entidade.EntidadeAmbienteNFS,
                 Item = new List<ItemTransmissaoVM>()
                 {
                     itemTransmissao

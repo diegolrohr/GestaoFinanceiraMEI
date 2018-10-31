@@ -54,6 +54,7 @@ namespace Fly01.EmissaoNFE.BL
             entity.Fail(entity.Homologacao == null || entity.Homologacao.Length != 6 || entity.Homologacao == "000000", EntidadeInvalida);
             entity.Fail(entity.Producao == null || entity.Producao.Length != 6 || entity.Producao == "000000", EntidadeProdInvalida);
             entity.Fail(!string.IsNullOrEmpty(entity.EntidadeAmbiente.ToString()) && !tipo.Any(x => x.Key == (entity.EntidadeAmbiente).ToString()), TipoInvalido);
+            entity.Fail(!string.IsNullOrEmpty(entity.EntidadeAmbienteNFS.ToString()) && !tipo.Any(x => x.Key == (entity.EntidadeAmbienteNFS).ToString()), TipoInvalido);
 
             base.ValidaModel(entity);
         }

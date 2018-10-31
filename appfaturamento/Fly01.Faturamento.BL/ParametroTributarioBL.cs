@@ -62,6 +62,7 @@ namespace Fly01.Faturamento.BL
                         Homologacao = entidade.Homologacao,
                         Producao = entidade.Producao,
                         EntidadeAmbiente = parametroTributario.TipoAmbiente,
+                        EntidadeAmbienteNFS = parametroTributario.TipoAmbienteNFS,
                         TipoAmbiente = parametroTributario.TipoAmbienteRest,
                         VersaoNFe = parametroTributario.TipoVersaoNFeRest == "3" ? "3.10" : "4.00",
                         VersaoDPEC = "1.01",

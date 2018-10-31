@@ -50,7 +50,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissaoNFS
 
         private static void ValidarCodigoMunicipalIBGE(TransmissaoNFSVM entity, EntitiesBLToValidateNFS entitiesBLToValidateNFS)
         {
-            if(entity.EntidadeAmbiente == TipoAmbiente.Homologacao && entity.ItemTransmissaoNFSVM?.Prestador.CodigoMunicipioIBGE == "3541000")
+            if(entity.EntidadeAmbienteNFS == TipoAmbiente.Homologacao && entity.ItemTransmissaoNFSVM?.Prestador.CodigoMunicipioIBGE == "3541000")
             {
                 //configuração específica para este município
                 entity.ItemTransmissaoNFSVM.Prestacao.CodigoMunicipioIBGE = "999";

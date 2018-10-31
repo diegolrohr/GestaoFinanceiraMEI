@@ -182,14 +182,14 @@ namespace Fly01.Faturamento.BL
                         throw new BusinessException("Para transmitir NFS, reenvie o seu Certificado Digital em Configurações");
                     }
 
-                    string entidadeCodigo = entidade.EntidadeAmbiente == TipoAmbiente.Producao ? entidade.Producao : entidade.Homologacao;
+                    string entidadeCodigo = entidade.EntidadeAmbienteNFS == TipoAmbiente.Producao ? entidade.Producao : entidade.Homologacao;
 
                     var header = new Dictionary<string, string>()
                     {
                         { "AppUser", AppUser },
                         { "PlataformaUrl", entidadeCodigo }
                     };
-                    var resourceById = $"configuracaoOKNFS?entidade={entidadeCodigo}&tipoAmbiente={entidade.EntidadeAmbiente}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge ?? ""}";
+                    var resourceById = $"configuracaoOKNFS?entidade={entidadeCodigo}&tipoAmbiente={entidade.EntidadeAmbienteNFS}&codigoIBGEMunicipio={empresa.Cidade?.CodigoIbge ?? ""}";
 
                     var response = RestHelper.ExecuteGetRequest<JObject>(AppDefaults.UrlEmissaoNfeApi, resourceById, header, null);
                     return true;

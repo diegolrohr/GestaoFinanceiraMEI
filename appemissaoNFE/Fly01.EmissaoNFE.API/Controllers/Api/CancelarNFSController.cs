@@ -24,7 +24,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 try
                 {
-                    var response = entity.EntidadeAmbiente == TipoAmbiente.Homologacao ? Homologacao(entity) : Producao(entity);
+                    var response = entity.EntidadeAmbienteNFS == TipoAmbiente.Homologacao ? Homologacao(entity) : Producao(entity);
 
                     return Ok(response);
 

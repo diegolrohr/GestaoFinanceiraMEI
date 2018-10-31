@@ -8,5 +8,6 @@ namespace Fly01.EmissaoNFE.Domain.ViewModel
         public string Producao { get; set; }
         public string Homologacao { get; set; }
         public TipoAmbiente EntidadeAmbiente { get; set; }
+        public TipoAmbiente EntidadeAmbienteNFS { get; set; }
     }
 }

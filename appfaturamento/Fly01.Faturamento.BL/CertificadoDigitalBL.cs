@@ -161,6 +161,7 @@ namespace Fly01.Faturamento.BL
             var parametros = ParametroTributarioBL.All.Where(x => x.Cnpj == empresa.CNPJ && x.InscricaoEstadual == empresa.InscricaoEstadual && x.UF == empresaUF).FirstOrDefault();
 
             var ambiente = parametros != null ? parametros.TipoAmbiente : TipoAmbiente.Homologacao;
+            var ambienteNFS = parametros != null ? parametros.TipoAmbienteNFS : TipoAmbiente.Homologacao;
             var retorno = new EntidadeVM();
 
             if (certificado != null && !string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))
@@ -173,6 +174,7 @@ namespace Fly01.Faturamento.BL
                 retorno = RetornaEntidade();
             }
             retorno.EntidadeAmbiente = ambiente;
+            retorno.EntidadeAmbienteNFS = ambienteNFS;
             return retorno;
         }
 
@@ -187,7 +189,8 @@ namespace Fly01.Faturamento.BL
 
             var retorno = new EntidadeVM
             {
-                EntidadeAmbiente = ambiente.TipoAmbiente
+                EntidadeAmbiente = ambiente.TipoAmbiente,
+                EntidadeAmbienteNFS = ambiente.TipoAmbienteNFS
             };
 
             if (!string.IsNullOrEmpty(certificado.EntidadeHomologacao) && !string.IsNullOrEmpty(certificado.EntidadeProducao))

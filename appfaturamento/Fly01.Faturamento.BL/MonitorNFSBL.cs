@@ -61,7 +61,7 @@ namespace Fly01.Faturamento.BL
                         {
                             Homologacao = dadosCertificado.Homologacao,
                             Producao = dadosCertificado.Producao,
-                            EntidadeAmbiente = dadosCertificado.EntidadeAmbiente,
+                            EntidadeAmbienteNFS = dadosCertificado.EntidadeAmbienteNFS,
                             NotaInicial = dadosPlataforma.notaInicial.ToString(),
                             NotaFinal = dadosPlataforma.notaFinal.ToString(),
                             DataInicial = dadosPlataforma.dataInicial,

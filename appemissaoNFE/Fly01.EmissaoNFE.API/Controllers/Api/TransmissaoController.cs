@@ -91,11 +91,11 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         schema.SchemaMensagem = new List<SchemaXMLMensagemVM>();
                         foreach (var erro in validacao[0].SCHEMAMSG)
                         {
-                            mensagens.Descricao = erro.DESC;
-                            mensagens.Erro = erro.ERRO;
-                            mensagens.Resumo = erro.LOG;
-                            mensagens.Local = erro.PARENT;
-                            mensagens.Campo = erro.TAG;
+                            mensagens.Descricao = erro.DESC ?? "";
+                            mensagens.Erro = erro.ERRO ?? "";
+                            mensagens.Resumo = erro.LOG ?? "";
+                            mensagens.Local = erro.PARENT ?? "";
+                            mensagens.Campo = erro.TAG ?? "";
 
                             schema.SchemaMensagem.Add(mensagens);
                         }
@@ -185,11 +185,11 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                         schema.SchemaMensagem = new List<SchemaXMLMensagemVM>();
                         foreach (var erro in validacao[0].SCHEMAMSG)
                         {
-                            mensagens.Descricao = erro.DESC;
-                            mensagens.Erro = erro.ERRO;
-                            mensagens.Resumo = erro.LOG;
-                            mensagens.Local = erro.PARENT;
-                            mensagens.Campo = erro.TAG;
+                            mensagens.Descricao = erro.DESC ?? "";
+                            mensagens.Erro = erro.ERRO ?? "";
+                            mensagens.Resumo = erro.LOG ?? "";
+                            mensagens.Local = erro.PARENT ?? "";
+                            mensagens.Campo = erro.TAG ?? "";
 
                             schema.SchemaMensagem.Add(mensagens);
                         }

@@ -185,7 +185,7 @@ namespace Fly01.Faturamento.BL
                     var schemaMensagens = "";
                     foreach (var schema in item.SchemaMensagem)
                     {
-                        schemaMensagens += string.Format("  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n", schema.Erro, schema.Descricao, schema.Campo);
+                        schemaMensagens += string.Format("\n  Erro: {0}\n  Descrição: {1}\n  Campo: {2}\n  Local: {3}\n  Resumo: {4}\n", schema.Erro, schema.Descricao, schema.Campo, schema.Local, schema.Resumo);
                     }
                     mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
                 }

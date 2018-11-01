@@ -69,7 +69,8 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
-            entity.Fail(entity.GrupoProdutoId != null && entity.TipoProduto != GrupoProdutoBL.All.AsNoTracking().Where(x => x.Id == entity.GrupoProdutoId).FirstOrDefault().TipoProduto, TipoProdutoDiferente);
+            entity.Fail(!All.Any(x => x.Id == entity.GrupoProdutoId) , new Error("Grupo de produto não encontrado ou excluído."));
+            entity.Fail(entity.GrupoProdutoId != null && entity.TipoProduto != GrupoProdutoBL.All.AsNoTracking().Where(x => x.Id == entity.GrupoProdutoId)?.FirstOrDefault()?.TipoProduto, TipoProdutoDiferente);
 
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
             {

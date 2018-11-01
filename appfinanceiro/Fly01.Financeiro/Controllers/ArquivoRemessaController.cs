@@ -87,7 +87,11 @@ namespace Fly01.Financeiro.Controllers
                     {
                         arquivosGerados.ToList().ForEach(item =>
                         {
-                            AddToArchive(ziparchive, item + ".REM", (byte[])Session[item]);
+                            var nomeCorreto = item;
+                            var indexString = item.IndexOf("-");
+                            item = item.Substring(indexString + 1);
+
+                            AddToArchive(ziparchive, item.Remove(8, 6) + ".REM", (byte[])Session[nomeCorreto]);
                         });
                     }
 
@@ -97,10 +101,16 @@ namespace Fly01.Financeiro.Controllers
             else
             {
                 var nomeArquivo = arquivosGerados.FirstOrDefault();
+                var nomeCorreto = nomeArquivo;
 
                 if (Session[nomeArquivo] != null)
                 {
-                    var arquivoDownload = File((byte[])Session[nomeArquivo], MediaTypeNames.Application.Octet, nomeArquivo + ".REM");
+                    var indexString = nomeArquivo.IndexOf("-");
+                    nomeArquivo = nomeArquivo.Substring(indexString + 1);
+                    nomeArquivo = nomeArquivo.Remove(8, 6);
+
+                    var arquivoDownload = File((byte[])Session[nomeCorreto], MediaTypeNames.Application.Octet, nomeArquivo + ".REM");
+
                     Session[nomeArquivo] = null;
 
                     return arquivoDownload;

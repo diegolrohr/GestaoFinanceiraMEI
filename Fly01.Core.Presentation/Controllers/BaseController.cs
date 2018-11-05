@@ -474,11 +474,34 @@ namespace Fly01.Core.Presentation
                             var filterField = item.Data;
                             bool dateTimeRange = false;
 
-                            propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(
-                                (filterField.IndexOf("_", StringComparison.Ordinal) > -1)
-                                ? filterField.Substring(0, filterField.IndexOf("_", StringComparison.Ordinal))
-                                : filterField, StringComparison.InvariantCultureIgnoreCase));
+                            //var campo = (filterField.IndexOf("_", StringComparison.Ordinal) > -1)
+                            //   ? filterField.Substring(0, filterField.IndexOf("_", StringComparison.Ordinal))
+                            //   : filterField;
 
+                            //propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(
+                            //   (filterField.IndexOf("_", StringComparison.Ordinal) > -1)
+                            //   ? filterField.Substring(0, filterField.IndexOf("_", StringComparison.Ordinal))
+                            //   : filterField, StringComparison.InvariantCultureIgnoreCase));
+
+                            var filterFieldSplit = filterField.Split('_');
+                            var className = filterField;
+                            propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
+
+                            if (filterFieldSplit.Length == 2)
+                            {
+                                className = filterFieldSplit[0];
+                                propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
+                            }
+                            else if (filterFieldSplit.Length > 2)
+                            {
+                                //sempre o penúltimo
+                                className = filterFieldSplit[filterFieldSplit.Length - 2];
+                                propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(filterFieldSplit[0], StringComparison.InvariantCultureIgnoreCase));
+
+                                Type type = propertyInfo.PropertyType;
+                                propertyInfo = type.GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
+
+                            } 
                             if (propertyInfo != null)
                             {
                                 bool mustCompareAsEqual = false;

@@ -293,7 +293,7 @@ namespace Fly01.Financeiro.Controllers
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> { new DomEventUI {DomEvent = "change", Function = "fnAtualizar"} },
                         Max = true,
-                        Min = -60
+                        Min = -180
                     },
                     new InputDateUI
                     {
@@ -303,7 +303,7 @@ namespace Fly01.Financeiro.Controllers
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> { new DomEventUI {DomEvent = "change", Function = "fnAtualizar"} },
                         Max = true,
-                        Min = -60
+                        Min = -180
                     },
                     new ButtonGroupUI
                     {

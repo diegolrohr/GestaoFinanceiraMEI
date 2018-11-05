@@ -183,7 +183,7 @@ namespace Fly01.Financeiro.BL
                                      DescricaoLancamento = mov.Descricao == null ? (mov.ContaFinanceira != null ? mov.ContaFinanceira.Descricao : "") : mov.Descricao,
                                      PessoaNome = mov.ContaFinanceira.Pessoa.Nome,
                                      ValorLancamento = Math.Round(mov.Valor, 2),
-                                 }).OrderBy(x => x.DataInclusao).Skip(skipRecords).Take(takeRecords).ToList();
+                                 }).OrderByDescending(x => x.DataMovimento).ThenBy(x => x.DataInclusao).Skip(skipRecords).Take(takeRecords).ToList();
 
             movimentacoes.ForEach(item =>
                 item.ContaBancariaDescricao = contasBancarias.FirstOrDefault(x => x.Id == item.ContaBancariaId).NomeConta ?? item.DescricaoLancamento

@@ -16,7 +16,7 @@
         var displayTotal = '0,00';
 
         var idPedido = $("form#fly01frm input#id").val();
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalPedidoItens", "Pedido")',
@@ -29,14 +29,14 @@
                 setDisplayTotal(displayTotal, tfoot);
             }
             else {
-                fly01.toast(data.message, "error");
+                $$$.toast(data.message, "error");
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 </script>

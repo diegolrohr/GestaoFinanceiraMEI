@@ -95,6 +95,7 @@ namespace Fly01.Faturamento.Controllers
 
             var config = new FormWizardUI
             {
+                Id = "fly01frm", 
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -252,9 +253,9 @@ namespace Fly01.Faturamento.Controllers
                 Label = "",
                 Value = "Adicionar serviço",
                 DomEvents = new List<DomEventUI>
-                    {
-                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
-                    }
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
+                }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12" });
             #endregion

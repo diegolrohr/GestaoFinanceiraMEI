@@ -21,9 +21,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.03841cm</Top>
-        <Left>0.19328cm</Left>
+        <Left>0.21369cm</Left>
         <Height>2.50472cm</Height>
-        <Width>16.27344cm</Width>
+        <Width>16.27466cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -840,7 +840,7 @@
         <Top>3.90331cm</Top>
         <Left>0.19328cm</Left>
         <Height>2.33501cm</Height>
-        <Width>16.26863cm</Width>
+        <Width>16.26864cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -1890,6 +1890,22 @@
           </Border>
         </Style>
       </Tablix>
+      <Image Name="ImgLogo">
+        <Source>Database</Source>
+        <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
+        <MIMEType>image/png</MIMEType>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.03841cm</Top>
+        <Left>0.21369cm</Left>
+        <Height>2.50472cm</Height>
+        <Width>3.15422cm</Width>
+        <ZIndex>8</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
     </ReportItems>
     <Height>6.91269in</Height>
     <Style />

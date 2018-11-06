@@ -1003,6 +1003,22 @@
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
+        <Image Name="ImgLogo">
+          <Source>Database</Source>
+          <Value>=System.Convert.FromBase64String(Parameters!ReportLogo.Value)</Value>
+          <MIMEType>image/png</MIMEType>
+          <Sizing>FitProportional</Sizing>
+          <Top>0.01573cm</Top>
+          <Left>0.14114cm</Left>
+          <Height>2.50472cm</Height>
+          <Width>3.15422cm</Width>
+          <ZIndex>3</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Image>
       </ReportItems>
       <Style>
         <Border>

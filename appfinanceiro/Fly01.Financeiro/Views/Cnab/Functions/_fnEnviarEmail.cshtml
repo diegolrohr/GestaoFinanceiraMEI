@@ -15,7 +15,7 @@
             success: function success(result) {
                 if (result.success) {
                     if (result.data != null)
-                        fly01.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + $('#idContaReceber').val() + "', '" + idBanco + "')");
+                        $$$.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + $('#idContaReceber').val() + "', '" + idBanco + "')");
                     else
                         fnGerarCnabEnviaEmail($('#idContaReceber').val(), idBanco, true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );
                 }
@@ -32,7 +32,7 @@
     }
 
     function fnGerarCnabEnviaEmail(idRecord, contaBancariaId, reimprime, pEmail, pAssunto, pMensagem) {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -41,7 +41,7 @@
             data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reimprime, email: pEmail, assunto: pAssunto, mensagem: pMensagem},
             success: function success(data) {
                 if (data.success) {
-                    fly01.toast("Boleto gerado e e-mail enviado com sucesso.", "success");
+                    $$$.toast("Boleto gerado e e-mail enviado com sucesso.", "success");
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
@@ -52,11 +52,11 @@
                         }, 10);
                     }
                 } else {
-                    fly01.loading.stop();
-                    fly01.toast(data.message, "error");
+                    $$$.loading.stop();
+                    $$$.toast(data.message, "error");
                 }
-                fly01._.fly01mdlfrmModalConfigEmail.close()
-                fly01.loading.stop();
+                $$$._.fly01mdlfrmModalConfigEmail.close()
+                $$$.loading.stop();
             },
         });
     }

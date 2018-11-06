@@ -3,20 +3,20 @@
         var idRecord = $("input[type=hidden]#id").val();
 
         if (idRecord.length == 0) {
-            fly01.toast("É necessário salvar o inventário antes de finaliza-lo", 'warning');
+            $$$.toast("É necessário salvar o inventário antes de finaliza-lo", 'warning');
             return;
         }
 
-        fly01._.dtInventarioItem.refresh();
+        $$$._.dtInventarioItem.refresh();
 
-        var dtData = fly01._.dtInventarioItem.data();
+        var dtData = $$$._.dtInventarioItem.data();
 
         if (!dtData || dtData.length == 0) {
-            fly01.toast("Não é possivel salvar um inventário sem produtos.", 'warning');
+            $$$.toast("Não é possivel salvar um inventário sem produtos.", 'warning');
             return;
         }
 
-        fly01.confirm("Confirmar Finalização", "Deseja realmente finalizar este inventário?", "fnFinalizaInventarioConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Finalização", "Deseja realmente finalizar este inventário?", "fnFinalizaInventarioConfirmed(\"" + idRecord + "\")");
     }
 
     function fnFinalizaInventarioConfirmed(id) {
@@ -41,18 +41,18 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Inventário finalizado com sucesso", "success");
+                        $$$.toast("Inventário finalizado com sucesso", "success");
 
-                        fly01.go("@Url.Action("List", "Inventario")");
+                        $$$.go("@Url.Action("List", "Inventario")");
                     }
                     else {
-                        fly01.loading.stop();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }

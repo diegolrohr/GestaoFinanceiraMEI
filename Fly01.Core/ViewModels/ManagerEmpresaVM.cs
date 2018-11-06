@@ -35,6 +35,9 @@ namespace Fly01.Core.ViewModels
     }
     public class ManagerEmpresaVM
     {
+        [JsonProperty("reportLogo")]
+        public string ReportLogo { get; set; }
+
         [JsonProperty("cnpj")]
         public string CNPJ { get; set; }
 

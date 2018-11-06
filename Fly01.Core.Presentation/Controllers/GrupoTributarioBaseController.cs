@@ -27,7 +27,7 @@ namespace Fly01.Core.Presentation.Controllers
                 id = x.Id,
                 descricao = x.Descricao,
                 cfopId = x.CfopId,
-                cfop_descricao = string.IsNullOrEmpty(x.Cfop.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
+                cfop_descricao = string.IsNullOrEmpty(x.Cfop?.Descricao) ? "" : x.Cfop.Descricao.Substring(0, x.Cfop?.Descricao.Length <= 100 ? x.Cfop.Descricao.Length : 100),
                 registroFixo = x.RegistroFixo
             };
         }
@@ -44,7 +44,7 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad", "GrupoTributario"), UrlFunctions = Url.Action("Functions", "GrupoTributario", null, Request.Url.Scheme) + "?fns=" };
+            var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad", "GrupoTributario"), UrlFunctions = Url.Action("Functions", "GrupoTributario", null, Request.Url.Scheme) + "?fns=" };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
@@ -94,6 +94,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -114,7 +115,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "cfopId",
                 Class = "col s12",
                 Label = "Código Fiscal de Operação (CFOP)",
-                Required = true,
                 DataUrl = @Url.Action("Cfop", "AutoComplete"),
                 LabelId = "cfopDescricao"
             });

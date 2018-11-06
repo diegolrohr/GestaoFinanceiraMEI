@@ -52,6 +52,12 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             }
         }
 
+        public string GetEmpresaUtcId()
+        {
+            var utcDefault = "E. South America Standard Time";
+            return Cabecalho.Empresa.Cidade != null ? (Cabecalho.Empresa.Cidade.Estado != null ? Cabecalho.Empresa.Cidade.Estado.UtcId : utcDefault) : utcDefault;
+        }
+
         public TransmissaoCabecalho ObterTransmissaoCabecalho()
         {
             return new TransmissaoCabecalho()
@@ -111,8 +117,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 ModeloDocumentoFiscal = 55,
                 Serie = int.Parse(Cabecalho.SerieNotaFiscal.Serie),
                 NumeroDocumentoFiscal = NFe.NumNotaFiscal.Value,
-                Emissao = TimeZoneHelper.GetDateTimeNow(Cabecalho.IsLocal),
-                EntradaSaida = TimeZoneHelper.GetDateTimeNow(Cabecalho.IsLocal),
+                Emissao = TimeZoneHelper.GetDateTimeNow(Cabecalho.IsLocal, GetEmpresaUtcId()),
+                EntradaSaida = TimeZoneHelper.GetDateTimeNow(Cabecalho.IsLocal, GetEmpresaUtcId()),
                 TipoDocumentoFiscal = ObterTipoDocumentoFiscal(),
                 DestinoOperacao = DeterminarDestinoOperacao(),
                 CodigoMunicipio = Cabecalho.Empresa.Cidade?.CodigoIbge,
@@ -229,8 +235,8 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new EmissaoNFe.Produto()
             {
-                CFOP = item.GrupoTributario.Cfop.Codigo,
-                Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop.Codigo.ToString()) : item.Produto.CodigoProduto,
+                CFOP = item.GrupoTributario.Cfop?.Codigo,
+                Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop?.Codigo.ToString()) : item.Produto.CodigoProduto,
                 Descricao = item.Produto.Descricao,
                 GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
                 GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,

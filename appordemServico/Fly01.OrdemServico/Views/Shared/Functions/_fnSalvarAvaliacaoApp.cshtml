@@ -2,7 +2,7 @@
     function fnSalvarAvaliacaoApp() {
 
         if ($('input[name=satisfacao]:checked', '#fly01frm').val() == undefined) {
-            fly01.toast("Dê uma nota para poder enviar sua avaliação.", "error");
+            $$$.toast("Dê uma nota para poder enviar sua avaliação.", "error");
             return;
         }
     if ($("form#fly01frm").valid()) {

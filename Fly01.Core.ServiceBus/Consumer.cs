@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using Fly01.Core.Base;
+using Fly01.Core.Mensageria;
+using Fly01.Core.Notifications;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
-using Fly01.Core.Notifications;
-using Fly01.Core.Mensageria;
-using Newtonsoft.Json;
-using Fly01.Core.Base;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Fly01.Core.ServiceBus
 {
@@ -64,7 +64,9 @@ namespace Fly01.Core.ServiceBus
         private string GetHeaderValue(string key)
         {
             if (!Headers.ContainsKey(key))
+            {
                 return string.Empty;
+            }
 
             return Encoding.UTF8.GetString(Headers[key] as byte[]);
         }
@@ -88,16 +90,28 @@ namespace Fly01.Core.ServiceBus
             {
                 try
                 {
-                    if (RabbitConfig.IsDevEnvironment && !RabbitConfig.QueueName.Contains(Environment.MachineName)) return;
+                    if (RabbitConfig.IsDevEnvironment && !RabbitConfig.QueueName.Contains(Environment.MachineName))
+                        return;
 
                     Headers = new Dictionary<string, object>(args.BasicProperties.Headers ?? new Dictionary<string, object>());
 
-                    if (args.BasicProperties.Headers == null || !HeaderIsValid()) throw new ArgumentException(MsgHeaderInvalid);
-                    if (args.BasicProperties.AppId == null) throw new ArgumentException(MsgAppIdInvalid);
-                    if (args.BasicProperties.Type == null) throw new ArgumentException(MsgTypeInvalid);
-                    if (args.RoutingKey == null) throw new ArgumentException(MsgRoutingKeyInvalid);
-                    if (args.BasicProperties.AppId == RabbitConfig.AppId) return;
-                    if (GetHeaderValue("Hostname") != RabbitConfig.VirtualHostApps && GetHeaderValue("Hostname") != RabbitConfig.VirtualHostIntegracao) return;
+                    if (args.BasicProperties.Headers == null || !HeaderIsValid())
+                        throw new ArgumentException(MsgHeaderInvalid);
+
+                    if (args.BasicProperties.AppId == null)
+                        throw new ArgumentException(MsgAppIdInvalid);
+
+                    if (args.BasicProperties.Type == null)
+                        throw new ArgumentException(MsgTypeInvalid);
+
+                    if (args.RoutingKey == null)
+                        throw new ArgumentException(MsgRoutingKeyInvalid);
+
+                    if (args.BasicProperties.AppId == RabbitConfig.AppId)
+                        return;
+
+                    if (GetHeaderValue("Hostname") != RabbitConfig.VirtualHostApps && GetHeaderValue("Hostname") != RabbitConfig.VirtualHostIntegracao)
+                        return;
 
                     var message = Encoding.UTF8.GetString(args.Body);
                     var httpMethod = (RabbitConfig.EnHttpVerb)Enum.Parse(typeof(RabbitConfig.EnHttpVerb), args.BasicProperties.Type);
@@ -111,7 +125,7 @@ namespace Fly01.Core.ServiceBus
                 catch (Exception ex)
                 {
                     _mediaClient = new MediaClient();
-                    _mediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex.InnerException, RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args.RoutingKey);
+                    _mediaClient.PostErrorRabbitMQ("Erro RabbitMQ", ex?.InnerException ?? new Exception("Erro Rabbit", ex), RabbitConfig.VirtualHostApps, RabbitConfig.QueueName, GetHeaderValue("PlataformaUrl"), args?.RoutingKey ?? "");
                 }
                 finally
                 {

@@ -71,6 +71,7 @@ namespace Fly01.Faturamento.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -118,6 +119,7 @@ namespace Fly01.Faturamento.Controllers
             };
             var config = new DataTableUI
             {
+                Id = "fly01dt",
                 UrlGridLoad = $"{Url.Action("GridLoad", "CartaCorrecao")}?id={idRecord}",
                 UrlFunctions = Url.Action("Functions", "CartaCorrecao", null, Request.Url.Scheme) + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }

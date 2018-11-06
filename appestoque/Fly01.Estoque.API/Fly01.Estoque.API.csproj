@@ -56,6 +56,7 @@
     <Compile Include="Controllers\Api\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\InventarioController.cs" />
+    <Compile Include="Controllers\Api\MovimentoOrdemVendaController.cs" />
     <Compile Include="Controllers\Api\InventarioItemController.cs" />
     <Compile Include="Controllers\Api\InventarioStatusController.cs" />
     <Compile Include="Controllers\Api\CestController.cs" />

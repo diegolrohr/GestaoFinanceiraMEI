@@ -87,6 +87,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -229,7 +230,7 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" }
             };
-            var config = new DataTableUI { UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+            var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {

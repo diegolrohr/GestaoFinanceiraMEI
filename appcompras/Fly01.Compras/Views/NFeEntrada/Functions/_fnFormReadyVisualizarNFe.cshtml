@@ -7,7 +7,7 @@
 
     function calculaTotalNFeVisualizar() {
         var idNFe = $("form#fly01mdlfrmVisualizarNFe input#id").val();
-        fly01.loading.start();
+        $$$.loading.start();
 
         $.ajax({
             url: '@Url.Action("TotalNotaFiscal", "NotaFiscalEntrada")',
@@ -20,17 +20,17 @@
                 $('input#totalImpostosProdutos').val(data.total.TotalImpostosProdutos.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmVisualizarNFe input#totalFrete').val(data.total.ValorFrete.formatMoneyMask(2, 3, '', ','));
                 $('form#fly01mdlfrmVisualizarNFe input#totalNotaFiscal').val(data.total.Total.formatMoneyMask(2, 3, '', ','));
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
             }
             else {
-                fly01.fn.submitErrorHandler(null, data.message);
+                $$$.fn.submitErrorHandler(null, data.message);
             }
-            fly01.loading.stop();
+            $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
             var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-            fly01.toast(err, "error");
-            fly01.loading.stop();
+            $$$.toast(err, "error");
+            $$$.loading.stop();
         });
     }
 
@@ -62,11 +62,11 @@
                         ]
                     });
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
         calculaTotalNFeVisualizar();

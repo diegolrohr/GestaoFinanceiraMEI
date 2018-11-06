@@ -12,7 +12,7 @@
     }
 
     function processData(event) {
-        fly01.loading.start();
+        $$$.loading.start();
         var ret = event.target.result;
 
         $.ajax({
@@ -45,14 +45,14 @@
                     $("#dtRetornoCnabItem_wrapper").addClass("dataTables_wrapper");
                     setupGridSelectEvents(table)
                 } else {
-                    fly01.toast(response.message, 'error');
+                    $$$.toast(response.message, 'error');
                 }
 
-                fly01.loading.stop();
+                $$$.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(errorThrown, 'error');
+                $$$.loading.stop();
+                $$$.toast(errorThrown, 'error');
             }
         });
     }

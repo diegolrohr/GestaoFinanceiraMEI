@@ -152,6 +152,7 @@ namespace Fly01.Financeiro.Controllers
            
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 //ReadyFn = "fnUpdateData",
                 Functions = new List<string> { "__format" },
                 Class = "col s12",

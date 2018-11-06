@@ -7,23 +7,23 @@
         var valorLancamentoExtrato = parseFloat($('input#valor').val().replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", ".").replace("-", ""));
 
         $('input#somaValoresSelecionados').val(valorAcumulado);
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
         $('input#somaValoresSelecionados').css('color', '');
         $('#save').attr('disabled', 'disabled');
 
         if (valorAcumulado == valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'green');
-            fly01.toast("A soma dos valores conciliados está de acordo ao valor do lançamento", "info");
+            $$$.toast("A soma dos valores conciliados está de acordo ao valor do lançamento", "info");
             $('#save').removeAttr('disabled');
         }
         else if (valorAcumulado > valorLancamentoExtrato) {
             $('#somaValoresSelecionados').css('color', 'red');
-            fly01.toast('A soma dos valores conciliados não pode ser maior que o valor da conta.', "error");
+            $$$.toast('A soma dos valores conciliados não pode ser maior que o valor da conta.', "error");
             $('#save').attr('disabled', 'disabled');
         }
         else if (valorAcumulado <= 0) {
             $('#somaValoresSelecionados').css('color', 'red');
-            fly01.toast('A soma dos valores conciliados não pode ser igual a zero.', "error");
+            $$$.toast('A soma dos valores conciliados não pode ser igual a zero.', "error");
             $('#save').attr('disabled', 'disabled');
         }
     }
@@ -40,10 +40,10 @@
 
     //ao atualizar valor conciliado, alterar o array e somas
     function setupGridSelectEvents() {
-        fly01._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
+        $$$._.dtContasExistentes.on("select", function (e, dt, type, indexes) {
             if (type !== undefined) {
                 var valorAcumulado = getValorSomaSelecionados();
-                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
+                var rowData = $$$._.dtContasExistentes.rows(indexes).data().toArray();
                 var valorConciliado = parseFloat(rowData[0].valorConciliado.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
 
                 var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == rowData[0].id);
@@ -63,13 +63,13 @@
             if (type !== undefined) {
 
                 var valorAcumulado = getValorSomaSelecionados();
-                var rowData = fly01._.dtContasExistentes.rows(indexes).data().toArray();
+                var rowData = $$$._.dtContasExistentes.rows(indexes).data().toArray();
 
                 var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == rowData[0].id);
                 if (index !== -1) {//se achou remove
                     var valorConciliado = arrayConciliacoes[index].valorConciliado;
 
-                    var row = fly01._.dtContasExistentes.row(indexes);
+                    var row = $$$._.dtContasExistentes.row(indexes);
                     //volta o valor original
                     $("input.valorParcial[data-id=\"" + row.data().id + "\"]").val(row.data().valorConciliado.replace("R$ ", "").replace("R$", "").replace(".", "").replace(",", "."));
 
@@ -113,17 +113,17 @@
                     if (data.success) {
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "") strMsg = data.message;
-                        fly01.toast(strMsg, "success");
+                        $$$.toast(strMsg, "success");
 
                         //voltar para edição
                         fnEditar($('#conciliacaoBancariaId').val());
                     } else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                     $('body').addClass('loaded');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                     $('body').addClass('loaded');
                 }
             });
@@ -144,7 +144,7 @@
         $("#" + config.id).DataTable().responsive.recalc();
 
         if (config.options.select) {
-            if ($.inArray(data.id, fly01._[config.id].selected) !== -1) {
+            if ($.inArray(data.id, $$$._[config.id].selected) !== -1) {
                 $(row).addClass("selected");
                 var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == data.id);
                 if (index !== -1) {

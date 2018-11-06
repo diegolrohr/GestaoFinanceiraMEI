@@ -10,7 +10,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string Descricao { get; set; }
 
         [JsonProperty("cfopId")]
-        public Guid CfopId { get; set; }
+        public Guid? CfopId { get; set; }
 
         //ICMS
         [JsonProperty("calculaIcms")]

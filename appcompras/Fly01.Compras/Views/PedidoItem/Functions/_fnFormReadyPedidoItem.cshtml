@@ -33,7 +33,7 @@
         }
         fnConfiguraTipoTributacaoICMSProduto();
 
-        fly01.fn.updateTextFields();
+        $$$.fn.updateTextFields();
         fnOverrideSubmitPedidoItem();
 
         $('form#fly01mdlfrmPedidoItem input#valor').on('change', function () {
@@ -58,7 +58,7 @@
                 return false;
 
             e.preventDefault();
-            fly01.loading.start();
+            $$$.loading.start();
             var formData = that.serializeObject();
             $.ajax({
                 type: that.attr("method"),
@@ -68,19 +68,19 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
-                        fly01.toast(data.message, "success");
-                        fly01._.dtPedidoItens.refresh();
-                        fly01._.fly01mdlfrmPedidoItem.close();
+                        $$$.toast(data.message, "success");
+                        $$$._.dtPedidoItens.refresh();
+                        $$$._.fly01mdlfrmPedidoItem.close();
                     } else {
-                        fly01.loading.stop();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
-                    fly01.loading.stop();
+                    $$$.loading.stop();
                     $('.modal-overlay').css('display', 'none');
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             })
         });

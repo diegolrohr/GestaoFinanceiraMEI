@@ -79,6 +79,7 @@ namespace Fly01.Financeiro.Controllers
 
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 UrlFunctions = Url.Action("Functions", "DemonstrativoResultadoExercicio", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12",
                 Elements = new List<BaseUI>

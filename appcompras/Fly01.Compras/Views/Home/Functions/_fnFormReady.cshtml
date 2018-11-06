@@ -1,16 +1,16 @@
 ﻿<script>
     function refreshDash(updateDt) {
-        fly01._.chartPagamento.refresh();
-        fly01._.chartStatus.refresh();
-        fly01._.chartCategoria.refresh();
+        $$$._.chartPagamento.refresh();
+        $$$._.chartStatus.refresh();
+        $$$._.chartCategoria.refresh();
         if (updateDt) {
-            fly01._.mProd.refresh();
-            fly01._.mForn.refresh();
+            $$$._.mProd.refresh();
+            $$$._.mForn.refresh();
         }
     }
 
     function fnFormReady() {
-        let date = fly01._.mesPicker.pickamonth("picker").get("select");
+        let date = $$$._.mesPicker.pickamonth("picker").get("select");
         var firstDay = new Date(date.year, date.month, 1);
         $("#btnOrcamento").click();
         $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));

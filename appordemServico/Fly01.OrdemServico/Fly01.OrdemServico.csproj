@@ -104,7 +104,7 @@
     <Compile Include="ViewModel\OrdemServicoItemVM.cs" />
     <Compile Include="ViewModel\OrdemServicoManutencaoVM.cs" />
     <Compile Include="ViewModel\OrdemServicoVM.cs" />
-    <Compile Include="ViewModel\DashboardTopProdutos.cs" />
+    <Compile Include="ViewModel\DashboardTopProdutosVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ParametroOrdemServicoVM.cs" />
     <Compile Include="ViewModel\ProdutoVM.cs" />
@@ -222,6 +222,10 @@
     <Content Include="Views\OrdemServico\Functions\_fnCancelarNovaOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnConcluirGerarOrdem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnEnviarEmailOS.cshtml" />
+    <Content Include="Views\Home\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\Home\Functions\_fnAtualizarPeriodo.cshtml" />
+    <Content Include="Views\Home\Functions\_fnFormReadyPeriodo.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
@@ -491,7 +495,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -196,6 +196,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 var cfgForm = new FormUI
                 {
+                    Id = "fly01frm",
                     ReadyFn = "fnUpdateDataFinal",
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
@@ -233,6 +234,7 @@ namespace Fly01.Financeiro.Controllers
 
             DataTableUI config = new DataTableUI
             {
+                Id = "fly01dt",
                 UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -613,6 +615,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config2 = new FormUI()
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("IncluirRenegociacao"),

@@ -4,7 +4,7 @@
 
     function fnImprimirDRE() {
         if ($('input#dataInicial').val() == "" || $('input#dataFinal').val() == "") {
-            fly01.toast("Informe a data inicial e a data final.", 'error');
+            $$$.toast("Informe a data inicial e a data final.", 'error');
         }
         else {
             var dataInicialDisplay = moment($('input#dataInicial').val(), "DD/MM/YYYY");

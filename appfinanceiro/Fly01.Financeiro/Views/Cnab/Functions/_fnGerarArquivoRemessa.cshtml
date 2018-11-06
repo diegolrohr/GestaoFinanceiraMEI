@@ -10,22 +10,22 @@
         $.ajax({
             type: "POST",
             url: '@Url.Action("GetQtdArquivos", "ArquivoRemessa")',
-            data: { ids: fly01._.dtBoletos.selected },
+            data: { ids: $$$._.dtBoletos.selected },
             success: function (retorno) {
                 if (retorno.success)
                 {
                     var files = retorno.FileGuid;
                     if (files > 1)
-                        fly01.confirm("Confirmar Geração de arquivo", "Existem diferentes bancos selecionados para geração do arquivo! Isto acarretará na geração de varios arquivos de remessa de acordo com os bancos selecionados. Deseja Continuar?", "fnConfirmGeracaoArquivo('" + fly01._.dtBoletos.selected + "')");
+                        $$$.confirm("Confirmar Geração de arquivo", "Existem diferentes bancos selecionados para geração do arquivo! Isto acarretará na geração de varios arquivos de remessa de acordo com os bancos selecionados. Deseja Continuar?", "fnConfirmGeracaoArquivo('" + $$$._.dtBoletos.selected + "')");
                     else {
-                        window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?ids=' + fly01._.dtBoletos.selected;
+                        window.location = '@Url.Action("DownloadArquivoRemessa", "ArquivoRemessa")?ids=' + $$$._.dtBoletos.selected;
                     }
                 }
                 else
-                    fly01.toast(retorno.message, 'error');
+                    $$$.toast(retorno.message, 'error');
 
                 setTimeout(function () {
-                    fly01._.dtBoletos.refresh();
+                    $$$._.dtBoletos.refresh();
                     $("#dtBoletos").loading("stop");
                 }, 5000);
             }

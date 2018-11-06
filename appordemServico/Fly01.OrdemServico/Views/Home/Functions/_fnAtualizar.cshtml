@@ -12,13 +12,13 @@
             $('input#dataFinal').val(moment(dataFinal).format("DD/MM/YYYY"));
         }
         if ($('input#dataInicial').val() == "" || $('input#dataFinal').val() == "") {
-            fly01.toast("Informe a data inicial e a data final.", 'error');
+            $$$.toast("Informe a data inicial e a data final.", 'error');
         }
         else {
-            fly01._.fly01chart.refresh();
-            fly01._.dtGridTopProdutos.refresh();
-            fly01._.dtGridTopServicos.refresh();
-            getSaldos(dataFinal);
+            $$$._.fly01chart.refresh();
+            $$$._.dtGridTopProdutos.refresh();
+            $$$._.dtGridTopServicos.refresh();
+            fnGetSaldos(dataFinal, dataInicial);
         }
     }
 </script>

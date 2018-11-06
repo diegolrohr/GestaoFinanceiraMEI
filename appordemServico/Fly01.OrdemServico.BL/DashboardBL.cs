@@ -23,12 +23,12 @@ namespace Fly01.OrdemServico.BL
             _ordemServicoItemProdutoBL = ordemServicoItemProdutoBL;
         }
 
-        public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime filtro)
+        public List<OrdemServicoPorStatusVM> GetOrdemServicoPorStatus(DateTime dataFinal, DateTime dataInicial)
         {
             List<OrdemServicoPorStatusVM> listaResult = new List<OrdemServicoPorStatusVM>();
-            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year) && x.Status != StatusOrdemServico.EmPreenchimento).Count();
+            int QtdTotal = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal && x.Status != StatusOrdemServico.EmPreenchimento).Count();
 
-            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao.Month.Equals(filtro.Month) && x.DataEmissao.Year.Equals(filtro.Year) && x.Status != StatusOrdemServico.EmPreenchimento)
+            var result = _ordemServicoBL.All.AsNoTracking().Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal && x.Status != StatusOrdemServico.EmPreenchimento)
                                             .GroupBy(x => new { x.Status })
                                             .Select(x => new
                                             {
@@ -36,7 +36,6 @@ namespace Fly01.OrdemServico.BL
                                                 Quantidade = x.Count()
                                             })
                                             .ToList();
-
 
             result.ForEach(x =>
             {

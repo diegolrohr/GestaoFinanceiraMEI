@@ -5,8 +5,8 @@
             $(this).find("td").attr("nowrap", "nowrap");
         });
         $("#dtContasExistentes").DataTable().responsive.recalc();
-        if (fly01._.dtContasExistentes.selected) {
-            if ($.inArray(data.id, fly01._.dtContasExistentes.selected) !== -1) {
+        if ($$$._.dtContasExistentes.selected) {
+            if ($.inArray(data.id, $$$._.dtContasExistentes.selected) !== -1) {
                 $(row).addClass("selected");
                 //comportamento específico, reescrever o valor digitado
                 var index = arrayConciliacoes.findIndex(x => x.contaFinanceiraId == data.id);
@@ -15,7 +15,7 @@
                 }
             }
         }
-        fly01.fn.maskFields();
+        $$$.fn.maskFields();
 
         return row;
     };

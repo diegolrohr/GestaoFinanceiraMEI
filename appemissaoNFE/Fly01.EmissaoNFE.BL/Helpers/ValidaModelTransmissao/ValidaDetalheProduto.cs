@@ -335,7 +335,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         private static void ValidarCFOP(Detalhe detalhe, TransmissaoVM entity, int nItemDetalhe)
         {
-            entity.Fail(string.IsNullOrEmpty(detalhe.Produto.CFOP.ToString()),
+            entity.Fail(string.IsNullOrEmpty(detalhe.Produto.CFOP?.ToString()),
                                 new Error("CFOP do produto é um dado obrigatório. Item: " + nItemDetalhe, "Item.Detalhes[" + (nItemDetalhe) + "].Produto.CFOP"));
         }
 

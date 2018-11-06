@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
@@ -58,6 +59,14 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
         [XmlElement(ElementName = "prestacao")]
         public Prestacao Prestacao { get; set; }
 
+        [XmlElement(ElementName = "intermediario")]
+        public Intermediador Intermediador { get; set; }
+
+        public bool ShouldSerializeIntermediador()
+        {
+            return Intermediador != null;
+        }
+
         [XmlElement(ElementName = "tomador")]
         public Tomador Tomador { get; set; }
 
@@ -66,12 +75,36 @@ namespace Fly01.EmissaoNFE.Domain.ViewModelNFS
 
         /// <summary>
         /// Gerado pelo sistema na serialização do xml
+        /// realizado aglutinação para posterior soma dos valores
         /// </summary>
         [XmlElement(ElementName = "valores")]
         public Valores Valores { get; set; }
 
+        [XmlArray("faturas"), XmlArrayItem(typeof(Fatura), ElementName = "fatura")]
+        public List<Fatura> Faturas { get; set; }
+
+        public bool ShouldSerializeFaturas()
+        {
+            return Faturas != null && Faturas.Any();
+        }
+
+        [XmlElement(ElementName = "pagamentos")]
+        public Pagamentos Pagamentos { get; set; }
+
+        public bool ShouldSerializePagamentos()
+        {
+            return Pagamentos != null && (Pagamentos.ListaPagamentos != null && Pagamentos.ListaPagamentos.Any());
+        }
+
         [XmlElement(ElementName = "infcompl")]
         public InformacoesComplementares InformacoesComplementares { get; set; }
 
+        [XmlElement(ElementName = "construcao")]
+        public Construcao Construcao { get; set; }
+
+        public bool ShouldSerializeConstrucao()
+        {
+            return Construcao != null;
+        }
     }
 }

@@ -17,6 +17,9 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// O tipo é fixo conforme código FIRST
+        /// 1 – Avenida; 2 – Rua; 3 – Rodovia; 4 – Ruela; 5 – Rio; 6 – Sítio; 7 – Sup Quadra; 8 – Travessa; 9 – Vale;
+        /// 10 – Via; 11 – Viaduto; 12 – Viela; 13 – Vila 14 – Vargem 15– Alameda 16 – Praça 17 – Beco 18 – Travessa 19 – Via Elevada 20 – Parque
+        /// 21 – largo 22 – Viela Particular 23 – Pátio 24 – Viela Sanitária 25 – Ladeira 26 – Jardim 27 – Estrada 28 – Ponte 29 – Rua Particular 30 – Praia
         /// </summary>
         [XmlElement(ElementName = "tipologr")]
         private string TipoLogradouro
@@ -33,6 +36,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
+
+        [XmlElement(ElementName = "complend")]
+        public string ComplementoEndereco { get; set; }
+
+        public bool ShouldSerializeComplementoEndereco()
+        {
+            return !string.IsNullOrEmpty(ComplementoEndereco);
+        }
 
         /// <summary>
         /// O tipo é fixo conforme código FIRST
@@ -140,6 +151,5 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         [XmlIgnore]
         public bool ConsumidorFinal { get; set; }
-
     }
 }

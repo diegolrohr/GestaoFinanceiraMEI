@@ -32,6 +32,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "telefone")]
         public string Telefone { get; set; }
 
+        public bool ShouldSerializeTelefone()
+        {
+            return !string.IsNullOrEmpty(Telefone);
+        }
+
         /// <summary>
         /// O tipo é fixo sim, pois só atendemos ao regime Simples Nacional
         /// </summary>
@@ -50,6 +55,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 
         /// <summary>
         /// Enviar vazio para TSS
+        /// Número do processo judicial ou administrativo de suspensão da exigibilidade
         /// </summary>
         [XmlElement(ElementName = "numproc")]
         public string NumeroProcedimento

@@ -260,6 +260,14 @@
     <Compile Include="Migrations\201810102224565_AlterParametrosCertificadoValidoNFS.Designer.cs">
       <DependentUpon>201810102224565_AlterParametrosCertificadoValidoNFS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810242042132_AlterParametroAddTipoRegimeEspecialTributacao.cs" />
+    <Compile Include="Migrations\201810242042132_AlterParametroAddTipoRegimeEspecialTributacao.Designer.cs">
+      <DependentUpon>201810242042132_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.cs" />
+    <Compile Include="Migrations\201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.Designer.cs">
+      <DependentUpon>201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -462,6 +470,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810102224565_AlterParametrosCertificadoValidoNFS.resx">
       <DependentUpon>201810102224565_AlterParametrosCertificadoValidoNFS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810242042132_AlterParametroAddTipoRegimeEspecialTributacao.resx">
+      <DependentUpon>201810242042132_AlterParametroAddTipoRegimeEspecialTributacao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.resx">
+      <DependentUpon>201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

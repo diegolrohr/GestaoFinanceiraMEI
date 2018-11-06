@@ -20,7 +20,7 @@
             if (!that.valid())
                 return false;
             e.preventDefault();
-            fly01.loading.start();
+            $$$.loading.start();
             var formData = that.serializeObject();
             $.ajax({
                 type: that.attr("method"),
@@ -30,24 +30,24 @@
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
-                        fly01.toast(data.message, "success");
+                        $$$.toast(data.message, "success");
 
                         var id = $('#contaFinanceiraId').val();
                         var dtId = $("input[value=\"" + id + "\"]").closest('table').attr('id');
 
-                        fly01._[dtId].refresh();
+                        $$$._[dtId].refresh();
 
-                        fly01._.fly01mdlfrm.close()
+                        $$$._.fly01mdlfrm.close()
 
                     } else {
-                        fly01.loading.stop();
-                        fly01.fn.submitErrorHandler(null, data.message);
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
-                    fly01.loading.stop();
+                    $$$.loading.stop();
                 },
                 error: function error(jXHR, textStatus) {
-                    fly01.toast(textStatus, "error");
-                    fly01.loading.stop();
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
                 }
             })
         });

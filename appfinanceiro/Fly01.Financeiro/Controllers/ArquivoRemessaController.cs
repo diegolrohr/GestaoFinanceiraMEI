@@ -110,7 +110,6 @@ namespace Fly01.Financeiro.Controllers
                     nomeArquivo = nomeArquivo.Remove(8, 6);
 
                     var arquivoDownload = File((byte[])Session[nomeCorreto], MediaTypeNames.Application.Octet, nomeArquivo + ".REM");
-
                     Session[nomeArquivo] = null;
 
                     return arquivoDownload;
@@ -119,6 +118,7 @@ namespace Fly01.Financeiro.Controllers
 
             return null;
         }
+
 
         private List<String> SalvarArquivoRemessa(string[] idsCnabToSave)
         {
@@ -221,6 +221,7 @@ namespace Fly01.Financeiro.Controllers
 
             var config = new FormUI
             {
+                Id = "fly01frm",
                 Action = new FormUIAction
                 {
                     Edit = @Url.Action("Edit"),

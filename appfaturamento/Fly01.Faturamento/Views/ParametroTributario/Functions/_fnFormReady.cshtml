@@ -1,6 +1,6 @@
 ﻿<script>
     function fnFormReady() {
-        fly01.loading.start();
+        $$$.loading.start();
         $.ajax({
             url: '@Url.Action("CarregaParametro", "ParametroTributario")',
             type: "GET",
@@ -39,12 +39,14 @@
                 $("input#aliquotaImpostoRenda").val(data.aliquotaImpostoRenda);
                 $("input#incentivoCultura").prop("checked", data.incentivoCultura);
                 $("input#formatarCodigoISS").prop("checked", data.formatarCodigoISS);
-                fly01.fn.updateTextFields();
-                fly01.loading.stop();
+                $('#tipoRegimeEspecialTributacao').val(data.tipoRegimeEspecialTributacao);
+                $('select#tipoRegimeEspecialTributacao').material_select();
+                $$$.fn.updateTextFields();
+                $$$.loading.stop();
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(data.message, 'error');
+                $$$.loading.stop();
+                $$$.toast(data.message, 'error');
             }
         });
     }

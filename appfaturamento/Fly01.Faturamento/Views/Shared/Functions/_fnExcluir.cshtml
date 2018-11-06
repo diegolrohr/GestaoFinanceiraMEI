@@ -1,6 +1,6 @@
 ﻿<script>
 function fnExcluir(idRecord) {
-    fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\""+idRecord+"\")");
+    $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirConfirmed(\""+idRecord+"\")");
 }
 function fnExcluirConfirmed(idRecord) {
     $('body').removeClass('loaded');
@@ -12,18 +12,18 @@ function fnExcluirConfirmed(idRecord) {
             success: function (data) {
                 $('body').addClass('loaded');
                 if (data.success) {
-                    fly01.toast("Excluído com sucesso.", "success");
+                    $$$.toast("Excluído com sucesso.", "success");
                     //var idRec = JSON.parse("{\"" + this.data.replace(/ /g, "\", \"").replace(/=/g, "\": \"") + "\"}").id;
                     var dtId = $("input[value=\"" + idRecord + "\"]").closest('table').attr('id');
-                    fly01._[dtId].refresh();
+                    $$$._[dtId].refresh();
                 }
                 else {
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
                 $('body').addClass('loaded');
-                fly01.toast(textStatus, "error");
+                $$$.toast(textStatus, "error");
             }
         });
     }

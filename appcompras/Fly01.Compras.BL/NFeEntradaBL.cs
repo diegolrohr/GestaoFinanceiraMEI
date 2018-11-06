@@ -143,6 +143,9 @@ namespace Fly01.Compras.BL
                     var versao = EnumHelper.GetValue(typeof(TipoVersaoNFe), parametros.TipoVersaoNFe.ToString());
                     var fornecedor = TotalTributacaoBL.GetPessoa(entity.FornecedorId);
                     var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                    var utcDefault = "E. South America Standard Time";
+                    var utcId = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.UtcId : utcDefault) : utcDefault;
+
                     var condicaoParcelamento = CondicaoParcelamentoBL.All.AsNoTracking().Where(x => x.Id == entity.CondicaoParcelamentoId).FirstOrDefault();
                     var formaPagamento = FormaPagamentoBL.All.AsNoTracking().Where(x => x.Id == entity.FormaPagamentoId).FirstOrDefault();
                     var transportadora = PessoaBL.AllIncluding(x => x.Estado, x => x.Cidade).Where(x => x.Transportadora && x.Id == entity.TransportadoraId).AsNoTracking().FirstOrDefault();
@@ -172,12 +175,6 @@ namespace Fly01.Compras.BL
                     var itemTransmissao = new ItemTransmissaoVM();
                     itemTransmissao.Versao = versao;
 
-                    var CalendarTimeZoneDefault = "E. South America Standard Time";
-                    DateTime now = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
-
-                    TimeZoneInfo clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(CalendarTimeZoneDefault);
-                    var data = TimeZoneInfo.ConvertTimeFromUtc(now, clientTimeZone);
-
                     #region Identificação
                     itemTransmissao.Identificador = new Identificador()
                     {
@@ -186,8 +183,8 @@ namespace Fly01.Compras.BL
                         ModeloDocumentoFiscal = 55,
                         Serie = int.Parse(serieNotaFiscal.Serie),
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
-                        Emissao = TimeZoneHelper.GetDateTimeNow(isLocal),
-                        EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal),
+                        Emissao = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
+                        EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
                         TipoDocumentoFiscal = entity.TipoCompra == TipoVenda.Devolucao ? TipoNota.Saida : TipoNota.Entrada,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
@@ -296,8 +293,8 @@ namespace Fly01.Compras.BL
 
                         var produtoNFe = new EmissaoNFE.Domain.Entities.NFe.Produto()
                         {
-                            CFOP = item.GrupoTributario.Cfop.Codigo,
-                            Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop.Codigo.ToString()) : item.Produto.CodigoProduto,
+                            CFOP = item.GrupoTributario.Cfop?.Codigo,
+                            Codigo = string.IsNullOrEmpty(item.Produto.CodigoProduto) ? string.Format("CFOP{0}", item.GrupoTributario.Cfop?.Codigo.ToString()) : item.Produto.CodigoProduto,
                             Descricao = item.Produto.Descricao,
                             GTIN = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,
                             GTIN_UnidadeMedidaTributada = string.IsNullOrEmpty(item.Produto.CodigoBarras) ? "SEM GETIN" : item.Produto.CodigoBarras,

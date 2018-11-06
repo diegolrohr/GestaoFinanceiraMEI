@@ -56,7 +56,7 @@
         var queryStringOdata = "";
 
         if ($("#dataInicial").val() != undefined) {
-            let date = fly01._.mesPicker.pickamonth("picker").get("select");
+            let date = $$$._.mesPicker.pickamonth("picker").get("select");
             var firstDay = new Date(date.year, date.month, 1);
             let lastDay = new Date(date.year, date.month + 1, 0);
 
@@ -72,7 +72,7 @@
         }
 
         if (validateDate($("#dataVencimento").val()) && $("#dataVencimento").val() != "") {
-            fly01.toast('Data inválida', 'error');
+            $$$.toast('Data inválida', 'error');
         }
         else {
             var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
@@ -88,10 +88,10 @@
                         " and numero eq " + $("#numero").val() : " numero eq " + $("#numero").val()) : "") +
                 "&tipoStatus=" + $("#statusContaBancaria").val();
 
-            if (fly01._.fly01dt.ajax.json().data.length > 0)
+            if ($$$._.fly01dt.ajax.json().data.length > 0)
                 fnImprimir(url);
             else
-                fly01.toast('Não há dados para imprimir!', 'error');
+                $$$.toast('Não há dados para imprimir!', 'error');
         }
     }
 </script>

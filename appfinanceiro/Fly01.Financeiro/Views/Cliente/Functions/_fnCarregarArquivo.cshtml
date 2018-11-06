@@ -22,12 +22,12 @@
                 $("#observacao").closest("div").css("display", "block");
                 $("#observacao").val(response.Retorno);
                 $("#observacao").trigger("autoresize");
-                fly01.fn.updateTextFields();
+                $$$.fn.updateTextFields();
                 $('body').addClass('loaded');
             },
             error: function (jXHR, textStatus, errorThrown) {
                 $('body').addClass('loaded');
-                fly01.toast(errorThrown, 'error');
+                $$$.toast(errorThrown, 'error');
             }
         });
     }

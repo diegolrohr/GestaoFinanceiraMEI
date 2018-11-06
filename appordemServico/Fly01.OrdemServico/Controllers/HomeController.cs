@@ -16,14 +16,43 @@ namespace Fly01.OrdemServico.Controllers
 {
     public class HomeController : Core.Presentation.Controllers.HomeController
     {
+        public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
+        {
+            var target = new List<HtmlUIButton>();
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });     
+            }
+
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
+            {
+                target.Add(new HtmlUIButton { Id = "filterGrid2", Label = "Atualizar", OnClickFn = "fnAtualizar" });
+            }
+                return target;
+        }
+
         protected override ContentUI HomeJson()
+            => HomeJ();
+
+        public ContentResult ListHomeJson(string gridLoad)
+        {
+            return Content(JsonConvert.SerializeObject(HomeJ(gridLoad), JsonSerializerSetting.Front), "application/json");
+        }
+        protected ContentUI HomeJ(string gridLoad = "GridLoad")
         {
             if (!UserCanPerformOperation(ResourceHashConst.OrdemServicoVisaoGeral))
                 return new ContentUI { SidebarUrl = @Url.Action("Sidebar") };
 
-            //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
-            //var responseCidade = response.Cidade != null ? response.Cidade.Nome : string.Empty;
+            var buttonLabel = "Mostrar O.S. por período";
+            var buttonOnClick = "fnRemoveFilter";
 
+
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
+            {
+                gridLoad = Request.QueryString["action"];
+                buttonLabel = "Mostrar O.S. do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
             var cfg = new ContentUI
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
@@ -31,7 +60,7 @@ namespace Fly01.OrdemServico.Controllers
                 Header = new HtmlUIHeader()
                 {
                     Title = "Visão Geral",
-                    Buttons = new List<HtmlUIButton>()
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
                 Functions = new List<string> { "__format", "fnGetSaldos" }
@@ -41,12 +70,16 @@ namespace Fly01.OrdemServico.Controllers
             var dataFinal = DateTime.Now.AddMonths(1);
             var dataFinalFiltroDefault = new DateTime(dataFinal.Year, dataFinal.Month, DateTime.DaysInMonth(dataFinal.Year, dataFinal.Month));
 
-            cfg.Content.Add(new FormUI
+
+            if (Request.QueryString["action"] != "GridLoadNoFilter")
             {
-                ReadyFn = "fnFormReady",
-                UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
-                Class = "col s12",
-                Elements = new List<BaseUI>
+                cfg.Content.Add(new FormUI
+                {
+                    Id = "fly01frm",
+                    ReadyFn = "fnFormReady",
+                    UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
+                    Class = "col s12",
+                    Elements = new List<BaseUI>
                 {
                     new PeriodPickerUI()
                     {
@@ -66,7 +99,7 @@ namespace Fly01.OrdemServico.Controllers
                     new InputHiddenUI()
                     {
                         Id = "dataFinal",
-                        Name = "dataFinal"
+                        Name = "dataFinal",
                     },
                     new InputHiddenUI()
                     {
@@ -75,7 +108,45 @@ namespace Fly01.OrdemServico.Controllers
 
                     }
                 }
-            });
+                });
+            }
+            else
+            {
+                cfg.Content.Add(new FormUI
+                {
+                    Id = "fly01frm2",
+                    ReadyFn = "fnFormReadyPeriodo",
+                    UrlFunctions = Url.Action("Functions") + "?fns=",
+                    Class = "col s12",
+                    Elements = new List<BaseUI>
+                {
+                    new InputDateUI {
+                        Id =  "dataInicial",
+                        Class = "col s6 m3 l4",
+                        Label = "Data Inicial"
+                    },
+                    new InputDateUI {
+                        Id =  "dataFinal",
+                        Class = "col s6 m3 l4",
+                        Label = "Data Final"
+                    },
+                    new ButtonGroupUI()
+                    {
+                        Id = "fly01btngrp",
+                        Class = "col s12 m6 l4",
+                        Label = "Selecione o período",
+                        OnClickFn = "fnAtualizarPeriodo",
+                        Options = new List<ButtonGroupOptionUI>
+                        {
+                            new ButtonGroupOptionUI {Id = "btnDia", Value = "dia", Label = "Dia", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnSemana", Value = "semana", Label = "Semana", Class = "col s4"},
+                            new ButtonGroupOptionUI {Id = "btnMes", Value = "mes", Label = "Mês", Class = "col s4"}
+                        }
+                    }
+                }
+                });
+
+            }
 
             cfg.Content.Add(new CardUI
             {
@@ -132,6 +203,7 @@ namespace Fly01.OrdemServico.Controllers
 
             cfg.Content.Add(new ChartUI
             {
+                Id = "fly01chart",
                 Options = new
                 {
                     title = new
@@ -265,6 +337,7 @@ namespace Fly01.OrdemServico.Controllers
 
                 }
             });
+
 
             return cfg;
         }

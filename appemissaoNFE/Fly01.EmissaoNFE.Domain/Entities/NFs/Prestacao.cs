@@ -6,21 +6,16 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
     {
         /// <summary>
         /// O tipo é fixo conforme códigos First
+        /// Série da prestação dos serviços do documento.
         /// </summary>
-        /// 
-        private string seriePrestacao = "99";
-
         [XmlElement(ElementName = "serieprest")]
         public string SeriePrestacao
         {
             get
             {
-                return seriePrestacao;
+                return "99";
             }
-            set
-            {
-                seriePrestacao = value;
-            }
+            set {}
         }
 
         [XmlElement(ElementName = "logradouro")]
@@ -32,11 +27,22 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         [XmlElement(ElementName = "numend")]
         public string NumeroEndereco { get; set; }
 
+        /// <summary>
+        /// Complemento do endereço da prestação dos serviços do documento. Length 30
+        /// </summary>
+        //[XmlElement(ElementName = "complend")]
+        [XmlIgnore]
+        public string ComplementoEndereco { get; set; }
+
+        /// <summary>
+        /// Código do município do prestador padrão IBGE.
+        /// </summary>
         [XmlElement(ElementName = "codmunibge")]
         public string CodigoMunicipioIBGE { get; set; }
 
         /// <summary>
         /// Código Municipio Incidência, mesmo código Municipio IBGE
+        /// Código do município de Incidência padrão IBGE.
         /// </summary>
         [XmlElement(ElementName = "codmunibgeinc")]
         public string CodigoMunicipioIBGEIncidencia
@@ -46,6 +52,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
                 return CodigoMunicipioIBGE;
             }
             set { }
+        }
+
+        [XmlElement(ElementName = "codmunsiafi")]        
+        public string CodigoMunicipioSIAFI { get; set; }
+
+        public bool ShouldSerializeCodigoMunicipioSIAFI()
+        {
+            return !string.IsNullOrEmpty(CodigoMunicipioSIAFI);
         }
 
         [XmlElement(ElementName = "municipio")]

@@ -1,6 +1,6 @@
 ﻿<script>
     function fnExcluirOrcamentoItem(idRecord) {
-        fly01.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrcamentoItemConfirmed(\"" + idRecord + "\")");
+        $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir este registro?", "fnExcluirOrcamentoItemConfirmed(\"" + idRecord + "\")");
     }
     function fnExcluirOrcamentoItemConfirmed(idRecord) {
         $('body').removeClass('loaded');
@@ -12,16 +12,16 @@
                 success: function (data) {
                     $('body').addClass('loaded');
                     if (data.success) {
-                        fly01.toast("Excluído com sucesso.", "success");
-                        fly01._.dtOrcamentoItens.refresh();
+                        $$$.toast("Excluído com sucesso.", "success");
+                        $$$._.dtOrcamentoItens.refresh();
                     }
                     else {
-                        fly01.toast(data.message, "error");
+                        $$$.toast(data.message, "error");
                     }
                 },
                 error: function (jXHR, textStatus, errorThrown) {
                     $('body').addClass('loaded');
-                    fly01.toast(textStatus, "error");
+                    $$$.toast(textStatus, "error");
                 }
             });
         }

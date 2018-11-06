@@ -38,6 +38,7 @@ namespace Fly01.Faturamento.Controllers
 
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions", "Home", null, Request.Url.Scheme) + "?fns=",
                 Class = "col s12"
@@ -59,8 +60,20 @@ namespace Fly01.Faturamento.Controllers
 
             cfg.Content.Add(new AppUI()
             {
+                Id = "nfsenormal",
+                Class = "col s12 m6 l3",
+                Title = "NFS-e Serviço",
+                Icon = "https://mpn.azureedge.net/img/icon/nfe/servico.svg",
+                Target = new LinkUI
+                {
+                    Go = Url.Action("FormPedido", "Pedido", new { isEdit = "false", tipoVenda = "Normal" })
+                }
+            });
+
+            cfg.Content.Add(new AppUI()
+            {
                 Id = "nfenormal",
-                Class = "col s12 m4",
+                Class = "col s12 m6 l3",
                 Title = "NF-e Normal",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/normal.svg",
                 Target = new LinkUI
@@ -72,7 +85,7 @@ namespace Fly01.Faturamento.Controllers
             cfg.Content.Add(new AppUI()
             {
                 Id = "nfedevolucao",
-                Class = "col s12 m4",
+                Class = "col s12 m6 l3",
                 Title = "NF-e Devolução",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/devolucao.svg",
                 Target = new LinkUI
@@ -84,7 +97,7 @@ namespace Fly01.Faturamento.Controllers
             cfg.Content.Add(new AppUI()
             {
                 Id = "nfecomplemento",
-                Class = "col s12 m4",
+                Class = "col s12 m6 l3",
                 Title = "NF-e Complemento",
                 Icon = "https://mpn.azureedge.net/img/icon/nfe/complemento.svg",
                 Target = new LinkUI

@@ -277,6 +277,7 @@ namespace Fly01.Financeiro.Controllers
             });
             cfg.Content.Add(new FormUI
             {
+                Id = "fly01frm",
                 ReadyFn = "fnFormReady",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string> { "__format" },
@@ -292,7 +293,7 @@ namespace Fly01.Financeiro.Controllers
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> { new DomEventUI {DomEvent = "change", Function = "fnAtualizar"} },
                         Max = true,
-                        Min = -60
+                        Min = -180
                     },
                     new InputDateUI
                     {
@@ -302,7 +303,7 @@ namespace Fly01.Financeiro.Controllers
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy"),
                         DomEvents = new List<DomEventUI> { new DomEventUI {DomEvent = "change", Function = "fnAtualizar"} },
                         Max = true,
-                        Min = -60
+                        Min = -180
                     },
                     new ButtonGroupUI
                     {
@@ -349,6 +350,7 @@ namespace Fly01.Financeiro.Controllers
             });
             cfg.Content.Add(new ChartUI
             {
+                Id = "fly01chart",
                 Options = new
                 {
                     title = new

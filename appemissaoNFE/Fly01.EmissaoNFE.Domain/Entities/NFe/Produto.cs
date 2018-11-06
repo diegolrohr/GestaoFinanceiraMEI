@@ -57,7 +57,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o CFOP - Código Fiscal de Operações e Prestações.
         /// </summary>
         [XmlElement(ElementName = "CFOP")]
-        public int CFOP { get; set; }
+        public int? CFOP { get; set; }
 
         [Required]
         [MaxLength(6)]

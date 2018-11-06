@@ -33,6 +33,7 @@ namespace Fly01.Estoque.API
             builder.EntitySet<Produto>("produtosmenosmovimentados");
             builder.EntitySet<Cest>("cest");
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
+            builder.EntitySet<MovimentoOrdemVenda>("movimentoordemvenda");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

@@ -1,11 +1,11 @@
 ﻿<script>
 
     function fnFinalizarRow(idRecord) {
-        var data, length = fly01._.fly01dt.data().length;
+        var data, length = $$$._.fly01dt.data().length;
 
         for (var i = 0; ((i < length) && (!data)) ; i++)
-            if (fly01._.fly01dt.data()[i].id === idRecord)
-                data = fly01._.fly01dt.data()[i];
+            if ($$$._.fly01dt.data()[i].id === idRecord)
+                data = $$$._.fly01dt.data()[i];
 
         var formData = {
             'id': data.id,
@@ -17,11 +17,11 @@
             fnFinalizaInventarioConfirmedRow(formData);
         }
 
-        fly01.confirm("Confirmar Finalização", "Deseja realmente finalizar este inventário?", "callbackConfirmaFinalizacao()");
+        $$$.confirm("Confirmar Finalização", "Deseja realmente finalizar este inventário?", "callbackConfirmaFinalizacao()");
     }
     
     function fnFinalizaInventarioConfirmedRow(formData) {
-        fly01.loading.start();
+        $$$.loading.start();
         
         var action = "@Url.Action("Edit", "Inventario")" + "/{" + formData.id + "}";  
 
@@ -32,20 +32,20 @@
             dataType: 'json',
             data: JSON.stringify(formData),
             success: function (data) {
-                fly01.loading.stop();
+                $$$.loading.stop();
                 if (data.success) {
-                    fly01.toast("Inventário finalizado com sucesso", "success");
+                    $$$.toast("Inventário finalizado com sucesso", "success");
 
 
-                    fly01.go("@Url.Action("List", "Inventario")");
+                    $$$.go("@Url.Action("List", "Inventario")");
                 }
                 else {
-                    fly01.fn.submitErrorHandler(null, data.message);
+                    $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function (jXHR, textStatus, errorThrown) {
-                fly01.loading.stop();
-                fly01.toast(textStatus, "error");
+                $$$.loading.stop();
+                $$$.toast(textStatus, "error");
             }
         });
     }

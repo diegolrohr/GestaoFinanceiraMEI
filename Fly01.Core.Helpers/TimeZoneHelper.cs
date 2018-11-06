@@ -15,7 +15,7 @@ namespace Fly01.Core.Helpers
             return DateTime.SpecifyKind(data, dateTimeKind);
         }
 
-        public static DateTime GetDateTimeNow(bool isLocal)
+        public static DateTime GetDateTimeNow(bool isLocal, string timeZoneId = "E. South America Standard Time")
         {
             if (isLocal)
             {
@@ -25,7 +25,7 @@ namespace Fly01.Core.Helpers
             {
                 //Azure é default utc 0, precisa retornar para South America
                 //a DataHora estava saindo 3 horas adiantado da atual
-                return ToClientTimeZone(TimeZoneHelper.DateTimeWithKind(DateTime.Now));
+                return ToClientTimeZone(TimeZoneHelper.DateTimeWithKind(DateTime.Now), timeZoneId);
             }
         }
 

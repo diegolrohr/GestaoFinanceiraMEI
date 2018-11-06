@@ -13,6 +13,7 @@ using Fly01.EmissaoNFE.Domain.ViewModelNFS;
 using Fly01.Faturamento.BL.Helpers.EntitiesBL;
 using ServicoEmissao = Fly01.EmissaoNFE.Domain.Entities.NFS.Servico;
 using Fly01.Core;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Faturamento.BL.Helpers
 {
@@ -42,6 +43,12 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             var itemTransmissaoNFS = ObterTransmissaoNFS();
             return ObterTransmissaoApartirDoItem(itemTransmissaoNFS);
+        }
+
+        public string GetEmpresaUtcId()
+        {
+            var utcDefault = "E. South America Standard Time";
+            return Empresa.Cidade != null ? (Empresa.Cidade.Estado != null ? Empresa.Cidade.Estado.UtcId : utcDefault) : utcDefault;
         }
 
         public string SubstringTelefone(string telefone = "")
@@ -248,6 +255,11 @@ namespace Fly01.Faturamento.BL.Helpers
             };
         }
 
+        private bool IsLocal()
+        {
+            return AppDefaults.UrlGateway.Contains("fly01local.com.br");
+        }
+
         private Identificacao ObterIdentificacao()
         {
             return new Identificacao()
@@ -255,10 +267,10 @@ namespace Fly01.Faturamento.BL.Helpers
                 TipoTributacao = ParametrosTributarios.TipoTributacaoNFS,
                 TipoRegimeEspecialTributacao = ParametrosTributarios.TipoRegimeEspecialTributacao,
                 CodigoIBGEPrestador = Empresa.Cidade?.CodigoIbge ?? "",
-                DataHoraEmissao = DateTime.Now,
+                DataHoraEmissao = TimeZoneHelper.GetDateTimeNow(IsLocal(), GetEmpresaUtcId()),
                 SerieRPS = TransmissaoNFSBLs.SerieNotaFiscalBL.All.AsNoTracking().Where(x => x.Id == NFSe.SerieNotaFiscalId).FirstOrDefault().Serie.ToUpper(),
                 NumeroRPS = NFSe.NumNotaFiscal.Value,
-                CompetenciaRPS = DateTime.Now
+                CompetenciaRPS = TimeZoneHelper.GetDateTimeNow(IsLocal(), GetEmpresaUtcId()),
             };
         }
 

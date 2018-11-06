@@ -474,34 +474,29 @@ namespace Fly01.Core.Presentation
                             var filterField = item.Data;
                             bool dateTimeRange = false;
 
-                            //var campo = (filterField.IndexOf("_", StringComparison.Ordinal) > -1)
-                            //   ? filterField.Substring(0, filterField.IndexOf("_", StringComparison.Ordinal))
-                            //   : filterField;
-
-                            //propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(
-                            //   (filterField.IndexOf("_", StringComparison.Ordinal) > -1)
-                            //   ? filterField.Substring(0, filterField.IndexOf("_", StringComparison.Ordinal))
-                            //   : filterField, StringComparison.InvariantCultureIgnoreCase));
-
                             var filterFieldSplit = filterField.Split('_');
+
+                            //nome
                             var className = filterField;
                             propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
 
                             if (filterFieldSplit.Length == 2)
                             {
+                                //pessoa_nome
                                 className = filterFieldSplit[0];
                                 propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
                             }
-                            else if (filterFieldSplit.Length > 2)
+                            else if (filterFieldSplit.Length == 3)
                             {
-                                //sempre o penúltimo
+                                //por enquanto ressolvido para buscar em até 2 níveis de navigation
+                                //contaBancaria_pessoa_nome
                                 className = filterFieldSplit[filterFieldSplit.Length - 2];
                                 propertyInfo = typeof(T).GetProperties().FirstOrDefault(x => x.Name.Equals(filterFieldSplit[0], StringComparison.InvariantCultureIgnoreCase));
 
                                 Type type = propertyInfo.PropertyType;
                                 propertyInfo = type.GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
-
                             } 
+
                             if (propertyInfo != null)
                             {
                                 bool mustCompareAsEqual = false;

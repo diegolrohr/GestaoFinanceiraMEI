@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
                 id = x.Id,
                 contaReceberId = x.ContaReceberId,
                 contaBancariaId = x.ContaBancariaCedenteId,
-                contaBancaria_banco_nome = x.ContaBancariaCedente?.Banco?.Nome,
+                contaBancariaCedente_banco_nome = x.ContaBancariaCedente?.Banco?.Nome,
                 contaReceber_pessoa_nome = x.ContaReceber.Pessoa.Nome,
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 valorBoleto = x.ValorBoleto.ToString("C", AppDefaults.CultureInfoDefault),
@@ -200,7 +200,7 @@ namespace Fly01.Financeiro.Controllers
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nº boleto", Priority = 6 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_nome", Priority = 3, DisplayName = "Cliente" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancaria_banco_nome", Priority = 3, DisplayName = "Banco" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 3, DisplayName = "Banco" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});

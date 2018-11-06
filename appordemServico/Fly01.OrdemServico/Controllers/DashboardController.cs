@@ -61,13 +61,14 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        public JsonResult LoadCards(DateTime? dataFinal = null)
+        public JsonResult LoadCards(DateTime? dataFinal = null, DateTime? dataInicial = null)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "filtro", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
+                    { "dataFinal", dataFinal.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") },
+                    { "dataInicial", dataInicial.GetValueOrDefault(DateTime.Now).ToString("yyyy-MM-dd") }
                 };
                 var response = RestHelper.ExecuteGetRequest<OrdemServicoPorStatusVM[]>("dashboard/status", queryString);
                 var qtdTotal = 0;
@@ -76,7 +77,7 @@ namespace Fly01.OrdemServico.Controllers
                 var concluido = "0/0";
                 var cancelado = "0/0";
 
-                if (response != null)
+                if (response.Any())
                 {
                     qtdTotal = response.First().QuantidadeTotal;
                     aberto = "0/" + qtdTotal;

@@ -10,11 +10,11 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     {
         [HttpGet]
         [Route("status")]
-        public IHttpActionResult GetOrdemServicoPorStatus(DateTime filtro)
+        public IHttpActionResult GetOrdemServicoPorStatus(DateTime dataFinal, DateTime dataInicial)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(unitOfWork.DashboardBL.GetOrdemServicoPorStatus(filtro));
+                return Ok(unitOfWork.DashboardBL.GetOrdemServicoPorStatus(dataFinal, dataInicial));
             }
         }
 

@@ -9,7 +9,8 @@
         $$$._.dtGridTopProdutos.refresh();
         $$$._.dtGridTopServicos.refresh();
         var dataFinal = moment(lastDay).format('YYYY-MM-DD');
-        getSaldos(dataFinal);
+        var dataInicial = moment(firstDay).format('YYYY-MM-DD');
+        fnGetSaldos(dataFinal, dataInicial);
         $$$._.fly01chart.refresh();
     }
 </script>

@@ -146,7 +146,12 @@ namespace Fly01.Faturamento.Controllers
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" },
+                Options = new DataTableUIConfig
+                {
+                    OrderColumn = 7,
+                    OrderDir = "desc"
+                }
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()

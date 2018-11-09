@@ -22,7 +22,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? EnquadramentoLegalIPIId { get; set; }
 
-        public bool ObjetoDeManutencao { get; set; }
+        public ObjetoDeManutencao ObjetoDeManutencao { get; set; }
 
         [JsonIgnore]
         public TipoProduto TipoProduto { get; set; }

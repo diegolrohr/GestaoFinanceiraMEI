@@ -428,6 +428,10 @@
     <Compile Include="Migrations\201810261928579_AlterServicoAddUnidadeMedida.Designer.cs">
       <DependentUpon>201810261928579_AlterServicoAddUnidadeMedida.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811091656409_AjusteProdutoOrdemServico.cs" />
+    <Compile Include="Migrations\201811091656409_AjusteProdutoOrdemServico.Designer.cs">
+      <DependentUpon>201811091656409_AjusteProdutoOrdemServico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -742,6 +746,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810261928579_AlterServicoAddUnidadeMedida.resx">
       <DependentUpon>201810261928579_AlterServicoAddUnidadeMedida.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811091656409_AjusteProdutoOrdemServico.resx">
+      <DependentUpon>201811091656409_AjusteProdutoOrdemServico.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

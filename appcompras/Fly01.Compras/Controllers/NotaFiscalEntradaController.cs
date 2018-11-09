@@ -148,7 +148,7 @@ namespace Fly01.Compras.Controllers
                 Functions = new List<string>() { "fnRenderEnum" },
                 Options = new DataTableUIConfig
                 {
-                    OrderColumn = 7,
+                    OrderColumn = 6,
                     OrderDir = "desc"
                 }
             };

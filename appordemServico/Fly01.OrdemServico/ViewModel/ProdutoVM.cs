@@ -29,8 +29,9 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("observacao")]
         public string Observacao { get; set; }
 
+        [APIEnum("ObjetoDeManutencao")]
         [JsonProperty("objetoDeManutencao")]
-        public bool ObjetoDeManutencao { get; set; }
+        public string ObjetoDeManutencao { get; set; }
 
         [JsonProperty("unidadeMedida")]
         public virtual UnidadeMedidaVM UnidadeMedida { get; set; }

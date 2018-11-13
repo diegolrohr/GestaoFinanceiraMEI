@@ -333,6 +333,10 @@
     <Content Include="Views\GrupoTributario\Functions\_fnShowCSLL.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowImpostoRenda.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowINSS.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Produto\ImportarProduto.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -20,5 +20,18 @@ namespace Fly01.Core.Presentation.Commons
 
             return RestHelper.ExecutePostRequest<ArquivoVM>("arquivo", JsonConvert.SerializeObject(arquivo, JsonSerializerSetting.Default));
         }
+
+        public static ArquivoVM ImportaProduto(string descricao, string conteudo)
+        {
+            var arquivo = new
+            {
+                descricao = descricao,
+                conteudo = Base64Helper.CodificaBase64(conteudo),
+                cadastro = "Produto",
+                md5 = Base64Helper.CalculaMD5Hash(conteudo)
+            };
+
+            return RestHelper.ExecutePostRequest<ArquivoVM>("arquivo", JsonConvert.SerializeObject(arquivo, JsonSerializerSetting.Default));
+        }
     }
 }

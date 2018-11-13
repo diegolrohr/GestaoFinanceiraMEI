@@ -66,6 +66,19 @@ namespace Fly01.Core.Presentation.Controllers
             return target;
         }
 
+        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "import", Label = "Importar Produtos", OnClickFn = "fnImportarCadastro", Position = HtmlUIButtonPosition.Out });
+            }
+
+            return target;
+        }
+
         public override ContentResult List()
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -159,7 +172,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "grupoProdutoId",
                 Class = "col s12 m3",
                 Label = "Grupo",
-                Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
                 DataUrlPost = @Url.Action("NovoGrupoProduto"),
                 LabelId = "grupoProdutoDescricao",
@@ -242,6 +254,83 @@ namespace Fly01.Core.Presentation.Controllers
 
         public virtual List<TooltipUI> GetHelpers()
             => null;
+
+        public ContentResult FormImportacao()
+        {
+            var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
+            {
+                History = new ContentUIHistory()
+                {
+                    Default = Url.Action("ImportarProduto"),
+                },
+                Header = new HtmlUIHeader()
+                {
+                    Title = $"Importar Produtos",
+                    Buttons = new List<HtmlUIButton>(GetFormImportacaoButtonsOnHeader())
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            var config = new FormUI
+            {
+                Id = "fly01frm",
+                Action = new FormUIAction()
+                {
+                    Create = Url.Action("ImportaCadastro"),
+                    Edit = Url.Action("ImportaCadastro"),
+                    Get = Url.Action("Json") + "/ImportarCadastro",
+                    List = @Url.Action("List")
+                },
+                ReadyFn = "fnImportarProdutoFormReady",
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            config.Elements.Add(new InputFileUI { Id = "arquivo", Class = "col s12", Label = "Arquivo de importação em lotes (.csv)", Required = true, Accept = ".csv" });
+
+            config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", Readonly = true });
+
+            cfg.Content.Add(config);
+
+            cfg.Content.Add(new CardUI()
+            {
+                Class = "col s12",
+                Color = "blue",
+                Id = "cardDuvidas",
+                Title = "Dúvidas",
+                Placeholder = "Se preferir você pode baixar um arquivo modelo de importação.",
+                Action = new LinkUI()
+                {
+                    Label = "Baixar arquivo modelo"
+                }
+
+            });
+
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public List<HtmlUIButton> GetFormImportacaoButtonsOnHeader()
+        {
+            var target = new List<HtmlUIButton>();
+
+            if (UserCanWrite)
+            {
+                target.Add(new HtmlUIButton() { Id = "cancel", Label = "Voltar", OnClickFn = "fnCancelar" });
+                target.Add(new HtmlUIButton() { Id = "save", Label = "Importar", OnClickFn = "fnCarregarArquivo", Type = "submit" });
+            }
+
+            return target;
+        }
+
+        public JsonResult ImportaArquivo(string pConteudo)
+        {
+            var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
+            return JsonResponseStatus.GetJson(arquivoVM);
+        }
+
+        public virtual ActionResult ImportarProduto()
+        {
+            return View();
+        }
 
         #region onDemand
 

@@ -3,6 +3,7 @@ using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using System.Data.Entity;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Collections.Generic;
 
 namespace Fly01.Compras.BL
 {
@@ -69,7 +70,6 @@ namespace Fly01.Compras.BL
             entity.Fail(entity.UnidadeMedidaId == null, UnidadeMedidaInvalida);
             entity.Fail(string.IsNullOrEmpty(entity.Descricao), DescricaoEmBranco);
             entity.Fail(All.Where(x => x.Descricao == entity.Descricao).Any(x => x.Id != entity.Id), DescricaoDuplicada);
-            entity.Fail(!GrupoProdutoBL.All.Any(x => x.Id == entity.GrupoProdutoId), new Error("Grupo de produto não encontrado ou excluído."));
             entity.Fail(entity.GrupoProdutoId != null && entity.TipoProduto != GrupoProdutoBL.All.AsNoTracking().Where(x => x.Id == entity.GrupoProdutoId).FirstOrDefault().TipoProduto, TipoProdutoDiferente);
 
             if (!string.IsNullOrWhiteSpace(entity.CodigoProduto))
@@ -105,5 +105,21 @@ namespace Fly01.Compras.BL
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");
         public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");
         public static Error TipoProdutoDiferente = new Error("Tipo do produto é diferente do tipo do grupo de produto.", "tipoProduto");
+
+        public static List<string> ColunasParaImportacao()
+        {
+            return new List<string>
+            {
+                "Descricao",
+                "CodigoProduto",
+                "CodigoBarras",
+                "AbreviacaoUnidadeMedida",
+                "SaldoMinimo",
+                "ValorCusto",
+                "ValorVenda",
+                "Observacao"
+            };
+        }
     }
+
 }

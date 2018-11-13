@@ -54,5 +54,6 @@ namespace Fly01.Estoque.DAL
         public DbSet<TipoMovimento> TiposMovimento { get; set; }
         public DbSet<Cest> Cests { get; set; }
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
+        public DbSet<Arquivo> Arquivo { get; set; }
     }
 }

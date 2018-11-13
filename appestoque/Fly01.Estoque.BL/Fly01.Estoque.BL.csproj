@@ -45,6 +45,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArquivoBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="InventarioBL.cs" />
@@ -81,6 +82,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Entities\Fly01.Core.Entities.csproj">
       <Project>{26E9896F-EDF5-4E59-9E0F-627C70E2E59E}</Project>
       <Name>Fly01.Core.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Helpers\Fly01.Core.Helpers.csproj">
+      <Project>{d3ee1325-9a1d-4620-853b-822d88105147}</Project>
+      <Name>Fly01.Core.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
       <Project>{89c80f58-c490-4c34-b04e-7c43f5f09951}</Project>

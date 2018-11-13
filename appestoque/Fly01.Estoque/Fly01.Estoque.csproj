@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -201,6 +201,10 @@
     <Content Include="Views\Shared\NotAllow.cshtml" />
     <Content Include="Views\Shared\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\Shared\View.cshtml" />
+    <Content Include="Views\Produto\ImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -197,31 +197,31 @@ namespace Fly01.Financeiro.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     Elements = new List<BaseUI>()
                     {
+                        //new PeriodPickerUI()
+                        //{
+                        //    Label = "Selecione o período",
+                        //    Id = "mesPicker",
+                        //    Name = "mesPicker",
+                        //    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                        //    DomEvents = new List<DomEventUI>()
+                        //    {
+                        //        new DomEventUI()
+                        //        {
+                        //            DomEvent = "change",
+                        //            Function = "fnUpdateDataFinal"
+                        //        }
+                        //    }
+                        //},
                         new PeriodPickerUI()
                         {
                             Label = "Selecione o período",
                             Id = "mesPicker",
                             Name = "mesPicker",
                             Class = "col s12 m6 offset-m3 l4 offset-l4",
-                            DomEvents = new List<DomEventUI>()
-                            {
-                                new DomEventUI()
-                                {
-                                    DomEvent = "change",
-                                    Function = "fnUpdateDataFinal"
-                                }
-                            }
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataFinal",
-                            Name = "dataFinal"
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataInicial",
-                            Name = "dataInicial"
-                        }
+                            Selectable = true,
+                            FimId = "dataFinal",
+                            InicioId ="dataInicial"
+                        }                        
                     }
                 };
 

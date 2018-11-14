@@ -68,7 +68,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XMLUnicoTSS = xmlUnicoTssString,
-                XMLGerado = Convert.ToBase64String(validacao[0].XML)
+                XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
             };
 
             if (validacao.Length > 0)

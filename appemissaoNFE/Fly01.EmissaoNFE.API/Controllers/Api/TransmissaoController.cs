@@ -1,4 +1,4 @@
-﻿using Fly01.EmissaoNFE.API.Model;
+using Fly01.EmissaoNFE.API.Model;
 using Fly01.EmissaoNFE.BL;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.Core.API;
@@ -16,6 +16,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         [HttpPost]
         public IHttpActionResult Post(TransmissaoVM entity)
         {
+            entity?.TrimAllStrings();
+
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.TransmissaoBL.ValidaModel(entity);

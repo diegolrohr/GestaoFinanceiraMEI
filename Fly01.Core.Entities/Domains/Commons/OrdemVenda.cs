@@ -96,6 +96,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }
 
+        [MaxLength(1000)]
+        public string InformacoesCompletamentaresNFS { get; set; }
+
         [StringLength(60)]
         public string NaturezaOperacao { get; set; }
 

@@ -68,15 +68,15 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
             {
                 NotaId = entity.ItemTransmissaoNFSVM.NotaId,
                 XMLUnicoTSS = xmlUnicoTssString,
-                XMLGerado = Convert.ToBase64String(validacao[0].XML)
+                XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
             };
 
-            if (validacao.Length > 0)
+            if (!string.IsNullOrEmpty(validacao[0].MENSAGEM) && validacao[0].MENSAGEM.Trim().Length > 0)
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
                     Id = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "")
+                    Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
                 };
                 response.Error = schema;
             }
@@ -134,12 +134,12 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                 XMLGerado = Encoding.UTF8.GetString(validacao[0].XML)
             };
 
-            if (!string.IsNullOrEmpty(validacao[0].MENSAGEM))
+            if (!string.IsNullOrEmpty(validacao[0].MENSAGEM) && validacao[0].MENSAGEM.Trim().Length > 0)
             {
                 var schema = new SchemaXMLNFSRetornoVM
                 {
                     Id = validacao[0].ID,
-                    Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "")
+                    Mensagem = validacao[0].MENSAGEM.Trim().Replace("\\", "").Replace("\n", "")
                 };
                 response.Error = schema;
             }

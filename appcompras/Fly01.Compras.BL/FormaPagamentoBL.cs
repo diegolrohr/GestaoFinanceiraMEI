@@ -7,8 +7,6 @@ namespace Fly01.Compras.BL
 {
     public class FormaPagamentoBL : PlataformaBaseBL<FormaPagamento>
     {
-        private static Error FormaDePagamentoJaCadastradaErr = new Error("Descrição já utilizada anteriormente.", "descricao");
-
         public FormaPagamentoBL(AppDataContextBase context) : base(context)
         {
             MustConsumeMessageServiceBus = true;
@@ -16,7 +14,8 @@ namespace Fly01.Compras.BL
 
         public override void ValidaModel(FormaPagamento entity)
         {
-            entity.Fail(All.Any(e => e.Ativo && e.Id != entity.Id && (e.Descricao.ToUpper() == entity.Descricao.ToUpper() && e.TipoFormaPagamento == entity.TipoFormaPagamento)), FormaDePagamentoJaCadastradaErr);
+            entity.Fail(All.Any(x => x.Ativo && x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper() && x.TipoFormaPagamento == entity.TipoFormaPagamento), 
+                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper() && x.TipoFormaPagamento == entity.TipoFormaPagamento)?.Id.ToString()));
 
             base.ValidaModel(entity);
         }

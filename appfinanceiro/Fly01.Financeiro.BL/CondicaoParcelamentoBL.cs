@@ -23,7 +23,8 @@ namespace Fly01.Financeiro.BL
             entity.Fail(!entity.QtdParcelas.HasValue && string.IsNullOrEmpty(entity.CondicoesParcelamento), CondicaoParcelamentoNaoInformada);
             entity.Fail(entity.QtdParcelas.HasValue && (entity.QtdParcelas < 1 || entity.QtdParcelas > 100), QtdParcelasInvalida);
             entity.Fail(!entity.QtdParcelas.HasValue && !ValidaFormatoCondicoesParcelamento(entity.CondicoesParcelamento), CondicaoParcelamentoInvalida);
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()), DescricaoDuplicada);
+            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()), 
+                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
 
 
             base.ValidaModel(entity);
@@ -138,6 +139,5 @@ namespace Fly01.Financeiro.BL
         public static Error CondicaoParcelamentoNaoInformada = new Error("Informe a quantidade de parcelas ou o intervalo de dias.");
         public static Error QtdParcelasInvalida = new Error("Quantidade de parcelas inválida.", "qtdParcelas");
         public static Error CondicaoParcelamentoInvalida = new Error("Condição de parcelamento inválida.", "condicoesParcelamento");
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
     }
 }

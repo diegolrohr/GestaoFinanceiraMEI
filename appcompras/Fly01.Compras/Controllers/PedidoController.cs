@@ -327,7 +327,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
                 }
             });
-            config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro
@@ -466,7 +466,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12 visible" });
             #endregion
 
             #region Helpers

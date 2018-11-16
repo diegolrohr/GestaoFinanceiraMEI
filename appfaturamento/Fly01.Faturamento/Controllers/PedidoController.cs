@@ -242,7 +242,7 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaProduto" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Serviços
@@ -257,7 +257,7 @@ namespace Fly01.Faturamento.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
                 }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro
@@ -399,7 +399,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12 visible" });
             #endregion
 
             #region Helpers            

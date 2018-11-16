@@ -21,7 +21,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                             value = unitOfWork.ContaPagarBL.Everything.Where(x =>
                                 (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
                                 (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
-                                (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal))
+                                (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)).ToList()
                         }
                     );
             }

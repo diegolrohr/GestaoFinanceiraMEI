@@ -146,8 +146,10 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public override ContentResult List() 
-            => ListContaPagar();
+        public override ContentResult List()
+        {
+            return ListContaPagar();
+        }
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string bntLabel, string btnOnClick)
         {
@@ -195,14 +197,44 @@ namespace Fly01.Financeiro.Controllers
                     Id = "fly01frm",
                     ReadyFn = "fnUpdateDataFinal",
                     UrlFunctions = Url.Action("Functions") + "?fns=",
+                    Functions = new List<string>() { "fnBuscaAvancada" },
                     Elements = new List<BaseUI>()
                     {
+                        new PeriodPickerUI()
+                        {
+                            Label = "Selecione o período",
+                            Id = "mesPicker",
+                            Name = "mesPicker",
+                            Class = "col s12 m6 offset-m3 l4 offset-l4",
+                            DomEvents = new List<DomEventUI>()
+                            {
+                                new DomEventUI()
+                                {
+                                    DomEvent = "change",
+                                    Function = "fnUpdateDataFinal"
+                                }
+                            }
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataFinal",
+                            Name = "dataFinal"
+                        },
+                        new InputHiddenUI()
+                        {
+                            Id = "dataInicial",
+                            Name = "dataInicial"
+                        }
+
                         //new PeriodPickerUI()
                         //{
                         //    Label = "Selecione o período",
                         //    Id = "mesPicker",
                         //    Name = "mesPicker",
                         //    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                        //    Selectable = true,
+                        //    FimId = "dataFinal",
+                        //    InicioId ="dataInicial",
                         //    DomEvents = new List<DomEventUI>()
                         //    {
                         //        new DomEventUI()
@@ -211,17 +243,7 @@ namespace Fly01.Financeiro.Controllers
                         //            Function = "fnUpdateDataFinal"
                         //        }
                         //    }
-                        //},
-                        new PeriodPickerUI()
-                        {
-                            Label = "Selecione o período",
-                            Id = "mesPicker",
-                            Name = "mesPicker",
-                            Class = "col s12 m6 offset-m3 l4 offset-l4",
-                            Selectable = true,
-                            FimId = "dataFinal",
-                            InicioId ="dataInicial"
-                        }                        
+                        //}
                     }
                 };
 
@@ -283,7 +305,9 @@ namespace Fly01.Financeiro.Controllers
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)
+            {
                 filters = new Dictionary<string, string>();
+            }
 
             filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
             filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
@@ -348,7 +372,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoParcela" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
-            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });            
+            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 
@@ -828,9 +852,14 @@ namespace Fly01.Financeiro.Controllers
         private string GetTipoDocumento(string documento)
         {
             if (documento.Length <= 11)
+            {
                 return "F";
+            }
+
             if (documento.Length > 11)
+            {
                 return "J";
+            }
 
             return null;
         }

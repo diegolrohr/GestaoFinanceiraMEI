@@ -21,7 +21,8 @@ namespace Fly01.Financeiro.BL
 
         public override void ValidaModel(ContaBancaria entity)
         {
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper()), DescricaoDuplicada);
+            entity.Fail(All.Any(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper()), 
+                new Error("Descrição já utilizada anteriormente.", "nomeConta", All.FirstOrDefault(x => x.Id != entity.Id && x.NomeConta.ToUpper() == entity.NomeConta.ToUpper())?.Id.ToString()));
 
             if(entity.BancoId == default(Guid) && !string.IsNullOrEmpty(entity.CodigoBanco))
             {

@@ -171,7 +171,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
             set { }
         }
 
-        [XmlElement(ElementName = "valfoncartri")]
+        //[XmlElement(ElementName = "valfoncartri")]
+        [XmlIgnore]
         public string ValorFonCarTributacao
         {
             get { return "IBPT"; }

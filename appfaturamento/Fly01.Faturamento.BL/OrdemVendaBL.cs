@@ -195,6 +195,7 @@ namespace Fly01.Faturamento.BL
             notaFiscal.MensagemPadraoNota = (mensagemComplementar + " " + entity.MensagemPadraoNota ?? "").Trim();
             notaFiscal.ContaFinanceiraParcelaPaiIdServicos = entity.ContaFinanceiraParcelaPaiIdServicos;
             notaFiscal.ContaFinanceiraParcelaPaiIdProdutos = entity.ContaFinanceiraParcelaPaiIdProdutos;
+            notaFiscal.InformacoesCompletamentaresNFS = entity.InformacoesCompletamentaresNFS;
             return notaFiscal;
         }
 

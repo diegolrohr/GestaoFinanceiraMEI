@@ -29,8 +29,11 @@ namespace Fly01.Estoque.BL
         {            
             Context = new AppDataContext(initialize);
         }
-        
+
         #region BLS
+
+        private ArquivoBL arquivoBL;
+        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
 
         private EstadoBL estadoBL;
         public EstadoBL EstadoBL => estadoBL ?? (estadoBL = new EstadoBL(Context));

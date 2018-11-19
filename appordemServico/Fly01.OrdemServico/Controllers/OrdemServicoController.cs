@@ -465,7 +465,7 @@ namespace Fly01.OrdemServico.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoManutencao" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemServicoManutencao", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoManutencao", Class = "col s12 visible" });
             #endregion
 
             #region step Produtos
@@ -480,7 +480,7 @@ namespace Fly01.OrdemServico.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemProduto" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Serviços
@@ -495,7 +495,7 @@ namespace Fly01.OrdemServico.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemServico" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemServicos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemServicoItemServicos", Class = "col s12 visible" });
             #endregion
 
             #region step Finalizar

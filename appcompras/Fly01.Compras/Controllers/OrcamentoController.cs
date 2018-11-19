@@ -171,7 +171,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalOrcamentoItem" }
                 }
             });
-            config.Elements.Add(new DivElementUI { Id = "orcamentoProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "orcamentoProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro

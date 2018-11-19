@@ -491,7 +491,7 @@ namespace Fly01.Faturamento.BL
                 {
                     tributacao.Icms = new Icms()
                     {
-                        Aliquota = parametros.AliquotaSimplesNacional,
+                        Aliquota = itemProduto.AliquotaICMS,
                         DespesaNaBase = grupoTributario.AplicaDespesaBaseIcms,
                         Difal = grupoTributario.CalculaIcmsDifal,
                         FreteNaBase = grupoTributario.AplicaFreteBaseIcms,
@@ -506,7 +506,7 @@ namespace Fly01.Faturamento.BL
 
                     tributacao.Fcp = new Fcp()
                     {
-                        Aliquota = parametros.AliquotaFCP
+                        Aliquota = itemProduto.AliquotaFCP
                     };
                 }
                 //IPI
@@ -649,7 +649,9 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                AliquotaFCP = x.Fcp,
+                AliquotaICMS = x.Icms
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -676,7 +678,9 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                AliquotaFCP = x.Fcp,
+                AliquotaICMS = x.Icms
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -690,7 +694,9 @@ namespace Fly01.Faturamento.BL
                 Desconto = x.Desconto,
                 Total = x.Total,
                 ProdutoId = x.ProdutoId,
-                GrupoTributarioId = x.GrupoTributarioId.Value
+                GrupoTributarioId = x.GrupoTributarioId.Value,
+                AliquotaFCP = x.Fcp,
+                AliquotaICMS = x.Icms
             }).ToList(), clienteId, tipoVenda, tipoNfeComplementar, tipoFrete, nFeRefIsDevolucao, valorFrete);
         }
 
@@ -729,6 +735,10 @@ namespace Fly01.Faturamento.BL
         public double Quantidade { get; set; }
 
         public double Valor { get; set; }
+
+        public double AliquotaFCP { get; set; }
+
+        public double AliquotaICMS { get; set; }
 
         public double Desconto { get; set; }
 

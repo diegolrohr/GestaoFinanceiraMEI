@@ -60,6 +60,8 @@ namespace Fly01.Core.BL
 
         public override IQueryable<TEntity> All => base.All.Where(PredicatePlatform);
 
+        public override IQueryable<TEntity> AllWithInactive => base.AllWithInactive.Where(x => x.PlataformaId == PlataformaUrl);
+
         public virtual void ValidaModel(TEntity entity)
         {
             if (!entity.IsValid())

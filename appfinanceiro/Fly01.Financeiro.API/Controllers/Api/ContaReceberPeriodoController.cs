@@ -17,7 +17,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(
                     new
                     {
-                        value = unitOfWork.ContaReceberBL.EverythingWithInactive.Where(x =>
+                        value = unitOfWork.ContaReceberBL.AllWithInactive.Where(x =>
                             (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
                             (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
                             (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)).ToList()

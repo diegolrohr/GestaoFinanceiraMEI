@@ -571,6 +571,7 @@ namespace Fly01.Compras.BL
                             }
                             mensagens += string.Format("Mensagem: {0}\n SchemaXMLMensagens: \n{1} \n\n", item.Mensagem, schemaMensagens);
                         }
+                        entity.XML = retorno.XML;
                         entity.Mensagem = mensagens;
                     }
                     else

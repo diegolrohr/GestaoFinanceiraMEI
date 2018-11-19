@@ -93,5 +93,6 @@ namespace Fly01.Financeiro.API.Models.DAL
         public DbSet<ConfiguracaoNotificacaoFinanceiro> ConfiguracaoNotificacao { get; set; }
         public DbSet<Cnab> Cnab { get; set; }
         public DbSet<ArquivoRemessa> ArquivoRemessa { get; set; }
+        public DbSet<TemplateBoleto> TemplateBoleto { get; set; }
     }
 }

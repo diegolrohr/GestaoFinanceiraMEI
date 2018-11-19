@@ -86,7 +86,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     var schema = new SchemaXMLRetornoVM();
                     schema.NotaId = validacao[0].ID;
                     schema.Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "");
-                    schema.XML = Convert.ToBase64String(validacao[0].XML);
+                    schema.XML = Base64Helper.CodificaBase64(Convert.ToBase64String(validacao[0].XML));
 
                     if (validacao[0].SCHEMAMSG.Length > 0)
                     {
@@ -180,7 +180,7 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
                     var schema = new SchemaXMLRetornoVM();
                     schema.NotaId = validacao[0].ID;
                     schema.Mensagem = validacao[0].MENSAGEM.Replace("\\", "").Replace("\n", "");
-                    schema.XML = Convert.ToBase64String(validacao[0].XML);
+                    schema.XML = Base64Helper.CodificaBase64(Convert.ToBase64String(validacao[0].XML));
 
                     if (validacao[0].SCHEMAMSG.Length > 0)
                     {

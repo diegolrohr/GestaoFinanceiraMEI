@@ -74,6 +74,7 @@
     <Compile Include="Controllers\Api\DashboardCategoriaController.cs" />
     <Compile Include="Controllers\Api\DashboardStatusController.cs" />
     <Compile Include="Controllers\Api\SendTaskController.cs" />
+    <Compile Include="Controllers\Api\TemplateBoletoController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\CategoriaController.cs" />
     <Compile Include="Controllers\Api\CidadeApiController.cs" />

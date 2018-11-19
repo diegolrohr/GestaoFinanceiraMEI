@@ -27,8 +27,6 @@ namespace Fly01.Financeiro.BL
             MustConsumeMessageServiceBus = true;
         }
 
-        public virtual IQueryable<ContaPagar> EverythingWithInactive => repository.AllWithInactive.Where(x => x.PlataformaId == PlataformaUrl);
-
         public override void Insert(ContaPagar entity)
         {
             var numero = default(int);

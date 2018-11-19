@@ -13,17 +13,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                return
-                    Ok(
-                        new
-                        {
-                            value = unitOfWork.ContaReceberBL.Everything.Where(x =>
-                                (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
-                                (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
-                                (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)).ToList()
-                        }
-                    );
+            { 
+                return Ok(
+                    new
+                    {
+                        value = unitOfWork.ContaReceberBL.EverythingWithInactive.Where(x =>
+                            (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
+                            (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
+                            (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)).ToList()
+                    }
+                );
             }
         }
     }

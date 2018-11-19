@@ -27,7 +27,7 @@ namespace Fly01.Financeiro.BL
             MustConsumeMessageServiceBus = true;
         }
 
-        public virtual IQueryable<ContaPagar> Everything => repository.All.Where(x => x.PlataformaId == PlataformaUrl);
+        public virtual IQueryable<ContaPagar> EverythingWithInactive => repository.AllWithInactive.Where(x => x.PlataformaId == PlataformaUrl);
 
         public override void Insert(ContaPagar entity)
         {

@@ -524,6 +524,14 @@ namespace Fly01.Faturamento.Controllers
                     Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

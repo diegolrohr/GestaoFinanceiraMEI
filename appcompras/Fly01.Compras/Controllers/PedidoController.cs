@@ -502,6 +502,14 @@ namespace Fly01.Compras.Controllers
                     Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

@@ -20,6 +20,14 @@ namespace Fly01.Core.BL
             dbSet = context.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> AllWithInactive
+        {
+            get
+            {
+                return dbSet;
+            }
+        }
+
         public IQueryable<TEntity> All
         {
             get

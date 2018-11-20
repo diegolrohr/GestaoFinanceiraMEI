@@ -147,9 +147,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         public override ContentResult List()
-        {
-            return ListContaPagar();
-        }
+            => ListContaPagar();
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string bntLabel, string btnOnClick)
         {
@@ -197,7 +195,6 @@ namespace Fly01.Financeiro.Controllers
                     Id = "fly01frm",
                     ReadyFn = "fnUpdateDataFinal",
                     UrlFunctions = Url.Action("Functions") + "?fns=",
-                    Functions = new List<string>() { "fnBuscaAvancada" },
                     Elements = new List<BaseUI>()
                     {
                         new PeriodPickerUI()
@@ -286,9 +283,7 @@ namespace Fly01.Financeiro.Controllers
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)
-            {
                 filters = new Dictionary<string, string>();
-            }
 
             filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
             filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
@@ -833,14 +828,9 @@ namespace Fly01.Financeiro.Controllers
         private string GetTipoDocumento(string documento)
         {
             if (documento.Length <= 11)
-            {
                 return "F";
-            }
-
             if (documento.Length > 11)
-            {
                 return "J";
-            }
 
             return null;
         }

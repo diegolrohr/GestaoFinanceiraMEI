@@ -310,6 +310,7 @@ namespace Fly01.Financeiro.Controllers
                     Items = new List<LinkUI>
                     {
                         new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Notificações", OnClick = @Url.Action("Form", "ConfiguracaoNotificacao")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroConfiguracoesNotificacoes, Label = "Template de Boleto", OnClick = @Url.Action("Form", "TemplateBoleto")}
                     }
                 },
                 new SidebarUIMenu()

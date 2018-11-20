@@ -52,7 +52,8 @@ namespace Fly01.Financeiro.BL
         {
             if (!string.IsNullOrWhiteSpace(entity.CPFCNPJ.ToString()))
             {
-                entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id), new Error(string.Format("O CPF/CNPJ informado já foi utilizado em outro cadastro.")));
+                entity.Fail(All.Any(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id),
+                    new Error("O CPF/CNPJ informado já foi utilizado em outro cadastro.", "cpfcnpj", All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == entity.CPFCNPJ.ToUpper() && x.Id != entity.Id)?.Id.ToString()));
             }
         }
 

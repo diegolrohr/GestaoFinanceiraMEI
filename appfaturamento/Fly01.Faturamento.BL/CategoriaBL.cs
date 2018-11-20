@@ -79,7 +79,8 @@ namespace Fly01.Faturamento.BL
             entity.Fail(categoriaPai != null && All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
 
             TipoCarteiraBL.ValidaTipoCarteira(entity.TipoCarteira);
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()), DescricaoDuplicada);
+            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
+                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
             entity.Fail(entity.Id == entity.CategoriaPaiId, CategoriaPropria);
 
             entity.Fail(All.Where(x => x.Id == entity.CategoriaPaiId).Any(x => x.TipoCarteira != entity.TipoCarteira), TipoCarteiraDiferente);
@@ -88,7 +89,6 @@ namespace Fly01.Faturamento.BL
 
         #endregion
 
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
         public static Error CategoriaPropria = new Error("Não é possível definir a própria categoria, como sua Categoria Superior.");
         public static Error TipoCarteiraDiferente = new Error("Não foi possível salvar este registro. O tipo da carteira deve ser igual ao da Categoria Superior.");
         public static Error ExclusaoInvalida = new Error("Não é possível excluir este registro, pois o mesmo possui filhos.");

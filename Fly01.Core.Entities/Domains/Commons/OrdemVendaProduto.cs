@@ -8,6 +8,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         public Guid ProdutoId { get; set; }
 
+        public double Icms { get; set; }
+
+        public double Fcp { get; set; }
+
         public double ValorCreditoICMS { get; set; }
 
         public double ValorICMSSTRetido { get; set; }

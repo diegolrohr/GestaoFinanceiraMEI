@@ -11,6 +11,10 @@ using Fly01.uiJS.Classes.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Rest;
+using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using System.Linq;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -157,6 +161,22 @@ namespace Fly01.Faturamento.Controllers
                 Value = "0"
             });
 
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "icms",
+                Class = "col s12 l6",
+                Label = "ICMS Simples Nacional",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new InputCustommaskUI
+            {
+                Id = "fcp",
+                Class = "col s12 l6",
+                Label = "Fundo de Combate à Pobreza",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
+            });
+
             #region Helpers 
             config.Helpers.Add(new TooltipUI
             {
@@ -179,7 +199,8 @@ namespace Fly01.Faturamento.Controllers
                 Id = "valorCreditoICMS",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado."
+                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado. Alíquota calculada pelo valor total versus o crédito informado." +
+                    " Os valores informados servirão de base para as informações complementares no xml, de acordo ao ARTIGO 23 DA LC 123."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -234,6 +255,25 @@ namespace Fly01.Faturamento.Controllers
         protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public JsonResult GetParametrosTributarios()
+        {
+            try
+            {
+                var response = RestHelper.ExecuteGetRequest<ResultBase<ParametroTributarioVM>>("parametrotributario");
+
+                return Json(
+                    new { success = true, imposto = response.Data.FirstOrDefault() },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
     }
 }

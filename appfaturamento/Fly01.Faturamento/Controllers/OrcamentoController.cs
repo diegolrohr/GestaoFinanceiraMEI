@@ -163,7 +163,7 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaProduto" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Serviços
@@ -178,7 +178,7 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro

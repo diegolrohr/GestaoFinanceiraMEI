@@ -43,6 +43,18 @@
             $('#mensagemPadraoNotaField').hide();
         }
 
+        if (geraNotaFiscal && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
+            $("#informacoesCompletamentaresNFSField").show();
+            $("input#informacoesCompletamentaresNFS").rules("add", { required: true });
+            $('#informacoesCompletamentaresNFSField').show();
+        }
+        else {
+            $("#informacoesCompletamentaresNFSField").hide();
+            $("input#informacoesCompletamentaresNFS").rules("remove", "required");
+            $('input#informacoesCompletamentaresNFS').removeClass("invalid")
+            $('#informacoesCompletamentaresNFSField').hide();
+        }
+
         $$$.loading.start();
 
         $.ajax({

@@ -146,6 +146,10 @@
     <Compile Include="Migrations\201811091754092_AjusteProdutoOrdemServico.Designer.cs">
       <DependentUpon>201811091754092_AjusteProdutoOrdemServico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811131913223_CreateArquivo.cs" />
+    <Compile Include="Migrations\201811131913223_CreateArquivo.Designer.cs">
+      <DependentUpon>201811131913223_CreateArquivo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -234,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811091754092_AjusteProdutoOrdemServico.resx">
       <DependentUpon>201811091754092_AjusteProdutoOrdemServico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131913223_CreateArquivo.resx">
+      <DependentUpon>201811131913223_CreateArquivo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

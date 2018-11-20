@@ -105,6 +105,9 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("mensagemPadraoNota")]
         public string MensagemPadraoNota { get; set; }
 
+        [JsonProperty("informacoesCompletamentaresNFS")]
+        public string InformacoesCompletamentaresNFS { get; set; }
+
         [JsonProperty("sefazId")]
         public string SefazId { get; set; }
 

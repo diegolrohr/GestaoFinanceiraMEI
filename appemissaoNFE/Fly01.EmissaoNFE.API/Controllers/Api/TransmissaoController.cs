@@ -24,6 +24,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
 
                 unitOfWork.IbptNcmBL.CalculaImpostoIBPT(entity);
 
+                unitOfWork.TransmissaoBL.MensagemCreditoICMS(entity);
+
                 try
                 {
                     var retorno = (int)entity.EntidadeAmbiente == 2 ? Homologacao(entity, unitOfWork) : Producao(entity, unitOfWork);

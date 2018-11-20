@@ -225,25 +225,6 @@ namespace Fly01.Financeiro.Controllers
                             Id = "dataInicial",
                             Name = "dataInicial"
                         }
-
-                        //new PeriodPickerUI()
-                        //{
-                        //    Label = "Selecione o período",
-                        //    Id = "mesPicker",
-                        //    Name = "mesPicker",
-                        //    Class = "col s12 m6 offset-m3 l4 offset-l4",
-                        //    Selectable = true,
-                        //    FimId = "dataFinal",
-                        //    InicioId ="dataInicial",
-                        //    DomEvents = new List<DomEventUI>()
-                        //    {
-                        //        new DomEventUI()
-                        //        {
-                        //            DomEvent = "change",
-                        //            Function = "fnUpdateDataFinal"
-                        //        }
-                        //    }
-                        //}
                     }
                 };
 

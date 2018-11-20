@@ -1,0 +1,23 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnSendManyMails() {
+        debugger;
+        $("#dtBoletos").loading("start");
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ModalConfigEmail", "Cnab")',
+            data: { ids: $$$._.dtBoletos.selected, email: $$$._.dtBoletos.context[0].json.data[0].contaReceber_pessoa_email },
+            success: function (retorno) {
+                if (retorno !== null) {
+                    $$$.modal(retorno);
+                }
+
+                setTimeout(function () {
+                    $$$._.dtBoletos.refresh();
+                    $("#dtBoletos").loading("stop");
+                }, 5000);
+            }
+        });
+    }
+</script>

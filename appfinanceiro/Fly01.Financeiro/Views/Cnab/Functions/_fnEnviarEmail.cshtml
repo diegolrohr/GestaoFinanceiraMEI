@@ -1,7 +1,7 @@
 ﻿<script>
     function fnEnviarEmail(data, type, row, meta) {
         var idBanco = "";
-        if ($('#bancoId').val() != undefined)
+        if ($('#bancoId').val() !== undefined)
             idBanco = $('#bancoId').val();
         else
             idBanco = $('#idContaBancaria').val();
@@ -14,7 +14,7 @@
             data: { contaReceberId: $('#idContaReceber').val(), contaBancariaId: idBanco},
             success: function success(result) {
                 if (result.success) {
-                    if (result.data != null)
+                    if (result.data !== null)
                         $$$.confirm("Boleto já gerado para outro banco.", "Já existe um boleto gerado para esta conta em outro banco e está vinculado a um arquivo de remessa, gostaria que este boleto seja remetido novamente?", "fnConfirmedOrCancel('" + $('#idContaReceber').val() + "', '" + idBanco + "')");
                     else
                         fnGerarCnabEnviaEmail($('#idContaReceber').val(), idBanco, true, $('#email').val(), $("#assunto").val(), $("#mensagem").val() );

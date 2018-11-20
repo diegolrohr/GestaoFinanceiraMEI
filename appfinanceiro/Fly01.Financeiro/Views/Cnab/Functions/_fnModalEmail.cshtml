@@ -8,7 +8,7 @@
         var formAttr = {
             "class": "cnabFormMail valign-wrapper left col s6 btn btn-narrow valid",
             "id": "btnEmail",
-            "onclick": `return fnAbreModalEnviaPorEmail("${row.contaReceberId}", "${row.contaBancariaId}")`
+            "onclick": `return fnAbreModalEnviaPorEmail("${row.contaReceberId}", "${row.contaBancariaId}", "${row.contaReceber_pessoa_email}")`
         };
         return createElem("button", formAttr, [inputHiddenId("emailId", row.email), createElem("i", { "class": "material-icons" }, "email")]);
     }
@@ -17,10 +17,10 @@
         return createElement(row).outerHTML;
     }
 
-    function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId) {
-        let email = "";
-        if ($('#emailId').val() != "undefined") 
-            email = $('#emailId').val();
+    function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId, email) {
+        debugger;
+        if (email === "") 
+            email = "";
         
         var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId ;
         $$$.modal(url);

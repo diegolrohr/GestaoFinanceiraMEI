@@ -386,6 +386,7 @@
     <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnSalvarEnovo.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnSalvarEnovo.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnSendManyMails.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

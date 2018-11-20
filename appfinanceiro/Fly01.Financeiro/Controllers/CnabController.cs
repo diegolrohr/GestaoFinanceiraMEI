@@ -41,7 +41,8 @@ namespace Fly01.Financeiro.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
                 dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"), 
-                nossoNumeroFormatado = x.NossoNumeroFormatado
+                nossoNumeroFormatado = x.NossoNumeroFormatado,
+                contaReceber_pessoa_email = x.ContaReceber?.Pessoa?.Email
             };
         }
 
@@ -158,6 +159,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "Gerar Boleto", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "Gerar Arq. Remessa", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "btnSendManyMails", Label = "Enviar Emails", OnClickFn = "fnSendManyMails", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;
@@ -199,19 +201,21 @@ namespace Fly01.Financeiro.Controllers
 
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nº boleto", Priority = 6 });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_nome", Priority = 3, DisplayName = "Cliente" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 3, DisplayName = "Banco" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_nome", Priority = 4, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 4, DisplayName = "Banco" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_email", Priority = 5, DisplayName = "Email" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
+
 
             cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email, string contaReceberId, string contaBancariaId)
+        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "", List<string> ids = null)
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -227,9 +231,16 @@ namespace Fly01.Financeiro.Controllers
                 },
                 Id = "fly01mdlfrmModalConfigEmail",
             };
+
+            if (ids == null)
+            {
+                config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
+                config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
+            }
+
+            string combindedString = string.Join(";", ids.ToArray());
             
-            config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
-            config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
+            config.Elements.Add(new InputHiddenUI { Id = "ids", Value = combindedString });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });

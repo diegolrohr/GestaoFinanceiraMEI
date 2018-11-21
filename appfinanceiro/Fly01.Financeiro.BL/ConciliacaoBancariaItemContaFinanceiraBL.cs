@@ -115,7 +115,7 @@ namespace Fly01.Financeiro.BL
                 x.ValorPrevisto == valor &&
                 ((x.DataVencimento >= dataIni) && (x.DataVencimento <= lancamento.Data)) &&
                 x.StatusContaBancaria == StatusContaBancaria.EmAberto
-            ).AsNoTracking().OrderByDescending(x => x.DataVencimento);
+            ).AsNoTracking().OrderByDescending(x => x.DataVencimento).ToList();
 
             return sugestoes != null ? 
                 sugestoes.Select(

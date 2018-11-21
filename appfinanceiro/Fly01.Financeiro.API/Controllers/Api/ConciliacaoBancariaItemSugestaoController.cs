@@ -6,6 +6,7 @@ using Fly01.Financeiro.BL;
 using System.Collections.Generic;
 using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -17,12 +18,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
+                int totalCount = unitOfWork.ConciliacaoBancariaItemBL.All.Where(x => x.ConciliacaoBancariaId == conciliacaoBancariaId && x.StatusConciliado != StatusConciliado.Sim).Count();
+
                 int skipRecords = (pageNo - 1) * pageSize;
-                List<ConciliacaoBancariaItem> sugestoes = unitOfWork.ConciliacaoBancariaItemContaFinanceiraBL.GetConciliacaoBancariaItemSugestoes(conciliacaoBancariaId);
-
-                int totalCount = sugestoes.Count;
-                sugestoes = sugestoes.Skip(skipRecords).Take(pageSize).ToList();
-
+                List<ConciliacaoBancariaItem> sugestoes = unitOfWork.ConciliacaoBancariaItemContaFinanceiraBL.GetConciliacaoBancariaItemSugestoes(conciliacaoBancariaId, skipRecords, pageSize);
+                
                 return Ok(new PagedResult<ConciliacaoBancariaItem>(sugestoes, pageNo, pageSize, totalCount));
             }
         }

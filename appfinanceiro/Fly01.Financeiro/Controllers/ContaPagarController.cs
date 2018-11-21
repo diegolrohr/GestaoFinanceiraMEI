@@ -146,7 +146,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public override ContentResult List() 
+        public override ContentResult List()
             => ListContaPagar();
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string bntLabel, string btnOnClick)
@@ -348,7 +348,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "descricaoParcela" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoPai" });
             config.Elements.Add(new InputHiddenUI { Id = "repeticaoFilha" });
-            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });            
+            config.Elements.Add(new InputHiddenUI { Id = "contaFinanceiraRepeticaoPaiId" });
 
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 l6", Label = "Descrição", Required = true, MaxLength = 150 });
 

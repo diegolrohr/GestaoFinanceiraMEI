@@ -111,11 +111,14 @@ namespace Fly01.EmissaoNFE.BL
             {
                 if (nota.Detalhes != null)
                 {
-                    var creditosDeICMS = nota.Detalhes.Where(x => x.Imposto != null && x.Imposto.ICMS != null)
-                        .Where(x => x.Imposto.ICMS.CodigoSituacaoOperacao.HasFlag(
-                        TipoTributacaoICMS.TributadaComPermissaoDeCredito |
-                        TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
-                        TipoTributacaoICMS.Outros) && x.Imposto.ICMS.ValorCreditoICMS.HasValue);
+                    var creditosDeICMS = nota.Detalhes.Where(x =>
+                        (x.Imposto != null) &&
+                        (x.Imposto.ICMS != null) &&
+                        (x.Imposto.ICMS.CodigoSituacaoOperacao.HasFlag(
+                            TipoTributacaoICMS.TributadaComPermissaoDeCredito |
+                            TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
+                            TipoTributacaoICMS.Outros))&&
+                        (x.Imposto.ICMS.ValorCreditoICMS.HasValue));
 
                     var totalCredito = creditosDeICMS.Sum(x => x.Imposto.ICMS.ValorCreditoICMS.Value);
                     var totalBrutoProduto = creditosDeICMS.Sum(x => x.Produto.ValorBruto);

@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core.ViewModels.Presentation.Commons;
+using Newtonsoft.Json;
 
-namespace Fly01.Core.ViewModels.Presentation.Commons
+namespace Fly01.Financeiro.ViewModel
 {
-    class TemplateBoletoVM : DomainBaseVM
+    public class TemplateBoletoVM : DomainBaseVM
     {
         [JsonProperty("assunto")]
         public string Assunto { get; set; }

@@ -32,6 +32,7 @@
 
         public const string FinanceiroConfiguracoes = "27C86F80-A8BF-4DD0-B7D2-CEDC39CDD39F";
         public const string FinanceiroConfiguracoesNotificacoes = "1F555A14-2C41-46E1-8AFF-05BE0552F93D";
+        public const string FinanceiroConfiguracoesTemplateBoleto = "6CC410A7-0059-4C0C-9E77-64C5F401BFA3";
 
         public const string FinanceiroAjuda = "F6B74801-2955-4973-9F57-3B41C4425D53";
         public const string FinanceiroAjudaAssistenciaRemota = "56F31FD5-E659-4B47-9B1E-CAAF86D8A1AB";

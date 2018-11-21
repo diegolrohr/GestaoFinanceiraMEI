@@ -128,7 +128,7 @@ namespace Fly01.Financeiro.BL
                     }).ToList() : null;
         }
 
-        public List<ConciliacaoBancariaItem> GetConciliacaoBancariaItemSugestoes(Guid conciliacaoBancariaId)
+        public List<ConciliacaoBancariaItem> GetConciliacaoBancariaItemSugestoes(Guid conciliacaoBancariaId, int skipRecords, int pageSize)
         {
             //lista todos, mas só busca sugestões para os não conciliados total
             if (conciliacaoBancariaId == null)
@@ -138,7 +138,8 @@ namespace Fly01.Financeiro.BL
             else
             {
                 //somente os que estão em aberto para conciliar
-                var conciliacaoBancariaItens = conciliacaoBancariaItemBL.All.Where(x => x.ConciliacaoBancariaId == conciliacaoBancariaId && x.StatusConciliado != StatusConciliado.Sim).AsNoTracking().OrderByDescending(x => x.Data).ToList();
+                var conciliacaoBancariaItens = conciliacaoBancariaItemBL.All.Where(x => x.ConciliacaoBancariaId == conciliacaoBancariaId && x.StatusConciliado != StatusConciliado.Sim)
+                    .AsNoTracking().OrderByDescending(x => x.Data).Skip(skipRecords).Take(pageSize).ToList();
 
                 foreach (var item in conciliacaoBancariaItens.Where(x => x.StatusConciliado == StatusConciliado.Nao))
                 {

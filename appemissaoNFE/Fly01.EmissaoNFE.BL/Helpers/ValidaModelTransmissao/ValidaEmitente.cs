@@ -115,6 +115,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             entity.Fail(string.IsNullOrEmpty(item.Emitente.Nome),
                                 new Error("Nome do emitente é um dado obrigatório.", "Item.Emitente.Nome"));
+            entity.Fail((item.Emitente.Nome.Length > 60), new Error("A razão social da Empresa deve possuir entre 2 a 60 caracteres. Altere a razão social da sua empresa", "Item.Emitente.Nome"));
         }
 
         private static void ValidarCNPJ(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)

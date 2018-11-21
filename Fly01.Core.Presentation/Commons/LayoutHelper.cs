@@ -10,6 +10,7 @@ namespace Fly01.Core.Presentation.Commons
         private static string libName = "mpnui";
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; /*
+        private static string serverUrl = $"http://localhost:8000/{cdnVersion}"; /*
         private static string serverUrl = $"http://192.168.109.128:8000/{cdnVersion}";  /**/
 
         private static string cssUrl = $"{serverUrl}/{libName}.css";

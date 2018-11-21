@@ -22,7 +22,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 int skipRecords = (pageNo - 1) * pageSize;
                 List<ConciliacaoBancariaItem> sugestoes = unitOfWork.ConciliacaoBancariaItemContaFinanceiraBL.GetConciliacaoBancariaItemSugestoes(conciliacaoBancariaId, skipRecords, pageSize);
-                
+
                 return Ok(new PagedResult<ConciliacaoBancariaItem>(sugestoes, pageNo, pageSize, totalCount));
             }
         }

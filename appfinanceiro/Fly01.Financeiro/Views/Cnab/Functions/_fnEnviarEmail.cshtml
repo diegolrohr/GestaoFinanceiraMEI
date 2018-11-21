@@ -37,7 +37,6 @@
             dataType: "json",
             url: '@Url.Action("GerarBoletoEnviaEmailsSelecionados", "Cnab")',
             data: { idsCnab: $$$._.dtBoletos.selected,  reimprimeBoleto: true, email: $('#email').val(), assunto: $("#assunto").val(), mensagem: $("#mensagem").val() },
-            //data: { contaReceberId: idRecord, contaBancariaId: contaBancariaId, reimprimeBoleto: reimprime, email: pEmail, assunto: pAssunto, mensagem: pMensagem },
             success: function success(data) {
                 if (data.success) {
                     $$$.toast("Boleto gerado e e-mail enviado com sucesso.", "success");

@@ -80,10 +80,8 @@ namespace Fly01.Financeiro.Controllers.Base
                     boletosGerados.Add(boleto);
                 }
 
-                var allBoletos = string.Join(",", boletosGerados);
-
+                var allBoletos = string.Join(Environment.NewLine + Environment.NewLine, boletosGerados);
                 var stream = new MemoryStream(ConvertHTMLToPDF.GerarArquivoPDF(allBoletos));
-                
                 Mail.Send(GetDadosEmpresa().NomeFantasia, email, assunto, mensagem, stream);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

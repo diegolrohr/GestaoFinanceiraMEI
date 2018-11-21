@@ -2,12 +2,14 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnSendManyMails() {
-        debugger;
+        let emailToSend = $$$._.dtBoletos.context[0].json.data[0].contaReceber_pessoa_email;
+        let idContaBancaria = $$$._.dtBoletos.context[0].json.data[0].contaBancariaId;
+
         $("#dtBoletos").loading("start");
         $.ajax({
             type: "POST",
             url: '@Url.Action("ModalConfigEmail", "Cnab")',
-            data: { ids: $$$._.dtBoletos.selected, email: $$$._.dtBoletos.context[0].json.data[0].contaReceber_pessoa_email },
+            data: {email: emailToSend, contaBancariaId: idContaBancaria },
             success: function (retorno) {
                 if (retorno !== null) {
                     $$$.modal(retorno);

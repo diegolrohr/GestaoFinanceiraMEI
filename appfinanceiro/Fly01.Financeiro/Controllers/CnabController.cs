@@ -215,7 +215,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "", List<string> ids = null)
+        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "")
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -232,20 +232,12 @@ namespace Fly01.Financeiro.Controllers
                 Id = "fly01mdlfrmModalConfigEmail",
             };
 
-            if (ids == null)
-            {
-                config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
-                config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
-            }
-
-            string combindedString = string.Join(";", ids.ToArray());
-            
-            config.Elements.Add(new InputHiddenUI { Id = "ids", Value = combindedString });
+            config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
+            config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });
             
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }

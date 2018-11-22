@@ -6,6 +6,7 @@
         else
             idBanco = $('#idContaBancaria').val();
 
+        $$$._.dtBoletos.selected = $("#ids").val().split(",");
         if ($$$._.dtBoletos.selected.length > 0) {
             fnSendMails();
         } else {
@@ -27,7 +28,6 @@
                 }
             });
         }
-        return createElement(row).outerHTML;
     }
 
     function fnSendMails() {
@@ -39,11 +39,13 @@
             data: { idsCnab: $$$._.dtBoletos.selected,  reimprimeBoleto: true, email: $('#email').val(), assunto: $("#assunto").val(), mensagem: $("#mensagem").val() },
             success: function success(data) {
                 if (data.success) {
+                    $(".selected").removeClass("selected");
+                    $$$._.dtBoletos.selected = [];
+
                     $$$.toast("Boleto gerado e e-mail enviado com sucesso.", "success");
                     if (data.message !== "" && data.message !== undefined) {
                         var win = window.open("", "_blank");
                         win.document.write(data.message);
-
                         setTimeout(function () {
                             win.print();
                             win.close();

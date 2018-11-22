@@ -2,24 +2,45 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnSendManyMails() {
-        let emailToSend = $$$._.dtBoletos.context[0].json.data[0].contaReceber_pessoa_email;
-        let idContaBancaria = $$$._.dtBoletos.context[0].json.data[0].contaBancariaId;
+        var differentEmails = false;
+        var emailBase = "";
+        var idContaBanca = "";
 
-        $("#dtBoletos").loading("start");
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("ModalConfigEmail", "Cnab")',
-            data: {email: emailToSend, contaBancariaId: idContaBancaria },
-            success: function (retorno) {
-                if (retorno !== null) {
-                    $$$.modal(retorno);
+        $$$._.dtBoletos.context[0].json.data.forEach(function (item) {
+            if (item.selected) {
+                if (emailBase === "") {
+                    emailBase = item.contaReceber_pessoa_email;
+                    idContaBanca = item.contaBancariaId;
                 }
 
-                setTimeout(function () {
-                    $$$._.dtBoletos.refresh();
-                    $("#dtBoletos").loading("stop");
-                }, 5000);
+                if (emailBase !== item.contaReceber_pessoa_email) {
+                    differentEmails = true;
+                    return false;
+                }
             }
         });
+
+        if (!differentEmails) {
+            
+            $("#dtBoletos").loading("start");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ModalConfigEmail", "Cnab")',
+                data: { email: emailBase, contaBancariaId: idContaBanca },
+                success: function (retorno) {
+                    if (retorno !== null) {
+                        $$$.modal(retorno);
+                        $(".selected").removeClass("selected");
+                    }
+
+                    setTimeout(function () {
+                        $$$._.dtBoletos.refresh();
+                        $("#dtBoletos").loading("stop");
+                    }, 5000);
+                }
+            });
+        } else {
+            $$$.toast("Não é possível enviar múltiplos e-mails para destinatários diferentes.", "info");
+        }
     }
 </script>

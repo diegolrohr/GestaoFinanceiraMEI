@@ -8,7 +8,16 @@
         $('#btnSendManyMails').attr('disabled', 'disabled');
         $('#btnGerarArqRemessa').attr('disabled', 'disabled');
         setupGridSelectEvents();
+        fnSelectRow();
     });
+
+    function fnSelectRow() {
+        $$$._.dtBoletos.on("select", function (e, dt, type, indexes) {
+            $$$._.dtBoletos.rows(indexes).data().toArray()[0].selected = true;
+        }).on('deselect', function (e, dt, type, indexes) {
+            $$$._.dtBoletos.rows(indexes).data().toArray()[0].selected = false;
+        });
+    } 
 
     function setupGridSelectEvents() {
         $$$._.dtBoletos.on("select", function (e, dt, type, indexes) {

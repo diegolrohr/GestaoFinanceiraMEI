@@ -13,6 +13,8 @@ using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Rest;
+using System.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -40,9 +42,10 @@ namespace Fly01.Financeiro.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"), 
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
                 nossoNumeroFormatado = x.NossoNumeroFormatado,
-                contaReceber_pessoa_email = x.ContaReceber?.Pessoa?.Email
+                contaReceber_pessoa_email = x.ContaReceber?.Pessoa?.Email,
+                selected = false
             };
         }
 
@@ -209,7 +212,6 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
 
-
             cfg.Content.Add(dtConfig);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
@@ -230,8 +232,10 @@ namespace Fly01.Financeiro.Controllers
                     List = ""
                 },
                 Id = "fly01mdlfrmModalConfigEmail",
+                ReadyFn = "fnFormReadyModal"
             };
 
+            config.Elements.Add(new InputHiddenUI { Id = "ids"});
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
@@ -240,5 +244,27 @@ namespace Fly01.Financeiro.Controllers
             
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+        [HttpGet]
+        public JsonResult GetTemplateBoleto()
+        {
+            try
+            {
+                var templete = RestHelper.ExecuteGetRequest <ResultBase<TemplateBoletoVM>>("templateboleto");
+
+                return Json(new
+                {
+                    success = true,
+                    data = templete.Data.FirstOrDefault()
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 }

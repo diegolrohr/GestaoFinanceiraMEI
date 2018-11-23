@@ -56,7 +56,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Serviços",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
             var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -102,7 +103,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Dados do Serviço",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

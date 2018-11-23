@@ -216,7 +216,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Ordem de Serviço",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
             if (gridLoad == "GridLoad")
@@ -364,7 +365,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Ordem de Serviços",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
             var config = new FormWizardUI

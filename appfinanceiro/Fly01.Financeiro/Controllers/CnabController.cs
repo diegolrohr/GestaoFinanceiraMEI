@@ -13,6 +13,8 @@ using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.Core.Rest;
+using System.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -40,8 +42,10 @@ namespace Fly01.Financeiro.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusCnab), x.Status),
                 statusDescription = EnumHelper.GetDescription(typeof(StatusCnab), x.Status),
                 statusTooltip = EnumHelper.GetTooltipHint(typeof(StatusCnab), x.Status),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"), 
-                nossoNumeroFormatado = x.NossoNumeroFormatado
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
+                nossoNumeroFormatado = x.NossoNumeroFormatado,
+                contaReceber_pessoa_email = x.ContaReceber?.Pessoa?.Email,
+                selected = false
             };
         }
 
@@ -158,6 +162,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "Gerar Boleto", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "Gerar Arq. Remessa", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "btnSendManyMails", Label = "Enviar Emails", OnClickFn = "fnSendManyMails", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;
@@ -199,9 +204,10 @@ namespace Fly01.Financeiro.Controllers
 
             });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "nossoNumeroFormatado", DisplayName = "Nº boleto", Priority = 6 });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_nome", Priority = 3, DisplayName = "Cliente" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 3, DisplayName = "Banco" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_nome", Priority = 4, DisplayName = "Cliente" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", Priority = 4, DisplayName = "Data Vencimento", Type = "date" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 4, DisplayName = "Banco" });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_email", Priority = 5, DisplayName = "Email" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
@@ -211,14 +217,14 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email, string contaReceberId, string contaBancariaId)
+        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "")
         {
             ModalUIForm config = new ModalUIForm()
             {
                 Title = "Configuração para o envio de e-mail",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnEnviarEmail" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar", OnClickFn = "fnCancelarEnvioEmail" },
                 Action = new FormUIAction
                 {
                     Create = "",
@@ -226,16 +232,39 @@ namespace Fly01.Financeiro.Controllers
                     List = ""
                 },
                 Id = "fly01mdlfrmModalConfigEmail",
+                ReadyFn = "fnFormReadyModal"
             };
-            
+
+            config.Elements.Add(new InputHiddenUI { Id = "ids"});
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });
             
-
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+        [HttpGet]
+        public JsonResult GetTemplateBoleto()
+        {
+            try
+            {
+                var templete = RestHelper.ExecuteGetRequest <ResultBase<TemplateBoletoVM>>("templateboleto");
+
+                return Json(new
+                {
+                    success = true,
+                    data = templete.Data.FirstOrDefault()
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 }

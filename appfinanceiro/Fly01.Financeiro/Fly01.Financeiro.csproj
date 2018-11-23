@@ -91,6 +91,7 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TemplateBoletoController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -151,6 +152,7 @@
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\TemplateBoletoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
   </ItemGroup>
@@ -386,6 +388,11 @@
     <Content Include="Views\Fornecedor\Functions\_fnCitySelect.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnSalvarEnovo.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnSalvarEnovo.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnSendManyMails.cshtml" />
+    <Content Include="Views\TemplateBoleto\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\TemplateBoleto\Functions\_fnSalvaTemplate.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnFormReadyModal.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnCancelarEnvioEmail.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

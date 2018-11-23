@@ -18,7 +18,7 @@ namespace Fly01.Financeiro.Controllers.Base
 {
     public abstract class BoletoController<TEntity> : BaseController<TEntity> where TEntity : DomainBaseVM
     {
-        private string GetBoletoAsString(Guid contaReceberId, Guid contaBancariaId, bool reimprimeBoleto = false)
+        private string GetBoletoAsString(Guid? contaReceberId, Guid? contaBancariaId, bool reimprimeBoleto = false)
         {
             var boletoBancario = RestHelper.ExecuteGetRequest<string>("boleto/imprimeBoleto", new Dictionary<string, string>
             {
@@ -55,6 +55,33 @@ namespace Fly01.Financeiro.Controllers.Base
             {
                 var boleto = GetBoletoAsString(contaReceberId, contaBancariaId, reimprimeBoleto);
                 var stream = new MemoryStream(ConvertHTMLToPDF.GerarArquivoPDF(boleto));
+                Mail.Send(GetDadosEmpresa().NomeFantasia, email, assunto, mensagem, stream);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [OperationRole(NotApply = true)]
+        [HttpPost]
+        public JsonResult GerarBoletoEnviaEmailsSelecionados(List<string> idsCnab, bool reimprimeBoleto = false, string email = "", string assunto = "", string mensagem = "")
+        {
+            try
+            {
+                List<string> boletosGerados = new List<string>();
+                var boletos = GetCnab(idsCnab.Select(Guid.Parse).ToList());
+
+                foreach (var item in boletos)
+                {
+                    var boleto = GetBoletoAsString(item.ContaReceberId, item.ContaBancariaCedenteId, reimprimeBoleto);
+                    boletosGerados.Add(boleto);
+                }
+
+                var allBoletos = string.Join(Environment.NewLine + Environment.NewLine, boletosGerados);
+                var stream = new MemoryStream(ConvertHTMLToPDF.GerarArquivoPDF(allBoletos));
                 Mail.Send(GetDadosEmpresa().NomeFantasia, email, assunto, mensagem, stream);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

@@ -56,7 +56,6 @@
     <Compile Include="ViewModels\Presentation\Commons\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicosPorDiaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicoPorStatusVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\TemplateBoletoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\TopServicosProdutosOrdemServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ComprasPagamentosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContasPagarDoDiaVM.cs" />

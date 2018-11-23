@@ -224,7 +224,7 @@ namespace Fly01.Financeiro.Controllers
                 Title = "Configuração para o envio de e-mail",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ConfirmAction = new ModalUIAction() { Label = "Enviar", OnClickFn = "fnEnviarEmail" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar", OnClickFn = "fnCancelarEnvioEmail" },
                 Action = new FormUIAction
                 {
                     Create = "",

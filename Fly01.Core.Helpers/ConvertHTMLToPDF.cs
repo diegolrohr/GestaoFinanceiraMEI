@@ -23,10 +23,14 @@ namespace Fly01.Core.Helpers
         {
             Byte[] bytes = null;
 
-            var pdf = new NReco.PdfGenerator.HtmlToPdfConverter().GeneratePdf(html);
+            var pdf = new NReco.PdfGenerator.HtmlToPdfConverter();
+            if (html.Length > 80000)
+                pdf.Margins.Top = 95;
+            var pdfAtributs = pdf.GeneratePdf(html);
+           
             using (MemoryStream fs = new MemoryStream())
             {
-                fs.Write(pdf, 0, pdf.Length);
+                fs.Write(pdfAtributs, 0, pdfAtributs.Length);
                 bytes = fs.ToArray();
                 fs.Close();
             }

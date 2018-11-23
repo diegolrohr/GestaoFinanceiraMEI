@@ -20,6 +20,11 @@ namespace Fly01.Core.BL
 
         public virtual IQueryable<TEntity> AllWithInactive => repository.AllWithInactive;
 
+        public virtual IQueryable<TEntity> AllWithInactiveIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            return repository.AllWithInactiveIncluding(includeProperties);
+        }
+
         public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return repository.AllIncluding(includeProperties);

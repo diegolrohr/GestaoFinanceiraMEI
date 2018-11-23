@@ -90,7 +90,7 @@ namespace Fly01.Compras.BL
         public CfopBL CfopBL => cfopBL ?? (cfopBL = new CfopBL(Context));
 
         private GrupoTributarioBL grupoTributarioBL;
-        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context));
+        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));

@@ -136,6 +136,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("retemImpostoRenda")]
         public bool RetemImpostoRenda { get; set; }
 
+        [JsonProperty("codigoCfop")]
+        public int CodigoCfop { get; set; }
+
         [JsonProperty("cfop")]
         public virtual CfopVM Cfop { get; set; }
 

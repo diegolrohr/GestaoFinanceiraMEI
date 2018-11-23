@@ -53,14 +53,17 @@ namespace Fly01.Financeiro.BL
                                 pessoa.CPFCNPJ = Regex.Replace(pessoa.CPFCNPJ ?? "", @"[^\d]", "").PadLeft(11, '0');
 
                                 var cpjcnpjJaExiste = false;
+                                if (pessoa.CPFCNPJ == "00000000000")
+                                    pessoa.CPFCNPJ = string.Empty;
+
                                 switch (pessoa.TipoDocumento)
                                 {
                                     case "F":
-                                        cpjcnpjJaExiste = cpf.Any(x => x == pessoa.CPFCNPJ);
+                                        cpjcnpjJaExiste = cpf.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
                                         cpf.Add(pessoa.CPFCNPJ);
                                         break;
                                     case "J":
-                                        cpjcnpjJaExiste = cnpj.Any(x => x == pessoa.CPFCNPJ);
+                                        cpjcnpjJaExiste = cnpj.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
                                         cnpj.Add(pessoa.CPFCNPJ);
                                         break;
                                 }
@@ -79,7 +82,6 @@ namespace Fly01.Financeiro.BL
                                 {
                                     var errors = pessoa.Notification.Errors.Select(e =>
                                     {
-                                        
                                         return string.Format("Campo: {0}; Mensagem: {1}", e.DataField, e.Message);
                                     }).FirstOrDefault();
                                     arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + errors + "\n";

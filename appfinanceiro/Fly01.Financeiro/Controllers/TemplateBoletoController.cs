@@ -12,6 +12,7 @@ using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Defaults;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -65,6 +66,25 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 m12 l12", Label = "Assunto", MaxLength = 200 });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 m12 l12", Label = "Mensagem" , MaxLength = 1000});
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "assunto",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Permite configurar assunto padrão no envio de boletos por e-mail."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagem",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Permite configurar mensagem padrão no envio de boleto por e-mail."
+                }
+            });
+            #endregion 
 
             cfg.Content.Add(config);
 

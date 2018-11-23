@@ -9,9 +9,11 @@
             url: '@Url.Action("GetTemplateBoleto", "Cnab")',
             success: function success(data) {
                 if (data.success) {
-                    $("#mensagem").val(data.data.Mensagem);
-                    $("#assunto").val(data.data.Assunto);
-                    $$$.fn.updateTextFields();
+                    if (data.data !== null ) {
+                        $("#mensagem").val(data.data.Mensagem);
+                        $("#assunto").val(data.data.Assunto);
+                        $$$.fn.updateTextFields();
+                    }
                 } else {
                     $$$.loading.stop();
                     $$$.toast(data.message, "error");

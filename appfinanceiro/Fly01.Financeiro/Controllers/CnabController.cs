@@ -15,6 +15,7 @@ using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
 using Fly01.Core.Rest;
 using System.Linq;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -239,8 +240,17 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
-            config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Required = true, Readonly = false });
-            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", Required = true, MaxLength = 150 });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "email",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Para enviar os boletos para múltiplos endereços de e-mail, separe-os por ponto e vírgula. Exemplo: email1@gmail.com;email2@hotmail.com"
+                }
+            });
+
+            config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Readonly = false });
+            config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", MaxLength = 150 });
             
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }

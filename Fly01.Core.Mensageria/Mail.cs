@@ -11,6 +11,20 @@ namespace Fly01.Core.Mensageria
     {
         public static void Send(string nomeRemetente, string emailDestinatario, string tituloEmail, string corpoEmail, Stream anexo)
         {
+            var emailsDestintario = emailDestinatario.Split(';');
+            if (emailsDestintario.Length > 1)
+            {
+                foreach (var item in emailsDestintario)
+                {
+                    SendEmail(item, nomeRemetente, tituloEmail, corpoEmail, anexo);
+                }
+            }
+            else 
+                SendEmail(emailDestinatario, nomeRemetente, tituloEmail, corpoEmail, anexo);            
+        }
+
+        private static void SendEmail(string emailDestinatario, string nomeRemetente, string tituloEmail, string corpoEmail, Stream anexo) {
+
             var from = new MailAddress(ConfigurationManager.AppSettings["EmailRemetente"], nomeRemetente);
             var to = new MailAddress(emailDestinatario);
             var message = new MailMessage(from, to)
@@ -25,14 +39,7 @@ namespace Fly01.Core.Mensageria
 
             try
             {
-                var client = new SmtpClient
-                {
-                    Host = ConfigurationManager.AppSettings["EmailHost"],
-                    Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]),
-                    EnableSsl = bool.Parse(ConfigurationManager.AppSettings["EmailEnableSsl"]),
-                    UseDefaultCredentials = bool.Parse(ConfigurationManager.AppSettings["EmailUseDefaultCredentials"]),
-                    Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailCredentialsUserName"], ConfigurationManager.AppSettings["EmailCredentialsPassword"])
-                };
+                SmtpClient client = ConfigSmtpClient();
 
                 client.Send(message);
             }
@@ -40,6 +47,18 @@ namespace Fly01.Core.Mensageria
             {
                 throw ex;
             }
+        }
+
+        private static SmtpClient ConfigSmtpClient()
+        {
+            return new SmtpClient
+            {
+                Host = ConfigurationManager.AppSettings["EmailHost"],
+                Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]),
+                EnableSsl = bool.Parse(ConfigurationManager.AppSettings["EmailEnableSsl"]),
+                UseDefaultCredentials = bool.Parse(ConfigurationManager.AppSettings["EmailUseDefaultCredentials"]),
+                Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailCredentialsUserName"], ConfigurationManager.AppSettings["EmailCredentialsPassword"])
+            };
         }
 
         public static string FormataMensagem(string htmlContent, string tituloEmail, string mensagemPrincipal)

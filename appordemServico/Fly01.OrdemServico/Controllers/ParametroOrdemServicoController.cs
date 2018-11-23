@@ -99,7 +99,8 @@ namespace Fly01.OrdemServico.Controllers
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = { "fnFormReady" }
+                Functions = { "fnFormReady" },
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

@@ -7,8 +7,10 @@ namespace Fly01.Faturamento.BL
 {
     public class GrupoTributarioBL : PlataformaBaseBL<GrupoTributario>
     {
-        public GrupoTributarioBL(AppDataContextBase context) : base(context)
+        protected CfopBL CfopBL;
+        public GrupoTributarioBL(AppDataContextBase context, CfopBL cfopBL) : base(context)
         {
+            CfopBL = cfopBL;
             MustConsumeMessageServiceBus = true;
         }
 
@@ -32,14 +34,26 @@ namespace Fly01.Faturamento.BL
             }
         }
 
+        public void GetIdCfop(GrupoTributario entity)
+        {
+            if (!entity.CfopId.HasValue && !string.IsNullOrEmpty(entity.CodigoCfop.ToString()))
+            {
+                var dadosCfop = CfopBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCfop);
+                if (dadosCfop != null)
+                    entity.CfopId = dadosCfop.Id;
+            }
+        }
+
         public override void Insert(GrupoTributario entity)
         {
+            GetIdCfop(entity);
             ConfiguraImpostos(entity);
             base.Insert(entity);
         }
 
         public override void Update(GrupoTributario entity)
         {
+            GetIdCfop(entity);
             ConfiguraImpostos(entity);
             base.Update(entity);
         }

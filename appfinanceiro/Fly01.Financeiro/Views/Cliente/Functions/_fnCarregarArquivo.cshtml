@@ -17,7 +17,7 @@
         $.ajax({
             type: "POST",
             url: "@Url.Action("ImportaArquivo")",
-            data: { pConteudo: csv },
+            data: { conteudo: csv },
             success: function (response) {
                 $("#observacao").closest("div").css("display", "block");
                 $("#observacao").val(response.Retorno);

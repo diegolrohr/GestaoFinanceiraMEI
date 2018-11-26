@@ -60,6 +60,7 @@ namespace Fly01.Faturamento.DAL
             builder.Entity<Produto>().Ignore(m => m.CodigoCest);
             builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
             builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
+            builder.Entity<GrupoTributario>().Ignore(m => m.CodigoCfop);
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

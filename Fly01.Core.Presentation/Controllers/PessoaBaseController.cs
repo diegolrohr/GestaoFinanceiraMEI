@@ -359,9 +359,9 @@ namespace Fly01.Core.Presentation.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
-        public JsonResult ImportaArquivo(string pConteudo)
+        public JsonResult ImportaArquivo(string conteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", pConteudo);
+            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", conteudo);
             return JsonResponseStatus.GetJson(arquivoVM);
         }
 

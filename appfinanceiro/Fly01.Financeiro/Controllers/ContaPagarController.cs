@@ -219,13 +219,13 @@ namespace Fly01.Financeiro.Controllers
                     Name = "mesPicker",
                     Class = "col s12 m6 offset-m3 l4 offset-l4",
                     DomEvents = new List<DomEventUI>()
-                            {
-                                new DomEventUI()
-                                {
-                                    DomEvent = "change",
-                                    Function = "fnUpdateDataFinal"
-                                }
-                            }
+                    {
+                        new DomEventUI()
+                        {
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
+                        }
+                    }
                 });
                 cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
@@ -286,9 +286,8 @@ namespace Fly01.Financeiro.Controllers
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             if (filters == null)
-            {
                 filters = new Dictionary<string, string>();
-            }
+            
 
             if (Request.QueryString["dataFinal"] != "")
                 filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);

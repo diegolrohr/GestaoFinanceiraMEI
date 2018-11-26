@@ -220,46 +220,48 @@ namespace Fly01.OrdemServico.Controllers
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
+
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+
             if (gridLoad == "GridLoad")
             {
-                var cfgForm = new FormUI
+                cfgForm.Elements.Add(new PeriodPickerUI()
                 {
-                    Id = "fly01frm",
-                    ReadyFn = "fnUpdateDataFinal",
-                    UrlFunctions = Url.Action("Functions") + "?fns=",
-                    Elements = new List<BaseUI>()
+                    Label = "Selecione o período",
+                    Id = "mesPicker",
+                    Name = "mesPicker",
+                    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                    DomEvents = new List<DomEventUI>()
                     {
-                        new PeriodPickerUI()
+                        new DomEventUI()
                         {
-                            Label = "Selecione o período",
-                            Id = "mesPicker",
-                            Name = "mesPicker",
-                            Class = "col s12 m6 offset-m3 l4 offset-l4",
-                            DomEvents = new List<DomEventUI>()
-                            {
-                                new DomEventUI()
-                                {
-                                    DomEvent = "change",
-                                    Function = "fnUpdateDataFinal"
-                                }
-                            }
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataFinal",
-                            Name = "dataFinal"
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataInicial",
-                            Name = "dataInicial"
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
                         }
                     }
-                };
-
-                cfg.Content.Add(cfgForm);
+                });
+                cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
+            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
@@ -531,14 +533,16 @@ namespace Fly01.OrdemServico.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
-            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }
 
         public JsonResult GridLoadNoFilter()
-            => base.GridLoad();
+            => GridLoad();
 
         [HttpPost]
         public override JsonResult Create(OrdemServicoVM entityVM)

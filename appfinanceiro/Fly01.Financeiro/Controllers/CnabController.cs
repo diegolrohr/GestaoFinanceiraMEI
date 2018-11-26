@@ -183,6 +183,27 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto"}
             };
 
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+            cfg.Content.Add(cfgForm);
+
             var dtConfig = new DataTableUI()
             {
                 Id = "dtBoletos",
@@ -191,9 +212,18 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
-                    Select = new { style = "multi" }
-                }
+                    Select = new { style = "multi" },
+                    OrderColumn = 1,
+                    OrderDir = "desc"
+                },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter() {Id = "dataInicial" },
+                    new DataTableUIParameter() {Id = "dataFinal" }
+                },
             };
+
+
             dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
@@ -276,5 +306,18 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
+        {
+            if (filters == null)
+                filters = new Dictionary<string, string>();
+
+
+           if (Request.QueryString["dataFinal"] != "")
+                filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
+
+            return base.GridLoad(filters);
+        }
     }
 }

@@ -394,6 +394,8 @@
     <Content Include="Views\Cnab\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnCancelarEnvioEmail.cshtml" />
     <Content Include="Views\ContaPagar\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\ContaReceber\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnChangeInput.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

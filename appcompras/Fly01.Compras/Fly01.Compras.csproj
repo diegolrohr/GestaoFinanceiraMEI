@@ -339,6 +339,9 @@
     <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
     <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Produto\ImportarProduto.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

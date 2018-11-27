@@ -71,7 +71,7 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true, MaxLength = 40 });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true, MaxLength = 100 });
 
             config.Elements.Add(new SelectUI
             {

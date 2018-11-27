@@ -9,7 +9,7 @@ namespace Fly01.Core.Entities.Domains.Commons
     public class Categoria : PlataformaBase
     {
         [Required]
-        [StringLength(40)]
+        [StringLength(100)]
         public string Descricao { get; set; }
 
         public Guid? CategoriaPaiId { get; set; }

@@ -43,6 +43,7 @@ namespace Fly01.Financeiro.BL
                     if (!ValidaColunasImportadas(cols, PessoaBL.ColunasParaImportacao()))
                         throw new BusinessException("Colunas inválidas");
 
+                    int count = 0;
                     for (var i = 1; i < content.Length; i++)
                     {
                         try
@@ -76,7 +77,8 @@ namespace Fly01.Financeiro.BL
                                 {
                                     PessoaBL.Insert(pessoa);
                                     insertedPessoas.Add(pessoa);
-                                    arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + pessoa.Nome + ", CPF/CNPJ " + pessoa.CPFCNPJ + " cadastrado com sucesso\n";
+
+                                    count = count + 1;
                                 }
                                 else
                                 {
@@ -99,6 +101,7 @@ namespace Fly01.Financeiro.BL
                         }
                     }
 
+                    arquivo.Retorno += count + " Registros inseridos com sucesso.";
                     Update(arquivo);
                 }
             }

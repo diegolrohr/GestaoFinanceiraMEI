@@ -7,8 +7,14 @@ namespace Fly01.Compras.BL
 {
     public class SubstituicaoTributariaBL : PlataformaBaseBL<SubstituicaoTributaria>
     {
-        public SubstituicaoTributariaBL(AppDataContextBase context) : base(context)
+        protected NCMBL NcmBL;
+        protected CestBL CestBL;
+        protected EstadoBL EstadoBL;
+        public SubstituicaoTributariaBL(AppDataContextBase context, NCMBL ncmBL, CestBL cestBL, EstadoBL estadoBL) : base(context)
         {
+            NcmBL = ncmBL;
+            CestBL = cestBL;
+            EstadoBL = estadoBL;
             MustConsumeMessageServiceBus = true;
         }
 
@@ -21,6 +27,66 @@ namespace Fly01.Compras.BL
             entity.Fail(All.Where(x => x.NcmId == entity.NcmId && x.CestId == entity.CestId && x.EstadoOrigemId == entity.EstadoOrigemId && x.EstadoDestinoId == entity.EstadoDestinoId && x.TipoSubstituicaoTributaria == entity.TipoSubstituicaoTributaria).Any(x => x.Id != entity.Id), SubstituicaoTributariaDuplicada);
 
             base.ValidaModel(entity);
+        }
+
+        public void GetIdEstadoOrigemEDestino(SubstituicaoTributaria entity)
+        {
+            if (entity.EstadoOrigemId == null && !string.IsNullOrEmpty(entity.EstadoOrigemCodigoIbge))
+            {
+                var dadosEstadoOrigem = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoOrigemCodigoIbge);
+                if (dadosEstadoOrigem != null)
+                {
+                    entity.EstadoOrigemId = dadosEstadoOrigem.Id;
+                }
+            }
+            if (entity.EstadoDestinoId == null && !string.IsNullOrEmpty(entity.EstadoDestinoCodigoIbge))
+            {
+                var dadosEstadoDestino = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoDestinoCodigoIbge);
+                if (dadosEstadoDestino != null)
+                {
+                    entity.EstadoDestinoId = dadosEstadoDestino.Id;
+                }
+            }
+        }
+
+        public void GetIdCNcm(SubstituicaoTributaria entity)
+        {
+            if (entity.NcmId == null && !string.IsNullOrEmpty(entity.CodigoNcm))
+            {
+                var dadosNcm = NcmBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
+                if (dadosNcm != null)
+                    entity.NcmId = dadosNcm.Id;
+            }
+        }
+
+        public void GetIdCest(SubstituicaoTributaria entity)
+        {
+            if (entity.CestId == null && !string.IsNullOrEmpty(entity.CodigoCest))
+            {
+                var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest);
+                if (dadosCest != null)
+                    entity.CestId = dadosCest.Id;
+            }
+        }
+
+        public override void Insert(SubstituicaoTributaria entity)
+        {
+            GetIdCNcm(entity);
+            GetIdCest(entity);
+            GetIdEstadoOrigemEDestino(entity);
+
+            ValidaModel(entity);
+            base.Insert(entity);
+        }
+
+        public override void Update(SubstituicaoTributaria entity)
+        {
+            GetIdCNcm(entity);
+            GetIdCest(entity);
+            GetIdEstadoOrigemEDestino(entity);
+
+            ValidaModel(entity);
+            base.Update(entity);
         }
 
         public static Error NcmInvalido = new Error("Código NCM inválido.", "ncmId");

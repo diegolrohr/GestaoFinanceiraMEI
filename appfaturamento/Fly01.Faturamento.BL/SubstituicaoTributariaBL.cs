@@ -2,6 +2,7 @@
 using Fly01.Core.BL;
 using Fly01.Core.Notifications;
 using Fly01.Core.Entities.Domains.Commons;
+using System;
 
 namespace Fly01.Faturamento.BL
 {
@@ -31,7 +32,7 @@ namespace Fly01.Faturamento.BL
 
         public void GetIdEstadoOrigemEDestino(SubstituicaoTributaria entity)
         {
-            if (entity.EstadoOrigemId == null && !string.IsNullOrEmpty(entity.EstadoOrigemCodigoIbge))
+            if ((entity.EstadoOrigemId == null || entity.EstadoOrigemId == default(Guid)) && !string.IsNullOrEmpty(entity.EstadoOrigemCodigoIbge))
             {
                 var dadosEstadoOrigem = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoOrigemCodigoIbge);
                 if (dadosEstadoOrigem != null)
@@ -39,7 +40,7 @@ namespace Fly01.Faturamento.BL
                     entity.EstadoOrigemId = dadosEstadoOrigem.Id;
                 }
             }
-            if (entity.EstadoDestinoId == null && !string.IsNullOrEmpty(entity.EstadoDestinoCodigoIbge))
+            if ((entity.EstadoDestinoId == null || entity.EstadoDestinoId == default(Guid)) && !string.IsNullOrEmpty(entity.EstadoDestinoCodigoIbge))
             {
                 var dadosEstadoDestino = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoDestinoCodigoIbge);
                 if (dadosEstadoDestino != null)
@@ -51,7 +52,7 @@ namespace Fly01.Faturamento.BL
 
         public void GetIdCNcm(SubstituicaoTributaria entity)
         {
-            if (entity.NcmId == null && !string.IsNullOrEmpty(entity.CodigoNcm))
+            if ((entity.NcmId == null || entity.NcmId == default(Guid)) && !string.IsNullOrEmpty(entity.CodigoNcm))
             {
                 var dadosNcm = NcmBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoNcm);
                 if (dadosNcm != null)
@@ -61,7 +62,7 @@ namespace Fly01.Faturamento.BL
 
         public void GetIdCest(SubstituicaoTributaria entity)
         {
-            if (entity.CestId == null && !string.IsNullOrEmpty(entity.CodigoCest))
+            if (entity.CestId.HasValue && !string.IsNullOrEmpty(entity.CodigoCest))
             {
                 var dadosCest = CestBL.All.FirstOrDefault(x => x.Codigo == entity.CodigoCest);
                 if (dadosCest != null)

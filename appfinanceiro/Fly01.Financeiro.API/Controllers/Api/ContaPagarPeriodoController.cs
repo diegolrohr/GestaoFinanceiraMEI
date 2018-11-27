@@ -14,19 +14,19 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return
-                    Ok(
-                        new
-                        {
-                            value = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
-                                x => x.Categoria
-                            ).Where(x =>
-                                (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
-                                (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
-                                (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)
-                            ).ToList()
-                        }
-                    );
+                return Ok(
+                    new
+                    {
+                        value = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x =>
+                            (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.ValorPago > 0) ||
+                            (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal && x.ValorPago > 0) ||
+                            (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)
+                        ).ToList()
+                    }
+                );
             }
         }
     }

@@ -65,6 +65,10 @@ namespace Fly01.Faturamento.DAL
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.EstadoDestinoCodigoIbge);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoNcm);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoCest);
+            builder.Entity<Servico>().Ignore(m => m.CodigoIss);
+            builder.Entity<Servico>().Ignore(m => m.CodigoNbs);
+            builder.Entity<Servico>().Ignore(m => m.AbreviacaoUnidadeMedida);
+
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

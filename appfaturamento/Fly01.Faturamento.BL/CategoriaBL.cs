@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Fly01.Faturamento.DAL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity;
 
 namespace Fly01.Faturamento.BL
 {
@@ -27,10 +28,11 @@ namespace Fly01.Faturamento.BL
         public override void Update(Categoria entity)
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            var previous = All.AsNoTracking().Where(x => x.Id == entity.Id).FirstOrDefault();
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
             bool categoriaTemOrdemDeVenda = ordemVendaBL.All.Where(x => x.CategoriaId == entity.Id && x.Ativo).Any();
 
-            entity.Fail(categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
+            entity.Fail((previous != null) && (entity.TipoCarteira != previous.TipoCarteira) && categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);

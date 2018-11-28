@@ -34,6 +34,18 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("aliquotaInterEstadual")]
         public double AliquotaInterEstadual { get; set; }
 
+        [JsonProperty("estadoOrigemCodigoIbge")]
+        public string EstadoOrigemCodigoIbge { get; set; }
+
+        [JsonProperty("estadoDestinoCodigoIbge")]
+        public string EstadoDestinoCodigoIbge { get; set; }
+
+        [JsonProperty("codigoNcm")]
+        public string CodigoNcm { get; set; }
+
+        [JsonProperty("codigoCest")]
+        public string CodigoCest { get; set; }
+
         [JsonProperty("ncm")]
         public virtual NcmVM Ncm { get; set; }
 

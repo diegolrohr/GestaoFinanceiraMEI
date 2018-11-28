@@ -84,7 +84,7 @@ namespace Fly01.Compras.BL
         public OrcamentoItemBL OrcamentoItemBL => orcamentoItemBL ?? (orcamentoItemBL = new OrcamentoItemBL(Context));
 
         private SubstituicaoTributariaBL substituicaoTributariaBL;
-        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context));
+        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context, NCMBL, CestBL, EstadoBL));
 
         private CfopBL cfopBL;
         public CfopBL CfopBL => cfopBL ?? (cfopBL = new CfopBL(Context));

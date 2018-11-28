@@ -41,6 +41,14 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public double AliquotaInterEstadual { get; set; }
 
+        public string EstadoOrigemCodigoIbge { get; set; }
+
+        public string EstadoDestinoCodigoIbge { get; set; }
+
+        public string CodigoNcm { get; set; }
+
+        public string CodigoCest { get; set; }
+
         public virtual Ncm Ncm { get; set; }
         public virtual Estado EstadoOrigem { get; set; }
         public virtual Estado EstadoDestino { get; set; }

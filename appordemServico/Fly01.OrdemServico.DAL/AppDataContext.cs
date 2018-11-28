@@ -50,6 +50,9 @@ namespace Fly01.OrdemServico.DAL
             builder.Entity<Produto>().Ignore(m => m.CodigoCest);
             builder.Entity<Produto>().Ignore(m => m.AbreviacaoUnidadeMedida);
             builder.Entity<Produto>().Ignore(m => m.CodigoEnquadramentoLegalIPI);
+            builder.Entity<Servico>().Ignore(m => m.CodigoIss);
+            builder.Entity<Servico>().Ignore(m => m.CodigoNbs);
+            builder.Entity<Servico>().Ignore(m => m.AbreviacaoUnidadeMedida);
         }
 
         public DbSet<Cidade> Cidades { get; set; }

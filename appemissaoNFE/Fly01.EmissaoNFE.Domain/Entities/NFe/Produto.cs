@@ -192,7 +192,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
         }
 
-        public bool ShouldSerializeValorDesconto()
+        public bool ShouldSerializeValorDescontoString()
         {
             return ValorDesconto.HasValue & ValorDesconto > 0;
         }

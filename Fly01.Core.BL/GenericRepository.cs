@@ -20,21 +20,30 @@ namespace Fly01.Core.BL
             dbSet = context.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> AllWithInactive
+        {
+            get
+            {
+                return dbSet;
+            }
+        }
+
+        public IQueryable<TEntity> AllWithInactiveIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = this.dbSet;
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query;
+        }
+
         public IQueryable<TEntity> All
         {
             get
             {
                 return dbSet.Where(x => x.Ativo);
             }
-        }
-
-        public List<DbEntityEntry> GetAffectEntries()
-        {
-            List<DbEntityEntry> entries = new List<DbEntityEntry>();
-            foreach (var entry in context.ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Modified))
-                entries.Add(entry);
-
-            return entries;
         }
 
         public IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
@@ -45,6 +54,15 @@ namespace Fly01.Core.BL
                 query = query.Include(includeProperty);
             }
             return query;
+        }
+
+        public List<DbEntityEntry> GetAffectEntries()
+        {
+            List<DbEntityEntry> entries = new List<DbEntityEntry>();
+            foreach (var entry in context.ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Modified))
+                entries.Add(entry);
+
+            return entries;
         }
 
         public bool Any(Expression<Func<TEntity, bool>> predicate)

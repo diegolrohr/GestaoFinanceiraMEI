@@ -95,47 +95,47 @@ namespace Fly01.Faturamento.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+
             if (gridLoad == "GridLoad")
             {
-                var cfgForm = new FormUI
+                cfgForm.Elements.Add(new PeriodPickerUI()
                 {
-                    Id = "fly01frm",
-                    ReadyFn = "fnUpdateDataFinal",
-                    UrlFunctions = Url.Action("Functions") + "?fns=",
-                    Elements = new List<BaseUI>()
+                    Label = "Selecione o período",
+                    Id = "mesPicker",
+                    Name = "mesPicker",
+                    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                    DomEvents = new List<DomEventUI>()
                     {
-                        new PeriodPickerUI
+                        new DomEventUI()
                         {
-                            Label = "Selecione o período",
-                            Id = "mesPicker",
-                            Name = "mesPicker",
-                            Class = "col s12 m6 offset-m3 l4 offset-l4",
-                            DomEvents = new List<DomEventUI>()
-                            {
-                                new DomEventUI()
-                                {
-                                    DomEvent = "change",
-                                    Function = "fnUpdateDataFinal"
-                                }
-                            }
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataFinal",
-                            Name = "dataFinal"
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataInicial",
-                            Name = "dataInicial"
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
                         }
                     }
-
-                };
-
-                cfg.Content.Add(cfgForm);
+                });
+                cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
+            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
@@ -146,7 +146,12 @@ namespace Fly01.Faturamento.Controllers
                     new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" },
+                Options = new DataTableUIConfig
+                {
+                    OrderColumn = 6,
+                    OrderDir = "desc"
+                }
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -159,7 +164,7 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnTransmitirNFSe", Label = "Transmitir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnExcluirNFSe", Label = "Excluir", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'NaoTransmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
-                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFe')" },
+                new DataTableUIAction { OnClickFn = "fnBaixarXMLNFe", Label = "Baixar XML", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarPDFNFe", Label = "Baixar PDF", ShowIf = "(row.status == 'Autorizada' && row.tipoNotaFiscal == 'NFe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLNFSe", Label = "Baixar XML", ShowIf = "((row.status == 'FalhaTransmissao' || row.status == 'NaoAutorizada' || row.status == 'Autorizada' || row.status == 'Transmitida') && row.tipoNotaFiscal == 'NFSe')" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXMLUnicoNFSe", Label = "Baixar XML TSS", ShowIf = "((row.status == 'NaoAutorizada' || row.status == 'Transmitida' || row.status == 'FalhaTransmissao') && row.tipoNotaFiscal == 'NFSe')" },
@@ -209,15 +214,17 @@ namespace Fly01.Faturamento.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("data le ", Request.QueryString["dataFinal"]);
-            filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("data le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }
 
         public JsonResult GridLoadNoFilter()
         {
-            return base.GridLoad();
+            return GridLoad();
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]

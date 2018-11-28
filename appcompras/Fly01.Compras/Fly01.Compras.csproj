@@ -134,7 +134,9 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="ReportViewerWebForm.aspx" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ApplicationInsights.config" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
@@ -333,6 +335,13 @@
     <Content Include="Views\GrupoTributario\Functions\_fnShowCSLL.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowImpostoRenda.cshtml" />
     <Content Include="Views\GrupoTributario\Functions\_fnShowINSS.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Produto\ImportarProduto.cshtml" />
+    <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -347,7 +356,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

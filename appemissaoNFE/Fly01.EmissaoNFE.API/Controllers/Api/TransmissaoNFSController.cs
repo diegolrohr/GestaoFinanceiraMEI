@@ -17,6 +17,8 @@ namespace Fly01.EmissaoNFE.API.Controllers.Api
         [HttpPost]
         public IHttpActionResult Post(TransmissaoNFSVM entity)
         {
+            entity?.TrimAllStrings();
+
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.TransmissaoNFSBL.ValidaModel(entity);

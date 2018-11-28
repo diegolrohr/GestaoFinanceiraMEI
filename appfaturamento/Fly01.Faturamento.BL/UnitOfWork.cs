@@ -33,7 +33,7 @@ namespace Fly01.Faturamento.BL
         #region BLS
 
         private ArquivoBL arquivoBL;
-        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));
+        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL, ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
 
         private PessoaBL pessoaBL;
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
@@ -66,7 +66,7 @@ namespace Fly01.Faturamento.BL
         public CfopBL CfopBL => cfopBL ?? (cfopBL = new CfopBL(Context));
 
         private GrupoTributarioBL grupoTributarioBL;
-        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context));
+        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private OrdemVendaBL ordemVendaBL;
         public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL));
@@ -90,7 +90,7 @@ namespace Fly01.Faturamento.BL
         public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context, OrdemVendaBL));
 
         private SubstituicaoTributariaBL substituicaoTributariaBL;
-        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context));
+        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context, NCMBL, CestBL, EstadoBL));
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));

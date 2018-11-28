@@ -34,6 +34,9 @@ namespace Fly01.Financeiro.BL
         private PessoaBL pessoaBL;
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
 
+        private TemplateBoletoBL templateBoletoBL;
+        public TemplateBoletoBL TemplateBoletoBL => templateBoletoBL ?? (templateBoletoBL = new TemplateBoletoBL(Context));
+
         private ContaBancariaBL contaBancariaBL;
         public ContaBancariaBL ContaBancariaBL => contaBancariaBL ?? (contaBancariaBL = new ContaBancariaBL(Context, SaldoHistoricoBL, BancoBL));
 

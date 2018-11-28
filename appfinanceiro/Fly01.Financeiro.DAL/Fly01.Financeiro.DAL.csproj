@@ -212,6 +212,14 @@
     <Compile Include="Migrations\201809241957111_AlterPessoaAddTipoSituacaoEspecial.Designer.cs">
       <DependentUpon>201809241957111_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811161602250_CreateTemplateBoleto.cs" />
+    <Compile Include="Migrations\201811161602250_CreateTemplateBoleto.Designer.cs">
+      <DependentUpon>201811161602250_CreateTemplateBoleto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811271202581_AlterTamanhoDescricaoCategoria.cs" />
+    <Compile Include="Migrations\201811271202581_AlterTamanhoDescricaoCategoria.Designer.cs">
+      <DependentUpon>201811271202581_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -354,6 +362,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809241957111_AlterPessoaAddTipoSituacaoEspecial.resx">
       <DependentUpon>201809241957111_AlterPessoaAddTipoSituacaoEspecial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811161602250_CreateTemplateBoleto.resx">
+      <DependentUpon>201811161602250_CreateTemplateBoleto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811271202581_AlterTamanhoDescricaoCategoria.resx">
+      <DependentUpon>201811271202581_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Fly01.Faturamento.DAL;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Data.Entity;
 
 namespace Fly01.Faturamento.BL
 {
@@ -27,10 +28,11 @@ namespace Fly01.Faturamento.BL
         public override void Update(Categoria entity)
         {
             var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            var previous = All.AsNoTracking().Where(x => x.Id == entity.Id).FirstOrDefault();
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
             bool categoriaTemOrdemDeVenda = ordemVendaBL.All.Where(x => x.CategoriaId == entity.Id && x.Ativo).Any();
 
-            entity.Fail(categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
+            entity.Fail((previous != null) && (entity.TipoCarteira != previous.TipoCarteira) && categoriaTemOrdemDeVenda && entity.TipoCarteira == TipoCarteira.Despesa, AlteracaoCategoriaInvalida);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);
@@ -79,7 +81,8 @@ namespace Fly01.Faturamento.BL
             entity.Fail(categoriaPai != null && All.Any(x => categoriaPai.CategoriaPaiId != null), PaiJaEFilho);
 
             TipoCarteiraBL.ValidaTipoCarteira(entity.TipoCarteira);
-            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()), DescricaoDuplicada);
+            entity.Fail(All.Any(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper()),
+                new Error("Descrição já utilizada anteriormente.", "descricao", All.FirstOrDefault(x => x.Id != entity.Id && x.Descricao.ToUpper() == entity.Descricao.ToUpper())?.Id.ToString()));
             entity.Fail(entity.Id == entity.CategoriaPaiId, CategoriaPropria);
 
             entity.Fail(All.Where(x => x.Id == entity.CategoriaPaiId).Any(x => x.TipoCarteira != entity.TipoCarteira), TipoCarteiraDiferente);
@@ -88,7 +91,6 @@ namespace Fly01.Faturamento.BL
 
         #endregion
 
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
         public static Error CategoriaPropria = new Error("Não é possível definir a própria categoria, como sua Categoria Superior.");
         public static Error TipoCarteiraDiferente = new Error("Não foi possível salvar este registro. O tipo da carteira deve ser igual ao da Categoria Superior.");
         public static Error ExclusaoInvalida = new Error("Não é possível excluir este registro, pois o mesmo possui filhos.");

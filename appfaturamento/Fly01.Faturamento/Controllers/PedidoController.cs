@@ -242,7 +242,7 @@ namespace Fly01.Faturamento.Controllers
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaProduto" }
                     }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Serviços
@@ -257,7 +257,7 @@ namespace Fly01.Faturamento.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
                 }
             });
-            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro
@@ -395,11 +395,12 @@ namespace Fly01.Faturamento.Controllers
             });
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarPedido", Class = "col s12 m4", Label = "Salvar e Finalizar" });
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
-            config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais", MaxLength = 4000 });
+            config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais NF-e", MaxLength = 4000 });
+            config.Elements.Add(new TextAreaUI { Id = "informacoesCompletamentaresNFS", Class = "col s12", Label = "Informações Adicionais NFS-e", MaxLength = 1000 });
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12 visible" });
             #endregion
 
             #region Helpers            
@@ -521,6 +522,14 @@ namespace Fly01.Faturamento.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Será setado para cada produto/serviço adicionado, podendo ser alterado. Na devolução informe o grupo tributário com CFOP correspondente, para setar aos produto copiados da nota fiscal referenciada."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
                 }
             });
             #endregion

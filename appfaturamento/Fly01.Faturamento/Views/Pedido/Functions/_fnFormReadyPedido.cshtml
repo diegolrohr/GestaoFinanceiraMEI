@@ -43,6 +43,18 @@
             $('#mensagemPadraoNotaField').hide();
         }
 
+        if (geraNotaFiscal && $$$._.dtOrdemVendaServicos.data(0).length > 0) {
+            $("#informacoesCompletamentaresNFSField").show();
+            $("input#informacoesCompletamentaresNFS").rules("add", { required: true });
+            $('#informacoesCompletamentaresNFSField').show();
+        }
+        else {
+            $("#informacoesCompletamentaresNFSField").hide();
+            $("input#informacoesCompletamentaresNFS").rules("remove", "required");
+            $('input#informacoesCompletamentaresNFS').removeClass("invalid")
+            $('#informacoesCompletamentaresNFSField').hide();
+        }
+
         $$$.loading.start();
 
         $.ajax({
@@ -268,6 +280,7 @@
     function fnSetInformacoes() {
         $("#infoEstoqueNegativoField").text('O estoque não pode ficar negativo, portanto abaixo é exibido a relação dos produtos que ficarão com o estoque faltante. Marque a opção para ajustar automáticamente a quantidade negativa ou realize os ajustes '
             + 'pelo aplicativo Bemacash Estoque. Ao marcar a opção Ajustar Negativo, serão criadas movimentações para que o saldo do produto fique com quantidade zerada.');
+        $("#infoEstoqueNegativoField").css("white-space", "normal");
     }
 
     function EstoqueNegativoETotal() {

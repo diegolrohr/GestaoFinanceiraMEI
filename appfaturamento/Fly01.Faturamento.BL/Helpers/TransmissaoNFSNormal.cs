@@ -126,7 +126,7 @@ namespace Fly01.Faturamento.BL.Helpers
         {
             return new InformacoesComplementares()
             {
-                Descricao = NFSe.MensagemPadraoNota ?? "",
+                Descricao = NFSe.InformacoesCompletamentaresNFS ?? "",
                 Observacao = NFSe.Observacao ?? ""
             };
         }

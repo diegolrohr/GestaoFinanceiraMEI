@@ -113,6 +113,9 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(5000)]
         public string MensagemPadraoNota { get; set; }
 
+        [MaxLength(1000)]
+        public string InformacoesCompletamentaresNFS { get; set; }
+
         public bool GeraFinanceiro { get; set; }
 
         public Guid? ContaFinanceiraParcelaPaiIdProdutos { get; set; }

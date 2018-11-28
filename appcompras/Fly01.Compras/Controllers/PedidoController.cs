@@ -327,7 +327,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
                 }
             });
-            config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12 visible" });
             #endregion
 
             #region step Financeiro
@@ -466,7 +466,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
-            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12 visible" });
             #endregion
 
             #region Helpers
@@ -500,6 +500,14 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Gerar Financeiro, serão criadas contas a Pagar ao fornecedor, e conta a Pagar a transportadora do valor de frete, se for configurado por conta da sua empresa."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "mensagemPadraoNota",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao transmitir a NF-e, além das informações aqui digitadas, será gerado automaticamente para o xml, as informações de IBPT e do aproveitamento de crédito de ICMS de acordo ao ARTIGO 23 DA LC 123 (Para CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário em cada produto do pedido)."
                 }
             });
             #endregion

@@ -90,6 +90,7 @@
     <Compile Include="ConvertHTMLToPDF.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="ErrorInfo.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ExtensoHelper.cs" />
     <Compile Include="FormatterUtils.cs" />

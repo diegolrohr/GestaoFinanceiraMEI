@@ -4,7 +4,6 @@ using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
-using Fly01.OrdemServico.Enum;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -36,9 +35,9 @@ namespace Fly01.OrdemServico.Controllers
                 tipoProduto = EnumHelper.GetValue(typeof(TipoProduto), x.TipoProduto),
                 tipoProdutoCSS = EnumHelper.GetCSS(typeof(TipoProduto), x.TipoProduto),
                 tipoProdutoDescricao = EnumHelper.GetDescription(typeof(TipoProduto), x.TipoProduto),
-                objetoDeManutencao = x.ObjetoDeManutencao,
-                manutencao_sn = x.ObjetoDeManutencao ? "Sim" : "Não",
-                SimNaoCss = EnumHelper.GetCSS(typeof(BoolSimNao), x.ObjetoDeManutencao ? "Sim" : "Nao"),
+                objetoDeManutencao = EnumHelper.GetValue(typeof(ObjetoDeManutencao), x.ObjetoDeManutencao),
+                objetoDeManutencaoCSS = EnumHelper.GetCSS(typeof(ObjetoDeManutencao), x.ObjetoDeManutencao),
+                objetoDeManutencaoDescricao = EnumHelper.GetDescription(typeof(ObjetoDeManutencao), x.ObjetoDeManutencao),
                 registroFixo = x.RegistroFixo,
             };
         }
@@ -133,7 +132,8 @@ namespace Fly01.OrdemServico.Controllers
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" },
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
             var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
 
@@ -147,11 +147,11 @@ namespace Fly01.OrdemServico.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 2 });
             config.Columns.Add(new DataTableUIColumn
             {
-                DataField = "manutencao_sn",
+                DataField = "objetoDeManutencao",
                 DisplayName = "Objeto de Manutenção",
                 Priority = 3,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(BoolSimNao))),
-                RenderFn = "fnRenderEnum(full.SimNaoCss, full.manutencao_sn)"
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(ObjetoDeManutencao))),
+                RenderFn = "fnRenderEnum(full.objetoDeManutencaoCSS, full.objetoDeManutencaoDescricao)"
             });
 
             cfg.Content.Add(config);
@@ -173,7 +173,8 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Dados do Produto",
                     Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns="
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
             var config = new FormUI

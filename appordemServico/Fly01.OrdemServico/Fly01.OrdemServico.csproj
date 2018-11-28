@@ -73,7 +73,6 @@
     <Compile Include="Controllers\ParametroOrdemServicoController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\ServicoController.cs" />
-    <Compile Include="Enum\BoolSimNao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,7 +177,6 @@
     <Content Include="Views\Cliente\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Cliente\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\Cliente\ImportaCadastro.cshtml" />
-    <Content Include="Views\ParametroOrdemServico\Index.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeGrupoProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeNCM.cshtml" />
     <Content Include="Views\Produto\Functions\_fnChangeSaldoProduto.cshtml" />
@@ -226,6 +224,7 @@
     <Content Include="Views\Home\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\Home\Functions\_fnAtualizarPeriodo.cshtml" />
     <Content Include="Views\Home\Functions\_fnFormReadyPeriodo.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnChangeInput.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
@@ -268,7 +267,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

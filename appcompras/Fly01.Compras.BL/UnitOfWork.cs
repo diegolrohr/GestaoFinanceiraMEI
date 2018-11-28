@@ -33,7 +33,7 @@ namespace Fly01.Compras.BL
         #region BLS
 
         private ArquivoBL arquivoBL;
-        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL));
+        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL , ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
 
         private PessoaBL pessoaBL;
         public PessoaBL PessoaBL => pessoaBL ?? (pessoaBL = new PessoaBL(Context, EstadoBL, CidadeBL));
@@ -84,13 +84,13 @@ namespace Fly01.Compras.BL
         public OrcamentoItemBL OrcamentoItemBL => orcamentoItemBL ?? (orcamentoItemBL = new OrcamentoItemBL(Context));
 
         private SubstituicaoTributariaBL substituicaoTributariaBL;
-        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context));
+        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context, NCMBL, CestBL, EstadoBL));
 
         private CfopBL cfopBL;
         public CfopBL CfopBL => cfopBL ?? (cfopBL = new CfopBL(Context));
 
         private GrupoTributarioBL grupoTributarioBL;
-        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context));
+        public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));

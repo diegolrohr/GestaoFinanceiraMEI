@@ -47,7 +47,7 @@ namespace Fly01.Core.Presentation.Controllers
                 id = x.Id,
                 nome = x.Nome,
                 cpfcnpj = FormatterUtils.FormatDocument(x.CPFCNPJ),
-                email = x.Email,
+                contato = x.Contato,
                 telefone = string.IsNullOrEmpty(x.Telefone)
                             ? ""
                             : Regex.Replace(x.Telefone, x.Telefone.Length == 10 ? @"(\d{2})(\d{4})(\d{4})" : @"(\d{2})(\d{4})(\d{5})", "($1) $2-$3"),
@@ -119,7 +119,16 @@ namespace Fly01.Core.Presentation.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
-            var config = new DataTableUI { Id = "fly01dt", UrlGridLoad = Url.Action("GridLoad"), UrlFunctions = Url.Action("Functions") + "?fns=" };
+            var config = new DataTableUI {
+                Id = "fly01dt",
+                UrlGridLoad = Url.Action("GridLoad"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Options = new DataTableUIConfig
+                {
+                    OrderColumn = 0,
+                    OrderDir = "asc"
+                }
+            };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
@@ -128,9 +137,9 @@ namespace Fly01.Core.Presentation.Controllers
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "nome", DisplayName = ResourceTitle, Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 2, Type = "cpfcnpj" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "email", DisplayName = "E-mail", Priority = 3, Type = "email" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 4, Type = "tel" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "contato", DisplayName = "Contato", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "telefone", DisplayName = "Telefone", Priority = 3, Type = "tel" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "cpfcnpj", DisplayName = "CPF / CNPJ", Priority = 4, Type = "cpfcnpj" });
 
             cfg.Content.Add(config);
 
@@ -352,10 +361,19 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string conteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", conteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
-        }
+            try
+            {
+                var arquivoVM = ImportacaoArquivoHelper.ImportaArquivo($"Cadastro de {LabelTitle}", conteudo);
+                return JsonResponseStatus.GetJson(arquivoVM);
 
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+
+        }
         protected virtual List<TooltipUI> GetHelpers()
         {
             return null;

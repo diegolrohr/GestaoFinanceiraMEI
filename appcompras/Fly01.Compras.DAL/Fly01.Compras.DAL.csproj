@@ -268,6 +268,14 @@
     <Compile Include="Migrations\201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.Designer.cs">
       <DependentUpon>201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811091755565_AjusteProdutoOrdemServico.cs" />
+    <Compile Include="Migrations\201811091755565_AjusteProdutoOrdemServico.Designer.cs">
+      <DependentUpon>201811091755565_AjusteProdutoOrdemServico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811271200487_AlterTamanhoDescricaoCategoria.cs" />
+    <Compile Include="Migrations\201811271200487_AlterTamanhoDescricaoCategoria.Designer.cs">
+      <DependentUpon>201811271200487_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -476,6 +484,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.resx">
       <DependentUpon>201810251835531_AlterGrupoTributarioObrigatoriedadeCFOP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811091755565_AjusteProdutoOrdemServico.resx">
+      <DependentUpon>201811091755565_AjusteProdutoOrdemServico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811271200487_AlterTamanhoDescricaoCategoria.resx">
+      <DependentUpon>201811271200487_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

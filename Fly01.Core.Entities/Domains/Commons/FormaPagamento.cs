@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Fly01.Core.Helpers;
+using System;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
@@ -14,6 +16,16 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Required]
         [JsonIgnore]
         public TipoFormaPagamento TipoFormaPagamento { get; set; }
+
+        [NotMapped]
+        [JsonProperty("tipoFormaPagamentoValue")]
+        public string TipoFormaPagamentoValue
+        {
+            get
+            {
+                return EnumHelper.GetValue(typeof(TipoFormaPagamento), TipoFormaPagamento.ToString());
+            }
+        }
 
         [NotMapped]
         [JsonProperty("tipoFormaPagamento")]

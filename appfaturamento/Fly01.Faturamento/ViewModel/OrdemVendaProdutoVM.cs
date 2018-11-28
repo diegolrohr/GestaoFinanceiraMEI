@@ -10,6 +10,12 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("produtoId")]
         public Guid ProdutoId { get; set; }
 
+        [JsonProperty("icms")]
+        public double Icms { get; set; }
+
+        [JsonProperty("fcp")]
+        public double Fcp { get; set; }
+
         [JsonProperty("valorCreditoICMS")]
         public double ValorCreditoICMS { get; set; }
 

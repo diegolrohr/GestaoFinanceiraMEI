@@ -116,6 +116,8 @@ namespace Fly01.Compras.BL
                             }
                         }
                     }
+                    else
+                        throw new BusinessException("Limite máximo é de 100 registros por importação.");
 
                     arquivo.Retorno += count + " Registros inseridos com sucesso.";
                     Update(arquivo);

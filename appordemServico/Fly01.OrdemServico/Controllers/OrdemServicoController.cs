@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
@@ -32,7 +33,7 @@ namespace Fly01.OrdemServico.Controllers
 
         public OrdemServicoController()
         {
-            ExpandProperties = "cliente($select=id,nome,email;$expand=cidade($select=nome),estado($select=sigla))";
+            ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,celular,telefone;$expand=cidade($select=nome),estado($select=sigla))";
         }
 
         private JsonResult GetJson(object data)
@@ -719,7 +720,7 @@ namespace Fly01.OrdemServico.Controllers
             ClienteCelular = os.Cliente?.Celular,
             ClienteTelefone = os.Cliente?.Telefone,
             ClienteEndereco = GetEndereco(os.Cliente),
-            ClientEmail = os.Cliente?.Email,
+            ClienteEmail = os.Cliente?.Email,
             DataEmissao = os.DataEmissao.ToString(),
             DataEntrega = os.DataEntrega.ToString(),
             Status = os.Status.ToString(),
@@ -850,6 +851,53 @@ namespace Fly01.OrdemServico.Controllers
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
             }
+        }
+
+        public JsonResult PostCliente(string term)
+        {
+            var entity = new PessoaVM
+            {
+                Nome = term,
+                Cliente = true,
+                TipoIndicacaoInscricaoEstadual = "ContribuinteIsento",
+                SituacaoEspecialNFS = "Outro"
+            };
+
+            NormarlizarEntidade(ref entity);
+
+            try
+            {
+                var resourceName = AppDefaults.GetResourceName(typeof(PessoaVM));
+                var data = RestHelper.ExecutePostRequest<PessoaVM>(resourceName, entity, AppDefaults.GetQueryStringDefault());
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        private void NormarlizarEntidade(ref PessoaVM entityVM)
+        {
+            const string regexSomenteDigitos = @"[^\d]";
+
+            entityVM.CPFCNPJ = Regex.Replace(entityVM.CPFCNPJ ?? "", regexSomenteDigitos, "");
+            entityVM.TipoDocumento = GetTipoDocumento(entityVM.CPFCNPJ ?? "");
+            entityVM.Celular = Regex.Replace(entityVM.Celular ?? "", regexSomenteDigitos, "");
+            entityVM.Telefone = Regex.Replace(entityVM.Telefone ?? "", regexSomenteDigitos, "");
+            entityVM.CEP = Regex.Replace(entityVM.CEP ?? "", regexSomenteDigitos, "");
+        }
+
+        private string GetTipoDocumento(string documento)
+        {
+            if (documento.Length <= 11)
+                return "F";
+            if (documento.Length > 11)
+                return "J";
+
+            return null;
         }
         #endregion
     }

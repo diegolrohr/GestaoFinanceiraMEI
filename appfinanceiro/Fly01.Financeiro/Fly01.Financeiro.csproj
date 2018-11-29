@@ -396,6 +396,9 @@
     <Content Include="Views\ContaPagar\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\ContaReceber\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\Cnab\Functions\_fnUpdateDataFinal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -287,7 +287,6 @@ namespace Fly01.Financeiro.Controllers
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
-            
 
             if (Request.QueryString["dataFinal"] != "")
                 filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);

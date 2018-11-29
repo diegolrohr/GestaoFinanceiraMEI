@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Fly01.Core.Helpers
 {
@@ -37,14 +38,20 @@ namespace Fly01.Core.Helpers
         }
 
         public static string RemoverAcentos(string texto)
-        {
+        {   
             //"ÄÅÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛüúûùÇç";
             if (string.IsNullOrEmpty(texto))
                 return String.Empty;
 
+            texto = RemoveSpecialCharacters(texto);
             texto = texto.Replace(Environment.NewLine, " ");//remove enters
-            byte[] bytes = System.Text.Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
-            return System.Text.Encoding.UTF8.GetString(bytes);
+            byte[] bytes = Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static string RemoveSpecialCharacters(string str)
+        {
+            return Regex.Replace(str, "[^0-9A-Za-z ,]+", "", RegexOptions.Compiled);
         }
     }
 }

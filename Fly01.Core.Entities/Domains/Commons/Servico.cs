@@ -28,6 +28,12 @@ namespace Fly01.Core.Entities.Domains.Commons
         [StringLength(5)]
         public string CodigoFiscalPrestacao { get; set; }
 
+        public string CodigoIss { get; set; }
+
+        public string CodigoNbs { get; set; }
+
+        public string AbreviacaoUnidadeMedida { get; set; }
+
         public Guid? UnidadeMedidaId { get; set; }
 
         public virtual Nbs Nbs { get; set; }

@@ -37,6 +37,15 @@ namespace Fly01.Faturamento.ViewModel
         [JsonProperty("unidadeMedidaId")]
         public Guid? UnidadeMedidaId { get; set; }
 
+        [JsonProperty("codigoIss")]
+        public string CodigoIss { get; set; }
+
+        [JsonProperty("codigoNbs")]
+        public string CodigoNbs { get; set; }
+
+        [JsonProperty("abreviacaoUnidadeMedida")]
+        public string AbreviacaoUnidadeMedida { get; set; }
+
         [JsonProperty("iss")]
         public virtual ISSVM Iss { get; set; }
 

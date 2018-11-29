@@ -63,7 +63,7 @@ namespace Fly01.OrdemServico.BL
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));
 
         private ServicoBL servicoBL;
-        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context));
+        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context, ISSBL, NBSBL, UnidadeMedidaBL));
 
         private UnidadeMedidaBL unidadeMedidaBL;
         public UnidadeMedidaBL UnidadeMedidaBL => unidadeMedidaBL ?? (unidadeMedidaBL = new UnidadeMedidaBL(Context));

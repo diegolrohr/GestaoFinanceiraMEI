@@ -9,21 +9,11 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Ordem de Serviço:  </Value>
+                <Value />
                 <MarkupType>HTML</MarkupType>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
-              </TextRun>
-              <TextRun>
-                <Value xml:space="preserve"> </Value>
-                <MarkupType>HTML</MarkupType>
-                <Style />
-              </TextRun>
-              <TextRun>
-                <Value>=Fields!Numero.Value</Value>
-                <MarkupType>HTML</MarkupType>
-                <Style />
               </TextRun>
             </TextRuns>
             <Style>
@@ -57,9 +47,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.03841cm</Top>
-        <Left>0.18287cm</Left>
+        <Left>3.29533cm</Left>
         <Height>2.50472cm</Height>
-        <Width>16.28385cm</Width>
+        <Width>9.93342cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -519,7 +509,7 @@
         <Top>10.64346cm</Top>
         <Left>0.05298cm</Left>
         <Height>1.19146cm</Height>
-        <Width>16.43002cm</Width>
+        <Width>16.43001cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -641,7 +631,15 @@
                             </TextRun>
                             <TextRun>
                               <Value>=Fields!ClienteEmail.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value xml:space="preserve"> </Value>
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -909,7 +907,7 @@
         <Top>3.90331cm</Top>
         <Left>0.05298cm</Left>
         <Height>1.95656cm</Height>
-        <Width>16.46672cm</Width>
+        <Width>16.46671cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -1069,6 +1067,51 @@
                 </TextRuns>
                 <Style />
               </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox255</rd:DefaultName>
             <Height>3.2191cm</Height>
@@ -1116,7 +1159,6 @@
         <MIMEType>image/png</MIMEType>
         <Sizing>FitProportional</Sizing>
         <Top>0.03841cm</Top>
-        <Left>0.07462cm</Left>
         <Height>2.50472cm</Height>
         <Width>3.15422cm</Width>
         <ZIndex>8</ZIndex>
@@ -1126,11 +1168,54 @@
           </Border>
         </Style>
       </Image>
+      <Textbox Name="Textbox2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Ordem de Serviço:  </Value>
+                <MarkupType>HTML</MarkupType>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <MarkupType>HTML</MarkupType>
+                <Style />
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!Numero.Value</Value>
+                <MarkupType>HTML</MarkupType>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>0.03841cm</Top>
+        <Left>11.50647cm</Left>
+        <Height>0.6cm</Height>
+        <Width>5.01323cm</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
     <Height>6.08615in</Height>
     <Style />
   </Body>
-  <Width>6.51467in</Width>
+  <Width>6.53509in</Width>
   <Page>
     <PageFooter>
       <Height>0.78449cm</Height>
@@ -1305,10 +1390,6 @@
           <DataField>ClienteEndereco</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ClienteEmail">
-          <DataField>ClienteEmail</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="ItemObservacao">
           <DataField>ItemObservacao</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -1321,10 +1402,14 @@
           <DataField>ClienteTelefone</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ClienteEmail">
+          <DataField>ClienteEmail</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetReports</rd:DataSetName>
-        <rd:SchemaPath>E:\Projeto\C#\Fly01.Apps\appordemServico\Fly01.OrdemServico\Reports\DataSetReports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\git\Fly01.Apps\appordemServico\Fly01.OrdemServico\Reports\DataSetReports.xsd</rd:SchemaPath>
         <rd:TableName>OrdemServico</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

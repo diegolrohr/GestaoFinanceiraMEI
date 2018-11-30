@@ -10,8 +10,6 @@
         
         if (id.length == 0)
         {
-            retornaDataEntregaParametro();
-            retornaResponsavelPadraoParametro();
             return true;
         }
 
@@ -48,6 +46,7 @@
                     var dataEntrega = new Date();
                     dataEntrega.setDate(today.getDate() + data.diasPrazoEntrega);
                     $$$._.dataEntrega.set(dataEntrega);
+                     ;
                     $$$.loading.stop();
                 }
             },
@@ -85,6 +84,7 @@
                 $('input#quantidadeItensCliente').val("0");
                 $$$.fn.submitErrorHandler(null, data.message);
             }
+             ;
             $$$.loading.stop();
         })
         .fail(function (jqxhr, textStatus, error) {
@@ -104,23 +104,22 @@
         $('#stepCadastro > div.step-content > div.step-actions > button.btn.next-step').click(function () {
             saveOrdemServico();
         });
-        $('li#stepProdutos div.step-title').click(function () {
+        $('li#stepItensCliente div.step-title').click(function () {
             saveOrdemServico();
         });
     }
 
     function fnBindOverrideSubmit() {
-        
         $("form#fly01frm").off("submit");
         $("form#fly01frm").on("submit", function (e) {
             e.preventDefault();
             if (!$(this).valid()) return false;
 
             $$$.loading.start();
+            $('input#numero').removeAttr('disabled');
             var jsonData = $(this).serializeObject();
+            $('input#numero').attr('disabled', 'disabled');
             $$$.fn.updateTextFields();
-
-            
 
             var url;
             if (isCreate()) {
@@ -137,7 +136,6 @@
             if (finalizarPreenchimento && jsonData.status === 'EmPreenchimento') {
                 jsonData.status = "EmAberto";
             }
-
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -145,12 +143,11 @@
                 url: url,
                 data: JSON.stringify({ 'entityVM': jsonData }),
                 success: function success(data) {
+                     ;
                     if (data.success) {
-                        $$$.loading.stop();
                         var strMsg = "Cadastrado com sucesso.";
                         if (data.message !== "" && !onCancelMustDeleteOrdemServico) strMsg = data.message;
                         //fica na página ou volta pra lista
-                        
                         if (justSaveOrdemToGoStepProdutos) {
                             onCancelMustDeleteOrdemServico= true;
                             $("form#fly01frm input#id").val(data.id);
@@ -162,8 +159,12 @@
                             window.history.pushState({}, document.title, url);
                             $("form#fly01frm").data("action", "@Url.Action("Edit", "OrdemServico")");
                             justSaveOrdemToGoStepProdutos = false;
+                             ;
+                            $$$.loading.stop();
+                            return true;
                         }
                         else {
+                            $$$.loading.stop();
                             $$$.toast(strMsg, "success");
                             $$$.go("@Url.Action("List", "OrdemServico")");
                         }
@@ -171,12 +172,11 @@
                         if (justSaveOrdemToGoStepProdutos) {
                             $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
+                         ;
                         $$$.loading.stop();
                         $("div#clienteIdField").show();
                         $$$.fn.submitErrorHandler(null, data.message);
                     }
-
-                    return data.success;
                 },
                 error: function error(jXHR, textStatus) {
                     $$$.toast(textStatus, "error");
@@ -196,7 +196,10 @@
             $('#btnNormal').click();
             var today = new Date();
             $$$._.dataEmissao.set(today);
-            
+
+            retornaDataEntregaParametro();
+            retornaResponsavelPadraoParametro();
+
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
         }

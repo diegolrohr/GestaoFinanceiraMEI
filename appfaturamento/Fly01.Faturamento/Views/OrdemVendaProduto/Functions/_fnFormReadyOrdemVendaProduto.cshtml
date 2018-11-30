@@ -37,9 +37,11 @@
             })
             .done(function (data) {
                 if (data.success) {
-                    $('input#fcp').val(data.imposto.AliquotaFCP);
-                    $('input#icms').val(data.imposto.AliquotaSimplesNacional);
-                    $$$.fn.updateTextFields();
+                    if (data.imposto != null) {
+                        $('input#fcp').val(data.imposto.AliquotaFCP);
+                        $('input#icms').val(data.imposto.AliquotaSimplesNacional);
+                        $$$.fn.updateTextFields();
+                    }
                 }
                 else {
 

@@ -70,10 +70,10 @@
         }
         else {
             if (dataInicial === "" && dataFinal === "") {
-                var url = "@Url.Action("ImprimirListContas", "ContaPagar")";
+                var url = "@Url.Action("ImprimirListContas", "ContaPagar")?tipoStatus=" + $("#statusContaBancaria").val();
             } else {
               var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
-                (($("#dataInicial").val() !== undefined || dateParam !== "") ?
+                ((($("#dataInicial").val() !== undefined || dateParam !== "") ?
                     (dateParam !== undefined && dateParam !== "" ?
                         ((queryStringOdata !== "") ? " and" : "") + " dataVencimento eq " + newDate :
                         ((queryStringOdata !== "") ? " and" : "") + " dataVencimento le " + dataFinal + " and dataVencimento ge " + dataInicial): "") +
@@ -82,7 +82,7 @@
                         " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", "."))) : "") +
                 ($("#numero").val() !== "" ?
                     (($("#valorPrevisto").val() !== "" && $("#valorPrevisto").val() !== "0,00" || queryStringOdata !== "" || $("#dataInicial").val() !== undefined || dateParam !== "") ?
-                        " and numero eq " + $("#numero").val() : " numero eq " + $("#numero").val()) : "") +
+                        " and numero eq " + $("#numero").val() : " numero eq " + $("#numero").val()) : "")) +
                 "&tipoStatus=" + $("#statusContaBancaria").val();
             }
 

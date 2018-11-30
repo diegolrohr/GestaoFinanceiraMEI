@@ -51,7 +51,7 @@ namespace Fly01.Core.Helpers
 
         public static string RemoveSpecialCharacters(string str)
         {
-            return Regex.Replace(str, "[^0-9A-Za-z ,]+", "", RegexOptions.Compiled);
+            return Regex.Replace(str ?? "", "[~|'|!|$|%|¨|&|*|,|;|'|`|´|{|}]", "");
         }
     }
 }

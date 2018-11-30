@@ -98,7 +98,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public List<ContaReceberVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
+        public List<ContaReceberVM> GetListContaPagar(string queryStringOdata = "", string tipoStatus = "")
         {
             var queryString = new Dictionary<string, string>();
             var strStatusConta = !string.IsNullOrEmpty(queryStringOdata)

@@ -102,7 +102,7 @@ namespace Fly01.Faturamento.BL
 
         public override void Insert(NFSe entity)
         {
-            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida || entity.Status != StatusNotaFiscal.Transmitida, new Error("Uma nova NFS-e só pode estar com status 'Não Transmitida' ou 'Transmitida'", "status"));
+            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida && entity.Status != StatusNotaFiscal.Transmitida, new Error("Uma nova NFS-e só pode estar com status 'Não Transmitida' ou 'Transmitida'", "status"));
             base.Insert(entity);
         }
 
@@ -110,7 +110,7 @@ namespace Fly01.Faturamento.BL
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
 
-            entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida & previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
+            entity.Fail(previous.Status != StatusNotaFiscal.FalhaTransmissao && previous.Status != StatusNotaFiscal.NaoTransmitida && previous.Status != StatusNotaFiscal.NaoAutorizada && entity.Status == StatusNotaFiscal.Transmitida, new Error("Para transmitir, somente notas fiscais com status anterior igual a Não Transmitida ou Não Autorizada", "status"));
             entity.Fail(
                 previous.Status != StatusNotaFiscal.NaoTransmitida &&
                 entity.Status != StatusNotaFiscal.Transmitida &&

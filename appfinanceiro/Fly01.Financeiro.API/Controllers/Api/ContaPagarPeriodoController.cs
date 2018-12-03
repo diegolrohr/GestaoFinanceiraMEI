@@ -10,7 +10,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class ContaPagarPeriodoController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal)
+        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal, bool ignoraExclusao)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -27,7 +27,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var contasExclusao = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
                             x => x.Categoria,
                             x => x.FormaPagamento
-                        ).Where(x => x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal);
+                        ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal));
 
                 return Ok(
                     new

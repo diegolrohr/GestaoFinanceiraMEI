@@ -5,8 +5,8 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        //private static string cdnVersion = "0.1.1"; 
-        private static string cdnVersion = "stage";
+        private static string cdnVersion = "0.1.1"; 
+        //private static string cdnVersion = "stage";
         private static string libName = "mpnui";
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; /*

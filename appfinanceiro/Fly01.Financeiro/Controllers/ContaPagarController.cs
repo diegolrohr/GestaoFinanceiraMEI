@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
+        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata = "", string tipoStatus = "")
         {
             var queryString = new Dictionary<string, string>();
             var strStatusConta = !string.IsNullOrEmpty(queryStringOdata)
@@ -287,7 +287,6 @@ namespace Fly01.Financeiro.Controllers
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
-            
 
             if (Request.QueryString["dataFinal"] != "")
                 filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);

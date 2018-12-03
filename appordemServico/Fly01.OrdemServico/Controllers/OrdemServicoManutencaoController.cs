@@ -72,7 +72,9 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "produtoId",
+                //2 modais com as mesmas propriedades, erro onDeman
+                Id = "produtoManutencaoId",
+                Name = "produtoId",
                 Class = "col s12 m6",
                 Label = "Produto do cliente",
                 Required = true,

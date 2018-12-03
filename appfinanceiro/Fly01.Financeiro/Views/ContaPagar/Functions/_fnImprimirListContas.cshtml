@@ -55,14 +55,8 @@
         var ListParams = GetListParams();
         var queryStringOdata = "";
 
-        if ($("#dataInicial").val() != undefined) {
-            let date = $$$._.mesPicker.pickamonth("picker").get("select");
-            var firstDay = new Date(date.year, date.month, 1);
-            let lastDay = new Date(date.year, date.month + 1, 0);
-
-            var dataInicial = $("#dataInicial").val(moment(firstDay).format('YYYY-MM-DD'));
-            var dataFinal = $("#dataFinal").val(moment(lastDay).format('YYYY-MM-DD'));
-        }
+        let dataInicial = $("#dataInicial").val();
+        let dataFinal = $("#dataFinal").val();
 
         var dateParam = $("#dataVencimento").val().split("/").reverse().join("/");
         var newDate = dateParam.replace("/", "-").replace("/", "-");
@@ -71,22 +65,26 @@
             queryStringOdata += "contains(" + ListParams[list].key + ", " + "'" + ListParams[list].value + "'" + ")" + (ListParams[list] != ListParams[ListParams.length - 1] ? " and " : "");
         }
 
-        if (validateDate($("#dataVencimento").val()) && $("#dataVencimento").val() != "") {
+        if (validateDate($("#dataVencimento").val()) && $("#dataVencimento").val() !== "") {
             $$$.toast('Data inválida', 'error');
         }
         else {
-            var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
-                (($("#dataInicial").val() != undefined || dateParam != "") ?
-                    (dateParam != undefined && dateParam != "" ?
-                        ((queryStringOdata != "") ? " and" : "") + " dataVencimento eq " + newDate :
-                        ((queryStringOdata != "") ? " and" : "") + " dataVencimento le " + dataFinal.val() + " and dataVencimento ge " + dataInicial.val()): "") +
-                (($("#valorPrevisto").val() != "" && $("#valorPrevisto").val() != "0,00") ?
-                    (($("#dataInicial").val() != undefined || dateParam != "" || queryStringOdata != "" ) ?
+            if (dataInicial === "" && dataFinal === "") {
+                var url = "@Url.Action("ImprimirListContas", "ContaPagar")?tipoStatus=" + $("#statusContaBancaria").val();
+            } else {
+              var url = "@Url.Action("ImprimirListContas", "ContaPagar")?queryStringOdata=" + queryStringOdata +
+                ((($("#dataInicial").val() !== undefined || dateParam !== "") ?
+                    (dateParam !== undefined && dateParam !== "" ?
+                        ((queryStringOdata !== "") ? " and" : "") + " dataVencimento eq " + newDate :
+                        ((queryStringOdata !== "") ? " and" : "") + " dataVencimento le " + dataFinal + " and dataVencimento ge " + dataInicial): "") +
+                (($("#valorPrevisto").val() !== "" && $("#valorPrevisto").val() !== "0,00") ?
+                    (($("#dataInicial").val() !== undefined || dateParam !== "" || queryStringOdata !== "" ) ?
                         " and valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", ".")) : "valorPrevisto eq " + parseFloat($("#valorPrevisto").val().replace(",", "."))) : "") +
-                ($("#numero").val() != "" ?
-                    (($("#valorPrevisto").val() != "" && $("#valorPrevisto").val() != "0,00" || queryStringOdata != "" || $("#dataInicial").val() != undefined || dateParam != "") ?
-                        " and numero eq " + $("#numero").val() : " numero eq " + $("#numero").val()) : "") +
+                ($("#numero").val() !== "" ?
+                    (($("#valorPrevisto").val() !== "" && $("#valorPrevisto").val() !== "0,00" || queryStringOdata !== "" || $("#dataInicial").val() !== undefined || dateParam !== "") ?
+                        " and numero eq " + $("#numero").val() : " numero eq " + $("#numero").val()) : "")) +
                 "&tipoStatus=" + $("#statusContaBancaria").val();
+            }
 
             if ($$$._.fly01dt.ajax.json().data.length > 0)
                 fnImprimir(url);

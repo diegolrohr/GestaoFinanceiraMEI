@@ -114,10 +114,9 @@ namespace Fly01.EmissaoNFE.BL
                     var creditosDeICMS = nota.Detalhes.Where(x =>
                         (x.Imposto != null) &&
                         (x.Imposto.ICMS != null) &&
-                        (x.Imposto.ICMS.CodigoSituacaoOperacao.HasFlag(
-                            TipoTributacaoICMS.TributadaComPermissaoDeCredito |
-                            TipoTributacaoICMS.TributadaComPermissaoDeCreditoST |
-                            TipoTributacaoICMS.Outros))&&
+                        (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCredito || 
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros) &&
                         (x.Imposto.ICMS.ValorCreditoICMS.HasValue));
 
                     var totalCredito = creditosDeICMS.Sum(x => x.Imposto.ICMS.ValorCreditoICMS.Value);
@@ -126,10 +125,10 @@ namespace Fly01.EmissaoNFE.BL
 
                     if(totalCredito > 0 && aliquota > 0)
                     {
-                        var mensagemAproveitamentoCredito = 
+                        var mensagemAproveitamentoCredito =
                             string.Format("PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE R$ {0}; CORRESPONDENTE À ALÍQUOTA DE {1}%, NOS TERMOS DO ARTIGO 23 DA LC 123.",
-                                totalCredito.ToString("0,00"),
-                                aliquota.ToString("0,00"));
+                                totalCredito.ToString("0.00"),
+                                aliquota.ToString("0.00"));
 
                         if (nota.InformacoesAdicionais == null)
                         {

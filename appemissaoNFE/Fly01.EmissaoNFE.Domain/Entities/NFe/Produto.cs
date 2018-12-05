@@ -182,10 +182,17 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Este campo deverá ser preenchido com: 0 - o valor do item (vProd) não compõe o valor total da NF-e (vProd) 1 - o valor do item (vProd) compõe o valor total da NF-e.
         /// </summary>
-        [XmlElement(ElementName = "vDesc", IsNullable = true)]
+        [XmlIgnore]
         public double? ValorDesconto { get; set; }
 
-        public bool ShouldSerializeValorDesconto()
+        [XmlElement(ElementName = "vDesc")]
+        public string ValorDescontoString
+        {
+            get { return ValorDesconto.HasValue ? ValorDesconto.Value.ToString("0.00").Replace(",", ".") : null; }
+            set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
+        }
+
+        public bool ShouldSerializeValorDescontoString()
         {
             return ValorDesconto.HasValue & ValorDesconto > 0;
         }

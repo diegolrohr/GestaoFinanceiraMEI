@@ -19,16 +19,18 @@
             url: "@Url.Action("ImportaArquivo")",
             data: { conteudo: csv },
             success: function (response) {
-                $("#observacao").closest("div").css("display", "block");
-                $("#observacao").val(response.Retorno);
-                $("#observacao").trigger("autoresize");
-                $$$.fn.updateTextFields();
-                $('body').addClass('loaded');
+                if (response.message == null) {
+                    $("#observacao").closest("div").css("display", "block");
+                    $("#observacao").val(response.Retorno);
+                    $("#observacao").trigger("autoresize");
+                    $$$.fn.updateTextFields();
+                    $('body').addClass('loaded');
+                }
+                else {
+                    $$$.toast(response.message, 'error');
+                    $('body').addClass('loaded');
+                }
             },
-            error: function (jXHR, textStatus, errorThrown) {
-                $('body').addClass('loaded');
-                $$$.toast(errorThrown, 'error');
-            }
         });
     }
 

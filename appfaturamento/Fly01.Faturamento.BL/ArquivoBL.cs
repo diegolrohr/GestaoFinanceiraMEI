@@ -56,24 +56,70 @@ namespace Fly01.Faturamento.BL
                     if (!ValidaColunasImportadas(cols, PessoaBL.ColunasParaImportacao()))
                         throw new BusinessException("Colunas inválidas");
 
-                    for (var i = 1; i < content.Length; i++)
+                    int count = 0;
+                    if (content.Length <= 100)
                     {
-                        try
+                        for (var i = 1; i < content.Length; i++)
                         {
-                            if (!string.IsNullOrWhiteSpace(content[i]))
-                                PopularArquivo(arquivo, content, cols, cpf, cnpj, i);
-                        }
-                        catch
-                        { }
-                        finally
-                        {
-                            var totalProcessado = (double)i / content.Length * 100.0;
-                            arquivo.TotalProcessado = (totalProcessado > 100 || i == (content.Length - 1))
-                                ? 100.0
-                                : totalProcessado;
+                            try
+                            {
+                                if (!string.IsNullOrWhiteSpace(content[i]))
+                                {
+                                    var pessoa = PopulaEntidade(new Pessoa(), cols, content[i]);
+                                    pessoa.CPFCNPJ = Regex.Replace(pessoa.CPFCNPJ ?? "", @"[^\d]", "").PadLeft(11, '0');
+
+                                    var cpjcnpjJaExiste = false;
+                                    if (pessoa.CPFCNPJ == "00000000000")
+                                        pessoa.CPFCNPJ = string.Empty;
+
+                                    switch (pessoa.TipoDocumento)
+                                    {
+                                        case "F":
+                                            cpjcnpjJaExiste = cpf.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
+                                            cpf.Add(pessoa.CPFCNPJ);
+                                            break;
+                                        case "J":
+                                            cpjcnpjJaExiste = cnpj.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
+                                            cnpj.Add(pessoa.CPFCNPJ);
+                                            break;
+                                    }
+
+                                    if (cpjcnpjJaExiste)
+                                        pessoa.Notification.Errors.Add(new Error(string.Format("CPF/CNPJ duplicado no arquivo : {0} - {1}", pessoa.Nome, pessoa.CPFCNPJ)));
+
+                                    PessoaBL.ValidaModelNoBase(pessoa);
+                                    if (!cpjcnpjJaExiste && PessoaBL.IsValid(pessoa))
+                                    {
+                                        PessoaBL.Insert(pessoa);
+                                        insertedPessoas.Add(pessoa);
+
+                                        count = count + 1;
+                                    }
+                                    else
+                                    {
+                                        var errors = pessoa.Notification.Errors.Select(e =>
+                                        {
+                                            return string.Format("Campo: {0}; Mensagem: {1}", e.DataField, e.Message);
+                                        }).FirstOrDefault();
+                                        arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + errors + "\n";
+                                    }
+                                }
+                            }
+                            catch
+                            { }
+                            finally
+                            {
+                                var totalProcessado = (double)i / content.Length * 100.0;
+                                arquivo.TotalProcessado = (totalProcessado > 100 || i == (content.Length - 1))
+                                    ? 100.0
+                                    : totalProcessado;
+                            }
                         }
                     }
+                    else
+                        throw new BusinessException("Limite máximo é de 100 registros por importação.");
 
+                    arquivo.Retorno += count + " Registros inseridos com sucesso.";
                     Update(arquivo);
                 }
             }
@@ -81,51 +127,6 @@ namespace Fly01.Faturamento.BL
             {
                 var message = ex.Message + ex.InnerException?.Message + ex.InnerException?.InnerException?.Message;
                 throw new BusinessException(message + " " + ex.InnerException?.Message);
-            }
-        }
-
-        private void PopularArquivo(Arquivo arquivo, string[] content, List<string> cols, List<string> cpf, List<string> cnpj, int i)
-        {
-            var pessoa = PopulaEntidade(new Pessoa(), cols, content[i]);
-            pessoa.CPFCNPJ = Regex.Replace(pessoa.CPFCNPJ ?? "", @"[^\d]", "").PadLeft(11, '0');
-
-            var cpjcnpjJaExiste = false;
-            if (pessoa.CPFCNPJ == "00000000000")
-                pessoa.CPFCNPJ = string.Empty;
-
-            switch (pessoa.TipoDocumento)
-            {
-                case "F":              
-                    cpjcnpjJaExiste = cpf.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
-                    cpf.Add(pessoa.CPFCNPJ);
-                    break;
-                case "J":
-                    cpjcnpjJaExiste = cnpj.Any(x => x == pessoa.CPFCNPJ && !string.IsNullOrEmpty(pessoa.CPFCNPJ));
-                    cnpj.Add(pessoa.CPFCNPJ);
-                    break;
-            }
-            if (cpjcnpjJaExiste)
-                pessoa.Notification.Errors.Add(new Error(string.Format("CPF/CNPJ duplicado no arquivo : {0} - {1}", pessoa.Nome, pessoa.CPFCNPJ)));
-
-            PessoaBL.ValidaModelNoBase(pessoa);
-            InsertPessoa(arquivo, i, pessoa, cpjcnpjJaExiste);
-        }
-
-        private void InsertPessoa(Arquivo arquivo, int i, Pessoa pessoa, bool cpjcnpjJaExiste)
-        {
-            if (!cpjcnpjJaExiste && PessoaBL.IsValid(pessoa))
-            {
-                PessoaBL.Insert(pessoa);
-                insertedPessoas.Add(pessoa);
-                arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + pessoa.Nome + ", CPF/CNPJ " + pessoa.CPFCNPJ + " cadastrado com sucesso\n";
-            }
-            else
-            {
-                var errors = pessoa.Notification.Errors.Select(e =>
-                {
-                    return string.Format("Campo: {0}; Mensagem: {1}", e.DataField, e.Message);
-                }).FirstOrDefault();
-                arquivo.Retorno += "Linha " + (i + 1).ToString().PadLeft(5, '0') + ";" + errors + "\n";
             }
         }
 

@@ -2,5 +2,7 @@
     function fnRemoveFilter() {
         $$$.go("@Url.Action("ListContaPagar", "ContaPagar")" + "?action=GridLoadNoFilter");
         $$$._.fly01dt.refresh();
+        $("#dataInical").val("");
+        $("#dataFinal").val("");
     }
 </script>

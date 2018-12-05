@@ -1,21 +1,21 @@
-﻿using System;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using Fly01.uiJS.Classes;
-using Fly01.uiJS.Defaults;
-using Fly01.Financeiro.ViewModel;
-using System.Collections.Generic;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.Core.Presentation.Commons;
+﻿using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
-using Fly01.Financeiro.Controllers.Base;
-using Fly01.Core;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
-using Fly01.uiJS.Enums;
+using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
-using System.Linq;
+using Fly01.Financeiro.Controllers.Base;
+using Fly01.Financeiro.ViewModel;
+using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -83,7 +83,7 @@ namespace Fly01.Financeiro.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() {"fnImprimirBoleto" },
+                Functions = new List<string>() { "fnImprimirBoleto" },
                 ReadyFn = "fnFormReady"
             };
 
@@ -127,7 +127,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "dtCnabItem",
                 UrlGridLoad = Url.Action("GridLoadContaCnabItem", "CnabItem"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum"},
+                Functions = new List<string>() { "fnRenderEnum" },
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "pessoaId", Required = true, Value = "PessoaId" }
@@ -137,7 +137,7 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1 });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "dataVencimento", DisplayName = "Vencimento", Priority = 2, Type = "date" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorPrevisto", DisplayName = "Valor", Priority = 3, Type = "currency" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7});
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricaoParcela", DisplayName = "Parcela", Priority = 7 });
             dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "statusContaBancaria",
@@ -155,15 +155,16 @@ namespace Fly01.Financeiro.Controllers
             return cfg;
         }
 
-        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        public List<HtmlUIButton> GetListButtonsOnHeader(string buttonLabel, string buttonOnClick)
         {
             var target = new List<HtmlUIButton>();
 
-            if(UserCanWrite)
+            if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "btnGerarBoleto", Label = "Gerar Boleto", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "btnGerarArqRemessa", Label = "Gerar Arq. Remessa", OnClickFn = "fnGerarArquivoRemessa", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "btnSendManyMails", Label = "Enviar Emails", OnClickFn = "fnSendManyMails", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "new", Label = buttonLabel, OnClickFn = buttonOnClick });
             }
 
             return target;
@@ -171,17 +172,74 @@ namespace Fly01.Financeiro.Controllers
 
         public override ContentResult List()
         {
+            return ListBoletos();
+        }
+
+        public ContentResult ListBoletos(string gridLoad = "GridLoad")
+        {
+            var buttonLabel = "Mostrar todas os boletos";
+            var buttonOnClick = "fnRemoveFilter";
+
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
+            {
+                gridLoad = Request.QueryString["action"];
+                buttonLabel = "Mostrar boletos do mes atual";
+                buttonOnClick = "fnAddFilter";
+            }
+
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory() { Default = Url.Action("Index", "Cnab") },
                 Header = new HtmlUIHeader()
                 {
                     Title = "Boletos",
-                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())                   
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto"}
+                Functions = new List<string>() { "fnFormReadyCnab", "fnImprimirBoleto" }
             };
+
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+
+            if (gridLoad == "GridLoad")
+            {
+                cfgForm.Elements.Add(new PeriodPickerUI()
+                {
+                    Label = "Selecione o período",
+                    Id = "mesPicker",
+                    Name = "mesPicker",
+                    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                    DomEvents = new List<DomEventUI>()
+                    {
+                        new DomEventUI()
+                        {
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
+                        }
+                    }
+                });
+                cfgForm.ReadyFn = "fnUpdateDataFinal";
+            }
+
+            cfg.Content.Add(cfgForm);
 
             var dtConfig = new DataTableUI()
             {
@@ -191,9 +249,18 @@ namespace Fly01.Financeiro.Controllers
                 Functions = new List<string> { "fnFormReadyCnab", "fnRenderEnum" },
                 Options = new DataTableUIConfig()
                 {
-                    Select = new { style = "multi" }
-                }
+                    Select = new { style = "multi" },
+                    OrderColumn = 2,
+                    OrderDir = "asc"
+                },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter() {Id = "dataInicial" },
+                    new DataTableUIParameter() {Id = "dataFinal" }
+                },
             };
+
+
             dtConfig.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
@@ -210,7 +277,7 @@ namespace Fly01.Financeiro.Controllers
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaBancariaCedente_banco_nome", Priority = 4, DisplayName = "Banco" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "contaReceber_pessoa_email", Priority = 5, DisplayName = "Email" });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "valorBoleto", Priority = 5, DisplayName = "Valor" });
-            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab"});
+            dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Imprimir", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnImprimirBoletoCnab" });
             dtConfig.Columns.Add(new DataTableUIColumn { DisplayName = "Compartilhar", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnModalEmail" });
 
             cfg.Content.Add(dtConfig);
@@ -236,7 +303,7 @@ namespace Fly01.Financeiro.Controllers
                 ReadyFn = "fnFormReadyModal"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "ids"});
+            config.Elements.Add(new InputHiddenUI { Id = "ids" });
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });
@@ -251,7 +318,7 @@ namespace Fly01.Financeiro.Controllers
 
             config.Elements.Add(new InputTextUI { Id = "assunto", Class = "col s12 l12", Label = "Assunto", Readonly = false });
             config.Elements.Add(new TextAreaUI { Id = "mensagem", Class = "col s12 l12", Label = "Mensagem", MaxLength = 150 });
-            
+
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
@@ -260,7 +327,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                var templete = RestHelper.ExecuteGetRequest <ResultBase<TemplateBoletoVM>>("templateboleto");
+                var templete = RestHelper.ExecuteGetRequest<ResultBase<TemplateBoletoVM>>("templateboleto");
 
                 return Json(new
                 {
@@ -276,5 +343,29 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
+        {
+            if (filters == null)
+            {
+                filters = new Dictionary<string, string>();
+            }
+
+            if (Request.QueryString["dataFinal"] != "")
+            {
+                filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
+            }
+
+            if (Request.QueryString["dataInicial"] != "")
+            {
+                filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
+            }
+
+            return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return GridLoad();
+        }
     }
 }

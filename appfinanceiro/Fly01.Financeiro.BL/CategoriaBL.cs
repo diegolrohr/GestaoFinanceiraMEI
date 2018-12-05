@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Data.Entity;
 
 namespace Fly01.Financeiro.BL
 {
@@ -24,13 +25,14 @@ namespace Fly01.Financeiro.BL
 
         public override void Update(Categoria entity)
         {
-            var categoriaPaiIdAlterada = All.Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            var categoriaPaiIdAlterada = All.AsNoTracking().Where(x => x.Id == entity.Id).Any(x => x.CategoriaPaiId != entity.CategoriaPaiId);
+            var previous = All.AsNoTracking().Where(x => x.Id == entity.Id).FirstOrDefault();
             bool categoriaTemFilho = All.Where(x => x.CategoriaPaiId == entity.Id).Any();
             bool temContaReceberRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaReceber  && e.Ativo).Any();
             bool temContaPagarRelacionada = contaFinanceiraBL.All.Where(e => e.CategoriaId == entity.Id && e.TipoContaFinanceira == TipoContaFinanceira.ContaPagar && e.Ativo).Any();
 
 
-            entity.Fail((temContaPagarRelacionada && entity.TipoCarteira == TipoCarteira.Receita) || (temContaReceberRelacionada && entity.TipoCarteira == TipoCarteira.Despesa), AlterarTipoInvalidaFK);
+            entity.Fail((previous != null) && (entity.TipoCarteira != previous.TipoCarteira) && (temContaPagarRelacionada && entity.TipoCarteira == TipoCarteira.Receita) || (temContaReceberRelacionada && entity.TipoCarteira == TipoCarteira.Despesa), AlterarTipoInvalidaFK);
             entity.Fail(categoriaTemFilho && entity.CategoriaPaiId.HasValue, AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(categoriaPaiIdAlterada && All.Any(x => x.CategoriaPaiId == entity.Id), AlteracaoCategoriaSuperiorInvalida);
             entity.Fail(All.Any(x => x.CategoriaPaiId == entity.Id && x.TipoCarteira != entity.TipoCarteira), AlteracaoTipoInvalida);

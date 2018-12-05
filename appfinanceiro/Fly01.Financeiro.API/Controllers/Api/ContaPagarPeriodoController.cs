@@ -10,23 +10,31 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class ContaPagarPeriodoController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal)
+        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal, bool ignoraExclusao)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return
-                    Ok(
-                        new
-                        {
-                            value = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
-                                x => x.Categoria
-                            ).Where(x =>
-                                (x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal) ||
-                                (x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal) ||
-                                (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal)
-                            ).ToList()
-                        }
-                    );
+                var contasInclusao = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.ValorPago > 0);
+
+                var contasEdicao = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x => x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal && x.ValorPago > 0);
+
+                var contasExclusao = unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal));
+
+                return Ok(
+                    new
+                    {
+                        value = contasInclusao.Union(contasEdicao).Union(contasExclusao).ToList()
+                    }
+                );
             }
         }
     }

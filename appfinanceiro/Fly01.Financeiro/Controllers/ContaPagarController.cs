@@ -74,7 +74,7 @@ namespace Fly01.Financeiro.Controllers
             return File(reportViewer.Print(itemRecibo, platformUrl: SessionManager.Current.UserData.PlatformUrl), "application/pdf");
         }
 
-        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata, string tipoStatus)
+        public List<ContaPagarVM> GetListContaPagar(string queryStringOdata = "", string tipoStatus = "")
         {
             var queryString = new Dictionary<string, string>();
             var strStatusConta = !string.IsNullOrEmpty(queryStringOdata)
@@ -147,7 +147,9 @@ namespace Fly01.Financeiro.Controllers
         }
 
         public override ContentResult List()
-            => ListContaPagar();
+        {
+            return ListContaPagar();
+        }
 
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string bntLabel, string btnOnClick)
         {
@@ -188,46 +190,47 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",               
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+
             if (gridLoad == "GridLoad")
             {
-                var cfgForm = new FormUI
+                cfgForm.Elements.Add(new PeriodPickerUI()
                 {
-                    Id = "fly01frm",
-                    ReadyFn = "fnUpdateDataFinal",
-                    UrlFunctions = Url.Action("Functions") + "?fns=",
-                    Elements = new List<BaseUI>()
+                    Label = "Selecione o período",
+                    Id = "mesPicker",
+                    Name = "mesPicker",
+                    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                    DomEvents = new List<DomEventUI>()
                     {
-                        new PeriodPickerUI()
+                        new DomEventUI()
                         {
-                            Label = "Selecione o período",
-                            Id = "mesPicker",
-                            Name = "mesPicker",
-                            Class = "col s12 m6 offset-m3 l4 offset-l4",
-                            DomEvents = new List<DomEventUI>()
-                            {
-                                new DomEventUI()
-                                {
-                                    DomEvent = "change",
-                                    Function = "fnUpdateDataFinal"
-                                }
-                            }
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataFinal",
-                            Name = "dataFinal"
-                        },
-                        new InputHiddenUI()
-                        {
-                            Id = "dataInicial",
-                            Name = "dataInicial"
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
                         }
                     }
-                };
-
-                cfg.Content.Add(cfgForm);
+                });
+                cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
+            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
@@ -285,15 +288,17 @@ namespace Fly01.Financeiro.Controllers
             if (filters == null)
                 filters = new Dictionary<string, string>();
 
-            filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
-            filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("dataVencimento le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and dataVencimento ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }
 
         public JsonResult GridLoadNoFilter()
         {
-            return base.GridLoad();
+            return GridLoad();
         }
 
         public override List<HtmlUIButton> GetFormButtonsOnHeader()
@@ -828,9 +833,14 @@ namespace Fly01.Financeiro.Controllers
         private string GetTipoDocumento(string documento)
         {
             if (documento.Length <= 11)
+            {
                 return "F";
+            }
+
             if (documento.Length > 11)
+            {
                 return "J";
+            }
 
             return null;
         }

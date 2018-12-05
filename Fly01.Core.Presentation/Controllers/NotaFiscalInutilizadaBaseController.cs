@@ -133,12 +133,39 @@ namespace Fly01.Core.Presentation.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
+
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+            cfg.Content.Add(cfgForm);
+
             var config = new DataTableUI
             {
                 Id = "fly01dt",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string>() { "fnRenderEnum" }
+                Functions = new List<string>() { "fnRenderEnum" },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter() {Id = "dataInicial" },
+                    new DataTableUIParameter() {Id = "dataFinal" }
+                },
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -207,6 +234,20 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new TextAreaUI { Id = "recomendacao", Class = "col s12", Label = "Recomendação", Disabled = true });
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
+        {
+            if (filters == null)
+                filters = new Dictionary<string, string>();
+
+
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("data le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and data ge ", Request.QueryString["dataInicial"]);
+
+            return base.GridLoad(filters);
         }
     }
 }

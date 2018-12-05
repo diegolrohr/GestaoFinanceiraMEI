@@ -78,7 +78,7 @@ namespace Fly01.Faturamento.BL
         public OrdemVendaServicoBL OrdemVendaServicoBL => ordemVendaServicoBL ?? (ordemVendaServicoBL = new OrdemVendaServicoBL(Context));
 
         private ServicoBL servicoBL;
-        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context));
+        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context, ISSBL , NBSBL, UnidadeMedidaBL));
 
         private CondicaoParcelamentoBL condicaoParcelamentoBL;
         public CondicaoParcelamentoBL CondicaoParcelamentoBL => condicaoParcelamentoBL ?? (condicaoParcelamentoBL = new CondicaoParcelamentoBL(Context));
@@ -90,7 +90,7 @@ namespace Fly01.Faturamento.BL
         public CategoriaBL CategoriaBL => categoriaBL ?? (categoriaBL = new CategoriaBL(Context, OrdemVendaBL));
 
         private SubstituicaoTributariaBL substituicaoTributariaBL;
-        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context));
+        public SubstituicaoTributariaBL SubstituicaoTributariaBL => substituicaoTributariaBL ?? (substituicaoTributariaBL = new SubstituicaoTributariaBL(Context, NCMBL, CestBL, EstadoBL));
 
         private CestBL cestBL;
         public CestBL CestBL => cestBL ?? (cestBL = new CestBL(Context));

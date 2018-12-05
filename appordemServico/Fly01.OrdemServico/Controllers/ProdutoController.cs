@@ -222,13 +222,15 @@ namespace Fly01.OrdemServico.Controllers
             elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
 
             if (objetoDeManutencao.HasValue)
-                elements.Add(new InputHiddenUI { Id = "objetoDeManutencao", Value = objetoDeManutencao.Value.ToString() });
+                elements.Add(new InputHiddenUI { Id = "objetoDeManutencao", Value = objetoDeManutencao.Value ? "Sim" : "Nao" });
             else
-                elements.Add(new InputCheckboxUI
+                elements.Add(new SelectUI
                 {
                     Id = "objetoDeManutencao",
                     Class = "col s12 m6 l3",
                     Label = "Objeto de Manutenção",
+                    ConstrainWidth = true,
+                    Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(ObjetoDeManutencao)))
                 });
 
             elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
@@ -252,7 +254,7 @@ namespace Fly01.OrdemServico.Controllers
                 },
                 Id = "fly01mdlfrmProduto",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnFormReadyModal"
+                //ReadyFn = "fnFormReadyModal"
             };
 
             AddElements(config.Elements, config.Helpers, objetoDeManutencao);

@@ -7,6 +7,7 @@ using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -126,9 +127,9 @@ namespace Fly01.EmissaoNFE.BL
                     if(totalCredito > 0 && aliquota > 0)
                     {
                         var mensagemAproveitamentoCredito =
-                            string.Format("PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE R$ {0}; CORRESPONDENTE À ALÍQUOTA DE {1}%, NOS TERMOS DO ARTIGO 23 DA LC 123.",
-                                totalCredito.ToString("0.00"),
-                                aliquota.ToString("0.00"));
+                            string.Format("PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE {0}; CORRESPONDENTE À ALÍQUOTA DE {1}%, NOS TERMOS DO ARTIGO 23 DA LC 123.",
+                                totalCredito.ToString("C", AppDefaults.CultureInfoDefault),
+                                aliquota.ToString("N", AppDefaults.CultureInfoDefault));
 
                         if (nota.InformacoesAdicionais == null)
                         {

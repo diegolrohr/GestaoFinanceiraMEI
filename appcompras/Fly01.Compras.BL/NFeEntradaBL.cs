@@ -324,7 +324,7 @@ namespace Fly01.Compras.BL
                         {
                             OrigemMercadoria = OrigemMercadoria.Nacional,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
-                            AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / item.Total) * 100), 2),
+                            AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                         };
 

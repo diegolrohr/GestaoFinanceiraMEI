@@ -397,7 +397,7 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputTextUI { Id = "naturezaOperacao", Class = "col s12", Label = "Natureza de Operação", MaxLength = 60 });
             config.Elements.Add(new TextAreaUI { Id = "mensagemPadraoNota", Class = "col s12", Label = "Informações Adicionais NF-e", MaxLength = 4000 });
             config.Elements.Add(new TextAreaUI { Id = "informacoesCompletamentaresNFS", Class = "col s12", Label = "Informações Adicionais NFS-e", MaxLength = 1000 });
-            config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify", Label = "Informação" });
+            config.Elements.Add(new DivElementUI { Id = "infoEstoqueNegativo", Class = "col s12 text-justify visible", Label = "Informação" });
             config.Elements.Add(new LabelSetUI { Id = "produtosEstoqueNegativoLabel", Class = "col s8", Label = "Produtos com estoque faltante" });
             config.Elements.Add(new InputCheckboxUI { Id = "ajusteEstoqueAutomatico", Class = "col s4", Label = "Ajustar negativo" });
             config.Elements.Add(new DivElementUI { Id = "produtosEstoqueNegativo", Class = "col s12 visible" });

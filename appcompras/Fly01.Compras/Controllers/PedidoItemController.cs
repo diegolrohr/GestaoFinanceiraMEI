@@ -164,10 +164,26 @@ namespace Fly01.Compras.Controllers
             #region Helpers 
             config.Helpers.Add(new TooltipUI
             {
+                Id = "icms",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao adicionar o produto, a alíquota será carregada dos parâmetros tributários, se necessário altere a alíquota por produto. Os impostos são calculados de acordo com as configurações do grupo Tributário."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "fcp",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Ao adicionar o produto, a alíquota será carregada dos parâmetros tributários, se necessário altere a alíquota por produto. Os impostos são calculados de acordo com as configurações do grupo Tributário."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
                 Id = "valorCreditoICMS",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado. Alíquota calculada pelo valor total versus o crédito informado." +
+                    Text = "Valor de Crédito do ICMS. Se o pedido gerar nota fiscal com CSOSN 101, 201 ou 900, conforme cadastro do Grupo Tributário, este dado deve ser informado. Alíquota calculada pelo valor bruto versus o crédito informado." +
                     " Os valores informados servirão de base para as informações complementares no xml, de acordo ao ARTIGO 23 DA LC 123."
                 }
             });

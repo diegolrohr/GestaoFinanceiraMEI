@@ -448,6 +448,10 @@
     <Compile Include="Migrations\201811271202049_AlterTamanhoDescricaoCategoria.Designer.cs">
       <DependentUpon>201811271202049_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812061905022_AlterPessoaTamanhoComplemento.cs" />
+    <Compile Include="Migrations\201812061905022_AlterPessoaTamanhoComplemento.Designer.cs">
+      <DependentUpon>201812061905022_AlterPessoaTamanhoComplemento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -777,6 +781,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811271202049_AlterTamanhoDescricaoCategoria.resx">
       <DependentUpon>201811271202049_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812061905022_AlterPessoaTamanhoComplemento.resx">
+      <DependentUpon>201812061905022_AlterPessoaTamanhoComplemento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

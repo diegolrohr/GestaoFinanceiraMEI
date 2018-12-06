@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201811271202581_AlterTamanhoDescricaoCategoria.Designer.cs">
       <DependentUpon>201811271202581_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.cs" />
+    <Compile Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.Designer.cs">
+      <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -370,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811271202581_AlterTamanhoDescricaoCategoria.resx">
       <DependentUpon>201811271202581_AlterTamanhoDescricaoCategoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.resx">
+      <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

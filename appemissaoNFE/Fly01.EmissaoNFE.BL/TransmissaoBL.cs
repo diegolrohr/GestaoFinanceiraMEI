@@ -6,6 +6,8 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
 using Fly01.EmissaoNFE.BL.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.BL
 {
@@ -102,6 +104,50 @@ namespace Fly01.EmissaoNFE.BL
             }
 
             return retorno;
+        }
+
+        public void MensagemCreditoICMS(TransmissaoVM entity)
+        {
+            foreach (var nota in entity.Item)
+            {
+                if (nota.Detalhes != null)
+                {
+                    var creditosDeICMS = nota.Detalhes.Where(x =>
+                        (x.Imposto != null) &&
+                        (x.Imposto.ICMS != null) &&
+                        (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCredito || 
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
+                        x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros) &&
+                        (x.Imposto.ICMS.ValorCreditoICMS.HasValue));
+
+                    var totalCredito = creditosDeICMS.Sum(x => x.Imposto.ICMS.ValorCreditoICMS.Value);
+                    var totalBrutoProduto = creditosDeICMS.Sum(x => x.Produto.ValorBruto);
+                    var aliquota = Math.Round(((totalCredito / totalBrutoProduto) * 100), 2);
+
+                    if(totalCredito > 0 && aliquota > 0)
+                    {
+                        var mensagemAproveitamentoCredito =
+                            string.Format("PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE {0}; CORRESPONDENTE À ALÍQUOTA DE {1}%, NOS TERMOS DO ARTIGO 23 DA LC 123.",
+                                totalCredito.ToString("C", AppDefaults.CultureInfoDefault),
+                                aliquota.ToString("N", AppDefaults.CultureInfoDefault));
+
+                        if (nota.InformacoesAdicionais == null)
+                        {
+                            nota.InformacoesAdicionais = new InformacoesAdicionais()
+                            {
+                                InformacoesComplementares = mensagemAproveitamentoCredito
+                            };
+                        }
+                        else
+                        {
+                            nota.InformacoesAdicionais.InformacoesComplementares =
+                                string.IsNullOrEmpty(nota.InformacoesAdicionais.InformacoesComplementares) ?
+                                mensagemAproveitamentoCredito :
+                                nota.InformacoesAdicionais.InformacoesComplementares + "\n" + mensagemAproveitamentoCredito;
+                        }
+                    }
+                }
+            }
         }
 
         public override void ValidaModel(TransmissaoVM entity)

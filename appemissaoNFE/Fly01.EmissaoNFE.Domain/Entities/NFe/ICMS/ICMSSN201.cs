@@ -16,10 +16,30 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
         {
         }
 
-        [XmlElement("pCredSN")]
+        [XmlIgnore]
         public double AliquotaAplicavelCalculoCreditoSN { get; set; }
 
-        [XmlElement("vCredICMSSN")]
+        [XmlElement("pCredSN")]
+        public string AliquotaAplicavelCalculoCreditoSNString
+        {
+            get
+            {
+                return AliquotaAplicavelCalculoCreditoSN.ToString("0.00").Replace(",", ".");
+            }
+            set { AliquotaAplicavelCalculoCreditoSN = double.Parse(value.Replace(".", ",")); }
+        }
+
+        [XmlIgnore]
         public double ValorCreditoICMS { get; set; }
+
+        [XmlElement("vCredICMSSN")]
+        public string ValorCreditoICMSString
+        {
+            get
+            {
+                return ValorCreditoICMS.ToString("0.00").Replace(",", ".");
+            }
+            set { ValorCreditoICMS = double.Parse(value.Replace(".", ",")); }
+        }
     }
 }

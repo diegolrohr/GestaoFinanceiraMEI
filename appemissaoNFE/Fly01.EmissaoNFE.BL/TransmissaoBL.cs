@@ -19,7 +19,7 @@ namespace Fly01.EmissaoNFE.BL
         protected EmpresaBL EmpresaBL;
         protected EntidadeBL EntidadeBL;
         protected EstadoBL EstadoBL;
-        protected NFeBL NFeBL;        
+        protected NFeBL NFeBL;
         protected HelperValidaModelTransmissao helperValidaModelTransmissao;
 
         public TransmissaoBL(AppDataContextBase context, CfopBL cfopBL, ChaveBL chaveBL, CidadeBL cidadeBL, EmpresaBL empresaBL, EntidadeBL entidadeBL, EstadoBL estadoBL, NFeBL nfeBL) : base(context)
@@ -108,14 +108,18 @@ namespace Fly01.EmissaoNFE.BL
 
         public void MensagemCreditoICMS(TransmissaoVM entity)
         {
-            foreach (var nota in entity.Item)
+            foreach (var nota in entity.Item.Where(x => x.Identificador != null &&
+                (
+                    (x.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || x.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar) &&
+                    x.Identificador.TipoDocumentoFiscal == TipoNota.Saida)
+                ))
             {
                 if (nota.Detalhes != null)
                 {
                     var creditosDeICMS = nota.Detalhes.Where(x =>
                         (x.Imposto != null) &&
                         (x.Imposto.ICMS != null) &&
-                        (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCredito || 
+                        (x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCredito ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.TributadaComPermissaoDeCreditoST ||
                         x.Imposto.ICMS.CodigoSituacaoOperacao == TipoTributacaoICMS.Outros) &&
                         (x.Imposto.ICMS.ValorCreditoICMS.HasValue));
@@ -124,7 +128,7 @@ namespace Fly01.EmissaoNFE.BL
                     var totalBrutoProduto = creditosDeICMS.Sum(x => x.Produto.ValorBruto);
                     var aliquota = Math.Round(((totalCredito / totalBrutoProduto) * 100), 2);
 
-                    if(totalCredito > 0 && aliquota > 0)
+                    if (totalCredito > 0 && aliquota > 0)
                     {
                         var mensagemAproveitamentoCredito =
                             string.Format("PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE {0}; CORRESPONDENTE À ALÍQUOTA DE {1}%, NOS TERMOS DO ARTIGO 23 DA LC 123.",

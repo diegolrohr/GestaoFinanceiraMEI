@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.Designer.cs">
       <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812111406155_CreateStone.cs" />
+    <Compile Include="Migrations\201812111406155_CreateStone.Designer.cs">
+      <DependentUpon>201812111406155_CreateStone.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -377,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.resx">
       <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812111406155_CreateStone.resx">
+      <DependentUpon>201812111406155_CreateStone.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

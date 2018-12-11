@@ -61,6 +61,7 @@
     <Compile Include="Controllers\Api\ArquivoRemessaController.cs" />
     <Compile Include="Controllers\Api\ArquivoRetornoController.cs" />
     <Compile Include="Controllers\Api\BoletoController.cs" />
+    <Compile Include="Controllers\Api\StoneControllerController.cs" />
     <Compile Include="Controllers\Api\CnabController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\ContaFinanceiraBaixaMultiplaController.cs" />

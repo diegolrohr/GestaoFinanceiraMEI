@@ -15,6 +15,7 @@
         public const string FinanceiroFinanceiroContasReceber = "4AF5ACA1-8D6F-4CAA-A7FC-4433BEBF33AD";
         public const string FinanceiroFinanceiroRelatorioDRE = "5BAB7260-EFDF-449B-A2B6-874817071751";
         public const string FinanceiroFinanceiroConciliacaoBancaria = "5638CC31-48F4-44ED-A322-F3F05BA41125";
+        public const string FinanceiroFinanceiroAntecipacaoRecebiveis = "C94F63C8-39D4-4056-B3CD-707C1FF06FBC";
 
         public const string FinanceiroCobranca = "85B55038-1BD1-42B7-81C5-12D3CF6E7AD3";
         public const string FinanceiroCobrancaBoletos = "B4787890-4341-46E7-B19A-BAC6D3E62739";

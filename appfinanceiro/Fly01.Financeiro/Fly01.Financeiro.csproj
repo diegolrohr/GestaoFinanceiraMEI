@@ -91,6 +91,7 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StoneController.cs" />
     <Compile Include="Controllers\TemplateBoletoController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
@@ -152,6 +153,7 @@
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\StoneVM.cs" />
     <Compile Include="ViewModel\TemplateBoletoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />

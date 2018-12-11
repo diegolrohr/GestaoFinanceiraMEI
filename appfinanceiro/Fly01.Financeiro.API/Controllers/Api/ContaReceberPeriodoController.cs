@@ -10,29 +10,32 @@ namespace Fly01.Financeiro.API.Controllers.Api
     public class ContaReceberPeriodoController : ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal, bool ignoraExclusao)
+        public IHttpActionResult Get(DateTime dataInicial, DateTime dataFinal, bool ignoraExclusao = false, int pageNumber = 1, int pageSize = 50)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var contasInclusao = unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                var union =
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
                             x => x.Categoria,
                             x => x.FormaPagamento
-                        ).Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.ValorPago > 0);
+                        ).Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.ValorPago > 0).Union(
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x => x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal && x.ValorPago > 0)).Union(
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                            x => x.Categoria,
+                            x => x.FormaPagamento
+                        ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal))).OrderBy(x => x.DataVencimento);
 
-                var contasEdicao = unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
-                            x => x.Categoria,
-                            x => x.FormaPagamento
-                        ).Where(x => x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal && x.ValorPago > 0);
-
-                var contasExclusao = unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
-                            x => x.Categoria,
-                            x => x.FormaPagamento
-                        ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal));
+                int skipRecords = (pageNumber - 1) * pageSize;
 
                 return Ok(
                     new
                     {
-                        value = contasInclusao.Union(contasEdicao).Union(contasExclusao).ToList()
+                        totalRecords = union.Count(),
+                        totalPages = Math.Ceiling(((double)union.Count() / (double)pageSize)),
+                        value = union.Skip(skipRecords).Take(pageSize).ToList()
                     }
                 );
             }

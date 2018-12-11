@@ -4,7 +4,7 @@ using System.Web.Http;
 namespace Fly01.Financeiro.API.Controllers.Api
 {
     [RoutePrefix("stone")]
-    public class StoneControllerController : ApiBaseController
+    public class StoneController : ApiBaseController
     {
 
     }

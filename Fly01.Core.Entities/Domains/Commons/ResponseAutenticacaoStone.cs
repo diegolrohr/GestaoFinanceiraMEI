@@ -3,12 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class AutenticacaoStone
+    public class ResponseAutenticacaoStone
     {
         [Required]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password{ get; set; }
+        [JsonProperty("token")]
+        public string Token { get; set; }
     }
 }

@@ -1,60 +1,61 @@
-﻿using Fly01.Core.API;
+﻿using Fly01.Core;
+using Fly01.Core.API;
+using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
-    public class Response
-    {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-        public int userId { get; set; }
-        public string name { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string email { get; set; }
-        public string token { get; set; }
-        public DateTime expire_at { get; set; }
-        public List<int> stone_code_collection { get; set; }
-        public List<string> permission_collection { get; set; }
-        public string role { get; set; }
-        public bool is_personified { get; set; }
-        public DateTime created_at { get; set; }
-    }
-
-
     [RoutePrefix("stone")]
-   // [AllowAnonymous]
     public class StoneController : ApiBaseController
     {
+        public Dictionary<string, string> GetDefaultHeader()
+        {
+            var header = new Dictionary<string, string>();
+            header.Add("Content-Type", "application/json");
+            return header;
+        }
+
+        public Dictionary<string, string> AddAuthorizationHeader(Dictionary<string, string> header)
+        {
+            //TODO token
+            header.Add("Authorization", String.Format("Bearer {0}", "StoneToken"));
+            return header;
+        }
+
+        public Dictionary<string, string> AddStoneCodeHeader(Dictionary<string, string> header)
+        {
+            ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+
+            header.Add("StoneCode", response?.StoneCode);
+            return header;
+        }
+
+
         public IHttpActionResult Get()
         {
             return Ok("SUCESSO");
         }
 
-
         [HttpPost]
-        public Response Post(AutenticacaoStone entity)
+        [Route("token")]
+        public string GetToken(AutenticacaoStone entity)
         {
-            var url = "https://portalapi.stone.com.br/";
             var resource = "authenticate";
-            //var resource = "stone/merchant/auth/login";
-            //var url = "http://payments.bemacash.com.br/";
             try
             {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var header = new Dictionary<string, string>()
-                {
-                    { "Content-Type", "application/json" }
-                };
-
-                var teste = RestHelper.ExecutePostRequest<Response>(url, resource, entity, null, header);
-                return teste;
+                var authenticate = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
+                return authenticate.Token;
             }
             catch (Exception ex)
             {

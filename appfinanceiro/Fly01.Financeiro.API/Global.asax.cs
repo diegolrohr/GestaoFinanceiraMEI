@@ -68,6 +68,7 @@ namespace Fly01.Financeiro.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlStone = ConfigurationManager.AppSettings["UrlStone"];
 
             base.SetAppDefaults();
         }

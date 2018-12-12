@@ -49,6 +49,7 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<Cnab>("cnab");
             builder.EntitySet<ArquivoRemessa>("arquivoremessa");
             builder.EntitySet<TemplateBoleto>("templateboleto");
+           // builder.EntitySet<Stone>("stone");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -67,6 +68,7 @@ namespace Fly01.Financeiro.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlStone = ConfigurationManager.AppSettings["UrlStone"];
 
             base.SetAppDefaults();
         }

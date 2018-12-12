@@ -61,6 +61,8 @@ namespace Fly01.Core
 
         public static string APIDomainResourceName { get; set; }
 
+        public static string UrlStone { get; set; }
+
         public static string GetRootPathApplication(string app) => string.Format(RootPathApplication, app);
 
         public static CultureInfo CultureInfoDefault

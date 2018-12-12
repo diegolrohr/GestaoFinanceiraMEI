@@ -1,11 +1,9 @@
 ﻿using Fly01.Core;
 using Fly01.Core.API;
-using Fly01.Core.Config;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ using System.Web.Http;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
-    [RoutePrefix("stone")]
+    [RoutePrefix("api/stone")]
     public class StoneController : ApiBaseController
     {
         public Dictionary<string, string> GetDefaultHeader()
@@ -43,7 +41,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         [HttpPost]
         [Route("token")]
-        public string GetToken(AutenticacaoStone entity)
+        public IHttpActionResult GetToken(AutenticacaoStone entity)
         {
             var resource = "authenticate";
             try
@@ -52,7 +50,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 var authenticate = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
-                return authenticate.Token;
+                return Ok(new { token = authenticate.Token });
             }
             catch (Exception ex)
             {
@@ -62,8 +60,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         [HttpPost]
         [Route("validartoken")]
-        public bool ValidarToken(ResponseAutenticacaoStone entity)
+        public IHttpActionResult ValidarToken(ResponseAutenticacaoStone entity)
         {
+
             var resource = "authenticate/validate";
             try
             {
@@ -71,11 +70,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
-                return authenticate.Value<bool>("success");
+                return Ok(new { success = true });
             }
             catch (Exception)
             {
-                return false;
+                return BadRequest();
             }
         }
     }

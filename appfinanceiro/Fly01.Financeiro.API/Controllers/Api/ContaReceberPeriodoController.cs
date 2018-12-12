@@ -14,28 +14,42 @@ namespace Fly01.Financeiro.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var union =
-                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
-                            x => x.Categoria,
-                            x => x.FormaPagamento
-                        ).Where(x => x.DataInclusao >= dataInicial && x.DataInclusao <= dataFinal && x.ValorPago > 0).Union(
-                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
-                            x => x.Categoria,
-                            x => x.FormaPagamento
-                        ).Where(x => x.DataAlteracao >= dataInicial && x.DataAlteracao <= dataFinal && x.ValorPago > 0)).Union(
-                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
-                            x => x.Categoria,
-                            x => x.FormaPagamento
-                        ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal))).OrderBy(x => x.DataVencimento);
-
                 int skipRecords = (pageNumber - 1) * pageSize;
+
+                var count =
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                        x => x.Categoria,
+                        x => x.FormaPagamento
+                    ).Where(x =>
+                        (x.DataAlteracao ?? x.DataInclusao) >= dataInicial &&
+                        (x.DataAlteracao ?? x.DataInclusao) <= dataFinal &&
+                        (x.ValorPago > 0)
+                        ).Union(
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                        x => x.Categoria,
+                        x => x.FormaPagamento
+                    ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal))).Count();
+
+                var result =
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                        x => x.Categoria,
+                        x => x.FormaPagamento
+                    ).Where(x =>
+                        (x.DataAlteracao ?? x.DataInclusao) >= dataInicial &&
+                        (x.DataAlteracao ?? x.DataInclusao) <= dataFinal &&
+                        (x.ValorPago > 0)
+                        ).Union(
+                    unitOfWork.ContaReceberBL.AllWithInactiveIncluding(
+                        x => x.Categoria,
+                        x => x.FormaPagamento
+                    ).Where(x => !ignoraExclusao && (x.DataExclusao >= dataInicial && x.DataExclusao <= dataFinal))).OrderBy(x => x.DataVencimento).Skip(skipRecords).Take(pageSize);
 
                 return Ok(
                     new
                     {
-                        totalRecords = union.Count(),
-                        totalPages = Math.Ceiling(((double)union.Count() / (double)pageSize)),
-                        value = union.Skip(skipRecords).Take(pageSize).ToList()
+                        totalRecords = count,
+                        totalPages = Math.Ceiling(((double)count / (double)pageSize)),
+                        value = result.ToList()
                     }
                 );
             }

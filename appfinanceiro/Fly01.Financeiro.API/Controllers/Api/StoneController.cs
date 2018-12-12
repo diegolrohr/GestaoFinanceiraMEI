@@ -6,6 +6,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -23,21 +24,17 @@ namespace Fly01.Financeiro.API.Controllers.Api
             return header;
         }
 
-        public Dictionary<string, string> AddAuthorizationHeader(Dictionary<string, string> header)
+        public void AddAuthorizationHeader(Dictionary<string, string> header)
         {
             //TODO token
             header.Add("Authorization", String.Format("Bearer {0}", "StoneToken"));
-            return header;
         }
 
-        public Dictionary<string, string> AddStoneCodeHeader(Dictionary<string, string> header)
+        public void AddStoneCodeHeader(Dictionary<string, string> header)
         {
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-
             header.Add("StoneCode", response?.StoneCode);
-            return header;
         }
-
 
         public IHttpActionResult Get()
         {
@@ -60,6 +57,27 @@ namespace Fly01.Financeiro.API.Controllers.Api
             catch (Exception ex)
             {
                 throw new BusinessException("Não foi possível obter autenticação na stone. " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("validartoken")]
+        public bool ValidarToken(ResponseAutenticacaoStone entity)
+        {
+            var resource = "authenticate/validate";
+            try
+            {
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
+                //HttpStatusCode.BadRequest
+                return authenticate.Value<bool>("success");
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

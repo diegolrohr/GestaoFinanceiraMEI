@@ -67,12 +67,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
             var resource = "authenticate/validate";
             try
             {
-
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
-                //HttpStatusCode.BadRequest
                 return authenticate.Value<bool>("success");
             }
             catch (Exception)

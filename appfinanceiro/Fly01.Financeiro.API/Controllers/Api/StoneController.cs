@@ -32,6 +32,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             header.Add("StoneCode", response?.StoneCode);
         }
+        public Dictionary<string, string> GetCompleteHeader(string token)
+        {
+            var header = GetDefaultHeader();
+            AddAuthorizationHeader(header,token);
+            AddStoneCodeHeader(header);
+            return header;
+        }
 
         public IHttpActionResult Get()
         {
@@ -45,11 +52,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
             var resource = "authenticate";
             try
             {
+                //TODO: ver https
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 var authenticate = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
-                return Ok(new { token = authenticate.Token });
+                return Ok(
+                    new StoneTokenBase()
+                    {
+                        Token = authenticate.Token
+                    });
             }
             catch (Exception ex)
             {
@@ -70,6 +82,26 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(new { success = true });
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("simularantecipacao")]
+        public IHttpActionResult SimularAntecipacao(AntecipacaoStone entity)
+        {
+
+            var resource = "v1/settlements/prepay/simulate";
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var simulate = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetCompleteHeader(entity.Token));
+                return Ok();
             }
             catch (Exception)
             {

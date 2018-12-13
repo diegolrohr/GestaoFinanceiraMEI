@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\AntecipacaoStone.cs" />

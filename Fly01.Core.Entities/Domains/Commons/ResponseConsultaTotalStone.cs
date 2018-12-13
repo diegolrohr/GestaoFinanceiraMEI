@@ -17,5 +17,18 @@ namespace Fly01.Core.Entities.Domains.Commons
             }
             set { }
         }
+
+        [JsonProperty("total_prepayable_amount")]
+        public int TotalBrutoCentavos { get; set; }
+
+        [JsonIgnore]
+        public double TotalBrutoAntecipavel
+        {
+            get
+            {
+                return (TotalBrutoCentavos / 100);
+            }
+            set { }
+        }
     }
 }

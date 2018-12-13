@@ -22,10 +22,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
             return header;
         }
 
-        public void AddAuthorizationHeader(Dictionary<string, string> header)
+        public void AddAuthorizationHeader(Dictionary<string, string> header, string token)
         {
-            //TODO token
-            header.Add("Authorization", String.Format("Bearer {0}", "StoneToken"));
+            header.Add("Authorization", String.Format("Bearer {0}", token));
         }
 
         public void AddStoneCodeHeader(Dictionary<string, string> header)

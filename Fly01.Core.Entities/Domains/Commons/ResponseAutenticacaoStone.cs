@@ -1,12 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-
-namespace Fly01.Core.Entities.Domains.Commons
+﻿namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class ResponseAutenticacaoStone
+    public class ResponseAutenticacaoStone : StoneTokenBase
     {
-        [Required]
-        [JsonProperty("token")]
-        public string Token { get; set; }
     }
 }

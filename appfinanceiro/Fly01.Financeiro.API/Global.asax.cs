@@ -49,6 +49,7 @@ namespace Fly01.Financeiro.API
             builder.EntitySet<Cnab>("cnab");
             builder.EntitySet<ArquivoRemessa>("arquivoremessa");
             builder.EntitySet<TemplateBoleto>("templateboleto");
+            builder.EntitySet<StoneAntecipacaoRecebiveis>("stoneantecipacaorecebiveis");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

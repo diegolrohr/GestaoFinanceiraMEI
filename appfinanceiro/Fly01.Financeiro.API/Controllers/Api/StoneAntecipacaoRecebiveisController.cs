@@ -1,11 +1,11 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Financeiro.BL;
-using System.Web.Http;
+using System.Web.OData.Routing;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
 
-    [RoutePrefix("stoneantecipacaorecebiveis")]
+    [ODataRoutePrefix("stoneantecipacaorecebiveis")]
     public class StoneAntecipacaoRecebiveisController : ApiPlataformaController<StoneAntecipacaoRecebiveis, StoneAntecipacaoRecebiveisBL>
     {
     }

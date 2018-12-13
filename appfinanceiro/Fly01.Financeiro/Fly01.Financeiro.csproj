@@ -401,6 +401,9 @@
     <Content Include="Views\Cnab\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnValidaToken.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnReadyRecebiveis.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -452,7 +455,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.7\lib\net452\Fly01.uiJS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

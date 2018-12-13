@@ -7,6 +7,7 @@ using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
@@ -43,6 +44,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
         }
         #endregion
 
+        private void SetSecurityProtocol()
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+        
         public IHttpActionResult Get()
         {
             return Ok("SUCESSO");
@@ -57,8 +64,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             try
             {
                 //TODO: ver https
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                SetSecurityProtocol();
 
                 var autenticacao = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(
@@ -82,9 +88,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             var resource = "authenticate/validate";
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
+                SetSecurityProtocol();
                 var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(new { success = true });
             }
@@ -103,14 +107,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
             var resource = "v1/settlements/prepay/simulate";
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
                 var antecipacao = new AntecipacaoStone()
                 {
                     Valor = entity.Valor,
                 };
 
+                SetSecurityProtocol();
                 var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
                 return Ok(
                     new ResponseAntecipacaoStoneVM()
@@ -137,14 +139,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
             var resource = "v1/settlements/prepay/proposals";
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
                 var antecipacao = new AntecipacaoStone()
                 {
                     Valor = entity.Valor,
                 };
 
+                SetSecurityProtocol();
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
                 return Ok(
                     new ResponseAntecipacaoStoneVM()
@@ -165,33 +165,84 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #endregion
 
         #region Consultar Total
-        //[HttpPost]
-        //[Route("consultartotal")]
-        //public IHttpActionResult ObterTotal(StoneTokenBaseVM entity)
-        //{
-        //    var resource = "v1/settlements/prepay/informations";
-        //    try
-        //    {
-        //        ServicePointManager.Expect100Continue = true;
-        //        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        [HttpPost]
+        [Route("consultartotal")]
+        public IHttpActionResult ConsultarTotal(StoneTokenBaseVM entity)
+        {
+            var resource = "v1/settlements/prepay/informations";
+            try
+            {
+                SetSecurityProtocol();
+                var total = RestHelper.ExecuteGetRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
+                return Ok(
+                    new ResponseConsultaTotalStoneVM()
+                    {
+                        SaldoDevedor = total.SaldoDevedor,
+                        TotalBrutoAntecipavel = total.TotalBrutoAntecipavel
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao consultar o total disponível para antecipação: " + ex.Message);
+            }
+        }
+        #endregion
 
-        //        var total = RestHelper.ExecutePostRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, null, null, GetCompleteHeader(entity.Token));
-        //        return Ok(
-        //            new ResponseConsultaTotalStoneVM()
-        //            {
-        //                Id = efetivacao.Id,
-        //                Data = efetivacao.Data,
-        //                DataCriacao = efetivacao.DataCriacao,
-        //                LiquidoAntecipar = efetivacao.LiquidoAntecipar,
-        //                SaldoLiquidoDisponivel = efetivacao.SaldoLiquidoDisponivel,
-        //                TaxaPontual = efetivacao.TaxaPontual
-        //            });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new BusinessException("Erro ao efetivar a antecipação stone: " + ex.Message);
-        //    }
-        //}
+        #region Consultar Configuração
+        [HttpPost]
+        [Route("configuracao")]
+        public IHttpActionResult Configuracao(StoneTokenBaseVM entity)
+        {
+            var resource = "v1/settlements/prepay/configurations";
+            try
+            {
+                SetSecurityProtocol();
+                var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource,GetCompleteHeader(entity.Token), null);
+                return Ok(
+                    new ResponseConfiguracaoStoneVM()
+                    {
+                        AntecipacaoAutomaticaAtivada = config.AntecipacaoAutomaticaAtivada,
+                        Bloqueado = config.Bloqueado,
+                        TaxaAntecipacaoAutomatica = config.TaxaAntecipacaoAutomatica,
+                        TaxaAntecipacaoPontual = config.TaxaAntecipacaoPontual,
+                        TaxaGarantia = config.TaxaGarantia
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao consultar a configuração de antecipação stone: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Consultar Dados Bancários
+        [HttpPost]
+        [Route("dadosbancarios")]
+        public IHttpActionResult DadosBancarios(StoneTokenBaseVM entity)
+        {
+            var resource = "v1/configurations/bank-details";
+            try
+            {
+                SetSecurityProtocol();
+                var dados = RestHelper.ExecuteGetRequest<List<ResponseDadosBancariosStone>>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null).FirstOrDefault();
+                return Ok(
+                    new ResponseDadosBancariosStoneVM()
+                    {
+                        Agencia = dados.Agencia,
+                        AgenciaDigito = dados.AgenciaDigito,
+                        BancoCodigo = dados.BancoCodigo,
+                        BancoNome = dados.BancoNome,
+                        ContaDigito = dados.ContaDigito,
+                        ContaNumero = dados.ContaNumero,
+                        ContaTipo = dados.ContaTipo,
+                        Id = dados.Id
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao consultar dados bancários da stone: " + ex.Message);
+            }
+        }
         #endregion
     }
 }

@@ -56,6 +56,9 @@
     <Compile Include="ViewModels\Presentation\Commons\ResponseAutenticacaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AutenticacaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseAntecipacaoStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ResponseDadosBancariosStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ResponseConfiguracaoStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ResponseConsultaTotalStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneTokenBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicosPorDiaVM.cs" />

@@ -27,7 +27,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         {
             get
             {
-                return (LiquidoAnteciparCentavos / 100);
+                return (LiquidoAnteciparCentavos / 100.00);
             }
             set { }
         }
@@ -42,7 +42,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         {
             get
             {
-                return (SaldoLiquidoDisponivelCentavos / 100);
+                return (SaldoLiquidoDisponivelCentavos / 100.00);
             }
             set { }
         }

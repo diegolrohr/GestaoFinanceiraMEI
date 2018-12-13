@@ -53,9 +53,12 @@
     <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AutenticacaoStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneTokenBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicosPorDiaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicoPorStatusVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AntecipacaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\TopServicosProdutosOrdemServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ComprasPagamentosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContasPagarDoDiaVM.cs" />

@@ -128,6 +128,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ApplicationInsights.config" />
+    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\Homologacao.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Web.Debug.config">

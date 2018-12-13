@@ -6,8 +6,5 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
     {
         [JsonProperty("valor")]
         public double Valor { get; set; }
-
-        [JsonProperty("diasMinimos")]
-        public double DiasMinimos { get; set; }
     }
 }

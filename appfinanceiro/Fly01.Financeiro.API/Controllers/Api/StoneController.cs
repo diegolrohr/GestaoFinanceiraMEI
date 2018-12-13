@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
     [RoutePrefix("api/stone")]
     public class StoneController : ApiBaseController
     {
+        #region Headers
         public Dictionary<string, string> GetDefaultHeader()
         {
             var header = new Dictionary<string, string>();
@@ -39,12 +41,14 @@ namespace Fly01.Financeiro.API.Controllers.Api
             AddStoneCodeHeader(header);
             return header;
         }
+        #endregion
 
         public IHttpActionResult Get()
         {
             return Ok("SUCESSO");
         }
 
+        #region Token
         [HttpPost]
         [Route("token")]
         public IHttpActionResult GetToken(AutenticacaoStone entity)
@@ -56,11 +60,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var authenticate = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
+                var autenticacao = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(
-                    new StoneTokenBase()
+                    new StoneTokenBaseVM()
                     {
-                        Token = authenticate.Token
+                        Token = autenticacao.Token
                     });
             }
             catch (Exception ex)
@@ -68,12 +72,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 throw new BusinessException("Não foi possível obter autenticação na stone. " + ex.Message);
             }
         }
+        #endregion
 
+        #region Validar Token
         [HttpPost]
         [Route("validartoken")]
-        public IHttpActionResult ValidarToken(ResponseAutenticacaoStone entity)
+        public IHttpActionResult ValidarToken(ResponseAutenticacaoStoneVM entity)
         {
-
             var resource = "authenticate/validate";
             try
             {
@@ -85,28 +90,108 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception)
             {
-                return BadRequest();
+                return Ok(new { success = false });
             }
         }
+        #endregion
 
+        #region Simular Antecipação
         [HttpPost]
         [Route("simularantecipacao")]
-        public IHttpActionResult SimularAntecipacao(AntecipacaoStone entity)
+        public IHttpActionResult SimularAntecipacao(AntecipacaoStoneVM entity)
         {
-
             var resource = "v1/settlements/prepay/simulate";
             try
             {
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                var simulate = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetCompleteHeader(entity.Token));
-                return Ok();
+                var antecipacao = new AntecipacaoStone()
+                {
+                    Valor = entity.Valor,
+                };
+
+                var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                return Ok(
+                    new ResponseAntecipacaoStoneVM()
+                    {
+                        Data = simulacao.Data,
+                        DataCriacao = simulacao.DataCriacao,
+                        LiquidoAntecipar = simulacao.LiquidoAntecipar,
+                        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
+                        TaxaPontual = simulacao.TaxaPontual
+                    });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                throw new BusinessException("Erro ao simular a antecipação stone: " + ex.Message);
             }
         }
+        #endregion
+
+        #region Efetivar Antecipação
+        [HttpPost]
+        [Route("efetivarantecipacao")]
+        public IHttpActionResult EfetivarAntecipacao(AntecipacaoStoneVM entity)
+        {
+            var resource = "v1/settlements/prepay/proposals";
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var antecipacao = new AntecipacaoStone()
+                {
+                    Valor = entity.Valor,
+                };
+
+                var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                return Ok(
+                    new ResponseAntecipacaoStoneVM()
+                    {
+                        Id = efetivacao.Id,
+                        Data = efetivacao.Data,
+                        DataCriacao = efetivacao.DataCriacao,
+                        LiquidoAntecipar = efetivacao.LiquidoAntecipar,
+                        SaldoLiquidoDisponivel = efetivacao.SaldoLiquidoDisponivel,
+                        TaxaPontual = efetivacao.TaxaPontual
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao efetivar a antecipação stone: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Consultar Total
+        //[HttpPost]
+        //[Route("consultartotal")]
+        //public IHttpActionResult ObterTotal(StoneTokenBaseVM entity)
+        //{
+        //    var resource = "v1/settlements/prepay/informations";
+        //    try
+        //    {
+        //        ServicePointManager.Expect100Continue = true;
+        //        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+        //        var total = RestHelper.ExecutePostRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, null, null, GetCompleteHeader(entity.Token));
+        //        return Ok(
+        //            new ResponseConsultaTotalStoneVM()
+        //            {
+        //                Id = efetivacao.Id,
+        //                Data = efetivacao.Data,
+        //                DataCriacao = efetivacao.DataCriacao,
+        //                LiquidoAntecipar = efetivacao.LiquidoAntecipar,
+        //                SaldoLiquidoDisponivel = efetivacao.SaldoLiquidoDisponivel,
+        //                TaxaPontual = efetivacao.TaxaPontual
+        //            });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new BusinessException("Erro ao efetivar a antecipação stone: " + ex.Message);
+        //    }
+        //}
+        #endregion
     }
 }

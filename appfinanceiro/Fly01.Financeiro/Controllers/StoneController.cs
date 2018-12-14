@@ -7,6 +7,12 @@ using Fly01.uiJS.Classes.Elements;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Fly01.Core.Defaults;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core;
+using Newtonsoft.Json.Linq;
+using Fly01.Core.Config;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -16,7 +22,6 @@ namespace Fly01.Financeiro.Controllers
         {
             throw new NotImplementedException();
         }
-
 
         protected FormUI FormLogin()
         {
@@ -63,7 +68,7 @@ namespace Fly01.Financeiro.Controllers
                 }
             });
 
-            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200 });
+            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200 , Required = true});
 
             config.Elements.Add(new ButtonUI
             {
@@ -71,7 +76,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "start",
                 Value = "Entrar",
                 ClassBtn = "green",
-                OnClickFn = ""
+                OnClickFn = "fnGetToken"
             });
 
             return config;
@@ -79,8 +84,47 @@ namespace Fly01.Financeiro.Controllers
 
         public bool ValidaToken()
         {
-            //dar get na api do honatel
-            return true;
+            try
+            {
+                var entity = new {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
+                var response = RestHelper.ExecutePostRequest<JObject>("stone/validartoken", entity, AppDefaults.GetQueryStringDefault());
+                bool success = response.Value<bool>("success");
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }                                        
+        }
+
+        public void GetToken(string senha)
+        {
+            try
+            {
+                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
+
+                var entity = new AutenticacaoStoneVM
+                {
+                    Email = email,
+                    Password = senha
+                };
+
+                var response = RestHelper.ExecutePostRequest<JObject>("stone/token", entity, AppDefaults.GetQueryStringDefault());
+
+                SessionManager.Current.UserData.StoneToken = response.Value<string>("token");
+
+                List();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public override ContentResult List()
@@ -137,7 +181,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputRangeUI
             {
                 Id = "rangeRecebivel",
-                Class = "col s12 offset-m2 m8 green-text",
+                Class = "col s12 offset-m2 m8",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }

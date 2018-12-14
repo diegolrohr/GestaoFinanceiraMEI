@@ -62,6 +62,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     {
                         Token = authenticate.Token
                     });
+
             }
             catch (Exception ex)
             {
@@ -85,7 +86,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception)
             {
-                return BadRequest();
+                return Ok(new { success = false });
             }
         }
 

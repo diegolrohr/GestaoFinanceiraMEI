@@ -1,7 +1,23 @@
 ﻿<script>
     function fnGetToken() {
-        var senha = $("#senha").val();
-        debugger;
-        $$$.go("@Url.Action("GetToken", "Stone", new { senha = "ST0n3!2017" })")
+        if ($("form#fly01frmLogin").valid()) {
+            var senha = $("#senha").val();
+            $$$.loading.start();
+            $.ajax({
+                url: '@Url.Action("GetToken", "Stone")',
+                type: "POST",
+                data: { senha: senha},
+                success: function (data) {
+                    if (data.success) {
+                        $$$.loading.stop();
+                         $$$.go('@Url.Action("List", "Stone")');
+                    } else {
+                        $$$.loading.stop();
+                        $$$.toast(data.message, 'error');
+
+                    }
+                },
+            });
+        }
     }
 </script>

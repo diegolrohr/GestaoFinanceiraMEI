@@ -13,12 +13,15 @@ using Fly01.Core;
 using Newtonsoft.Json.Linq;
 using Fly01.Core.Config;
 using Fly01.Core.ViewModels;
+using Fly01.Core.Notifications;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
-    public class StoneController : BaseController<StoneVM>
+    public class StoneController : BaseController<DomainBaseVM>
     {
-        public override Func<StoneVM, object> GetDisplayData()
+        public override Func<DomainBaseVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
         }
@@ -27,7 +30,7 @@ namespace Fly01.Financeiro.Controllers
         {
             var config = new FormUI
             {
-                Id = "fly01frm",
+                Id = "fly01frmLogin",
                 Class = "col s12 m8 offset-m2 center",
                 Action = new FormUIAction
                 {
@@ -97,11 +100,11 @@ namespace Fly01.Financeiro.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new BusinessException(ex.Message);
             }                                        
         }
 
-        public void GetToken(string senha)
+        public JsonResult GetToken(string senha)
         {
             try
             {
@@ -117,13 +120,14 @@ namespace Fly01.Financeiro.Controllers
 
                 SessionManager.Current.UserData.StoneToken = response.Value<string>("token");
 
-                List();
+                return JsonResponseStatus.GetJson(new { success = true }); ;
 
             }
             catch (Exception ex)
             {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
 
-                throw new Exception(ex.Message);
             }
         }
 

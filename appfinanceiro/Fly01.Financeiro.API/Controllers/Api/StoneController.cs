@@ -40,7 +40,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public Dictionary<string, string> GetCompleteHeader(string token)
         {
             var header = GetDefaultHeader();
-            AddAuthorizationHeader(header,token);
+            AddAuthorizationHeader(header, token);
             AddStoneCodeHeader(header);
             return header;
         }
@@ -51,7 +51,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
-        
+
         public IHttpActionResult Get()
         {
             return Ok("SUCESSO");
@@ -63,6 +63,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
         public IHttpActionResult GetToken(AutenticacaoStoneVM entity)
         {
             var resource = "authenticate";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAutenticacaoStone(entity);
+            }
+
             try
             {
                 //TODO: ver https
@@ -76,9 +81,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     });
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new BusinessException("Não foi possível obter autenticação na stone. " + ex.Message);
+                throw new BusinessException("Não foi possível obter autenticação na stone. Verifique a senha digitada e tente novamente.");
             }
         }
         #endregion
@@ -104,8 +109,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         #region Simular Antecipação
         [HttpPost]
-        [Route("simularantecipacao")]
-        public IHttpActionResult SimularAntecipacao(SimularAntecipacaoStoneVM entity)
+        [Route("antecipacaosimular")]
+        public IHttpActionResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
         {
             var resource = "v1/settlements/prepay/simulate";
             try
@@ -136,8 +141,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         #region Efetivar Antecipação
         [HttpPost]
-        [Route("efetivarantecipacao")]
-        public async Task<IHttpActionResult> EfetivarAntecipacao(EfetivarAntecipacaoStoneVM entity)
+        [Route("antecipacaoefetivar")]
+        public async Task<IHttpActionResult> AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
         {
             var resource = "v1/settlements/prepay/proposals";
             try
@@ -149,14 +154,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 SetSecurityProtocol();
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
-                //var efetivacao = new ResponseAntecipacaoStone()
-                //{
-                //    Data = DateTime.Now,
-                //    LiquidoAnteciparCentavos = 158212,
-                //    SaldoLiquidoDisponivel = 15216315,
-                //    Id = 1452,
-                //    TaxaPontual = 4.99
-                //};
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
@@ -192,8 +189,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         #region Consultar Total
         [HttpPost]
-        [Route("consultartotal")]
-        public IHttpActionResult ConsultarTotal(StoneTokenBaseVM entity)
+        [Route("antecipacaoconsultar")]
+        public IHttpActionResult AntecipacaoConsultar(StoneTokenBaseVM entity)
         {
             var resource = "v1/settlements/prepay/informations";
             try
@@ -216,14 +213,14 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
         #region Consultar Configuração
         [HttpPost]
-        [Route("configuracao")]
-        public IHttpActionResult Configuracao(StoneTokenBaseVM entity)
+        [Route("antecipacaoconfiguracao")]
+        public IHttpActionResult AntecipacaoConfiguracao(StoneTokenBaseVM entity)
         {
             var resource = "v1/settlements/prepay/configurations";
             try
             {
                 SetSecurityProtocol();
-                var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource,GetCompleteHeader(entity.Token), null);
+                var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
                     new ResponseConfiguracaoStoneVM()
                     {

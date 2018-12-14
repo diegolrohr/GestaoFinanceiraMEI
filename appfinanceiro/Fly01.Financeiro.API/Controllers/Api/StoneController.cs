@@ -73,6 +73,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     {
                         Token = autenticacao.Token
                     });
+
             }
             catch (Exception ex)
             {

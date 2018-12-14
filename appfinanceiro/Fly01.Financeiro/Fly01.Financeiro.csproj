@@ -91,6 +91,7 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StoneController.cs" />
     <Compile Include="Controllers\TemplateBoletoController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
@@ -152,6 +153,7 @@
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
+    <Compile Include="ViewModel\StoneVM.cs" />
     <Compile Include="ViewModel\TemplateBoletoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
@@ -399,6 +401,9 @@
     <Content Include="Views\Cnab\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnGetToken.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnReadyRecebiveis.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -450,7 +455,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.7\lib\net452\Fly01.uiJS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

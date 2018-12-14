@@ -74,9 +74,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     });
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new BusinessException("Não foi possível obter autenticação na stone. " + ex.Message);
+                throw new BusinessException("Não foi possível obter autenticação na stone. Verifique a senha digitada e tente novamente.");
             }
         }
         #endregion

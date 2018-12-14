@@ -37,6 +37,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             header.Add("StoneCode", response?.StoneCode);
         }
+
         public Dictionary<string, string> GetCompleteHeader(string token)
         {
             var header = GetDefaultHeader();

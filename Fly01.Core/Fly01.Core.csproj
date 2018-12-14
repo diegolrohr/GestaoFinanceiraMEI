@@ -59,11 +59,12 @@
     <Compile Include="ViewModels\Presentation\Commons\ResponseDadosBancariosStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseConfiguracaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ResponseConsultaTotalStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\EfetivarAntecipacaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneTokenBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\CertificadoDigitalVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicosPorDiaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\OrdemServicoPorStatusVM.cs" />
-    <Compile Include="ViewModels\Presentation\Commons\AntecipacaoStoneVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\SimularAntecipacaoStoneVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\TopServicosProdutosOrdemServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ComprasPagamentosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ContasPagarDoDiaVM.cs" />

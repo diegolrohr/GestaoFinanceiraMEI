@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using Fly01.Financeiro.BL;
+using System.Threading.Tasks;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -104,7 +105,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Simular Antecipação
         [HttpPost]
         [Route("simularantecipacao")]
-        public IHttpActionResult SimularAntecipacao(AntecipacaoStoneVM entity)
+        public IHttpActionResult SimularAntecipacao(SimularAntecipacaoStoneVM entity)
         {
             var resource = "v1/settlements/prepay/simulate";
             try
@@ -136,7 +137,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Efetivar Antecipação
         [HttpPost]
         [Route("efetivarantecipacao")]
-        public IHttpActionResult EfetivarAntecipacao(AntecipacaoStoneVM entity)
+        public async Task<IHttpActionResult> EfetivarAntecipacao(EfetivarAntecipacaoStoneVM entity)
         {
             var resource = "v1/settlements/prepay/proposals";
             try
@@ -148,12 +149,30 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 SetSecurityProtocol();
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
-                //using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                //var efetivacao = new ResponseAntecipacaoStone()
                 //{
-                //    unitOfWork.
-                //}
+                //    Data = DateTime.Now,
+                //    LiquidoAnteciparCentavos = 158212,
+                //    SaldoLiquidoDisponivel = 15216315,
+                //    Id = 1452,
+                //    TaxaPontual = 4.99
+                //};
 
-                    return Ok(
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    unitOfWork.StoneAntecipacaoRecebiveisBL.Insert(new StoneAntecipacaoRecebiveis()
+                    {
+                        StoneId = efetivacao.Id,
+                        StoneBancoId = entity.StoneBancoId,
+                        TaxaPontual = efetivacao.TaxaPontual,
+                        Data = efetivacao.Data,
+                        ValorBruto = entity.Valor,
+                        ValorAntecipado = efetivacao.LiquidoAntecipar
+                    });
+                    await unitOfWork.Save();
+                }
+
+                return Ok(
                     new ResponseAntecipacaoStoneVM()
                     {
                         Id = efetivacao.Id,

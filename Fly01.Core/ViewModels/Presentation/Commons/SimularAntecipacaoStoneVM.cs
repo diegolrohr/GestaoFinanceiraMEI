@@ -2,7 +2,7 @@
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class AntecipacaoStoneVM : StoneTokenBaseVM
+    public class SimularAntecipacaoStoneVM : StoneTokenBaseVM
     {
         [JsonProperty("valor")]
         public double Valor { get; set; }

@@ -232,6 +232,10 @@
     <Compile Include="Migrations\201812111900553_AlterStone.Designer.cs">
       <DependentUpon>201812111900553_AlterStone.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.cs" />
+    <Compile Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.Designer.cs">
+      <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -391,6 +395,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812111900553_AlterStone.resx">
       <DependentUpon>201812111900553_AlterStone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.resx">
+      <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -63,12 +63,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
+    <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
     <Compile Include="Domains\Commons\AntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\StoneTokenBase.cs" />
-    <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
     <Compile Include="Domains\Commons\AutenticacaoStone.cs" />
     <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemBase.cs" />

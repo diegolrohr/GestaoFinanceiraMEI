@@ -11,6 +11,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
+using Fly01.Financeiro.BL;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -58,7 +59,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Token
         [HttpPost]
         [Route("token")]
-        public IHttpActionResult GetToken(AutenticacaoStone entity)
+        public IHttpActionResult GetToken(AutenticacaoStoneVM entity)
         {
             var resource = "authenticate";
             try
@@ -147,7 +148,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 SetSecurityProtocol();
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
-                return Ok(
+                //using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                //{
+                //    unitOfWork.
+                //}
+
+                    return Ok(
                     new ResponseAntecipacaoStoneVM()
                     {
                         Id = efetivacao.Id,

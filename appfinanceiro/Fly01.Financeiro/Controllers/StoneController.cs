@@ -70,8 +70,11 @@ namespace Fly01.Financeiro.Controllers
                     }
                 }
             });
+            string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
 
-            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200 , Required = true});
+            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 m6 offset-m3", Label = "E-mail Stone", MaxLength = 200, Disabled = true, Value = email });
+
+            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200, Required = true });
 
             config.Elements.Add(new ButtonUI
             {
@@ -83,75 +86,6 @@ namespace Fly01.Financeiro.Controllers
             });
 
             return config;
-        }
-
-        public bool ValidaToken()
-        {
-            try
-            {
-                var entity = new {
-                    Token = SessionManager.Current.UserData.StoneToken
-                };
-
-                var response = RestHelper.ExecutePostRequest<JObject>("stone/validartoken", entity, AppDefaults.GetQueryStringDefault());
-                bool success = response.Value<bool>("success");
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                throw new BusinessException(ex.Message);
-            }                                        
-        }
-
-        public JsonResult GetToken(string senha)
-        {
-            try
-            {
-                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
-
-                var entity = new AutenticacaoStoneVM
-                {
-                    Email = email,
-                    Password = senha
-                };
-
-                var response = RestHelper.ExecutePostRequest<JObject>("stone/token", entity, AppDefaults.GetQueryStringDefault());
-
-                SessionManager.Current.UserData.StoneToken = response.Value<string>("token");
-
-                return JsonResponseStatus.GetJson(new { success = true }); ;
-
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-
-            }
-        }
-
-        public override ContentResult List()
-        {
-            ContentUI result = new ContentUIBase(Url.Action("Sidebar", "Home"))
-            {
-                History = new ContentUIHistory
-                {
-                    Default = Url.Action("Index")
-                },
-                Header = new HtmlUIHeader
-                {
-                    Title = "Stone - Antecipação de recebíveis",
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-
-            if (ValidaToken()) // se tem TOKEN VALIDO
-                result.Content.Add(FormSimulacao());
-            else
-                result.Content.Add(FormLogin());
-
-            return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
         }
 
         protected FormUI FormSimulacao()
@@ -201,8 +135,105 @@ namespace Fly01.Financeiro.Controllers
                 ClassBtn = "btn-jumbo green",
                 OnClickFn = ""
             });
-            
+
             return config;
+        }
+
+        public bool ValidaToken()
+        {
+            try
+            {
+                var entity = new
+                {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
+                var response = RestHelper.ExecutePostRequest<JObject>("stone/validartoken", entity, AppDefaults.GetQueryStringDefault());
+                bool success = response.Value<bool>("success");
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public JsonResult GetToken(string senha)
+        {
+            try
+            {
+                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
+
+                var entity = new AutenticacaoStoneVM
+                {
+                    Email = email,
+                    Password = senha
+                };
+
+                var response = RestHelper.ExecutePostRequest<JObject>("stone/token", entity, AppDefaults.GetQueryStringDefault());
+
+                SessionManager.Current.UserData.StoneToken = response.Value<string>("token");
+
+                return JsonResponseStatus.GetJson(new { success = true }); ;
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+
+            }
+        }
+
+        public JsonResult GetTotalAntecipar()
+        {
+            try
+            {
+                var entity = new StoneTokenBaseVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
+                var response = RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
+                if (response == null)
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+                return Json(new
+                {
+                    totalAntecipavel = response.TotalBrutoAntecipavel,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+
+            }
+        }
+
+        public override ContentResult List()
+        {
+            ContentUI result = new ContentUIBase(Url.Action("Sidebar", "Home"))
+            {
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index")
+                },
+                Header = new HtmlUIHeader
+                {
+                    Title = "Stone - Antecipação de recebíveis",
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns="
+            };
+
+            if (ValidaToken()) // se tem TOKEN VALIDO
+                result.Content.Add(FormSimulacao());
+            else
+                result.Content.Add(FormLogin());
+
+            return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
         }
 
         protected override ContentUI FormJson()

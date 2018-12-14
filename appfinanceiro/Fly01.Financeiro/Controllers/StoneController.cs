@@ -200,10 +200,19 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        public JsonResult AntecipacaoEfetivar(double valor, int stoneBancoId, string senha)
         {
             try
             {
+                GetToken(senha);
+
+                var entity= new EfetivarAntecipacaoStoneVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken,
+                    StoneBancoId = stoneBancoId,
+                    Valor = valor
+                };
+
                 var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
                 return Json(response);
             }
@@ -214,10 +223,15 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult AntecipacaoConfiguracao(StoneTokenBaseVM entity)
+        public JsonResult AntecipacaoConfiguracao()
         {
             try
             {
+                var entity = new StoneTokenBaseVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
                 var response = RestHelper.ExecutePostRequest<ResponseConfiguracaoStoneVM>("stone/antecipacaoconfiguracao", entity);
                 return Json(response);
             }
@@ -228,10 +242,15 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult AntecipacaoDadosBancarios(StoneTokenBaseVM entity)
+        public JsonResult AntecipacaoDadosBancarios()
         {
             try
             {
+                var entity = new StoneTokenBaseVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
                 var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/antecipacaoconfiguracao", entity);
                 return Json(response);
             }

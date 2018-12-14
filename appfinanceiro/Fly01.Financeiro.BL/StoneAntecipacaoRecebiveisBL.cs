@@ -11,13 +11,11 @@ namespace Fly01.Financeiro.BL
 
         public override void ValidaModel(StoneAntecipacaoRecebiveis entity)
         {
-            entity.Fail(string.IsNullOrWhiteSpace(entity.ValorAntecipado), ValorAntecipadoNull);
-            entity.Fail(string.IsNullOrWhiteSpace(entity.ValorRecebido), ValorRecebidoNull);
-            entity.Fail(string.IsNullOrWhiteSpace(entity.Taxa), TaxaNull);
+            entity.Fail(entity.ValorAntecipado <= 0, new Error("Valor antecipado deve ser superior a zero.", "valorAntecipado"));
+            entity.Fail(entity.ValorBruto <= 0, new Error("Valor recebido deve ser superior a zero.", "valorBruto"));
+            entity.Fail(entity.TaxaPontual <= 0, new Error("Valor da taxa deve ser superior a zero.", "taxaPontual"));
+            entity.Fail(entity.StoneBancoId <= 0, new Error("Stone bancoId inválido.", "stoneBancoId"));
+            entity.Fail(entity.StoneId <= 0, new Error("Stone id inválido.", "StoneId"));
         }
-
-        public static Error ValorAntecipadoNull = new Error("Valor Antecipado Nulo.");
-        public static Error ValorRecebidoNull = new Error("Valor Recebido Nulo.");
-        public static Error TaxaNull = new Error("Taxa Nulo.");
     }
 }

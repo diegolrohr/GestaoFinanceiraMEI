@@ -78,7 +78,7 @@
     <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
     <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
-    <Compile Include="Domains\Commons\Stone.cs" />
+    <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
     <Compile Include="Domains\Commons\TemplateBoleto.cs" />
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />

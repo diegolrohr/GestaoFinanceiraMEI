@@ -1,6 +1,6 @@
 ﻿namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class Stone : PlataformaBase
+    public class StoneAntecipacaoRecebiveis : PlataformaBase
     {
         public string ValorRecebido { get; set; }
 

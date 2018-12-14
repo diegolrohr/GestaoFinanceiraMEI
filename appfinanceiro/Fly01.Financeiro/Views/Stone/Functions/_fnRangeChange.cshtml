@@ -1,0 +1,11 @@
+﻿<script>
+    function fnRangeChange(event) {
+        if (event.target.id === "valorRecebivel")
+            $("#rangeRecebivel").val(event.target.value.replace(".", "").replace(",", "."));
+        else if (document.querySelector(`#${event.target.id} ~ span.thumb.active`))
+            $("#valorRecebivel").val(event.target.value);
+        $$$.fn.updateTextFields();
+        //$("#formAntecipacao").valid();
+    }
+</script>
+

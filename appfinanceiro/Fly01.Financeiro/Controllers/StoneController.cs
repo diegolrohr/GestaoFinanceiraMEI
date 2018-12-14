@@ -116,11 +116,11 @@ namespace Fly01.Financeiro.Controllers
                     Password = senha
                 };
 
-                var response = RestHelper.ExecutePostRequest<JObject>("stone/token", entity, AppDefaults.GetQueryStringDefault());
+                var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
 
-                SessionManager.Current.UserData.StoneToken = response.Value<string>("token");
+                SessionManager.Current.UserData.StoneToken = response.Token;
 
-                return JsonResponseStatus.GetJson(new { success = true }); ;
+                return JsonResponseStatus.GetSuccess("");
 
             }
             catch (Exception ex)
@@ -130,6 +130,63 @@ namespace Fly01.Financeiro.Controllers
 
             }
         }
+
+        public JsonResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        {
+            try
+            {
+                var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaosimular", entity);
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetJson(error.Message);
+            }
+        }
+
+        public JsonResult AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        {
+            try
+            {
+                var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public JsonResult AntecipacaoConfiguracao(StoneTokenBaseVM entity)
+        {
+            try
+            {
+                var response = RestHelper.ExecutePostRequest<ResponseConfiguracaoStoneVM>("stone/antecipacaoconfiguracao", entity);
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public JsonResult AntecipacaoDadosBancarios(StoneTokenBaseVM entity)
+        {
+            try
+            {
+                var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/antecipacaoconfiguracao", entity);
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
 
         public override ContentResult List()
         {

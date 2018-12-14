@@ -149,14 +149,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
                 SetSecurityProtocol();
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
-                //var efetivacao = new ResponseAntecipacaoStone()
-                //{
-                //    Data = DateTime.Now,
-                //    LiquidoAnteciparCentavos = 158212,
-                //    SaldoLiquidoDisponivel = 15216315,
-                //    Id = 1452,
-                //    TaxaPontual = 4.99
-                //};
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {

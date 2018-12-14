@@ -70,8 +70,11 @@ namespace Fly01.Financeiro.Controllers
                     }
                 }
             });
+            string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
 
-            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200 , Required = true});
+            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 m6 offset-m3", Label = "E-mail Stone", MaxLength = 200, Disabled = true, Value = email });
+
+            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200, Required = true });
 
             config.Elements.Add(new ButtonUI
             {
@@ -85,11 +88,63 @@ namespace Fly01.Financeiro.Controllers
             return config;
         }
 
+        protected FormUI FormSimulacao()
+        {
+            var config = new FormUI
+            {
+                Id = "formAntecipacao",
+                Class = "col s12 m8 offset-m2 center",
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    List = Url.Action("Form")
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                ReadyFn = "fnReadyRecebiveis",
+                //AfterLoadFn = "fnAfterLoad"
+            };
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorRecebivel",
+                Label = "Valor",
+                Class = "col s12 offset-m4 m4",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
+                }
+
+            });
+
+            config.Elements.Add(new InputRangeUI
+            {
+                Id = "rangeRecebivel",
+                Class = "col s12 offset-m2 m8",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
+                }
+            });
+
+            config.Elements.Add(new ButtonUI
+            {
+
+                Id = "simular",
+                Value = "Simular",
+                Class = "col s12 offset-m4 m4",
+                ClassBtn = "btn-jumbo green",
+                OnClickFn = ""
+            });
+
+            return config;
+        }
+
         public bool ValidaToken()
         {
             try
             {
-                var entity = new {
+                var entity = new
+                {
                     Token = SessionManager.Current.UserData.StoneToken
                 };
 
@@ -101,7 +156,7 @@ namespace Fly01.Financeiro.Controllers
             catch (Exception ex)
             {
                 throw new BusinessException(ex.Message);
-            }                                        
+            }
         }
 
         public JsonResult GetToken(string senha)
@@ -187,6 +242,32 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        public JsonResult GetTotalAntecipar()
+        {
+            try
+            {
+                var entity = new StoneTokenBaseVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken
+                };
+
+                var response = RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
+                if (response == null)
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+
+                return Json(new
+                {
+                    totalAntecipavel = response.TotalBrutoAntecipavel,
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+
+            }
+        }
 
         public override ContentResult List()
         {
@@ -209,57 +290,6 @@ namespace Fly01.Financeiro.Controllers
                 result.Content.Add(FormLogin());
 
             return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
-        }
-
-        protected FormUI FormSimulacao()
-        {
-            var config = new FormUI
-            {
-                Id = "formAntecipacao",
-                Class = "col s12 m8 offset-m2 center",
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    List = Url.Action("Form")
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnReadyRecebiveis",
-                //AfterLoadFn = "fnAfterLoad"
-            };
-
-            config.Elements.Add(new InputCurrencyUI
-            {
-                Id = "valorRecebivel",
-                Label = "Valor",
-                Class = "col s12 offset-m4 m4",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
-                }
-
-            });
-
-            config.Elements.Add(new InputRangeUI
-            {
-                Id = "rangeRecebivel",
-                Class = "col s12 offset-m2 m8",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
-                }
-            });
-
-            config.Elements.Add(new ButtonUI
-            {
-
-                Id = "simular",
-                Value = "Simular",
-                Class = "col s12 offset-m4 m4",
-                ClassBtn = "btn-jumbo green",
-                OnClickFn = ""
-            });
-            
-            return config;
         }
 
         protected override ContentUI FormJson()

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
-    [RoutePrefix("api/stone/")]
+    [RoutePrefix("api/stone")]
     public class StoneController : ApiBaseController
     {
         #region Headers

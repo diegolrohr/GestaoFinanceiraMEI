@@ -153,7 +153,6 @@
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
     <Compile Include="ViewModel\ReceitaPorCategoriaVM.cs" />
-    <Compile Include="ViewModel\StoneVM.cs" />
     <Compile Include="ViewModel\TemplateBoletoVM.cs" />
     <Compile Include="ViewModel\TransferenciaCadastroVM.cs" />
     <Compile Include="ViewModel\TransferenciaVM.cs" />
@@ -634,6 +633,10 @@
     <ProjectReference Include="..\..\Fly01.Core.Mensageria\Fly01.Core.Mensageria.csproj">
       <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
       <Name>Fly01.Core.Mensageria</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Presentation\Fly01.Core.Presentation.csproj">
       <Project>{C285FE7E-0A0C-47CE-BAE9-7FCBDCEEE378}</Project>

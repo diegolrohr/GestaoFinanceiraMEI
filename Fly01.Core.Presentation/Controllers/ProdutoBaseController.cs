@@ -3,6 +3,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
@@ -217,15 +218,6 @@ namespace Fly01.Core.Presentation.Controllers
                 PreFilter = "ncmId"
             });
 
-            config.Elements.Add(new AutoCompleteUI()
-            {
-                Id = "enquadramentoLegalIPIId",
-                Class = "col s12",
-                Label = "Enquadramento Legal do IPI",
-                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
-                LabelId = "enquadramentoLegalIPIDescricao"
-            });
-
             config.Elements.Add(new InputFloatUI { Id = "saldoMinimo", Class = "col s12 m3", Label = "Saldo Mínimo", Digits = 3 });
             config.Elements.Add(new InputFloatUI
             {
@@ -239,6 +231,24 @@ namespace Fly01.Core.Presentation.Controllers
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
+
+            config.Elements.Add(new AutoCompleteUI()
+            {
+                Id = "enquadramentoLegalIPIId",
+                Class = "col s12",
+                Label = "Enquadramento Legal do IPI",
+                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
+                LabelId = "enquadramentoLegalIPIDescricao"
+            });
+
+            config.Elements.Add(new SelectUI
+            {
+                Id = "origemMercadoria",
+                Class = "col s12",
+                Label = "Origem Mercadoria",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
+            });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 

@@ -322,7 +322,7 @@ namespace Fly01.Compras.BL
 
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
-                            OrigemMercadoria = OrigemMercadoria.Nacional,
+                            OrigemMercadoria = item.Produto.OrigemMercadoria,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),

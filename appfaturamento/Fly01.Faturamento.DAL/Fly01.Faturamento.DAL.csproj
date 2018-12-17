@@ -452,6 +452,10 @@
     <Compile Include="Migrations\201812061905022_AlterPessoaTamanhoComplemento.Designer.cs">
       <DependentUpon>201812061905022_AlterPessoaTamanhoComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812171332554_AlterProdutoAddOrigemMercadoria.cs" />
+    <Compile Include="Migrations\201812171332554_AlterProdutoAddOrigemMercadoria.Designer.cs">
+      <DependentUpon>201812171332554_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -784,6 +788,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812061905022_AlterPessoaTamanhoComplemento.resx">
       <DependentUpon>201812061905022_AlterPessoaTamanhoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812171332554_AlterProdutoAddOrigemMercadoria.resx">
+      <DependentUpon>201812171332554_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -63,6 +63,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string CodigoEnquadramentoLegalIPI { get; set; }
 
+        public OrigemMercadoria OrigemMercadoria { get; set; }
+
         public virtual GrupoProduto GrupoProduto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
         public virtual Ncm Ncm { get; set; }

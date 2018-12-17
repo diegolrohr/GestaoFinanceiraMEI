@@ -1,0 +1,11 @@
+﻿<script>
+    function fnSimular(event) {
+        var capital = parseFloat(document.getElementById("valorRecebivel").value.toLocaleString("pt-BR"));
+        var liquido = capital * 0.9;
+
+        $$$._.dtSimulacao.row.add({
+            capital: capital.toLocaleString("pt-BR", { minimumFractionDigits: 2, style: "currency", currency: "BRL" }),
+            liquido: liquido.toLocaleString("pt-BR", { minimumFractionDigits: 2, style: "currency", currency: "BRL" })
+        }).draw();
+    }
+</script>

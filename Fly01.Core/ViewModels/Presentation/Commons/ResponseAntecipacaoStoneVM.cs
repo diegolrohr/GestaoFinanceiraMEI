@@ -22,5 +22,27 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("saldoLiquidoDisponivel")]
         public double SaldoLiquidoDisponivel { get; set; }
+
+        [JsonProperty("liquidoAnteciparCurrency")]
+        public string LiquidoAnteciparCurrency
+        {
+            get
+            {
+                return LiquidoAntecipar.ToString("C", AppDefaults.CultureInfoDefault);
+            }
+            set
+            { }
+        }
+
+        [JsonProperty("saldoLiquidoDisponivelCurrency")]
+        public string SaldoLiquidoDisponivelCurrency
+        {
+            get
+            {
+                return SaldoLiquidoDisponivel.ToString("C", AppDefaults.CultureInfoDefault);
+            }
+            set
+            { }
+        }
     }
 }

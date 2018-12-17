@@ -110,12 +110,104 @@ namespace Fly01.Financeiro.Controllers
             return config;
         }
 
-        protected FormUI FormSimulacao()
+        protected void FormSimulacao(ContentUI result)
         {
             var config = new FormUI
             {
                 Id = "formAntecipacao",
-                Class = "col s12 m8 offset-m2 center",
+                Class = "col s12 center card green",
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    List = Url.Action("Form")
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                //ReadyFn = "fnReadyRecebiveis"
+            };
+            config.Elements.Add(new StaticTextUI
+            {
+                Class = "col s12 m4 white-text card-content",
+                Lines = new List<LineUI>
+                {
+                    new LineUI
+                    {
+                        Tag = "span",
+                        Class = "card-title",
+                        Text = "Total antecipável"
+                    },
+                    new LineUI
+                    {
+                        Id = "totalAntecipavel",
+                        Tag = "h5",
+                        Class = "",
+                        //Text = "R$ 110.000,00"
+                    }
+                }
+            });
+            config.Elements.Add(new StaticTextUI
+            {
+                Class = "col s12 m4 teal white-text card-content",
+                Lines = new List<LineUI>
+                {
+                    new LineUI
+                    {
+                        Tag = "span",
+                        Class = "card-title",
+                        Text = "Líquido antecipável"
+                    },
+                    new LineUI
+                    {
+                        Id = "liquidoAntecipavel",
+                        Tag = "h5",
+                        Class = "",
+                        //Text = "R$ 100.000,00"
+                    }
+                }
+            });
+            config.Elements.Add(new InputHiddenUI
+            {
+                Id = "stoneBancoId"
+            });
+
+            config.Elements.Add(new StaticTextUI
+            {
+                Class = "col s12 m4 white-text card-content",
+                Lines = new List<LineUI>
+                {
+                    new LineUI
+                    {
+                        //Id = "contaBancaria",
+                        Tag = "span",
+                        Class = "card-title",
+                        Text = "Conta Bancária"
+                    },
+                    new LineUI
+                    {
+                        Id = "banco",
+                        Tag = "h6",
+                        Class = "",
+                        //Text = "Banco Brasil"
+                    },
+                    new LineUI
+                    {
+                        Id = "agencia",
+                        Tag = "h6",
+                        Class = "",
+                        //Text = "Ag. 0912"
+                    },
+                    new LineUI
+                    {
+                        Id = "conta",
+                        Tag = "h6",
+                        Class = "",
+                        //Text = "Cc. 35364-8"
+                    }
+                }
+            });
+            var config2 = new FormUI
+            {
+                Id = "formAntecipacao2",
+                Class = "col s12 m4 card",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -124,40 +216,96 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnReadyRecebiveis"
             };
+            config2.Elements.Add(new StaticTextUI
+            {
+                Class = "col s12 card-content",
+                Lines = new List<LineUI>
+                {
+                    new LineUI
+                    {
+                        Tag = "span",
+                        Class = "green-text card-title",
+                        Text = "Simular antecipação"
+                    }
+                }
+            });
 
-            config.Elements.Add(new InputCurrencyUI
+            config2.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorRecebivel",
                 Label = "Valor",
-                Class = "col s12 offset-m4 m4",
+                Class = "col s12 green-text",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
                 }
 
             });
-
-            config.Elements.Add(new InputRangeUI
+            config2.Elements.Add(new InputRangeUI
             {
                 Id = "rangeRecebivel",
-                Class = "col s12 offset-m2 m8",
+                Class = "col s12 green-text",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
                 }
             });
 
-            config.Elements.Add(new ButtonUI
+            config2.Elements.Add(new ButtonUI
             {
-
-                Id = "simular",
                 Value = "Simular",
-                Class = "col s12 offset-m4 m4",
-                ClassBtn = "btn-jumbo green",
-                OnClickFn = ""
+                Class = "col s12 m6 offset-m3",
+                ClassBtn = "btn-large green",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI
+                    {
+                        DomEvent = "click",
+                        Function = "fnSimular"
+                    }
+                }
             });
 
-            return config;
+            var configdt = new DataTableUI
+            {
+                Id = "dtSimulacao",
+                Class = "col s12 m8",
+                Actions =
+                {
+                    new DataTableUIAction
+                    {
+                        OnClickFn = "fnEfetivar",
+                        Label = "Efetivar"
+                    }
+                },
+                Columns =
+                {
+                    new DataTableUIColumn
+                    {
+                        DataField = "Id"
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "capital",
+                        DisplayName = "Capital",
+                        Visible = true,
+                        Searchable = false,
+                        Orderable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "liquido",
+                        DisplayName = "Líquido",
+                        Visible = true,
+                        Searchable = false,
+                        Orderable = false
+                    },
+                },
+                UrlGridLoad = ""
+            };
+            result.Content.Add(config);
+            result.Content.Add(config2);
+            result.Content.Add(configdt);
         }
 
         public bool ValidaToken()
@@ -207,7 +355,8 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult AntecipacaoSimular(double valor)
+        [HttpGet]
+        public ContentResult AntecipacaoSimular(double valor)
         {
             try
             {
@@ -218,16 +367,16 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaosimular", entity);
-                return Json(response, JsonRequestBehavior.AllowGet);
+                return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetJson(error.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
             }
         }
 
-        public JsonResult AntecipacaoEfetivar(double valor, int stoneBancoId, string senha)
+        public ContentResult AntecipacaoEfetivar(double valor, int stoneBancoId, string senha)
         {
             try
             {
@@ -241,16 +390,17 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
-                return Json(response, JsonRequestBehavior.AllowGet);
+                return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
             }
         }
 
-        public JsonResult AntecipacaoConfiguracao()
+        [HttpGet]
+        public ContentResult AntecipacaoConfiguracao()
         {
             try
             {
@@ -260,16 +410,17 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseConfiguracaoStoneVM>("stone/antecipacaoconfiguracao", entity);
-                return Json(response, JsonRequestBehavior.AllowGet);
+                return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
             }
         }
 
-        public JsonResult AntecipacaoDadosBancarios()
+        [HttpGet]
+        public ContentResult AntecipacaoDadosBancarios()
         {
             try
             {
@@ -278,17 +429,18 @@ namespace Fly01.Financeiro.Controllers
                     Token = SessionManager.Current.UserData.StoneToken
                 };
 
-                var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/antecipacaoconfiguracao", entity);
-                return Json(response, JsonRequestBehavior.AllowGet);
+                var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/dadosbancarios", entity);
+                return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
             }
         }
 
-        public JsonResult GetTotalAntecipar()
+        [HttpGet]
+        public ContentResult GetTotalAntecipar()
         {
             try
             {
@@ -298,19 +450,12 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
-                if (response == null)
-                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-
-                return Json(new
-                {
-                    totalAntecipavel = response.TotalBrutoAntecipavel,
-                    success = true
-                }, JsonRequestBehavior.AllowGet);
+                return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
 
             }
         }
@@ -330,13 +475,13 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            if (ValidaToken()) // se tem TOKEN VALIDO
-                result.Content.Add(FormSimulacao());
+            if (ValidaToken())// se tem TOKEN VALIDO
+                FormSimulacao(result);           
             else
                 result.Content.Add(FormLogin());
 
             return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
-        }       
+        }
 
         protected override ContentUI FormJson()
         {

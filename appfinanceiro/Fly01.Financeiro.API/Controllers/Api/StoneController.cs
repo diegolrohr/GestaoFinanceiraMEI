@@ -125,16 +125,26 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
-                var resource = "v1/settlements/prepay/simulate";
-                var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //var resource = "v1/settlements/prepay/simulate";
+                //var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //return Ok(
+                //    new ResponseAntecipacaoStoneVM()
+                //    {
+                //        Data = simulacao.Data,
+                //        DataCriacao = simulacao.DataCriacao,
+                //        LiquidoAntecipar = simulacao.LiquidoAntecipar,
+                //        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
+                //        TaxaPontual = simulacao.TaxaPontual
+                //    });
+
                 return Ok(
                     new ResponseAntecipacaoStoneVM()
                     {
-                        Data = simulacao.Data,
-                        DataCriacao = simulacao.DataCriacao,
-                        LiquidoAntecipar = simulacao.LiquidoAntecipar,
-                        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
-                        TaxaPontual = simulacao.TaxaPontual
+                        Data = DateTime.Now,
+                        DataCriacao = DateTime.Now,
+                        LiquidoAntecipar = entity.Valor*0.95,
+                        SaldoLiquidoDisponivel = 123.00,
+                        TaxaPontual = 4
                     });
             }
             catch (Exception ex)
@@ -216,7 +226,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     new ResponseConsultaTotalStoneVM()
                     {
                         SaldoDevedor = total.SaldoDevedor,
-                        TotalBrutoAntecipavel = total.TotalBrutoAntecipavel
+                        TotalBrutoAntecipavel = 5420.25//total.TotalBrutoAntecipavel
                     });
             }
             catch (Exception ex)

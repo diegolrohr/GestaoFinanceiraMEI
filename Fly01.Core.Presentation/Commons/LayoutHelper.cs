@@ -32,5 +32,4 @@ namespace Fly01.Core.Presentation.Commons
                 );
         }
     }
-
 }

@@ -31,7 +31,7 @@ namespace Fly01.Financeiro.Controllers
             var config = new FormUI
             {
                 Id = "fly01frmLogin",
-                Class = "col s12 m8 offset-m2 center",
+                Class = "card-panel center col s12 offset-m2 offset-l3 m8 l6",
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -49,7 +49,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new LineUI()
                     {
-                        Tag = "h2",
+                        Tag = "h3",
                         Class = "strong green-text",
                         Text = "Login Stone",
                     }
@@ -64,24 +64,37 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new LineUI()
                     {
-                        Tag = "h5",
-                        Class = "light",
+                        Tag = "p",
+                        Class = "center light",
                         Text = "Digite sua senha do portal da Stone, para ter acesso à funcionalidade de antecipação de recebíveis.",
                     }
                 }
             });
             string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
 
-            config.Elements.Add(new InputEmailUI { Id = "email", Class = "col s12 m6 offset-m3", Label = "E-mail Stone", MaxLength = 200, Disabled = true, Value = email });
-
-            config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m6 offset-m3", Label = "Senha Stone", MaxLength = 200, Required = true });
-
+            config.Elements.Add(new InputEmailUI
+            {
+                Id = "email",
+                Class = "col s12 m6 offset-m3",
+                Label = "E-mail Stone",
+                MaxLength = 200,
+                Disabled = true,
+                Value = email
+            });
+            config.Elements.Add(new InputPasswordUI
+            {
+                Id = "senha",
+                Class = "col s8",
+                Label = "Senha Stone",
+                MaxLength = 200,
+                Required = true
+            });
             config.Elements.Add(new ButtonUI
             {
-
                 Id = "start",
                 Value = "Entrar",
-                ClassBtn = "green",
+                Class = "col s4",
+                ClassBtn = "green btn-large",
                 OnClickFn = "fnGetToken"
             });
 
@@ -206,7 +219,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 GetToken(senha);
 
-                var entity= new EfetivarAntecipacaoStoneVM
+                var entity = new EfetivarAntecipacaoStoneVM
                 {
                     Token = SessionManager.Current.UserData.StoneToken,
                     StoneBancoId = stoneBancoId,
@@ -309,7 +322,7 @@ namespace Fly01.Financeiro.Controllers
                 result.Content.Add(FormLogin());
 
             return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
-        }
+        }       
 
         protected override ContentUI FormJson()
         {

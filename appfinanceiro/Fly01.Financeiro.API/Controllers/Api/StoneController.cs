@@ -93,11 +93,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("validartoken")]
         public IHttpActionResult ValidarToken(ResponseAutenticacaoStoneVM entity)
         {
-            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
-            {
-                unitOfWork.StoneBL.ValidaToken(entity);
-            }
-
             try
             {
                 SetSecurityProtocol();

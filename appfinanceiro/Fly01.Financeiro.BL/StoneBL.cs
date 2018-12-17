@@ -4,6 +4,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Fly01.Financeiro.BL
 {
@@ -19,17 +20,71 @@ namespace Fly01.Financeiro.BL
 
         public void ValidaAutenticacaoStone(AutenticacaoStoneVM entity)
         {
-            Fail(string.IsNullOrEmpty(entity.Email), new Error("Informe o e-mail.", "email"));
+            CleanErros();
             Fail(string.IsNullOrEmpty(entity.Password), new Error("Informe a senha.", "senha"));
+            Fail(string.IsNullOrEmpty(entity.Email), new Error("Informe o e-mail.", "email"));
+            
+            const string pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
+            Fail(!string.IsNullOrEmpty(entity.Email) && (!Regex.IsMatch(entity.Email ?? "", pattern)), new Error("Informe um e-mail válido.", "email"));
             ThrowErros();
         }
 
+        public void ValidaToken(ResponseAutenticacaoStoneVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            ThrowErros();
+        }
+
+        public void ValidaAntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            Fail(entity.Valor <= 0, new Error("Informe um valor válido.", "valor"));
+            ThrowErros();
+        }
+
+        public void ValidaAntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            Fail(entity.Valor <= 0, new Error("Valor inválido.", "valor"));
+            Fail(entity.StoneBancoId <= 0, new Error("Informe o banco para efetivar.", "stoneBancoId"));
+            ThrowErros();
+        }
+
+        public void ValidaAntecipacaoConfiguracao(StoneTokenBaseVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            ThrowErros();
+        }
+
+        public void ValidaAntecipacaoConsultar(StoneTokenBaseVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            ThrowErros();
+        }
+
+        public void ValidaAntecipacaoDadosBancarios(StoneTokenBaseVM entity)
+        {
+            CleanErros();
+            FailToken(entity.Token);
+            ThrowErros();
+        }
+
+        public void FailToken(string token)
+        {
+            Fail(string.IsNullOrEmpty(token), new Error("Informe o token.", "token"));
+        }
+
+        #region Validation codes
         private void Fail(bool condition, Error error)
         {
             if (condition)
                 Notification.Errors.Add(error);
         }
-
 
         private void CleanErros()
         {
@@ -43,5 +98,6 @@ namespace Fly01.Financeiro.BL
                 throw new BusinessException(Notification.Get());
             }
         }
+        #endregion
     }
 }

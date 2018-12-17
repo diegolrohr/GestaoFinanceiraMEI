@@ -37,6 +37,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             header.Add("StoneCode", response?.StoneCode);
         }
+
         public Dictionary<string, string> GetCompleteHeader(string token)
         {
             var header = GetDefaultHeader();
@@ -62,7 +63,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("token")]
         public IHttpActionResult GetToken(AutenticacaoStoneVM entity)
         {
-            var resource = "authenticate";
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.StoneBL.ValidaAutenticacaoStone(entity);
@@ -72,7 +72,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             {
                 //TODO: ver https
                 SetSecurityProtocol();
-
+                var resource = "authenticate";
                 var autenticacao = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(
                     new StoneTokenBaseVM()
@@ -93,10 +93,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("validartoken")]
         public IHttpActionResult ValidarToken(ResponseAutenticacaoStoneVM entity)
         {
-            var resource = "authenticate/validate";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaToken(entity);
+            }
+
             try
             {
                 SetSecurityProtocol();
+                var resource = "authenticate/validate";
                 var authenticate = RestHelper.ExecutePostRequest<JObject>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
                 return Ok(new { success = true });
             }
@@ -112,7 +117,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("antecipacaosimular")]
         public IHttpActionResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
         {
-            var resource = "v1/settlements/prepay/simulate";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAntecipacaoSimular(entity);
+            }
+            
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -121,6 +130,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
+                var resource = "v1/settlements/prepay/simulate";
                 var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
                 return Ok(
                     new ResponseAntecipacaoStoneVM()
@@ -144,7 +154,11 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("antecipacaoefetivar")]
         public async Task<IHttpActionResult> AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
         {
-            var resource = "v1/settlements/prepay/proposals";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAntecipacaoEfetivar(entity);
+            }
+            
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -153,6 +167,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
+                var resource = "v1/settlements/prepay/proposals";
                 var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
@@ -192,10 +207,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("antecipacaoconsultar")]
         public IHttpActionResult AntecipacaoConsultar(StoneTokenBaseVM entity)
         {
-            var resource = "v1/settlements/prepay/informations";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAntecipacaoConsultar(entity);
+            }
+
             try
             {
                 SetSecurityProtocol();
+                var resource = "v1/settlements/prepay/informations";
                 var total = RestHelper.ExecuteGetRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
                     new ResponseConsultaTotalStoneVM()
@@ -216,10 +236,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("antecipacaoconfiguracao")]
         public IHttpActionResult AntecipacaoConfiguracao(StoneTokenBaseVM entity)
         {
-            var resource = "v1/settlements/prepay/configurations";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAntecipacaoConfiguracao(entity);
+            }
+
             try
             {
                 SetSecurityProtocol();
+                var resource = "v1/settlements/prepay/configurations";
                 var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
                     new ResponseConfiguracaoStoneVM()
@@ -243,10 +268,15 @@ namespace Fly01.Financeiro.API.Controllers.Api
         [Route("dadosbancarios")]
         public IHttpActionResult DadosBancarios(StoneTokenBaseVM entity)
         {
-            var resource = "v1/configurations/bank-details";
+            using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                unitOfWork.StoneBL.ValidaAntecipacaoDadosBancarios(entity);
+            }
+            
             try
             {
                 SetSecurityProtocol();
+                var resource = "v1/configurations/bank-details";
                 var dados = RestHelper.ExecuteGetRequest<List<ResponseDadosBancariosStone>>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null).FirstOrDefault();
                 return Ok(
                     new ResponseDadosBancariosStoneVM()

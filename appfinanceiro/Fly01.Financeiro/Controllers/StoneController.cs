@@ -16,6 +16,7 @@ using Fly01.Core.ViewModels;
 using Fly01.Core.Notifications;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Helpers;
+using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -75,7 +76,7 @@ namespace Fly01.Financeiro.Controllers
             config.Elements.Add(new InputEmailUI
             {
                 Id = "email",
-                Class = "col s12 m6 offset-m3",
+                Class = "col s8",
                 Label = "E-mail Stone",
                 MaxLength = 200,
                 Disabled = true,
@@ -97,6 +98,14 @@ namespace Fly01.Financeiro.Controllers
                 ClassBtn = "green btn-large",
                 OnClickFn = "fnGetToken"
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "email",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Para alterar o e-mail você precisa ir em dados da Empresa no campo 'E-mail Stone'."
+                }
+            });
 
             return config;
         }
@@ -113,8 +122,7 @@ namespace Fly01.Financeiro.Controllers
                     List = Url.Action("Form")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnReadyRecebiveis",
-                //AfterLoadFn = "fnAfterLoad"
+                ReadyFn = "fnReadyRecebiveis"
             };
 
             config.Elements.Add(new InputCurrencyUI

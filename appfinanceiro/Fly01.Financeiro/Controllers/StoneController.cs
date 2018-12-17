@@ -199,12 +199,18 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        public JsonResult AntecipacaoSimular(double valor)
         {
             try
             {
+                var entity = new SimularAntecipacaoStoneVM
+                {
+                    Token = SessionManager.Current.UserData.StoneToken,
+                    Valor = valor
+                };
+
                 var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaosimular", entity);
-                return Json(response);
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -227,7 +233,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
-                return Json(response);
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -246,7 +252,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseConfiguracaoStoneVM>("stone/antecipacaoconfiguracao", entity);
-                return Json(response);
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -265,7 +271,7 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/antecipacaoconfiguracao", entity);
-                return Json(response);
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

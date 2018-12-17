@@ -1,7 +1,7 @@
 ﻿using Fly01.Core.Helpers.Attribute;
 using System.Xml.Serialization;
 
-namespace Fly01.EmissaoNFE.Domain.Enums
+namespace Fly01.Core.Entities.Domains.Enum
 {
     public enum OrigemMercadoria
     {
@@ -65,7 +65,7 @@ namespace Fly01.EmissaoNFE.Domain.Enums
         /// 8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%;
         /// </summary>
         [XmlEnum(Name = "8")]
-        [Subtitle("NacionalConteudoImportacaoSuperior70", "7 - Nacional, conteúdo importação superior a 70%")]
+        [Subtitle("NacionalConteudoImportacaoSuperior70", "8 - Nacional, conteúdo importação superior a 70%")]
         NacionalConteudoImportacaoSuperior70 = 8
     }
 }

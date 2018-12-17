@@ -38,9 +38,5 @@ namespace Fly01.OrdemServico.ViewModel
 
         [JsonProperty("registroFixo")]
         public bool RegistroFixo { get; set; }
-
-        [APIEnum("OrigemMercadoria")]
-        [JsonProperty("origemMercadoria")]
-        public string OrigemMercadoria { get; set; }
     }
 }

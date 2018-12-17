@@ -179,7 +179,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             var ICMS = new ICMSPai()
             {
-                OrigemMercadoria = OrigemMercadoria.Nacional,
+                OrigemMercadoria = item.Produto.OrigemMercadoria,
                 //AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                 //ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                 CodigoSituacaoOperacao = TipoTributacaoICMS.TributadaSemPermissaoDeCredito, //TODO: ver Wilson

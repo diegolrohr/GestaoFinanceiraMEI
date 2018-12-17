@@ -64,6 +64,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("enquadramentoLegalIPIId")]
         public Guid? EnquadramentoLegalIPIId { get; set; }
 
+        [APIEnum("OrigemMercadoria")]
+        [JsonProperty("origemMercadoria")]
+        public string OrigemMercadoria { get; set; }
+
         [JsonProperty("grupoProduto")]
         public virtual GrupoProdutoVM GrupoProduto { get; set; }
 

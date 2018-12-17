@@ -10,8 +10,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("totalBrutoAntecipavel")]
         public double TotalBrutoAntecipavel { get; set; }
 
-        [JsonProperty("totalAntecipavel")]
-        public string TotalAntecipavel
+        [JsonProperty("totalAntecipavelCurrency")]
+        public string TotalAntecipavelCurrency
         {
             get
             {

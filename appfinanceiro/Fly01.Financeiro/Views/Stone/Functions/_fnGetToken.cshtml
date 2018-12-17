@@ -13,8 +13,7 @@
                          $$$.go('@Url.Action("List", "Stone")');
                     } else {
                         $$$.loading.stop();
-                        $$$.toast(data.message, 'error');
-
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
             });

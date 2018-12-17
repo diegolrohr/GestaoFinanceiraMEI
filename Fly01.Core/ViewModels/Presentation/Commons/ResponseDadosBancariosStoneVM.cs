@@ -22,10 +22,30 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("agenciaDigito")]
         public string AgenciaDigito { get; set; }
 
+        [JsonProperty("agenciaComDigito")]
+        public string AgenciaComDigito
+        {
+            get
+            {
+                return Agencia + " - " + AgenciaDigito;
+            }
+            set { }
+        }
+
         [JsonProperty("contaNumero")]
         public string ContaNumero { get; set; }
 
         [JsonProperty("contaDigito")]
         public string ContaDigito { get; set; }
+
+        [JsonProperty("contaComDigito")]
+        public string ContaComDigito
+        {
+            get
+            {
+                return ContaNumero + " - " + ContaDigito;
+            }
+            set { }
+        }
     }
 }

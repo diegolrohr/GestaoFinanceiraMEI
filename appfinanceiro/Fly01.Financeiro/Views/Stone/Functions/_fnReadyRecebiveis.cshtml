@@ -1,65 +1,11 @@
 ﻿<script>
     function fnReadyRecebiveis(event) {
         $$$.loading.start();
-        $.when(ajaxTotal(), ajaxDadosBancarios()).done(function (a1, a2) {
-            debugger;
-            $$$.loading.stop();
-        });
-
+        debugger;
+        document.getElementById("rangeRecebivel").setAttribute("max", document.getElementById("valorRecebivel").value.replace(".", "").replace(",", "."));
+        document.getElementById("rangeRecebivel").value = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
+        $$$.fn.updateTextFields();
+        //fnSimular(event);
     }
-
-    function ajaxDadosBancarios() {
-        $.ajax({
-            url: '@Url.Action("AntecipacaoDadosBancarios", "Stone")',
-            type: "GET",
-            data: {},
-            success: function (data) {
-                if (data.message) {
-                    $$$.loading.stop();
-                    $$$.toast("", 'error');
-                } else {
-                    $("#banco").text(data.bancoNome);
-                    var agencia = "Ag. " + data.agencia;
-                    $("#agencia").text(agencia);
-                    var conta = "Cc. " + data.contaNumero + "-" + data.contaDigito;
-                    $("#conta").text(conta);
-                }
-            },
-        });
-    }
-
-    function ajaxTotal() {
-        return $.ajax({
-            url: '@Url.Action("GetTotalAntecipar", "Stone")',
-            type: "GET",
-            data: {},
-            success: function (data) {
-                if (data.message) {
-                    $$$.loading.stop();
-                    $$$.toast("", 'error');
-                } else {
-                    document.getElementById("valorRecebivel").value = data.totalAntecipavel;//perguntar alexis
-                    document.getElementById("valorRecebivel").value = data.totalAntecipavel;
-                    $("#totalAntecipavel").text(data.totalAntecipavel);
-                    document.getElementById("rangeRecebivel").setAttribute("max", data.totalAntecipavel);
-                    $$$.fn.updateTextFields();
-                    $.ajax({
-                        url: '@Url.Action("AntecipacaoSimular", "Stone")',
-                        type: "GET",
-                        data: { valor: data.totalBrutoAntecipavel },
-                        success: function (data) {
-                            if (data.message) {
-                                $$$.loading.stop();
-                                $$$.toast("", 'error');
-                            } else {
-                                $("#liquidoAntecipavel").text(data.liquidoAnteciparCurrency);
-                            }
-                        },
-                    });
-                }
-            },
-        });
-    }
-
 </script>
 

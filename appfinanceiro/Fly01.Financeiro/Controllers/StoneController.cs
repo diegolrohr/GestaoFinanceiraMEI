@@ -112,6 +112,10 @@ namespace Fly01.Financeiro.Controllers
 
         protected void FormSimulacao(ContentUI result)
         {
+            var dadosBancarios = AntecipacaoDadosBancarios();
+            var total = AntecipacaoConsultar();
+            var simulacao = AntecipacaoSimulacao(total.TotalBrutoAntecipavel);
+
             var config = new FormUI
             {
                 Id = "formAntecipacao",
@@ -121,8 +125,7 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("Create"),
                     List = Url.Action("Form")
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                //ReadyFn = "fnReadyRecebiveis"
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
             config.Elements.Add(new StaticTextUI
             {
@@ -133,14 +136,14 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Tag = "span",
                         Class = "card-title",
-                        Text = "Total antecipável"
+                        Text = "Total Antecipável"
                     },
                     new LineUI
                     {
                         Id = "totalAntecipavel",
                         Tag = "h5",
                         Class = "",
-                        //Text = "R$ 110.000,00"
+                        Text = total?.TotalAntecipavelCurrency ?? "R$ 0,00"
                     }
                 }
             });
@@ -153,14 +156,14 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Tag = "span",
                         Class = "card-title",
-                        Text = "Líquido antecipável"
+                        Text = "Líquido Antecipável"
                     },
                     new LineUI
                     {
                         Id = "liquidoAntecipavel",
                         Tag = "h5",
                         Class = "",
-                        //Text = "R$ 100.000,00"
+                        Text = simulacao?.LiquidoAnteciparCurrency ?? "R$ 0,00"
                     }
                 }
             });
@@ -176,7 +179,6 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new LineUI
                     {
-                        //Id = "contaBancaria",
                         Tag = "span",
                         Class = "card-title",
                         Text = "Conta Bancária"
@@ -186,24 +188,25 @@ namespace Fly01.Financeiro.Controllers
                         Id = "banco",
                         Tag = "h6",
                         Class = "",
-                        //Text = "Banco Brasil"
+                        Text = dadosBancarios?.BancoNome ?? "Banco"
                     },
                     new LineUI
                     {
                         Id = "agencia",
                         Tag = "h6",
                         Class = "",
-                        //Text = "Ag. 0912"
+                        Text = "Ag. " + dadosBancarios?.AgenciaComDigito ?? "Ag. 0000"
                     },
                     new LineUI
                     {
                         Id = "conta",
                         Tag = "h6",
                         Class = "",
-                        //Text = "Cc. 35364-8"
+                        Text = "Cc. " + dadosBancarios?.ContaComDigito ?? "Cc. 0000-0"
                     }
                 }
             });
+
             var config2 = new FormUI
             {
                 Id = "formAntecipacao2",
@@ -235,6 +238,7 @@ namespace Fly01.Financeiro.Controllers
                 Id = "valorRecebivel",
                 Label = "Valor",
                 Class = "col s12 green-text",
+                Value = total.TotalBrutoAntecipavel.ToString(),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
@@ -282,10 +286,6 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DataTableUIColumn
                     {
-                        DataField = "Id"
-                    },
-                    new DataTableUIColumn
-                    {
                         DataField = "capital",
                         DisplayName = "Capital",
                         Visible = true,
@@ -301,8 +301,9 @@ namespace Fly01.Financeiro.Controllers
                         Orderable = false
                     },
                 },
-                UrlGridLoad = ""
+                UrlGridLoad = " "
             };
+
             result.Content.Add(config);
             result.Content.Add(config2);
             result.Content.Add(configdt);
@@ -355,18 +356,22 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        protected ResponseAntecipacaoStoneVM AntecipacaoSimulacao(double valor)
+        {
+            var entity = new SimularAntecipacaoStoneVM
+            {
+                Token = SessionManager.Current.UserData.StoneToken,
+                Valor = valor
+            };
+            return RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaosimular", entity);
+        }
+
         [HttpGet]
         public ContentResult AntecipacaoSimular(double valor)
         {
             try
             {
-                var entity = new SimularAntecipacaoStoneVM
-                {
-                    Token = SessionManager.Current.UserData.StoneToken,
-                    Valor = valor
-                };
-
-                var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaosimular", entity);
+                var response = AntecipacaoSimulacao(valor);
                 return Content(JsonConvert.SerializeObject(response), "application/json");
             }
             catch (Exception ex)
@@ -419,45 +424,25 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        [HttpGet]
-        public ContentResult AntecipacaoDadosBancarios()
+        protected ResponseDadosBancariosStoneVM AntecipacaoDadosBancarios()
         {
-            try
+            var entity = new StoneTokenBaseVM
             {
-                var entity = new StoneTokenBaseVM
-                {
-                    Token = SessionManager.Current.UserData.StoneToken
-                };
+                Token = SessionManager.Current.UserData.StoneToken
+            };
 
-                var response = RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/dadosbancarios", entity);
-                return Content(JsonConvert.SerializeObject(response), "application/json");
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
-            }
+            return RestHelper.ExecutePostRequest<ResponseDadosBancariosStoneVM>("stone/dadosbancarios", entity);
         }
 
         [HttpGet]
-        public ContentResult GetTotalAntecipar()
+        protected ResponseConsultaTotalStoneVM AntecipacaoConsultar()
         {
-            try
+            var entity = new StoneTokenBaseVM
             {
-                var entity = new StoneTokenBaseVM
-                {
-                    Token = SessionManager.Current.UserData.StoneToken
-                };
+                Token = SessionManager.Current.UserData.StoneToken
+            };
 
-                var response = RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
-                return Content(JsonConvert.SerializeObject(response), "application/json");
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
-
-            }
+            return RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
         }
 
         public override ContentResult List()
@@ -476,7 +461,7 @@ namespace Fly01.Financeiro.Controllers
             };
 
             if (ValidaToken())// se tem TOKEN VALIDO
-                FormSimulacao(result);           
+                FormSimulacao(result);
             else
                 result.Content.Add(FormLogin());
 

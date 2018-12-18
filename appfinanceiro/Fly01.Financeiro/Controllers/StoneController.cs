@@ -18,6 +18,7 @@ using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Enums;
+using System.Linq;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -307,20 +308,17 @@ namespace Fly01.Financeiro.Controllers
                     Password = senha
                 };
 
-                SessionManager.Current.UserData.StoneToken = null;
-
                 var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
 
                 SessionManager.Current.UserData.StoneToken = response.Token;
 
                 return JsonResponseStatus.GetSuccess("");
-
             }
             catch (Exception ex)
             {
+                //SessionManager.Current.UserData.StoneToken = null;
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message);
-
             }
         }
 
@@ -355,8 +353,10 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
-                GetToken(entity.Senha);
-                if (ValidaToken())
+                var result = GetToken(entity.Senha);
+                var property = result.Data.GetType().GetProperty("success");
+                var tokenValido = (bool)property.GetValue(result.Data, null);
+                if (tokenValido)
                 {
                     entity.Token = SessionManager.Current.UserData.StoneToken;
                     var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
@@ -419,6 +419,8 @@ namespace Fly01.Financeiro.Controllers
         [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override ContentResult List()
         {
+            //TODO: Diego
+            //SessionManager.Current.UserData.StoneToken = null;
             ContentUI result = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
@@ -476,6 +478,7 @@ namespace Fly01.Financeiro.Controllers
                 var config = new FormUI
                 {
                     Id = "fly01frm",
+                    Class = "card-panel center col s12 offset-m2 offset-l3 m8 l6",
                     Action = new FormUIAction
                     {
                         Create = Url.Action("AntecipacaoEfetivar", "Stone"),
@@ -489,6 +492,20 @@ namespace Fly01.Financeiro.Controllers
                 config.Elements.Add(new InputHiddenUI { Id = "valor", Value = valor.ToString() });
                 config.Elements.Add(new StaticTextUI
                 {
+                    Id = "textInfoStone",
+                    Lines = new List<LineUI>
+                {
+                    new LineUI()
+                    {
+                        Tag = "h3",
+                        Class = "strong green-text",
+                        Text = "Login Stone",
+                    }
+                }
+                });
+
+                config.Elements.Add(new StaticTextUI
+                {
                     Id = "textInfoSenha",
                     Class = "col s12",
                     Lines = new List<LineUI>
@@ -497,11 +514,18 @@ namespace Fly01.Financeiro.Controllers
                     {
                         Tag = "p",
                         Class = "center light",
-                        Text = "Insira sua senha de acesso ao portal Stone para confirmar a operação.",
+                        Text = "Digite sua senha do portal da Stone, para efetivar a antecipação.",
                     }
                 }
+                });                
+                config.Elements.Add(new InputPasswordUI
+                {
+                    Id = "senha",
+                    Class = "col s12",
+                    Label = "Senha Stone",
+                    MaxLength = 200,
+                    Required = true
                 });
-                config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m3 offset-m4", Label = "Senha", Required = true });
 
                 cfg.Content.Add(config);
 

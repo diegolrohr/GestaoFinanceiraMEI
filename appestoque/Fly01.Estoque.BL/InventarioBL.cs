@@ -40,7 +40,10 @@ namespace Fly01.Estoque.BL
             
             entity.Fail(inventariosAtivosAbertos.Any(e => e.Descricao == entity.Descricao), descricaoUtilizadaEmOutroInventario);
 
-            entity.DataUltimaInteracao = DateTime.Now;
+            if (entity.DataUltimaInteracao == default(DateTime))
+            {
+                entity.DataUltimaInteracao = DateTime.Now;
+            }
 
             base.ValidaModel(entity);
         }

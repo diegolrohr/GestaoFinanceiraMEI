@@ -20,6 +20,7 @@ using Fly01.uiJS.Classes.Helpers;
 
 namespace Fly01.Financeiro.Controllers
 {
+    [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroAntecipacaoRecebiveis, PermissionValue = EPermissionValue.Write)]
     public class StoneController : BaseController<DomainBaseVM>
     {
         public override Func<DomainBaseVM, object> GetDisplayData()
@@ -27,6 +28,7 @@ namespace Fly01.Financeiro.Controllers
             throw new NotImplementedException();
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         protected FormUI FormLogin()
         {
             var config = new FormUI
@@ -38,9 +40,7 @@ namespace Fly01.Financeiro.Controllers
                     Create = @Url.Action("Create"),
                     List = Url.Action("Form")
                 },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                //ReadyFn = "fnFormReady",
-                //AfterLoadFn = "fnAfterLoad"
+                UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
             config.Elements.Add(new StaticTextUI
@@ -110,170 +110,127 @@ namespace Fly01.Financeiro.Controllers
             return config;
         }
 
-        protected void FormSimulacao(ContentUI result)
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        protected void FormSimulacao(ContentUI content)
         {
             var dadosBancarios = AntecipacaoDadosBancarios();
             var total = AntecipacaoConsultar();
-            var simulacao = AntecipacaoSimulacao(total.TotalBrutoAntecipavel);
+            var simulacao = new ResponseAntecipacaoStoneVM();
+
+            if (total.TotalBrutoAntecipavel > 0)
+                simulacao = AntecipacaoSimulacao(total.TotalBrutoAntecipavel);
+
+            content.Content.Add(new DivUI
+            {
+                Id = "frmSim",
+                Class = "col s12 m6 l8 card",
+                Elements = new List<BaseUI>()
+            });
+            content.Content.Add(new DivUI
+            {
+                Id = "divInf",
+                Class = "col s12 m6 l4",
+                Elements = new List<BaseUI>()
+            });
+            content.Content.Add(new CardUI
+            {
+                Parent = "divInf",
+                Class = "col s12 green-text",
+                Color = "white",
+                Title = "Total antecipável",
+                Placeholder = total.TotalAntecipavelCurrency
+            });
+            content.Content.Add(new CardUI
+            {
+                Parent = "divInf",
+                Class = "col s12 totvs-blue-text",
+                Color = "white",
+                Title = "Líquido antecipável",
+                Placeholder = simulacao.LiquidoAnteciparCurrency
+            });
+            content.Content.Add(new CardUI
+            {
+                Parent = "divInf",
+                Class = "col s12 teal-text",
+                Color = "white",
+                Title = dadosBancarios.BancoNome,
+                Placeholder = string.Format("AG: {0} / CC: {1}", dadosBancarios.Agencia, dadosBancarios.ContaComDigito)
+            });
 
             var config = new FormUI
             {
                 Id = "formAntecipacao",
-                Class = "col s12 center card green",
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    List = Url.Action("Form")
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns="
-            };
-            config.Elements.Add(new StaticTextUI
-            {
-                Class = "col s12 m4 white-text card-content",
-                Lines = new List<LineUI>
-                {
-                    new LineUI
-                    {
-                        Tag = "span",
-                        Class = "card-title",
-                        Text = "Total Antecipável"
-                    },
-                    new LineUI
-                    {
-                        Id = "totalAntecipavel",
-                        Tag = "h5",
-                        Class = "",
-                        Text = total?.TotalAntecipavelCurrency ?? "R$ 0,00"
-                    }
-                }
-            });
-            config.Elements.Add(new StaticTextUI
-            {
-                Class = "col s12 m4 teal white-text card-content",
-                Lines = new List<LineUI>
-                {
-                    new LineUI
-                    {
-                        Tag = "span",
-                        Class = "card-title",
-                        Text = "Líquido Antecipável"
-                    },
-                    new LineUI
-                    {
-                        Id = "liquidoAntecipavel",
-                        Tag = "h5",
-                        Class = "",
-                        Text = simulacao?.LiquidoAnteciparCurrency ?? "R$ 0,00"
-                    }
-                }
-            });
-            config.Elements.Add(new InputHiddenUI
-            {
-                Id = "stoneBancoId"
-            });
-
-            config.Elements.Add(new StaticTextUI
-            {
-                Class = "col s12 m4 white-text card-content",
-                Lines = new List<LineUI>
-                {
-                    new LineUI
-                    {
-                        Tag = "span",
-                        Class = "card-title",
-                        Text = "Conta Bancária"
-                    },
-                    new LineUI
-                    {
-                        Id = "banco",
-                        Tag = "h6",
-                        Class = "",
-                        Text = dadosBancarios?.BancoNome ?? "Banco"
-                    },
-                    new LineUI
-                    {
-                        Id = "agencia",
-                        Tag = "h6",
-                        Class = "",
-                        Text = "Ag. " + dadosBancarios?.AgenciaComDigito ?? "Ag. 0000"
-                    },
-                    new LineUI
-                    {
-                        Id = "conta",
-                        Tag = "h6",
-                        Class = "",
-                        Text = "Cc. " + dadosBancarios?.ContaComDigito ?? "Cc. 0000-0"
-                    }
-                }
-            });
-
-            var config2 = new FormUI
-            {
-                Id = "formAntecipacao2",
-                Class = "col s12 m4 card",
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    List = Url.Action("Form")
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Parent = "frmSim",
+                Class = "col s12",
+                UrlFunctions = Url.Action("Functions") + "?fns=fnEfetivar,",
                 ReadyFn = "fnReadyRecebiveis"
             };
-            config2.Elements.Add(new StaticTextUI
+            config.Elements.Add(new StaticTextUI
             {
                 Class = "col s12 card-content",
                 Lines = new List<LineUI>
                 {
                     new LineUI
                     {
-                        Tag = "span",
-                        Class = "green-text card-title",
+                        Tag = "p",
+                        Class = "center card-title",
                         Text = "Simular antecipação"
                     }
                 }
             });
-
-            config2.Elements.Add(new InputCurrencyUI
+            config.Elements.Add(new InputHiddenUI
+            {
+                Id = "bancoStoneId",
+                Value = dadosBancarios.Id.ToString()
+            });
+            config.Elements.Add(new InputHiddenUI
+            {
+                Id = "totalAntecipavel",
+                Value = total.TotalBrutoAntecipavel.ToString()
+            });
+            config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorRecebivel",
                 Label = "Valor",
-                Class = "col s12 green-text",
+                Class = "col s12",
                 Value = total.TotalBrutoAntecipavel.ToString(),
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
-                }
-
+                },
+                Disabled = total.TotalBrutoAntecipavel == 0
             });
-            config2.Elements.Add(new InputRangeUI
+            config.Elements.Add(new InputRangeUI
             {
                 Id = "rangeRecebivel",
-                Class = "col s12 green-text",
+                Class = "col s12",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
                 }
             });
-
-            config2.Elements.Add(new ButtonUI
+            config.Elements.Add(new ButtonUI
             {
+                Id = "btnSimular",
                 Value = "Simular",
-                Class = "col s12 m6 offset-m3",
-                ClassBtn = "btn-large green",
+                Class = "col s8 m6 l4 offset-s2 offset-m3 offset-l4 center",
+                ClassBtn = "btn-large",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI
                     {
                         DomEvent = "click",
-                        Function = "fnSimular"
+                        Function = "fnSimular",
                     }
-                }
+                },
+                Disabled = total.TotalBrutoAntecipavel == 0
             });
 
             var configdt = new DataTableUI
             {
                 Id = "dtSimulacao",
-                Class = "col s12 m8",
+                Parent = "frmSim",
+                Class = "col s12",
                 Actions =
                 {
                     new DataTableUIAction
@@ -286,8 +243,16 @@ namespace Fly01.Financeiro.Controllers
                 {
                     new DataTableUIColumn
                     {
-                        DataField = "capital",
-                        DisplayName = "Capital",
+                        DataField = "bruto",
+                        DisplayName = "Bruto",
+                        Visible = true,
+                        Searchable = false,
+                        Orderable = false
+                    },
+                    new DataTableUIColumn
+                    {
+                        DataField = "taxa",
+                        DisplayName = "Taxa",
                         Visible = true,
                         Searchable = false,
                         Orderable = false
@@ -301,12 +266,11 @@ namespace Fly01.Financeiro.Controllers
                         Orderable = false
                     },
                 },
-                UrlGridLoad = " "
+                UrlGridLoad = ""
             };
 
-            result.Content.Add(config);
-            result.Content.Add(config2);
-            result.Content.Add(configdt);
+            content.Content.Add(config);
+            content.Content.Add(configdt);
         }
 
         public bool ValidaToken()
@@ -329,6 +293,7 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public JsonResult GetToken(string senha)
         {
             try
@@ -340,6 +305,8 @@ namespace Fly01.Financeiro.Controllers
                     Email = email,
                     Password = senha
                 };
+
+                SessionManager.Current.UserData.StoneToken = null;
 
                 var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
 
@@ -367,6 +334,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [HttpGet]
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult AntecipacaoSimular(double valor)
         {
             try
@@ -381,30 +349,32 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public ContentResult AntecipacaoEfetivar(double valor, int stoneBancoId, string senha)
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        public JsonResult AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
         {
             try
             {
-                GetToken(senha);
-
-                var entity = new EfetivarAntecipacaoStoneVM
+                GetToken(entity.Senha);
+                if (ValidaToken())
                 {
-                    Token = SessionManager.Current.UserData.StoneToken,
-                    StoneBancoId = stoneBancoId,
-                    Valor = valor
-                };
-
-                var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
-                return Content(JsonConvert.SerializeObject(response), "application/json");
+                    entity.Token = SessionManager.Current.UserData.StoneToken;
+                    var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
+                    return JsonResponseStatus.Get(new ErrorInfo { HasError = false}, Operation.Create);
+                }
+                else
+                {
+                    return JsonResponseStatus.GetFailure("Não foi possível obter autenticação na stone. Verifique a senha digitada e tente novamente.");
+                }
             }
             catch (Exception ex)
             {
                 var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
+                return JsonResponseStatus.GetFailure(error.Message);
             }
         }
 
         [HttpGet]
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public ContentResult AntecipacaoConfiguracao()
         {
             try
@@ -445,6 +415,7 @@ namespace Fly01.Financeiro.Controllers
             return RestHelper.ExecutePostRequest<ResponseConsultaTotalStoneVM>("stone/antecipacaoconsultar", entity);
         }
 
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
         public override ContentResult List()
         {
             ContentUI result = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -460,7 +431,7 @@ namespace Fly01.Financeiro.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
 
-            if (ValidaToken())// se tem TOKEN VALIDO
+            if (ValidaToken())
                 FormSimulacao(result);
             else
                 result.Content.Add(FormLogin());
@@ -471,6 +442,45 @@ namespace Fly01.Financeiro.Controllers
         protected override ContentUI FormJson()
         {
             throw new NotImplementedException();
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        public ContentResult ModalEfetivar(double valor, string stoneBancoId)
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Efetivar Antecipação",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                ConfirmAction = new ModalUIAction() { Label = "Efetivar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AntecipacaoEfetivar", "Stone"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "Stone")
+                },
+                Id = "fly01mdlfrmEfetivar"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "stoneBancoId", Value = stoneBancoId });
+            config.Elements.Add(new InputHiddenUI { Id = "valor", Value = valor.ToString() });
+            config.Elements.Add(new StaticTextUI
+            {
+                Id = "textInfoSenha",
+                Class = "col s12",
+                Lines = new List<LineUI>
+                {
+                    new LineUI()
+                    {
+                        Tag = "p",
+                        Class = "center light",
+                        Text = "Insira sua senha de acesso ao portal Stone para confirmar a operação.",
+                    }
+                }
+            });
+            config.Elements.Add(new InputPasswordUI{ Id = "senha", Class = "col s12 m3 offset-m4", Required = true});
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }
 }

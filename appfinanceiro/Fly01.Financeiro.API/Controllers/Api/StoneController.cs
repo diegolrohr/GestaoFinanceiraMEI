@@ -116,7 +116,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoSimular(entity);
             }
-            
+
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -142,9 +142,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     {
                         Data = DateTime.Now,
                         DataCriacao = DateTime.Now,
-                        LiquidoAntecipar = entity.Valor*0.95,
+                        LiquidoAntecipar = entity.Valor * 0.0399,
                         SaldoLiquidoDisponivel = 123.00,
-                        TaxaPontual = 4
+                        TaxaPontual = 3.99,
+                        BrutoAntecipar = entity.Valor
                     });
             }
             catch (Exception ex)
@@ -163,7 +164,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoEfetivar(entity);
             }
-            
+
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -172,8 +173,17 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
-                var resource = "v1/settlements/prepay/proposals";
-                var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //var resource = "v1/settlements/prepay/proposals";
+                //var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                var efetivacao = new ResponseAntecipacaoStone()
+                {
+                    Data = DateTime.Now,
+                    DataCriacao = DateTime.Now,
+                    Id = 152515,
+                    LiquidoAnteciparCentavos = antecipacao.ValorCentavos,
+                    SaldoLiquidoDisponivel = entity.Valor * 0.05,
+                    TaxaPontual = 1.95
+                };
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
@@ -277,7 +287,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoDadosBancarios(entity);
             }
-            
+
             try
             {
                 SetSecurityProtocol();

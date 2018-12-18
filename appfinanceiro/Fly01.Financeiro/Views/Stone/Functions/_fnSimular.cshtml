@@ -1,6 +1,6 @@
 ﻿<script>
     function fnSimular(event) {
-        var capital = parseFloat(document.getElementById("valorRecebivel").value.toLocaleString("pt-BR"));
+        var capital = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
 
         $.ajax({
             url: '@Url.Action("AntecipacaoSimular", "Stone")',
@@ -8,13 +8,15 @@
             data: { valor: capital },
             success: function (data) {
                 if (data.message) {
-                    debugger;
+                    
                     $$$.loading.stop();
                     $$$.toast("", 'error');
                 } else {
                     $("#liquidoAntecipavel").text(data.liquidoAnteciparCurrency);
                     $$$._.dtSimulacao.row.add({
-                        capital: capital.toLocaleString("pt-BR", { minimumFractionDigits: 2, style: "currency", currency: "BRL" }),
+                        id: data.brutoAntecipar,
+                        bruto: data.brutoAnteciparCurrency,
+                        taxa: data.taxaPontualPercent,
                         liquido: data.liquidoAnteciparCurrency
                     }).draw();
                 }

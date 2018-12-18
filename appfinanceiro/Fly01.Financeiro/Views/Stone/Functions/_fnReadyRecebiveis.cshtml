@@ -1,11 +1,10 @@
 ﻿<script>
     function fnReadyRecebiveis(event) {
         $$$.loading.start();
-        debugger;
         document.getElementById("rangeRecebivel").setAttribute("max", document.getElementById("valorRecebivel").value.replace(".", "").replace(",", "."));
         document.getElementById("rangeRecebivel").value = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
         $$$.fn.updateTextFields();
-        //fnSimular(event);
+        $$$.loading.stop();
     }
 </script>
 

@@ -9,5 +9,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("stoneBancoId")]
         public int StoneBancoId { get; set; }
+
+        [JsonProperty("senha")]
+        public string Senha { get; set; }
     }
 }

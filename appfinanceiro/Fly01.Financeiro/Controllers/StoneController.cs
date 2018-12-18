@@ -17,6 +17,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Helpers;
 using Fly01.uiJS.Classes.Helpers;
+using Fly01.uiJS.Enums;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -196,7 +197,7 @@ namespace Fly01.Financeiro.Controllers
                 Value = total.TotalBrutoAntecipavel.ToString(),
                 DomEvents = new List<DomEventUI>
                 {
-                    new DomEventUI { DomEvent = "change", Function = "fnRangeChange" }
+                    new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
                 },
                 Disabled = total.TotalBrutoAntecipavel == 0
             });
@@ -359,7 +360,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     entity.Token = SessionManager.Current.UserData.StoneToken;
                     var response = RestHelper.ExecutePostRequest<ResponseAntecipacaoStoneVM>("stone/antecipacaoefetivar", entity);
-                    return JsonResponseStatus.Get(new ErrorInfo { HasError = false}, Operation.Create);
+                    return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
                 }
                 else
                 {
@@ -445,30 +446,52 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public ContentResult ModalEfetivar(double valor, string stoneBancoId)
-        {
-            ModalUIForm config = new ModalUIForm()
-            {
-                Title = "Efetivar Antecipação",
-                UrlFunctions = @Url.Action("Functions") + "?fns=",
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
-                ConfirmAction = new ModalUIAction() { Label = "Efetivar" },
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("AntecipacaoEfetivar", "Stone"),
-                    Get = @Url.Action("Json") + "/",
-                    List = @Url.Action("List", "Stone")
-                },
-                Id = "fly01mdlfrmEfetivar"
-            };
+        public virtual ActionResult EfetivarAntecipacao()
+            => View("EfetivarAntecipacao");
 
-            config.Elements.Add(new InputHiddenUI { Id = "stoneBancoId", Value = stoneBancoId });
-            config.Elements.Add(new InputHiddenUI { Id = "valor", Value = valor.ToString() });
-            config.Elements.Add(new StaticTextUI
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        public ContentResult FormEfetivar(double valor, string stoneBancoId)
+        {
+            if (ValidaToken())
             {
-                Id = "textInfoSenha",
-                Class = "col s12",
-                Lines = new List<LineUI>
+                var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
+                {
+                    History = new ContentUIHistory
+                    {
+                        Default = Url.Action("EfetivarAntecipacao"),
+                        WithParams = Url.Action("EfetivarAntecipacao")
+                    },
+                    Header = new HtmlUIHeader
+                    {
+                        Title = "Efetivar Antecipação",
+                        Buttons = new List<HtmlUIButton>()
+                    {
+                        new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Out },
+                        new HtmlUIButton { Id = "save", Label = "Efetivar", OnClickFn = "fnSalvar", Position = HtmlUIButtonPosition.Main }
+                    }
+                    },
+                    UrlFunctions = Url.Action("Functions") + "?fns="
+                };
+
+                var config = new FormUI
+                {
+                    Id = "fly01frm",
+                    Action = new FormUIAction
+                    {
+                        Create = Url.Action("AntecipacaoEfetivar", "Stone"),
+                        Get = Url.Action("Json") + "/",
+                        List = Url.Action("List", "Stone")
+                    },
+                    UrlFunctions = Url.Action("Functions") + "?fns=",
+                    ReadyFn = "fnFormReadyEfetivar"
+                };
+                config.Elements.Add(new InputHiddenUI { Id = "stoneBancoId", Value = stoneBancoId });
+                config.Elements.Add(new InputHiddenUI { Id = "valor", Value = valor.ToString() });
+                config.Elements.Add(new StaticTextUI
+                {
+                    Id = "textInfoSenha",
+                    Class = "col s12",
+                    Lines = new List<LineUI>
                 {
                     new LineUI()
                     {
@@ -477,10 +500,17 @@ namespace Fly01.Financeiro.Controllers
                         Text = "Insira sua senha de acesso ao portal Stone para confirmar a operação.",
                     }
                 }
-            });
-            config.Elements.Add(new InputPasswordUI{ Id = "senha", Class = "col s12 m3 offset-m4", Required = true});
+                });
+                config.Elements.Add(new InputPasswordUI { Id = "senha", Class = "col s12 m3 offset-m4", Label = "Senha", Required = true });
 
-            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+                cfg.Content.Add(config);
+
+                return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            }
+            else
+            {
+                return List();
+            }
         }
     }
 }

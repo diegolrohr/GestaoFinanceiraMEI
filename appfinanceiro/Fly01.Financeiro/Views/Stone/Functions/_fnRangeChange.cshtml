@@ -1,21 +1,22 @@
 ﻿<script>
     function fnRangeChange(event) {
-        if (event.target.value == 0)
+        var totalAntecipavel = parseFloat($("#totalAntecipavel").val().replace(".", "").replace(",", "."));
+        var targetValue = parseFloat(event.target.value.replace(".", "").replace(",", "."));
+
+        if (targetValue > totalAntecipavel) {
+            targetValue = totalAntecipavel;
+            $("#valorRecebivel").val(totalAntecipavel);
+        }
+
+        if (targetValue <= 0)
             $("#btnSimular").attr('disabled', 'disabled');
         else
             $("#btnSimular").removeAttr('disabled');
 
-        var totalAntecipavel = $("#totalAntecipavel").val().replace(".", "").replace(",", ".");
-
         if (event.target.id === "valorRecebivel"){
-            var targetValue = event.target.value.replace(".", "").replace(",", ".");
-            if (targetValue > totalAntecipavel) {
-                targetValue = totalAntecipavel;
-                $("#valorRecebivel").val(totalAntecipavel);
-            }
             $("#rangeRecebivel").val(targetValue);
-        }
-            
+            document.getElementById("rangeRecebivel").setAttribute("value", targetValue)
+        }            
         else if (document.querySelector(`#${event.target.id} ~ span.thumb.active`))
             $("#valorRecebivel").val(event.target.value);
         $$$.fn.updateTextFields();

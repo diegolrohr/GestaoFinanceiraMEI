@@ -1,26 +1,28 @@
 ﻿<script>
     function fnSimular(event) {
-        var capital = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
+        var valor = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
+        var totalAntecipavel = $("#totalAntecipavel").val().replace(".", "").replace(",", ".");
 
-        $.ajax({
-            url: '@Url.Action("AntecipacaoSimular", "Stone")',
-            type: "GET",
-            data: { valor: capital },
-            success: function (data) {
-                if (data.message) {
-                    
-                    $$$.loading.stop();
-                    $$$.toast("", 'error');
-                } else {
-                    $("#liquidoAntecipavel").text(data.liquidoAnteciparCurrency);
-                    $$$._.dtSimulacao.row.add({
-                        id: data.brutoAntecipar,
-                        bruto: data.brutoAnteciparCurrency,
-                        taxa: data.taxaPontualPercent,
-                        liquido: data.liquidoAnteciparCurrency
-                    }).draw();
-                }
-            },
-        });
+        if (valor > 0 && valor <= totalAntecipavel) {
+            $.ajax({
+                url: '@Url.Action("AntecipacaoSimular", "Stone")',
+                type: "GET",
+                data: { valor: valor },
+                success: function (data) {
+                    if (data.message) {
+                        $$$.loading.stop();
+                        $$$.toast(data.message, 'error');
+                    } else {
+                        $("#liquidoAntecipavel").text(data.liquidoAnteciparCurrency);
+                        $$$._.dtSimulacao.row.add({
+                            id: data.brutoAntecipar,
+                            bruto: data.brutoAnteciparCurrency,
+                            taxa: data.taxaPontualPercent,
+                            liquido: data.liquidoAnteciparCurrency
+                        }).draw();
+                    }
+                },
+            });
+        }
     }
 </script>

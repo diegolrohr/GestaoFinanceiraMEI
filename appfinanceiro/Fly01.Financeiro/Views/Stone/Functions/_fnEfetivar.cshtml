@@ -1,6 +1,6 @@
 ﻿<script>
     function fnEfetivar(valor) {
         var stoneBancoId = $("form#formAntecipacao #bancoStoneId").val();
-        $$$.modal("@Url.Action("ModalEfetivar", "Stone")" + "?valor=" + valor + "&stoneBancoId=" + stoneBancoId);
+        $$$.go("@Url.Action("FormEfetivar", "Stone")" + "?valor=" + valor + "&stoneBancoId=" + stoneBancoId);
     }
 </script>

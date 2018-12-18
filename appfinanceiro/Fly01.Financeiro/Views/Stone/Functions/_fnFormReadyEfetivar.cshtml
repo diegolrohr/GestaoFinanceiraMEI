@@ -1,0 +1,9 @@
+﻿<script>
+    function fnFormReadyEfetivar() {
+
+        if ($('#fly01frm #stoneBancoId').val() <= 0 || $('#stoneBancoId').val() == undefined ||
+            $('#fly01frm #valor').val() <= 0 || $('#valor').val() == undefined){
+            $$$.go("@Url.Action("List", "Stone")");
+        }
+    }
+</script>

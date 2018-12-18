@@ -142,7 +142,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     {
                         Data = DateTime.Now,
                         DataCriacao = DateTime.Now,
-                        LiquidoAntecipar = entity.Valor * 0.0399,
+                        LiquidoAntecipar = entity.Valor * 0.9601,
                         SaldoLiquidoDisponivel = 123.00,
                         TaxaPontual = 3.99,
                         BrutoAntecipar = entity.Valor

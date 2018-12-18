@@ -405,6 +405,8 @@
     <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
     <Content Include="Views\Stone\Functions\_fnSimular.cshtml" />
     <Content Include="Views\Stone\Functions\_fnEfetivar.cshtml" />
+    <Content Include="Views\Stone\EfetivarAntecipacao.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnFormReadyEfetivar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

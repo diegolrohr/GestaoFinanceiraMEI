@@ -553,7 +553,7 @@ namespace Fly01.Financeiro.Controllers
                         {
                             Tag = "h6",
                             Class = "col s12 center",
-                            Text = "Digite sua senha para confirmar e realizar a antecipação",
+                            Text = "Digite sua senha para confirmar e realizar a antecipação:",
                         }
                     }
                 });

@@ -70,7 +70,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             try
             {
-                //TODO: ver https
                 SetSecurityProtocol();
                 var resource = "authenticate";
                 var autenticacao = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
@@ -237,7 +236,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     new StoneTotaisVM()
                     {
                         SaldoDevedor = total.SaldoDevedor,
-                        TotalBrutoAntecipavel = 5420.25//total.TotalBrutoAntecipavel
+                        TotalBrutoAntecipavel = 75690.25//total.TotalBrutoAntecipavel
                     });
             }
             catch (Exception ex)

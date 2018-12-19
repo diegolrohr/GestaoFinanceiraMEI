@@ -367,13 +367,16 @@ namespace Fly01.Financeiro.Controllers
 
         protected void AntecipacaoSimulacao(double valor)
         {
-            var entity = new StoneAntecipacaoSimularVM
+            if (valor > 0 && !SessionManager.Current.UserData.Stone.Simulacoes.Any(x => Math.Round(x.BrutoAntecipar, 2) == Math.Round(valor, 2)))
             {
-                Token = SessionManager.Current.UserData.Stone.Token,
-                Valor = valor
-            };
-            var response = RestHelper.ExecutePostRequest<StoneAntecipacaoVM>("stone/antecipacaosimular", entity);
-            SessionManager.Current.UserData.Stone.Simulacoes.Add(response);
+                var entity = new StoneAntecipacaoSimularVM
+                {
+                    Token = SessionManager.Current.UserData.Stone.Token,
+                    Valor = valor
+                };
+                var response = RestHelper.ExecutePostRequest<StoneAntecipacaoVM>("stone/antecipacaosimular", entity);
+                SessionManager.Current.UserData.Stone.Simulacoes.Add(response);
+            }
         }
 
         [HttpGet]
@@ -600,17 +603,6 @@ namespace Fly01.Financeiro.Controllers
                         }
                     }
                 });
-
-                #region Helpers
-                config.Helpers.Add(new VideoHelperUI
-                {
-                    Id = "cardTaxa .card-title",
-                    Video = new HelperUIVideo
-                    {
-                        Youtube = "sUHOeyQJHtg"
-                    }
-                });
-                #endregion
 
                 cfg.Content.Add(config);
 

@@ -271,7 +271,7 @@ namespace Fly01.Financeiro.Controllers
             if (response.StoneCode != null)
             {
                 financeiroMenuItens.Items.Add(
-                    new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroAntecipacaoRecebiveis, Label = "Antecipação de Recebíveis", OnClick = @Url.Action("List", "Stone") });
+                    new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroAntecipacaoRecebiveis, Label = "Antecipação de Recebíveis", OnClick = @Url.Action("ListAndUpdate", "Stone") });
             }
 
 

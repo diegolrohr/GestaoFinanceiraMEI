@@ -408,6 +408,7 @@
     <Content Include="Views\Stone\AntecipacaoEfetivar.cshtml" />
     <Content Include="Views\Stone\Functions\_fnLogout.cshtml" />
     <Content Include="Views\Stone\Functions\_fnReadyLogin.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,6 +12,17 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("bancoNome")]
         public string BancoNome { get; set; }
 
+        [JsonProperty("bancoComCodigo")]
+        public string BancoComCodigo
+        {
+            get
+            {
+                return string.Format("{0}({1})", BancoNome, BancoCodigo);
+            }
+            set { }
+        }
+
+
         [JsonProperty("bancoCodigo")]
         public int BancoCodigo { get; set; }
 

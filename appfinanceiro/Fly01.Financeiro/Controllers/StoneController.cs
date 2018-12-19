@@ -157,21 +157,19 @@ namespace Fly01.Financeiro.Controllers
                 Parent = "divInf",
                 Class = "col s12 teal-text",
                 Color = "white",
-                Title = "Taxa Pontual",
+                Title = "Taxa pontual",
                 Placeholder = configuracao.TaxaAntecipacaoPontualCurrency
             });
 
-            content.Content.Add(new CardUI
-            {
-                Id = "cardSaldoDevedor",
-                Parent = "divInf",
-                Class = "col s12 teal-text",
-                Color = "white",
-                //Title = dadosBancarios.BancoNome,
-                //Placeholder = string.Format("AG: {0} / CC: {1}", dadosBancarios.Agencia, dadosBancarios.ContaComDigito)
-                Title = "Saldo Devedor",
-                Placeholder = total.SaldoDevedorCurrency
-            });
+            //content.Content.Add(new CardUI
+            //{
+            //    Id = "cardSaldoDevedor",
+            //    Parent = "divInf",
+            //    Class = "col s12 teal-text",
+            //    Color = "white",
+            //    Title = "Saldo Devedor",
+            //    Placeholder = total.SaldoDevedorCurrency
+            //});
 
             var config = new FormUI
             {
@@ -310,7 +308,7 @@ namespace Fly01.Financeiro.Controllers
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
-        public ContentResult FormEfetivar(double valor, string stoneBancoId)
+        public ContentResult FormEfetivar()
         {
             if (ValidaToken())
             {
@@ -328,10 +326,50 @@ namespace Fly01.Financeiro.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns="
                 };
 
+                cfg.Content.Add(new DivUI
+                {
+                    Id = "divEfetivar",
+                    Class = "col s12 m6 l8 card",
+                    Elements = new List<BaseUI>()
+                });
+                cfg.Content.Add(new DivUI
+                {
+                    Id = "divInf",
+                    Class = "col s12 m6 l4",
+                    Elements = new List<BaseUI>()
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Parent = "divInf",
+                    Class = "col s12 green-text",
+                    Color = "white",
+                    Title = "Total antecipável",
+                    Placeholder = "R$ Tirar"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Parent = "divInf",
+                    Class = "col s12 totvs-blue-text",
+                    Color = "white",
+                    Title = "Líquido antecipável",
+                    Placeholder = "R$ 115,00"
+                });
+                cfg.Content.Add(new CardUI
+                {
+                    Id = "cardTaxa",
+                    Parent = "divInf",
+                    Class = "col s12 teal-text",
+                    Color = "white",
+                    Title = "Taxa pontual",
+                    Placeholder = "R$ tirar"
+                });
+
                 var config = new FormUI
                 {
                     Id = "fly01frm",
-                    Class = "col s12 m7 xl6 offset-xl1 card",
+                    //Class = "col s12 m7 xl6 offset-xl1 card",
+                    Parent = "divEfetivar",
+                    Class = "col s12",
                     Action = new FormUIAction
                     {
                         Create = Url.Action("AntecipacaoEfetivar", "Stone"),
@@ -341,8 +379,9 @@ namespace Fly01.Financeiro.Controllers
                     UrlFunctions = Url.Action("Functions") + "?fns=",
                     ReadyFn = "fnFormReadyEfetivar"
                 };
-                config.Elements.Add(new InputHiddenUI { Id = "stoneBancoId", Value = stoneBancoId });
-                config.Elements.Add(new InputHiddenUI { Id = "valor", Value = valor.ToString() });
+                //TODO:
+                config.Elements.Add(new InputHiddenUI { Id = "stoneBancoId", Value = "1245" });
+                config.Elements.Add(new InputHiddenUI { Id = "valor", Value = "1245.15" });
                 config.Elements.Add(new StaticTextUI
                 {
                     Id = "textInfoStone",
@@ -357,7 +396,6 @@ namespace Fly01.Financeiro.Controllers
                         }
                     }
                 });
-
                 config.Elements.Add(new StaticTextUI
                 {
                     Id = "textValorLiquido",
@@ -384,29 +422,77 @@ namespace Fly01.Financeiro.Controllers
                     Class = "col s12",
                     Lines = new List<LineUI>
                     {
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Valor Bruto:" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = "R$ 00 mudar", Id = "valorBruto" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Banco:" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = "Banco mudar", Id = "banco" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Data Pagamento:" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = "00/00/0000 mudar", Id = "dataPagamento" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Taxa:" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = "00 %mudar", Id = "taxa" },
+                    }
+                });
+                config.Elements.Add(new StaticTextUI
+                {
+                    Id = "textInfoStone",
+                    Class = "col s12 card - content",
+                    Lines = new List<LineUI>
+                    {
                         new LineUI()
                         {
-                            Id = "valorBruto",
                             Tag = "h6",
-                            Class = "truncate col s6 light right-align",
-                            Text = "Valor Bruto:"
-                        },
-                        new LineUI()
-                        {
-                            Tag = "h5",
-                            Class = "col s6 truncate",
-                            Text = "R$ 00 mudar",
+                            Class = "col s12 center",
+                            Text = "Confirmar Dados?",
                         }
                     }
                 });
                 config.Elements.Add(new InputPasswordUI
                 {
                     Id = "senha",
-                    Class = "col s12",
+                    Class = "col s12 m8 l6 offset-m2 offset-l3",
                     Label = "Senha Stone",
                     MaxLength = 200,
                     Required = true
                 });
+                config.Elements.Add(new ButtonUI
+                {
+                    Id = "btnCancelar",
+                    Class = "col s6 right-align",
+                    Value = "Cancelar",
+                    ClassBtn = "btn-secondary btn-narrow",
+                    DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI
+                        {
+                            DomEvent = "click", Function = "fnCancelar"
+                        }
+                    }
+                });
+                config.Elements.Add(new ButtonUI
+                {
+                    Id = "btnEfetivar",
+                    Class = "col s6",
+                    Value = "Efetivar",
+                    ClassBtn = "btn-narrow",
+                    DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI
+                        {
+                            DomEvent = "click", Function = "fnSalvar"
+                        }
+                    }
+                });
+
+                #region Helpers
+                config.Helpers.Add(new VideoHelperUI
+                {
+                    Id = "cardTaxa .card-title",
+                    Video = new HelperUIVideo
+                    {
+                        Youtube = "sUHOeyQJHtg"
+                    }
+                });
+                #endregion
 
                 cfg.Content.Add(config);
 

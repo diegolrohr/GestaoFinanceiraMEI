@@ -4,9 +4,9 @@
             var senha = $("#senha").val();
             $$$.loading.start();
             $.ajax({
-                url: '@Url.Action("GetToken", "Stone")',
+                url: '@Url.Action("Login", "Stone")',
                 type: "POST",
-                data: { senha: senha, atualizarDados: true },
+                data: { senha: senha },
                 success: function (data) {
                     if (data.success) {
                         $$$.loading.stop();

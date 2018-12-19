@@ -129,24 +129,24 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        public JsonResult GetToken(string senha, bool atualizarDados = false)
+        protected StoneTokenBaseVM GetToken(string senha)
+        {
+            string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
+
+            var entity = new AutenticacaoStoneVM
+            {
+                Email = email,
+                Password = senha
+            };            
+            return RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);            
+        }
+
+        public JsonResult Login(string senha)
         {
             try
             {
-                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
-
-                var entity = new AutenticacaoStoneVM
-                {
-                    Email = email,
-                    Password = senha
-                };
-
-                var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
-                SessionManager.Current.UserData.Stone.Token = response.Token;
-
-                if (atualizarDados)
-                    AtualizaDadosStone();
-
+                SessionManager.Current.UserData.Stone.Token = GetToken(senha).Token;
+                AtualizaDadosStone();
                 return JsonResponseStatus.GetSuccess("");
             }
             catch (Exception ex)
@@ -543,7 +543,7 @@ namespace Fly01.Financeiro.Controllers
                         new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Valor Bruto:" },
                         new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = simulacao.BrutoAnteciparCurrency, Id = "valorBruto" },
                         new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Banco:" },
-                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = "Banco mudar", Id = "banco" },
+                        new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = SessionManager.Current.UserData.Stone.DadosBancarios.BancoNome, Id = "banco" },
                         new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Data Pagamento:" },
                         new LineUI(){ Tag = "h6", Class = "truncate col s6", Text = simulacao.Data.ToString("dd/MM/yyyy"), Id = "dataPagamento" },
                         new LineUI(){ Tag = "h6", Class = "truncate col s6 light right-align", Text = "Taxa:" },
@@ -628,9 +628,8 @@ namespace Fly01.Financeiro.Controllers
             try
             {
                 var result = GetToken(entity.Senha);
-                var property = result.Data.GetType().GetProperty("success");
-                var tokenValido = (bool)property.GetValue(result.Data, null);
-                if (tokenValido)
+                
+                if (!string.IsNullOrWhiteSpace(result.Token))
                 {
                     entity.StoneBancoId = SessionManager.Current.UserData.Stone.DadosBancarios.Id;
                     entity.Valor = SessionManager.Current.UserData.Stone.Simulacoes.FirstOrDefault(x => x.Id == entity.Id).BrutoAntecipar;

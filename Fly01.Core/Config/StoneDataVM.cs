@@ -6,15 +6,12 @@ using System.Collections.Generic;
 namespace Fly01.Core.Config
 {
     [Serializable]
-    public class StoneDataVM
+    public class StoneDataVM : StoneTokenBaseVM
     {
         public StoneDataVM()
         {
             Simulacoes = new List<StoneAntecipacaoVM>();
         }
-
-        [JsonProperty("token")]
-        public string Token { get; set; }
 
         [JsonProperty("simulacoes")]
         public List<StoneAntecipacaoVM> Simulacoes { get; set; }

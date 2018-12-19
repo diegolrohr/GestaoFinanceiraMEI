@@ -4,9 +4,9 @@ using System;
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
-    public class StoneTokenBaseVM
+    public class StoneAntecipacaoVM : StoneAntecipacaoBaseVM
     {
-        [JsonProperty("token")]
-        public string Token { get; set; }
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
     }
 }

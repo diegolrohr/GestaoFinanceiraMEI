@@ -29,14 +29,14 @@ namespace Fly01.Financeiro.BL
             ThrowErros();
         }
 
-        public void ValidaToken(ResponseAutenticacaoStoneVM entity)
+        public void ValidaToken(StoneAutenticacaoVM entity)
         {
             CleanErros();
             FailToken(entity.Token);
             ThrowErros();
         }
 
-        public void ValidaAntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        public void ValidaAntecipacaoSimular(StoneAntecipacaoSimularVM entity)
         {
             CleanErros();
             FailToken(entity.Token);
@@ -44,7 +44,7 @@ namespace Fly01.Financeiro.BL
             ThrowErros();
         }
 
-        public void ValidaAntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        public void ValidaAntecipacaoEfetivar(StoneAntecipacaoEfetivarPostVM entity)
         {
             CleanErros();
             FailToken(entity.Token);

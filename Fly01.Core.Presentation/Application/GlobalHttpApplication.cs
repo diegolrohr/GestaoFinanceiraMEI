@@ -45,7 +45,7 @@ namespace Fly01.Core.Presentation.Application
                 string platformUser = cookieUserData.UserName;
                 string platformUrl = cookieUserData.Fly01Url;
 
-                var userData = new UserDataVM
+                var userData = new UserDataVM()
                 {
                     PlatformUser = platformUser,
                     PlatformUrl = platformUrl
@@ -61,7 +61,7 @@ namespace Fly01.Core.Presentation.Application
                     userData.TokenData = tokenData;
                     userData.TokenData.Username = cookieUserData.Name;
                     userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
-
+                    
                     SessionManager.Current.UserData = userData;
                     return true;
                 }

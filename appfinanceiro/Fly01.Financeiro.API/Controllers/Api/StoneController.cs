@@ -70,7 +70,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
 
             try
             {
-                //TODO: ver https
                 SetSecurityProtocol();
                 var resource = "authenticate";
                 var autenticacao = RestHelper.ExecutePostRequest<ResponseAutenticacaoStone>(AppDefaults.UrlStone, resource, entity, null, GetDefaultHeader());
@@ -91,7 +90,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Validar Token
         [HttpPost]
         [Route("validartoken")]
-        public IHttpActionResult ValidarToken(ResponseAutenticacaoStoneVM entity)
+        public IHttpActionResult ValidarToken(StoneAutenticacaoVM entity)
         {
             try
             {
@@ -110,13 +109,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Simular Antecipação
         [HttpPost]
         [Route("antecipacaosimular")]
-        public IHttpActionResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        public IHttpActionResult AntecipacaoSimular(StoneAntecipacaoSimularVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoSimular(entity);
             }
-            
+
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -125,16 +124,28 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
-                var resource = "v1/settlements/prepay/simulate";
-                var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //var resource = "v1/settlements/prepay/simulate";
+                //var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //return Ok(
+                //    new ResponseAntecipacaoStoneVM()
+                //    {
+                //        Data = simulacao.Data,
+                //        DataCriacao = simulacao.DataCriacao,
+                //        LiquidoAntecipar = simulacao.LiquidoAntecipar,
+                //        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
+                //        TaxaPontual = simulacao.TaxaPontual
+                //    });
+
                 return Ok(
-                    new ResponseAntecipacaoStoneVM()
+                    new StoneAntecipacaoVM()
                     {
-                        Data = simulacao.Data,
-                        DataCriacao = simulacao.DataCriacao,
-                        LiquidoAntecipar = simulacao.LiquidoAntecipar,
-                        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
-                        TaxaPontual = simulacao.TaxaPontual
+                        Id = Guid.NewGuid(),
+                        Data = DateTime.Now,
+                        DataCriacao = DateTime.Now,
+                        LiquidoAntecipar = entity.Valor * 0.9641,
+                        SaldoLiquidoDisponivel = 123.00,
+                        TaxaPontual = 3.59,
+                        BrutoAntecipar = entity.Valor
                     });
             }
             catch (Exception ex)
@@ -147,13 +158,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Efetivar Antecipação
         [HttpPost]
         [Route("antecipacaoefetivar")]
-        public async Task<IHttpActionResult> AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        public async Task<IHttpActionResult> AntecipacaoEfetivar(StoneAntecipacaoEfetivarPostVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoEfetivar(entity);
             }
-            
+
             try
             {
                 var antecipacao = new AntecipacaoStone()
@@ -162,8 +173,17 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
-                var resource = "v1/settlements/prepay/proposals";
-                var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                //var resource = "v1/settlements/prepay/proposals";
+                //var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
+                var efetivacao = new ResponseAntecipacaoStone()
+                {
+                    Data = DateTime.Now,
+                    DataCriacao = DateTime.Now,
+                    Id = 152515,
+                    LiquidoAnteciparCentavos = (int)(antecipacao.ValorCentavos * 0.9641),
+                    SaldoLiquidoDisponivel = entity.Valor * 0.9641,
+                    TaxaPontual = 3.59
+                };
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
                 {
@@ -180,7 +200,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 }
 
                 return Ok(
-                    new ResponseAntecipacaoStoneVM()
+                    new StoneAntecipacaoEfetivarVM()
                     {
                         Id = efetivacao.Id,
                         Data = efetivacao.Data,
@@ -213,10 +233,10 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var resource = "v1/settlements/prepay/informations";
                 var total = RestHelper.ExecuteGetRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
-                    new ResponseConsultaTotalStoneVM()
+                    new StoneTotaisVM()
                     {
                         SaldoDevedor = total.SaldoDevedor,
-                        TotalBrutoAntecipavel = total.TotalBrutoAntecipavel
+                        TotalBrutoAntecipavel = 75690.25//total.TotalBrutoAntecipavel
                     });
             }
             catch (Exception ex)
@@ -242,7 +262,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var resource = "v1/settlements/prepay/configurations";
                 var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
-                    new ResponseConfiguracaoStoneVM()
+                    new StoneConfiguracaoVM()
                     {
                         AntecipacaoAutomaticaAtivada = config.AntecipacaoAutomaticaAtivada,
                         Bloqueado = config.Bloqueado,
@@ -267,14 +287,14 @@ namespace Fly01.Financeiro.API.Controllers.Api
             {
                 unitOfWork.StoneBL.ValidaAntecipacaoDadosBancarios(entity);
             }
-            
+
             try
             {
                 SetSecurityProtocol();
                 var resource = "v1/configurations/bank-details";
                 var dados = RestHelper.ExecuteGetRequest<List<ResponseDadosBancariosStone>>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null).FirstOrDefault();
                 return Ok(
-                    new ResponseDadosBancariosStoneVM()
+                    new StoneDadosBancariosVM()
                     {
                         Agencia = dados.Agencia,
                         AgenciaDigito = dados.AgenciaDigito,

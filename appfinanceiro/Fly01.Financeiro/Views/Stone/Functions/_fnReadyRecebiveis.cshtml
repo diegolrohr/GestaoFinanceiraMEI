@@ -1,21 +1,9 @@
 ﻿<script>
     function fnReadyRecebiveis(event) {
-            $$$.loading.start();
-            $.ajax({
-                url: '@Url.Action("GetTotalAntecipar", "Stone")',
-                type: "POST",
-                data: {},
-                success: function (data) {
-                    if (data.success) {                       
-                        document.getElementById("rangeRecebivel").setAttribute("max", data.totalAntecipavel);
-                        $$$.loading.stop();
-                    } else {
-                        $$$.loading.stop();
-                        $$$.toast("", 'error');
-
-                    }
-                },
-            });
-        }    
+        $$$.loading.start();
+        document.getElementById("rangeRecebivel").setAttribute("value", document.getElementById("valorRecebivel").value.replace(",", "."));
+        $$$.fn.updateTextFields();
+        $$$.loading.stop();
+    }
 </script>
 

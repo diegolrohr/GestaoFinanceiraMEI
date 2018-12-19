@@ -4,17 +4,16 @@
             var senha = $("#senha").val();
             $$$.loading.start();
             $.ajax({
-                url: '@Url.Action("GetToken", "Stone")',
+                url: '@Url.Action("Login", "Stone")',
                 type: "POST",
-                data: { senha: senha},
+                data: { senha: senha },
                 success: function (data) {
                     if (data.success) {
                         $$$.loading.stop();
                          $$$.go('@Url.Action("List", "Stone")');
                     } else {
                         $$$.loading.stop();
-                        $$$.toast(data.message, 'error');
-
+                        $$$.fn.submitErrorHandler(null, data.message);
                     }
                 },
             });

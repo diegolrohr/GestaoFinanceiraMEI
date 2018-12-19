@@ -13,7 +13,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         {
             get
             {
-                return ((SaldoDevedorCentavos / 100)*-1);
+                return (SaldoDevedorCentavos / 100);
             }
             set { }
         }

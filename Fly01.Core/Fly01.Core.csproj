@@ -40,6 +40,7 @@
     <Compile Include="Config\NotificationVM.cs" />
     <Compile Include="Config\ProxyConfig.cs" />
     <Compile Include="Config\SessionManager.cs" />
+    <Compile Include="Config\StoneDataVM.cs" />
     <Compile Include="Config\TokenDataVM.cs" />
     <Compile Include="Config\UserDataVM.cs" />
     <Compile Include="Defaults\JsonSerializerSetting.cs" />

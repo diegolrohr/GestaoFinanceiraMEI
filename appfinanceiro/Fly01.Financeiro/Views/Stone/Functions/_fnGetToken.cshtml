@@ -6,7 +6,7 @@
             $.ajax({
                 url: '@Url.Action("GetToken", "Stone")',
                 type: "POST",
-                data: { senha: senha},
+                data: { senha: senha, atualizarDados: true },
                 success: function (data) {
                     if (data.success) {
                         $$$.loading.stop();

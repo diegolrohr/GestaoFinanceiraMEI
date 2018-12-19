@@ -1,8 +1,8 @@
 ﻿<script>
     function fnSimular(event) {
         $$$.loading.start();
-        var valor = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
-        var totalAntecipavel = $("#totalAntecipavel").val().replace(".", "").replace(",", ".");
+        var valor = document.getElementById("valorRecebivel").value.replace(",", ".");
+        var totalAntecipavel = document.getElementById("rangeRecebivel").getAttribute("max");
 
         if (valor > 0 && valor <= totalAntecipavel) {
             $.ajax({

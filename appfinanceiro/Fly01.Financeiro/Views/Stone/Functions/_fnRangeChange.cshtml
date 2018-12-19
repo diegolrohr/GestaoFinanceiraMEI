@@ -1,14 +1,12 @@
 ﻿<script>
     function fnRangeChange(event) {
-        var totalAntecipavel = parseFloat($("#totalAntecipavel").val().replace(".", "").replace(",", "."));
-        var targetValue = parseFloat(event.target.value.replace(".", "").replace(",", "."));
+        var totalAntecipavel = document.getElementById("rangeRecebivel").getAttribute("max");
+        var targetValue = parseFloat(event.target.value.replace(",", "."));
 
         if (targetValue > totalAntecipavel) {
             targetValue = totalAntecipavel;
             $("#valorRecebivel").val(totalAntecipavel);
-        }
-
-        if (targetValue <= 0)
+        } else if (targetValue <= 0)
             $("#btnSimular").attr('disabled', 'disabled');
         else
             $("#btnSimular").removeAttr('disabled');

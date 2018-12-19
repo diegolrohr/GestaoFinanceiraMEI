@@ -140,6 +140,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(
                     new StoneAntecipacaoVM()
                     {
+                        Id = Guid.NewGuid(),
                         Data = DateTime.Now,
                         DataCriacao = DateTime.Now,
                         LiquidoAntecipar = entity.Valor * 0.9641,
@@ -158,7 +159,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Efetivar Antecipação
         [HttpPost]
         [Route("antecipacaoefetivar")]
-        public async Task<IHttpActionResult> AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        public async Task<IHttpActionResult> AntecipacaoEfetivar(StoneAntecipacaoEfetivarPostVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {

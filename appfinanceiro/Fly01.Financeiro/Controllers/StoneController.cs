@@ -1,4 +1,4 @@
-﻿using Fly01.Core.Presentation;
+using Fly01.Core.Presentation;
 using Fly01.Financeiro.ViewModel;
 using System;
 using Fly01.uiJS.Classes;
@@ -25,6 +25,8 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(ResourceKey = ResourceHashConst.FinanceiroFinanceiroAntecipacaoRecebiveis, PermissionValue = EPermissionValue.Write)]
     public class StoneController : BaseController<DomainBaseVM>
     {
+        #region Autenticação
+
         protected FormUI FormLogin()
         {
             var config = new FormUI
@@ -106,6 +108,88 @@ namespace Fly01.Financeiro.Controllers
             return config;
         }
 
+        protected bool ValidaToken()
+        {
+            try
+            {
+                var entity = new
+                {
+                    SessionManager.Current.UserData.Stone.Token
+                };
+
+                var response = RestHelper.ExecutePostRequest<JObject>("stone/validartoken", entity, AppDefaults.GetQueryStringDefault());
+                bool success = response.Value<bool>("success");
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+
+        public JsonResult GetToken(string senha)
+        {
+            try
+            {
+                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
+
+                var entity = new AutenticacaoStoneVM
+                {
+                    Email = email,
+                    Password = senha
+                };
+
+                var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
+
+                SessionManager.Current.UserData.Stone.Token = response.Token;         
+                AtualizaDadosStone();
+                return JsonResponseStatus.GetSuccess("");
+            }
+            catch (Exception ex)
+            {
+                //SessionManager.Current.UserData.Stone.Token = null;
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        protected void AtualizaDadosStone()
+        {
+            var entity = new StoneTokenBaseVM
+            {
+                Token = SessionManager.Current.UserData.Stone.Token
+            };
+
+            SessionManager.Current.UserData.Stone.DadosBancarios =
+                RestHelper.ExecutePostRequest<StoneDadosBancariosVM>("stone/dadosbancarios", entity);
+
+            SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao =
+                RestHelper.ExecutePostRequest<StoneConfiguracaoVM>("stone/antecipacaoconfiguracao", entity);
+
+            SessionManager.Current.UserData.Stone.AntecipacaoTotais =
+                RestHelper.ExecutePostRequest<StoneTotaisVM>("stone/antecipacaoconsultar", entity);
+
+            if (SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel > 0)
+            {
+                SessionManager.Current.UserData.Stone.Simulacoes = new List<StoneAntecipacaoVM>();
+                AntecipacaoSimulacao(SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel);
+                SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalLiquidoAntecipavel =
+                    SessionManager.Current.UserData.Stone.Simulacoes.FirstOrDefault().LiquidoAntecipar;
+            }
+        }
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            SessionManager.Current.UserData.Stone.Token = null;
+            return View("Index");
+        }
+
+        #endregion
+
+        #region Antecipação
+
+        #region Simulação
         protected List<HtmlUIFunctionBase> FormSimulacao()
         {
             var content = new List<HtmlUIFunctionBase>();
@@ -127,16 +211,16 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 green-text",
                 Color = "white",
                 Title = "Total antecipável",
-                Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalAntecipavelCurrency
+                Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavelCurrency
             });
-            //content.Add(new CardUI
-            //{
-            //    Parent = "divInf",
-            //    Class = "col s12 totvs-blue-text",
-            //    Color = "white",
-            //    Title = "Líquido antecipável",
-            //    Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.LiquidoAnteciparCurrency
-            //});
+            content.Add(new CardUI
+            {
+                Parent = "divInf",
+                Class = "col s12 totvs-blue-text",
+                Color = "white",
+                Title = "Líquido antecipável",
+                Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalLiquidoAntecipavelCurrency
+            });
             content.Add(new CardUI
             {
                 Id = "cardTaxa",
@@ -144,7 +228,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12 teal-text",
                 Color = "white",
                 Title = "Taxa pontual",
-                Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao.TaxaAntecipacaoPontualCurrency
+                Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao.TaxaAntecipacaoPontualPercent
             });
 
             var config = new FormUI
@@ -185,6 +269,9 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "rangeRecebivel",
                 Class = "col s12",
+                Min = 0,
+                Max = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel,
+                Step = 0.01,
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "input mousemove touchmove", Function = "fnRangeChange" }
@@ -266,7 +353,7 @@ namespace Fly01.Financeiro.Controllers
                         Orderable = false
                     },
                 },
-                UrlGridLoad = Url.Action("GridLoad")
+                UrlGridLoad = Url.Action("GridLoadSimulacoes")
             };
 
             content.Add(config);
@@ -275,7 +362,68 @@ namespace Fly01.Financeiro.Controllers
             return content;
         }
 
-        public ContentResult FormEfetivar(Guid id)
+        protected void AntecipacaoSimulacao(double valor)
+        {
+            var entity = new StoneAntecipacaoSimularVM
+            {                
+                Token = SessionManager.Current.UserData.Stone.Token,
+                Valor = valor
+            };
+            var response = RestHelper.ExecutePostRequest<StoneAntecipacaoVM>("stone/antecipacaosimular", entity);
+            SessionManager.Current.UserData.Stone.Simulacoes.Add(response);            
+        }
+
+        [HttpGet]
+        public ContentResult AntecipacaoSimular(double valor)
+        {
+            try
+            {
+                AntecipacaoSimulacao(valor);
+                return Content(JsonConvert.SerializeObject(new { success = true }), "application/json");
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
+            }
+        }
+        
+        public JsonResult GridLoadSimulacoes(Dictionary<string, string> filters = null)
+        {            
+            try
+            {
+                return Json(new
+                {
+                    recordsTotal = SessionManager.Current.UserData.Stone.Simulacoes.Count(),
+                    recordsFiltered = SessionManager.Current.UserData.Stone.Simulacoes.Count(),
+                    data = SessionManager.Current.UserData.Stone.Simulacoes.Select(x => new
+                    {
+                        id = x.Id,
+                        bruto = x.BrutoAnteciparCurrency,
+                        taxa = x.TaxaPontualPercent,
+                        liquido = x.LiquidoAnteciparCurrency
+                    })
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    queryStringFilter = string.Empty,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new { },
+                    success = false,
+                    message = string.Format("Ocorreu um erro ao carregar dados: {0}", ex.Message)
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        #region Efetivação
+        /* ST0n3!2017 */
+        public ContentResult FormEfetivar(Guid? id)
         {
             if (ValidaToken())
             {
@@ -288,8 +436,7 @@ namespace Fly01.Financeiro.Controllers
                 {
                     History = new ContentUIHistory
                     {
-                        Default = Url.Action("EfetivarAntecipacao"),
-                        WithParams = Url.Action("EfetivarAntecipacao")
+                        Default = Url.Action("AntecipacaoEfetivar") + "/" + id.ToString()
                     },
                     Header = new HtmlUIHeader
                     {
@@ -308,8 +455,7 @@ namespace Fly01.Financeiro.Controllers
                         Get = Url.Action("Json") + "/",
                         List = Url.Action("List", "Stone")
                     },
-                    UrlFunctions = Url.Action("Functions") + "?fns=",
-                    ReadyFn = "fnFormReadyEfetivar"
+                    UrlFunctions = Url.Action("Functions") + "?fns="
                 };
                 //TODO:
                 config.Elements.Add(new InputHiddenUI { Id = "id", Value = simulacao.Id.ToString() });
@@ -439,7 +585,7 @@ namespace Fly01.Financeiro.Controllers
                     Class = "col s12 green-text",
                     Color = "white",
                     Title = "Total antecipável",
-                    Placeholder = "R$ Tirar"
+                    Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavelCurrency
                 });
                 cfg.Content.Add(new CardUI
                 {
@@ -447,7 +593,7 @@ namespace Fly01.Financeiro.Controllers
                     Class = "col s12 green-text",
                     Color = "white",
                     Title = "Líquido antecipável",
-                    Placeholder = "R$ 115,00"
+                    Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalLiquidoAntecipavelCurrency
                 });
                 cfg.Content.Add(new CardUI
                 {
@@ -456,7 +602,7 @@ namespace Fly01.Financeiro.Controllers
                     Class = "col s12 green-text",
                     Color = "white",
                     Title = "Taxa pontual",
-                    Placeholder = "R$ tirar"
+                    Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao.TaxaAntecipacaoPontualPercent
                 });
 
 
@@ -468,95 +614,8 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-               
-        protected bool ValidaToken()
-        {
-            try
-            {
-                var entity = new
-                {
-                    SessionManager.Current.UserData.Stone.Token
-                };
-
-                var response = RestHelper.ExecutePostRequest<JObject>("stone/validartoken", entity, AppDefaults.GetQueryStringDefault());
-                bool success = response.Value<bool>("success");
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                throw new BusinessException(ex.Message);
-            }
-        }
-
-        public JsonResult GetToken(string senha)
-        {
-            try
-            {
-                string email = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl)?.StoneEmail;
-
-                var entity = new AutenticacaoStoneVM
-                {
-                    Email = email,
-                    Password = senha
-                };
-
-                var response = RestHelper.ExecutePostRequest<StoneTokenBaseVM>("stone/token", entity);
-
-                SessionManager.Current.UserData.Stone.Token = response.Token;         
-                AtualizaDadosStone();
-                return JsonResponseStatus.GetSuccess("");
-            }
-            catch (Exception ex)
-            {
-                //SessionManager.Current.UserData.Stone.Token = null;
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
-
-        protected StoneAntecipacaoVM AntecipacaoSimulacao(double valor)
-        {
-            var entity = new StoneAntecipacaoSimularVM
-            {
-                Token = SessionManager.Current.UserData.Stone.Token,
-                Valor = valor
-            };
-            return RestHelper.ExecutePostRequest<StoneAntecipacaoVM>("stone/antecipacaosimular", entity);
-        }
-
-        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
-        {            
-            try
-            {
-                return Json(new
-                {
-                    recordsTotal = SessionManager.Current.UserData.Stone.Simulacoes.Count(),
-                    recordsFiltered = SessionManager.Current.UserData.Stone.Simulacoes.Count(),
-                    data = SessionManager.Current.UserData.Stone.Simulacoes.Select(x => new
-                    {
-                        id = x.Id,
-                        bruto = x.BrutoAnteciparCurrency,
-                        taxa = x.TaxaPontualPercent,
-                        liquido = x.LiquidoAnteciparCurrency
-                    })
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    queryStringFilter = string.Empty,
-                    recordsTotal = 0,
-                    recordsFiltered = 0,
-                    data = new { },
-                    success = false,
-                    message = string.Format("Ocorreu um erro ao carregar dados: {0}", ex.Message)
-                }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        public JsonResult AntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        [HttpPost]
+        public JsonResult AntecipacaoEfetivar(StoneAntecipacaoEfetivarPostVM entity)
         {
             try
             {
@@ -565,8 +624,11 @@ namespace Fly01.Financeiro.Controllers
                 var tokenValido = (bool)property.GetValue(result.Data, null);
                 if (tokenValido)
                 {
+                    entity.StoneBancoId = SessionManager.Current.UserData.Stone.DadosBancarios.Id;
+                    entity.Valor = SessionManager.Current.UserData.Stone.Simulacoes.FirstOrDefault(x => x.Id == entity.Id).BrutoAntecipar;
                     entity.Token = SessionManager.Current.UserData.Stone.Token;
                     var response = RestHelper.ExecutePostRequest<StoneAntecipacaoVM>("stone/antecipacaoefetivar", entity);
+                    AtualizaDadosStone();
                     return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Create);
                 }
                 else
@@ -581,38 +643,12 @@ namespace Fly01.Financeiro.Controllers
             }
         }
 
-        protected void AtualizaDadosStone()
-        {
-            var entity = new StoneTokenBaseVM
-            {
-                Token = SessionManager.Current.UserData.Stone.Token
-            };
+        public virtual ActionResult AntecipacaoEfetivar(Guid? id)
+            => View("AntecipacaoEfetivar", id);
 
-            SessionManager.Current.UserData.Stone.DadosBancarios = 
-                RestHelper.ExecutePostRequest<StoneDadosBancariosVM>("stone/dadosbancarios", entity);
+        #endregion
 
-            SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao = 
-                RestHelper.ExecutePostRequest<StoneConfiguracaoVM>("stone/antecipacaoconfiguracao", entity);
-
-            SessionManager.Current.UserData.Stone.AntecipacaoTotais =
-                RestHelper.ExecutePostRequest<StoneTotaisVM>("stone/antecipacaoconsultar", entity);
-
-            if (SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel > 0)
-            {
-                SessionManager.Current.UserData.Stone.Simulacoes = new List<StoneAntecipacaoVM>
-                {
-                    AntecipacaoSimulacao(SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel)
-                };
-            }
-        }
-
-
-        [HttpGet]
-        public ActionResult Logout()
-        {
-            SessionManager.Current.UserData.Stone.Token = null;
-            return View("Index");
-        }
+        #endregion
 
         public override ContentResult List()
         {
@@ -636,26 +672,6 @@ namespace Fly01.Financeiro.Controllers
 
             return Content(JsonConvert.SerializeObject(result, JsonSerializerSetting.Front), "application/json"); ;
         }
-
-        [HttpGet]
-        public ContentResult AntecipacaoSimular(double valor)
-        {
-            try
-            {
-                var response = AntecipacaoSimulacao(valor);
-                SessionManager.Current.UserData.Stone.Simulacoes.Add(response);
-
-                return Content(JsonConvert.SerializeObject(response), "application/json");
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message)), "application/json");
-            }
-        }
-
-        public virtual ActionResult EfetivarAntecipacao()
-            => View("EfetivarAntecipacao");
 
         #region NotImplemented        
         protected override ContentUI FormJson()

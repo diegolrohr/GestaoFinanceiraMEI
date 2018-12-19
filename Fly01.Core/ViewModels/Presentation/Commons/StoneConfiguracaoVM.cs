@@ -12,8 +12,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("taxaAntecipacaoPontual")]
         public double TaxaAntecipacaoPontual { get; set; }
 
-        [JsonProperty("taxaAntecipacaoPontualCurrency")]
-        public string TaxaAntecipacaoPontualCurrency
+        [JsonProperty("taxaAntecipacaoPontualPercent")]
+        public string TaxaAntecipacaoPontualPercent
         {
             get
             {

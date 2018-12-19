@@ -44,7 +44,7 @@ namespace Fly01.Financeiro.BL
             ThrowErros();
         }
 
-        public void ValidaAntecipacaoEfetivar(EfetivarAntecipacaoStoneVM entity)
+        public void ValidaAntecipacaoEfetivar(StoneAntecipacaoEfetivarPostVM entity)
         {
             CleanErros();
             FailToken(entity.Token);

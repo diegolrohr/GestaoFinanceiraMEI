@@ -23,15 +23,25 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("totalBrutoAntecipavel")]
         public double TotalBrutoAntecipavel { get; set; }
 
-        [JsonProperty("totalAntecipavelCurrency")]
-        public string TotalAntecipavelCurrency
+        [JsonProperty("totalBrutoAntecipavelCurrency")]
+        public string TotalBrutoAntecipavelCurrency
         {
             get
             {
                 return TotalBrutoAntecipavel.ToString("C", AppDefaults.CultureInfoDefault);
+            }            
+        }
+
+        [JsonProperty("totalLiquidoAntecipavel")]
+        public double TotalLiquidoAntecipavel { get; set; }
+
+        [JsonProperty("totalLiquidoAntecipavelCurrency")]
+        public string TotalLiquidoAntecipavelCurrency
+        {
+            get
+            {
+                return TotalLiquidoAntecipavel.ToString("C", AppDefaults.CultureInfoDefault);
             }
-            set
-            { }
         }
     }
 }

@@ -150,6 +150,10 @@
     <Compile Include="Migrations\201811131913223_CreateArquivo.Designer.cs">
       <DependentUpon>201811131913223_CreateArquivo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812171332071_alterProdutoAddOrigemMercadoria.cs" />
+    <Compile Include="Migrations\201812171332071_alterProdutoAddOrigemMercadoria.Designer.cs">
+      <DependentUpon>201812171332071_alterProdutoAddOrigemMercadoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\Contract\IDataInitializer.cs" />
@@ -241,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811131913223_CreateArquivo.resx">
       <DependentUpon>201811131913223_CreateArquivo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812171332071_alterProdutoAddOrigemMercadoria.resx">
+      <DependentUpon>201812171332071_alterProdutoAddOrigemMercadoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

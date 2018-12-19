@@ -181,7 +181,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     Data = DateTime.Now,
                     DataCriacao = DateTime.Now,
                     Id = 152515,
-                    LiquidoAnteciparCentavos = antecipacao.ValorCentavos,
+                    LiquidoAnteciparCentavos = (int)(antecipacao.ValorCentavos * 0.9641),
                     SaldoLiquidoDisponivel = entity.Valor * 0.9641,
                     TaxaPontual = 3.59
                 };

@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ResponseDadosBancariosStoneVM
+    [Serializable]
+    public class StoneDadosBancariosVM
     {
         [JsonProperty("id")]
         public int Id { get; set; }

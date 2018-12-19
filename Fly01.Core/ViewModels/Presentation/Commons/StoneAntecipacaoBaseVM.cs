@@ -2,12 +2,10 @@
 using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
-{
-    public class ResponseAntecipacaoStoneVM
+{    
+    [Serializable]
+    public abstract class StoneAntecipacaoBaseVM
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
         [JsonProperty("data")]
         public DateTime Data { get; set; }
 
@@ -19,7 +17,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         {
             get
             {
-                return TaxaPontual.ToString("N", AppDefaults.CultureInfoDefault)+"%";
+                return TaxaPontual.ToString("N", AppDefaults.CultureInfoDefault) + "%";
             }
             set
             { }
@@ -37,9 +35,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
             get
             {
                 return LiquidoAntecipar.ToString("C", AppDefaults.CultureInfoDefault);
-            }
-            set
-            { }
+            }            
         }
 
         [JsonProperty("brutoAntecipar")]
@@ -52,12 +48,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
             {
                 return BrutoAntecipar.ToString("C", AppDefaults.CultureInfoDefault);
             }
-            set
-            { }
         }
 
         [JsonProperty("saldoLiquidoDisponivel")]
-        public double SaldoLiquidoDisponivel { get; set; }        
+        public double SaldoLiquidoDisponivel { get; set; }
 
         [JsonProperty("saldoLiquidoDisponivelCurrency")]
         public string SaldoLiquidoDisponivelCurrency
@@ -66,8 +60,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
             {
                 return SaldoLiquidoDisponivel.ToString("C", AppDefaults.CultureInfoDefault);
             }
-            set
-            { }
         }
     }
 }
+
+

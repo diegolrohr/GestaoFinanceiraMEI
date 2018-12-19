@@ -91,7 +91,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Validar Token
         [HttpPost]
         [Route("validartoken")]
-        public IHttpActionResult ValidarToken(ResponseAutenticacaoStoneVM entity)
+        public IHttpActionResult ValidarToken(StoneAutenticacaoVM entity)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
         #region Simular Antecipação
         [HttpPost]
         [Route("antecipacaosimular")]
-        public IHttpActionResult AntecipacaoSimular(SimularAntecipacaoStoneVM entity)
+        public IHttpActionResult AntecipacaoSimular(StoneAntecipacaoSimularVM entity)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
@@ -138,7 +138,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 //    });
 
                 return Ok(
-                    new ResponseAntecipacaoStoneVM()
+                    new StoneAntecipacaoVM()
                     {
                         Data = DateTime.Now,
                         DataCriacao = DateTime.Now,
@@ -200,7 +200,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 }
 
                 return Ok(
-                    new ResponseAntecipacaoStoneVM()
+                    new StoneAntecipacaoEfetivarVM()
                     {
                         Id = efetivacao.Id,
                         Data = efetivacao.Data,
@@ -233,7 +233,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var resource = "v1/settlements/prepay/informations";
                 var total = RestHelper.ExecuteGetRequest<ResponseConsultaTotalStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
-                    new ResponseConsultaTotalStoneVM()
+                    new StoneTotaisVM()
                     {
                         SaldoDevedor = total.SaldoDevedor,
                         TotalBrutoAntecipavel = 5420.25//total.TotalBrutoAntecipavel
@@ -262,7 +262,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var resource = "v1/settlements/prepay/configurations";
                 var config = RestHelper.ExecuteGetRequest<ResponseConfiguracaoStone>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null);
                 return Ok(
-                    new ResponseConfiguracaoStoneVM()
+                    new StoneConfiguracaoVM()
                     {
                         AntecipacaoAutomaticaAtivada = config.AntecipacaoAutomaticaAtivada,
                         Bloqueado = config.Bloqueado,
@@ -294,7 +294,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var resource = "v1/configurations/bank-details";
                 var dados = RestHelper.ExecuteGetRequest<List<ResponseDadosBancariosStone>>(AppDefaults.UrlStone, resource, GetCompleteHeader(entity.Token), null).FirstOrDefault();
                 return Ok(
-                    new ResponseDadosBancariosStoneVM()
+                    new StoneDadosBancariosVM()
                     {
                         Agencia = dados.Agencia,
                         AgenciaDigito = dados.AgenciaDigito,

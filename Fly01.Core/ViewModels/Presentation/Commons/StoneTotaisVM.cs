@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ResponseConsultaTotalStoneVM
+    [Serializable]
+    public class StoneTotaisVM
     {
         [JsonProperty("saldoDevedor")]
         public double SaldoDevedor { get; set; }

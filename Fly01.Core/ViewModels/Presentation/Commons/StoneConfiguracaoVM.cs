@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class ResponseConfiguracaoStoneVM
+    [Serializable]
+    public class StoneConfiguracaoVM
     {
         [JsonProperty("taxaAntecipacaoAutomatica")]
         public double TaxaAntecipacaoAutomatica { get; set; }

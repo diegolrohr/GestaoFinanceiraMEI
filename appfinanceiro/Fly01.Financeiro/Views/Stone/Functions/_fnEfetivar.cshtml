@@ -1,6 +1,8 @@
 ﻿<script>
     function fnEfetivar(valor) {
+        //alert($(this).closest('tr').index());
         var stoneBancoId = $("form#formAntecipacao #bancoStoneId").val();
+        //var rowData = $$$._.datatableSelecaoTitulos.rows(indexes).data().toArray();
         $$$.go("@Url.Action("FormEfetivar", "Stone")" + "?valor=" + valor + "&stoneBancoId=" + stoneBancoId);
     }
 </script>

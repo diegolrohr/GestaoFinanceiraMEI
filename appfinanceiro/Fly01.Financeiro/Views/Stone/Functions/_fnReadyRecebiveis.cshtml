@@ -1,8 +1,8 @@
 ﻿<script>
     function fnReadyRecebiveis(event) {
         $$$.loading.start();
-        document.getElementById("rangeRecebivel").setAttribute("max", document.getElementById("valorRecebivel").value.replace(".", "").replace(",", "."));
-        document.getElementById("rangeRecebivel").value = document.getElementById("valorRecebivel").value.replace(".", "").replace(",", ".");
+        document.getElementById("rangeRecebivel").setAttribute("max", document.getElementById("valorRecebivel").value.replace(",", "."));
+        document.getElementById("rangeRecebivel").setAttribute("value", document.getElementById("valorRecebivel").value.replace(",", "."));
         $$$.fn.updateTextFields();
         $$$.loading.stop();
     }

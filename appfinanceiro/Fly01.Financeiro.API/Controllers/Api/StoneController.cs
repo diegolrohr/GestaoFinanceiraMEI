@@ -142,9 +142,9 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     {
                         Data = DateTime.Now,
                         DataCriacao = DateTime.Now,
-                        LiquidoAntecipar = entity.Valor * 0.9601,
+                        LiquidoAntecipar = entity.Valor * 0.9641,
                         SaldoLiquidoDisponivel = 123.00,
-                        TaxaPontual = 3.99,
+                        TaxaPontual = 3.59,
                         BrutoAntecipar = entity.Valor
                     });
             }
@@ -181,8 +181,8 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     DataCriacao = DateTime.Now,
                     Id = 152515,
                     LiquidoAnteciparCentavos = antecipacao.ValorCentavos,
-                    SaldoLiquidoDisponivel = entity.Valor * 0.05,
-                    TaxaPontual = 1.95
+                    SaldoLiquidoDisponivel = entity.Valor * 0.9641,
+                    TaxaPontual = 3.59
                 };
 
                 using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))

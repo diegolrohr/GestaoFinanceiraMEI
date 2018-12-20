@@ -274,6 +274,7 @@ namespace Fly01.Financeiro.Controllers
                 Class = "col s12",
                 Min = 0,
                 Max = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel,
+                Value = SessionManager.Current.UserData.Stone.AntecipacaoTotais.TotalBrutoAntecipavel.ToString(),
                 Step = 0.01,
                 DomEvents = new List<DomEventUI>
                 {

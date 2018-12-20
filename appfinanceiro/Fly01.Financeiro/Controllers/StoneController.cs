@@ -227,7 +227,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Id = "cardTaxa",
                 Parent = "divInf",
-                Class = "col s12 teal-text",
+                Class = "col s12 green-text",
                 Color = "white",
                 Title = "Taxa pontual",
                 Placeholder = SessionManager.Current.UserData.Stone.AntecipacaoConfiguracao.TaxaAntecipacaoPontualPercent

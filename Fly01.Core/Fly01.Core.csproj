@@ -61,6 +61,7 @@
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneDadosBancariosVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneConfiguracaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\StoneErrorVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneTotaisVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoEfetivarPostVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneTokenBaseVM.cs" />

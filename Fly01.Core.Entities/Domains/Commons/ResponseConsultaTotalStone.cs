@@ -7,15 +7,17 @@ namespace Fly01.Core.Entities.Domains.Commons
     {
         [JsonProperty("negative_balance")]
         public int SaldoDevedorCentavos { get; set; }
-
+        
+        /// <summary>
+        /// Manter(100.00) double para correta conversão dos centavos
+        /// </summary>
         [JsonIgnore]
         public double SaldoDevedor
         {
             get
             {
-                return (SaldoDevedorCentavos / 100);
+                return (SaldoDevedorCentavos / 100.00);
             }
-            set { }
         }
 
         [JsonProperty("total_prepayable_amount")]
@@ -26,9 +28,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         {
             get
             {
-                return (TotalBrutoCentavos / 100);
+                return (TotalBrutoCentavos / 100.00);
             }
-            set { }
         }
     }
 }

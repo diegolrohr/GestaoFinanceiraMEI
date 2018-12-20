@@ -13,6 +13,7 @@ using System.Net;
 using System.Web.Http;
 using Fly01.Financeiro.BL;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -124,16 +125,19 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
+                //TODO:Stone publicacao
                 //var resource = "v1/settlements/prepay/simulate";
                 //var simulacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
                 //return Ok(
-                //    new ResponseAntecipacaoStoneVM()
+                //    new StoneAntecipacaoVM()
                 //    {
+                //        Id = Guid.NewGuid(),
                 //        Data = simulacao.Data,
                 //        DataCriacao = simulacao.DataCriacao,
                 //        LiquidoAntecipar = simulacao.LiquidoAntecipar,
                 //        SaldoLiquidoDisponivel = simulacao.SaldoLiquidoDisponivel,
-                //        TaxaPontual = simulacao.TaxaPontual
+                //        TaxaPontual = simulacao.TaxaPontual,
+                //        BrutoAntecipar = entity.Valor
                 //    });
 
                 return Ok(
@@ -150,7 +154,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao simular a antecipação stone: " + ex.Message);
+                var message = ex.Message;
+                var error = JsonConvert.DeserializeObject<StoneErrorVM>(ex.Message);
+                if (error != null && !string.IsNullOrEmpty(error?.Message))
+                {
+                    message = error?.Message;
+                }
+                throw new BusinessException("Erro ao simular a antecipação stone: " + message);
             }
         }
         #endregion
@@ -173,6 +183,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 };
 
                 SetSecurityProtocol();
+                //TODO:Stone publicacao
                 //var resource = "v1/settlements/prepay/proposals";
                 //var efetivacao = RestHelper.ExecutePostRequest<ResponseAntecipacaoStone>(AppDefaults.UrlStone, resource, antecipacao, null, GetCompleteHeader(entity.Token));
                 var efetivacao = new ResponseAntecipacaoStone()
@@ -212,7 +223,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao efetivar a antecipação stone: " + ex.Message);
+                var message = ex.Message;
+                var error = JsonConvert.DeserializeObject<StoneErrorVM>(ex.Message);
+                if (error != null && !string.IsNullOrEmpty(error?.Message))
+                {
+                    message = error?.Message;
+                }
+                throw new BusinessException("Erro ao efetivar a antecipação stone: " + message);
             }
         }
         #endregion
@@ -236,12 +253,18 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     new StoneTotaisVM()
                     {
                         SaldoDevedor = total.SaldoDevedor,
-                        TotalBrutoAntecipavel = 75690.25//total.TotalBrutoAntecipavel
+                        TotalBrutoAntecipavel = 75690.25//total.TotalBrutoAntecipavel //TODO:Stone publicacao
                     });
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao consultar o total disponível para antecipação: " + ex.Message);
+                var message = ex.Message;
+                var error = JsonConvert.DeserializeObject<StoneErrorVM>(ex.Message);
+                if (error != null && !string.IsNullOrEmpty(error?.Message))
+                {
+                    message = error?.Message;
+                }
+                throw new BusinessException("Erro ao consultar o total disponível para antecipação: " + message);
             }
         }
         #endregion
@@ -273,7 +296,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao consultar a configuração de antecipação stone: " + ex.Message);
+                var message = ex.Message;
+                var error = JsonConvert.DeserializeObject<StoneErrorVM>(ex.Message);
+                if (error != null && !string.IsNullOrEmpty(error?.Message))
+                {
+                    message = error?.Message;
+                }
+                throw new BusinessException("Erro ao consultar a configuração de antecipação stone: " + message);
             }
         }
         #endregion
@@ -308,7 +337,13 @@ namespace Fly01.Financeiro.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao consultar dados bancários da stone: " + ex.Message);
+                var message = ex.Message;
+                var error = JsonConvert.DeserializeObject<StoneErrorVM>(ex.Message);
+                if (error != null && !string.IsNullOrEmpty(error?.Message))
+                {
+                    message = error?.Message;
+                }
+                throw new BusinessException("Erro ao consultar dados bancários da stone: " + message);
             }
         }
         #endregion

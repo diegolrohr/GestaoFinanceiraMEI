@@ -528,7 +528,7 @@ namespace Fly01.Compras.BL
                     {
                         itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
                         {
-                            InformacoesComplementares = entity.MensagemPadraoNota
+                            InformacoesComplementares = entity.Observacao + " | " + entity.MensagemPadraoNota
                         };
                     }
 

@@ -47,7 +47,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
                 {
-                    InformacoesComplementares = NFe.MensagemPadraoNota
+                    InformacoesComplementares = NFe.Observacao + " | " + NFe.MensagemPadraoNota
                 };
             }
 

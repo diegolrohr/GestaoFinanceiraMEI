@@ -8,6 +8,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class Produto : PlataformaBase
     {
+        [JsonProperty("imageProduto")]
+        [Column(TypeName = "varchar(MAX)")]
+        [MaxLength(int.MaxValue)]
+        public string ImageProduto { get; set; }
+
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(120, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         public string Descricao { get; set; }

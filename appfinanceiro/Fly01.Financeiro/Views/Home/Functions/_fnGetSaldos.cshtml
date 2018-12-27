@@ -3,8 +3,9 @@
         $("#" + elName).loading(lock ? "start" : "stop");
     }
 
-    function getSaldos(dataFinal) {
+    function getSaldos(dataFinal, dataInicial) {
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+        var inicial = isValidDate(dataInicial.toString()) ? dataInicial : formatDate(dataInicial);
 
         lockSaldos("fly01cardSA", true);
         lockSaldos("fly01cardCP", true);
@@ -12,7 +13,7 @@
         lockSaldos("fly01cardSC", true);
 
         $.ajax({
-            url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final,
+            url: "@Url.Action("LoadSaldos", "FluxoCaixa")?dataFinal=" + final + "&dataInicial=" + inicial,
             type: "GET",
             success: function (data) {
                 $$$._.fly01cardSA.info(data.SaldoAtual);

@@ -456,6 +456,10 @@
     <Compile Include="Migrations\201812171332554_AlterProdutoAddOrigemMercadoria.Designer.cs">
       <DependentUpon>201812171332554_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812271221415_CreateImageProduto.cs" />
+    <Compile Include="Migrations\201812271221415_CreateImageProduto.Designer.cs">
+      <DependentUpon>201812271221415_CreateImageProduto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -791,6 +795,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812171332554_AlterProdutoAddOrigemMercadoria.resx">
       <DependentUpon>201812171332554_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812271221415_CreateImageProduto.resx">
+      <DependentUpon>201812271221415_CreateImageProduto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

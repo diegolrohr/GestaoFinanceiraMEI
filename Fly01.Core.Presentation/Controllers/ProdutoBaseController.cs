@@ -153,6 +153,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
 
+            config.Elements.Add(new InputFileUI
+            {
+                Id = "imageProduto",
+                Class = "col s12 m3",
+                Label = "Imagem",
+                Accept = "image/png",
+                Image = true
+            });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
 
@@ -189,16 +197,6 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "ncmId",
-                Class = "col s12 m9",
-                Label = "NCM",
-                DataUrl = @Url.Action("Ncm", "AutoComplete"),
-                LabelId = "ncmDescricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
-            });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaIpi",
@@ -206,6 +204,16 @@ namespace Fly01.Core.Presentation.Controllers
                 Label = "Alíquota IPI",
                 MaxLength = 5,
                 Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'numeric', 'suffix': ' %', 'autoUnmask': true, 'radixPoint': ',' " }
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
+                Id = "ncmId",
+                Class = "col s12 m12",
+                Label = "NCM",
+                DataUrl = @Url.Action("Ncm", "AutoComplete"),
+                LabelId = "ncmDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
             });
 
             config.Elements.Add(new AutoCompleteUI

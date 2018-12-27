@@ -284,6 +284,10 @@
     <Compile Include="Migrations\201812171331249_AlterProdutoAddOrigemMercadoria.Designer.cs">
       <DependentUpon>201812171331249_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812271228007_CreateImageProduto.cs" />
+    <Compile Include="Migrations\201812271228007_CreateImageProduto.Designer.cs">
+      <DependentUpon>201812271228007_CreateImageProduto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -504,6 +508,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812171331249_AlterProdutoAddOrigemMercadoria.resx">
       <DependentUpon>201812171331249_AlterProdutoAddOrigemMercadoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812271228007_CreateImageProduto.resx">
+      <DependentUpon>201812271228007_CreateImageProduto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

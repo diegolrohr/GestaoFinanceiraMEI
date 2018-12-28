@@ -6,12 +6,12 @@ namespace Fly01.OrdemServico.ViewModel
     {
         public string Id { get; internal set; }
         public string ClienteNome { get; internal set; }
-        public object DataEmissao { get; internal set; }
-        public string DataEntrega { get; internal set; }
+        public DateTime? DataEmissao { get; internal set; }
+        public DateTime? DataEntrega { get; internal set; }
         public string Status { get; internal set; }
         public string Numero { get; internal set; }
         public string Descricao { get; internal set; }
-        public Guid ItemId { get; internal set; }
+        public string ItemId { get; internal set; }
         public string ItemNome { get; internal set; }
         public double ItemQtd { get; internal set; }
         public double ItemValor { get; internal set; }

@@ -40,16 +40,6 @@ namespace Fly01.OrdemServico.Controllers
             => Json(data, JsonRequestBehavior.AllowGet);
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public List<OrdemServicoItemProdutoVM> GetObjetosManutencao(Guid id)
-        {
-            var queryString = new Dictionary<string, string>();
-            queryString.AddParam("$filter", $"ordemServicoId eq {id}");
-            queryString.AddParam("$expand", "produto");
-
-            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemProdutoVM>>("OrdemServicoItemProduto", queryString).Data;
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemServicoItemProdutoVM> GetProdutos(Guid id)
         {
             var queryString = new Dictionary<string, string>();
@@ -88,7 +78,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoManutencao", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoManutencao", Label = "Excluir" }
             }));
-            
+
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoManutencaoCfg.Columns.Add(new DataTableUIColumn() { DataField = "total", DisplayName = "Total", Priority = 3, Type = "float", Searchable = false, Orderable = false });
@@ -115,7 +105,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemProduto", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemProduto", Label = "Excluir" }
             }));
-            
+
 
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "produto_descricao", DisplayName = "Produto", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemProdutosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
@@ -145,7 +135,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditarOrdemServicoItemServico", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluirOrdemServicoItemServico", Label = "Excluir" }
             }));
-            
+
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "servico_descricao", DisplayName = "Serviço", Priority = 1, Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtOrdemServicoItemServicosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "currency", Searchable = false, Orderable = false });
@@ -287,7 +277,7 @@ namespace Fly01.OrdemServico.Controllers
                 new DataTableUIAction { OnClickFn = "fnConcluirOrdem", Label = "Concluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}' && !row.geraOrdemVenda)" },
                 new DataTableUIAction { OnClickFn = "fnConcluirGerarOrdem", Label = "Concluir & Gerar Pedido de Venda", ShowIf = $"(row.status == '{StatusOrdemServico.EmAndamento}')" }
             }));
-            
+
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número OS", Priority = 1, Type = "numbers" });
             config.Columns.Add(new DataTableUIColumn
             {
@@ -689,78 +679,30 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        private List<ImprimirOrdemServicoVM> GetDadosOrcamentoPedido(string id, OrdemServicoVM os)
-        {
-            var manut = GetObjetosManutencao(Guid.Parse(id));
-            var produtos = GetProdutos(Guid.Parse(id));
-            var servicos = GetServicos(Guid.Parse(id));
-            var total = produtos.Sum(x => x.Total) + servicos.Sum(x => x.Total);
-
-            var reportItems = new List<ImprimirOrdemServicoVM>();
-            foreach (OrdemServicoItemProdutoVM itemManutencao in manut)
-                reportItems.Add(PreencherItemBase(os, total, "Objetos de manutenção", itemManutencao, itemManutencao.ProdutoId, itemManutencao.Produto?.Descricao));
-
-            foreach (OrdemServicoItemServicoVM OrdemServico in servicos)
-                reportItems.Add(PreencherItemBase(os, total, "Serviços", OrdemServico, OrdemServico.ServicoId, OrdemServico.Servico?.Descricao));
-
-            foreach (OrdemServicoItemProdutoVM OrdemProduto in produtos)
-                reportItems.Add(PreencherItemBase(os, total, "Produtos", OrdemProduto, OrdemProduto.ProdutoId, OrdemProduto.Produto?.Descricao));
-
-            if (!produtos.Any() && !servicos.Any())
-                reportItems.Add(GetEntidadeImpressaoBase(os, total));
-
-            return reportItems;
-        }
-
-        private static ImprimirOrdemServicoVM GetEntidadeImpressaoBase(OrdemServicoVM os, double total) => new ImprimirOrdemServicoVM
-        {
-            Id = os.Id.ToString(),
-            ClienteNome = os.Cliente?.Nome,
-            ClienteCPF = os.Cliente?.CPFCNPJ,
-            ClienteCelular = os.Cliente?.Celular,
-            ClienteTelefone = os.Cliente?.Telefone,
-            ClienteEndereco = GetEndereco(os.Cliente),
-            ClienteEmail = os.Cliente?.Email,
-            DataEmissao = os.DataEmissao.ToString(),
-            DataEntrega = os.DataEntrega.ToString(),
-            Status = os.Status.ToString(),
-            Numero = os.Numero.ToString(),
-            Descricao = os.Descricao,
-            Total = total
-        };
-
-        private static ImprimirOrdemServicoVM PreencherItemBase(OrdemServicoVM os, double total, string itemTipo, OrdemServicoItemVM OrdemProduto, Guid itemId, string itemNome)
-        {
-            var ent = GetEntidadeImpressaoBase(os, total);
-            ent.ItemTipo = itemTipo;
-            ent.ItemId = itemId;
-            ent.ItemNome = itemNome;
-            ent.ItemQtd = OrdemProduto.Quantidade;
-            ent.ItemValor = OrdemProduto.Valor;
-            ent.ItemDesconto = OrdemProduto.Desconto;
-            ent.ItemTotal = OrdemProduto.Total;
-            ent.ItemObservacao = OrdemProduto.Observacao;
-
-            return ent;
-        }
-
         private static string GetEndereco(PessoaVM cliente) =>
                 cliente == null || string.IsNullOrEmpty(cliente.Endereco) ?
                 "" :
                 $"{cliente.Endereco}, {cliente.Cidade?.Nome} - {cliente.Estado?.Sigla}. CEP: {cliente.CEP}";
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public virtual JsonResult ImprimirOrdemServico(string id)
+        public virtual ActionResult ImprimirOrdemServico(Guid id)
         {
             try
             {
-                var ordemServico = Get(Guid.Parse(id));
-                var fileName = "OrdemServico" + ordemServico.Numero.ToString() + ".pdf";
-                var fileBase64 = Convert.ToBase64String(GetPDFFile(ordemServico));
+                OrdemServicoVM OrdemServico = Get(id);
 
-                Session.Add(fileName, fileBase64);
+                var produtos = GetProdutos(id);
+                var servicos = GetServicos(id);
+                List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
 
-                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadPDF", new { fileName }) });
+                if (!produtos.Any() && !servicos.Any())
+                    AdicionarInformacoesPadrao(OrdemServico, reportItems);
+                else                
+                    MontarServicosParaPrint(OrdemServico, servicos, reportItems);
+                    MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
+                    
+                var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
+                return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
             }
             catch (Exception ex)
             {
@@ -768,11 +710,106 @@ namespace Fly01.OrdemServico.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+        private static void AdicionarInformacoesPadrao(OrdemServicoVM OrdemServico, List<ImprimirOrdemServicoVM> reportItems)
+        {
+            reportItems.Add(new ImprimirOrdemServicoVM
+            {
+                Id = OrdemServico.Id.ToString(),
+                ClienteNome = OrdemServico.Cliente?.Nome,
+                ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
+                ClienteCelular = OrdemServico.Cliente?.Celular,
+                ClienteTelefone = OrdemServico.Cliente?.Telefone,
+                ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                ClienteEmail = OrdemServico.Cliente?.Email,
+                DataEmissao = OrdemServico.DataEmissao,
+                DataEntrega = OrdemServico.DataEntrega,
+                Status = OrdemServico.Status.ToString(),
+                Numero = OrdemServico.Numero.ToString(),
+                Descricao = OrdemServico.Descricao,
+                Total = 100
+            });
+        }
+
+        private static void MontarServicosParaPrint(OrdemServicoVM OrdemServico, List<OrdemServicoItemServicoVM> servicos, List<ImprimirOrdemServicoVM> reportItems)
+        {
+            foreach (OrdemServicoItemServicoVM servicositens in servicos)
+            {
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    //ORDEM SERVICO
+                    Id = OrdemServico.Id.ToString(),
+                    ClienteNome = OrdemServico.Cliente?.Nome,
+                    ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
+                    ClienteCelular = OrdemServico.Cliente?.Celular,
+                    ClienteTelefone = OrdemServico.Cliente?.Telefone,
+                    ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    ClienteEmail = OrdemServico.Cliente?.Email,
+                    DataEmissao = OrdemServico.DataEmissao,
+                    DataEntrega = OrdemServico.DataEntrega,
+                    Status = OrdemServico.Status.ToString(),
+                    Numero = OrdemServico.Numero.ToString(),
+                    Descricao = OrdemServico.Descricao,
+                    ItemTipo = "Serviço",
+                    ItemId = servicositens.Id.ToString(),
+                    ItemNome = servicositens?.Servico?.Descricao,
+                    ItemQtd = servicositens.Quantidade,
+                    ItemValor = servicositens.Valor,
+                    ItemDesconto = servicositens.Desconto,
+                    ItemTotal = servicositens.Total,
+                    ItemObservacao = servicositens.Observacao
+                });
+            }
+        }
+        private static void MontarProdutosParaPrint(OrdemServicoVM OrdemServico, List<OrdemServicoItemProdutoVM> produtos, List<ImprimirOrdemServicoVM> reportItems)
+        {
+            foreach (OrdemServicoItemProdutoVM produtositens in produtos)
+            {
+                reportItems.Add( new ImprimirOrdemServicoVM
+                {
+                    //ORDEM SERVICO
+                    Id = OrdemServico.Id.ToString(),
+                    ClienteNome = OrdemServico.Cliente?.Nome,
+                    ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
+                    ClienteCelular = OrdemServico.Cliente?.Celular,
+                    ClienteTelefone = OrdemServico.Cliente?.Telefone,
+                    ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    ClienteEmail = OrdemServico.Cliente?.Email,
+                    DataEmissao = OrdemServico.DataEmissao,
+                    DataEntrega = OrdemServico.DataEntrega,
+                    Status = OrdemServico.Status.ToString(),
+                    Numero = OrdemServico.Numero.ToString(),
+                    Descricao = OrdemServico.Descricao,
+                    ItemTipo = "Produto",
+                    ItemId = produtositens.Id.ToString(),
+                    ItemNome = produtositens?.Produto?.Descricao,
+                    ItemQtd = produtositens.Quantidade,
+                    ItemValor = produtositens.Valor,
+                    ItemDesconto = produtositens.Desconto,
+                    ItemTotal = produtositens.Total,
+                    ItemObservacao = produtositens.Observacao
+                });
+            }
+        }
 
         private byte[] GetPDFFile(OrdemServicoVM ordemServico)
         {
             var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
-            return reportViewer.Print(GetDadosOrcamentoPedido(ordemServico.Id.ToString(), ordemServico), SessionManager.Current.UserData.PlatformUrl);
+            return reportViewer.Print(GetDadosOS(ordemServico.Id, ordemServico), SessionManager.Current.UserData.PlatformUrl);
+        }
+
+        private List<ImprimirOrdemServicoVM> GetDadosOS(Guid id, OrdemServicoVM OrdemServico)
+        {
+            var produtos = GetProdutos(id);
+            var servicos = GetServicos(id);
+            List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
+
+            if (!produtos.Any() && !servicos.Any())
+                AdicionarInformacoesPadrao(OrdemServico, reportItems);
+            else
+                MontarServicosParaPrint(OrdemServico, servicos, reportItems);
+            MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
+
+            return reportItems;
         }
 
         private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)

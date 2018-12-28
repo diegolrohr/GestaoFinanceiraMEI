@@ -2,25 +2,7 @@
     @Html.Partial("Functions/_fnImprimir");
 
     function fnImprimirOrdemServico(idRecord) {
-        $$$.loading.start();
-
-        $.ajax({
-            url: '@Url.Action("ImprimirOrdemServico", "OrdemServico")',
-            data: { id: idRecord },
-			type: "GET",
-            success: function (data) {
-                $$$.loading.stop();
-                if (data.message) {
-                    $$$.fn.submitErrorHandler(null, data.message);
-                } else {
-                    location.href = data.downloadAddress;
-                }
-			},
-            error: function (jqxhr, textStatus, error) {
-				var err = 'Ocorreu um erro na requisição: ' + textStatus + ", " + error;
-				$$$.toast(err, "error");
-				$$$.loading.stop();
-			}
-        });
+        var url = '@Url.Action("ImprimirOrdemServico", "OrdemServico")?id=' + idRecord;
+        fnImprimir(url);
     }
 </script>

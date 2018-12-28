@@ -15,12 +15,12 @@ namespace Fly01.Financeiro.API.Controllers.Api
     {
         [HttpGet]
         [Route("saldos")]
-        public IHttpActionResult GetSaldos(DateTime dataFinal, DateTime dataInicial)
+        public IHttpActionResult GetSaldos(DateTime dataFinal)
         {
             //#1 Saldo de Todas as Contas (Consolidado) + AReceber e APagar (hoje)
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos(dataFinal, dataInicial) });
+                return Ok(new { value = unitOfWork.FluxoCaixaBL.GetSaldos(dataFinal) });
             }
         }
 

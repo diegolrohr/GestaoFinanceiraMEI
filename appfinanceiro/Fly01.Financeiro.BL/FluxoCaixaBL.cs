@@ -23,13 +23,13 @@ namespace Fly01.Financeiro.BL
         }
 
         #region #1 Saldo de Todas as Contas (Consolidado) + AReceber e APagar (hoje)
-        public FluxoCaixaSaldo GetSaldos(DateTime dataFinal, DateTime dataInicial)
+        public FluxoCaixaSaldo GetSaldos(DateTime dataFinal)
         {
             var saldoTodasAsContas = saldoHistoricoBL.GetSaldos().FirstOrDefault(x => x.ContaBancariaId == Guid.Empty).SaldoConsolidado;
             var dataBase = dataFinal;
 
             var contasFinanceirasBase = contaFinanceiraBL.All
-                .Where(x => x.DataVencimento <= dataBase && x.DataInclusao >= dataInicial)
+                .Where(x => x.DataVencimento <= dataBase)
                 .Where(x => x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.BaixadoParcialmente)
                 .Select(item => new
                 {

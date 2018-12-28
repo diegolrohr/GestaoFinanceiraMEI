@@ -40,17 +40,6 @@ namespace Fly01.OrdemServico.Controllers
             => Json(data, JsonRequestBehavior.AllowGet);
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
-        public List<OrdemServicoItemProdutoVM> GetObjetosManutencao(Guid id)
-        {
-            var queryString = new Dictionary<string, string>();
-            queryString.AddParam("$expand", "produto");
-            queryString.AddParam("$filter", $"ordemServicoId eq {id} and produto/objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Sim'");
-            
-
-            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoItemProdutoVM>>("OrdemServicoItemProduto", queryString).Data;
-        }
-
-        [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemServicoItemProdutoVM> GetProdutos(Guid id)
         {
             var queryString = new Dictionary<string, string>();
@@ -702,18 +691,15 @@ namespace Fly01.OrdemServico.Controllers
             {
                 OrdemServicoVM OrdemServico = Get(id);
 
-                var manut = GetObjetosManutencao(id);
                 var produtos = GetProdutos(id);
                 var servicos = GetServicos(id);
                 List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
 
-                if (!produtos.Any() && !servicos.Any() && !manut.Any())
+                if (!produtos.Any() && !servicos.Any())
                     AdicionarInformacoesPadrao(OrdemServico, reportItems);
                 else                
                     MontarServicosParaPrint(OrdemServico, servicos, reportItems);
                     MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
-                    MontarObjManutencaoParaPrint(OrdemServico, manut, reportItems);
-                
                     
                 var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
                 return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
@@ -805,55 +791,23 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
-        private static void MontarObjManutencaoParaPrint(OrdemServicoVM OrdemServico, List<OrdemServicoItemProdutoVM> manut, List<ImprimirOrdemServicoVM> reportItems)
-        {
-            foreach (OrdemServicoItemProdutoVM manutitens in manut)
-            {
-                reportItems.Add(new ImprimirOrdemServicoVM
-                {
-                    //ORDEM SERVICO
-                    Id = OrdemServico.Id.ToString(),
-                    ClienteNome = OrdemServico.Cliente?.Nome,
-                    ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
-                    ClienteCelular = OrdemServico.Cliente?.Celular,
-                    ClienteTelefone = OrdemServico.Cliente?.Telefone,
-                    ClienteEndereco = GetEndereco(OrdemServico.Cliente),
-                    ClienteEmail = OrdemServico.Cliente?.Email,
-                    DataEmissao = OrdemServico.DataEmissao,
-                    DataEntrega = OrdemServico.DataEntrega,
-                    Status = OrdemServico.Status.ToString(),
-                    Numero = OrdemServico.Numero.ToString(),
-                    Descricao = OrdemServico.Descricao,
-                    ItemTipo = "Obj.Manut.",
-                    ItemId = manutitens.Id.ToString(),
-                    ItemNome = manutitens?.Produto?.Descricao,
-                    ItemQtd = manutitens.Quantidade,
-                    ItemValor = manutitens.Valor,
-                    ItemDesconto = manutitens.Desconto,
-                    ItemTotal = manutitens.Total,
-                    ItemObservacao = manutitens.Observacao
-                });
-            }
-        }
         private byte[] GetPDFFile(OrdemServicoVM ordemServico)
         {
             var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
-            return reportViewer.Print(GetDadosOrcamentoPedido(ordemServico.Id, ordemServico), SessionManager.Current.UserData.PlatformUrl);
+            return reportViewer.Print(GetDadosOS(ordemServico.Id, ordemServico), SessionManager.Current.UserData.PlatformUrl);
         }
 
-        private List<ImprimirOrdemServicoVM> GetDadosOrcamentoPedido(Guid id, OrdemServicoVM OrdemServico)
+        private List<ImprimirOrdemServicoVM> GetDadosOS(Guid id, OrdemServicoVM OrdemServico)
         {
-            var manut = GetObjetosManutencao(id);
             var produtos = GetProdutos(id);
             var servicos = GetServicos(id);
             List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
 
-            if (!produtos.Any() && !servicos.Any() && !manut.Any())
+            if (!produtos.Any() && !servicos.Any())
                 AdicionarInformacoesPadrao(OrdemServico, reportItems);
             else
                 MontarServicosParaPrint(OrdemServico, servicos, reportItems);
             MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
-            MontarObjManutencaoParaPrint(OrdemServico, manut, reportItems);
 
             return reportItems;
         }

@@ -16,20 +16,16 @@ namespace Fly01.Financeiro.Controllers
     [OperationRole(NotApply = true)]
     public class FluxoCaixaController : PrimitiveBaseController
     {
-        public JsonResult LoadSaldos(string dataFinal, string dataInicial)
+        public JsonResult LoadSaldos(string dataFinal)
         {
             try
             {
                 if (string.IsNullOrEmpty(dataFinal))
                     dataFinal = DateTime.Now.ToString("yyyy-MM-dd");
 
-                if (string.IsNullOrEmpty(dataInicial))
-                    dataInicial = DateTime.Now.ToString("yyyy-MM-dd");
-
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
                     { "dataFinal", dataFinal },
-                    { "dataInicial", dataInicial },
                 };
 
                 var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaSaldoVM>("fluxocaixa/saldos", queryString);

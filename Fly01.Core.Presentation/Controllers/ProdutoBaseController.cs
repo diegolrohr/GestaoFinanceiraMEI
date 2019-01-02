@@ -49,6 +49,7 @@ namespace Fly01.Core.Presentation.Controllers
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
             customFilters.AddParam("$select", SelectProperties);
+            customFilters.AddParam("$filter", $"objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao'");
 
             return customFilters;
         }

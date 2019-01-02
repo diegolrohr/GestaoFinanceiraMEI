@@ -321,6 +321,18 @@ namespace Fly01.OrdemServico.Reports {
             
             private global::System.Data.DataColumn columnClienteEmail;
             
+            private global::System.Data.DataColumn columnObjManutId;
+            
+            private global::System.Data.DataColumn columnObjManutQtd;
+            
+            private global::System.Data.DataColumn columnObjManutNome;
+            
+            private global::System.Data.DataColumn columnObjManutDesconto;
+            
+            private global::System.Data.DataColumn columnObjManutValor;
+            
+            private global::System.Data.DataColumn columnObjManutTipo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public OrdemServicoDataTable() {
@@ -524,6 +536,54 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutIdColumn {
+                get {
+                    return this.columnObjManutId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutQtdColumn {
+                get {
+                    return this.columnObjManutQtd;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutNomeColumn {
+                get {
+                    return this.columnObjManutNome;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutDescontoColumn {
+                get {
+                    return this.columnObjManutDesconto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutValorColumn {
+                get {
+                    return this.columnObjManutValor;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ObjManutTipoColumn {
+                get {
+                    return this.columnObjManutTipo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -580,7 +640,13 @@ namespace Fly01.OrdemServico.Reports {
                         string ItemObservacao, 
                         string ClienteCelular, 
                         string ClienteTelefone, 
-                        string ClienteEmail) {
+                        string ClienteEmail, 
+                        string ObjManutId, 
+                        string ObjManutQtd, 
+                        string ObjManutNome, 
+                        string ObjManutDesconto, 
+                        string ObjManutValor, 
+                        string ObjManutTipo) {
                 OrdemServicoRow rowOrdemServicoRow = ((OrdemServicoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -603,7 +669,13 @@ namespace Fly01.OrdemServico.Reports {
                         ItemObservacao,
                         ClienteCelular,
                         ClienteTelefone,
-                        ClienteEmail};
+                        ClienteEmail,
+                        ObjManutId,
+                        ObjManutQtd,
+                        ObjManutNome,
+                        ObjManutDesconto,
+                        ObjManutValor,
+                        ObjManutTipo};
                 rowOrdemServicoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrdemServicoRow);
                 return rowOrdemServicoRow;
@@ -647,6 +719,12 @@ namespace Fly01.OrdemServico.Reports {
                 this.columnClienteCelular = base.Columns["ClienteCelular"];
                 this.columnClienteTelefone = base.Columns["ClienteTelefone"];
                 this.columnClienteEmail = base.Columns["ClienteEmail"];
+                this.columnObjManutId = base.Columns["ObjManutId"];
+                this.columnObjManutQtd = base.Columns["ObjManutQtd"];
+                this.columnObjManutNome = base.Columns["ObjManutNome"];
+                this.columnObjManutDesconto = base.Columns["ObjManutDesconto"];
+                this.columnObjManutValor = base.Columns["ObjManutValor"];
+                this.columnObjManutTipo = base.Columns["ObjManutTipo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -694,6 +772,18 @@ namespace Fly01.OrdemServico.Reports {
                 base.Columns.Add(this.columnClienteTelefone);
                 this.columnClienteEmail = new global::System.Data.DataColumn("ClienteEmail", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClienteEmail);
+                this.columnObjManutId = new global::System.Data.DataColumn("ObjManutId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutId);
+                this.columnObjManutQtd = new global::System.Data.DataColumn("ObjManutQtd", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutQtd);
+                this.columnObjManutNome = new global::System.Data.DataColumn("ObjManutNome", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutNome);
+                this.columnObjManutDesconto = new global::System.Data.DataColumn("ObjManutDesconto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutDesconto);
+                this.columnObjManutValor = new global::System.Data.DataColumn("ObjManutValor", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutValor);
+                this.columnObjManutTipo = new global::System.Data.DataColumn("ObjManutTipo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjManutTipo);
                 this.columnNumero.Caption = "NumeroNota";
                 this.columnDataEmissao.Caption = "Data Emissão";
                 this.columnDataEntrega.Caption = "Data Entrega";
@@ -1179,6 +1269,102 @@ namespace Fly01.OrdemServico.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutId {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutId\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutQtd {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutQtdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutQtd\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutQtdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutNome {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutNomeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutNome\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutNomeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutDesconto {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutDescontoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutDesconto\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutDescontoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutValor {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutValorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutValor\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutValorColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ObjManutTipo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdemServico.ObjManutTipoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjManutTipo\' in table \'OrdemServico\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdemServico.ObjManutTipoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIdNull() {
                 return this.IsNull(this.tableOrdemServico.IdColumn);
             }
@@ -1427,6 +1613,78 @@ namespace Fly01.OrdemServico.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetClienteEmailNull() {
                 this[this.tableOrdemServico.ClienteEmailColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutIdNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutIdNull() {
+                this[this.tableOrdemServico.ObjManutIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutQtdNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutQtdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutQtdNull() {
+                this[this.tableOrdemServico.ObjManutQtdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutNomeNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutNomeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutNomeNull() {
+                this[this.tableOrdemServico.ObjManutNomeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutDescontoNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutDescontoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutDescontoNull() {
+                this[this.tableOrdemServico.ObjManutDescontoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutValorNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutValorColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutValorNull() {
+                this[this.tableOrdemServico.ObjManutValorColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsObjManutTipoNull() {
+                return this.IsNull(this.tableOrdemServico.ObjManutTipoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetObjManutTipoNull() {
+                this[this.tableOrdemServico.ObjManutTipoColumn] = global::System.Convert.DBNull;
             }
         }
         

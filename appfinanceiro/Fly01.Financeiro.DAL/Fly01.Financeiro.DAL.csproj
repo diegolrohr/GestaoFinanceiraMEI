@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.Designer.cs">
       <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.cs" />
+    <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.Designer.cs">
+      <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
@@ -398,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.resx">
       <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.resx">
+      <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

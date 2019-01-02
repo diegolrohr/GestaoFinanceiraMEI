@@ -1,14 +1,15 @@
-﻿using System;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
-using System.Linq;
-using Fly01.Core.ViewModels;
-using System.Text.RegularExpressions;
-using System.Text;
-using Fly01.Core.Rest;
 using Fly01.Core.Entities.Domains.Enum;
-using System.Globalization;
 using Fly01.Core.Notifications;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Fly01.Financeiro.BL
 {
@@ -18,8 +19,8 @@ namespace Fly01.Financeiro.BL
         protected ContaBancariaBL contaBancariaBL;
 
         private string codigoCedente;
-        const double jurosDiaPadrao = 0.33;
-        const double percentMultaPadrao = 2.00;
+        private const double jurosDiaPadrao = 0.33;
+        private const double percentMultaPadrao = 2.00;
 
         public CnabBL(AppDataContextBase context, ContaReceberBL contaReceberBL, ContaBancariaBL contaBancariaBL) : base(context)
         {
@@ -43,7 +44,9 @@ namespace Fly01.Financeiro.BL
             var cnabReemprime = base.All.FirstOrDefault(x => x.ContaBancariaCedenteId == contaBancariaId && x.ContaReceberId == contaReceberId);
 
             if (cnabReemprime != null)
+            {
                 nossoNumero = cnabReemprime.NossoNumero;
+            }
             else
             {
                 var max = Everything.Any() ? Everything.Max(x => x.NossoNumero) : 0;
@@ -70,7 +73,7 @@ namespace Fly01.Financeiro.BL
 
             var boletoVM = new BoletoVM()
             {
-                ValorPrevisto = (decimal)contaReceber.ValorPrevisto - (Convert.ToDecimal(contaReceber.ValorPago?? 0)),
+                ValorPrevisto = (decimal)contaReceber.ValorPrevisto - (Convert.ToDecimal(contaReceber.ValorPago ?? 0)),
                 ValorDesconto = contaReceber.ValorDesconto.HasValue ? (decimal)contaReceber.ValorDesconto : 0,
                 ValorMulta = valorMulta,
                 ValorJuros = valorJuros,
@@ -87,30 +90,68 @@ namespace Fly01.Financeiro.BL
             };
 
             if (ValidaDadosBoleto(boletoVM))
+            {
                 return boletoVM;
+            }
             else
+            {
                 return null;
+            }
         }
 
         public Cnab GetCnab(Guid Id)
         {
             if (Id != Guid.Empty)
+            {
                 return base.AllIncluding(b => b.ContaReceber, b => b.ContaReceber.Pessoa).Where(x => x.Id == Id).FirstOrDefault();
+            }
 
             return null;
         }
 
+        public List<Cnab> GetCnabs(Guid Id)
+        {
+            if (Id != Guid.Empty)
+            {
+                var t = base.All.Where(x => x.PessoaId == Id).ToList();
+                return base.All.Where(x => x.PessoaId == Id).ToList();
+            }
+
+            return null;
+        }
         #endregion
 
         private bool ValidaDadosBoleto(BoletoVM boleto)
         {
-            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoComplemento)) boleto.Cedente.EnderecoComplemento = "---";
-            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoNumero)) boleto.Cedente.EnderecoNumero = "0";
-            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento)) boleto.Sacado.EnderecoComplemento = "---";
-            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero)) boleto.Sacado.EnderecoNumero = "0";
+            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoComplemento))
+            {
+                boleto.Cedente.EnderecoComplemento = "---";
+            }
+
+            if (string.IsNullOrEmpty(boleto.Cedente.EnderecoNumero))
+            {
+                boleto.Cedente.EnderecoNumero = "0";
+            }
+
+            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoComplemento))
+            {
+                boleto.Sacado.EnderecoComplemento = "---";
+            }
+
+            if (string.IsNullOrEmpty(boleto.Sacado.EnderecoNumero))
+            {
+                boleto.Sacado.EnderecoNumero = "0";
+            }
+
             if (string.IsNullOrEmpty(boleto.Cedente.CodigoCedente))
+            {
                 throw new BusinessException("É necessário informar o código do cedente");
-            if (string.IsNullOrEmpty(boleto.Cedente.CodigoDV)) boleto.Cedente.CodigoDV = "0";
+            }
+
+            if (string.IsNullOrEmpty(boleto.Cedente.CodigoDV))
+            {
+                boleto.Cedente.CodigoDV = "0";
+            }
 
             return true;
         }
@@ -179,17 +220,44 @@ namespace Fly01.Financeiro.BL
             var valorJuros = (decimal)(valorParcial * (juros / 100));
             var msgCaixa = new StringBuilder();
 
-            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue) msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("C", new CultureInfo("pt-BR"))} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
-            if (percentMultaPadrao > 0) msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("C", new CultureInfo("pt-BR"))} após o vencimento. ");
-            if (jurosDiaPadrao > 0) msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("C", new CultureInfo("pt-BR"))} por dia de atraso. ");
+            if (conta.ValorDesconto.HasValue && conta.DataDesconto.HasValue)
+            {
+                msgCaixa.AppendLine($"Conceder desconto de {conta.ValorDesconto.Value.ToString("C", new CultureInfo("pt-BR"))} até {conta.DataDesconto.Value.ToString("dd/MM/yyyy")}. ");
+            }
+
+            if (percentMultaPadrao > 0)
+            {
+                msgCaixa.AppendLine($"Cobrar multa de {valorMulta.ToString("C", new CultureInfo("pt-BR"))} após o vencimento. ");
+            }
+
+            if (jurosDiaPadrao > 0)
+            {
+                msgCaixa.AppendLine($"Cobrar juros de {valorJuros.ToString("C", new CultureInfo("pt-BR"))} por dia de atraso. ");
+            }
 
             return msgCaixa.ToString();
         }
 
         public override void Insert(Cnab entity)
         {
+            var idPessoa = contaReceberBL.All.FirstOrDefault(x => x.Id == entity.ContaReceberId).PessoaId;
+            entity.PessoaId = idPessoa;
+
             if (!All.Any(x => x.ContaReceberId == entity.ContaReceberId))
+            {
                 base.Insert(entity);
+            }
+        }
+
+        public override void Update(Cnab entity)
+        {
+            if (entity.PessoaId == null)
+            {
+                var idPessoa = contaReceberBL.All.FirstOrDefault(x => x.Id == entity.ContaReceberId).PessoaId;
+                entity.PessoaId = idPessoa;
+            }
+
+            base.Update(entity);
         }
 
         public Boleto2Net.BoletoBancario GeraBoleto(BoletoVM boleto)
@@ -204,23 +272,50 @@ namespace Fly01.Financeiro.BL
             if (!proxy.SetupCobranca(cedente.CNPJ, cedente.RazaoSocial, cedente.Endereco, cedente.EnderecoNumero, cedente.EnderecoComplemento, cedente.EnderecoBairro,
                 cedente.EnderecoCidade, cedente.EnderecoUF, cedente.EnderecoCEP, cedente.Observacoes, contaCedente.CodigoBanco, contaCedente.Agencia, contaCedente.DigitoAgencia,
                 "1", contaCedente.Conta, contaCedente.DigitoConta, cedente.CodigoCedente, cedente.CodigoDV, "", carteira.CarteiraPadrao, carteira.VariacaoCarteira,
-                (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                (int)Boleto2Net.TipoCarteira.CarteiraCobrancaSimples, (int)Boleto2Net.TipoFormaCadastramento.ComRegistro, (int)Boleto2Net.TipoImpressaoBoleto.Empresa, (int)Boleto2Net.TipoDocumento.Tradicional, ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
-            if (!proxy.NovoBoleto(ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.NovoBoleto(ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
             if (!proxy.DefinirSacado(sacado.CNPJ, sacado.Nome, sacado.Endereco, sacado.EnderecoNumero, sacado.EnderecoComplemento, sacado.EnderecoBairro, sacado.EnderecoCidade,
-                sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                sacado.EnderecoUF, sacado.EnderecoCEP, sacado.Observacoes, ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
             if (!proxy.DefinirBoleto(Boleto2Net.TipoEspecieDocumento.DM.ToString(), boleto.NumeroDocumento, FormataNossoNumero(cedente.CodigoCedente, cedente.ContaBancariaCedente.CodigoBanco, boleto.NossoNumero), boleto.DataEmissao,
-                DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+                DateTime.Now, boleto.DataVencimento, boleto.ValorPrevisto, boleto.NumeroDocumento, "N", ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
-            if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
-            if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirMulta(boleto.DataVencimento, boleto.ValorMulta, 2, ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
+
+            if (!proxy.DefinirJuros(boleto.DataVencimento.AddDays(1), boleto.ValorJuros, 3, ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
             if (boleto.DataDesconto.HasValue)
-                if (!proxy.DefinirDesconto(boleto.DataDesconto.Value, boleto.ValorDesconto.Value, ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            {
+                if (!proxy.DefinirDesconto(boleto.DataDesconto.Value, boleto.ValorDesconto.Value, ref mensagemBoleto))
+                {
+                    throw new Exception(mensagemBoleto);
+                }
+            }
 
-            if (!proxy.DefinirInstrucoes(boleto.InstrucoesCaixa, "", "", "", "", "", "", "", ref mensagemBoleto)) throw new Exception(mensagemBoleto);
+            if (!proxy.DefinirInstrucoes(boleto.InstrucoesCaixa, "", "", "", "", "", "", "", ref mensagemBoleto))
+            {
+                throw new Exception(mensagemBoleto);
+            }
 
             proxy.FecharBoleto(ref mensagemBoleto);
 
@@ -280,7 +375,15 @@ namespace Fly01.Financeiro.BL
             if (!reimprimeBoleto)
             {
                 if (cnabToEdit.Count() <= 0)
-                    base.Insert(cnab);
+                    Insert(cnab);
+                else
+                {
+                    var cnabEdit = base.All.FirstOrDefault(x => x.ContaReceberId == contaReceberId);
+                    if (cnabEdit != null)
+                    {
+                        Update(cnabEdit);
+                    }
+                }
             }
             else
             {
@@ -289,10 +392,13 @@ namespace Fly01.Financeiro.BL
                     if (contaBancariaId != cnabToEdit.FirstOrDefault().ContaBancariaCedenteId)
                     {
                         cnab.Id = cnabToEdit.FirstOrDefault().Id;
-                        base.Update(cnab);
+                        Update(cnab);
                     }
                 }
             }
+
+
+
         }
     }
 }

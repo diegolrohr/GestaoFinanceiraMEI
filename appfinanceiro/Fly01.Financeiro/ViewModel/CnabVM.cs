@@ -38,6 +38,9 @@ namespace Fly01.Financeiro.ViewModel
         [JsonProperty("arquivoRemessaId")]
         public Guid? ArquivoRemessaId { get; set; }
 
+        [JsonProperty("pessoaId")]
+        public Guid? PessoaId { get; set; }
+
         [JsonProperty("valorBoleto")]
         public double ValorBoleto { get; set; }
 

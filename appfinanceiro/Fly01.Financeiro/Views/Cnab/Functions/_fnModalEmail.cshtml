@@ -8,7 +8,7 @@
         var formAttr = {
             "class": "cnabFormMail valign-wrapper left col s6 btn btn-narrow valid",
             "id": "btnEmail",
-            "onclick": `return fnAbreModalEnviaPorEmail("${row.contaReceberId}", "${row.contaBancariaId}", "${row.contaReceber_pessoa_email}")`
+            "onclick": `return fnAbreModalEnviaPorEmail("${row.contaReceberId}", "${row.contaBancariaId}", "${row.contaReceber_pessoa_email}", "${row.id}")`
         };
         return createElem("button", formAttr, [inputHiddenId("emailId", row.email), createElem("i", { "class": "material-icons" }, "email")]);
     }
@@ -17,10 +17,30 @@
         return createElement(row).outerHTML;
     }
 
-    function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId, email) {
-        if (email === "") 
+    function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId, email, id) {
+        if (email === "")
             email = "";
-        
+
+        @*debugger;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("VerificarBoletosPessoa", "Cnab")?id=' + id,
+            success: function success(data) {
+                if (data.success) {
+                    if (data.data !== null ) {
+                        $("#mensagem").val(data.data.Mensagem);
+                        $("#assunto").val(data.data.Assunto);
+                        $$$.fn.updateTextFields();
+                    }
+                } else {
+                    $$$.loading.stop();
+                    $$$.toast(data.message, "error");
+                }
+            }
+        });*@
+
+
         var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
         $$$.modal(url);
     }

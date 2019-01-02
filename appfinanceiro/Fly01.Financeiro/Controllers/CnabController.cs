@@ -177,7 +177,7 @@ namespace Fly01.Financeiro.Controllers
 
         public ContentResult ListBoletos(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todas os boletos";
+            var buttonLabel = "Mostrar todos os boletos";
             var buttonOnClick = "fnRemoveFilter";
 
             if (Request.QueryString["action"] == "GridLoadNoFilter")

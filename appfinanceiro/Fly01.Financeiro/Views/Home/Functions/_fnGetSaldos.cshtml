@@ -3,8 +3,9 @@
         $("#" + elName).loading(lock ? "start" : "stop");
     }
 
-    function getSaldos(dataFinal) {
+    function getSaldos(dataFinal, dataInicial) {
         var final = isValidDate(dataFinal.toString()) ? dataFinal : formatDate(dataFinal);
+       // var inicial = isValidDate(dataInicial.toString()) ? dataInicial : formatDate(dataInicial);
 
         lockSaldos("fly01cardSA", true);
         lockSaldos("fly01cardCP", true);

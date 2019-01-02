@@ -25,7 +25,7 @@ namespace Fly01.Financeiro.Controllers
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "dataFinal", dataFinal }
+                    { "dataFinal", dataFinal },
                 };
 
                 var response = RestHelper.ExecuteGetRequest<ResponseFluxoCaixaSaldoVM>("fluxocaixa/saldos", queryString);

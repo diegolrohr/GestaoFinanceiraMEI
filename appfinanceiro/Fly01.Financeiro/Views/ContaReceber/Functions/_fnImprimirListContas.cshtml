@@ -70,7 +70,7 @@
         }
         else {
             if (dataInicial === "" && dataFinal === "") {
-                var url = "@Url.Action("ImprimirListContas", "ContaPagar")?tipoStatus=" + $("#statusContaBancaria").val();
+                var url = "@Url.Action("ImprimirListContas", "ContaReceber")?tipoStatus=" + $("#statusContaBancaria").val();
             } else {
                 var url = "@Url.Action("ImprimirListContas", "ContaReceber")?queryStringOdata=" + queryStringOdata +
                     ((($("#dataInicial").val() !==undefined || dateParam !== "") ?

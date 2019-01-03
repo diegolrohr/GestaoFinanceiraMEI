@@ -34,6 +34,7 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Servico>("servico");
             builder.EntitySet<UnidadeMedida>("unidademedida");
             builder.EntitySet<Iss>("iss");
+            builder.EntitySet<Arquivo>("arquivo");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

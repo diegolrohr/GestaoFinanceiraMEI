@@ -86,6 +86,9 @@ namespace Fly01.OrdemServico.BL
         private ISSBL issBL;
         public ISSBL ISSBL => issBL ?? (issBL = new ISSBL(Context));
 
+        private ArquivoBL arquivoBL;
+        public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL, ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
+
         #endregion
     }
 }

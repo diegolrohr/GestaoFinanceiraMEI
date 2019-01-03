@@ -234,6 +234,10 @@
     <Content Include="Views\Responsavel\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnNovaOS.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Produto\ImportarProduto.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

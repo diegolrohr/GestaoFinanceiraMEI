@@ -60,7 +60,7 @@ namespace Fly01.OrdemServico.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao'");
             queryString.AddParam("$select", "id,descricao,codigoProduto,codigoBarras,valorVenda,saldoProduto");
             queryString.AddParam("$orderby", "descricao");
 

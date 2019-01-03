@@ -49,6 +49,7 @@ namespace Fly01.Core.Presentation.Controllers
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
             customFilters.AddParam("$select", SelectProperties);
+            customFilters.AddParam("$filter", $"objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao'");
 
             return customFilters;
         }
@@ -341,8 +342,17 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
+            try
+            {
+                var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
+                return JsonResponseStatus.GetJson(arquivoVM);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         public virtual ActionResult ImportarProduto()

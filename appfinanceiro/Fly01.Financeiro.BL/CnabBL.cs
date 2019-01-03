@@ -113,7 +113,6 @@ namespace Fly01.Financeiro.BL
         {
             if (Id != Guid.Empty)
             {
-                var t = base.All.Where(x => x.PessoaId == Id).ToList();
                 return base.All.Where(x => x.PessoaId == Id).ToList();
             }
 

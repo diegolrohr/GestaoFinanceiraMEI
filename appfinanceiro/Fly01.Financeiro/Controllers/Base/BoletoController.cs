@@ -149,27 +149,38 @@ namespace Fly01.Financeiro.Controllers.Base
             return boletos.Data;
         }
 
-        //[OperationRole(NotApply = true)]
-        //[HttpGet]
-        //public JsonResult VerificarBoletosPessoa(string id)
-        //{
-        //    var guids = new List<Guid>
-        //    {
-        //        new Guid(id)
-        //    };
-
-        //    var cnab = GetCnab(guids);
-        //    var idPessoa = cnab.FirstOrDefault().PessoaId;
-        //    var queryString = new Dictionary<string, string>
-        //        {
-        //            { "IdPessoa", idPessoa.ToString()},
-        //            { "pageSize", "10"}
-        //        };
-
-        //    var restResponse = RestHelper.ExecuteGetRequest<List<CnabVM>>("cnab", queryString);
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public JsonResult VerificarBoletosPessoa(string id)
+        {
+            var guids = new List<Guid> { new Guid(id) };
             
-        //    return null;
-        //}
+            try
+            {
+                var cnab = GetCnab(guids);
+                var idPessoa = cnab.FirstOrDefault().PessoaId;
+                var restResponse = new List<CnabVM>();
+
+                if (idPessoa != null )
+                {
+                    var queryString = new Dictionary<string, string>
+                    {
+                        { "IdPessoa", idPessoa.ToString()},
+                        { "pageSize", "10"}
+                    };
+
+                    restResponse = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString).Data;
+                }
+
+                return Json(new { success = true, data = restResponse ?? null }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message.Replace("\r\n", " "));
+            }
+
+        }
 
         protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave)
         {

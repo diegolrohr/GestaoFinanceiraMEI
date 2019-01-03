@@ -47,6 +47,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArquivoBL.cs" />
     <Compile Include="Base\OrdemServicoItemBaseBL.cs" />
     <Compile Include="CestBL.cs" />
     <Compile Include="DashboardBL.cs" />

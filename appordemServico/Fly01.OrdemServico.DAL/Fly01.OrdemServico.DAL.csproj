@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201812271222482_CreateImageProduto.Designer.cs">
       <DependentUpon>201812271222482_CreateImageProduto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901031228364_CreateArquivoOS.cs" />
+    <Compile Include="Migrations\201901031228364_CreateArquivoOS.Designer.cs">
+      <DependentUpon>201901031228364_CreateArquivoOS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -237,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812271222482_CreateImageProduto.resx">
       <DependentUpon>201812271222482_CreateImageProduto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901031228364_CreateArquivoOS.resx">
+      <DependentUpon>201901031228364_CreateArquivoOS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

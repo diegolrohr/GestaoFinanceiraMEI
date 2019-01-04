@@ -1,8 +1,9 @@
 ﻿<script>
     function fnFormReadyModal() {
-        $("#ids").val($$$._.dtBoletos.selected);
+        if ($("#ids").val() === "") {
+            $("#ids").val($$$._.dtBoletos.selected);
+        }
         $$$._.dtBoletos.selected = [];
-
         $.ajax({
             type: "GET",
             dataType: "json", 

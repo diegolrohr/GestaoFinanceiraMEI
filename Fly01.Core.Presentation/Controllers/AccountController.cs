@@ -8,49 +8,10 @@ using System.Web.Security;
 using System.Web.Configuration;
 using System.Collections.Generic;
 using Fly01.Core.Presentation.SSO;
-using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    public class UserDataCookieVM
-    {
-        public string Fly01Url { get; set; }
-        public string UserName { get; set; }
-        public string Name { get; set; }
-        public string Company { get; set; }
-        public string Branch { get; set; }
-        public bool RememberMe { get; set; }
-    }
-
-    public static class HttpResponseBaseExtensions
-    {
-        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
-        {
-            /// In order to pickup the settings from config, we create a default cookie and use its values to create a 
-            /// new one.
-            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
-
-            var ticket = FormsAuthentication.Decrypt(cookie.Value);
-
-            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
-                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
-            var encTicket = FormsAuthentication.Encrypt(newTicket);
-
-            var isLocalhost = AppDefaults.UrlGateway.Contains("localhost");
-
-            cookie.Domain = !isLocalhost
-                ? AppDefaults.UrlGateway.Replace("http://gateway", "")
-                : ".bemacash.com.br";
-            /// Use existing cookie. Could create new one but would have to copy settings over...
-            cookie.Value = encTicket;
-
-            responseBase.Cookies.Add(cookie);
-
-            return encTicket.Length;
-        }
-    }
-
     [AllowAnonymous]
     public abstract class AccountController : Controller
     {

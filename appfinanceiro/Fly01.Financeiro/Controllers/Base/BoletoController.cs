@@ -170,6 +170,10 @@ namespace Fly01.Financeiro.Controllers.Base
                     };
 
                     restResponse = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString).Data;
+
+                    if (restResponse.Count == 1)
+                        restResponse = null;
+                    
                 }
 
                 return Json(new { success = true, data = restResponse ?? null }, JsonRequestBehavior.AllowGet);

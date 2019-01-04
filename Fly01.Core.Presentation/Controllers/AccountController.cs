@@ -17,11 +17,6 @@ namespace Fly01.Core.Presentation.Controllers
     {
         public ActionResult Login(string returnUrl, string email = "")
         {
-            //if (HttpContext.User.Identity.IsAuthenticated)
-            //    return RedirectToAction("Index", "Home");
-            //ViewBag.LoginUrl = AppDefaults.UrlLoginSSO;
-            //return View();
-
             return View("LoginSSO", new SSOGatewayRequest()
             {
                 AssertionUrl = Url.Action("Assertion", "Account", null, Request.Url.Scheme),

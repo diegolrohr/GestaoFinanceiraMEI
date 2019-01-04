@@ -21,35 +21,42 @@
     function fnAbreModalEnviaPorEmail(contaReceberId, contaBancariaId, email, id) {
         if (email === "")
             email = "";
+        
+        if (id !== "undefined") {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '@Url.Action("VerificarBoletosPessoa", "Cnab")?id=' + id,
+                success: function success(data) {
+                    boletosEmail = data.data;
+                    if (data.success) {
+                        if (data.data !== null) {
+                            if (data.data.length > 0)
+                                $$$.confirm("Confirmar envio de múltiplos boletos ", "Existe mais de um boleto para este cliente. Deseja enviar todos?", "fnConfirmEnvioBoletos('" + email + "', '" + contaBancariaId + "')");
+                            else {
+                                var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
+                                $$$.modal(url);
+                            }
+                        } else {
+                            var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
+                            $$$.modal(url);
+                        }
 
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: '@Url.Action("VerificarBoletosPessoa", "Cnab")?id=' + id,
-            success: function success(data) {
-                boletosEmail = data.data;
-                if (data.success) {
-                    if (data.data.length > 0) 
-                        $$$.confirm("Confirmar envio de múltiplos boletos ", "Existe mais de um boleto para este cliente. Deseja enviar todos?", "fnConfirmEnvioBoletos('" + email + "', '" + contaBancariaId + "')");
-                    else {
+                    } else {
                         var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
                         $$$.modal(url);
                     }
-                    
-                } else {
-                    var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
-                    $$$.modal(url);
+
+                    // $("a.modal-action.modal-close.btn")[0].text = "não enviar todos";
+                    //$("a.modal-action.modal-close.btn")[1].text = "enviar";
+
+                    $("a.modal-action.modal-close.btn-secondary").click(function () {
+                        var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
+                        $$$.modal(url);
+                    });
                 }
-
-               // $("a.modal-action.modal-close.btn")[0].text = "não enviar todos";
-                //$("a.modal-action.modal-close.btn")[1].text = "enviar";
-
-                $("a.modal-action.modal-close.btn-secondary").click(function () {
-                    var url = "@Url.Action("ModalConfigEmail", "Cnab")?email=" + email + "&contaReceberId=" + contaReceberId + "&contaBancariaId=" + contaBancariaId;
-                    $$$.modal(url);
-                });
-            }
-        });
+            });
+        } 
     }
 
     function fnConfirmEnvioBoletos(email, contaBancariaId) {

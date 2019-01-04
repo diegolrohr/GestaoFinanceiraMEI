@@ -342,6 +342,7 @@
     <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Account\LoginSSO.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

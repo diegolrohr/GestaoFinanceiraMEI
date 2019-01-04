@@ -205,6 +205,7 @@
     <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\Account\LoginSSO.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

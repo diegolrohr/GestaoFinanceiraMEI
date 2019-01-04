@@ -1,21 +1,116 @@
-﻿using Fly01.Core.Config;
+﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using Fly01.Core.Rest;
+using Fly01.Core.Config;
+using Fly01.Core.Helpers;
 using System.Web.Security;
+using System.Web.Configuration;
+using System.Collections.Generic;
+using Fly01.Core.Presentation.SSO;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Newtonsoft.Json;
 
 namespace Fly01.Core.Presentation.Controllers
 {
+    public class UserDataCookieVM
+    {
+        public string Fly01Url { get; set; }
+        public string UserName { get; set; }
+        public string Name { get; set; }
+        public string Company { get; set; }
+        public string Branch { get; set; }
+        public bool RememberMe { get; set; }
+    }
+
+    public static class HttpResponseBaseExtensions
+    {
+        public static int SetAuthCookie<T>(this HttpResponseBase responseBase, string name, bool rememberMe, T userData)
+        {
+            /// In order to pickup the settings from config, we create a default cookie and use its values to create a 
+            /// new one.
+            var cookie = FormsAuthentication.GetAuthCookie(name, rememberMe);
+
+            var ticket = FormsAuthentication.Decrypt(cookie.Value);
+
+            var newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration,
+                ticket.IsPersistent, JsonConvert.SerializeObject(userData), ticket.CookiePath);
+            var encTicket = FormsAuthentication.Encrypt(newTicket);
+
+            var isLocalhost = AppDefaults.UrlGateway.Contains("localhost");
+
+            cookie.Domain = !isLocalhost
+                ? AppDefaults.UrlGateway.Replace("http://gateway", "")
+                : ".bemacash.com.br";
+            /// Use existing cookie. Could create new one but would have to copy settings over...
+            cookie.Value = encTicket;
+
+            responseBase.Cookies.Add(cookie);
+
+            return encTicket.Length;
+        }
+    }
+
+    [AllowAnonymous]
     public abstract class AccountController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Login(string returnUrl, string email = "")
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-            ViewBag.LoginUrl = AppDefaults.UrlLoginSSO;
-            return View();
+            //if (HttpContext.User.Identity.IsAuthenticated)
+            //    return RedirectToAction("Index", "Home");
+            //ViewBag.LoginUrl = AppDefaults.UrlLoginSSO;
+            //return View();
+
+            return View("LoginSSO", new SSOGatewayRequest()
+            {
+                AssertionUrl = Url.Action("Assertion", "Account", null, Request.Url.Scheme),
+                AppId = WebConfigurationManager.AppSettings["GatewayUserName"],
+                AppPassword = WebConfigurationManager.AppSettings["GatewayPassword"],
+                SSOUrl = AppDefaults.UrlLoginSSO
+            });
         }
-       
+
+        [HttpPost]
+        public ActionResult Assertion()
+        {
+            var assertion = new AssertionResponseVM(Request.Form);
+
+            var dataPermission = RestUtils.ExecuteGetRequest<ResponseDataVM<DataUserPermissionVM>>(AppDefaults.UrlManager, "user/permissions", RestUtils.GetAuthHeader(assertion.TokenType + " " + assertion.AccessToken), new Dictionary<string, string>()
+            {
+                { "platformUrl", assertion.PlatformUrl },
+                { "email", assertion.UserEmail },
+            });
+
+            var tokenDataVM = new TokenDataVM
+            {
+                AccessToken = assertion.AccessToken,
+                ExpiresIn = assertion.ExpiresIn,
+                TokenType = assertion.TokenType,
+                Username = assertion.Username
+            };
+
+            UserDataVM userDataVM = new UserDataVM
+            {
+                PlatformUser = assertion.UserEmail,
+                PlatformUrl = assertion.PlatformUrl,
+                TokenData = tokenDataVM,
+                Permissions = dataPermission.Data.Items
+            };
+
+            SessionManager.Current.UserData = userDataVM;
+
+            HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+            mpnData.Values["UserName"] = SessionManager.Current.UserData.PlatformUser;
+            mpnData.Values["UserEmail"] = assertion.UserEmail;
+            mpnData.Values["TrialUntil"] = assertion.Trial ? assertion.LicenseExpiration : "";
+
+            Response.Cookies.Add(mpnData);
+
+            FormsAuthentication.SetAuthCookie(SessionManager.Current.UserData.PlatformUser, false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult LogOff()
         {
             if (HttpContext.Session != null)
@@ -29,7 +124,6 @@ namespace Fly01.Core.Presentation.Controllers
             return httpContext.User.Identity.IsAuthenticated && SessionManager.Current.UserData.IsValidUserData();
         }
 
-        [AllowAnonymous]
         public JsonResult ValidateTokenJson()
         {
             return Json(ValidateToken(System.Web.HttpContext.Current), JsonRequestBehavior.AllowGet);

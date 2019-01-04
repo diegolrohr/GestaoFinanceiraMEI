@@ -37,7 +37,11 @@ namespace Fly01.Core.Presentation.Application
 
         private static bool ReadCookieAndSetSession(string token)
         {
+            //var email = SessionManager.Current.UserData.PlatformUser;
+            //var fly01Url = SessionManager.Current.UserData.PlatformUrl;
+
             var formsAuthenticationTicket = FormsAuthentication.Decrypt(token);
+
             if ((formsAuthenticationTicket != null) && (formsAuthenticationTicket.UserData != null))
             {
                 dynamic cookieUserData = Json.Decode(formsAuthenticationTicket.UserData);
@@ -54,14 +58,12 @@ namespace Fly01.Core.Presentation.Application
 
                 if (!SessionManager.Current.UserData.IsValidUserData(userData))
                 {
-                    TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(
-                        AppDefaults.UrlGateway, AppDefaults.GatewayUserName,
-                        AppDefaults.GatewayPassword, platformUrl, platformUser);
+                    TokenDataVM tokenData = RestHelper.ExecuteGetAuthToken(AppDefaults.UrlGateway, AppDefaults.GatewayUserName, AppDefaults.GatewayPassword, platformUrl, platformUser);
 
                     userData.TokenData = tokenData;
                     userData.TokenData.Username = cookieUserData.Name;
                     userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
-                    
+
                     SessionManager.Current.UserData = userData;
                     return true;
                 }
@@ -71,46 +73,46 @@ namespace Fly01.Core.Presentation.Application
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
-            if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) &&
-                ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
-            {
-                HttpContext.Current.Session.Clear();
-                HttpContext.Current.Session.Abandon();
-                HttpContext.Current.Session.RemoveAll();
-                FormsAuthentication.SignOut();
+            //if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) && ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
+            //{
+            //    HttpContext.Current.Session.Clear();
+            //    HttpContext.Current.Session.Abandon();
+            //    HttpContext.Current.Session.RemoveAll();
+            //    FormsAuthentication.SignOut();
 
-                if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
-                {
-                    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
-                    Response.End();
-                }
-                else if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                {
-                    FormsAuthentication.RedirectToLoginPage();
-                }
-                else
-                {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
-                    Response.End();
-                }
-            }
-            else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-            {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
-                {
-                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial 
-                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    Response.Cookies.Add(mpnData);
-                }
-            }
+            //    //if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+            //    //{
+            //    //    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
+            //    //    Response.End();
+            //    //}
+            //    if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+            //    {
+            //        FormsAuthentication.RedirectToLoginPage();
+            //    }
+            //    //else
+            //    //{
+            //    //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+            //    //    Response.End();
+            //    //}
+            //}
+            //else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            //if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            //{
+            //if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+            //{
+            //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+            //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+            //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+            //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+            //Response.Cookies.Add(mpnData);
+            //}
+            //}
         }
 
         protected void Application_Start()
         {
             string instrumentationKeyAppInsights = GetInstrumentationKeyAppInsights();
+
             if (!string.IsNullOrWhiteSpace(instrumentationKeyAppInsights))
                 TelemetryConfiguration.Active.InstrumentationKey = instrumentationKeyAppInsights;
 
@@ -118,11 +120,13 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.MashupPassword = ConfigurationManager.AppSettings["MashupPassword"];
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
-            AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
+            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
+            AppDefaults.UrlLoginSSO = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}sso/login";
+            AppDefaults.UrlApiGateway = string.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
             AppDefaults.GatewayUserName = ConfigurationManager.AppSettings["GatewayUserName"];
             AppDefaults.GatewayPassword = ConfigurationManager.AppSettings["GatewayPassword"];
             AppDefaults.GatewayVerificationKeyPassword = ConfigurationManager.AppSettings["GatewayVerificationKeyPassword"];
-            AppDefaults.UrlLoginSSO = ConfigurationManager.AppSettings["UrlLoginSSO"];
             AppDefaults.UrlLogoutSSO = ConfigurationManager.AppSettings["UrlLogoutSSO"];
             AppDefaults.UrlLicenseManager = ConfigurationManager.AppSettings[""];
             AppDefaults.SessionKey = ConfigurationManager.AppSettings["SessionKey"];
@@ -138,49 +142,46 @@ namespace Fly01.Core.Presentation.Application
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            if ((Request.Cookies["ASP.NET_SessionId"] != null) &&
-                (Request.Url.LocalPath.Equals(FormsAuthentication.LoginUrl,
-                    StringComparison.InvariantCultureIgnoreCase)))
-                return;
-            if (FormsAuthentication.CookiesSupported &&
-                Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-            {
-                if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
-                {
-                    HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-                    mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-                    mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-                    mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
-                        ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-                    Response.Cookies.Add(mpnData);
-                }
-            }
-            else
-            {
-                HttpContext.Current.Session.Clear();
-                HttpContext.Current.Session.Abandon();
-                HttpContext.Current.Session.RemoveAll();
-                FormsAuthentication.SignOut();
+            //if ((Request.Cookies["ASP.NET_SessionId"] != null) && (Request.Url.LocalPath.Equals(FormsAuthentication.LoginUrl, StringComparison.InvariantCultureIgnoreCase)))
+            //    return;
 
-                if (Request.Headers["X-Requested-With"] != null &&
-                        Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-                {
-                    FormsAuthentication.RedirectToLoginPage();
-                }
-                else if (Request.AppRelativeCurrentExecutionFilePath.Equals("~/") && Request.QueryString["t"] != null)
-                {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}?t={Request.QueryString["t"]}';</script>");
-                    Response.End();
-                }
-                else
-                {
-                    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
-                    Response.End();
-                }
-            }
+            //if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            //{
+            //    if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+            //    {
+            //        HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+            //        mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+            //        mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+            //        mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial
+            //            ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+            //        Response.Cookies.Add(mpnData);
+            //    }
+            //}
+            //else
+            //{
+            //    HttpContext.Current.Session.Clear();
+            //    HttpContext.Current.Session.Abandon();
+            //    HttpContext.Current.Session.RemoveAll();
+            //    FormsAuthentication.SignOut();
+
+            //    if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+            //    {
+            //        FormsAuthentication.RedirectToLoginPage();
+            //    }
+            //    //else if (Request.AppRelativeCurrentExecutionFilePath.Equals("~/") && Request.QueryString["t"] != null)
+            //    //{
+            //    //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}?t={Request.QueryString["t"]}';</script>");
+            //    //    Response.End();
+            //    //}
+            //    //else
+            //    //{
+            //    //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+            //    //    Response.End();
+            //    //}
+            //}
         }
 
-        protected void Session_End(object sender, EventArgs e) 
-            => FormsAuthentication.SignOut();
+        //protected void Session_End(object sender, EventArgs e)
+        //    => FormsAuthentication.SignOut();
     }
 }

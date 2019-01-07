@@ -6,12 +6,11 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class KitItem : PlataformaBase
     {
-        
         public Guid KitId { get; set; }
 
-        public Guid ProdutoId { get; set; }
+        public Guid? ProdutoId { get; set; }
 
-        public Guid ServicoId { get; set; }
+        public Guid? ServicoId { get; set; }
 
         public virtual Kit Kit { get; set; }
 

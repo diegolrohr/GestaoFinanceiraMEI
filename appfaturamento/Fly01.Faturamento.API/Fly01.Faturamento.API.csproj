@@ -67,7 +67,9 @@
     <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCartaCorrecaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCartaCorrecaoAtualizaStatusController.cs" />
+    <Compile Include="Controllers\Api\KitController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalInutilizadaAtualizaStatusController.cs" />
+    <Compile Include="Controllers\Api\KitItemController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalCancelarController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController.cs" />

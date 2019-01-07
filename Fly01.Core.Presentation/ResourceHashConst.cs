@@ -60,6 +60,7 @@
         public const string FaturamentoCadastrosFormasPagamento = "F01B50F5-E906-49E4-BBC5-0893DA4AA207";
         public const string FaturamentoCadastrosCategoria = "13D0BD8E-06FA-4CC2-BB1B-25AC17D24363";
         public const string FaturamentoCadastrosSubstituicaoTributaria = "25503866-3DFC-445A-A13D-677798AD6E89";
+        public const string FaturamentoCadastrosKit = "0b083814-ad86-4fc0-a0f4-8a903c2813a7";
 
         public const string FaturamentoConfiguracoes = "0A6B803C-215C-4CAD-89AF-F9AD96D87EBB";
         public const string FaturamentoConfiguracoesCertificadoDigital = "A4EF868D-E45F-48DB-8483-6EB222CC685B";

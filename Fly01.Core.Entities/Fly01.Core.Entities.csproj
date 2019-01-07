@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\Kit.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />

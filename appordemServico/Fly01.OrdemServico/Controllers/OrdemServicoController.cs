@@ -222,10 +222,33 @@ namespace Fly01.OrdemServico.Controllers
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
+            cfg.Content.Add(new TabsUI
+            {
+                Id = "fly01tabs",
+                Tabs = new List<TabsUIItem>()
+                {
+                    new TabsUIItem()
+                    {
+                        Id = "fly01div",
+                        Title = "Listagem"
+                    },
+                    new TabsUIItem()
+                    {
+                        Id = "cal1",
+                        Title = "Agenda"
+                    }
+                }
+            });
+
+            cfg.Content.Add(new DivUI
+            {
+                Id = "fly01div"
+            });
 
             var cfgForm = new FormUI
             {
                 Id = "fly01frm",
+                Parent = "fly01div",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
                 Elements = new List<BaseUI>()
@@ -263,10 +286,10 @@ namespace Fly01.OrdemServico.Controllers
                 cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
-            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
+                Parent = "fly01div",
                 UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -302,6 +325,18 @@ namespace Fly01.OrdemServico.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 3 });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
+
+            cfg.Content.Add(cfgForm);
+
+            cfg.Content.Add(new CalendarUI
+            {
+                Id = "cal1",
+                Class = "col s12",
+
+            });
+
+
+
 
             cfg.Content.Add(config);
 

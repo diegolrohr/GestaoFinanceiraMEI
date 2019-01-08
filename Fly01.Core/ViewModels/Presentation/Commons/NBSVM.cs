@@ -1,11 +1,10 @@
-﻿using Fly01.Core.ViewModels.Presentation.Commons;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Faturamento.ViewModel
+namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
-    public class ISSVM : DomainBaseVM
+    public class NBSVM : DomainBaseVM
     {
         [JsonProperty("codigo")]
         public string Codigo { get; set; }

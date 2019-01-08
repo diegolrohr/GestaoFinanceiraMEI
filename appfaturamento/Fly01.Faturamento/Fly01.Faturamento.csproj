@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
+    <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\NFeController.cs" />
     <Compile Include="Controllers\NFeProdutoController.cs" />
     <Compile Include="Controllers\NFSeController.cs" />
@@ -117,8 +118,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ISSVM.cs" />
-    <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />
     <Compile Include="ViewModel\NFSeServicoVM.cs" />
@@ -131,7 +130,6 @@
     <Compile Include="ViewModel\OrdemVendaServicoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
-    <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -353,6 +351,11 @@
     <Content Include="Views\OrdemVenda\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscal\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionaProduto.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionaServico.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

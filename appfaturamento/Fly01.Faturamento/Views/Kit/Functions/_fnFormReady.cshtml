@@ -2,12 +2,13 @@
     @Html.Partial("Functions/_fnMain");
 
     function kitItensShow() {
-        $('#dtConfig').show();
+        $('#dtKitItens').show();
         $('#fly01frmKitItens').show();
+        $('#fly01frmKitItens #kitId').val($('#fly01frmKit #id').val());
     }
 
     function fndtHide() {
-        $('#dtConfig').hide();
+        $('#dtKitItens').hide();
         $('#fly01frmKitItens').hide();        
     }
 
@@ -60,17 +61,6 @@
         btnSalvar.html(buttonCancel.html());
     }
 
-    //function fnkitFechado() {
-    //    if ($('input#inventarioStatus').val() !== "Finalizado")
-    //        return;
-
-    //    $('form#fly01frmInventario').find('input').attr('disabled', 'disabled');
-
-    //    changeSaveButton();
-
-    //    $('ul.fly01-buttons').children().slice(1).hide();
-    //};
-
     function isCreate() {
         var idSelector = "input#id";
         var id = $(idSelector).val();
@@ -88,8 +78,7 @@
             fndtHide();
         } else {
             kitItensShow();
-            $$$._.dtConfig.refresh();
-            //fnkitFechado();
+            $$$._.dtKitItens.refresh();
         }
     }
 

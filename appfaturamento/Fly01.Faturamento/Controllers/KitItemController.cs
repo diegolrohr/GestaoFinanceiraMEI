@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Fly01.Core;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -11,7 +14,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public KitItemController()
         {
-            ExpandProperties = "produto($select=descricao,codigoProduto,valorCusto,saldoProduto,unidadeMedidaId),produto($expand=unidadeMedida)";
+            ExpandProperties = "produto($select=descricao),servico($select=descricao)";
         }
 
         public override Func<KitItemVM, object> GetDisplayData()
@@ -19,7 +22,12 @@ namespace Fly01.Faturamento.Controllers
             return x => new
             {
                 id = x.Id,
-                produtoId = x.ProdutoId,
+                produtoServicoDescricao = x.ProdutoServicoDescricao,
+                quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
+                tipoItem = x.TipoItem,
+                tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), x.TipoItem),
+                tipoItemCssClass = EnumHelper.GetCSS(typeof(TipoOrdemVenda), x.TipoItem),
+                tipoItemValue = EnumHelper.GetValue(typeof(TipoOrdemVenda), x.TipoItem),
             };
         }
 

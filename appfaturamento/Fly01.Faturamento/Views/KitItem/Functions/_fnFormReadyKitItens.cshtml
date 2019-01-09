@@ -1,7 +1,4 @@
 ﻿<script>
-    function afterInsert() {
-        $$$._.dtInventarioItem.refresh();
-    }
 
     function fnOverrideSubmitItem() {
         var myForm = "form#fly01frmKitItens";
@@ -14,31 +11,25 @@
                 return false;
 
             e.preventDefault();
-
             $$$.loading.start();
             
-            var action = "@Url.Action("Create", "KitItem")";
+            //var formData = JSON.parse('{}');
+            var formData = that.serializeObject();
             
-            var formData = JSON.parse('{}');
-
-            formData.produtoId = $('#produtoId').val();
-            formData.inventarioId = $('input#id').val();
-
             $.ajax({
                 type: that.attr("method"),
                 contentType: 'application/json',
                 dataType: 'json',
-                url: action,
+                url: that.attr("action"),
                 data: JSON.stringify(formData),
                 success: function (data) {
                     if (data.success) {
-                        $$$.toast(data.message, "success");
-                        afterInsert();
+                        //$$$.toast(data.message, "success");
+                        $$$._.dtKitItens.refresh();
                     } else {
                         $$$.loading.stop();
                         $$$.fn.submitErrorHandler(null, data.message);
                     }
-
                     $$$.loading.stop();
                 },
                 error: function error(jXHR, textStatus) {
@@ -49,20 +40,8 @@
         });
     }
 
-    function fnInventarioFechadoItem() {
-        if ($('input#inventarioStatus').val() !== "Finalizado")
-            return;
-
-        $('form#fly01frmInventarioItem').children().children('input').attr("disabled", "disabled");
-        
-        $('table#dtInventarioItem').children().slice(1).on('change', function () {
-            $('form.saldoInventariadoForm').children().attr("disabled", "disabled");
-        });
-    }
-
-    function fnFormReadyKitProduto() {
+    function fnFormReadyKitItens() {
         fnOverrideSubmitItem();
-        fnInventarioFechadoItem();
-    }
 
+    }
 </script>

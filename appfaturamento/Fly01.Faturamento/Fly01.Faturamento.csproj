@@ -353,9 +353,9 @@
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
-    <Content Include="Views\KitItem\Functions\_fnAdicionaProduto.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
     <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
-    <Content Include="Views\KitItem\Functions\_fnAdicionaServico.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -78,57 +78,70 @@ namespace Fly01.Faturamento.Controllers
 
             #region kit Itens
 
-            string nomeCtrl = @"InventarioItem";
             var formConfigKitItens = new FormUI
             {
                 Id = "fly01frmKitItens",
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create", "KitItem")
+                },
                 ReadyFn = "fnFormReadyKitItens",
-                UrlFunctions = Url.Action("Functions", nomeCtrl, null, Request.Url.Scheme) + "?fns=",
+                UrlFunctions = Url.Action("Functions", "KitItem", null, Request.Url.Scheme) + "?fns=",
             };
 
-            formConfigKitItens.Elements.Add(new InputHiddenUI { Id = "kitId", Name = "kitId" });
+            formConfigKitItens.Elements.Add(new InputHiddenUI { Id = "kitId" });
+            formConfigKitItens.Elements.Add(new InputHiddenUI { Id = "tipoItem" });
+            formConfigKitItens.Elements.Add(new InputHiddenUI { Id = "produtoId" });
+            formConfigKitItens.Elements.Add(new InputHiddenUI { Id = "servicoId" });
+
+            formConfigKitItens.Elements.Add(new LabelSetUI { Label = "Adicionar Produtos e Serviços"});
 
             formConfigKitItens.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "IdItens",
-                Class = "col s8",
+                Id = "produtoServicoId",
+                Class = "col s12 m9",
                 Label = "Produto/ Serviço",
                 Required = true,
-                DataUrl = @Url.Action("Produto", "AutoComplete"),
-                LabelId = "produto_servicos",
-            }, ResourceHashConst.EstoqueCadastrosProdutos));
+                DataUrl = @Url.Action("ProdutoServico", "AutoComplete"),
+                LabelId = "produtoServicoDescricao",
+                DomEvents = new List<DomEventUI>() {
+                    new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnProdutoServicoSelected" }
+                }
+            }, ResourceHashConst.FaturamentoCadastrosKit));
 
             formConfigKitItens.Elements.Add(new InputFloatUI
             {
-                Id = "quantidadeItens",
-                Class = "col s2",
+                Id = "quantidade",
+                Class = "col s12 m2",
                 Label = "Quantidade",
+                Value = "1"
             });
 
             formConfigKitItens.Elements.Add(new ButtonUI
             {
                 Id = "btnAdicionar",
-                Class = "col s5 m2",
+                Class = "col s12 m1",
                 Value = "+",
                 DomEvents = new List<DomEventUI>() {
-                    new DomEventUI() { DomEvent = "click", Function = "fnAdicionaProduto" }
+                    new DomEventUI() { DomEvent = "click", Function = "fnAdicionarItem" }
                 }
             });
+            formConfigKitItens.Elements.Add(new DivElementUI { Id = "divKitItensGrid", Class = "col s12 visible" });
 
             #endregion
-
 
             #region DataTable Produtos / Serviços
 
             var dtConfig = new DataTableUI
             {
-                Id = "dtConfig",
-                UrlGridLoad = Url.Action("GridLoadKitItem", "KitItem"),
+                Id = "dtKitItens",
+                UrlGridLoad = Url.Action("GridLoad", "KitItem"),
                 UrlFunctions = Url.Action("Functions", "kitItem", null, Request.Url.Scheme) + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter {Id = "id", Required = true }
-                }
+                },
+                Parent = "divKitItensGridField"
             };
 
             dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -136,11 +149,11 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 1, Searchable = false, Orderable = false });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "tipo", DisplayName = "Quant.", Priority = 4, Searchable = false, Orderable = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "produtoServicoDescricao", DisplayName = "Descrição", Priority = 1, Searchable = false, Orderable = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Searchable = false, Orderable = false });
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "tipoItemDescription", DisplayName = "Tipo", Priority = 3, Searchable = false, Orderable = false });
 
             #endregion
-
 
             cfg.Content.Add(formConfigKit);
             cfg.Content.Add(formConfigKitItens);

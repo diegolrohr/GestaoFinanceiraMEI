@@ -31,9 +31,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if(dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
             
-            //if ((dataInicial > DateTime.Now.Date) || (dataFinal > DateTime.Now.Date))
-            //    return BadRequest("O período informado não pode ser superior ao dia de hoje.");
-            
             if ((dataFinal - dataInicial).TotalDays > 180)
                 return BadRequest("O período informado não deve ultrapassar 180 dias");
 
@@ -50,9 +47,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             //#3 (Grid com o detalhamento de contas do extrato)
             if (dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
-
-            //if ((dataInicial > DateTime.Now.Date) || (dataFinal > DateTime.Now.Date))
-            //    return BadRequest("O período informado não pode ser superior ao dia de hoje.");
 
             if ((dataFinal - dataInicial).TotalDays > 180)
                 return BadRequest("O período informado não deve ultrapassar 180 dias");
@@ -77,9 +71,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 //#4 (Grid com o detalhamento de contas do extrato para impressão)
                 if (dataInicial > dataFinal)
                     return BadRequest("Data inicial não pode ser superior a data final.");
-
-                //if ((dataInicial > DateTime.Now.Date) || (dataFinal > DateTime.Now.Date))
-                //    return BadRequest("O período informado não pode ser superior ao dia de hoje.");
 
                 if ((dataFinal - dataInicial).TotalDays > 180)
                     return BadRequest("O período informado não deve ultrapassar 180 dias");

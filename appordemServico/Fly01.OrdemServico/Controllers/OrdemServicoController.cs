@@ -279,6 +279,7 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },

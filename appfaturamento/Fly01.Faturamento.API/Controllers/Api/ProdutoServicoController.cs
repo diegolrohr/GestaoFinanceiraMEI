@@ -16,52 +16,42 @@ namespace Fly01.Faturamento.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var query = unitOfWork.ProdutoBL.All.AsNoTracking().Where(x =>
-                          (
-                              ((x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
+                var produtos = unitOfWork.ProdutoBL.All;
+                var servicos = unitOfWork.ServicoBL.All;
+
+                if (!string.IsNullOrWhiteSpace(filtro))
+                {
+                    produtos = produtos.Where(x =>
+                        (
+                              (x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
                               (x.CodigoProduto.ToUpper().Contains(filtro.ToUpper())) ||
-                              (x.CodigoBarras.ToUpper().Contains(filtro.ToUpper())))
-                              ||
-                                string.IsNullOrEmpty(filtro)
+                              (x.CodigoBarras.ToUpper().Contains(filtro.ToUpper()))
                           ) &&
                           (
                               (x.ObjetoDeManutencao == ObjetoDeManutencao.Nao)
                           )
-                      )
-                      .OrderBy(x => x.Descricao).Take(20).ToString();
+                      );
 
-                var produtos =
-                      unitOfWork.ProdutoBL.All
-                      .Where(x =>
-                          (
-                              (x.Descricao.ToUpper().IndexOf(filtro.ToUpper()) > -1) ||
-                              (x.CodigoProduto.ToUpper().IndexOf(filtro.ToUpper()) > 0) ||
-                              (x.CodigoBarras.ToUpper().IndexOf(filtro.ToUpper()) > 0)
-                          ) &&
-                          (
-                              (x.ObjetoDeManutencao == ObjetoDeManutencao.Nao)
-                          )
-                      )
-                      .OrderBy(x => x.Descricao)
-                      .Take(20)
-                      .Select(y => new ProdutoServicoVM()
-                       {
-                           TipoItem = TipoItem.Produto,
-                           Id = y.Id,
-                           Descricao = y.Descricao,
-                           Codigo = y.CodigoProduto,
-                           ValorCusto = y.ValorCusto,
-                           ValorVenda = y.ValorVenda
-                       }).ToList();
-
-                var servicos =
-                      unitOfWork.ServicoBL.All.AsNoTracking().Where(x =>
+                    servicos = servicos.Where(x =>
                           (
                               (x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
                               (x.CodigoServico.ToUpper().Contains(filtro.ToUpper()))
                           )
-                      )
-                      .OrderBy(x => x.Descricao)
+                      );
+                }
+
+                var result = produtos.OrderBy(x => x.Descricao).Take(20)
+                      .Select(y => new ProdutoServicoVM()
+                      {
+                          TipoItem = TipoItem.Produto,
+                          Id = y.Id,
+                          Descricao = y.Descricao,
+                          Codigo = y.CodigoProduto,
+                          ValorCusto = y.ValorCusto,
+                          ValorVenda = y.ValorVenda
+                      });
+
+                var resultServicos = servicos.OrderBy(x => x.Descricao)
                       .Take(20)
                       .Select(y => new ProdutoServicoVM()
                       {
@@ -71,9 +61,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
                           Codigo = y.CodigoServico,
                           ValorCusto = y.ValorServico,
                           ValorVenda = y.ValorServico
-                      }).ToList();
+                      });
 
-                var result = produtos.Union(servicos).OrderBy(x => x.Descricao);
+                result = result.Union(resultServicos).OrderBy(x => x.Descricao);
 
                 return Ok(
                     new

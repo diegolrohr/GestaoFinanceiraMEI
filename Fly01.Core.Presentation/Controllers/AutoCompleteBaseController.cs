@@ -328,26 +328,13 @@ namespace Fly01.Core.Presentation.Controllers
             var queryString = new Dictionary<string, string> {
                 { "filtro", term },
             };
-
-            //var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
-            //var queryString = AppDefaults.GetQueryStringDefault();
-
-            //queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and (objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao')");
-            //queryString.AddParam("$select", "id,descricao,codigoProduto,codigoBarras,valorCusto,saldoProduto");
-            //queryString.AddParam("$orderby", "descricao");
-
-            //var filterObjects = from item RestHelper.ExecuteGetRequest<ResultBase<ProdutoVM>>(resourceName, queryString).Data
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoServicoVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,
                                     label = item.Descricao,
-                                    //detail = "Produto",
-                                    //tipoItem = "Produto",
-                                    //tipoItemDescricao = "Produto",
-                                    //produtoId = (item.Id),
-                                    //servicoId = ""
                                     detail = item.TipoItemDescricao,
+                                    tipoItem = item.TipoItem,
                                     tipoItemDescricao = item.TipoItemDescricao,
                                     produtoId = (item.TipoItem == TipoItem.Produto ? item.Id.ToString() : null),
                                     servicoId = (item.TipoItem == TipoItem.Servico ? item.Id.ToString() : null)

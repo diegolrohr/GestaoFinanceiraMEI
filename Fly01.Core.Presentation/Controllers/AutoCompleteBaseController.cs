@@ -4,6 +4,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Collections.Generic;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -317,6 +318,27 @@ namespace Fly01.Core.Presentation.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<GrupoTributarioVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Descricao, detail = "", tipoTributacaoICMS = item.TipoTributacaoICMS };
+
+            return GetJson(filterObjects);
+        }
+
+        public virtual JsonResult ProdutoServico(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoServicoVM));
+            var queryString = new Dictionary<string, string> {
+                { "filtro", term },
+            };
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoServicoVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Descricao,
+                                    detail = item.TipoItemDescricao,
+                                    tipoItemDescricao = item.TipoItemDescricao,
+                                    produtoId = (item.TipoItem == TipoItem.Produto ? item.Id.ToString() : null),
+                                    servicoId = (item.TipoItem == TipoItem.Servico ? item.Id.ToString() : null)
+                                };
 
             return GetJson(filterObjects);
         }

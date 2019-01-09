@@ -352,7 +352,7 @@
     <Content Include="Views\NotaFiscal\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
-    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnAdicionaProduto.cshtml" />
     <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnAdicionaServico.cshtml" />

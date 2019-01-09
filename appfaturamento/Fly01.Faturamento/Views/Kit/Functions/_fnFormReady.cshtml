@@ -2,15 +2,13 @@
     @Html.Partial("Functions/_fnMain");
 
     function kitItensShow() {
-        //$('#dtKitItem_wrapper').parent().show();
-        $('#fly01tabs').show();
+        $('#dtConfig').show();
+        $('#fly01frmKitItens').show();
     }
 
-    function kitItensHide() {
-        $('#fly01tabs').hide();
-        $('#fly01frmKitProduto').hide();
-        $('#fly01frmKitServico').hide();
-        //$('#dtKitItem').hide();
+    function fndtHide() {
+        $('#dtConfig').hide();
+        $('#fly01frmKitItens').hide();        
     }
 
     function fnOverrideSubmit() {
@@ -87,10 +85,10 @@
         $('#Field').hide();
         if (isCreate()) {
             fnOverrideSubmit();
-            kitItensHide();
+            fndtHide();
         } else {
             kitItensShow();
-            $$$._.dtKitItem.refresh();
+            $$$._.dtConfig.refresh();
             //fnkitFechado();
         }
     }

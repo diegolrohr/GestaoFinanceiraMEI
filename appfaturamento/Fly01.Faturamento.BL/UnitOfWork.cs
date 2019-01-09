@@ -145,6 +145,12 @@ namespace Fly01.Faturamento.BL
 
         private EnquadramentoLegalIPIBL enquadramentoLegalIPIBL;
         public EnquadramentoLegalIPIBL EnquadramentoLegalIPIBL => enquadramentoLegalIPIBL ?? (enquadramentoLegalIPIBL = new EnquadramentoLegalIPIBL(Context));
+
+        private KitBL kitBL;
+        public KitBL KitBL => kitBL ?? (kitBL = new KitBL(Context));
+
+        private KitItemBL kitItemBL;
+        public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
         #endregion
     }
 }

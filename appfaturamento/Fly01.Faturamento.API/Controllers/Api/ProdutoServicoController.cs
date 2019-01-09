@@ -12,15 +12,17 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [RoutePrefix("produtoservico")]
     public class ProdutoServicoController : ApiBaseController
     {
-        public IHttpActionResult Get(string filtro = " ")
+        public IHttpActionResult Get(string filtro = "")
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
                 var query = unitOfWork.ProdutoBL.All.AsNoTracking().Where(x =>
                           (
-                              (x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
+                              ((x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
                               (x.CodigoProduto.ToUpper().Contains(filtro.ToUpper())) ||
-                              (x.CodigoBarras.ToUpper().Contains(filtro.ToUpper()))
+                              (x.CodigoBarras.ToUpper().Contains(filtro.ToUpper())))
+                              ||
+                                string.IsNullOrEmpty(filtro)
                           ) &&
                           (
                               (x.ObjetoDeManutencao == ObjetoDeManutencao.Nao)
@@ -29,26 +31,28 @@ namespace Fly01.Faturamento.API.Controllers.Api
                       .OrderBy(x => x.Descricao).Take(20).ToString();
 
                 var produtos =
-                      unitOfWork.ProdutoBL.All.AsNoTracking().Where(x =>
+                      unitOfWork.ProdutoBL.All
+                      .Where(x =>
                           (
-                              (x.Descricao.ToUpper().Contains(filtro.ToUpper())) ||
-                              (x.CodigoProduto.ToUpper().Contains(filtro.ToUpper())) ||
-                              (x.CodigoBarras.ToUpper().Contains(filtro.ToUpper()))
+                              (x.Descricao.ToUpper().IndexOf(filtro.ToUpper()) > -1) ||
+                              (x.CodigoProduto.ToUpper().IndexOf(filtro.ToUpper()) > 0) ||
+                              (x.CodigoBarras.ToUpper().IndexOf(filtro.ToUpper()) > 0)
                           ) &&
                           (
                               (x.ObjetoDeManutencao == ObjetoDeManutencao.Nao)
                           )
                       )
-                      .OrderBy(x => x.Descricao).Take(20)
+                      .OrderBy(x => x.Descricao)
+                      .Take(20)
                       .Select(y => new ProdutoServicoVM()
-                      {
-                          TipoItem = TipoItem.Produto,
-                          Id = y.Id,
-                          Descricao = y.Descricao,
-                          Codigo = y.CodigoProduto,
-                          ValorCusto = y.ValorCusto,
-                          ValorVenda = y.ValorVenda
-                      }).ToList();
+                       {
+                           TipoItem = TipoItem.Produto,
+                           Id = y.Id,
+                           Descricao = y.Descricao,
+                           Codigo = y.CodigoProduto,
+                           ValorCusto = y.ValorCusto,
+                           ValorVenda = y.ValorVenda
+                       }).ToList();
 
                 var servicos =
                       unitOfWork.ServicoBL.All.AsNoTracking().Where(x =>
@@ -57,7 +61,8 @@ namespace Fly01.Faturamento.API.Controllers.Api
                               (x.CodigoServico.ToUpper().Contains(filtro.ToUpper()))
                           )
                       )
-                      .OrderBy(x => x.Descricao).Take(20)
+                      .OrderBy(x => x.Descricao)
+                      .Take(20)
                       .Select(y => new ProdutoServicoVM()
                       {
                           TipoItem = TipoItem.Servico,

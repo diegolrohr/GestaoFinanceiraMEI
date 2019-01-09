@@ -112,7 +112,7 @@ namespace Fly01.Faturamento.Controllers
             formConfigKitItens.Elements.Add(new InputFloatUI
             {
                 Id = "quantidade",
-                Class = "col s12 m2",
+                Class = "col s8 m2",
                 Label = "Quantidade",
                 Value = "1"
             });
@@ -120,7 +120,7 @@ namespace Fly01.Faturamento.Controllers
             formConfigKitItens.Elements.Add(new ButtonUI
             {
                 Id = "btnAdicionar",
-                Class = "col s12 m1",
+                Class = "col s4 m1",
                 Value = "+",
                 DomEvents = new List<DomEventUI>() {
                     new DomEventUI() { DomEvent = "click", Function = "fnAdicionarItem" }

@@ -188,7 +188,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>SALDO CONSOLIDADO R$:</Value>
+                <Value>SALDO CONSOLIDADO:</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -200,7 +200,8 @@
               <TextRun>
                 <Value>=Fields!SaldoConsolidado.Value</Value>
                 <Style>
-                  <Format>0.00</Format>
+                  <Format>'R$'#,0.00</Format>
+                  <rd:FormatSymbolCulture>pt-BR</rd:FormatSymbolCulture>
                 </Style>
               </TextRun>
             </TextRuns>

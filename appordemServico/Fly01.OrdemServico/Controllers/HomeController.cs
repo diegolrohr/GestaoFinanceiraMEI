@@ -364,6 +364,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoVisaoGeral, Label = "Visão Geral", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoOrdemServico, Label = "Ordem de Serviço", OnClick = @Url.Action("List", "OrdemServico")},
+                        new LinkUI() { Class = ResourceHashConst.OrdemServicoAgenda, Label = "Agenda", OnClick = @Url.Action("List", "Agenda")},
                     }
                 },
                 new SidebarUIMenu()

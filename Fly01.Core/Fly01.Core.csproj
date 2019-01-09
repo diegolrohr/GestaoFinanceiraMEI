@@ -54,6 +54,7 @@
     <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoEfetivarVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAutenticacaoVM.cs" />

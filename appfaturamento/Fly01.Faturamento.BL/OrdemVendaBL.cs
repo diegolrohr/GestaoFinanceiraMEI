@@ -12,15 +12,6 @@ using Fly01.Core.Helpers.Attribute;
 
 namespace Fly01.Faturamento.BL
 {
-    public enum TipoItem
-    {
-        [Subtitle("Produtos", "Produtos", "Produtos")]
-        Produtos = 1,
-
-        [Subtitle("Servicos", "Serviços", "Serviços")]
-        Servicos = 2
-    }
-
     public class OrdemVendaBL : PlataformaBaseBL<OrdemVenda>
     {
         public const int MaxLengthObservacao = 200;
@@ -655,8 +646,8 @@ namespace Fly01.Faturamento.BL
                         PessoaId = entity.TransportadoraId.Value,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = GetDescricaoTitulo(TipoItem.Produtos, entity),
-                        Observacao = GetObservacaoTitulo(TipoItem.Produtos, entity),
+                        Descricao = GetDescricaoTitulo(TipoItem.Produto, entity),
+                        Observacao = GetObservacaoTitulo(TipoItem.Produto, entity),
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -668,22 +659,22 @@ namespace Fly01.Faturamento.BL
                 {
                     if (valorPrevistoProdutos > 0)
                     {
-                        GeraContaReceber(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                        GeraContaReceber(TipoItem.Produto, valorPrevistoProdutos, entity);
                     }
                     if (valorPrevistoServicos > 0)
                     {
-                        GeraContaReceber(TipoItem.Servicos, valorPrevistoServicos, entity);
+                        GeraContaReceber(TipoItem.Servico, valorPrevistoServicos, entity);
                     }
                 }
                 else if ((entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao)))
                 {
                     if (valorPrevistoProdutos > 0)
                     {
-                        GeraContaPagar(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                        GeraContaPagar(TipoItem.Produto, valorPrevistoProdutos, entity);
                     }
                     if (valorPrevistoServicos > 0)
                     {
-                        GeraContaPagar(TipoItem.Servicos, valorPrevistoServicos, entity);
+                        GeraContaPagar(TipoItem.Servico, valorPrevistoServicos, entity);
                     }
                 }
             }
@@ -763,7 +754,7 @@ namespace Fly01.Faturamento.BL
         private Guid GetContaFinanceiraParcelaId(TipoItem tipoItem, OrdemVenda entity)
         {
             var idConta = default(Guid);
-            if (tipoItem == TipoItem.Produtos)
+            if (tipoItem == TipoItem.Produto)
             {
                 idConta = entity.ContaFinanceiraParcelaPaiIdProdutos ?? default(Guid);
             }

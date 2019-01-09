@@ -9,16 +9,16 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
     public class ProdutoServicoVM : DomainBaseVM
     {
         [JsonProperty("codigo")]
-        public int Codigo { get; set; }
+        public string Codigo { get; set; }
 
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 
         [JsonProperty("valorCusto")]
-        public string ValorCusto { get; set; }
+        public double ValorCusto { get; set; }
 
         [JsonProperty("valorVenda")]
-        public string ValorVenda { get; set; }
+        public double ValorVenda { get; set; }
 
         [JsonProperty("tipoItem")]
         public TipoItem TipoItem { get; set; }

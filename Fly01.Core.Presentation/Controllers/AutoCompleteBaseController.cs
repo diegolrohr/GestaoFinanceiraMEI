@@ -334,7 +334,7 @@ namespace Fly01.Core.Presentation.Controllers
                                 {
                                     id = item.Id,
                                     label = item.Descricao,
-                                    detail = "",
+                                    detail = item.TipoItemDescricao,
                                     tipoItemDescricao = item.TipoItemDescricao,
                                     produtoId = (item.TipoItem == TipoItem.Produto ? item.Id.ToString() : null),
                                     servicoId = (item.TipoItem == TipoItem.Servico ? item.Id.ToString() : null)

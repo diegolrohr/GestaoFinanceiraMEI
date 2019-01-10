@@ -427,7 +427,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
                 Label = "Grupo",
-                Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
                 DataUrlPost = @Url.Action("NovoGrupoProduto"),
                 LabelId = "grupoProdutoDescricao",
@@ -441,8 +440,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m2",
                 Label = "Saldo atual",
                 Value = "0",
-                Digits = 3,
-                Required = true
+                Digits = 3
             });
 
             config.Elements.Add(new AutoCompleteUI

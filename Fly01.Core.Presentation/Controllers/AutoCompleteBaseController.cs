@@ -322,19 +322,19 @@ namespace Fly01.Core.Presentation.Controllers
             return GetJson(filterObjects);
         }
 
-        public virtual JsonResult ProdutoServico(string term)
+        public JsonResult ProdutoServico(string term)
         {
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoServicoVM));
             var queryString = new Dictionary<string, string> {
                 { "filtro", term },
             };
-
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoServicoVM>>(resourceName, queryString).Data
                                 select new
                                 {
                                     id = item.Id,
                                     label = item.Descricao,
                                     detail = item.TipoItemDescricao,
+                                    tipoItem = item.TipoItem,
                                     tipoItemDescricao = item.TipoItemDescricao,
                                     produtoId = (item.TipoItem == TipoItem.Produto ? item.Id.ToString() : null),
                                     servicoId = (item.TipoItem == TipoItem.Servico ? item.Id.ToString() : null)

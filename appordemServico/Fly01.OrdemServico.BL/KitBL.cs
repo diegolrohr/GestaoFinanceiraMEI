@@ -1,8 +1,8 @@
-﻿using Fly01.Faturamento.DAL;
-using Fly01.Core.BL;
+﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
+using Fly01.OrdemServico.DAL;
 
-namespace Fly01.Faturamento.BL
+namespace Fly01.OrdemServico.BL
 {
     public class KitBL : PlataformaBaseBL<Kit>
     {

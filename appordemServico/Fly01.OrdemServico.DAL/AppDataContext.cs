@@ -73,6 +73,8 @@ namespace Fly01.OrdemServico.DAL
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<UnidadeMedida> UnidadeMedidas { get; set; }
         public DbSet<Iss> Isss { get; set; }
-        public DbSet<Arquivo> Arquivo { get; set; }
+        public DbSet<Arquivo> Arquivos { get; set; }
+        public DbSet<Kit> Kits { get; set; }
+        public DbSet<KitItem> KitItens{ get; set; }
     }
 }

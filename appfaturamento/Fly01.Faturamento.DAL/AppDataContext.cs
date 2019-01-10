@@ -104,7 +104,7 @@ namespace Fly01.Faturamento.DAL
         public DbSet<EnquadramentoLegalIPI> EnquadramentoLegalIPIs { get; set; }
         public DbSet<NotaFiscalInutilizada> NotaFiscalInutilizadas{ get; set; }
         public DbSet<NotaFiscalCartaCorrecao> NotaFiscalCartasCorrecao { get; set; }
-        public DbSet<Kit> Kit { get; set; }
-        public DbSet<KitItem> KitItem { get; set; }
+        public DbSet<Kit> Kits { get; set; }
+        public DbSet<KitItem> KitItens { get; set; }
     }
 }

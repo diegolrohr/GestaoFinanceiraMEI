@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Helpers;
@@ -10,6 +11,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using Fly01.Core.Config;
+using Fly01.Core.Helpers;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -35,43 +37,79 @@ namespace Fly01.Core.Presentation.Application
             }
         }
 
-        //protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
-        //{
-        //if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) && ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
-        //{
-        //    HttpContext.Current.Session.Clear();
-        //    HttpContext.Current.Session.Abandon();
-        //    HttpContext.Current.Session.RemoveAll();
-        //    FormsAuthentication.SignOut();
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            ////try
+            ////{
+            if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            {
+                var success = RestHelper.ExecuteGetRequest<bool>(AppDefaults.UrlGatewayNew.Replace("api/", ""), "token/validate", RestUtils.GetAuthHeader(SessionManager.Current.UserData.TokenData.TokenType + " " + SessionManager.Current.UserData.TokenData.AccessToken), new Dictionary<string, string>());
 
-        //    //if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
-        //    //{
-        //    //    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
-        //    //    Response.End();
-        //    //}
-        //    if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
-        //    {
-        //        FormsAuthentication.RedirectToLoginPage();
-        //    }
-        //    //else
-        //    //{
-        //    //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
-        //    //    Response.End();
-        //    //}
-        //}
-        //else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-        //if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
-        //{
-        //if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
-        //{
-        //HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-        //mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
-        //mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
-        //mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
-        //Response.Cookies.Add(mpnData);
-        //}
-        //}
-        //}
+                if (!success)
+                {
+                    var userEmail = SessionManager.Current.UserData.PlatformUser;
+
+                    if (HttpContext.Current.Session != null)
+                    {
+                        HttpContext.Current.Session.Clear();
+                        HttpContext.Current.Session.Abandon();
+                        HttpContext.Current.Session.RemoveAll();
+                        FormsAuthentication.SignOut();
+                    }
+
+                    Response.Redirect(AppDefaults.UrlLogoutSSO + "?userEmail=" + userEmail);
+                }
+            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    var userEmail = SessionManager.Current.UserData.PlatformUser;
+
+            //    if (HttpContext.Current.Session != null)
+            //    {
+            //        HttpContext.Current.Session.Clear();
+            //        HttpContext.Current.Session.Abandon();
+            //        HttpContext.Current.Session.RemoveAll();
+            //        FormsAuthentication.SignOut();
+            //    }
+
+            //    Response.Redirect(AppDefaults.UrlLogoutSSO + "?userEmail=" + userEmail);
+            //}
+
+            ////if ((Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState) && ((HttpContext.Current.User == null) || (HttpContext.Current.User.Identity.IsAuthenticated == false)))
+            ////{
+            ////    HttpContext.Current.Session.Clear();
+            ////    HttpContext.Current.Session.Abandon();
+            ////    HttpContext.Current.Session.RemoveAll();
+            ////    FormsAuthentication.SignOut();
+
+            ////    //if (Request.Headers["Accept"] != null && Request.Headers["Accept"].Contains("application/json"))
+            ////    //{
+            ////    //    Response.Write(JsonConvert.SerializeObject(new { urlToRedirect = AppDefaults.UrlLoginSSO }));
+            ////    //    Response.End();
+            ////    //}
+            ////    if (Request.Headers["X-Requested-With"] != null && Request.Headers["X-Requested-With"].ToUpper().Equals("XMLHTTPREQUEST"))
+            ////    {
+            ////        FormsAuthentication.RedirectToLoginPage();
+            ////    }
+            ////    //else
+            ////    //{
+            ////    //    Response.Write($"<script type=\"text/javascript\">top.location.href='{AppDefaults.UrlLoginSSO}';</script>");
+            ////    //    Response.End();
+            ////    //}
+            ////}
+            ////else if (FormsAuthentication.CookiesSupported && Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            ////{
+            ////    if (ReadCookieAndSetSession(Request.Cookies[FormsAuthentication.FormsCookieName].Value))
+            ////    {
+            ////        HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
+            ////        mpnData.Values["UserEmail"] = SessionManager.Current.UserData.PlatformUser;
+            ////        mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
+            ////        mpnData.Values["TrialUntil"] = SessionManager.Current.UserData.TokenData.Trial ? SessionManager.Current.UserData.TokenData.LicenseExpirationString : "";
+            ////        Response.Cookies.Add(mpnData);
+            ////    }
+            ////}
+        }
 
         protected void Application_Start()
         {

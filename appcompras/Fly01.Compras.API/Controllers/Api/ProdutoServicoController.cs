@@ -12,7 +12,7 @@ namespace Fly01.Compras.API.Controllers.Api
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {
-                var result = unitOfWork.ProdutoBL.All;//GetProdutosServicos(filtro, unitOfWork.ProdutoBL.All, unitOfWork.ServicoBL.All);
+                var result = GetProdutosServicos(filtro, unitOfWork.ProdutoBL.All, unitOfWork.ServicoBL.All);
 
                 return Ok(
                     new

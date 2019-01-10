@@ -376,7 +376,7 @@ namespace Fly01.OrdemServico.Controllers
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastrosServicos, Label = "Serviços", OnClick = @Url.Action("List", "Servico")},
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastrosClientes, Label = "Clientes", OnClick = @Url.Action("List", "Cliente")},
                         new LinkUI() { Class = ResourceHashConst.OrdemServicoCadastrosResponsaveis, Label = "Responsáveis", OnClick = @Url.Action("List", "Responsavel")},
-                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit produtos/serviços", OnClick = @Url.Action("List", "Kit") }
+                        new LinkUI() { Class = ResourceHashConst.FaturamentoCadastrosKit, Label = "Kit Produtos/Serviços", OnClick = @Url.Action("List", "Kit") }
                     }
                 },
                 new SidebarUIMenu()

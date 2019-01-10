@@ -81,6 +81,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CfopController.cs" />
     <Compile Include="Controllers\CestController.cs" />
+    <Compile Include="Controllers\KitController.cs" />
+    <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
     <Compile Include="Controllers\NFeEntradaController.cs" />
     <Compile Include="Controllers\NFeProdutoEntradaController.cs" />
@@ -342,6 +344,11 @@
     <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

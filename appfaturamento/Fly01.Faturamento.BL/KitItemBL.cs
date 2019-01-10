@@ -23,10 +23,10 @@ namespace Fly01.Faturamento.BL
 
         public override void ValidaModel(KitItem entity)
         {
-            entity.Fail(entity.ProdutoId == null && entity.ServicoId == null, new Error("É necessário ao menos ter um produto ou um serviço adicionado ao kit"));
+            entity.Fail((entity.ProdutoId == null || entity.ProdutoId == default(Guid)) && (entity.ServicoId == null || entity.ServicoId == default(Guid)), new Error("É necessário ao menos ter um produto ou um serviço adicionado ao kit"));
             entity.Fail(entity.ProdutoId != null && entity.ServicoId != null, new Error("É permitido adicionar 1 produto ou 1 serviço por registro"));
-            entity.Fail(All.AsNoTracking().Any(x => x.ProdutoId == entity.ProdutoId && entity.ProdutoId != null && x.Id != entity.Id), new Error("Este produto já existe no kit"));
-            entity.Fail(All.AsNoTracking().Any(x => x.ServicoId == entity.ServicoId && entity.ServicoId != null && x.Id != entity.Id), new Error("Este serviço já existe no kit"));
+            entity.Fail(All.AsNoTracking().Any(x => x.KitId == entity.KitId && x.ProdutoId == entity.ProdutoId && entity.ProdutoId != null && x.Id != entity.Id), new Error("Este produto já existe no kit"));
+            entity.Fail(All.AsNoTracking().Any(x => x.KitId == entity.KitId && x.ServicoId == entity.ServicoId && entity.ServicoId != null && x.Id != entity.Id), new Error("Este serviço já existe no kit"));
             entity.Fail(entity.Quantidade <= 0, new Error("Quantidade deve ser superior a zero"));
 
             base.ValidaModel(entity);

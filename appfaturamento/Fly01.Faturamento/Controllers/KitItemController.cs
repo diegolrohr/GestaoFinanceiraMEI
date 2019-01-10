@@ -26,8 +26,8 @@ namespace Fly01.Faturamento.Controllers
                 quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 tipoItem = x.TipoItem,
                 tipoItemDescription = EnumHelper.GetDescription(typeof(TipoItem), x.TipoItem),
-                tipoItemCssClass = EnumHelper.GetCSS(typeof(TipoOrdemVenda), x.TipoItem),
-                tipoItemValue = EnumHelper.GetValue(typeof(TipoOrdemVenda), x.TipoItem),
+                tipoItemCssClass = EnumHelper.GetCSS(typeof(TipoItem), x.TipoItem),
+                tipoItemValue = EnumHelper.GetValue(typeof(TipoItem), x.TipoItem),
             };
         }
 

@@ -9,6 +9,8 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.Core.Presentation.Commons;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Faturamento.Controllers
 {
@@ -72,7 +74,7 @@ namespace Fly01.Faturamento.Controllers
             };
 
             formConfigKit.Elements.Add(new InputHiddenUI { Id = "id" });
-            formConfigKit.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição Kit", Required = true, MaxLength = 40 });
+            formConfigKit.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 40 });
 
             #endregion Form fly01frmKit
 
@@ -127,7 +129,6 @@ namespace Fly01.Faturamento.Controllers
                 }
             });
             formConfigKitItens.Elements.Add(new DivElementUI { Id = "divKitItensGrid", Class = "col s12 visible" });
-
             #endregion
 
             #region DataTable Produtos / Serviços
@@ -135,13 +136,19 @@ namespace Fly01.Faturamento.Controllers
             var dtConfig = new DataTableUI
             {
                 Id = "dtKitItens",
-                UrlGridLoad = Url.Action("GridLoad", "KitItem"),
+                UrlGridLoad = Url.Action("GridLoadKitItem", "KitItem"),
                 UrlFunctions = Url.Action("Functions", "kitItem", null, Request.Url.Scheme) + "?fns=",
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter {Id = "id", Required = true }
                 },
-                Parent = "divKitItensGridField"
+                Functions = new List<string>() { "fnRenderEnum" },
+                Parent = "divKitItensGridField",
+                Options = new DataTableUIConfig
+                {
+                    OrderColumn = 0,
+                    OrderDir = "asc"
+                }
             };
 
             dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
@@ -151,8 +158,28 @@ namespace Fly01.Faturamento.Controllers
 
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "produtoServicoDescricao", DisplayName = "Descrição", Priority = 1, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Searchable = false, Orderable = false });
-            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "tipoItemDescription", DisplayName = "Tipo", Priority = 3, Searchable = false, Orderable = false });
+            dtConfig.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "tipoItem",
+                DisplayName = "Tipo",
+                Priority = 3,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoItem))),
+                RenderFn = "fnRenderEnum(full.tipoItemCssClass, full.tipoItemDescription)",
+                Searchable = false, 
+                Orderable = false
+            });
 
+            #endregion
+
+            #region Helpers
+            formConfigKit.Helpers.Add(new TooltipUI
+            {
+                Id = "produtoServicoId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Pesquise Produtos por: descrição, código ou código de barras. Serviços por: descrição ou código"
+                }
+            });
             #endregion
 
             cfg.Content.Add(formConfigKit);

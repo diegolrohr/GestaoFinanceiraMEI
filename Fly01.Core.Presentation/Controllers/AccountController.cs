@@ -69,10 +69,12 @@ namespace Fly01.Core.Presentation.Controllers
 
         public ActionResult LogOff()
         {
+            var userEmail = SessionManager.Current.UserData.PlatformUser;
+
             if (HttpContext.Session != null)
                 SystemLogOff(System.Web.HttpContext.Current);
 
-            return Redirect(AppDefaults.UrlLogoutSSO);
+            return Redirect(AppDefaults.UrlLogoutSSO + "?userEmail=" + userEmail);
         }
 
         private bool ValidateToken(HttpContext httpContext)

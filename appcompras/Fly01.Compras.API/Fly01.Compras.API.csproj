@@ -85,6 +85,7 @@
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />
+    <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
     <Compile Include="Controllers\Api\SerieNotaFiscalController.cs" />
     <Compile Include="Controllers\Api\TipoIndicacaoInscricaoEstadualController .cs" />
     <Compile Include="Controllers\Api\PedidoItemController.cs" />

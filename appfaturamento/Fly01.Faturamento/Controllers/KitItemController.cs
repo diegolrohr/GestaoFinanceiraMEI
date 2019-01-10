@@ -14,7 +14,7 @@ namespace Fly01.Faturamento.Controllers
     {
         public KitItemController()
         {
-            ExpandProperties = "produto($select=descricao),servico($select=descricao)";
+            ExpandProperties = "produto($select=descricao,codigoProduto),servico($select=descricao,codigoServico)";
         }
 
         public override Func<KitItemVM, object> GetDisplayData()
@@ -22,6 +22,7 @@ namespace Fly01.Faturamento.Controllers
             return x => new
             {
                 id = x.Id,
+                produtoServicoCodigo = x.ProdutoServicoCodigo,
                 produtoServicoDescricao = x.ProdutoServicoDescricao,
                 quantidade = x.Quantidade.ToString("N", AppDefaults.CultureInfoDefault),
                 tipoItem = x.TipoItem,

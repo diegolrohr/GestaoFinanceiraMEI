@@ -156,6 +156,7 @@ namespace Fly01.Faturamento.Controllers
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 
+            dtConfig.Columns.Add(new DataTableUIColumn { DataField = "produtoServicoCodigo", DisplayName = "Código", Priority = 4, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "produtoServicoDescricao", DisplayName = "Descrição", Priority = 1, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Searchable = false, Orderable = false });
             dtConfig.Columns.Add(new DataTableUIColumn

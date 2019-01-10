@@ -32,6 +32,16 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
             set { }
         }
 
+        [JsonProperty("produtoServicoCodigo")]
+        public string ProdutoServicoCodigo
+        {
+            get
+            {
+                return TipoItem == TipoItemEnum.Produto.ToString() ? Produto?.CodigoProduto : Servico?.CodigoServico;
+            }
+            set { }
+        }
+
         [JsonProperty("kit")]
         public virtual KitVM Kit { get; set; }
 

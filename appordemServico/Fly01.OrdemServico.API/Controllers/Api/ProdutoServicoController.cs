@@ -1,9 +1,9 @@
 ﻿using System.Web.Http;
-using Fly01.Faturamento.BL;
+using Fly01.OrdemServico.BL;
 using System.Linq;
 using Fly01.Core.API;
 
-namespace Fly01.Faturamento.API.Controllers.Api
+namespace Fly01.OrdemServico.API.Controllers.Api
 {
     [RoutePrefix("produtoservico")]
     public class ProdutoServicoController : ProdutoServicoBaseController

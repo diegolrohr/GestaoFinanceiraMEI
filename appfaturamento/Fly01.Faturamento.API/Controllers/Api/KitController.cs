@@ -7,5 +7,9 @@ namespace Fly01.Faturamento.API.Controllers.Api
     [ODataRoutePrefix("kit")]
     public class KitController : ApiPlataformaController<Kit, KitBL>
     {
+        public KitController()
+        {
+            MustProduceMessageServiceBus = true;
+        }
     }
 }

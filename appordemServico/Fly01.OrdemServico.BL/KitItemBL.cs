@@ -1,17 +1,17 @@
 ﻿using Fly01.Core.BL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
-using Fly01.Faturamento.DAL;
+using Fly01.OrdemServico.DAL;
 using System;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Fly01.Faturamento.BL
+namespace Fly01.OrdemServico.BL
 {
     public class KitItemBL : PlataformaBaseBL<KitItem>
     {
         protected KitBL KitBL { get; set; }
-        protected  ProdutoBL ProdutoBL { get; set; }
+        protected ProdutoBL ProdutoBL { get; set; }
         protected ServicoBL ServicoBL { get; set; }
 
         public KitItemBL(AppDataContext context, KitBL kitBL, ProdutoBL produtoBL, ServicoBL servicoBL) : base(context)

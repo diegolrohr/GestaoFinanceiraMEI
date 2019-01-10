@@ -7,6 +7,8 @@ namespace Fly01.Faturamento.BL
     public class KitBL : PlataformaBaseBL<Kit>
     {
         public KitBL(AppDataContext context) : base(context)
-        { }
+        {
+            MustConsumeMessageServiceBus = true;
+        }
     }
 }

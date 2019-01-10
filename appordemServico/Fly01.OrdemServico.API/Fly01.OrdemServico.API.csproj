@@ -66,6 +66,7 @@
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\ISSController.cs" />
+    <Compile Include="Controllers\Api\KitItemController.cs" />
     <Compile Include="Controllers\Api\KitController.cs" />
     <Compile Include="Controllers\Api\NBSController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />

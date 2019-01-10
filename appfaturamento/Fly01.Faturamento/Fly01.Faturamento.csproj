@@ -356,6 +356,8 @@
     <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
     <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaKit.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFormReadyOrdemVendaKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

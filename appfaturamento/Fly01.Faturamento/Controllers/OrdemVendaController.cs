@@ -14,6 +14,7 @@ using Fly01.Faturamento.Models.ViewModel;
 using Fly01.Faturamento.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Newtonsoft.Json;
 using System;
@@ -753,6 +754,136 @@ namespace Fly01.Faturamento.Controllers
                     new { success = true, infcomp = response.Data.FirstOrDefault()?.MensagemPadraoNota },
                     JsonRequestBehavior.AllowGet
                 );
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public ContentResult ModalKit()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Kit Produto/Serviço",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AdicionarKit", "OrdemVenda")
+                },
+                Id = "fly01mdlfrmOrdemVendaKit",
+                ReadyFn = "fnFormReadyOrdemVendaKit"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "kitId",
+                Class = "col s12",
+                Label = "Kit",
+                Required = true,
+                DataUrl = Url.Action("Kit", "AutoComplete"),
+                LabelId = "kitDescricao",
+            }, ResourceHashConst.FaturamentoCadastrosKit));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarProdutos",
+                Class = "col s12 m6",
+                Label = "Adicionar produtos do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarServicos",
+                Class = "col s12 m6",
+                Label = "Adicionar serviços do Kit"
+            });
+
+            config.Elements.Add(new LabelSetUI() { Label = "Grupo Tributário Padrão", Class = "col s12" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "grupoTributarioProdutoIdKit",
+                Class = "col s12 m6",
+                Label = "Para Produtos",
+                Name = "grupoTributarioProdutoId",
+                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
+                LabelId = "grupoTributarioProdutoDescricaoKit",
+                LabelName = "grupoTributarioProdutoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "grupoTributarioServicoIdKit",
+                Class = "col s12 m6",
+                Label = "Para Serviços",
+                Name = "grupoTributarioServicoId",
+                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
+                LabelId = "grupoTributarioServicoDescricaoKit",
+                LabelName = "grupoTributarioServicoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "kitId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit, que ainda não constam no pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioProdutoIdKit",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionaos ao pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioServicoIdKit",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionaos ao pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarServicos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult AdicionarKit(UtilizarKitVM entityVM)
+        {
+            try
+            {
+                //RestHelper.ExecutePostRequest("utilizarkitordemvenda", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                return JsonResponseStatus.GetSuccess("Itens do kit adicionados com sucesso.");
             }
             catch (Exception ex)
             {

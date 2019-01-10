@@ -89,6 +89,9 @@ namespace Fly01.OrdemServico.BL
         private ArquivoBL arquivoBL;
         public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL, ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
 
+        private AgendaBL agendaBL;
+        public AgendaBL AgendaBL => agendaBL ?? (agendaBL = new AgendaBL(Context, OrdemServicoBL));
+
         #endregion
     }
 }

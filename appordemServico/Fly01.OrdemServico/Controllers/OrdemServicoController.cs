@@ -222,24 +222,6 @@ namespace Fly01.OrdemServico.Controllers
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
-            cfg.Content.Add(new TabsUI
-            {
-                Id = "fly01tabs",
-                Tabs = new List<TabsUIItem>()
-                {
-                    new TabsUIItem()
-                    {
-                        Id = "fly01div",
-                        Title = "Listagem"
-                    },
-                    new TabsUIItem()
-                    {
-                        Id = "cal1",
-                        Title = "Agenda"
-                    }
-                }
-            });
-
             cfg.Content.Add(new DivUI
             {
                 Id = "fly01div"

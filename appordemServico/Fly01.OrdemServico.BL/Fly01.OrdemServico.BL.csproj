@@ -58,6 +58,7 @@
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="ISSBL.cs" />
     <Compile Include="NBSBL.cs" />
+    <Compile Include="AgendaBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />

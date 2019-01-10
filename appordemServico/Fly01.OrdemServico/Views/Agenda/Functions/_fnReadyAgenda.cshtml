@@ -1,0 +1,21 @@
+﻿<script>
+    function fnReadyAgenda() {
+
+        $('.fc-button-prev span').click(function () {
+            alert('prev is clicked, do something');
+        });
+
+        $('.fc-button-next span').click(function () {
+            alert('nextis clicked, do something');
+        });
+
+        $('#calendar').fullCalendar('renderEvent', {
+
+            title: 'Titulo do Evento de Teste',
+            start: '2019-01-10',
+            end: '2019-01-10'
+
+        });
+    }
+    
+</script>

@@ -146,6 +146,12 @@ namespace Fly01.Compras.BL
         private NBSBL nbsBL;
         public NBSBL NBSBL => nbsBL ?? (nbsBL = new NBSBL(Context));
 
+        private KitBL kitBL;
+        public KitBL KitBL => kitBL ?? (kitBL = new KitBL(Context));
+
+        private KitItemBL kitItemBL;
+        public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
+
         #endregion
     }
 }

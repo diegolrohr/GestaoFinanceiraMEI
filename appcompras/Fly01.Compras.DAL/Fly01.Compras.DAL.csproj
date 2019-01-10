@@ -292,6 +292,10 @@
     <Compile Include="Migrations\201901101718394_AddServico.Designer.cs">
       <DependentUpon>201901101718394_AddServico.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901101740447_AddKitKitItem.cs" />
+    <Compile Include="Migrations\201901101740447_AddKitKitItem.Designer.cs">
+      <DependentUpon>201901101740447_AddKitKitItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -520,6 +524,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901101718394_AddServico.resx">
       <DependentUpon>201901101718394_AddServico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901101740447_AddKitKitItem.resx">
+      <DependentUpon>201901101740447_AddKitKitItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

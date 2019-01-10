@@ -98,6 +98,7 @@ namespace Fly01.Compras.DAL
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<Iss> Isss { get; set; }
         public DbSet<Nbs> Nbss { get; set; }
-
+        public DbSet<Kit> Kits { get; set; }
+        public DbSet<KitItem> KitItens { get; set; }
     }
 }

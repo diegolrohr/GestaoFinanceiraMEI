@@ -89,6 +89,11 @@ namespace Fly01.OrdemServico.BL
         private ArquivoBL arquivoBL;
         public ArquivoBL ArquivoBL => arquivoBL ?? (arquivoBL = new ArquivoBL(Context, PessoaBL, ProdutoBL, GrupoProdutoBL, UnidadeMedidaBL));
 
+        private KitBL kitBL;
+        public KitBL KitBL => kitBL ?? (kitBL = new KitBL(Context));
+
+        //private KitItemBL kitItemBL;
+        //public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
         #endregion
     }
 }

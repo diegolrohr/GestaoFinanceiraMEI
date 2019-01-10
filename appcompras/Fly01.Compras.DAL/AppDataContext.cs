@@ -95,6 +95,9 @@ namespace Fly01.Compras.DAL
         public DbSet<NotaFiscalCartaCorrecaoEntrada> NotaFiscalCartasCorrecaoEntrada { get; set; }
         public DbSet<NFeEntrada> NFeEntradas { get; set; }
         public DbSet<NFeProdutoEntrada> NFeProdutoEntradas { get; set; }
+        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Iss> Isss { get; set; }
+        public DbSet<Nbs> Nbss { get; set; }
 
     }
 }

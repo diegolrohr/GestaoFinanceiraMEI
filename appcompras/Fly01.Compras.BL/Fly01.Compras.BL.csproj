@@ -50,6 +50,8 @@
     <Compile Include="CfopBL.cs" />
     <Compile Include="CestBL.cs" />
     <Compile Include="ISSBL.cs" />
+    <Compile Include="KitBL.cs" />
+    <Compile Include="KitItemBL.cs" />
     <Compile Include="MonitorNFBL.cs" />
     <Compile Include="NBSBL.cs" />
     <Compile Include="NCMBL.cs" />

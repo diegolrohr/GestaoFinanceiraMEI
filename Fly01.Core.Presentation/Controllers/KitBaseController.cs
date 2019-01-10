@@ -195,7 +195,7 @@ namespace Fly01.Core.Presentation.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Kits",
+                    Title = "Kits Produtos/Serviços",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="

@@ -1,21 +1,112 @@
 ﻿<script>
     function fnReadyAgenda() {
 
-        $('.fc-button-prev span').click(function () {
-            alert('prev is clicked, do something');
+        $('.fc-month-button').hide();
+        $('.fc-agendaWeek-button').hide();
+        $('.fc-agendaDay-button').hide();
+        $$$.loading.start();
+        var dataInicio = $($('.fc-day').get(0)).data("date")
+        var dataFim = $($('.fc-day').get(-1)).data("date")
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetOSAgenda", "Agenda")',
+            data: {
+                dataInicial: dataInicio,
+                dataFinal: dataFim
+            },
+            success: function (json, success) {
+                if (success) {
+                    fullCalendar(json);
+                    $$$.loading.stop();
+                }
+                else
+                    $$$.toast(response.message, 'error');
+            }
         });
 
-        $('.fc-button-next span').click(function () {
-            alert('nextis clicked, do something');
+        $('.fc-next-button').on("click", function () {
+            $$$.loading.start();
+            var dataInicio = $($('.fc-day').get(0)).data("date")
+            var dataFim = $($('.fc-day').get(-1)).data("date")
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetOSAgenda", "Agenda")',
+                data: {
+                    dataInicial: dataInicio,
+                    dataFinal: dataFim
+                },
+                success: function (json, success) {
+                    if (success) {
+                        fullCalendar(json);
+                        $$$.loading.stop();
+                    }
+                    else
+                        $$$.toast(response.message, 'error');
+                }
+            });
         });
 
-        $('#calendar').fullCalendar('renderEvent', {
-
-            title: 'Titulo do Evento de Teste',
-            start: '2019-01-10',
-            end: '2019-01-10'
-
+        $('.fc-prev-button').click(function () {
+            $$$.loading.start();
+            var dataInicio = $($('.fc-day').get(0)).data("date")
+            var dataFim = $($('.fc-day').get(-1)).data("date")
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetOSAgenda", "Agenda")',
+                data: {
+                    dataInicial: dataInicio,
+                    dataFinal: dataFim
+                },
+                success: function (json, success) {
+                    if (success) {
+                        fullCalendar(json);
+                        $$$.loading.stop();
+                    }
+                    else
+                        $$$.toast(response.message, 'error');
+                }
+            });
         });
+
+        function fullCalendar(json) {
+            for (var i = 0; i < json.response.length; i++) {
+                $('#calendar').fullCalendar('renderEvent', {
+                    eventLimit: true,
+                    title: json.response[i].Cliente,
+                    start: json.response[i].Entrega,
+                    end: json.response[i].Entrega,
+                    color: getColor(json.response[i].Status),
+                    allDay: true,
+                    editable: false
+                });
+            }
+        }
+        function getColor(status) {
+            switch (status) {
+
+                case "Em Preenchimento":
+                    return "#8e999b";
+                    break;
+
+                case "Em Aberto":
+                    return "#0c9abe";
+                    break;
+
+                case "Em Andamento":
+                    return "#FBCA1F";
+                    break;
+
+                case "Concluído":
+                    return "#00b279";
+                    break;
+
+                case "Cancelado":
+                    return "#db3a34";
+                    break;
+
+                default:
+                    return "pink"
+            }
+        }
     }
-    
 </script>

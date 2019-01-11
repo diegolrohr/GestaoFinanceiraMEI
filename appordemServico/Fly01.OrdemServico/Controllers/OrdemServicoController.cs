@@ -309,17 +309,6 @@ namespace Fly01.OrdemServico.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
 
             cfg.Content.Add(cfgForm);
-
-            cfg.Content.Add(new CalendarUI
-            {
-                Id = "cal1",
-                Class = "col s12",
-
-            });
-
-
-
-
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");

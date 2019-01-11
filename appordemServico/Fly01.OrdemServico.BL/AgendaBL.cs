@@ -23,7 +23,7 @@ namespace Fly01.OrdemServico.BL
         {
             List<AgendaVM> listaResult = new List<AgendaVM>();
 
-            var response = OrdemServicoBL.All.Where(x => x.DataEmissao >= dataInicial && x.DataEmissao <= dataFinal).ToList();
+            var response = OrdemServicoBL.AllIncluding(x => x.Cliente).Where(x => x.DataEntrega >= dataFinal && x.DataEntrega <= dataInicial).ToList();
 
             foreach (var item in response)
             {

@@ -9,7 +9,7 @@ namespace Fly01.OrdemServico.API.Controllers.Api
     public class AgendaController: ApiBaseController
     {
         [HttpGet]
-        public IHttpActionResult GetOrdemServicoPorStatus(DateTime dataFinal, DateTime dataInicial)
+        public IHttpActionResult Get(DateTime dataFinal, DateTime dataInicial)
         {
             using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
             {

@@ -1,6 +1,10 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -43,11 +47,10 @@ namespace Fly01.OrdemServico.Controllers
                     Title = "Agenda"
                 }
             };
-
             cfg.Content.Add(new CalendarUI
             {
                 Id = "calendar",
-                Class = "col s12"
+                Class = "col s10 offset-s1"
             });
 
             var config = new FormUI
@@ -69,6 +72,30 @@ namespace Fly01.OrdemServico.Controllers
         public override Func<OrdemServicoVM, object> GetDisplayData()
         {
             throw new NotImplementedException();
+        }
+
+        public JsonResult GetOSAgenda(DateTime dataInicial, DateTime dataFinal)
+        {
+            try
+            {
+                Dictionary<string, string> queryString = new Dictionary<string, string>
+                {
+                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
+                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                };
+
+                var response = RestHelper.ExecuteGetRequest<List<AgendaVM>>("agenda", queryString);
+
+                return Json(new {
+                    response,
+                    sucess = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
     }
 }

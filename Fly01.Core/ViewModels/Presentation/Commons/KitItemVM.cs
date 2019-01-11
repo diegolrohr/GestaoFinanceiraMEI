@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using TipoItemEnum = Fly01.Core.Entities.Domains.Enum.TipoItem;
 
@@ -21,6 +24,18 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("tipoItem")]
         public string TipoItem { get; set; }
+
+        public string PropTipoItemDescricao { get; set; }
+
+        [JsonProperty("tipoItemDescricao")]
+        public string TipoItemDescricao
+        {
+            get
+            {
+                return EnumHelper.GetDescription(typeof(TipoItem), TipoItem);
+            }
+            set { PropTipoItemDescricao = value; }
+        }
 
         [JsonProperty("produtoServicoDescricao")]
         public string ProdutoServicoDescricao

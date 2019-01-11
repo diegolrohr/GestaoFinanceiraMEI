@@ -50,7 +50,8 @@ namespace Fly01.Core.Presentation.Controllers
                 PlatformUser = assertion.UserEmail,
                 PlatformUrl = assertion.PlatformUrl,
                 TokenData = tokenDataVM,
-                Permissions = dataPermission.Data.Items
+                Permissions = dataPermission.Data.Items,
+                ClientToken = assertion.ClientToken
             };
 
             SessionManager.Current.UserData = userDataVM;
@@ -69,12 +70,12 @@ namespace Fly01.Core.Presentation.Controllers
 
         public ActionResult LogOff()
         {
-            var userEmail = SessionManager.Current.UserData.PlatformUser;
+            var clientToken = SessionManager.Current.UserData.ClientToken;
 
             if (HttpContext.Session != null)
                 SystemLogOff(System.Web.HttpContext.Current);
 
-            return Redirect(AppDefaults.UrlLogoutSSO + "?userEmail=" + userEmail);
+            return Redirect($"{AppDefaults.UrlLogoutSSO}/{clientToken}");
         }
 
         private bool ValidateToken(HttpContext httpContext)

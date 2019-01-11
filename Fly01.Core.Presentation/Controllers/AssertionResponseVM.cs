@@ -9,6 +9,8 @@ namespace Fly01.Core.Presentation.Controllers
     {
         public string AccessToken { get; set; }
 
+        public string ClientToken { get; set; }
+
         public string TokenType { get; set; }
 
         public int ExpiresIn { get; set; }
@@ -35,6 +37,7 @@ namespace Fly01.Core.Presentation.Controllers
             bool.TryParse(formCollection["trial"], out trial);
 
             AccessToken = formCollection["access_token"];
+            ClientToken = formCollection["clientToken"];
             TokenType = formCollection["token_type"];
             CodigoMaxime = formCollection["codigoMaxime"];
             Username = formCollection["userName"];

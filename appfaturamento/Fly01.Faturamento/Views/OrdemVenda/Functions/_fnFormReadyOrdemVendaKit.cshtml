@@ -1,8 +1,13 @@
 ﻿<script>
     function fnFormReadyOrdemVendaKit() {
-        $('form#fly01mdlfrmOrdemVendaKit input#ordemVendaId').val($('form#fly01frm input#id').val());
+        $('form#fly01mdlfrmOrdemVendaKit input#ordemVendaId').val($('form#fly01frm input#orcamentoPedidoId').val());
         $("form#fly01mdlfrmOrdemVendaKit input#adicionarProdutos").prop("checked", true);
         $("form#fly01mdlfrmOrdemVendaKit input#adicionarServicos").prop("checked", true);
+        $("form#fly01mdlfrmOrdemVendaKit input#somarExistentes").prop("checked", true);
+
+        $("form#fly01mdlfrmOrdemVendaKit #infoGrupoTributario").text("dmdfasdfasdfasdf d fasdfad ");
+        $("form#fly01mdlfrmOrdemVendaKit #infoGrupoTributario").css("white-space", "normal");
+
         fnOverrideSubmit();
     }
 

@@ -792,14 +792,20 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "adicionarProdutos",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Adicionar produtos do Kit"
             });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "adicionarServicos",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Adicionar serviços do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "somarExistentes",
+                Class = "col s12 m4",
+                Label = "Somar com existentes"
             });
 
             config.Elements.Add(new LabelSetUI() { Label = "Grupo Tributário Padrão", Class = "col s12" });
@@ -830,13 +836,15 @@ namespace Fly01.Faturamento.Controllers
                 DataPostField = "descricao"
             }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
 
+            config.Elements.Add(new DivElementUI { Id = "infoGrupoTributario", Class = "col s12 text-justify visible", Label = "Informação" });
+
             #region Helpers            
             config.Helpers.Add(new TooltipUI
             {
                 Id = "kitId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit, que ainda não constam no pedido."
+                    Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -844,7 +852,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioProdutoIdKit",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionaos ao pedido."
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionaos ao orçamento/pedido."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -852,7 +860,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioServicoIdKit",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionaos ao pedido."
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionaos ao orçamento/pedido."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -871,6 +879,14 @@ namespace Fly01.Faturamento.Controllers
                     Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
                 }
             });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somarExistentes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os produtos/serviços cadastrados no kit, serão somados com a quantidade já existente no orçamento/pedido."
+                }
+            });
             #endregion
 
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
@@ -882,7 +898,7 @@ namespace Fly01.Faturamento.Controllers
         {
             try
             {
-                //RestHelper.ExecutePostRequest("utilizarkitordemvenda", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("kitordemvenda", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 return JsonResponseStatus.GetSuccess("Itens do kit adicionados com sucesso.");
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Helpers.Attribute;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.BL
 {
@@ -24,6 +25,7 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
+        protected KitItemBL KitItemBL { get; set; }
 
         private readonly string descricaoVenda = @"Venda nº: {0} de {1}";
         private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} de {1} : {2}";
@@ -31,7 +33,7 @@ namespace Fly01.Faturamento.BL
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
-        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
+        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL, KitItemBL kitItemBl) : base(context)
         {
             MustConsumeMessageServiceBus = true;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
@@ -42,6 +44,7 @@ namespace Fly01.Faturamento.BL
             NFSeServicoBL = nfseServicoBL;
             TotalTributacaoBL = totalTributacaoBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
+            KitItemBL = kitItemBl;
         }
 
         public override void ValidaModel(OrdemVenda entity)
@@ -867,6 +870,58 @@ namespace Fly01.Faturamento.BL
             };
 
             return result;
+        }
+
+        public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
+        {
+            try
+            {
+                if(All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                {
+                    if(KitItemBL.All.Any(x => x.Id == entity.KitId))
+                    {
+                        if (entity.AdicionarProdutos)
+                        {
+                            var existentes =
+                                from ovp in OrdemVendaProdutoBL.AllIncluding(x => x.Produto).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
+                                join ki in KitItemBL.All.Where(x => x.KitId == entity.KitId) on ovp.ProdutoId equals ki.ProdutoId
+                                select new { ProdutoId = ki.ProdutoId, OrdemVendaProdutoId = ovp.Id, Quantidade = ki.Quantidade };
+
+                            var newsOrdemVendaProdutos = 
+                                from ex in existentes
+                                join kit in KitItemBL.All.Where(x => x.KitId == entity.KitId) on ex.ProdutoId equals kit.ProdutoId into newInsert
+                                from kit in newInsert.DefaultIfEmpty()
+                                select new OrdemVendaProduto
+                                {
+                                    GrupoTributarioId = entity.GrupoTributarioProdutoId,
+                                    OrdemVendaId = entity.OrcamentoPedidoId,
+                                    ProdutoId = kit.ProdutoId.Value,
+                                    Valor = kit.Produto.ValorVenda,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            foreach (var item in newsOrdemVendaProdutos)
+                            {
+                                OrdemVendaProdutoBL.Insert(item);
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentes)
+                                {
+                                    var ordemVendaProduto = OrdemVendaProdutoBL.Find(item.OrdemVendaProdutoId);
+                                    ordemVendaProduto.Quantidade += item.Quantidade;
+                                    OrdemVendaProdutoBL.Update(ordemVendaProduto);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
 
         public static string ValorBCSTRetidoRequerido = "Valor da base de cálculo do ICMS substituído é obrigatório para CSOSN 500. Item {itemcount} da lista de produtos";

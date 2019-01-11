@@ -3,8 +3,11 @@ using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class UtilizarKitVM : DomainBaseVM
+    public class UtilizarKitVM
     {
+        [JsonProperty("orcamentoPedidoId")]
+        public Guid OrcamentoPedidoId { get; set; }
+
         [JsonProperty("kitId")]
         public Guid KitId  { get; set; }
 
@@ -19,6 +22,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("adicionarServicos")]
         public bool AdicionarServicos { get; set; }
+
+        [JsonProperty("somarExistentes")]
+        public bool SomarExistentes { get; set; }
 
         [JsonProperty("kit")]
         public virtual KitVM Kit { get; set; }

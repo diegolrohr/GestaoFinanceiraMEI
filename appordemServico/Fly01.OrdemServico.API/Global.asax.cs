@@ -55,6 +55,10 @@ namespace Fly01.OrdemServico.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
+            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
 
             base.SetAppDefaults();
         }

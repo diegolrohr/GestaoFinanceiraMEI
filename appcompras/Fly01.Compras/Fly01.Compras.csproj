@@ -349,6 +349,8 @@
     <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -232,6 +232,8 @@
     <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

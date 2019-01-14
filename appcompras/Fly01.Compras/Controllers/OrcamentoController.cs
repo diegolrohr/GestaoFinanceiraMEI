@@ -476,12 +476,14 @@ namespace Fly01.Compras.Controllers
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
-                Id = "fornecedorPadraoId",
+                Id = "fornecedorPadraoIdKit",
+                Name = "fornecedorPadraoId",
                 Class = "col s12",
                 Required = true,
                 Label = "Fornecedor padrão",
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
-                LabelId = "fornecedorNome",
+                LabelId = "fornecedorPadraoNomeKit",
+                LabelName = "fornecedorPadraoNome",
                 DataUrlPostModal = Url.Action("FormModal", "Fornecedor"),
                 DataPostField = "nome"
             }, ResourceHashConst.ComprasCadastrosFornecedores));

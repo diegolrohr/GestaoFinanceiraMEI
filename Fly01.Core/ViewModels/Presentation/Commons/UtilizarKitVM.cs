@@ -38,8 +38,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("grupoTributarioServico")]
         public virtual GrupoTributarioVM GrupoTributarioServico { get; set; }
 
-        [JsonProperty("fornecedorId")]
-        public virtual PessoaVM Fornecedor { get; set; }
+        [JsonProperty("fornecedorPadrao")]
+        public virtual PessoaVM FornecedorPadrao { get; set; }
 
     }
 }

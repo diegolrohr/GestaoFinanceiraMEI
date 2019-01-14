@@ -358,6 +358,9 @@
     <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaKit.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFormReadyOrdemVendaKit.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

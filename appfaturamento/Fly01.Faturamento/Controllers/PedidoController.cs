@@ -124,13 +124,13 @@ namespace Fly01.Faturamento.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Serviços",
                         Id = "stepServicos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -234,12 +234,23 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemVendaProduto",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaProduto" }
+                    }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemVendaProdutoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaKit" }
                     }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemVendaProdutos", Class = "col s12 visible" });
@@ -249,13 +260,24 @@ namespace Fly01.Faturamento.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemVendaServico",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar serviço",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaServico" }
                 }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemVendaServicoKit",
+                Class = "col s12 m2",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemVendaKit" }
+                    }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemVendaServicos", Class = "col s12 visible" });
             #endregion

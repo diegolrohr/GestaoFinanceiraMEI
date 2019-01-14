@@ -777,7 +777,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "fly01mdlfrmOrdemVendaKit",
                 ReadyFn = "fnFormReadyOrdemVendaKit"
             };
-            config.Elements.Add(new InputHiddenUI { Id = "ordemVendaId" });
+            config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {

@@ -100,7 +100,7 @@ namespace Fly01.Faturamento.BL
                         var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
                         entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
                     }
-                    
+
                     entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
@@ -876,22 +876,24 @@ namespace Fly01.Faturamento.BL
         {
             try
             {
-                if(All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                if (All.Any(x => x.Id == entity.OrcamentoPedidoId))
                 {
-                    if(KitItemBL.All.Any(x => x.Id == entity.KitId))
+                    if (KitItemBL.All.Any(x => x.KitId == entity.KitId))
                     {
+                        #region Produtos
                         if (entity.AdicionarProdutos)
                         {
+                            var kitItens = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+
                             var existentes =
                                 from ovp in OrdemVendaProdutoBL.AllIncluding(x => x.Produto).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
-                                join ki in KitItemBL.All.Where(x => x.KitId == entity.KitId) on ovp.ProdutoId equals ki.ProdutoId
+                                join ki in kitItens on ovp.ProdutoId equals ki.ProdutoId
                                 select new { ProdutoId = ki.ProdutoId, OrdemVendaProdutoId = ovp.Id, Quantidade = ki.Quantidade };
 
-                            var newsOrdemVendaProdutos = 
-                                from ex in existentes
-                                join kit in KitItemBL.All.Where(x => x.KitId == entity.KitId) on ex.ProdutoId equals kit.ProdutoId into newInsert
-                                from kit in newInsert.DefaultIfEmpty()
-                                select new OrdemVendaProduto
+                            var novasOrdemVendaProdutos =
+                                from kit in kitItens
+                                where !existentes.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                select new
                                 {
                                     GrupoTributarioId = entity.GrupoTributarioProdutoId,
                                     OrdemVendaId = entity.OrcamentoPedidoId,
@@ -900,9 +902,16 @@ namespace Fly01.Faturamento.BL
                                     Quantidade = kit.Quantidade
                                 };
 
-                            foreach (var item in newsOrdemVendaProdutos)
+                            foreach (var item in novasOrdemVendaProdutos)
                             {
-                                OrdemVendaProdutoBL.Insert(item);
+                                OrdemVendaProdutoBL.Insert(new OrdemVendaProduto()
+                                {
+                                    GrupoTributarioId = item.GrupoTributarioId == default(Guid) ? null : item.GrupoTributarioId,
+                                    ProdutoId = item.ProdutoId,
+                                    OrdemVendaId = item.OrdemVendaId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
                             }
 
                             if (entity.SomarExistentes)
@@ -911,10 +920,17 @@ namespace Fly01.Faturamento.BL
                                 {
                                     var ordemVendaProduto = OrdemVendaProdutoBL.Find(item.OrdemVendaProdutoId);
                                     ordemVendaProduto.Quantidade += item.Quantidade;
+                                    //ordemVendaProduto.GrupoTributarioId = ordemVendaProduto.GrupoTributarioId != null ? ordemVendaProduto.GrupoTributarioId : entity.GrupoTributarioProdutoId;
                                     OrdemVendaProdutoBL.Update(ordemVendaProduto);
                                 }
                             }
                         }
+                        #endregion
+                        #region Servicos
+                        if (entity.AdicionarServicos)
+                        {
+                        }
+                        #endregion
                     }
                 }
             }

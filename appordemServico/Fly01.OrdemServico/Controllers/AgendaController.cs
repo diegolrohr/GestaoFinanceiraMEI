@@ -50,7 +50,11 @@ namespace Fly01.OrdemServico.Controllers
             cfg.Content.Add(new CalendarUI
             {
                 Id = "calendar",
-                Class = "col s10 offset-s1"
+                Class = "col s10 offset-s1",
+                Options = new CalendarUIConfig()
+                {
+                    EventLimit = true
+                }
             });
 
             var config = new FormUI

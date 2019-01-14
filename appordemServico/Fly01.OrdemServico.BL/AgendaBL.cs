@@ -31,7 +31,8 @@ namespace Fly01.OrdemServico.BL
                 {
                     Status = EnumHelper.GetValue(typeof(StatusOrdemServico), item.Status.ToString()),
                     Cliente = item.Cliente?.Nome,
-                    Entrega = item.DataEntrega
+                    Entrega = item.DataEntrega,
+                    OSId = item.Id.ToString()
                 });
             }
 

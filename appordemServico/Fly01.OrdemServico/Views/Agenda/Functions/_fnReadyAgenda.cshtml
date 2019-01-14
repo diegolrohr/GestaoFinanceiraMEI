@@ -1,4 +1,4 @@
-﻿<script>
+<script>
     function fnReadyAgenda() {
 
         $('.fc-month-button').hide();
@@ -77,7 +77,8 @@
                     end: json.response[i].Entrega,
                     color: getColor(json.response[i].Status),
                     allDay: true,
-                    editable: false
+                    editable: false,
+                    url: json.response[i].Status == "Concluído" || json.response[i].Status == "Cancelado" ? "" : "OrdemServico/Edit/" + json.response[i].OSId
                 });
             }
         }

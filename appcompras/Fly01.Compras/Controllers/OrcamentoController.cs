@@ -461,7 +461,7 @@ namespace Fly01.Compras.Controllers
                 Required = true,
                 DataUrl = Url.Action("Kit", "AutoComplete"),
                 LabelId = "kitDescricao",
-            }, ResourceHashConst.FaturamentoCadastrosKit));
+            }, ResourceHashConst.ComprasCadastrosKit));
 
             config.Elements.Add(new InputCheckboxUI
             {

@@ -954,7 +954,7 @@ namespace Fly01.OrdemServico.Controllers
                 Required = true,
                 DataUrl = Url.Action("Kit", "AutoComplete"),
                 LabelId = "kitDescricao",
-            }, ResourceHashConst.FaturamentoCadastrosKit));
+            }, ResourceHashConst.OrdemServicoCadastrosKit));
 
             config.Elements.Add(new InputCheckboxUI
             {
@@ -975,34 +975,6 @@ namespace Fly01.OrdemServico.Controllers
                 Label = "Somar com existentes"
             });
 
-            config.Elements.Add(new LabelSetUI() { Label = "Grupo Tributário Padrão", Class = "col s12" });
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "grupoTributarioProdutoIdKit",
-                Class = "col s12 m6",
-                Label = "Para Produtos",
-                Name = "grupoTributarioProdutoId",
-                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
-                LabelId = "grupoTributarioProdutoDescricaoKit",
-                LabelName = "grupoTributarioProdutoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
-
-            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
-            {
-                Id = "grupoTributarioServicoIdKit",
-                Class = "col s12 m6",
-                Label = "Para Serviços",
-                Name = "grupoTributarioServicoId",
-                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
-                LabelId = "grupoTributarioServicoDescricaoKit",
-                LabelName = "grupoTributarioServicoDescricao",
-                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
-                DataPostField = "descricao"
-            }, ResourceHashConst.FaturamentoCadastrosGrupoTributario));
-
             config.Elements.Add(new DivElementUI { Id = "infoGrupoTributario", Class = "col s12 text-justify visible", Label = "Informação" });
 
             #region Helpers            
@@ -1012,22 +984,6 @@ namespace Fly01.OrdemServico.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "grupoTributarioProdutoIdKit",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionados à ordem de serviço."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "grupoTributarioServicoIdKit",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionados à ordem de serviço."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -1065,7 +1021,7 @@ namespace Fly01.OrdemServico.Controllers
         {
             try
             {
-                //RestHelper.ExecutePostRequest("kitordemservico", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("kitordemservico", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 return JsonResponseStatus.GetSuccess("Itens do kit adicionados com sucesso.");
             }
             catch (Exception ex)

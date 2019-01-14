@@ -793,13 +793,13 @@ namespace Fly01.Faturamento.Controllers
             {
                 Id = "adicionarProdutos",
                 Class = "col s12 m4",
-                Label = "Adicionar produtos do Kit"
+                Label = "Adicionar produtos do kit"
             });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "adicionarServicos",
                 Class = "col s12 m4",
-                Label = "Adicionar serviços do Kit"
+                Label = "Adicionar serviços do kit"
             });
             config.Elements.Add(new InputCheckboxUI
             {

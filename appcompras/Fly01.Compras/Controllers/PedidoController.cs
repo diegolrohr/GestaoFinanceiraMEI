@@ -872,7 +872,6 @@ namespace Fly01.Compras.Controllers
             }
         }
 
-
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public JsonResult EnviaEmailPedido(string id)
         {
@@ -1028,14 +1027,8 @@ namespace Fly01.Compras.Controllers
                 Required = true,
                 DataUrl = Url.Action("Kit", "AutoComplete"),
                 LabelId = "kitDescricao",
-            }, ResourceHashConst.FaturamentoCadastrosKit));
+            }, ResourceHashConst.ComprasCadastrosKit));
 
-            //config.Elements.Add(new InputCheckboxUI
-            //{
-            //    Id = "adicionarProdutos",
-            //    Class = "col s12 m4",
-            //    Label = "Adicionar produtos do Kit"
-            //});
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "somarExistentes",

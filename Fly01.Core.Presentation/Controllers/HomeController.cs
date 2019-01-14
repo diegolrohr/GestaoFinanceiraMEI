@@ -7,25 +7,50 @@ using Fly01.Core.Config;
 using Fly01.Core.Rest;
 using Fly01.uiJS.Classes.Elements;
 using System.Linq;
+using Fly01.Core.Helpers;
+using System;
+using Fly01.Core.Presentation.Commons;
 
 namespace Fly01.Core.Presentation.Controllers
 {
     [OperationRole(NotApply = true)]
     public abstract class HomeController : GenericAppController
     {
-        public override ActionResult Index() 
+        public override ActionResult Index()
             => Request.IsAjaxRequest() ? Go() : base.Index();
 
-        public ContentResult Go() 
+        public ContentResult Go()
             => Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
 
-        public ContentResult List() 
+        public ContentResult List()
             => Content(JsonConvert.SerializeObject(HomeJson(), JsonSerializerSetting.Front), "application/json");
 
         public List<AppUI> AppsList()
         {
-            var requestObject = new { platformUrl = SessionManager.Current.UserData.PlatformUrl, platformUser = SessionManager.Current.UserData.PlatformUser, originApp = AppDefaults.AppId };
-            return RestHelper.ExecutePostRequest<List<AppUI>>(AppDefaults.UrlGateway, "v1/sidebarApps", requestObject);
+            var listOfApps = RestUtils.ExecuteGetRequest<ResponseDataVM<List<AppVM>>>(AppDefaults.UrlManager, "app",
+               RestUtils.GetAuthHeader("Bearer " + SessionManager.Current.UserData.TokenData.AccessToken), new Dictionary<string, string>()
+            {
+                { "platformUrl", SessionManager.Current.UserData.PlatformUrl},
+                { "platformUser", SessionManager.Current.UserData.PlatformUser },
+                { "originApp", AppDefaults.AppId }
+            });
+
+            if (listOfApps == null)
+                return new List<AppUI>();
+
+            return (from item in listOfApps.Data
+                    select new AppUI()
+                    {
+                        Title = item.Name,
+                        Target = new LinkUI()
+                        {
+                            Link = item.AccessUrl
+                        },
+                        Id = item.ClientId,
+                        Class = "col s12 m3",
+                        Icon = item.ImageUrl ?? "https://cdnfly01.azureedge.net/img/icon/default.png",
+                        Color = item.Cor ?? "#0c9abe"
+                    }).ToList();
         }
 
         protected abstract ContentUI HomeJson();
@@ -35,7 +60,7 @@ namespace Fly01.Core.Presentation.Controllers
         public virtual List<SidebarUIMenu> ProcessMenuRoles(List<SidebarUIMenu> appMenu)
         {
             var resourceByUser = SessionManager.Current.UserData.Permissions.Select(x => x.ResourceHash.ToUpper()).ToList();
-            
+
             var subMenuItems = appMenu.SelectMany(x => x.Items).Where(x => !resourceByUser.Contains(x.Class.ToUpper())).Select(x => x.Class);
             var menuItems = appMenu.Where(x => !resourceByUser.Contains(x.Class.ToUpper())).Select(x => x.Class);
             var itemsToRemove = subMenuItems.Union(menuItems).ToList();
@@ -46,7 +71,7 @@ namespace Fly01.Core.Presentation.Controllers
             appMenu.RemoveAll(x => itemsToRemove.Contains(x.Class.ToUpper()));
 
             // Clear ResourceHash in class items
-            appMenu.ForEach(m => 
+            appMenu.ForEach(m =>
             {
                 m.Class = string.Empty;
                 m.Items.ForEach(s => s.Class = string.Empty);

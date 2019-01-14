@@ -125,6 +125,7 @@
     <Compile Include="Application\GlobalHttpApplication.cs" />
     <Compile Include="Application\RouteConfig.cs" />
     <Compile Include="Application\WebAPIConfig.cs" />
+    <Compile Include="Commons\AppVM.cs" />
     <Compile Include="Commons\ElementUIHelper.cs" />
     <Compile Include="Controllers\AssertionResponseVM.cs" />
     <Compile Include="Controllers\CertificadoDigitalBaseController.cs" />

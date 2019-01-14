@@ -164,7 +164,7 @@ namespace Fly01.Compras.BL
                             var existentesOrcamento =
                                 from oi in OrcamentoItemBL.AllIncluding(x => x.Produto).Where(x => x.OrcamentoId == entity.OrcamentoPedidoId)
                                 join ki in kitProdutos on oi.ProdutoId equals ki.ProdutoId
-                                select new { ProdutoId = ki.ProdutoId, OrcamentoId = oi.Id, Quantidade = ki.Quantidade };
+                                select new { ProdutoId = ki.ProdutoId, OrcamentoItemId = oi.Id, Quantidade = ki.Quantidade };
 
                             var novasOrcamentoItens =
                                 from kit in kitProdutos
@@ -194,7 +194,7 @@ namespace Fly01.Compras.BL
                             {
                                 foreach (var item in existentesOrcamento)
                                 {
-                                    var orcamentoItem = OrcamentoItemBL.Find(item.OrcamentoId);
+                                    var orcamentoItem = OrcamentoItemBL.Find(item.OrcamentoItemId);
                                     orcamentoItem.Quantidade += item.Quantidade;
                                     OrcamentoItemBL.Update(orcamentoItem);
                                 }

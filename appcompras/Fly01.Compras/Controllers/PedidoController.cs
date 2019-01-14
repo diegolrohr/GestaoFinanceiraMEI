@@ -1018,6 +1018,7 @@ namespace Fly01.Compras.Controllers
                 ReadyFn = "fnFormReadyPedidoKit"
             };
             config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+            config.Elements.Add(new InputHiddenUI { Id = "adicionarProdutos", Value = "true" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -1029,12 +1030,12 @@ namespace Fly01.Compras.Controllers
                 LabelId = "kitDescricao",
             }, ResourceHashConst.FaturamentoCadastrosKit));
 
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "adicionarProdutos",
-                Class = "col s12 m4",
-                Label = "Adicionar produtos do Kit"
-            });
+            //config.Elements.Add(new InputCheckboxUI
+            //{
+            //    Id = "adicionarProdutos",
+            //    Class = "col s12 m4",
+            //    Label = "Adicionar produtos do Kit"
+            //});
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "somarExistentes",
@@ -1065,14 +1066,6 @@ namespace Fly01.Compras.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "adicionarProdutos",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe se deseja adicionar todos produtos cadastrados no kit."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
                 Id = "grupoTributarioProdutoIdKit",
                 Tooltip = new HelperUITooltip()
                 {
@@ -1098,7 +1091,7 @@ namespace Fly01.Compras.Controllers
         {
             try
             {
-                //RestHelper.ExecutePostRequest("kitpedido", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                RestHelper.ExecutePostRequest("kitpedido", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
                 return JsonResponseStatus.GetSuccess("Produtos do kit adicionados com sucesso.");
             }
             catch (Exception ex)

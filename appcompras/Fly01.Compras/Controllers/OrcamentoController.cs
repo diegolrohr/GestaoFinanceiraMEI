@@ -451,6 +451,7 @@ namespace Fly01.Compras.Controllers
                 ReadyFn = "fnFormReadyOrcamentoKit"
             };
             config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+            config.Elements.Add(new InputHiddenUI { Id = "adicionarProdutos", Value = "true" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -462,12 +463,6 @@ namespace Fly01.Compras.Controllers
                 LabelId = "kitDescricao",
             }, ResourceHashConst.FaturamentoCadastrosKit));
 
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "adicionarProdutos",
-                Class = "col s12 m4",
-                Label = "Adicionar produtos do Kit"
-            });
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "somarExistentes",
@@ -495,14 +490,6 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Vai ser adicionado os produtos cadastrados no Kit."
-                }
-            });
-            config.Helpers.Add(new TooltipUI
-            {
-                Id = "adicionarProdutos",
-                Tooltip = new HelperUITooltip()
-                {
-                    Text = "Informe se deseja adicionar todos produtos cadastrados no kit."
                 }
             });
             config.Helpers.Add(new TooltipUI

@@ -72,7 +72,7 @@ namespace Fly01.Compras.BL
         public OrdemCompraItemBL OrdemCompraItemBL => ordemCompraItemBL ?? (ordemCompraItemBL = new OrdemCompraItemBL(Context));
 
         private PedidoBL pedidoBL;
-        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL));
+        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL, KitItemBL));
 
         private PedidoItemBL pedidoItemBL;
         public PedidoItemBL PedidoItemBL => pedidoItemBL ?? (pedidoItemBL = new PedidoItemBL(Context));

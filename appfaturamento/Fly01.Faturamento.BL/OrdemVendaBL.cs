@@ -883,16 +883,16 @@ namespace Fly01.Faturamento.BL
                         #region Produtos
                         if (entity.AdicionarProdutos)
                         {
-                            var kitItens = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+                            var kitProdutos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
 
-                            var existentes =
+                            var existentesOrcamentoPedido =
                                 from ovp in OrdemVendaProdutoBL.AllIncluding(x => x.Produto).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
-                                join ki in kitItens on ovp.ProdutoId equals ki.ProdutoId
+                                join ki in kitProdutos on ovp.ProdutoId equals ki.ProdutoId
                                 select new { ProdutoId = ki.ProdutoId, OrdemVendaProdutoId = ovp.Id, Quantidade = ki.Quantidade };
 
                             var novasOrdemVendaProdutos =
-                                from kit in kitItens
-                                where !existentes.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                from kit in kitProdutos
+                                where !existentesOrcamentoPedido.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
                                 select new
                                 {
                                     GrupoTributarioId = entity.GrupoTributarioProdutoId,
@@ -906,7 +906,7 @@ namespace Fly01.Faturamento.BL
                             {
                                 OrdemVendaProdutoBL.Insert(new OrdemVendaProduto()
                                 {
-                                    GrupoTributarioId = item.GrupoTributarioId == default(Guid) ? null : item.GrupoTributarioId,
+                                    GrupoTributarioId = item.GrupoTributarioId != default(Guid) ? item.GrupoTributarioId : (Guid?)null,
                                     ProdutoId = item.ProdutoId,
                                     OrdemVendaId = item.OrdemVendaId,
                                     Valor = item.Valor,
@@ -916,11 +916,10 @@ namespace Fly01.Faturamento.BL
 
                             if (entity.SomarExistentes)
                             {
-                                foreach (var item in existentes)
+                                foreach (var item in existentesOrcamentoPedido)
                                 {
                                     var ordemVendaProduto = OrdemVendaProdutoBL.Find(item.OrdemVendaProdutoId);
                                     ordemVendaProduto.Quantidade += item.Quantidade;
-                                    //ordemVendaProduto.GrupoTributarioId = ordemVendaProduto.GrupoTributarioId != null ? ordemVendaProduto.GrupoTributarioId : entity.GrupoTributarioProdutoId;
                                     OrdemVendaProdutoBL.Update(ordemVendaProduto);
                                 }
                             }
@@ -929,6 +928,46 @@ namespace Fly01.Faturamento.BL
                         #region Servicos
                         if (entity.AdicionarServicos)
                         {
+                            var kitServicos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Servico);
+
+                            var existentesOrcamentoPedido =
+                                from ovp in OrdemVendaServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
+                                join ki in kitServicos on ovp.ServicoId equals ki.ServicoId
+                                select new { ServicoId = ki.ProdutoId, OrdemVendaServicoId = ovp.Id, Quantidade = ki.Quantidade };
+
+                            var novasOrdemVendaServicos =
+                                from kit in kitServicos
+                                where !existentesOrcamentoPedido.Select(x => x.ServicoId).Contains(kit.ServicoId)
+                                select new
+                                {
+                                    GrupoTributarioId = entity.GrupoTributarioServicoId,
+                                    OrdemVendaId = entity.OrcamentoPedidoId,
+                                    ServicoId = kit.ServicoId.Value,
+                                    Valor = kit.Servico.ValorServico,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            foreach (var item in novasOrdemVendaServicos)
+                            {
+                                OrdemVendaServicoBL.Insert(new OrdemVendaServico()
+                                {
+                                    GrupoTributarioId = item.GrupoTributarioId != default(Guid) ? item.GrupoTributarioId : (Guid?)null,
+                                    ServicoId = item.ServicoId,
+                                    OrdemVendaId = item.OrdemVendaId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrcamentoPedido)
+                                {
+                                    var ordemVendaServico = OrdemVendaServicoBL.Find(item.OrdemVendaServicoId);
+                                    ordemVendaServico.Quantidade += item.Quantidade;
+                                    OrdemVendaServicoBL.Update(ordemVendaServico);
+                                }
+                            }
                         }
                         #endregion
                     }

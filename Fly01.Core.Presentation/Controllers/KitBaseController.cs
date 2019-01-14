@@ -114,7 +114,8 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "quantidade",
                 Class = "col s8 m2",
                 Label = "Quantidade",
-                Value = "1"
+                Value = "1",
+                Required = true
             });
 
             formConfigKitItens.Elements.Add(new ButtonUI
@@ -151,6 +152,7 @@ namespace Fly01.Core.Presentation.Controllers
 
             dtConfig.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
+                new DataTableUIAction { OnClickFn = "fnModalKitItem", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" }
             }));
 

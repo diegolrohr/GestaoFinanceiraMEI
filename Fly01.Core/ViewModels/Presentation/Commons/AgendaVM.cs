@@ -16,5 +16,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [APIEnum("StatusOrdemServico")]
         public string Status { get; set; }
 
+        [JsonProperty("oSId")]
+        public string OSId { get; set; }
     }
 }

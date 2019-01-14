@@ -439,7 +439,7 @@ namespace Fly01.Compras.Controllers
         {
             ModalUIForm config = new ModalUIForm()
             {
-                Title = "Adicionar Kit Produto",
+                Title = "Adicionar Kit Produtos",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
                 ConfirmAction = new ModalUIAction() { Label = "Salvar" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },

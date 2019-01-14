@@ -188,7 +188,6 @@ namespace Fly01.Compras.Controllers
             return dtProdutosEstoqueNegativoCfg;
         }
 
-
         public ContentUI FormPedidoJson(bool isEdit = false)
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -237,7 +236,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -320,12 +319,23 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnAddPedidoItem",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnModalPedidoItem" }
                 }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemVendaServicoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalPedidoKit" }
+                    }
             });
             config.Elements.Add(new DivElementUI { Id = "pedidoProdutos", Class = "col s12 visible" });
             #endregion
@@ -991,6 +1001,113 @@ namespace Fly01.Compras.Controllers
 
             });
         }
+
+        public ContentResult ModalKit()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Kit Produtos",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AdicionarKit", "Pedido")
+                },
+                Id = "fly01mdlfrmPedidoKit",
+                ReadyFn = "fnFormReadyPedidoKit"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "kitId",
+                Class = "col s12",
+                Label = "Kit",
+                Required = true,
+                DataUrl = Url.Action("Kit", "AutoComplete"),
+                LabelId = "kitDescricao",
+            }, ResourceHashConst.FaturamentoCadastrosKit));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarProdutos",
+                Class = "col s12 m4",
+                Label = "Adicionar produtos do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "somarExistentes",
+                Class = "col s12 m4",
+                Label = "Somar com existentes"
+            });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "grupoTributarioProdutoIdKit",
+                Class = "col s12",
+                Label = "Grupo Tributário Padrão",
+                Name = "grupoTributarioProdutoId",
+                DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
+                LabelId = "grupoTributarioProdutoDescricaoKit",
+                LabelName = "grupoTributarioProdutoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "GrupoTributario"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosGrupoTributario));
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "kitId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Vai ser adicionado os produtos cadastrados no Kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos produtos cadastrados no kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "grupoTributarioProdutoIdKit",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionados ao pedido."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somarExistentes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os produtos cadastrados no kit, serão somados com a quantidade já existente no pedido."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult AdicionarKit(UtilizarKitVM entityVM)
+        {
+            try
+            {
+                //RestHelper.ExecutePostRequest("kitpedido", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                return JsonResponseStatus.GetSuccess("Produtos do kit adicionados com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
         #region OnDemmand
         [HttpPost]
         public JsonResult NovaCategoriaDespesa(string term)

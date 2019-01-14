@@ -234,6 +234,7 @@
     <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFormReadyOrdemServicoKit.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
@@ -247,6 +248,7 @@
     <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
     <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Produto\ImportarProduto.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

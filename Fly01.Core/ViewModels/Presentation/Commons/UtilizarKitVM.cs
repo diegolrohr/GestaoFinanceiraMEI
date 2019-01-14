@@ -12,10 +12,13 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public Guid KitId  { get; set; }
 
         [JsonProperty("grupoTributarioProdutoId")]
-        public Guid GrupoTributarioProdutoId { get; set; }
+        public Guid? GrupoTributarioProdutoId { get; set; }
 
         [JsonProperty("grupoTributarioServicoId")]
-        public Guid GrupoTributarioServicoId { get; set; }
+        public Guid? GrupoTributarioServicoId { get; set; }
+
+        [JsonProperty("fornecedorPadraoId")]
+        public Guid? FornecedorPadraoId { get; set; }
 
         [JsonProperty("adicionarProdutos")]
         public bool AdicionarProdutos { get; set; }
@@ -34,5 +37,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("grupoTributarioServico")]
         public virtual GrupoTributarioVM GrupoTributarioServico { get; set; }
+
+        [JsonProperty("fornecedorId")]
+        public virtual PessoaVM Fornecedor { get; set; }
+
     }
 }

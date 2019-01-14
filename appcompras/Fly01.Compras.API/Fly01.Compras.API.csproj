@@ -86,6 +86,7 @@
     <Compile Include="Controllers\Api\NotaFiscalItemTributacaoEntradaController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalPDFController.cs" />
     <Compile Include="Controllers\Api\NotaFiscalXMLController.cs" />
+    <Compile Include="Controllers\Api\OrcamentoKitController.cs" />
     <Compile Include="Controllers\Api\OrdemCompraController.cs" />
     <Compile Include="Controllers\Api\ParametroTributarioController.cs" />
     <Compile Include="Controllers\Api\PedidoEstoqueNegativoController.cs" />

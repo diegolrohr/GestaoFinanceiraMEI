@@ -852,7 +852,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioProdutoIdKit",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionaos ao orçamento/pedido."
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os produtos do kit, que vão ser adicionados ao orçamento/pedido."
                 }
             });
             config.Helpers.Add(new TooltipUI
@@ -860,7 +860,7 @@ namespace Fly01.Faturamento.Controllers
                 Id = "grupoTributarioServicoIdKit",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionaos ao orçamento/pedido."
+                    Text = "Se desejar, informe um grupo tributário padrão para todos os serviços do kit, que vão ser adicionados ao orçamento/pedido."
                 }
             });
             config.Helpers.Add(new TooltipUI

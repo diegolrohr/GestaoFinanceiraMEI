@@ -18,6 +18,8 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using Fly01.uiJS.Classes.Helpers;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.Controllers
 {
@@ -131,7 +133,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 2,
+                        Quantity = 3,
 
                     },
                     new FormWizardUIStep()
@@ -164,12 +166,23 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnAddOrcamentoItem",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnModalOrcamentoItem" }
                 }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemVendaServicoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrcamentoKit" }
+                    }
             });
             config.Elements.Add(new DivElementUI { Id = "orcamentoProdutos", Class = "col s12 visible" });
             #endregion
@@ -420,6 +433,111 @@ namespace Fly01.Compras.Controllers
             queryString.AddParam("$expand", "produto,fornecedor");
 
             return RestHelper.ExecuteGetRequest<ResultBase<OrcamentoItemVM>>("OrcamentoItem", queryString).Data;
+        }
+
+        public ContentResult ModalKit()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Kit Produto",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AdicionarKit", "Orcamento")
+                },
+                Id = "fly01mdlfrmOrcamentoKit",
+                ReadyFn = "fnFormReadyOrcamentoKit"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "kitId",
+                Class = "col s12",
+                Label = "Kit",
+                Required = true,
+                DataUrl = Url.Action("Kit", "AutoComplete"),
+                LabelId = "kitDescricao",
+            }, ResourceHashConst.FaturamentoCadastrosKit));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarProdutos",
+                Class = "col s12 m4",
+                Label = "Adicionar produtos do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "somarExistentes",
+                Class = "col s12 m4",
+                Label = "Somar com existentes"
+            });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "fornecedorPadraoId",
+                Class = "col s12",
+                Required = true,
+                Label = "Fornecedor padrão",
+                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
+                LabelId = "fornecedorNome",
+                DataUrlPostModal = Url.Action("FormModal", "Fornecedor"),
+                DataPostField = "nome"
+            }, ResourceHashConst.ComprasCadastrosFornecedores));
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "kitId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Vai ser adicionado os produtos cadastrados no Kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos produtos cadastrados no kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "fornecedorId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe um fornecedor padrão para todos os produtos do kit, que vão ser adicionados ao orçamento."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somarExistentes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os produtos cadastrados no kit, serão somados com a quantidade já existente no orçamento."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult AdicionarKit(UtilizarKitVM entityVM)
+        {
+            try
+            {
+                RestHelper.ExecutePostRequest("kitorcamento", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                return JsonResponseStatus.GetSuccess("Produtos do kit adicionados com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         #region OnDemmand

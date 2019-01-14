@@ -57,7 +57,7 @@ namespace Fly01.Core.Presentation.Controllers
             SessionManager.Current.UserData = userDataVM;
 
             HttpCookie mpnData = new HttpCookie("mpndata") { Expires = DateTime.UtcNow.AddDays(2), Path = "/" };
-            mpnData.Values["UserName"] = SessionManager.Current.UserData.PlatformUser;
+            mpnData.Values["UserName"] = SessionManager.Current.UserData.TokenData.Username;
             mpnData.Values["UserEmail"] = assertion.UserEmail;
             mpnData.Values["TrialUntil"] = assertion.Trial ? assertion.LicenseExpiration : "";
 

@@ -59,6 +59,7 @@
     <Compile Include="ISSBL.cs" />
     <Compile Include="KitItemBL.cs" />
     <Compile Include="NBSBL.cs" />
+    <Compile Include="AgendaBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />

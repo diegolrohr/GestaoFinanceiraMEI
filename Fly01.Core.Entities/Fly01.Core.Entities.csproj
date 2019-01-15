@@ -65,6 +65,7 @@
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\KitItem.cs" />
     <Compile Include="Domains\Commons\Kit.cs" />
+    <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
@@ -149,7 +150,7 @@
     <Compile Include="Domains\Commons\MovimentoEstoque.cs" />
     <Compile Include="Domains\Commons\MovimentoOrdemVenda.cs" />
     <Compile Include="Domains\Commons\Nbs.cs" />
-    <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\Agenda.cs" />
     <Compile Include="Domains\Commons\NFe.cs" />
     <Compile Include="Domains\Commons\NFeProduto.cs" />
     <Compile Include="Domains\Commons\NFSe.cs" />

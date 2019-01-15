@@ -10,7 +10,7 @@ namespace Fly01.Core.Presentation.Commons
         private static string libName = "mpnui";
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; /*
-        //private static string serverUrl = $"http://10.51.5.26:3000/{cdnVersion}"; /* */
+        private static string serverUrl = $"http://10.51.5.55:3000/{cdnVersion}"; /* */
     
         private static string cssUrl = $"{serverUrl}/{libName}.css";
         private static string jsUrl = $"{serverUrl}/{libName}.js";
@@ -29,7 +29,7 @@ namespace Fly01.Core.Presentation.Commons
             return new HtmlString(
                 $"<script src=\"{vendorJsUrl}\"></script>" +
                 $"<script src=\"{jsUrl}\"></script>"
-                );
+            );
         }
     }
 }

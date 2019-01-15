@@ -8,6 +8,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using System;
 using System.Collections.Generic;
 using Fly01.Core.Helpers;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Compras.BL
 {
@@ -19,6 +20,7 @@ namespace Fly01.Compras.BL
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         public const int MaxLengthObservacao = 200;
+        protected KitItemBL KitItemBL { get; set; }
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
@@ -29,7 +31,7 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
 
-        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL) : base(context)
+        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
@@ -37,6 +39,7 @@ namespace Fly01.Compras.BL
             NFeProdutoEntradaBL = nFeProdutoEntradaBL;
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             TotalTributacaoBL = totalTributacaoBL;
+            KitItemBL = kitItemBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -502,6 +505,68 @@ namespace Fly01.Compras.BL
             };
 
             return result;
+        }
+
+        public void UtilizarKitPedido(UtilizarKitVM entity)
+        {
+            try
+            {
+                if (All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                {
+                    if (KitItemBL.All.Any(x => x.KitId == entity.KitId))
+                    {
+                        #region Produtos
+                        if (entity.AdicionarProdutos)
+                        {
+                            var kitProdutos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+
+                            var existentesPedido =
+                                from pi in PedidoItemBL.AllIncluding(x => x.Produto).Where(x => x.PedidoId == entity.OrcamentoPedidoId)
+                                join ki in kitProdutos on pi.ProdutoId equals ki.ProdutoId
+                                select new { ProdutoId = ki.ProdutoId, PedidoItemId = pi.Id, Quantidade = ki.Quantidade };
+
+                            var novasPedidoItens =
+                                from kit in kitProdutos
+                                where !existentesPedido.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                select new
+                                {
+                                    PedidoId = entity.OrcamentoPedidoId,
+                                    ProdutoId = kit.ProdutoId.Value,
+                                    Valor = kit.Produto.ValorVenda,
+                                    Quantidade = kit.Quantidade,
+                                    GrupoTributarioId = entity.GrupoTributarioProdutoId
+                                };
+
+                            foreach (var item in novasPedidoItens)
+                            {
+                                PedidoItemBL.Insert(new PedidoItem()
+                                {
+                                    GrupoTributarioId = item.GrupoTributarioId != default(Guid) ? item.GrupoTributarioId : (Guid?)null,
+                                    ProdutoId = item.ProdutoId,
+                                    PedidoId = item.PedidoId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesPedido)
+                                {
+                                    var pedidoItem = PedidoItemBL.Find(item.PedidoItemId);
+                                    pedidoItem.Quantidade += item.Quantidade;
+                                    PedidoItemBL.Update(pedidoItem);
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
 
         public static string ValorBCSTRetidoRequerido = "Valor da base de cálculo do ICMS substituído é obrigatório para CSOSN 500. Item {itemcount} da lista de produtos";

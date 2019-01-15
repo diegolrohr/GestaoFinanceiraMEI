@@ -60,6 +60,7 @@
         public const string FaturamentoCadastrosFormasPagamento = "F01B50F5-E906-49E4-BBC5-0893DA4AA207";
         public const string FaturamentoCadastrosCategoria = "13D0BD8E-06FA-4CC2-BB1B-25AC17D24363";
         public const string FaturamentoCadastrosSubstituicaoTributaria = "25503866-3DFC-445A-A13D-677798AD6E89";
+        public const string FaturamentoCadastrosKit = "0B083814-AD86-4FC0-A0F4-8A903C2813A7";
 
         public const string FaturamentoConfiguracoes = "0A6B803C-215C-4CAD-89AF-F9AD96D87EBB";
         public const string FaturamentoConfiguracoesCertificadoDigital = "A4EF868D-E45F-48DB-8483-6EB222CC685B";
@@ -107,7 +108,8 @@
         public const string ComprasCadastrosGrupoProdutos = "30F7EE6D-3D8A-478C-876A-7888FABED371";
         public const string ComprasCadastrosCategoria = "C7BA2B5A-CB3C-4E30-86E0-7571D5CB2836";
         public const string ComprasCadastrosSubstituicaoTributaria = "361B7CF8-BC9D-4C96-800C-9CA58611E3FA";
-
+        public const string ComprasCadastrosKit = "E9261063-39DA-45CA-BA45-82C9811B89E3";
+        
         public const string ComprasConfiguracoes = "6CC410A7-0059-4C0C-9E77-64C5F401BFA3";
         public const string ComprasConfiguracoesCertificadoDigital = "41996A68-7DF5-4CA2-ABDA-839B52AE5DF3";
         public const string ComprasConfiguracoesParametrosTributarios = "D3C4072E-ACAD-40DF-8C11-DFC52347FD52";
@@ -128,10 +130,12 @@
         public const string OrdemServicoAgenda = "6DA1BF03-D7C8-4716-B637-06FA8D263737";
 
         public const string OrdemServicoCadastros = "53ADC54B-B949-4F41-8AB7-91CBB34435DE";
-        public const string OrdemServicoCadastroProdutos = "937C0526-60EE-4957-BE73-413083BF5D05";
-        public const string OrdemServicoCadastroServicos = "2F4F12B8-383F-40C9-805D-718B4BEC383C";
-        public const string OrdemServicoCadastroClientes = "DB7C28D1-0F67-4204-B95D-D176DCBAB1AD";
-        public const string OrdemServicoCadastroResponsaveis = "C748EFD3-5A45-4E05-BD4F-06F33B745A00";
+        public const string OrdemServicoCadastrosProdutos = "937C0526-60EE-4957-BE73-413083BF5D05";
+        public const string OrdemServicoCadastrosServicos = "2F4F12B8-383F-40C9-805D-718B4BEC383C";
+        public const string OrdemServicoCadastrosClientes = "DB7C28D1-0F67-4204-B95D-D176DCBAB1AD";
+        public const string OrdemServicoCadastrosResponsaveis = "C748EFD3-5A45-4E05-BD4F-06F33B745A00";
+        public const string OrdemServicoCadastrosKit = "C124C754-271F-4116-B219-5A65FAE94397";
+ 
 
         public const string OrdemServicoConfiguracoes = "0DA692E7-7DB2-4556-8D60-F58B24476646";
         public const string OrdemServicoConfiguracoesParametros = "B00703C3-34ED-44FF-B3EE-A13B9292F030";

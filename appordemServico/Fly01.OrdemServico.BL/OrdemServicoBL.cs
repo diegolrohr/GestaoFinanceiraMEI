@@ -238,9 +238,9 @@ namespace Fly01.OrdemServico.BL
                             var kitServicos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Servico);
 
                             var existentesOrdemServico =
-                                from ovp in OrdemServicoItemServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemServicoId == entity.OrcamentoPedidoId)
-                                join ki in kitServicos on ovp.ServicoId equals ki.ServicoId
-                                select new { ServicoId = ki.ServicoId, OrdemServicoItemServicoId = ovp.Id, Quantidade = ki.Quantidade };
+                                from ovs in OrdemServicoItemServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemServicoId == entity.OrcamentoPedidoId)
+                                join ki in kitServicos on ovs.ServicoId equals ki.ServicoId
+                                select new { ServicoId = ki.ServicoId, OrdemServicoItemServicoId = ovs.Id, Quantidade = ki.Quantidade };
 
                             var novasOrdemServicoItemServicos =
                                 from kit in kitServicos

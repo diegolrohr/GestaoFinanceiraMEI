@@ -7,8 +7,18 @@ namespace Fly01.Core.API
 {
     public class ProdutoServicoBaseController : ApiBaseController
     {
-        protected IQueryable<ProdutoServicoVM> GetProdutosServicos(string filtro, IQueryable<Produto> produtos, IQueryable<Servico> servicos)
+        protected IQueryable<ProdutoServicoVM> GetProdutosServicos(string filtro, IQueryable<Produto> produtos, IQueryable<Servico> servicos, IQueryable<KitItem> kitItens)
         {
+            produtos =
+                from prod in produtos
+                where !kitItens.Where(x => x.TipoItem == TipoItem.Produto).Select(x => x.ProdutoId).Contains(prod.Id)
+                select prod;
+
+            servicos =
+                from serv in servicos
+                where !kitItens.Where(x => x.TipoItem == TipoItem.Servico).Select(x => x.ServicoId).Contains(serv.Id)
+                select serv;
+
             if (!string.IsNullOrWhiteSpace(filtro))
             {
                 produtos = produtos.Where(x =>

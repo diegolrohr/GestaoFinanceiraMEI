@@ -102,7 +102,6 @@ namespace Fly01.Faturamento.BL
 
         public override void Insert(NFSe entity)
         {
-            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida && entity.Status != StatusNotaFiscal.Transmitida, new Error("Uma nova NFS-e só pode estar com status 'Não Transmitida' ou 'Transmitida'", "status"));
             base.Insert(entity);
         }
 

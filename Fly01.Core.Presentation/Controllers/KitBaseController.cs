@@ -104,6 +104,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Required = true,
                 DataUrl = @Url.Action("ProdutoServico", "AutoComplete"),
                 LabelId = "produtoServicoDescricao",
+                PreFilter = "kitId",
                 DomEvents = new List<DomEventUI>() {
                     new DomEventUI() { DomEvent = "autocompleteselect", Function = "fnProdutoServicoSelected" }
                 }
@@ -178,7 +179,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "produtoServicoId",
                 Tooltip = new HelperUITooltip()
                 {
-                    Text = "Pesquise Produtos por: descrição, código ou código de barras. Serviços por: descrição ou código"
+                    Text = "Pesquise produtos por: descrição, código ou código de barras. Pesquise serviços por: descrição ou código. Produtos/Serviços já adicionados ao kit não são listados."
                 }
             });
             #endregion

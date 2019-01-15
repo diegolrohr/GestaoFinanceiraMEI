@@ -660,8 +660,7 @@ namespace Fly01.Compras.BL
         }
 
         public override void Insert(NFeEntrada entity)
-        {
-            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
+        {             
             base.Insert(entity);
         }
 

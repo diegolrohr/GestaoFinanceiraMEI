@@ -98,6 +98,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Reports\ReportFluxo.cs" />
+    <Compile Include="Models\Reports\ReportExtrato.cs" />
     <Compile Include="Models\Reports\ReportListContas.cs" />
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="ViewModel\FeriadoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaProjecaoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaSaldoVM.cs" />
+    <Compile Include="ViewModel\ImprimirExtratoBancarioVM.cs" />
     <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
@@ -663,6 +665,9 @@
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ReportExtrato.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

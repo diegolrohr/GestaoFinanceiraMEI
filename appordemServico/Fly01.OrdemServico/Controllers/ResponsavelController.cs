@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastroResponsaveis)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastrosResponsaveis)]
     public class ResponsavelController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Responsável";

@@ -13,6 +13,7 @@ using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
@@ -362,7 +363,6 @@ namespace Fly01.OrdemServico.Controllers
         public ContentResult FormOrdemServico(bool isEdit = false)
             => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit), JsonSerializerSetting.Front), "application/json");
 
-
         public ContentUI FormOrdemServicoJson(bool isEdit = false)
         {
 
@@ -413,13 +413,13 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Serviços",
                         Id = "stepServicos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -487,12 +487,23 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemServicoItemProduto",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemProduto" }
+                    }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoProdutoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoKit" }
                     }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemServicoItemProdutos", Class = "col s12 visible" });
@@ -502,12 +513,23 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemServicoItemServico",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar serviço",
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemServico" }
+                    }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoServicoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoKit" }
                     }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemServicoItemServicos", Class = "col s12 visible" });
@@ -907,6 +929,108 @@ namespace Fly01.OrdemServico.Controllers
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public ContentResult ModalKit()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Kit Produtos/Serviços",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AdicionarKit", "OrdemServico")
+                },
+                Id = "fly01mdlfrmOrdemServicoKit",
+                ReadyFn = "fnFormReadyOrdemServicoKit"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "kitId",
+                Class = "col s12",
+                Label = "Kit",
+                Required = true,
+                DataUrl = Url.Action("Kit", "AutoComplete"),
+                LabelId = "kitDescricao",
+            }, ResourceHashConst.OrdemServicoCadastrosKit));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarProdutos",
+                Class = "col s12 m4",
+                Label = "Adicionar produtos do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarServicos",
+                Class = "col s12 m4",
+                Label = "Adicionar serviços do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "somarExistentes",
+                Class = "col s12 m4",
+                Label = "Somar com existentes"
+            });
+
+            config.Elements.Add(new DivElementUI { Id = "infoGrupoTributario", Class = "col s12 text-justify visible", Label = "Informação" });
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "kitId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarServicos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somarExistentes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os produtos/serviços cadastrados no kit, serão somados com a quantidade já existente na ordem de serviço."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult AdicionarKit(UtilizarKitVM entityVM)
+        {
+            try
+            {
+                RestHelper.ExecutePostRequest("kitordemservico", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                return JsonResponseStatus.GetSuccess("Itens do kit adicionados com sucesso.");
             }
             catch (Exception ex)
             {

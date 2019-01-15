@@ -78,7 +78,6 @@ namespace Fly01.Compras.Controllers
                 Id = "grupoTributarioIdProduto",
                 Class = "col s12 m6",
                 Label = "Grupo Tributário",
-                Required = true,
                 Name = "grupoTributarioId",
                 DataUrl = Url.Action("GrupoTributario", "AutoComplete"),
                 LabelId = "grupoTributarioDescricaoProduto",

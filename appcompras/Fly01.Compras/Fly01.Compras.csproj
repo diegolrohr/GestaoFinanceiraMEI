@@ -81,6 +81,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CfopController.cs" />
     <Compile Include="Controllers\CestController.cs" />
+    <Compile Include="Controllers\KitController.cs" />
+    <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
     <Compile Include="Controllers\NFeEntradaController.cs" />
     <Compile Include="Controllers\NFeProdutoEntradaController.cs" />
@@ -342,6 +344,17 @@
     <Content Include="Views\OrdemCompra\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalEntrada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoKit.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnFormReadyOrcamentoKit.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalPedidoKit.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnFormReadyPedidoKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -183,7 +183,7 @@ namespace Fly01.OrdemServico.Controllers
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick});
             }
 
             return target;
@@ -193,7 +193,9 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "andamento", Label = "Em Andamento", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluído", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
 
             return target;
         }
@@ -867,7 +869,7 @@ namespace Fly01.OrdemServico.Controllers
             return reportItems;
         }
 
-        private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
+        public JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
         {
             dynamic pedido = new ExpandoObject();
             pedido.status = status.ToString();

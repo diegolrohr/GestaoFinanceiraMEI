@@ -227,6 +227,8 @@
     <Content Include="Views\Home\Functions\_fnFormReadyPeriodo.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnReadyAgenda.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusAndamento.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusConcluido.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

@@ -219,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AiHandleErrorAttribute.cs" />
+    <Compile Include="MinhaContaBaseController.cs" />
     <Compile Include="ProdutoServicoBaseController.cs" />
     <Compile Include="ApiBaseController.cs" />
     <Compile Include="ApiDomainBaseController.cs" />

@@ -931,9 +931,11 @@ namespace Fly01.Faturamento.BL
                             var kitServicos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Servico);
 
                             var existentesOrcamentoPedido =
-                                from ovp in OrdemVendaServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
-                                join ki in kitServicos on ovp.ServicoId equals ki.ServicoId
-                                select new { ServicoId = ki.ProdutoId, OrdemVendaServicoId = ovp.Id, Quantidade = ki.Quantidade };
+                                from ovs in OrdemVendaServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
+                                join ki in kitServicos on ovs.ServicoId equals ki.ServicoId
+                                select new { ServicoId = ki.ServicoId, OrdemVendaServicoId = ovs.Id, Quantidade = ki.Quantidade };
+
+                            var ex = existentesOrcamentoPedido.ToList();
 
                             var novasOrdemVendaServicos =
                                 from kit in kitServicos
@@ -946,6 +948,8 @@ namespace Fly01.Faturamento.BL
                                     Valor = kit.Servico.ValorServico,
                                     Quantidade = kit.Quantidade
                                 };
+
+                            var novas = novasOrdemVendaServicos.ToList();
 
                             foreach (var item in novasOrdemVendaServicos)
                             {

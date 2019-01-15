@@ -342,5 +342,20 @@ namespace Fly01.Core.Presentation.Controllers
 
             return GetJson(filterObjects);
         }
+
+        public JsonResult Kit(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(KitVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(descricao,'{term}'))");
+            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<KitVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao };
+
+            return GetJson(filterObjects);
+        }
     }
 }

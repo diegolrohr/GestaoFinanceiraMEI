@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.OrdemServico.BL.Extension;
 using System;
 using System.Data.Entity;
@@ -19,14 +20,16 @@ namespace Fly01.OrdemServico.BL
         protected OrdemServicoItemProdutoBL OrdemServicoItemProdutoBL { get; set; }
         protected OrdemServicoItemServicoBL OrdemServicoItemServicoBL { get; set; }
         protected OrdemServicoManutencaoBL OrdemServicoManutencaoBL { get; set; }
+        protected KitItemBL KitItemBL { get; set; }
 
-        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL, OrdemServicoItemProdutoBL ordemServicoItemProdutoBL, OrdemServicoItemServicoBL ordemServicoItemServicoBL, OrdemServicoManutencaoBL ordemServicoManutencaoBL) : base(context)
+        public OrdemServicoBL(AppDataContextBase context, ParametroOrdemServicoBL parametroBL, PessoaBL pessoaBL, OrdemServicoItemProdutoBL ordemServicoItemProdutoBL, OrdemServicoItemServicoBL ordemServicoItemServicoBL, OrdemServicoManutencaoBL ordemServicoManutencaoBL, KitItemBL kitItemBl) : base(context)
         {
             OrdemServicoManutencaoBL = ordemServicoManutencaoBL;
             OrdemServicoItemProdutoBL = ordemServicoItemProdutoBL;
             OrdemServicoItemServicoBL = ordemServicoItemServicoBL;
             _parametroBL = parametroBL;
             _pessoaBL = pessoaBL;
+            KitItemBL = kitItemBl;
         }
 
         public IQueryable<Core.Entities.Domains.Commons.OrdemServico> Everything => repository.All.AsNoTracking().Where(x => x.PlataformaId == PlataformaUrl);
@@ -177,5 +180,108 @@ namespace Fly01.OrdemServico.BL
 
         private void Send<T>(T entity) where T : DomainBase
             => Producer<T>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.POST);
+
+        public void UtilizarKitOrdemServico(UtilizarKitVM entity)
+        {
+            try
+            {
+                if (All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                {
+                    if (KitItemBL.All.Any(x => x.KitId == entity.KitId))
+                    {
+                        #region Produtos
+                        if (entity.AdicionarProdutos)
+                        {
+                            var kitProdutos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+
+                            var existentesOrdemServico =
+                                from ovp in OrdemServicoItemProdutoBL.AllIncluding(x => x.Produto).Where(x => x.OrdemServicoId == entity.OrcamentoPedidoId)
+                                join ki in kitProdutos on ovp.ProdutoId equals ki.ProdutoId
+                                select new { ProdutoId = ki.ProdutoId, OrdemServicoItemProdutoId = ovp.Id, Quantidade = ki.Quantidade };
+
+                            var novasOrdemServicoItemProdutos =
+                                from kit in kitProdutos
+                                where !existentesOrdemServico.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                select new
+                                {                                     
+                                    OrdemServicoId = entity.OrcamentoPedidoId,
+                                    ProdutoId = kit.ProdutoId.Value,
+                                    Valor = kit.Produto.ValorVenda,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            foreach (var item in novasOrdemServicoItemProdutos)
+                            {
+                                OrdemServicoItemProdutoBL.Insert(new OrdemServicoItemProduto()
+                                {
+                                    ProdutoId = item.ProdutoId,
+                                    OrdemServicoId = item.OrdemServicoId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrdemServico)
+                                {
+                                    var ordemServicoItemProduto = OrdemServicoItemProdutoBL.Find(item.OrdemServicoItemProdutoId);
+                                    ordemServicoItemProduto.Quantidade += item.Quantidade;
+                                    OrdemServicoItemProdutoBL.Update(ordemServicoItemProduto);
+                                }
+                            }
+                        }
+                        #endregion
+                        #region Servicos
+                        if (entity.AdicionarServicos)
+                        {
+                            var kitServicos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Servico);
+
+                            var existentesOrdemServico =
+                                from ovp in OrdemServicoItemServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemServicoId == entity.OrcamentoPedidoId)
+                                join ki in kitServicos on ovp.ServicoId equals ki.ServicoId
+                                select new { ServicoId = ki.ServicoId, OrdemServicoItemServicoId = ovp.Id, Quantidade = ki.Quantidade };
+
+                            var novasOrdemServicoItemServicos =
+                                from kit in kitServicos
+                                where !existentesOrdemServico.Select(x => x.ServicoId).Contains(kit.ServicoId)
+                                select new
+                                {
+                                    OrdemServicoId = entity.OrcamentoPedidoId,
+                                    ServicoId = kit.ServicoId.Value,
+                                    Valor = kit.Servico.ValorServico,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            foreach (var item in novasOrdemServicoItemServicos)
+                            {
+                                OrdemServicoItemServicoBL.Insert(new OrdemServicoItemServico()
+                                {
+                                    ServicoId = item.ServicoId,
+                                    OrdemServicoId = item.OrdemServicoId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrdemServico)
+                                {
+                                    var ordemServicoItemServico = OrdemServicoItemServicoBL.Find(item.OrdemServicoItemServicoId);
+                                    ordemServicoItemServico.Quantidade += item.Quantidade;
+                                    OrdemServicoItemServicoBL.Update(ordemServicoItemServico);
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
     }
 }

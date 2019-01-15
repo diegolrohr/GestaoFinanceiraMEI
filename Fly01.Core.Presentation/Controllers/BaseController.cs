@@ -23,12 +23,20 @@ using Fly01.uiJS.Classes.Elements;
 using System.Web.Configuration;
 using Fly01.Core.Presentation.Controllers;
 using Fly01.uiJS.Enums;
+using System.Data;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using iTextSharp.text;
+using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
+using System.Web;
 
 namespace Fly01.Core.Presentation
 {
-    
+
     public abstract class BaseController<T> : PrimitiveBaseController where T : DomainBaseVM
     {
+
         public class ContentUIBase : ContentUI
         {
             public ContentUIBase(string sidebarUrl)
@@ -45,7 +53,7 @@ namespace Fly01.Core.Presentation
             => WebConfigurationManager.AppSettings["AppViewModelResourceName"];
 
         protected string AppViewModelResourceName
-            => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];        
+            => WebConfigurationManager.AppSettings["AppEntitiesResourceName"];
 
         public virtual List<HtmlUIButton> GetListButtonsOnHeader()
         {
@@ -445,14 +453,16 @@ namespace Fly01.Core.Presentation
         public virtual JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var fileType = (Request.QueryString.AllKeys.Contains("fileType")) ? Request.QueryString.Get("fileType") : "";
 
             try
             {
                 var gridParams = new Dictionary<string, string>();
                 gridParams.AddParam("$count", "true");
 
-                if (param.Length > 0)
-                    gridParams.AddParam("$top", param.Length.ToString());
+                if (string.IsNullOrWhiteSpace(fileType)) 
+                    if (param.Length > 0)
+                        gridParams.AddParam("$top", param.Length.ToString());
 
                 if (param.Order != null)
                 {
@@ -495,7 +505,7 @@ namespace Fly01.Core.Presentation
 
                                 Type type = propertyInfo.PropertyType;
                                 propertyInfo = type.GetProperties().FirstOrDefault(x => x.Name.Equals(className, StringComparison.InvariantCultureIgnoreCase));
-                            } 
+                            }
 
                             if (propertyInfo != null)
                             {
@@ -566,26 +576,49 @@ namespace Fly01.Core.Presentation
                     }
                 }
 
-                if (param.Start > 0)
-                    gridParams.AddParam("$skip", param.Start.ToString());
+                if (string.IsNullOrWhiteSpace(fileType))
+                    if (param.Start > 0)
+                        gridParams.AddParam("$skip", param.Start.ToString());
 
                 if (filters != null && filters.Any())
                 {
                     filters.Remove("action");
                     filters.Remove("controller");
+
                     if (filters.Any())
-                    {// se ainda tem algo
+                    {
                         gridParams.AddParamAndUpdate("$filter", Extensions.ReturnProcessFilter(filters));
                     }
                 }
 
-                //GetQueryStringDefaultGridLoad().ForEach(x => gridParams.AddParamAndUpdate(x.Key, x.Value));
+
                 foreach (var item in GetQueryStringDefaultGridLoad())
-                {
                     gridParams.AddParamAndUpdate(item.Key, item.Value);
-                }
 
                 var responseGrid = RestHelper.ExecuteGetRequest<ResultBase<T>>(ResourceName, gridParams);
+                if (!string.IsNullOrWhiteSpace(fileType))
+                {
+                    DataTable dataTable = GridToDataTable(responseGrid);
+                    switch (fileType.ToLower())
+                    {
+                        case "pdf":
+                            GridToPDF(dataTable);
+                            break;
+                        case "doc":
+                            GridToDOC(dataTable);
+                            break;
+                        case "xls":
+                            GridToXLS(dataTable);
+                            break;
+                        case "csv":
+                            GridToCSV(dataTable);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
                 return Json(new
                 {
                     recordsTotal = responseGrid.Total,
@@ -858,5 +891,129 @@ namespace Fly01.Core.Presentation
                 return new HttpNotFoundResult("O XML solicitado não está disponível para download.");
             }
         }
+
+
+        #region ExportGrid 
+
+        public void GridToDOC(DataTable data)
+        {
+            //Create a dummy GridView
+            GridView gv = new GridView()
+            {
+                AllowPaging = false,
+                DataSource = data
+            };
+            gv.DataBind();
+
+            Response.Clear();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.doc");
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.ms-word ";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+            gv.RenderControl(hw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+        }
+        public void GridToXLS(DataTable data)
+        {
+            GridView gv = new GridView()
+            {
+                AllowPaging = false,
+                DataSource = data
+            };
+            gv.DataBind();
+
+            Response.Clear();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.xls");
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.ms-excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+            for (int i = 0; i < gv.Rows.Count; i++)
+            {
+                gv.Rows[i].Attributes.Add("class", "textmode");
+            }
+            gv.RenderControl(hw);
+
+            //style to format numbers to string
+            string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+            Response.Write(style);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+        }
+        public void GridToPDF(DataTable data)
+        {
+            GridView gv = new GridView()
+            {
+                AllowPaging = false,
+                DataSource = data
+            };
+            gv.DataBind();
+
+
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+            gv.RenderControl(hw);
+            StringReader sr = new StringReader(sw.ToString());
+            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+            PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            pdfDoc.Open();
+            htmlparser.Parse(sr);
+            pdfDoc.Close();
+            Response.Write(pdfDoc);
+            Response.End();
+        }
+        public void GridToCSV(DataTable data)
+        {
+            Response.Clear();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.csv");
+            Response.Charset = "";
+            Response.ContentType = "application/text";
+
+            StringBuilder sb = new StringBuilder();
+            foreach (DataColumn v in data.Columns)
+                sb.Append(v.ColumnName + ',');
+
+            sb.Append("\r\n");
+            foreach (DataRow v1 in data.Rows)
+            {
+                for (int k = 0; k < data.Columns.Count; k++)
+                    sb.Append(v1[k].ToString().Replace(",", ";") + ',');
+                sb.Append("\r\n");
+            }
+            Response.Output.Write(sb.ToString());
+            Response.Flush();
+            Response.End();
+        }
+
+        private DataTable GridToDataTable(ResultBase<T> responseGrid)
+        {
+            DataTable dt = new DataTable();
+            dt.Clear();
+
+
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Marks");
+
+            DataRow _ravi = dt.NewRow();
+            _ravi["Name"] = "ravi";
+            _ravi["Marks"] = "500";
+
+            dt.Rows.Add(_ravi);
+
+            return dt;
+        }
+        #endregion
     }
 }

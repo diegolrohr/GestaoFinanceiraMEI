@@ -29,7 +29,7 @@ namespace Fly01.Core.Presentation.Commons
             return new HtmlString(
                 $"<script src=\"{vendorJsUrl}\"></script>" +
                 $"<script src=\"{jsUrl}\"></script>"
-                );
+            );
         }
     }
 }

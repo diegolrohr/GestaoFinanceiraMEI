@@ -6,7 +6,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 {
     public class GrupoProduto : PlataformaBase
     {
-        [StringLength(40, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
+        [StringLength(60, ErrorMessage = "O campo {0} deve possuir entre {2} e {1} caracteres.")]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public string Descricao { get; set; }
 

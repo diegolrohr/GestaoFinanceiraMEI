@@ -108,7 +108,7 @@ namespace Fly01.Core.Presentation.Controllers
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 40 });
+            config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12", Label = "Descrição", Required = true, MaxLength = 60 });
 
             config.Elements.Add(new AutoCompleteUI
             {

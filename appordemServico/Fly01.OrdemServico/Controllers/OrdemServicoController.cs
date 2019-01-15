@@ -184,7 +184,7 @@ namespace Fly01.OrdemServico.Controllers
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick});
             }
 
             return target;
@@ -194,7 +194,9 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "andamento", Label = "Em Andamento", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
 
             return target;
         }
@@ -223,10 +225,15 @@ namespace Fly01.OrdemServico.Controllers
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
+            cfg.Content.Add(new DivUI
+            {
+                Id = "fly01div"
+            });
 
             var cfgForm = new FormUI
             {
                 Id = "fly01frm",
+                Parent = "fly01div",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
                 Elements = new List<BaseUI>()
@@ -264,10 +271,10 @@ namespace Fly01.OrdemServico.Controllers
                 cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
-            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
+                Parent = "fly01div",
                 UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -304,6 +311,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
 
+            cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -883,7 +891,7 @@ namespace Fly01.OrdemServico.Controllers
             return reportItems;
         }
 
-        private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
+        public JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
         {
             dynamic pedido = new ExpandoObject();
             pedido.status = status.ToString();

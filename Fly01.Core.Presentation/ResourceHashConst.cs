@@ -127,6 +127,7 @@
         public const string OrdemServico = "CB584FBE-BBE6-4F28-A62F-DF193FF4A3BF";
         public const string OrdemServicoVisaoGeral = "A0801822-381D-47CB-8E03-DA6424221C46";
         public const string OrdemServicoOrdemServico = "23BD19A4-6ECC-493A-AF9B-E5090312AD73";
+        public const string OrdemServicoAgenda = "6DA1BF03-D7C8-4716-B637-06FA8D263737";
 
         public const string OrdemServicoCadastros = "53ADC54B-B949-4F41-8AB7-91CBB34435DE";
         public const string OrdemServicoCadastrosProdutos = "937C0526-60EE-4957-BE73-413083BF5D05";

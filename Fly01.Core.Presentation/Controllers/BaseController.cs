@@ -460,7 +460,7 @@ namespace Fly01.Core.Presentation
                 var gridParams = new Dictionary<string, string>();
                 gridParams.AddParam("$count", "true");
 
-                if (string.IsNullOrWhiteSpace(fileType)) 
+                if (string.IsNullOrWhiteSpace(fileType))
                     if (param.Length > 0)
                         gridParams.AddParam("$top", param.Length.ToString());
 
@@ -598,7 +598,9 @@ namespace Fly01.Core.Presentation
                 var responseGrid = RestHelper.ExecuteGetRequest<ResultBase<T>>(ResourceName, gridParams);
                 if (!string.IsNullOrWhiteSpace(fileType))
                 {
-                    DataTable dataTable = GridToDataTable(responseGrid);
+                    if (responseGrid.Total.Equals(0))
+                        throw new Exception("Não existem registros para exportar");
+                    DataTable dataTable = GridToDataTable(responseGrid, param);
                     switch (fileType.ToLower())
                     {
                         case "pdf":
@@ -895,7 +897,7 @@ namespace Fly01.Core.Presentation
 
         #region ExportGrid 
 
-        public void GridToDOC(DataTable data)
+        protected void GridToDOC(DataTable data)
         {
             //Create a dummy GridView
             GridView gv = new GridView()
@@ -917,7 +919,7 @@ namespace Fly01.Core.Presentation
             Response.Flush();
             Response.End();
         }
-        public void GridToXLS(DataTable data)
+        protected void GridToXLS(DataTable data)
         {
             GridView gv = new GridView()
             {
@@ -947,7 +949,7 @@ namespace Fly01.Core.Presentation
             Response.Flush();
             Response.End();
         }
-        public void GridToPDF(DataTable data)
+        protected void GridToPDF(DataTable data)
         {
             GridView gv = new GridView()
             {
@@ -973,7 +975,7 @@ namespace Fly01.Core.Presentation
             Response.Write(pdfDoc);
             Response.End();
         }
-        public void GridToCSV(DataTable data)
+        protected void GridToCSV(DataTable data)
         {
             Response.Clear();
             Response.Buffer = true;
@@ -997,20 +999,28 @@ namespace Fly01.Core.Presentation
             Response.End();
         }
 
-        private DataTable GridToDataTable(ResultBase<T> responseGrid)
+        protected DataTable GridToDataTable(ResultBase<T> responseGrid, JQueryDataTableParams param)
         {
             DataTable dt = new DataTable();
             dt.Clear();
 
+            param.Columns.ForEach(x => {
+                if (!string.IsNullOrWhiteSpace(x.Name))
+                    dt.Columns.Add(x.Name);
+            });
 
-            dt.Columns.Add("Name");
-            dt.Columns.Add("Marks");
+            var data = responseGrid.Data.Select(GetDisplayData()).ToList();
 
-            DataRow _ravi = dt.NewRow();
-            _ravi["Name"] = "ravi";
-            _ravi["Marks"] = "500";
-
-            dt.Rows.Add(_ravi);
+            Type o = data.FirstOrDefault().GetType();
+            data.ForEach(x =>
+            {
+                DataRow dtr = dt.NewRow();
+                param.Columns.ForEach(y => {
+                    if (!string.IsNullOrWhiteSpace(y.Name))
+                        dtr[y.Name] = o.GetProperty(y.Data).GetValue(x, null);
+                });
+                dt.Rows.Add(dtr);
+            });
 
             return dt;
         }

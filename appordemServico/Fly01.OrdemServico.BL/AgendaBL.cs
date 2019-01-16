@@ -29,7 +29,7 @@ namespace Fly01.OrdemServico.BL
             {
                 listaResult.Add(new AgendaVM
                 {
-                    Status = EnumHelper.GetValue(typeof(StatusOrdemServico), item.Status.ToString()),
+                    Status = item.Status.ToString(),
                     Cliente = item.Cliente?.Nome,
                     Entrega = item.DataEntrega,
                     OSId = item.Id.ToString()

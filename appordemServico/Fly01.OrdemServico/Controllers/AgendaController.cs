@@ -1,4 +1,4 @@
-﻿using Fly01.Core;
+using Fly01.Core;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
@@ -9,9 +9,11 @@ using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Defaults;
+using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
@@ -24,12 +26,12 @@ namespace Fly01.OrdemServico.Controllers
             ExpandProperties = "cliente($select=id,nome,email,cpfcnpj,endereco,celular,telefone;$expand=cidade($select=nome),estado($select=sigla))";
         }
 
-        private List<HtmlUIButton> GetButtonsOnHeader()
+        public override List<HtmlUIButton> GetFormButtonsOnHeader()
         {
             var target = new List<HtmlUIButton>();
 
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo" });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
 
             return target;
         }
@@ -41,19 +43,52 @@ namespace Fly01.OrdemServico.Controllers
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
-                History = new ContentUIHistory { Default = Url.Action("Index") },
+                History = new ContentUIHistory
+                {
+                    Default = Url.Action("Index"),
+                    WithParams = Url.Action("Edit")
+                },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Agenda"
-                }
+                    Title = "Agenda",
+                    Buttons = new List<HtmlUIButton>(GetFormButtonsOnHeader())
+                },
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                SidebarUrl = Url.Action("Sidebar", "Home")
             };
+            cfg.Content.Add(new DivUI
+            {
+                Id = "legenda",
+                Class = "col s12",
+                Elements = new List<BaseUI>
+                {
+                    new StaticTextUI
+                    {
+                        Id = "leg1",
+                        Class = "col s12 center",
+                        Lines = EnumHelper.GetDataEnumValues(typeof(StatusOrdemServico)).OrderBy(x => x.Description).Select(x => new LineUI()
+                        {
+                            Tag = "span",
+                            Class = $"badge cool {x.CssClass}",
+                            Text = x.Description
+                        }).ToList()
+                    }
+                }
+            });
             cfg.Content.Add(new CalendarUI
             {
                 Id = "calendar",
                 Class = "col s10 offset-s1",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new CalendarUIConfig()
                 {
-                    EventLimit = true
+                    EventLimit = true,
+                    Selectable = true
+                },
+                Callbacks = new CalendarUICallbacks()
+                {
+                    DayClick = "fnDayClick",
+                    Select = "fnSelect"
                 }
             });
 
@@ -90,7 +125,8 @@ namespace Fly01.OrdemServico.Controllers
 
                 var response = RestHelper.ExecuteGetRequest<List<AgendaVM>>("agenda", queryString);
 
-                return Json(new {
+                return Json(new
+                {
                     response,
                     sucess = true
                 }, JsonRequestBehavior.AllowGet);

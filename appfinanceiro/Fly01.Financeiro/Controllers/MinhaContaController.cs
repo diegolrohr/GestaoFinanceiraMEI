@@ -109,6 +109,7 @@ namespace Fly01.Financeiro.Controllers
         {
             try
             {
+
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>

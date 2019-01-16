@@ -65,8 +65,6 @@
     <Compile Include="Domains\Commons\AjusteManual.cs" />
     <Compile Include="Domains\Commons\KitItem.cs" />
     <Compile Include="Domains\Commons\Kit.cs" />
-    <Compile Include="Domains\Commons\MinhaContaResponse.cs" />
-    <Compile Include="Domains\Commons\MinhaConta.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />

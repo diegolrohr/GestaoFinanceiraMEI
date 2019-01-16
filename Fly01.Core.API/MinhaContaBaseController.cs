@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Rest;
+﻿using Fly01.Core.Notifications;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json.Linq;
 using System;
@@ -21,17 +22,15 @@ namespace Fly01.Core.API
                         { "vencimentoFinal", entity.VencimentoFinal},
                         { "posicao", entity.Posicao}
                     };
+                                
+                var boletos = RestHelper.ExecuteGetRequest<MinhaContaResponseVM>(AppDefaults.UrlApiGatewayMpn, "boletos/consulta", queryString);
 
-                var url = "http://gateway-homolog.totvsmpn.com.br/api/boletos/";
-                var autenticacao = RestHelper.ExecuteGetRequest<MinhaContaResponse>(url, "consulta", queryString);
-
-                return Ok(autenticacao.Data);
+                return Ok(boletos.Data);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new BusinessException(ex.Message);
             }
         }
     }

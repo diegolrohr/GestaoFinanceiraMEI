@@ -3,7 +3,7 @@ using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
-    public class MinhaContaResponse
+    public class MinhaContaResponseVM
     {
         [JsonProperty("hasError")]
         public bool HasError { get; set; }
@@ -12,7 +12,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public int StatusCode { get; set; }
 
         [JsonProperty("data")]
-        public MinhaConta[] Data { get; set; }
+        public MinhaContaVM[] Data { get; set; }
     }
 }
 

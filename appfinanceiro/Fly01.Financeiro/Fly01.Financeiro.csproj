@@ -56,7 +56,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Views\CnabItem\Functions\" />
-    <Folder Include="Views\MinhaConta\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ArquivoRetornoController.cs" />
@@ -413,6 +412,8 @@
     <Content Include="Views\Stone\Functions\_fnLogout.cshtml" />
     <Content Include="Views\Stone\Functions\_fnReadyLogin.cshtml" />
     <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -695,7 +696,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

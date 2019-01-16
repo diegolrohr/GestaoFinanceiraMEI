@@ -468,6 +468,10 @@
     <Compile Include="Migrations\201901091656336_AlterTableKitAddColumns.Designer.cs">
       <DependentUpon>201901091656336_AlterTableKitAddColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901152009122_AlterDescricaoGrupoProdutoTributario.cs" />
+    <Compile Include="Migrations\201901152009122_AlterDescricaoGrupoProdutoTributario.Designer.cs">
+      <DependentUpon>201901152009122_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CFOPDataInitializer.cs" />
@@ -812,6 +816,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901091656336_AlterTableKitAddColumns.resx">
       <DependentUpon>201901091656336_AlterTableKitAddColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901152009122_AlterDescricaoGrupoProdutoTributario.resx">
+      <DependentUpon>201901152009122_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

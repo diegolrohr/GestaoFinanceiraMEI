@@ -13,6 +13,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
@@ -65,39 +66,12 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Id = "leg1",
                         Class = "col s12 center",
-                        Lines = new List<LineUI>
+                        Lines = EnumHelper.GetDataEnumValues(typeof(StatusOrdemServico)).OrderBy(x => x.Description).Select(x => new LineUI()
                         {
-                            new LineUI
-                            {
-                                Tag = "span",
-                                Class = "badge cool red",
-                                Text = "CANCELADO"
-                            },
-                            new LineUI
-                            {
-                                Tag = "span",
-                                Class = "badge cool blue",
-                                Text = "EM ABERTO"
-                            },
-                            new LineUI
-                            {
-                                Tag = "span",
-                                Class = "badge cool yellow",
-                                Text = "EM ANDAMENTO"
-                            },
-                            new LineUI
-                            {
-                                Tag = "span",
-                                Class = "badge cool green",
-                                Text = "CONCLUÍDO"
-                            },
-                            new LineUI
-                            {
-                                Tag = "span",
-                                Class = "badge cool grey",
-                                Text = "EM PREENCHIMENTO"
-                            }
-                        }
+                            Tag = "span",
+                            Class = $"badge cool {x.CssClass}",
+                            Text = x.Description
+                        }).ToList()
                     }
                 }
             });

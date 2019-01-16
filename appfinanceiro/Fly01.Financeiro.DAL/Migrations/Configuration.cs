@@ -33,8 +33,6 @@ namespace Fly01.Financeiro.DAL.Migrations
                 //new CidadeDataInitializer5().Initialize(context, ufs);
                 //new CidadeDataInitializer6().Initialize(context, ufs);
                 //new CidadeDataInitializer7().Initialize(context, ufs);
-                //new PessoaDataInitializer("lojarodrigo.fly01dev.com.br", "SEED", 1000).Initialize(context);
-                //new MockDataInitializer().Initialize(context); //deixar por ltimo
                 new CnabDataInitializer().Initialize(context);
 
             }

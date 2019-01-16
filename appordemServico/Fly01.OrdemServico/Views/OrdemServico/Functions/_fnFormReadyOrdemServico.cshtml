@@ -193,6 +193,7 @@
     }
 
     function fnFormReadyOrdemServico() {
+        $$$.fn.updateActiveMenu("/OrdemServico/List");
         if (isCreate()) {
             $('#andamento').hide();
             $('#concluido').hide();

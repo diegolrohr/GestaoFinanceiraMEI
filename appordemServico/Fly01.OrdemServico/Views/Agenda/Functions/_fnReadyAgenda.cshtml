@@ -1,5 +1,13 @@
 <script>
     function fnReadyAgenda() {
+        document.getElementById("legenda").innerHTML =
+            createElem("div", null, [
+                createElem("span", { "class": "gray badge cool" }, "EM PREENCHIMENTO"),
+                createElem("span", { "class": "totvs-blue badge cool" }, "EM ABERTO"),
+                createElem("span", { "class": "light-orange badge cool" }, "EM ANDAMENTO"),
+                createElem("span", { "class": "green badge cool" }, "CONCLUÕDO"),
+                createElem("span", { "class": "red badge cool" }, "CANCELADO")
+            ]).innerHTML;
 
         $('.fc-month-button').hide();
         $('.fc-agendaWeek-button').hide();
@@ -78,23 +86,23 @@
                     color: getColor(json.response[i].Status),
                     allDay: true,
                     editable: false,
-                    url: json.response[i].Status == "Conclu√≠do" || json.response[i].Status == "Cancelado" ? "" : "OrdemServico/Edit/" + json.response[i].OSId
+                    url: json.response[i].Status == "Concluido" || json.response[i].Status == "Cancelado" ? "" : "OrdemServico/Edit/" + json.response[i].OSId
                 });
             }
         }
         function getColor(status) {
             switch (status) {
 
-                case "Em Preenchimento":
+                case "EmPreenchimento":
                     return "#8e999b";
                     break;
 
-                case "Em Aberto":
+                case "EmAberto":
                     return "#0c9abe";
                     break;
 
-                case "Em Andamento":
-                    return "#FBCA1F";
+                case "EmAndamento":
+                    return "#FAA634";
                     break;
 
                 case "Concluido":

@@ -241,6 +241,7 @@
     <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusConcluido.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnSelect.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnDayClick.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnNovaOS.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

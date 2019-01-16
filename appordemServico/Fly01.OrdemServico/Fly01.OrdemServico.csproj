@@ -55,7 +55,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>

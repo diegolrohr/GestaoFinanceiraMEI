@@ -184,7 +184,7 @@ namespace Fly01.OrdemServico.Controllers
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick});
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
             }
 
             return target;
@@ -194,10 +194,12 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "andamento", Label = "Em Andamento", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });                
+                target.Add(new HtmlUIButton { Id = "andamento", Label = "Executar", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
-
+            }
+                    
             return target;
         }
 

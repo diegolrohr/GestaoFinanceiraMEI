@@ -51,9 +51,16 @@ namespace Fly01.OrdemServico.Controllers
             {
                 Id = "calendar",
                 Class = "col s10 offset-s1",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new CalendarUIConfig()
                 {
-                    EventLimit = true
+                    EventLimit = true,
+                    Selectable = true
+                },
+                Callbacks = new CalendarUICallbacks()
+                {
+                    DayClick = "fnDayClick",
+                    Select = "fnSelect"
                 }
             });
 

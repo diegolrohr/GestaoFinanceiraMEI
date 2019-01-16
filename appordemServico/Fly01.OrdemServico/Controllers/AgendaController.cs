@@ -57,8 +57,49 @@ namespace Fly01.OrdemServico.Controllers
             };
             cfg.Content.Add(new DivUI
             {
-                Class = "col s12",
                 Id = "legenda",
+                Class = "col s12",
+                Elements = new List<BaseUI>
+                {
+                    new StaticTextUI
+                    {
+                        Id = "leg1",
+                        Class = "col s12 center",
+                        Lines = new List<LineUI>
+                        {
+                            new LineUI
+                            {
+                                Tag = "span",
+                                Class = "badge cool red",
+                                Text = "CANCELADO"
+                            },
+                            new LineUI
+                            {
+                                Tag = "span",
+                                Class = "badge cool blue",
+                                Text = "EM ABERTO"
+                            },
+                            new LineUI
+                            {
+                                Tag = "span",
+                                Class = "badge cool yellow",
+                                Text = "EM ANDAMENTO"
+                            },
+                            new LineUI
+                            {
+                                Tag = "span",
+                                Class = "badge cool green",
+                                Text = "CONCLUÍDO"
+                            },
+                            new LineUI
+                            {
+                                Tag = "span",
+                                Class = "badge cool grey",
+                                Text = "EM PREENCHIMENTO"
+                            }
+                        }
+                    }
+                }
             });
             cfg.Content.Add(new CalendarUI
             {

@@ -4,10 +4,13 @@ using System;
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     [Serializable]
-    public class MinhaContaVM
+    public class MinhaContaVM : DomainBaseVM
     {
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
+
+        [JsonProperty("observacao")]
+        public string Observacao { get; set; }
 
         [JsonProperty("emissao")]
         public string DataEmissao { get; set; }

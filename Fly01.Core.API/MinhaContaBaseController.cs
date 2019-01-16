@@ -23,7 +23,9 @@ namespace Fly01.Core.API
                     };
 
                 var url = "http://gateway-homolog.totvsmpn.com.br/api/boletos/";
-                var autenticacao = RestHelper.ExecuteGetRequest<JObject>(url, "consulta", queryString);
+                var autenticacao = RestHelper.ExecuteGetRequest<MinhaContaResponse>(url, "consulta", queryString);
+
+                return Ok(autenticacao.Data);
 
             }
             catch (Exception)
@@ -31,8 +33,6 @@ namespace Fly01.Core.API
 
                 throw;
             }
-
-            return null;
         }
     }
 }

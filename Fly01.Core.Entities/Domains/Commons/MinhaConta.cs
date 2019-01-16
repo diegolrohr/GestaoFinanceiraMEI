@@ -7,6 +7,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
     {
         public string Descricao { get; set; }
 
+        public string Observacao { get; set; }
+
         public string DataEmissao { get; set; }
 
         public string NFE { get; set; }

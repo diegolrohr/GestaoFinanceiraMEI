@@ -27,8 +27,8 @@ using System.Data;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using iTextSharp.text;
-using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using System.Web;
 
 namespace Fly01.Core.Presentation
@@ -954,26 +954,30 @@ namespace Fly01.Core.Presentation
             GridView gv = new GridView()
             {
                 AllowPaging = false,
-                DataSource = data
+                DataSource = data,                
             };
             gv.DataBind();
-
-
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.pdf");
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter hw = new HtmlTextWriter(sw);
-            gv.RenderControl(hw);
-            StringReader sr = new StringReader(sw.ToString());
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-            PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
-            pdfDoc.Open();
-            htmlparser.Parse(sr);
-            pdfDoc.Close();
-            Response.Write(pdfDoc);
-            Response.End();
+            using (StringWriter sw = new StringWriter())
+            {
+                using (HtmlTextWriter hw = new HtmlTextWriter(sw))
+                {
+                    gv.RenderControl(hw);
+                    StringReader sr = new StringReader(sw.ToString());                    
+                    Document pdfDoc = new Document(gv.Columns.Count > 5 ? PageSize.A4.Rotate() : PageSize.A4, 10f, 10f, 10f, 0f);
+                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+                    pdfDoc.Open();
+                    writer.PageEvent = new Footer();
+                    //Paragraph welcomeParagraph = new Paragraph("Bemacash");
+                    //pdfDoc.Add(welcomeParagraph);
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                    pdfDoc.Close();
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.pdf");
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.Write(pdfDoc);
+                    Response.End();
+                }
+            }
         }
         protected void GridToCSV(DataTable data)
         {
@@ -1010,7 +1014,6 @@ namespace Fly01.Core.Presentation
             });
 
             var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-
             Type o = data.FirstOrDefault().GetType();
             data.ForEach(x =>
             {
@@ -1021,8 +1024,31 @@ namespace Fly01.Core.Presentation
                 });
                 dt.Rows.Add(dtr);
             });
+            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+            {
+                if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                    dt.Columns.Remove(column);
+            });
 
             return dt;
+        }
+        public partial class Footer : PdfPageEventHelper
+        {
+            public override void OnEndPage(PdfWriter writer, Document doc)
+            {
+                Paragraph footer = new Paragraph("THANK YOU", FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.NORMAL));
+                footer.Alignment = Element.ALIGN_RIGHT;
+                PdfPTable footerTbl = new PdfPTable(1);
+                footerTbl.TotalWidth = 300;
+                footerTbl.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                PdfPCell cell = new PdfPCell(footer);
+                cell.Border = 0;
+                cell.PaddingLeft = 10;
+
+                footerTbl.AddCell(cell);
+                footerTbl.WriteSelectedRows(0, -1, 415, 30, writer.DirectContent);
+            }
         }
         #endregion
     }

@@ -6,17 +6,24 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class AgendaVM
     {
-        [JsonProperty("entrega")]
-        public DateTime Entrega { get; set; }
+        [JsonProperty("start")]
+        public DateTime Start { get; set; }
 
-        [JsonProperty("cliente")]
-        public string Cliente { get; set; }
+        [JsonProperty("end")]
+        public DateTime End { get; set; }
 
-        [JsonProperty("status")]
-        [APIEnum("StatusOrdemServico")]
-        public string Status { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
-        [JsonProperty("oSId")]
-        public string OSId { get; set; }
+        [JsonProperty("className")]
+        //[APIEnum("StatusOrdemServico")]
+        public string ClassName { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+
+        //[JsonProperty("oSId")]
+        //public string OSId { get; set; }
     }
 }

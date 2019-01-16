@@ -66,7 +66,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Id = "leg1",
                         Class = "col s12 center",
-                        Lines = EnumHelper.GetDataEnumValues(typeof(StatusOrdemServico)).OrderBy(x => x.Description).Select(x => new LineUI()
+                        Lines = EnumHelper.GetDataEnumValues(typeof(StatusOrdemServico)).OrderByDescending(x => x.Description).Select(x => new LineUI()
                         {
                             Tag = "span",
                             Class = $"badge cool {x.CssClass}",
@@ -127,7 +127,14 @@ namespace Fly01.OrdemServico.Controllers
 
                 return Json(new
                 {
-                    response,
+                    events = response.Select(x => new
+                    {
+                        className = x.ClassName,
+                        title = x.Title,
+                        start = x.Start,
+                        end   = x.End,
+                        url   = x.Url
+                    }),
                     sucess = true
                 }, JsonRequestBehavior.AllowGet);
             }

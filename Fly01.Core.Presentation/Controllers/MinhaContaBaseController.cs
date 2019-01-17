@@ -40,8 +40,8 @@ namespace Fly01.Core.Presentation.Controllers
         public override ContentResult List()
         {
             var dateNow = DateTime.Now;
-            var dataInicialFiltroDefault = new DateTime(dateNow.Year, dateNow.Month, 1);
-            var dataFinalFiltroDefault = new DateTime(dateNow.Year, dateNow.Month, DateTime.DaysInMonth(dateNow.Year, dateNow.Month));
+            var dataInicialFiltroDefault = dateNow.AddMonths(-3);
+            var dataFinalFiltroDefault = dateNow.AddMonths(1);
 
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
@@ -123,7 +123,8 @@ namespace Fly01.Core.Presentation.Controllers
 
                 var configuracao = new MinhaContaConfiguracaoVM()
                 {
-                    CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
+                    //CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
+                    CodigoMaxime = "T5333",
                     VencimentoInicial = dataInicial.ToString("yyyy-MM-dd"),
                     VencimentoFinal = dataFinal.ToString("yyyy-MM-dd"),
                     Posicao = "TODOS"

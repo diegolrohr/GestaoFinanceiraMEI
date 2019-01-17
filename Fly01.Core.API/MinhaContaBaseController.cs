@@ -2,8 +2,8 @@
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.Http;
 
 namespace Fly01.Core.API
@@ -45,7 +45,7 @@ namespace Fly01.Core.API
                     }
    
                 }
-                return Ok(boletos.Data);
+                return Ok(boletos.Data.OrderBy(x => x.Vencimento));
 
             }
             catch (Exception ex)

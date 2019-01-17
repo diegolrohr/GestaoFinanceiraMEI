@@ -83,7 +83,8 @@ namespace Fly01.OrdemServico.Controllers
                 Options = new CalendarUIConfig()
                 {
                     EventLimit = true,
-                    Selectable = true
+                    Selectable = true,
+                    Editable = false
                 },
                 Callbacks = new CalendarUICallbacks()
                 {

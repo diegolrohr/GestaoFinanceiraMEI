@@ -13,6 +13,7 @@ using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
@@ -57,16 +58,37 @@ namespace Fly01.OrdemServico.Controllers
             };
             cfg.Content.Add(new DivUI
             {
-                Class = "col s12",
                 Id = "legenda",
+                Class = "col s12",
+                Elements = new List<BaseUI>
+                {
+                    new StaticTextUI
+                    {
+                        Id = "leg1",
+                        Class = "col s12 center",
+                        Lines = EnumHelper.GetDataEnumValues(typeof(StatusOrdemServico)).OrderByDescending(x => x.Description).Select(x => new LineUI()
+                        {
+                            Tag = "span",
+                            Class = $"badge cool {x.CssClass}",
+                            Text = x.Description
+                        }).ToList()
+                    }
+                }
             });
             cfg.Content.Add(new CalendarUI
             {
                 Id = "calendar",
                 Class = "col s10 offset-s1",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new CalendarUIConfig()
                 {
-                    EventLimit = true
+                    EventLimit = true,
+                    Selectable = true
+                },
+                Callbacks = new CalendarUICallbacks()
+                {
+                    DayClick = "fnDayClick",
+                    Select = "fnSelect"
                 }
             });
 
@@ -105,7 +127,14 @@ namespace Fly01.OrdemServico.Controllers
 
                 return Json(new
                 {
-                    response,
+                    events = response.Select(x => new
+                    {
+                        className = x.ClassName,
+                        title = x.Title,
+                        start = x.Start,
+                        end   = x.End,
+                        url   = x.Url
+                    }),
                     sucess = true
                 }, JsonRequestBehavior.AllowGet);
             }

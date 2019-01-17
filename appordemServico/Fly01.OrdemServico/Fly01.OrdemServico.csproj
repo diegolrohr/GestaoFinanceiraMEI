@@ -55,7 +55,6 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +238,8 @@
     <Content Include="Views\Agenda\Functions\_fnReadyAgenda.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusAndamento.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusConcluido.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnSelect.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnDayClick.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnNovaOS.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
@@ -287,7 +288,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.2\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.3\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

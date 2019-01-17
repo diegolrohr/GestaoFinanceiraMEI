@@ -27,8 +27,8 @@ using System.Data;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using iTextSharp.text;
-using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using System.Web;
 
 namespace Fly01.Core.Presentation
@@ -899,7 +899,6 @@ namespace Fly01.Core.Presentation
 
         protected void GridToDOC(DataTable data)
         {
-            //Create a dummy GridView
             GridView gv = new GridView()
             {
                 AllowPaging = false,
@@ -942,7 +941,6 @@ namespace Fly01.Core.Presentation
             }
             gv.RenderControl(hw);
 
-            //style to format numbers to string
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
             Response.Write(style);
             Response.Output.Write(sw.ToString());
@@ -951,28 +949,65 @@ namespace Fly01.Core.Presentation
         }
         protected void GridToPDF(DataTable data)
         {
-            GridView gv = new GridView()
+            int columns = data.Columns.Count;
+            PdfPTable table = new PdfPTable(columns);
+            int padding = 5;
+            float[] widths = new float[columns];
+            for (int x = 0; x < columns; x++)
             {
-                AllowPaging = false,
-                DataSource = data
-            };
-            gv.DataBind();
+                string cellText = Server.HtmlDecode(data.Columns[x].ColumnName);
+                widths[x] = cellText.Length > 2 ? cellText.Length : 3;
+                PdfPCell cell = new PdfPCell(new Phrase(new Chunk(cellText, FontFactory.GetFont("Roboto", 12, BaseColor.WHITE))))
+                {
+                    BorderWidth = 0,
+                    BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#f37021")),
+                    Padding = padding
+                };
+                if (x != 0)
+                {
+                    cell.BorderColorLeft = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#eee"));
+                    cell.BorderWidthLeft = 1;
+                }
 
+                table.AddCell(cell);
+            }
+            for (int i = 0; i < data.Rows.Count; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    string cellText = Server.HtmlDecode(data.Rows[i].ItemArray[j].ToString());
+                    widths[j] = cellText.Length > widths[j] ? cellText.Length : widths[j];
+                    PdfPCell cell = new PdfPCell(new Phrase(cellText))
+                    {
+                        BorderWidth = 0,
+                        Padding = padding
+                    };
 
+                    if (i % 2 != 0)
+                        cell.BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#eee"));
+
+                    if (i != 0)
+                    {
+                        cell.BorderColorLeft = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#eee"));
+                        cell.BorderWidthLeft = 1;
+                    }
+
+                    table.AddCell(cell);
+                }
+            }
+            var totalWidth = widths.Sum();
+            for (int j = 0; j < columns; j++)
+            {
+                widths[j] = (float)((columns > 3 ? PageSize.A4.Height : PageSize.A4.Width) * 0.98) * (1 / totalWidth * widths[j]);
+            }
+            table.SetWidthPercentage(widths, PageSize.A4);
+            table.LockedWidth = true;
             Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=GridViewExport.pdf");
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter hw = new HtmlTextWriter(sw);
-            gv.RenderControl(hw);
-            StringReader sr = new StringReader(sw.ToString());
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+            Document pdfDoc = new Document(data.Columns.Count > 3 ? PageSize.A4.Rotate() : PageSize.A4, 10f, 10f, 10f, 0f);
             PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
             pdfDoc.Open();
-            htmlparser.Parse(sr);
+            pdfDoc.Add(table);
             pdfDoc.Close();
-            Response.Write(pdfDoc);
             Response.End();
         }
         protected void GridToCSV(DataTable data)
@@ -1004,25 +1039,49 @@ namespace Fly01.Core.Presentation
             DataTable dt = new DataTable();
             dt.Clear();
 
-            param.Columns.ForEach(x => {
+            param.Columns.ForEach(x =>
+            {
                 if (!string.IsNullOrWhiteSpace(x.Name))
                     dt.Columns.Add(x.Name);
             });
 
             var data = responseGrid.Data.Select(GetDisplayData()).ToList();
-
             Type o = data.FirstOrDefault().GetType();
             data.ForEach(x =>
             {
                 DataRow dtr = dt.NewRow();
-                param.Columns.ForEach(y => {
+                param.Columns.ForEach(y =>
+                {
                     if (!string.IsNullOrWhiteSpace(y.Name))
                         dtr[y.Name] = o.GetProperty(y.Data).GetValue(x, null);
                 });
                 dt.Rows.Add(dtr);
             });
+            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+            {
+                if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                    dt.Columns.Remove(column);
+            });
 
             return dt;
+        }
+        public partial class Footer : PdfPageEventHelper
+        {
+            public override void OnEndPage(PdfWriter writer, Document doc)
+            {
+                Paragraph footer = new Paragraph("THANK YOU", FontFactory.GetFont(FontFactory.TIMES, 10, iTextSharp.text.Font.NORMAL));
+                footer.Alignment = Element.ALIGN_RIGHT;
+                PdfPTable footerTbl = new PdfPTable(1);
+                footerTbl.TotalWidth = 300;
+                footerTbl.HorizontalAlignment = Element.ALIGN_CENTER;
+
+                PdfPCell cell = new PdfPCell(footer);
+                cell.Border = 0;
+                cell.PaddingLeft = 10;
+
+                footerTbl.AddCell(cell);
+                footerTbl.WriteSelectedRows(0, -1, 415, 30, writer.DirectContent);
+            }
         }
         #endregion
     }

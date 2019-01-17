@@ -10,10 +10,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string CodigoMaxime { get; set; }
 
         [JsonProperty("vencimentoInicial")]
-        public string VencimentoInicial { get; set; }
+        public DateTime VencimentoInicial { get; set; }
 
         [JsonProperty("vencimentoFinal")]
-        public string VencimentoFinal { get; set; }
+        public DateTime VencimentoFinal { get; set; }
 
         [JsonProperty("posicao")]
         public string Posicao { get; set; }

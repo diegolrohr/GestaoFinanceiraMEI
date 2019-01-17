@@ -1,4 +1,6 @@
-﻿using Fly01.Core.Defaults;
+﻿using Fly01.Core.Config;
+using Fly01.Core.Defaults;
+using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Presentation.JQueryDataTable;
 using Fly01.Core.Rest;
@@ -101,8 +103,7 @@ namespace Fly01.Core.Presentation.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 2, Orderable = false, Searchable = false, RenderFn = "fnRenderVencimento" });
             config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor", Priority = 3, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 7, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "situacao", DisplayName = "Situação", Priority = 6, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "codigoBarrasFormatado", DisplayName = "barras", Priority = 6, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DisplayName = "Situação", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderSituacao"});
             config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "20%" });
 
             cfg.Content.Add(config);
@@ -124,9 +125,9 @@ namespace Fly01.Core.Presentation.Controllers
                 var configuracao = new MinhaContaConfiguracaoVM()
                 {
                     //CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
-                    CodigoMaxime = "T5333",
-                    VencimentoInicial = dataInicial.ToString("yyyy-MM-dd"),
-                    VencimentoFinal = dataFinal.ToString("yyyy-MM-dd"),
+                    CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
+                    VencimentoInicial = dataInicial,
+                    VencimentoFinal = dataFinal,
                     Posicao = "TODOS"
                 };
 
@@ -143,7 +144,15 @@ namespace Fly01.Core.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                return JsonResponseStatus.GetFailure(ex.Message);
+                return Json(new
+                {
+                    queryStringFilter = string.Empty,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
+                    data = new { },
+                    success = false,
+                    message = string.Format("Ocorreu um erro ao carregar dados: {0}", ex.Message)
+                }, JsonRequestBehavior.AllowGet);
             }
         }        
     }

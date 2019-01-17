@@ -71,6 +71,7 @@
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
     <Compile Include="Controllers\GrupoTributarioController.cs" />
@@ -355,6 +356,10 @@
     <Content Include="Views\Orcamento\Functions\_fnFormReadyOrcamentoKit.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnModalPedidoKit.cshtml" />
     <Content Include="Views\Pedido\Functions\_fnFormReadyPedidoKit.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

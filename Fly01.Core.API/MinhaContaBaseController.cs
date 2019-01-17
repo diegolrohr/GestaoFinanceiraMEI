@@ -15,11 +15,16 @@ namespace Fly01.Core.API
         {
             try
             {
+                if((entity.VencimentoFinal.Date - entity.VencimentoInicial.Date).Days > 365)
+                {
+                    throw new BusinessException("Período máximo de 1 ano para pesquisa. Altere o período informado.");
+                }
+
                 var queryString = new Dictionary<string, string>
                     {
                         { "codigoMaxime", entity.CodigoMaxime},
-                        { "vencimentoInicial", entity.VencimentoInicial},
-                        { "vencimentoFinal", entity.VencimentoFinal},
+                        { "vencimentoInicial", entity.VencimentoInicial.ToString("yyyy-MM-dd")},
+                        { "vencimentoFinal", entity.VencimentoFinal.ToString("yyyy-MM-dd")},
                         { "posicao", entity.Posicao}
                     };
                                 

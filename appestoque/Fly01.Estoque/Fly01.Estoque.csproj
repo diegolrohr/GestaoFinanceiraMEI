@@ -66,6 +66,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\InventarioItemController.cs" />
     <Compile Include="Controllers\CestController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
     <Compile Include="Controllers\GrupoProdutoController.cs" />
     <Compile Include="Controllers\PosicaoAtualController.cs" />
@@ -205,6 +206,10 @@
     <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
     <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

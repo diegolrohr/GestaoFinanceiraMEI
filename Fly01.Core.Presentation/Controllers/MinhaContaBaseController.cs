@@ -26,6 +26,7 @@ namespace Fly01.Core.Presentation.Controllers
                 emissao = x.Emissao.ToString("dd/MM/yyyy"),
                 observacao = x.Observacao,
                 vencimento = x.Vencimento.ToString("dd/MM/yyyy"),
+                boletoVencido = x.Vencimento.Date <= DateTime.Now.Date,
                 numero = x.Numero,
                 situacao = x.Situacao,
                 urlBoleto = x.UrlBoleto,

@@ -1,9 +1,15 @@
 ﻿<script>
     function fnRenderBoletos(data, type, row, meta) {
-        return createElem("div", { "class": "right col s12" }, [
-           createElem("a", { "alt": "Imprimir boleto", "target": "_blank", "href": row.urlBoleto, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "print") ),
-           createElem("a", { "alt": "2ª via", "target": "_blank", "href": row.urlSegundaVia, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "filter_2") )
-        ]).innerHTML;
+        var btns = [
+            createElem("a", { "alt": "Imprimir boleto", "target": "_blank", "href": row.urlBoleto, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "print"))
+        ];
+        
+        if(row.boletoVencido && row.situacao == 'PENDENTE')
+        {
+            btns.push(createElem("a", { "alt": "2ª via", "target": "_blank", "href": row.urlSegundaVia, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "filter_2")))
+        }
+
+        return createElem("div", { "class": "right col s12" }, btns).innerHTML;
     };
 
 </script>

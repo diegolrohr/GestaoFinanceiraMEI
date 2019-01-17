@@ -343,7 +343,8 @@ namespace Fly01.Financeiro.Controllers
 
             #region User Menu Items
             config.UserMenuItems.Add(new LinkUI() { Label = "Sair", Link = @Url.Action("Logoff", "Account") });
-            config.UserMenuItems.Add(new LinkUI() { Label = "Minha Conta", OnClick = @Url.Action("List", "MinhaConta") });
+            //TODO: if(!string.IsNullOrEmpty(SessionManager.Current.UserData.TokenData.CodigoMaxime))
+                config.UserMenuItems.Add(new LinkUI() { Label = "Minha Conta", OnClick = @Url.Action("List", "MinhaConta") });
             #endregion
 
             #region Lista de aplicativos do usuário

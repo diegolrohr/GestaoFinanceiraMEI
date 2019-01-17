@@ -35,25 +35,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("situacao")]
         public string Situacao { get; set; }
 
-        //[JsonIgnore]
-        //public TipoSituacao Situacao { get; set; }
-
-        //[JsonProperty("situacao")]
-        //public string SituacaoRest { get; set; }
-
-        //[JsonProperty("situacao")]
-        //public string SituacaoRest
-        //{
-        //    get
-        //    {
-        //        return EnumHelper.GetKey(typeof(TipoSituacao), Situacao.ToString());
-        //    }
-        //    set
-        //    {
-        //        Situacao = (TipoSituacao)Enum.Parse(typeof(TipoSituacao), value);
-        //    }
-        //}
-
         [JsonProperty("urlBoleto")]
         public string UrlBoleto { get; set; }
 
@@ -68,6 +49,12 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("parcela")]
         public string Parcela { get; set; }
+
+        [JsonProperty("codigoBarras")]
+        public string CodigoBarras { get; set; }
+
+        [JsonProperty("codigoBarrasFormatado")]
+        public string CodigoBarrasFormatado { get; set; }
     }
 
     public enum TipoSituacao

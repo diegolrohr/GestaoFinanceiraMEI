@@ -30,7 +30,10 @@ namespace Fly01.Core.Presentation.Controllers
                 numero = x.Numero,
                 situacao = x.Situacao,
                 urlBoleto = x.UrlBoleto,
-                urlSegundaVia = "https://www.itau.com.br/servicos/boletos/atualizar/"
+                urlSegundaVia = "https://www.itau.com.br/servicos/boletos/atualizar/",
+                nfe = x.NFE,
+                parcela = x.Parcela,
+                codigoBarrasFormatado = x.CodigoBarrasFormatado
             };
         }
 
@@ -93,11 +96,14 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Columns.Add(new DataTableUIColumn { DataField = "emissao", DisplayName = "Emissão", Priority = 5, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "nfe", DisplayName = "NFe", Priority = 8, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 2, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 2, Orderable = false, Searchable = false, RenderFn = "fnRenderVencimento" });
             config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor", Priority = 3, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 7, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "situacao", DisplayName = "Situação", Priority = 6, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "25%" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "codigoBarrasFormatado", DisplayName = "barras", Priority = 6, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "20%" });
 
             cfg.Content.Add(config);
 

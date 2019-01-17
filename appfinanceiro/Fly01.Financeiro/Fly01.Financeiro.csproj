@@ -414,6 +414,7 @@
     <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

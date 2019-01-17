@@ -10,7 +10,7 @@ namespace Fly01.Core.Entities.Domains.Enum
         [Subtitle("EmAberto", "Em Aberto", "EM ABERTO", "totvs-blue")]
         EmAberto = 2,
 
-        [Subtitle("EmAndamento", "Em Andamento", "EM ANDAMENTO", "yellow")]
+        [Subtitle("EmAndamento", "Em Andamento", "EM ANDAMENTO", "light-orange")]
         EmAndamento = 3,
 
         [Subtitle("Concluido", "Concluído", "CONCLUÍDO", "green")]

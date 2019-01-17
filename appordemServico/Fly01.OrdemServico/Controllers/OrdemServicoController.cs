@@ -184,7 +184,7 @@ namespace Fly01.OrdemServico.Controllers
             if (UserCanWrite)
             {
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovaOS", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick});
+                target.Add(new HtmlUIButton { Id = "filterGrid1", Label = buttonLabel, OnClickFn = buttonOnClick });
             }
 
             return target;
@@ -194,14 +194,16 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
             if (UserCanWrite)
+            {
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
-                target.Add(new HtmlUIButton { Id = "andamento", Label = "Em Andamento", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "andamento", Label = "Executar", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
+            }
 
             return target;
         }
 
-        public ContentResult ListOrdemServico(string gridLoad = "GridLoad")
+        public ContentResult ListOrdemServico(string gridLoad = "GridLoad", string dtInicio = null, string dtFinal = null)
         {
             var buttonLabel = "Mostrar todos as ordens de serviço";
             var buttonOnClick = "fnRemoveFilter";
@@ -253,6 +255,18 @@ namespace Fly01.OrdemServico.Controllers
 
             if (gridLoad == "GridLoad")
             {
+                cfgForm.Elements.Add(new InputHiddenUI
+                {
+                    Id = "dtInicial",
+                    Value = dtInicio
+                });
+
+                cfgForm.Elements.Add(new InputHiddenUI
+                {
+                    Id = "dtFinal",
+                    Value = dtFinal
+                });
+
                 cfgForm.Elements.Add(new PeriodPickerUI()
                 {
                     Label = "Selecione o período",
@@ -565,11 +579,15 @@ namespace Fly01.OrdemServico.Controllers
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
-
-            if (Request.QueryString["dataFinal"] != "")
+            if (Request.QueryString["dataFinal"] != "" && Request.QueryString["dtFinal"] != "")
+                filters.Add("dataEntrega le ", Request.QueryString["dataFinal"]);
+            else
                 filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
-            if (Request.QueryString["dataInicial"] != "")
-                filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
+
+            if (Request.QueryString["dataInicial"] != "" && Request.QueryString["dtFinal"] != "")
+                filters.Add(" and dataEntrega ge ", Request.QueryString["dataInicial"]);
+            else
+            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }

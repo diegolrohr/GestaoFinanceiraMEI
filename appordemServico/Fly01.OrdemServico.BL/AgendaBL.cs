@@ -29,10 +29,11 @@ namespace Fly01.OrdemServico.BL
             {
                 listaResult.Add(new AgendaVM
                 {
-                    Status = EnumHelper.GetValue(typeof(StatusOrdemServico), item.Status.ToString()),
-                    Cliente = item.Cliente?.Nome,
-                    Entrega = item.DataEntrega,
-                    OSId = item.Id.ToString()
+                    ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
+                    Title = item.Cliente?.Nome,
+                    Start = item.DataEntrega,
+                    End = item.DataEntrega,
+                    Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado)?"": $"OrdemServico/Edit/{item.Id.ToString()}"
                 });
             }
 

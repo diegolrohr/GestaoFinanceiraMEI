@@ -136,6 +136,10 @@
     <Compile Include="Migrations\201901101555291_AddKitKitItem.Designer.cs">
       <DependentUpon>201901101555291_AddKitKitItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901152015549_AlterDescricaoGrupoProduto.cs" />
+    <Compile Include="Migrations\201901152015549_AlterDescricaoGrupoProduto.Designer.cs">
+      <DependentUpon>201901152015549_AlterDescricaoGrupoProduto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -251,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901101555291_AddKitKitItem.resx">
       <DependentUpon>201901101555291_AddKitKitItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901152015549_AlterDescricaoGrupoProduto.resx">
+      <DependentUpon>201901152015549_AlterDescricaoGrupoProduto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

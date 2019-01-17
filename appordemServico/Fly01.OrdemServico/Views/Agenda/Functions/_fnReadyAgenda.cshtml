@@ -1,10 +1,6 @@
 <script>
     function fnReadyAgenda() {
-
-        $('.fc-month-button').hide();
-        $('.fc-agendaWeek-button').hide();
-        $('.fc-agendaDay-button').hide();
-        $$$.loading.start();
+        @*$$$.loading.start();
         var dataInicio = $($('.fc-day').get(0)).data("date")
         var dataFim = $($('.fc-day').get(-1)).data("date")
         $.ajax({
@@ -67,47 +63,10 @@
                 }
             });
         });
-
+      
         function fullCalendar(json) {
-            for (var i = 0; i < json.response.length; i++) {
-                $('#calendar').fullCalendar('renderEvent', {
-                    eventLimit: true,
-                    title: json.response[i].Cliente,
-                    start: json.response[i].Entrega,
-                    end: json.response[i].Entrega,
-                    color: getColor(json.response[i].Status),
-                    allDay: true,
-                    editable: false,
-                    url: json.response[i].Status == "Concluído" || json.response[i].Status == "Cancelado" ? "" : "OrdemServico/Edit/" + json.response[i].OSId
-                });
-            }
-        }
-        function getColor(status) {
-            switch (status) {
-
-                case "Em Preenchimento":
-                    return "#8e999b";
-                    break;
-
-                case "Em Aberto":
-                    return "#0c9abe";
-                    break;
-
-                case "Em Andamento":
-                    return "#FBCA1F";
-                    break;
-
-                case "Concluído":
-                    return "#00b279";
-                    break;
-
-                case "Cancelado":
-                    return "#db3a34";
-                    break;
-
-                default:
-                    return "pink"
-            }
-        }
+            if (json.events)
+                $("#calendar").fullCalendar("renderEvents", json.events);
+        }*@
     }
 </script>

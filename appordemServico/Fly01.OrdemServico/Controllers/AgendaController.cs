@@ -56,10 +56,29 @@ namespace Fly01.OrdemServico.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
+            
+            cfg.Content.Add(new CalendarUI
+            {
+                Id = "calendar",
+                Class = "col s12",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Options = new CalendarUIConfig()
+                {
+                    EventLimit = true,
+                    Selectable = true,
+                    Editable = false
+                },
+                Callbacks = new CalendarUICallbacks()
+                {
+                    DayClick = "fnDayClick",
+                    Select = "fnSelect"
+                },
+                UrlData = Url.Action("GetOSAgenda")
+            });
             cfg.Content.Add(new DivUI
             {
                 Id = "legenda",
-                Class = "col s12",
+                Class = "col s12 ",
                 Elements = new List<BaseUI>
                 {
                     new StaticTextUI
@@ -75,25 +94,7 @@ namespace Fly01.OrdemServico.Controllers
                     }
                 }
             });
-            cfg.Content.Add(new CalendarUI
-            {
-                Id = "calendar",
-                Class = "col s10 offset-s1",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Options = new CalendarUIConfig()
-                {
-                    EventLimit = true,
-                    Selectable = true,
-                    Editable = false
-                },
-                Callbacks = new CalendarUICallbacks()
-                {
-                    DayClick = "fnDayClick",
-                    Select = "fnSelect"
-                }
-            });
-
-            var config = new FormUI
+            cfg.Content.Add(new FormUI
             {
                 Id = "fly01frm",
                 Action = new FormUIAction
@@ -103,9 +104,7 @@ namespace Fly01.OrdemServico.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnReadyAgenda"
-            };
-
-            cfg.Content.Add(config);
+            });
             return cfg;
         }
 
@@ -136,7 +135,7 @@ namespace Fly01.OrdemServico.Controllers
                         end   = x.End,
                         url   = x.Url
                     }),
-                    sucess = true
+                    success = true
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

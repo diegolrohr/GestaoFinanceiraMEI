@@ -1,6 +1,7 @@
 <script>
     function fnDayClick(date) {
-
-        alert('clicked ' + date.format());
+        debugger
+        let a = date.format();
+        $$$.go("@Url.Action("ListOrdemServico", "OrdemServico")" + "?dtInicio=" + a.toString() + "&dtFinal=" + a.toString());
     }
 </script>

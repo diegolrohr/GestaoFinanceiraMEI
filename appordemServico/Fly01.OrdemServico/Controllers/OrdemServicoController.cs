@@ -203,7 +203,7 @@ namespace Fly01.OrdemServico.Controllers
             return target;
         }
 
-        public ContentResult ListOrdemServico(string gridLoad = "GridLoad")
+        public ContentResult ListOrdemServico(string gridLoad = "GridLoad", DateTime? dtInicio = null, DateTime? dtFinal = null)
         {
             var buttonLabel = "Mostrar todos as ordens de serviço";
             var buttonOnClick = "fnRemoveFilter";

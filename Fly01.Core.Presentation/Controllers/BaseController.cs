@@ -28,8 +28,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using iTextSharp.tool.xml;
-using System.Web;
 
 namespace Fly01.Core.Presentation
 {
@@ -615,8 +613,6 @@ namespace Fly01.Core.Presentation
                         case "csv":
                             GridToCSV(dataTable);
                             break;
-                        default:
-                            break;
                     }
 
                 }
@@ -949,6 +945,7 @@ namespace Fly01.Core.Presentation
         }
         protected void GridToPDF(DataTable data)
         {
+            Font fontDefault = FontFactory.GetFont("Roboto", 8, BaseColor.BLACK);
             int columns = data.Columns.Count;
             PdfPTable table = new PdfPTable(columns);
             int padding = 5;
@@ -956,9 +953,9 @@ namespace Fly01.Core.Presentation
             for (int x = 0; x < columns; x++)
             {
                 string cellText = Server.HtmlDecode(data.Columns[x].ColumnName);
-                widths[x] = cellText.Length > 2 ? cellText.Length : 3;
-                PdfPCell cell = new PdfPCell(new Phrase(new Chunk(cellText, FontFactory.GetFont("Roboto", 12, BaseColor.WHITE))))
-                {
+                widths[x] = cellText.Length > 4 ? cellText.Length : 4;
+                PdfPCell cell = new PdfPCell(new Phrase(new Chunk(cellText, FontFactory.GetFont("Roboto", 8, BaseColor.WHITE))))
+                {                    
                     BorderWidth = 0,
                     BackgroundColor = new BaseColor(System.Drawing.ColorTranslator.FromHtml("#f37021")),
                     Padding = padding
@@ -977,7 +974,7 @@ namespace Fly01.Core.Presentation
                 {
                     string cellText = Server.HtmlDecode(data.Rows[i].ItemArray[j].ToString());
                     widths[j] = cellText.Length > widths[j] ? cellText.Length : widths[j];
-                    PdfPCell cell = new PdfPCell(new Phrase(cellText))
+                    PdfPCell cell = new PdfPCell(new Phrase(new Chunk(cellText, FontFactory.GetFont("Roboto", 8, BaseColor.BLACK))))
                     {
                         BorderWidth = 0,
                         Padding = padding

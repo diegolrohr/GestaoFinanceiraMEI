@@ -100,17 +100,6 @@ namespace Fly01.OrdemServico.Controllers
                     }
                 }
             });
-            cfg.Content.Add(new FormUI
-            {
-                Id = "fly01frm",
-                Action = new FormUIAction
-                {
-                    Create = @Url.Action("Create"),
-                    List = Url.Action("Form")
-                },
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                ReadyFn = "fnReadyAgenda"
-            });
             return cfg;
         }
 

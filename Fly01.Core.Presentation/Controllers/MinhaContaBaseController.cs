@@ -15,7 +15,6 @@ using System.Web.Mvc;
 
 namespace Fly01.Core.Presentation.Controllers
 {
-    //[OperationRole(ResourceKey = ResourceHashConst.FinanceiroCadastrosCategoria)]
     public class MinhaContaBaseController : BaseController<MinhaContaVM>
     {
         public override Func<MinhaContaVM, object> GetDisplayData()
@@ -42,7 +41,7 @@ namespace Fly01.Core.Presentation.Controllers
         public override ContentResult List()
         {
             var dateNow = DateTime.Now;
-            var dataInicialFiltroDefault = dateNow.AddMonths(-3);
+            var dataInicialFiltroDefault = dateNow.AddMonths(-1);
             var dataFinalFiltroDefault = dateNow.AddMonths(1);
 
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
@@ -70,14 +69,14 @@ namespace Fly01.Core.Presentation.Controllers
                     new InputDateUI
                     {
                         Id = "dataInicial",
-                        Class = "col s6 m3 l6",
+                        Class = "col s12 m6",
                         Label = "Data Inicial",
                         Value = dataInicialFiltroDefault.ToString("dd/MM/yyyy")
                     },
                     new InputDateUI
                     {
                         Id = "dataFinal",
-                        Class = "col s6 m3 l6",
+                        Class = "col s12 m6",
                         Label = "Data Final",
                         Value = dataFinalFiltroDefault.ToString("dd/MM/yyyy")
                     }
@@ -96,15 +95,15 @@ namespace Fly01.Core.Presentation.Controllers
                 },
             };
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "emissao", DisplayName = "Emissão", Priority = 5, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 1, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "nfe", DisplayName = "NFe", Priority = 8, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "emissao", DisplayName = "Emissão", Priority = 7, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 6, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "nfe", DisplayName = "NFe", Priority = 9, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 2, Orderable = false, Searchable = false, RenderFn = "fnRenderVencimento" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor", Priority = 3, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 7, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 3, Orderable = false, Searchable = false, RenderFn = "fnRenderVencimento" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor", Priority = 1, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 8, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DisplayName = "Situação", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderSituacao"});
-            config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "20%" });
+            config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "20%" });
 
             cfg.Content.Add(config);
 
@@ -124,8 +123,8 @@ namespace Fly01.Core.Presentation.Controllers
 
                 var configuracao = new MinhaContaConfiguracaoVM()
                 {
-                    //CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
-                    CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
+                    CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
+                    //CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
                     VencimentoInicial = dataInicial,
                     VencimentoFinal = dataFinal,
                     Posicao = "TODOS"

@@ -1,8 +1,7 @@
-﻿using Fly01.Core.API;
+﻿using Fly01.Core.Presentation.Controllers;
 
 namespace Fly01.Faturamento.Controllers
 {
-    //TODO [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasDashboard)]
     public class MinhaContaController : MinhaContaBaseController
     {
     }

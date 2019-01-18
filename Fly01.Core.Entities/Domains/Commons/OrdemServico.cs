@@ -16,10 +16,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public int Numero { get; set; }
 
         [Required]
-        [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
-        [Column(TypeName = "date")]
         public DateTime DataEntrega { get; set; }
 
         public Guid? ResponsavelId { get; set; }

@@ -232,7 +232,8 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10,
-                    LengthChange = true
+                    LengthChange = true,
+                    NoExportButtons = true
                 },
                 Columns = new List<DataTableUIColumn>
                 {

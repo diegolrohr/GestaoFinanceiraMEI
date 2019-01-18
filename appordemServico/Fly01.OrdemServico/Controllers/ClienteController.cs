@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastroClientes)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastrosClientes)]
     public class ClienteController : PessoaBaseController<PessoaVM>
     {
         protected override string ResourceTitle => "Cliente";

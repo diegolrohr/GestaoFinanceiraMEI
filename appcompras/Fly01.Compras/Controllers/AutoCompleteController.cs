@@ -23,7 +23,7 @@ namespace Fly01.Compras.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
 
             Dictionary<string, string> queryString = AppDefaults.GetQueryStringDefault();
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and (objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao')");
             queryString.AddParam("$select", "id,descricao,valorCusto,codigoProduto,codigoBarras");
             queryString.AddParam("$orderby", "descricao");
 

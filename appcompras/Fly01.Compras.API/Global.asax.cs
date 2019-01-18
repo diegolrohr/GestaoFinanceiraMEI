@@ -49,6 +49,11 @@ namespace Fly01.Compras.API
             builder.EntitySet<NFeEntrada>("nfeentrada");
             builder.EntitySet<NFeProdutoEntrada>("nfeprodutoentrada");
             builder.EntitySet<NotaFiscalCartaCorrecaoEntrada>("notafiscalcartacorrecaoentrada");
+            builder.EntitySet<Kit>("kit");
+            builder.EntitySet<KitItem>("kititem");
+            builder.EntitySet<KitItem>("servico");
+            builder.EntitySet<KitItem>("iss");
+            builder.EntitySet<KitItem>("nbs");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -69,6 +74,7 @@ namespace Fly01.Compras.API
             AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
             AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
 
             base.SetAppDefaults();
         }

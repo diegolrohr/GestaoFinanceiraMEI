@@ -18,5 +18,16 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 return Ok(data);
             }
         }
+
+
+        [HttpGet]
+        public IHttpActionResult Get(string IdPessoa)
+        {
+            using (var unitOfWork = new UnitOfWork(ContextInitialize))
+            {
+                var data = unitOfWork.CnabBL.GetCnabs(new Guid(IdPessoa));
+                return Ok(data);
+            }
+        }
     }
 }

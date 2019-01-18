@@ -49,6 +49,7 @@ namespace Fly01.Core.Presentation.Controllers
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
             customFilters.AddParam("$select", SelectProperties);
+            customFilters.AddParam("$filter", $"objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao'");
 
             return customFilters;
         }
@@ -341,8 +342,17 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
+            try
+            {
+                var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
+                return JsonResponseStatus.GetJson(arquivoVM);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         public virtual ActionResult ImportarProduto()
@@ -417,7 +427,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
                 Label = "Grupo",
-                Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
                 DataUrlPost = @Url.Action("NovoGrupoProduto"),
                 LabelId = "grupoProdutoDescricao",
@@ -431,8 +440,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m2",
                 Label = "Saldo atual",
                 Value = "0",
-                Digits = 3,
-                Required = true
+                Digits = 3
             });
 
             config.Elements.Add(new AutoCompleteUI

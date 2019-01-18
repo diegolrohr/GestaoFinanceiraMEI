@@ -69,11 +69,14 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\EnquadramentoLegalIPIController.cs" />
+    <Compile Include="Controllers\KitItemController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\NFeController.cs" />
     <Compile Include="Controllers\NFeProdutoController.cs" />
     <Compile Include="Controllers\NFSeController.cs" />
     <Compile Include="Controllers\NFSeServicoController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\KitController.cs" />
     <Compile Include="Controllers\NotaFiscalInutilizadaController.cs" />
     <Compile Include="Controllers\NotaFiscalController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
@@ -116,8 +119,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetReports.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ISSVM.cs" />
-    <Compile Include="ViewModel\NBSVM.cs" />
     <Compile Include="ViewModel\NFeProdutoVM.cs" />
     <Compile Include="ViewModel\NFeVM.cs" />
     <Compile Include="ViewModel\NFSeServicoVM.cs" />
@@ -130,7 +131,6 @@
     <Compile Include="ViewModel\OrdemVendaServicoVM.cs" />
     <Compile Include="ViewModel\OrdemVendaVM.cs" />
     <Compile Include="ViewModel\PedidoEstoqueNegativoVM.cs" />
-    <Compile Include="ViewModel\ServicoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -354,6 +354,20 @@
     <Content Include="Views\NotaFiscal\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NotaFiscalInutilizada\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\Account\LoginSSO.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\Pedido\Functions\_fnModalOrdemVendaKit.cshtml" />
+    <Content Include="Views\OrdemVenda\Functions\_fnFormReadyOrdemVendaKit.cshtml" />
+    <Content Include="Views\Orcamento\Functions\_fnModalOrcamentoKit.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -374,7 +388,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.8\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.4\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

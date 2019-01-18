@@ -66,6 +66,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\InventarioItemController.cs" />
     <Compile Include="Controllers\CestController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\NCMController.cs" />
     <Compile Include="Controllers\GrupoProdutoController.cs" />
     <Compile Include="Controllers\PosicaoAtualController.cs" />
@@ -207,6 +208,10 @@
     <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
     <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
     <Content Include="Views\Account\LoginSSO.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -226,7 +231,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.8\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.4\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>

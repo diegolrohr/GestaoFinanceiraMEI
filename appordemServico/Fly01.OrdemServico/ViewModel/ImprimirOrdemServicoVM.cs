@@ -25,5 +25,12 @@ namespace Fly01.OrdemServico.ViewModel
         public string ClienteEmail { get; internal set; }
         public string ClienteTelefone { get; internal set; }
         public string ClienteCelular { get; internal set; }
+        public string ObjManutId { get; internal set; }
+        public string ObjManutNome { get; internal set; }
+        public string ObjManutQtd { get; internal set; }
+        public double ObjManutValor { get; internal set; }
+        public double ObjManutDesconto { get; internal set; }
+        public double ObjManutTotal { get; internal set; }
+        public string ObjManutTipo { get; internal set; }
     }
 }

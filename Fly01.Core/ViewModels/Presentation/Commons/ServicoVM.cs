@@ -1,9 +1,7 @@
-﻿using Fly01.Core.Helpers.Attribute;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 
-namespace Fly01.Faturamento.ViewModel
+namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class ServicoVM : DomainBaseVM
     {

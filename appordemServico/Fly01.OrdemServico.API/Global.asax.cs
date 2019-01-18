@@ -34,6 +34,9 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Servico>("servico");
             builder.EntitySet<UnidadeMedida>("unidademedida");
             builder.EntitySet<Iss>("iss");
+            builder.EntitySet<Arquivo>("arquivo");
+            builder.EntitySet<Kit>("kit");
+            builder.EntitySet<KitItem>("kititem");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();
@@ -52,6 +55,11 @@ namespace Fly01.OrdemServico.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
+            AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
+            AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
+            AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
 
             base.SetAppDefaults();
         }

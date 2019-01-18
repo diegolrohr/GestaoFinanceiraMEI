@@ -54,6 +54,19 @@
     <Compile Include="ViewModels\DadosArquivoRemessaVM.cs" />
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\UtilizarKitVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ISSVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\KitItemVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\KitVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\NBSVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\ServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoBaseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAntecipacaoEfetivarVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\StoneAutenticacaoVM.cs" />
@@ -137,6 +150,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

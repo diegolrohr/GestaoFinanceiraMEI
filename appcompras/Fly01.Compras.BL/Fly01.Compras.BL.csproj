@@ -49,7 +49,11 @@
     <Compile Include="GrupoTributarioBL.cs" />
     <Compile Include="CfopBL.cs" />
     <Compile Include="CestBL.cs" />
+    <Compile Include="ISSBL.cs" />
+    <Compile Include="KitBL.cs" />
+    <Compile Include="KitItemBL.cs" />
     <Compile Include="MonitorNFBL.cs" />
+    <Compile Include="NBSBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="CondicaoParcelamentoBL.cs" />
     <Compile Include="EstadoBL.cs" />
@@ -69,6 +73,7 @@
     <Compile Include="PedidoBL.cs" />
     <Compile Include="OrcamentoBL.cs" />
     <Compile Include="PessoaBL.cs" />
+    <Compile Include="ServicoBL.cs" />
     <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerieNotaFiscalBL.cs" />

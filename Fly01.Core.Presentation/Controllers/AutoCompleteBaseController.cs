@@ -4,6 +4,7 @@ using Fly01.Core.Rest;
 using Fly01.Core.Helpers;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.Core.Entities.Domains.Enum;
+using System.Collections.Generic;
 
 namespace Fly01.Core.Presentation.Controllers
 {
@@ -197,7 +198,7 @@ namespace Fly01.Core.Presentation.Controllers
             var resourceName = AppDefaults.GetResourceName(typeof(ProdutoVM));
             var queryString = AppDefaults.GetQueryStringDefault();
 
-            queryString.AddParam("$filter", $"contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')");
+            queryString.AddParam("$filter", $"(contains(descricao, '{term}') or contains(codigoProduto, '{term}') or contains(codigoBarras, '{term}')) and (objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao')");
             queryString.AddParam("$select", "id,descricao,codigoProduto,codigoBarras,valorCusto,saldoProduto");
             queryString.AddParam("$orderby", "descricao");
 
@@ -317,6 +318,43 @@ namespace Fly01.Core.Presentation.Controllers
 
             var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<GrupoTributarioVM>>(resourceName, queryString).Data
                                 select new { id = item.Id, label = item.Descricao, detail = "", tipoTributacaoICMS = item.TipoTributacaoICMS };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult ProdutoServico(string term, string prefilter)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(ProdutoServicoVM));
+            var queryString = new Dictionary<string, string> {
+                { "kitId", prefilter },
+                { "filtro", term }
+            };
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<ProdutoServicoVM>>(resourceName, queryString).Data
+                                select new
+                                {
+                                    id = item.Id,
+                                    label = item.Descricao,
+                                    detail = item.TipoItemDescricao,
+                                    tipoItem = item.TipoItem,
+                                    tipoItemDescricao = item.TipoItemDescricao,
+                                    produtoId = (item.TipoItem == TipoItem.Produto ? item.Id.ToString() : null),
+                                    servicoId = (item.TipoItem == TipoItem.Servico ? item.Id.ToString() : null)
+                                };
+
+            return GetJson(filterObjects);
+        }
+
+        public JsonResult Kit(string term)
+        {
+            var resourceName = AppDefaults.GetResourceName(typeof(KitVM));
+            var queryString = AppDefaults.GetQueryStringDefault();
+
+            queryString.AddParam("$filter", $"(contains(descricao,'{term}'))");
+            queryString.AddParam("$select", "id,descricao");
+            queryString.AddParam("$orderby", "descricao");
+
+            var filterObjects = from item in RestHelper.ExecuteGetRequest<ResultBase<KitVM>>(resourceName, queryString).Data
+                                select new { id = item.Id, label = item.Descricao };
 
             return GetJson(filterObjects);
         }

@@ -1,0 +1,72 @@
+<script>
+    function fnReadyAgenda() {
+        @*$$$.loading.start();
+        var dataInicio = $($('.fc-day').get(0)).data("date")
+        var dataFim = $($('.fc-day').get(-1)).data("date")
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetOSAgenda", "Agenda")',
+            data: {
+                dataInicial: dataInicio,
+                dataFinal: dataFim
+            },
+            success: function (json, success) {
+                if (success) {
+                    fullCalendar(json);
+                    $$$.loading.stop();
+                }
+                else
+                    $$$.toast(response.message, 'error');
+            }
+        });
+
+        $('.fc-next-button').on("click", function () {
+            $$$.loading.start();
+            var dataInicio = $($('.fc-day').get(0)).data("date")
+            var dataFim = $($('.fc-day').get(-1)).data("date")
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetOSAgenda", "Agenda")',
+                data: {
+                    dataInicial: dataInicio,
+                    dataFinal: dataFim
+                },
+                success: function (json, success) {
+                    if (success) {
+                        fullCalendar(json);
+                        $$$.loading.stop();
+                    }
+                    else
+                        $$$.toast(response.message, 'error');
+                }
+            });
+        });
+
+        $('.fc-prev-button').click(function () {
+            $$$.loading.start();
+            var dataInicio = $($('.fc-day').get(0)).data("date")
+            var dataFim = $($('.fc-day').get(-1)).data("date")
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetOSAgenda", "Agenda")',
+                data: {
+                    dataInicial: dataInicio,
+                    dataFinal: dataFim
+                },
+                success: function (json, success) {
+                    if (success) {
+                        fullCalendar(json);
+                        $$$.loading.stop();
+                    }
+                    else
+                        $$$.toast(response.message, 'error');
+                }
+            });
+        });
+      
+        function fullCalendar(json) {
+            if (json.events)
+                $("#calendar").fullCalendar("renderEvents", json.events);
+        }*@
+    }
+</script>

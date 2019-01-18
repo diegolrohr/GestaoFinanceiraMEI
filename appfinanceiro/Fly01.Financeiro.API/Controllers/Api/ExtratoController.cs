@@ -4,6 +4,8 @@ using System;
 using System.Web.Http;
 using Fly01.Core.API;
 using Fly01.Core.Entities.Domains.Commons;
+using System.Collections.Generic;
+using Fly01.Core.Notifications;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -29,9 +31,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if(dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
             
-            //if ((dataInicial > DateTime.Now.Date) || (dataFinal > DateTime.Now.Date))
-            //    return BadRequest("O período informado não pode ser superior ao dia de hoje.");
-            
             if ((dataFinal - dataInicial).TotalDays > 180)
                 return BadRequest("O período informado não deve ultrapassar 180 dias");
 
@@ -49,9 +48,6 @@ namespace Fly01.Financeiro.API.Controllers.Api
             if (dataInicial > dataFinal)
                 return BadRequest("Data inicial não pode ser superior a data final.");
 
-            //if ((dataInicial > DateTime.Now.Date) || (dataFinal > DateTime.Now.Date))
-            //    return BadRequest("O período informado não pode ser superior ao dia de hoje.");
-
             if ((dataFinal - dataInicial).TotalDays > 180)
                 return BadRequest("O período informado não deve ultrapassar 180 dias");
 
@@ -63,6 +59,53 @@ namespace Fly01.Financeiro.API.Controllers.Api
                 var items = unitOfWork.ExtratoBL.GetExtratoDetalhe(dataInicial, dataFinal, contaBancariaId, skipRecords, pageSize);
 
                 return Ok(new PagedResult<ExtratoDetalhe>(items, pageNo, pageSize, totalRecords));
+            }
+        }
+
+        [HttpGet]
+        [Route("impressaoextratodetalhe")]
+        public IHttpActionResult GetImpressaoExtratoDetalhe(DateTime dataInicial, DateTime dataFinal, Guid? contaBancariaId, int pageNo = 1, int pageSize = 1000)
+        {
+            try
+            {
+                //#4 (Grid com o detalhamento de contas do extrato para impressão)
+                if (dataInicial > dataFinal)
+                    return BadRequest("Data inicial não pode ser superior a data final.");
+
+                if ((dataFinal - dataInicial).TotalDays > 180)
+                    return BadRequest("O período informado não deve ultrapassar 180 dias");
+
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    int skipRecords = (pageNo - 1) * pageSize;
+
+                    var items = unitOfWork.ExtratoBL.GetExtratoDetalhe(dataInicial, dataFinal, contaBancariaId, skipRecords, pageSize);
+
+                    return Ok(new List<ExtratoDetalhe>(items));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("impressaosaldos")]
+        public IHttpActionResult GetImpressaoSaldos()
+        {
+            try
+            {
+                //#5 (Lista de Contas com saldos para impressão)
+                using (UnitOfWork unitOfWork = new UnitOfWork(ContextInitialize))
+                {
+                    var listacontas = unitOfWork.ExtratoBL.GetSaldos();
+
+                    return Ok(new List<ExtratoContaSaldo>(listacontas));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
             }
         }
     }

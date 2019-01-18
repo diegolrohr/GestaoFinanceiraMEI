@@ -13,6 +13,7 @@ using Fly01.OrdemServico.Models.Reports;
 using Fly01.OrdemServico.ViewModel;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Defaults;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
@@ -38,6 +39,17 @@ namespace Fly01.OrdemServico.Controllers
 
         private JsonResult GetJson(object data)
             => Json(data, JsonRequestBehavior.AllowGet);
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public List<OrdemServicoManutencaoVM> GetObjetosManutencao(Guid id)
+        {
+            var queryString = new Dictionary<string, string>();
+
+            queryString.AddParam("$expand", "produto");
+            queryString.AddParam("$filter", $"ordemServicoId eq {id}");
+
+            return RestHelper.ExecuteGetRequest<ResultBase<OrdemServicoManutencaoVM>>("OrdemServicoManutencao", queryString).Data;
+        }
 
         [OperationRole(PermissionValue = EPermissionValue.Read)]
         public List<OrdemServicoItemProdutoVM> GetProdutos(Guid id)
@@ -182,12 +194,16 @@ namespace Fly01.OrdemServico.Controllers
         {
             var target = new List<HtmlUIButton>();
             if (UserCanWrite)
-                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem" });
+            {
+                target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "andamento", Label = "Executar", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
+            }
 
             return target;
         }
 
-        public ContentResult ListOrdemServico(string gridLoad = "GridLoad")
+        public ContentResult ListOrdemServico(string gridLoad = "GridLoad", string dtInicio = null, string dtFinal = null)
         {
             var buttonLabel = "Mostrar todos as ordens de serviço";
             var buttonOnClick = "fnRemoveFilter";
@@ -211,10 +227,15 @@ namespace Fly01.OrdemServico.Controllers
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
 
+            cfg.Content.Add(new DivUI
+            {
+                Id = "fly01div"
+            });
 
             var cfgForm = new FormUI
             {
                 Id = "fly01frm",
+                Parent = "fly01div",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
                 Elements = new List<BaseUI>()
@@ -234,6 +255,18 @@ namespace Fly01.OrdemServico.Controllers
 
             if (gridLoad == "GridLoad")
             {
+                cfgForm.Elements.Add(new InputHiddenUI
+                {
+                    Id = "dtInicial",
+                    Value = dtInicio
+                });
+
+                cfgForm.Elements.Add(new InputHiddenUI
+                {
+                    Id = "dtFinal",
+                    Value = dtFinal
+                });
+
                 cfgForm.Elements.Add(new PeriodPickerUI()
                 {
                     Label = "Selecione o período",
@@ -252,10 +285,10 @@ namespace Fly01.OrdemServico.Controllers
                 cfgForm.ReadyFn = "fnUpdateDataFinal";
             }
 
-            cfg.Content.Add(cfgForm);
             var config = new DataTableUI
             {
                 Id = "fly01dt",
+                Parent = "fly01div",
                 UrlGridLoad = Url.Action(gridLoad),
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -268,6 +301,7 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmAndamento}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = $"(row.status == '{StatusOrdemServico.EmAberto}' || row.status == '{StatusOrdemServico.EmPreenchimento}')" },
                 new DataTableUIAction { OnClickFn = "fnImprimirOrdemServico", Label = "Imprimir", ShowIf = $"(row.status != '{StatusOrdemServico.EmPreenchimento}')" },
@@ -291,6 +325,7 @@ namespace Fly01.OrdemServico.Controllers
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date" });
             config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
 
+            cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);
 
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
@@ -342,7 +377,6 @@ namespace Fly01.OrdemServico.Controllers
         public ContentResult FormOrdemServico(bool isEdit = false)
             => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit), JsonSerializerSetting.Front), "application/json");
 
-
         public ContentUI FormOrdemServicoJson(bool isEdit = false)
         {
 
@@ -393,13 +427,13 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Serviços",
                         Id = "stepServicos",
-                        Quantity = 2,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
@@ -467,12 +501,23 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemServicoItemProduto",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar produto",
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemProduto" }
+                    }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoProdutoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoKit" }
                     }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemServicoItemProdutos", Class = "col s12 visible" });
@@ -482,12 +527,23 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new ButtonUI
             {
                 Id = "btnOrdemServicoItemServico",
-                Class = "col s12 m2",
+                Class = "col s12 m3",
                 Label = "",
                 Value = "Adicionar serviço",
                 DomEvents = new List<DomEventUI>
                     {
                         new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoItemServico" }
+                    }
+            });
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "btnOrdemServicoServicoKit",
+                Class = "col s12 m3",
+                Label = "",
+                Value = "Adicionar kit",
+                DomEvents = new List<DomEventUI>
+                    {
+                        new DomEventUI { DomEvent = "click", Function = "fnModalOrdemServicoKit" }
                     }
             });
             config.Elements.Add(new DivElementUI { Id = "ordemServicoItemServicos", Class = "col s12 visible" });
@@ -523,11 +579,15 @@ namespace Fly01.OrdemServico.Controllers
         {
             if (filters == null)
                 filters = new Dictionary<string, string>();
-
-            if (Request.QueryString["dataFinal"] != "")
+            if (Request.QueryString["dataFinal"] != "" && Request.QueryString["dtFinal"] != "")
+                filters.Add("dataEntrega le ", Request.QueryString["dataFinal"]);
+            else
                 filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
-            if (Request.QueryString["dataInicial"] != "")
-                filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
+
+            if (Request.QueryString["dataInicial"] != "" && Request.QueryString["dtFinal"] != "")
+                filters.Add(" and dataEntrega ge ", Request.QueryString["dataInicial"]);
+            else
+            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }
@@ -691,16 +751,20 @@ namespace Fly01.OrdemServico.Controllers
             {
                 OrdemServicoVM OrdemServico = Get(id);
 
+                var manut = GetObjetosManutencao(id);
                 var produtos = GetProdutos(id);
                 var servicos = GetServicos(id);
                 List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
 
-                if (!produtos.Any() && !servicos.Any())
+                if (!produtos.Any() && !servicos.Any() && !manut.Any())
                     AdicionarInformacoesPadrao(OrdemServico, reportItems);
-                else                
+                else
+                {
                     MontarServicosParaPrint(OrdemServico, servicos, reportItems);
                     MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
-                    
+                    MontarObjManutencaoParaPrint(OrdemServico, manut, reportItems);
+                }
+
                 var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
                 return File(reportViewer.Print(reportItems, SessionManager.Current.UserData.PlatformUrl), "application/pdf");
             }
@@ -760,11 +824,12 @@ namespace Fly01.OrdemServico.Controllers
                 });
             }
         }
+
         private static void MontarProdutosParaPrint(OrdemServicoVM OrdemServico, List<OrdemServicoItemProdutoVM> produtos, List<ImprimirOrdemServicoVM> reportItems)
         {
             foreach (OrdemServicoItemProdutoVM produtositens in produtos)
             {
-                reportItems.Add( new ImprimirOrdemServicoVM
+                reportItems.Add(new ImprimirOrdemServicoVM
                 {
                     //ORDEM SERVICO
                     Id = OrdemServico.Id.ToString(),
@@ -791,6 +856,34 @@ namespace Fly01.OrdemServico.Controllers
             }
         }
 
+        private static void MontarObjManutencaoParaPrint(OrdemServicoVM OrdemServico, List<OrdemServicoManutencaoVM> manut, List<ImprimirOrdemServicoVM> reportItems)
+        {
+            foreach (OrdemServicoManutencaoVM manutitens in manut)
+            {
+                reportItems.Add(new ImprimirOrdemServicoVM
+                {
+                    //ORDEM SERVICO
+                    Id = OrdemServico.Id.ToString(),
+                    ClienteNome = OrdemServico.Cliente?.Nome,
+                    ClienteCPF = OrdemServico.Cliente?.CPFCNPJ,
+                    ClienteCelular = OrdemServico.Cliente?.Celular,
+                    ClienteTelefone = OrdemServico.Cliente?.Telefone,
+                    ClienteEndereco = GetEndereco(OrdemServico.Cliente),
+                    ClienteEmail = OrdemServico.Cliente?.Email,
+                    DataEmissao = OrdemServico.DataEmissao,
+                    DataEntrega = OrdemServico.DataEntrega,
+                    Status = OrdemServico.Status.ToString(),
+                    Numero = OrdemServico.Numero.ToString(),
+                    Descricao = OrdemServico.Descricao,
+                    ObjManutTipo = "Objeto de Manutençao",
+                    ObjManutId = manutitens.Id.ToString(),
+                    ObjManutNome = manutitens?.Produto?.Descricao,
+                    ObjManutQtd = manutitens.Quantidade.ToString(),
+                    ItemNome = "Obj"
+                });
+            }
+        }
+
         private byte[] GetPDFFile(OrdemServicoVM ordemServico)
         {
             var reportViewer = new WebReportViewer<ImprimirOrdemServicoVM>(ReportOrdemServico.Instance);
@@ -799,20 +892,24 @@ namespace Fly01.OrdemServico.Controllers
 
         private List<ImprimirOrdemServicoVM> GetDadosOS(Guid id, OrdemServicoVM OrdemServico)
         {
+            var manut = GetObjetosManutencao(id);
             var produtos = GetProdutos(id);
             var servicos = GetServicos(id);
             List<ImprimirOrdemServicoVM> reportItems = new List<ImprimirOrdemServicoVM>();
 
-            if (!produtos.Any() && !servicos.Any())
+            if (!produtos.Any() && !servicos.Any() && !manut.Any())
                 AdicionarInformacoesPadrao(OrdemServico, reportItems);
             else
+            {
                 MontarServicosParaPrint(OrdemServico, servicos, reportItems);
-            MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
+                MontarProdutosParaPrint(OrdemServico, produtos, reportItems);
+                MontarObjManutencaoParaPrint(OrdemServico, manut, reportItems);
+            }
 
             return reportItems;
         }
 
-        private JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
+        public JsonResult MudarStatus(string id, StatusOrdemServico status, bool gerarOrdemVenda = false)
         {
             dynamic pedido = new ExpandoObject();
             pedido.status = status.ToString();
@@ -850,6 +947,108 @@ namespace Fly01.OrdemServico.Controllers
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(pedido, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        public ContentResult ModalKit()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Adicionar Kit Produtos/Serviços",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("AdicionarKit", "OrdemServico")
+                },
+                Id = "fly01mdlfrmOrdemServicoKit",
+                ReadyFn = "fnFormReadyOrdemServicoKit"
+            };
+            config.Elements.Add(new InputHiddenUI { Id = "orcamentoPedidoId" });
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "kitId",
+                Class = "col s12",
+                Label = "Kit",
+                Required = true,
+                DataUrl = Url.Action("Kit", "AutoComplete"),
+                LabelId = "kitDescricao",
+            }, ResourceHashConst.OrdemServicoCadastrosKit));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarProdutos",
+                Class = "col s12 m4",
+                Label = "Adicionar produtos do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "adicionarServicos",
+                Class = "col s12 m4",
+                Label = "Adicionar serviços do Kit"
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "somarExistentes",
+                Class = "col s12 m4",
+                Label = "Somar com existentes"
+            });
+
+            config.Elements.Add(new DivElementUI { Id = "infoGrupoTributario", Class = "col s12 text-justify visible", Label = "Informação" });
+
+            #region Helpers            
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "kitId",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Vai ser adicionado os produtos/serviços cadastrados no Kit."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarProdutos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "adicionarServicos",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Informe se deseja adicionar todos itens cadastrados no kit, somente serviços ou somente produtos."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "somarExistentes",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Os produtos/serviços cadastrados no kit, serão somados com a quantidade já existente na ordem de serviço."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public JsonResult AdicionarKit(UtilizarKitVM entityVM)
+        {
+            try
+            {
+                RestHelper.ExecutePostRequest("kitordemservico", JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                return JsonResponseStatus.GetSuccess("Itens do kit adicionados com sucesso.");
             }
             catch (Exception ex)
             {

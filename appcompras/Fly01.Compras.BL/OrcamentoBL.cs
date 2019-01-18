@@ -4,6 +4,7 @@ using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
+using Fly01.Core.ViewModels.Presentation.Commons;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,13 +18,15 @@ namespace Fly01.Compras.BL
         protected OrcamentoItemBL OrcamentoItemBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected OrdemCompraBL OrdemCompraBL { get; set; }
+        protected KitItemBL KitItemBL { get; set; }
 
-        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL) : base(context)
+        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, KitItemBL kitItemBL) : base(context)
         {
             PedidoBL = pedidoBL;
             OrcamentoItemBL = orcamentoItemBL;
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
+            KitItemBL = kitItemBL;
         }
 
         public override void ValidaModel(Orcamento entity)
@@ -143,6 +146,68 @@ namespace Fly01.Compras.BL
                 throw new BusinessException(entityToDelete.Notification.Get());
 
             base.Delete(entityToDelete);
+        }
+
+        public void UtilizarKitOrcamento(UtilizarKitVM entity)
+        {
+            try
+            {
+                if (All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                {
+                    if (KitItemBL.All.Any(x => x.KitId == entity.KitId))
+                    {
+                        #region Produtos
+                        if (entity.AdicionarProdutos)
+                        {
+                            var kitProdutos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+
+                            var existentesOrcamento =
+                                from oi in OrcamentoItemBL.AllIncluding(x => x.Produto).Where(x => x.OrcamentoId == entity.OrcamentoPedidoId)
+                                join ki in kitProdutos on oi.ProdutoId equals ki.ProdutoId
+                                select new { ProdutoId = ki.ProdutoId, OrcamentoItemId = oi.Id, Quantidade = ki.Quantidade };
+
+                            var novasOrcamentoItens =
+                                from kit in kitProdutos
+                                where !existentesOrcamento.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                select new
+                                {
+                                    OrcamentoId = entity.OrcamentoPedidoId,
+                                    ProdutoId = kit.ProdutoId.Value,
+                                    Valor = kit.Produto.ValorVenda,
+                                    Quantidade = kit.Quantidade,
+                                    FornecedorId = entity.FornecedorPadraoId
+                                };
+
+                            foreach (var item in novasOrcamentoItens)
+                            {
+                                OrcamentoItemBL.Insert(new OrcamentoItem()
+                                {
+                                    FornecedorId = item.FornecedorId.Value,
+                                    ProdutoId = item.ProdutoId,
+                                    OrcamentoId = item.OrcamentoId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrcamento)
+                                {
+                                    var orcamentoItem = OrcamentoItemBL.Find(item.OrcamentoItemId);
+                                    orcamentoItem.Quantidade += item.Quantidade;
+                                    OrcamentoItemBL.Update(orcamentoItem);
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
     }
 }

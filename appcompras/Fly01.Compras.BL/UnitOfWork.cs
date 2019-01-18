@@ -72,13 +72,13 @@ namespace Fly01.Compras.BL
         public OrdemCompraItemBL OrdemCompraItemBL => ordemCompraItemBL ?? (ordemCompraItemBL = new OrdemCompraItemBL(Context));
 
         private PedidoBL pedidoBL;
-        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL));
+        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL, KitItemBL));
 
         private PedidoItemBL pedidoItemBL;
         public PedidoItemBL PedidoItemBL => pedidoItemBL ?? (pedidoItemBL = new PedidoItemBL(Context));
 
         private OrcamentoBL orcamentoBL;
-        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL, OrdemCompraBL));
+        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL, OrdemCompraBL, KitItemBL));
 
         private OrcamentoItemBL orcamentoItemBL;
         public OrcamentoItemBL OrcamentoItemBL => orcamentoItemBL ?? (orcamentoItemBL = new OrcamentoItemBL(Context));
@@ -136,6 +136,21 @@ namespace Fly01.Compras.BL
 
         private MonitorNFBL monitorNFBL;
         public MonitorNFBL MonitorNFBL => monitorNFBL ?? (monitorNFBL = new MonitorNFBL(Context, TotalTributacaoBL, NFeEntradaBL, CertificadoDigitalBL, NotaFiscalInutilizadaBL, NotaFiscalCartaCorrecaoEntradaBL));
+
+        private ServicoBL servicoBL;
+        public ServicoBL ServicoBL => servicoBL ?? (servicoBL = new ServicoBL(Context, ISSBL, NBSBL, UnidadeMedidaBL));
+
+        private ISSBL issBL;
+        public ISSBL ISSBL => issBL ?? (issBL = new ISSBL(Context));
+
+        private NBSBL nbsBL;
+        public NBSBL NBSBL => nbsBL ?? (nbsBL = new NBSBL(Context));
+
+        private KitBL kitBL;
+        public KitBL KitBL => kitBL ?? (kitBL = new KitBL(Context));
+
+        private KitItemBL kitItemBL;
+        public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
 
         #endregion
     }

@@ -113,14 +113,14 @@ namespace Fly01.OrdemServico.Controllers
             throw new NotImplementedException();
         }
 
-        public JsonResult GetOSAgenda(DateTime dataInicial, DateTime dataFinal)
+        public JsonResult GetOSAgenda(DateTime initialDate, DateTime finalDate)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "dataInicial", initialDate.ToString("yyyy-MM-dd") },
+                    { "dataFinal", finalDate.ToString("yyyy-MM-dd") },
                 };
 
                 var response = RestHelper.ExecuteGetRequest<List<AgendaVM>>("agenda", queryString);

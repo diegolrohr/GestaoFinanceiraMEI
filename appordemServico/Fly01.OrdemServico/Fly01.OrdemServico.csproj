@@ -236,7 +236,6 @@
     <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
     <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnFormReadyOrdemServicoKit.cshtml" />
-    <Content Include="Views\Agenda\Functions\_fnReadyAgenda.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusAndamento.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusConcluido.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnSelect.cshtml" />

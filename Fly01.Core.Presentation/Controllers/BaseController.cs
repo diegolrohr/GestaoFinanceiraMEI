@@ -613,8 +613,6 @@ namespace Fly01.Core.Presentation
                         case "csv":
                             GridToCSV(dataTable);
                             break;
-                        default:
-                            break;
                     }
 
                 }

@@ -18,6 +18,13 @@ using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
 using Fly01.Core.ViewModels;
 using Fly01.Financeiro.Models.Reports;
+using System.Data;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using System.IO;
+using System.Text;
 
 namespace Fly01.Financeiro.Controllers
 {
@@ -118,7 +125,7 @@ namespace Fly01.Financeiro.Controllers
                     length = 50;
 
                 var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
-
+                var fileType = (Request.QueryString.AllKeys.Contains("fileType")) ? Request.QueryString.Get("fileType") : "";
                 var pageNo = param.Start > 0 ? (param.Start / length) + 1 : 1;
 
                 Dictionary<string, string> queryString = new Dictionary<string, string>
@@ -131,6 +138,30 @@ namespace Fly01.Financeiro.Controllers
                 };
 
                 var responseExtratoDetalhe = RestHelper.ExecuteGetRequest<PagedResult<ExtratoDetalheVM>>("extrato/extratodetalhe", queryString);
+
+                if (!string.IsNullOrWhiteSpace(fileType))
+                {
+                    if (responseExtratoDetalhe.Data.Count.Equals(0))
+                        throw new Exception("Não existem registros para exportar");
+                    DataTable dataTable = GridToDataTable(responseExtratoDetalhe, param);
+                    switch (fileType.ToLower())
+                    {
+                        case "pdf":
+                            GridToPDF(dataTable);
+                            break;
+                        case "doc":
+                            GridToDOC(dataTable);
+                            break;
+                        case "xls":
+                            GridToXLS(dataTable);
+                            break;
+                        case "csv":
+                            GridToCSV(dataTable);
+                            break;
+                    }
+
+                }
+
                 return Json(new
                 {
                     recordsTotal = responseExtratoDetalhe.Paging.TotalRecordCount,
@@ -769,5 +800,47 @@ namespace Fly01.Financeiro.Controllers
                 });
             }
         }
+
+        #region ExportGrid 
+      
+        protected DataTable GridToDataTable(PagedResult<ExtratoDetalheVM> responseGrid, JQueryDataTableParams param)
+        {
+            DataTable dt = new DataTable();
+            dt.Clear();
+
+            param.Columns.ForEach(x =>
+            {
+                if (!string.IsNullOrWhiteSpace(x.Name))
+                    dt.Columns.Add(x.Name);
+            });
+
+            var data = responseGrid.Data.Select(item => new
+            {
+                data = item.DataMovimento.ToString("dd/MM/yyyy"),
+                descricaoLancamento = item.DescricaoLancamento,
+                pessoaNome = item.PessoaNome,
+                contaBancariaDescricao = item.ContaBancariaDescricao,
+                valorLancamento = item.ValorLancamento.ToString("C", AppDefaults.CultureInfoDefault)
+            }).ToList();
+            Type o = data.FirstOrDefault().GetType();
+            data.ForEach(x =>
+            {
+                DataRow dtr = dt.NewRow();
+                param.Columns.ForEach(y =>
+                {
+                    if (!string.IsNullOrWhiteSpace(y.Name))
+                        dtr[y.Name] = o.GetProperty(y.Data).GetValue(x, null);
+                });
+                dt.Rows.Add(dtr);
+            });
+            dt.Columns.Cast<DataColumn>().ToList().ForEach(column =>
+            {
+                if (dt.AsEnumerable().All(dr => dr.IsNull(column) || dr[column].ToString().Equals("")))
+                    dt.Columns.Remove(column);
+            });
+
+            return dt;
+        }
+        #endregion
     }
 }

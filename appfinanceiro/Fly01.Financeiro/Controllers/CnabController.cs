@@ -251,7 +251,8 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Select = new { style = "multi" },
                     OrderColumn = 2,
-                    OrderDir = "asc"
+                    OrderDir = "asc",
+                    NoExportButtons = true
                 },
                 Parameters = new List<DataTableUIParameter>
                 {

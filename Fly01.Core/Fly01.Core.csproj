@@ -55,6 +55,11 @@
     <Compile Include="ViewModels\EPermissionValue.cs" />
     <Compile Include="ViewModels\PermissionResponseVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\AgendaVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaConfiguracaoVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaResponseVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaCodigoBarrasVM.cs" />
+    <Compile Include="ViewModels\Presentation\Commons\MinhaContaVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\UtilizarKitVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ProdutoServicoVM.cs" />
     <Compile Include="ViewModels\Presentation\Commons\ISSVM.cs" />

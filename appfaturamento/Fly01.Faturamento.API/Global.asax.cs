@@ -76,6 +76,7 @@ namespace Fly01.Faturamento.API
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
             AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlApiGatewayMpn = ConfigurationManager.AppSettings["UrlGatewayMpn"];
 
             base.SetAppDefaults();
         }

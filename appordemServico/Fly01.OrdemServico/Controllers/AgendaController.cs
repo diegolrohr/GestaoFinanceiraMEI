@@ -56,10 +56,35 @@ namespace Fly01.OrdemServico.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 SidebarUrl = Url.Action("Sidebar", "Home")
             };
+            
+            cfg.Content.Add(new CalendarUI
+            {
+                Id = "calendar",
+                Class = "col s12",
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Header = new CalendarUIHeader
+                {
+                    Left = "prev,next today",
+                    Center = "title",
+                    Right = "month,agendaWeek,agendaDay"
+                },
+                Options = new CalendarUIConfig()
+                {
+                    EventLimit = true,
+                    Selectable = true,
+                    Editable = false
+                },
+                Callbacks = new CalendarUICallbacks()
+                {
+                    DayClick = "fnDayClick",
+                    Select = "fnSelect"
+                },
+                UrlData = Url.Action("GetOSAgenda")
+            });
             cfg.Content.Add(new DivUI
             {
                 Id = "legenda",
-                Class = "col s12",
+                Class = "col s12 ",
                 Elements = new List<BaseUI>
                 {
                     new StaticTextUI
@@ -75,25 +100,7 @@ namespace Fly01.OrdemServico.Controllers
                     }
                 }
             });
-            cfg.Content.Add(new CalendarUI
-            {
-                Id = "calendar",
-                Class = "col s10 offset-s1",
-                UrlFunctions = Url.Action("Functions") + "?fns=",
-                Options = new CalendarUIConfig()
-                {
-                    EventLimit = true,
-                    Selectable = true,
-                    Editable = false
-                },
-                Callbacks = new CalendarUICallbacks()
-                {
-                    DayClick = "fnDayClick",
-                    Select = "fnSelect"
-                }
-            });
-
-            var config = new FormUI
+            cfg.Content.Add(new FormUI
             {
                 Id = "fly01frm",
                 Action = new FormUIAction
@@ -103,9 +110,7 @@ namespace Fly01.OrdemServico.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnReadyAgenda"
-            };
-
-            cfg.Content.Add(config);
+            });
             return cfg;
         }
 
@@ -114,14 +119,14 @@ namespace Fly01.OrdemServico.Controllers
             throw new NotImplementedException();
         }
 
-        public JsonResult GetOSAgenda(DateTime dataInicial, DateTime dataFinal)
+        public JsonResult GetOSAgenda(DateTime initialDate, DateTime finalDate)
         {
             try
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "dataInicial", dataInicial.ToString("yyyy-MM-dd") },
-                    { "dataFinal", dataFinal.ToString("yyyy-MM-dd") },
+                    { "dataInicial", initialDate.ToString("yyyy-MM-dd") },
+                    { "dataFinal", finalDate.ToString("yyyy-MM-dd") },
                 };
 
                 var response = RestHelper.ExecuteGetRequest<List<AgendaVM>>("agenda", queryString);
@@ -136,7 +141,7 @@ namespace Fly01.OrdemServico.Controllers
                         end   = x.End,
                         url   = x.Url
                     }),
-                    sucess = true
+                    success = true
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

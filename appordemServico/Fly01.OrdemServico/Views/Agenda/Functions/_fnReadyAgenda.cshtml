@@ -1,9 +1,6 @@
 <script>
     function fnReadyAgenda() {
-        $('.fc-month-button').hide();
-        $('.fc-agendaWeek-button').hide();
-        $('.fc-agendaDay-button').hide();
-        $$$.loading.start();
+        @*$$$.loading.start();
         var dataInicio = $($('.fc-day').get(0)).data("date")
         var dataFim = $($('.fc-day').get(-1)).data("date")
         $.ajax({
@@ -70,6 +67,6 @@
         function fullCalendar(json) {
             if (json.events)
                 $("#calendar").fullCalendar("renderEvents", json.events);
-        }
+        }*@
     }
 </script>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props" Condition="Exists('..\..\packages\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\build\MSBuild.Microsoft.VisualStudio.Web.targets.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -70,6 +70,7 @@
     <Compile Include="Controllers\Api\KitOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\KitItemController.cs" />
     <Compile Include="Controllers\Api\KitController.cs" />
+    <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\NBSController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />
     <Compile Include="Controllers\Api\OrdemServicoController.cs" />

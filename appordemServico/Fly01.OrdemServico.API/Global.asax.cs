@@ -59,6 +59,7 @@ namespace Fly01.OrdemServico.API
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
             AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
             AppDefaults.UrlComprasApi = ConfigurationManager.AppSettings["UrlComprasApi"];
+            AppDefaults.UrlApiGatewayMpn = ConfigurationManager.AppSettings["UrlGatewayMpn"];
 
             base.SetAppDefaults();
         }

@@ -138,6 +138,7 @@
     <Compile Include="Controllers\NotaFiscalInutilizadaBaseController.cs" />
     <Compile Include="Controllers\ParametroTributarioBaseController.cs" />
     <Compile Include="Controllers\KitBaseController.cs" />
+    <Compile Include="Controllers\MinhaContaBaseController.cs" />
     <Compile Include="Controllers\SerieNotaFiscalBaseController.cs" />
     <Compile Include="OperationRoleAttribute.cs" />
     <Compile Include="Commons\ImportacaoArquivoHelper.cs" />

@@ -64,6 +64,7 @@
     <Compile Include="Controllers\KitItemController.cs" />
     <Compile Include="Controllers\KitController.cs" />
     <Compile Include="Controllers\AgendaController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\ResponsavelController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -241,6 +242,10 @@
     <Content Include="Views\Agenda\Functions\_fnSelect.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnDayClick.cshtml" />
     <Content Include="Views\Agenda\Functions\_fnNovaOS.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />

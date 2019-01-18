@@ -62,6 +62,12 @@ namespace Fly01.OrdemServico.Controllers
                 Id = "calendar",
                 Class = "col s12",
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Header = new CalendarUIHeader
+                {
+                    Left = "prev,next today",
+                    Center = "title",
+                    Right = "month,agendaWeek,agendaDay"
+                },
                 Options = new CalendarUIConfig()
                 {
                     EventLimit = true,

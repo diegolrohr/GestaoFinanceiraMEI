@@ -3,17 +3,38 @@
         var btns = [
             createElem("a", { "alt": "Imprimir boleto", "target": "_blank", "href": row.urlBoleto, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "print"))
         ];
-        
-        if(row.boletoVencido && row.situacao == 'PENDENTE')
-        {
+        if (row.boletoVencido && row.situacao == 'PENDENTE') {
             btns.push(createElem("a", { "alt": "2ª via", "target": "_blank", "href": row.urlSegundaVia, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "filter_2")))
         }
-        if (row.situacao == "PENDENTE" && row.codigoBarrasFormatado != undefined && row.codigoBarrasFormatado != "") {
+        if (row.situacao == "PENDENTE") {
+            let btn = document.getElementById(`${row.numero}cbbtn`);
+            if (!btn) {
+                btns.push(createElem("button", { "id": `${row.numero}cbbtn`, "alt": "Copiar código", "class": "btn btn-narrow valid hide ajax" }, createElem("i", { "class": "material-icons" }, "file_copy")))
+                console.log("Add btn " + row.numero);
+            }
 
-            btns.push(createElem("buttom", { "alt": "Copiar código", "onClick": "fnCopiarCodigoBarra(" +  "'"+row.codigoBarrasFormatado+"'" + ")", "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "file_copy")))
+            //o render é executado em cada cell do grid..
+            //para não disparar inúmeras vezes
+            if (btn && btn.classList.contains("ajax")) {
+                btn.classList.remove("ajax");
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CodigoBarras", "MinhaConta")",
+                    data: { urlBoleto: row.urlBoleto, numero: row.numero },
+                    success: function (json) {
+                        if (json.success && json.codigoBarrasFormatado != "" && json.codigoBarrasFormatado != undefined) {
+                            var btnCodigo = document.getElementById(`${json.numero}cbbtn`);
+                            if (!btnCodigo.classList.contains("done")) {
+                                //tudo por que onclick não funcionou
+                                $("#divAcoes #" + json.numero + "cbbtn").remove();
+                                $("#divAcoes").append(createElem("buttom", { "alt": "Copiar código", "onClick": "fnCopiarCodigoBarra(" + "'" + json.codigoBarrasFormatado + "'" + ")", "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "file_copy")));
+                            }
+                        }
+                    }
+                });
+            }
         }
-
-        return createElem("div", { "class": "right col s12" }, btns).innerHTML;
+        return createElem("div", { "id": "divAcoes" , "class": "right col s12" }, btns).outerHTML;
     };
 
     function fnCopiarCodigoBarra(codigoBarras) {

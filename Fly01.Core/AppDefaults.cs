@@ -33,7 +33,7 @@ namespace Fly01.Core
 
         public static string UrlGateway { get; set; }
         public static string UrlApiGateway { get; set; }
-        public static string UrlApiGatewayMpn { get; set; }
+        public static string UrlApiGatewayNew { get; set; }
         public static string UrlManager { get; set; }
         public static string UrlFinanceiroApi { get; set; }
         public static string UrlFaturamentoApi { get; set; }

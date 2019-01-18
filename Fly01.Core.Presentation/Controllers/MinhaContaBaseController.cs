@@ -95,14 +95,14 @@ namespace Fly01.Core.Presentation.Controllers
                 },
             };
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "emissao", DisplayName = "Emissão", Priority = 7, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 6, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "emissao", DisplayName = "Emissão", Priority = 8, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 7, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "nfe", DisplayName = "NFe", Priority = 9, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 4, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "descricao", DisplayName = "Descrição", Priority = 5, Orderable = false, Searchable = false });
             config.Columns.Add(new DataTableUIColumn { DataField = "vencimento", DisplayName = "Vencimento", Priority = 3, Orderable = false, Searchable = false, RenderFn = "fnRenderVencimento" });
             config.Columns.Add(new DataTableUIColumn { DataField = "valor", DisplayName = "Valor", Priority = 1, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 8, Orderable = false, Searchable = false });
-            config.Columns.Add(new DataTableUIColumn { DisplayName = "Situação", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnRenderSituacao"});
+            config.Columns.Add(new DataTableUIColumn { DataField = "parcela", DisplayName = "Parcela", Priority = 10, Orderable = false, Searchable = false });
+            config.Columns.Add(new DataTableUIColumn { DisplayName = "Situação", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnRenderSituacao" });
             config.Columns.Add(new DataTableUIColumn { DisplayName = "Ações", Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderBoletos", Width = "20%" });
 
             cfg.Content.Add(config);
@@ -153,6 +153,37 @@ namespace Fly01.Core.Presentation.Controllers
                     message = string.Format("Ocorreu um erro ao carregar dados: {0}", ex.Message)
                 }, JsonRequestBehavior.AllowGet);
             }
-        }        
+        }
+
+        [HttpPost]
+        public JsonResult CodigoBarras(string urlBoleto, string numero)
+        {
+            try
+            {
+                //http://www.secretgeek.net/uri_enconding
+                var queryStringCodigo = new Dictionary<string, string>
+                {
+                    { "urlBoleto", Uri.EscapeUriString(urlBoleto)}
+                };
+                var response = RestHelper.ExecuteGetRequest<MinhaContaCodigoBarrasResponseVM>(AppDefaults.UrlApiGatewayNew, "boletos/codigobarras", queryStringCodigo)?.Data;
+                return Json(new
+                {
+                    success = true,
+                    numero = numero,
+                    codigoBarras = response.CodigoBarras,
+                    codigoBarrasFormatado = response.CodigoBarrasFormatado,
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    success = false,
+                    numero = string.Empty,
+                    codigoBarras = string.Empty,
+                    codigoBarrasFormatado = string.Empty,
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

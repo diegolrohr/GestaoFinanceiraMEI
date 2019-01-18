@@ -74,7 +74,7 @@ namespace Fly01.Compras.API
             AppDefaults.UrlEmissaoNfeApi = ConfigurationManager.AppSettings["UrlEmissaoNfeApi"];
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
             AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
-            AppDefaults.UrlApiGatewayMpn = ConfigurationManager.AppSettings["UrlGatewayMpn"];
+            AppDefaults.UrlApiGatewayNew = ConfigurationManager.AppSettings["UrlGatewayNew"];
 
             base.SetAppDefaults();
         }

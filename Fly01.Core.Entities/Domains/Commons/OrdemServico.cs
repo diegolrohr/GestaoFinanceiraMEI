@@ -22,6 +22,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime DataEntrega { get; set; }
 
+        public TimeSpan HoraEntrega { get; set; }
+
         public Guid? ResponsavelId { get; set; }
 
         public bool Aprovado { get; set; }

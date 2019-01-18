@@ -52,6 +52,7 @@ namespace Fly01.Estoque.API
         protected override void SetAppDefaults()
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
+            AppDefaults.UrlApiGatewayMpn = ConfigurationManager.AppSettings["UrlGatewayMpn"];
 
             base.SetAppDefaults();
         }

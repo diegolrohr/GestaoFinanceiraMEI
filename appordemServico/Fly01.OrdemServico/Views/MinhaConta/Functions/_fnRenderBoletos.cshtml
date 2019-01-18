@@ -1,0 +1,37 @@
+﻿<script>
+    function fnRenderBoletos(data, type, row, meta) {
+        var btns = [
+            createElem("a", { "alt": "Imprimir boleto", "target": "_blank", "href": row.urlBoleto, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "print"))
+        ];
+        
+        if(row.boletoVencido && row.situacao == 'PENDENTE')
+        {
+            btns.push(createElem("a", { "alt": "2ª via", "target": "_blank", "href": row.urlSegundaVia, "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "filter_2")))
+        }
+        if (row.situacao == "PENDENTE" && row.codigoBarrasFormatado != undefined && row.codigoBarrasFormatado != "") {
+
+            btns.push(createElem("buttom", { "alt": "Copiar código", "onClick": "fnCopiarCodigoBarra(" +  "'"+row.codigoBarrasFormatado+"'" + ")", "class": "btn btn-narrow valid" }, createElem("i", { "class": "material-icons" }, "file_copy")))
+        }
+
+        return createElem("div", { "class": "right col s12" }, btns).innerHTML;
+    };
+
+    function fnCopiarCodigoBarra(codigoBarras) {
+        const selBox = document.createElement('textarea');
+        selBox.style.height = '0px';
+        selBox.style.left = '-100px';
+        selBox.style.opacity = '0';
+        selBox.style.position = 'fixed';
+        selBox.style.top = '-100px';
+        selBox.style.width = '0px';
+        selBox.textContent = codigoBarras;
+        selBox.value = codigoBarras;
+        document.body.appendChild(selBox);
+        selBox.select();
+        if (document.execCommand('copy')) {
+            $$$.toast("Copiado com sucesso.", "success");
+        }
+        document.body.removeChild(selBox);
+    }
+
+</script>

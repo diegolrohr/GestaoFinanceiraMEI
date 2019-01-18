@@ -150,7 +150,8 @@ namespace Fly01.Faturamento.Controllers
                 Options = new DataTableUIConfig
                 {
                     OrderColumn = 6,
-                    OrderDir = "desc"
+                    OrderDir = "desc",
+                    NoExportButtons = true
                 }
             };
 

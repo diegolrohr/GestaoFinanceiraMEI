@@ -31,7 +31,7 @@ namespace Fly01.OrdemServico.BL
                 {
                     ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
                     Title = item.Cliente?.Nome,
-                    Start = item.DataEntrega,
+                    Start = item.DataEntrega + item.HoraEntrega,
                     End = item.DataEntrega,
                     Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado)?"": $"OrdemServico/Edit/{item.Id.ToString()}"
                 });

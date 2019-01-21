@@ -21,7 +21,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             return x => new
             {
-                id = x.Id,
+                id = (x.Numero + x.Vencimento.ToString("ddMMyyyy")),
                 descricao = x.Descricao,
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 emissao = x.Emissao.ToString("dd/MM/yyyy"),
@@ -135,8 +135,8 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     success = true,
-                    recordsTotal = minhasContas.Count,
-                    recordsFiltered = minhasContas.Count,
+                    recordsTotal = 0,
+                    recordsFiltered = 0,
                     data = minhasContas.Select(GetDisplayData())
                 }, JsonRequestBehavior.AllowGet);
 
@@ -156,7 +156,7 @@ namespace Fly01.Core.Presentation.Controllers
         }
 
         [HttpPost]
-        public JsonResult CodigoBarras(string urlBoleto, string numero)
+        public JsonResult CodigoBarras(string urlBoleto, string id)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace Fly01.Core.Presentation.Controllers
                 return Json(new
                 {
                     success = true,
-                    numero = numero,
+                    id = id,
                     codigoBarras = response.CodigoBarras,
                     codigoBarrasFormatado = response.CodigoBarrasFormatado,
                 }, JsonRequestBehavior.AllowGet);

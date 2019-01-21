@@ -45,7 +45,8 @@ namespace Fly01.Core.Helpers
 
             texto = RemoveSpecialCharacters(texto);
             texto = texto.Replace(Environment.NewLine, " ");//remove enters
-            texto = texto.Replace("> ", "");
+            texto = texto.Replace("> ", ">");
+            texto = texto.Replace(" <", "<");
             byte[] bytes = Encoding.GetEncoding("iso-8859-8").GetBytes(texto);
             return Encoding.UTF8.GetString(bytes);
         }

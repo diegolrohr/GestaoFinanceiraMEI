@@ -13,13 +13,16 @@
             $('input#dataFinal').val(moment(dataFinal).format("DD/MM/YYYY"));
         }
         
+        console.log("datediff"+dataFinalDisplay.diff(dataInicialDisplay, 'days'));
+
         if ($('input#dataInicial').val() == "" || $('input#dataFinal').val() == "") {
             $$$.toast("Informe a data inicial e a data final.", 'error');
         }
-        else if (dataInicialDisplay.diff(dataFinalDisplay, 'years')) {
+        else if (dataFinalDisplay.diff(dataInicialDisplay, 'days') > 365) {
             $$$.toast("Período máximo de 1 ano para pesquisa. Altere o período informado.", 'error');
         }
         else {
+            $("#fly01dtminhaconta > tbody").html("");
             $$$._.fly01dtminhaconta.refresh();
         }
     }

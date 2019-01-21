@@ -119,7 +119,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
-            AppDefaults.UrlApiGatewayMpn = ConfigurationManager.AppSettings["UrlGatewayMpn"];
+            AppDefaults.UrlApiGatewayNew = ConfigurationManager.AppSettings["UrlGatewayNew"];
             AppDefaults.GatewayUserName = ConfigurationManager.AppSettings["GatewayUserName"];
             AppDefaults.GatewayPassword = ConfigurationManager.AppSettings["GatewayPassword"];
             AppDefaults.GatewayVerificationKeyPassword = ConfigurationManager.AppSettings["GatewayVerificationKeyPassword"];

@@ -27,8 +27,8 @@ namespace Fly01.Compras.DAL.Migrations
             //new CFOPDataInitializer().Initialize(context);
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
-            new ISSDataInitializer().Initialize(context);
-            new NBSDataInitializer().Initialize(context);
+            //new ISSDataInitializer().Initialize(context);
+            //new NBSDataInitializer().Initialize(context);
         }
     }
 }

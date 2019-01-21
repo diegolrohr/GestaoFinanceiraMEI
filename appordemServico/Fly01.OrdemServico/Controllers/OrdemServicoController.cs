@@ -415,7 +415,7 @@ namespace Fly01.OrdemServico.Controllers
                     {
                         Title = "Cadastro",
                         Id = "stepCadastro",
-                        Quantity = 8,
+                        Quantity = 9,
                     },
                     new FormWizardUIStep()
                     {

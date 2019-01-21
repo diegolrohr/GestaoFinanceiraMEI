@@ -208,6 +208,18 @@
             fnBindStepsWizard();
         }
         else {
+            if ($('#status').val() == "EmAberto") {
+                $('#concluido').hide();
+            }
+            else {
+                if ($('#status').val() == "EmPreenchimento") {
+                    $('#andamento').hide();
+                    $('#concluido').hide();
+                }
+                if ($('#status').val() == "EmAndamento") {
+                    $('#andamento').hide();
+                }
+            }
             //setar o agrupamento com a opção escolhida
             if ($('input#tipoVenda').val() == "Normal") {
                 $('#btnNormal').click();

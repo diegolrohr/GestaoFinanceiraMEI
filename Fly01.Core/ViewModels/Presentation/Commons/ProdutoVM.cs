@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Fly01.Core.Helpers.Attribute;
 using Newtonsoft.Json;
-using Fly01.Core.Helpers.Attribute;
+using System;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class ProdutoVM : DomainBaseVM
-    {        
+    {
+        [JsonProperty("imageProduto")]
+        public string ImageProduto { get; set; }
+
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 
@@ -63,6 +66,10 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("enquadramentoLegalIPIId")]
         public Guid? EnquadramentoLegalIPIId { get; set; }
+
+        [APIEnum("OrigemMercadoria")]
+        [JsonProperty("origemMercadoria")]
+        public string OrigemMercadoria { get; set; }
 
         [JsonProperty("grupoProduto")]
         public virtual GrupoProdutoVM GrupoProduto { get; set; }

@@ -130,7 +130,7 @@ namespace Fly01.Core.Presentation.Controllers
                 RowGroup = "tipoCarteira",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions", "Categoria", null, Request.Url?.Scheme) + "?fns=",
-                Options = new DataTableUIConfig { PageLength = 50 }
+                Options = new DataTableUIConfig { PageLength = 50, NoExportButtons = true }
             };
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()

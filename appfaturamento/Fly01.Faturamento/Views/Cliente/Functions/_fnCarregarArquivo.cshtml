@@ -1,13 +1,17 @@
 ﻿<script>
     function fnCarregarArquivo(input) {
         if (!window.FileReader) return; // Browser is not compatible
-
         var reader = new FileReader();
         // Read file into memory as UTF-8
-        reader.readAsText($("#arquivo")[0].files[0]);
+        reader.readAsText($("#arquivo")[0].files[0])
+        var nome = ($("#arquivo")[0].files[0].type)
         // Handle errors load
-        reader.onload = processData;
-        reader.onerror = errorHandler;
+        if (nome == "application/vnd.ms-excel") {
+            reader.onload = processData;
+            reader.onerror = errorHandler;
+        }
+        else
+            $$$.toast("Não foi possível ler o arquivo!", "error");
     }
 
     function processData(event) {

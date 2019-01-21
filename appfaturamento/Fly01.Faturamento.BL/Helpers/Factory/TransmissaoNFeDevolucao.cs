@@ -53,7 +53,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
                 {
-                    InformacoesComplementares = NFe.MensagemPadraoNota
+                    InformacoesComplementares = NFe.Observacao + " | " + NFe.MensagemPadraoNota
                 };
             }
             if (NFe.GeraFinanceiro)
@@ -189,7 +189,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             var ICMS = new ICMSPai()
             {
-                OrigemMercadoria = OrigemMercadoria.Nacional,
+                OrigemMercadoria = item.Produto.OrigemMercadoria,
                 AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                 ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
                 CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito

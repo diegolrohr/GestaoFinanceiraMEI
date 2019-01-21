@@ -9,18 +9,10 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using Fly01.Core.Helpers.Attribute;
+using Fly01.Core.ViewModels.Presentation.Commons;
 
 namespace Fly01.Faturamento.BL
 {
-    public enum TipoItem
-    {
-        [Subtitle("Produtos", "Produtos", "Produtos")]
-        Produtos = 1,
-
-        [Subtitle("Servicos", "Serviços", "Serviços")]
-        Servicos = 2
-    }
-
     public class OrdemVendaBL : PlataformaBaseBL<OrdemVenda>
     {
         public const int MaxLengthObservacao = 200;
@@ -33,6 +25,7 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
+        protected KitItemBL KitItemBL { get; set; }
 
         private readonly string descricaoVenda = @"Venda nº: {0} de {1}";
         private readonly string observacaoVenda = @"Obs. gerada pela venda nº {0} de {1} : {2}";
@@ -40,7 +33,7 @@ namespace Fly01.Faturamento.BL
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
-        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL) : base(context)
+        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL, KitItemBL kitItemBl) : base(context)
         {
             MustConsumeMessageServiceBus = true;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
@@ -51,6 +44,7 @@ namespace Fly01.Faturamento.BL
             NFSeServicoBL = nfseServicoBL;
             TotalTributacaoBL = totalTributacaoBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
+            KitItemBL = kitItemBl;
         }
 
         public override void ValidaModel(OrdemVenda entity)
@@ -106,7 +100,7 @@ namespace Fly01.Faturamento.BL
                         var totalRetencoesServicos = TotalTributacaoBL.TributacaoServicoRetencao(tributacoesServicos);
                         entity.Fail((totalOutrasRetencoesServicos + totalRetencoesServicos) > totalServicos, new Error("Total de retenções dos serviços, não pode ser superior ao total de serviços", "totalRetencoesServicos"));
                     }
-                    
+
                     entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
                     entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
@@ -655,8 +649,8 @@ namespace Fly01.Faturamento.BL
                         PessoaId = entity.TransportadoraId.Value,
                         DataEmissao = entity.Data,
                         DataVencimento = entity.DataVencimento.Value,
-                        Descricao = GetDescricaoTitulo(TipoItem.Produtos, entity),
-                        Observacao = GetObservacaoTitulo(TipoItem.Produtos, entity),
+                        Descricao = GetDescricaoTitulo(TipoItem.Produto, entity),
+                        Observacao = GetObservacaoTitulo(TipoItem.Produto, entity),
                         FormaPagamentoId = entity.FormaPagamentoId.Value,
                         PlataformaId = PlataformaUrl,
                         UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao
@@ -668,22 +662,22 @@ namespace Fly01.Faturamento.BL
                 {
                     if (valorPrevistoProdutos > 0)
                     {
-                        GeraContaReceber(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                        GeraContaReceber(TipoItem.Produto, valorPrevistoProdutos, entity);
                     }
                     if (valorPrevistoServicos > 0)
                     {
-                        GeraContaReceber(TipoItem.Servicos, valorPrevistoServicos, entity);
+                        GeraContaReceber(TipoItem.Servico, valorPrevistoServicos, entity);
                     }
                 }
                 else if ((entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao)))
                 {
                     if (valorPrevistoProdutos > 0)
                     {
-                        GeraContaPagar(TipoItem.Produtos, valorPrevistoProdutos, entity);
+                        GeraContaPagar(TipoItem.Produto, valorPrevistoProdutos, entity);
                     }
                     if (valorPrevistoServicos > 0)
                     {
-                        GeraContaPagar(TipoItem.Servicos, valorPrevistoServicos, entity);
+                        GeraContaPagar(TipoItem.Servico, valorPrevistoServicos, entity);
                     }
                 }
             }
@@ -763,7 +757,7 @@ namespace Fly01.Faturamento.BL
         private Guid GetContaFinanceiraParcelaId(TipoItem tipoItem, OrdemVenda entity)
         {
             var idConta = default(Guid);
-            if (tipoItem == TipoItem.Produtos)
+            if (tipoItem == TipoItem.Produto)
             {
                 idConta = entity.ContaFinanceiraParcelaPaiIdProdutos ?? default(Guid);
             }
@@ -876,6 +870,117 @@ namespace Fly01.Faturamento.BL
             };
 
             return result;
+        }
+
+        public void UtilizarKitOrdemVenda(UtilizarKitVM entity)
+        {
+            try
+            {
+                if (All.Any(x => x.Id == entity.OrcamentoPedidoId))
+                {
+                    if (KitItemBL.All.Any(x => x.KitId == entity.KitId))
+                    {
+                        #region Produtos
+                        if (entity.AdicionarProdutos)
+                        {
+                            var kitProdutos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Produto);
+
+                            var existentesOrcamentoPedido =
+                                from ovp in OrdemVendaProdutoBL.AllIncluding(x => x.Produto).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
+                                join ki in kitProdutos on ovp.ProdutoId equals ki.ProdutoId
+                                select new { ProdutoId = ki.ProdutoId, OrdemVendaProdutoId = ovp.Id, Quantidade = ki.Quantidade };
+
+                            var novasOrdemVendaProdutos =
+                                from kit in kitProdutos
+                                where !existentesOrcamentoPedido.Select(x => x.ProdutoId).Contains(kit.ProdutoId)
+                                select new
+                                {
+                                    GrupoTributarioId = entity.GrupoTributarioProdutoId,
+                                    OrdemVendaId = entity.OrcamentoPedidoId,
+                                    ProdutoId = kit.ProdutoId.Value,
+                                    Valor = kit.Produto.ValorVenda,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            foreach (var item in novasOrdemVendaProdutos)
+                            {
+                                OrdemVendaProdutoBL.Insert(new OrdemVendaProduto()
+                                {
+                                    GrupoTributarioId = item.GrupoTributarioId != default(Guid) ? item.GrupoTributarioId : (Guid?)null,
+                                    ProdutoId = item.ProdutoId,
+                                    OrdemVendaId = item.OrdemVendaId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrcamentoPedido)
+                                {
+                                    var ordemVendaProduto = OrdemVendaProdutoBL.Find(item.OrdemVendaProdutoId);
+                                    ordemVendaProduto.Quantidade += item.Quantidade;
+                                    OrdemVendaProdutoBL.Update(ordemVendaProduto);
+                                }
+                            }
+                        }
+                        #endregion
+                        #region Servicos
+                        if (entity.AdicionarServicos)
+                        {
+                            var kitServicos = KitItemBL.All.Where(x => x.KitId == entity.KitId && x.TipoItem == TipoItem.Servico);
+
+                            var existentesOrcamentoPedido =
+                                from ovs in OrdemVendaServicoBL.AllIncluding(x => x.Servico).Where(x => x.OrdemVendaId == entity.OrcamentoPedidoId)
+                                join ki in kitServicos on ovs.ServicoId equals ki.ServicoId
+                                select new { ServicoId = ki.ServicoId, OrdemVendaServicoId = ovs.Id, Quantidade = ki.Quantidade };
+
+                            var ex = existentesOrcamentoPedido.ToList();
+
+                            var novasOrdemVendaServicos =
+                                from kit in kitServicos
+                                where !existentesOrcamentoPedido.Select(x => x.ServicoId).Contains(kit.ServicoId)
+                                select new
+                                {
+                                    GrupoTributarioId = entity.GrupoTributarioServicoId,
+                                    OrdemVendaId = entity.OrcamentoPedidoId,
+                                    ServicoId = kit.ServicoId.Value,
+                                    Valor = kit.Servico.ValorServico,
+                                    Quantidade = kit.Quantidade
+                                };
+
+                            var novas = novasOrdemVendaServicos.ToList();
+
+                            foreach (var item in novasOrdemVendaServicos)
+                            {
+                                OrdemVendaServicoBL.Insert(new OrdemVendaServico()
+                                {
+                                    GrupoTributarioId = item.GrupoTributarioId != default(Guid) ? item.GrupoTributarioId : (Guid?)null,
+                                    ServicoId = item.ServicoId,
+                                    OrdemVendaId = item.OrdemVendaId,
+                                    Valor = item.Valor,
+                                    Quantidade = item.Quantidade
+                                });
+                            }
+
+                            if (entity.SomarExistentes)
+                            {
+                                foreach (var item in existentesOrcamentoPedido)
+                                {
+                                    var ordemVendaServico = OrdemVendaServicoBL.Find(item.OrdemVendaServicoId);
+                                    ordemVendaServico.Quantidade += item.Quantidade;
+                                    OrdemVendaServicoBL.Update(ordemVendaServico);
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
 
         public static string ValorBCSTRetidoRequerido = "Valor da base de cálculo do ICMS substituído é obrigatório para CSOSN 500. Item {itemcount} da lista de produtos";

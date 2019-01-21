@@ -4,6 +4,7 @@ using Fly01.Core.Notifications;
 using Fly01.Core.ServiceBus;
 using System.Data.Entity;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Fly01.OrdemServico.BL
 {
@@ -109,6 +110,21 @@ namespace Fly01.OrdemServico.BL
             base.Delete(entity);
             if (entity.IsValid() && MustProduceMessageServiceBus)
                 Producer<Produto>.Send(entity.GetType().Name, AppUser, PlataformaUrl, entity, RabbitConfig.EnHttpVerb.DELETE);
+        }
+
+        public static List<string> ColunasParaImportacao()
+        {
+            return new List<string>
+            {
+                "Descricao",
+                "CodigoProduto",
+                "CodigoBarras",
+                "AbreviacaoUnidadeMedida",
+                "SaldoMinimo",
+                "ValorCusto",
+                "ValorVenda",
+                "Observacao"
+            };
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");

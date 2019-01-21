@@ -49,7 +49,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
             {
                 itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
                 {
-                    InformacoesComplementares = NFe.MensagemPadraoNota
+                    InformacoesComplementares = NFe.Observacao + " | " + NFe.MensagemPadraoNota
                 };
             }
 
@@ -134,7 +134,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
         {
             return new ICMSPai()
             {
-                OrigemMercadoria = OrigemMercadoria.Nacional,
+                OrigemMercadoria = item.Produto.OrigemMercadoria,
                 CodigoSituacaoOperacao = TipoTributacaoICMS.Imune//TODO: Ver Wilson TipoTributacaoICMS.NaoTributadaPeloSN
             };
         }

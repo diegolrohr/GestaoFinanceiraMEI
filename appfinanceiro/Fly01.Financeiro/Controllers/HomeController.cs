@@ -232,7 +232,8 @@ namespace Fly01.Financeiro.Controllers
                 Options = new DataTableUIConfig()
                 {
                     PageLength = 10,
-                    LengthChange = true
+                    LengthChange = true,
+                    NoExportButtons = true
                 },
                 Columns = new List<DataTableUIColumn>
                 {
@@ -250,6 +251,31 @@ namespace Fly01.Financeiro.Controllers
         {
             var config = new SidebarUI() { Id = "nav-bar", AppName = "Financeiro", Parent = "header" };
 
+            var financeiroMenuItens = new SidebarUIMenu()
+            {
+                Class = ResourceHashConst.FinanceiroFinanceiro,
+                Label = "Financeiro",
+                Items = new List<LinkUI>
+                    {
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroExtrato, Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
+                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria, Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
+                        
+                    }
+            };
+
+            //ManagerEmpresaVM response = ApiEmpresaManager.GetEmpresa(SessionManager.Current.UserData.PlatformUrl);
+
+            //if (response.StoneCode != null)
+            //{
+            //    financeiroMenuItens.Items.Add(
+            //        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroAntecipacaoRecebiveis, Label = "Antecipação de Recebíveis", OnClick = @Url.Action("ListAndUpdate", "Stone") });
+            //}
+
+
             #region MenuItems
             var menuItems = new List<SidebarUIMenu>()
             {
@@ -263,20 +289,9 @@ namespace Fly01.Financeiro.Controllers
                         new LinkUI() { Class = ResourceHashConst.FinanceiroDashboardContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "DashboardContaReceber")},
                     }
                 },
-                new SidebarUIMenu()
-                {
-                    Class = ResourceHashConst.FinanceiroFinanceiro,
-                    Label = "Financeiro",
-                    Items = new List<LinkUI>
-                    {
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroFluxoCaixa, Label = "Fluxo de Caixa", OnClick = @Url.Action("List", "Home")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroExtrato, Label = "Extrato", OnClick = @Url.Action("List", "Extrato")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasPagar, Label = "Contas a Pagar", OnClick = @Url.Action("List", "ContaPagar")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroContasReceber, Label = "Contas a Receber", OnClick = @Url.Action("List", "ContaReceber")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroRelatorioDRE, Label = "Relatório DRE", OnClick = @Url.Action("List", "DemonstrativoResultadoExercicio")},
-                        new LinkUI() { Class = ResourceHashConst.FinanceiroFinanceiroConciliacaoBancaria, Label = "Conciliação Bancária", OnClick = @Url.Action("List", "ConciliacaoBancaria")},
-                    }
-                },
+
+                financeiroMenuItens,
+
                 new SidebarUIMenu()
                 {
                     Class = ResourceHashConst.FinanceiroCobranca,
@@ -324,11 +339,12 @@ namespace Fly01.Financeiro.Controllers
                 },
                 new SidebarUIMenu() { Class = ResourceHashConst.FinanceiroAvalieAplicativo, Label = "Avalie o Aplicativo", OnClick = @Url.Action("List", "AvaliacaoApp") }
             };
-
             config.MenuItems.AddRange(ProcessMenuRoles(menuItems));
             #endregion
 
             #region User Menu Items
+            if(!string.IsNullOrEmpty(SessionManager.Current.UserData.TokenData.CodigoMaxime))
+                config.UserMenuItems.Add(new LinkUI() { Label = "Minha Conta", OnClick = @Url.Action("List", "MinhaConta") });
             config.UserMenuItems.Add(new LinkUI() { Label = "Sair", Link = @Url.Action("Logoff", "Account") });
             #endregion
 

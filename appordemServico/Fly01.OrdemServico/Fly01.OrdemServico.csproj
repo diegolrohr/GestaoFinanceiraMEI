@@ -55,13 +55,16 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Controllers\Base\" />
     <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
+    <Compile Include="Controllers\KitItemController.cs" />
+    <Compile Include="Controllers\KitController.cs" />
+    <Compile Include="Controllers\AgendaController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\ResponsavelController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -225,6 +228,23 @@
     <Content Include="Views\Home\Functions\_fnAtualizarPeriodo.cshtml" />
     <Content Include="Views\Home\Functions\_fnFormReadyPeriodo.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnFormReady.cshtml" />
+    <Content Include="Views\Kit\Functions\_fnSalvar.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnAdicionarItem.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnProdutoServicoSelected.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnFormReadyModalKitItens.cshtml" />
+    <Content Include="Views\KitItem\Functions\_fnModalKitItem.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnFormReadyOrdemServicoKit.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusAndamento.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnAlterarStatusConcluido.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnSelect.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnDayClick.cshtml" />
+    <Content Include="Views\Agenda\Functions\_fnNovaOS.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
     <None Include="Views\OrdemServico\Functions\_fnModalOrdemServicoManutencao.cshtml" />
     <Content Include="Views\ParametroOrdemServico\Functions\_fnFormReady.cshtml" />
     <Content Include="Views\Responsavel\ImportaCadastro.cshtml" />
@@ -234,6 +254,11 @@
     <Content Include="Views\Responsavel\Functions\_fnImportaCadastroFormReady.cshtml" />
     <Content Include="Views\Responsavel\Functions\_fnStateSelect.cshtml" />
     <Content Include="Views\OrdemServico\Functions\_fnNovaOS.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProduto.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnImportarProdutoFormReady.cshtml" />
+    <Content Include="Views\Produto\Functions\_fnCarregarArquivo.cshtml" />
+    <Content Include="Views\Produto\ImportarProduto.cshtml" />
+    <Content Include="Views\OrdemServico\Functions\_fnModalOrdemServicoKit.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -267,13 +292,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itextsharp.xmlworker.5.5.13\lib\itextsharp.xmlworker.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>

@@ -224,12 +224,29 @@
     <Compile Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.Designer.cs">
       <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812111406155_CreateStone.cs" />
+    <Compile Include="Migrations\201812111406155_CreateStone.Designer.cs">
+      <DependentUpon>201812111406155_CreateStone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812111900553_AlterStone.cs" />
+    <Compile Include="Migrations\201812111900553_AlterStone.Designer.cs">
+      <DependentUpon>201812111900553_AlterStone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.cs" />
+    <Compile Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.Designer.cs">
+      <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.cs" />
+    <Compile Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.Designer.cs">
+      <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer2.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer3.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer4.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
+    <Compile Include="Migrations\DataInitializer\CnabDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\MockDataInitializer.cs" />
@@ -377,6 +394,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812061907013_AlterPessoaTamanhoComplemento.resx">
       <DependentUpon>201812061907013_AlterPessoaTamanhoComplemento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812111406155_CreateStone.resx">
+      <DependentUpon>201812111406155_CreateStone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812111900553_AlterStone.resx">
+      <DependentUpon>201812111900553_AlterStone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141205419_AlterStoneAntecipacaoRecebiveis.resx">
+      <DependentUpon>201812141205419_AlterStoneAntecipacaoRecebiveis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901021634288_AlterTableCnabAddColumnPessoaId.resx">
+      <DependentUpon>201901021634288_AlterTableCnabAddColumnPessoaId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

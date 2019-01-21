@@ -47,6 +47,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArquivoBL.cs" />
     <Compile Include="Base\OrdemServicoItemBaseBL.cs" />
     <Compile Include="CestBL.cs" />
     <Compile Include="DashboardBL.cs" />
@@ -56,7 +57,9 @@
     <Compile Include="Extension\DomainBaseExtension.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
     <Compile Include="ISSBL.cs" />
+    <Compile Include="KitItemBL.cs" />
     <Compile Include="NBSBL.cs" />
+    <Compile Include="AgendaBL.cs" />
     <Compile Include="NCMBL.cs" />
     <Compile Include="OrdemServicoBL.cs" />
     <Compile Include="OrdemServicoItemProdutoBL.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="OrdemServicoManutencaoBL.cs" />
     <Compile Include="ParametroOrdemServicoBL.cs" />
     <Compile Include="PessoaBL.cs" />
+    <Compile Include="KitBL.cs" />
     <Compile Include="ProdutoBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicoBL.cs" />

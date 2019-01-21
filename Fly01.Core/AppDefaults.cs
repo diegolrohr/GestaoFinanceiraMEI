@@ -33,6 +33,7 @@ namespace Fly01.Core
 
         public static string UrlGateway { get; set; }
         public static string UrlApiGateway { get; set; }
+        public static string UrlApiGatewayNew { get; set; }
         public static string UrlManager { get; set; }
         public static string UrlFinanceiroApi { get; set; }
         public static string UrlFaturamentoApi { get; set; }
@@ -60,6 +61,8 @@ namespace Fly01.Core
         public static string APIEnumResourceName { get; set; }
 
         public static string APIDomainResourceName { get; set; }
+
+        public static string UrlStone { get; set; }
 
         public static string GetRootPathApplication(string app) => string.Format(RootPathApplication, app);
 

@@ -58,6 +58,18 @@ namespace Fly01.Core.Helpers
             }
         }
 
+        public static string GetKey(Type enumType, string value)
+        {
+            try
+            {
+                return SubtitleDataAnotation(enumType, value)?.Key;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
         public static string GetTooltipHint(Type enumType, string value)
         {
             try

@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Fly01.OrdemServico.Controllers
 {
-    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastroServicos)]
+    [OperationRole(ResourceKey = ResourceHashConst.OrdemServicoCadastrosServicos)]
     public class ServicoController : BaseController<ServicoVM>
     {
         protected Func<ServicoVM, object> GetDisplayDataSelect { get; set; }

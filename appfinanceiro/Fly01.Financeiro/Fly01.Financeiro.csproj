@@ -65,6 +65,7 @@
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Base\BoletoController.cs" />
     <Compile Include="Controllers\Base\ContaFinanceiraController.cs" />
+    <Compile Include="Controllers\MinhaContaController.cs" />
     <Compile Include="Controllers\CnabController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaController.cs" />
     <Compile Include="Controllers\ContaFinanceiraBaixaMultiplaCPController.cs" />
@@ -91,12 +92,14 @@
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StoneController.cs" />
     <Compile Include="Controllers\TemplateBoletoController.cs" />
     <Compile Include="Controllers\TransportadoraController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Reports\ReportFluxo.cs" />
+    <Compile Include="Models\Reports\ReportExtrato.cs" />
     <Compile Include="Models\Reports\ReportListContas.cs" />
     <Compile Include="Models\Reports\ReportRecibo.cs" />
     <Compile Include="Models\Reports\ReportDre.cs" />
@@ -148,6 +151,7 @@
     <Compile Include="ViewModel\FeriadoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaProjecaoVM.cs" />
     <Compile Include="ViewModel\FluxoCaixaSaldoVM.cs" />
+    <Compile Include="ViewModel\ImprimirExtratoBancarioVM.cs" />
     <Compile Include="ViewModel\MovimentacaoPorCategoriaVM.cs" />
     <Compile Include="ViewModel\MovimentacaoVM.cs" />
     <Compile Include="ViewModel\PlatformEnvironmentVM.cs" />
@@ -399,6 +403,19 @@
     <Content Include="Views\Cnab\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnRemoveFilter.cshtml" />
     <Content Include="Views\Cnab\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnGetToken.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnReadyRecebiveis.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnRangeChange.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnSimular.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnEfetivar.cshtml" />
+    <Content Include="Views\Stone\AntecipacaoEfetivar.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnLogout.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnReadyLogin.cshtml" />
+    <Content Include="Views\Stone\Functions\_fnExcluir.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnAtualizar.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -450,13 +467,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fly01.uiJS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Fly01.uiJS.2.0.3.5\lib\net452\Fly01.uiJS.dll</HintPath>
+      <HintPath>..\..\packages\Fly01.uiJS.2.0.4.5\lib\net452\Fly01.uiJS.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\itextsharp.xmlworker.5.5.13\lib\itextsharp.xmlworker.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -629,6 +652,10 @@
       <Project>{2A0FD4C0-CDED-410F-8F09-EE85154679E3}</Project>
       <Name>Fly01.Core.Mensageria</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Fly01.Core.Notifications\Fly01.Core.Notifications.csproj">
+      <Project>{89C80F58-C490-4C34-B04E-7C43F5F09951}</Project>
+      <Name>Fly01.Core.Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.Presentation\Fly01.Core.Presentation.csproj">
       <Project>{C285FE7E-0A0C-47CE-BAE9-7FCBDCEEE378}</Project>
       <Name>Fly01.Core.Presentation</Name>
@@ -649,6 +676,9 @@
       <Project>{d848bbbd-61a9-4843-a16d-14a2b6ebec85}</Project>
       <Name>Fly01.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\ReportExtrato.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -674,7 +704,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

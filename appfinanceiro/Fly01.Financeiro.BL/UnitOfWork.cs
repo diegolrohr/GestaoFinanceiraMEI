@@ -142,6 +142,12 @@ namespace Fly01.Financeiro.BL
         private DashboardBL dashboardBL;
         public DashboardBL DashboardBL => dashboardBL ?? (dashboardBL = new DashboardBL(Context, ContaFinanceiraBL, ContaFinanceiraBaixaBL));
 
+        private StoneAntecipacaoRecebiveisBL stoneAntecipacaoRecebiveisBL;
+        public StoneAntecipacaoRecebiveisBL StoneAntecipacaoRecebiveisBL => stoneAntecipacaoRecebiveisBL ?? (stoneAntecipacaoRecebiveisBL = new StoneAntecipacaoRecebiveisBL(Context));
+
+        private StoneBL stoneBL;
+        public StoneBL StoneBL => stoneBL ?? (stoneBL = new StoneBL(Context));
+
         #endregion
     }
 }

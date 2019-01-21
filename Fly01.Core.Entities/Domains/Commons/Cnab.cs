@@ -47,6 +47,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? ArquivoRemessaId { get; set; }
 
+        public Guid? PessoaId { get; set; }
+
         public virtual ContaBancaria ContaBancariaCedente { get; set; }
         public virtual ContaReceber ContaReceber { get; set; }
         public virtual ArquivoRemessa ArquivoRemessa { get; set; }

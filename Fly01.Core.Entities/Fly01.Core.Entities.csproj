@@ -63,16 +63,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domains\Commons\AjusteManual.cs" />
+    <Compile Include="Domains\Commons\KitItem.cs" />
+    <Compile Include="Domains\Commons\Kit.cs" />
+    <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
+    <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
+    <Compile Include="Domains\Commons\ResponseAutenticacaoStone.cs" />
+    <Compile Include="Domains\Commons\ResponseAntecipacaoStone.cs" />
     <Compile Include="Domains\Commons\Arquivo.cs" />
     <Compile Include="Domains\Commons\ArquivoRetornoCnab.cs" />
+    <Compile Include="Domains\Commons\AntecipacaoStone.cs" />
+    <Compile Include="Domains\Commons\StoneTokenBase.cs" />
     <Compile Include="Domains\Commons\MovimentoPedidoCompra.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemBase.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItem.cs" />
     <Compile Include="Domains\Commons\OrdemServicoItemServico.cs" />
     <Compile Include="Domains\Commons\ParametroOrdemServico.cs" />
+    <Compile Include="Domains\Commons\StoneAntecipacaoRecebiveis.cs" />
     <Compile Include="Domains\Commons\TemplateBoleto.cs" />
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
+    <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
     <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />
@@ -85,6 +97,7 @@
     <Compile Include="Domains\Commons\NotaFiscalEntrada.cs" />
     <Compile Include="Domains\Commons\NotaFiscalItemEntrada.cs" />
     <Compile Include="Domains\Commons\NotaFiscalItemTributacaoEntrada.cs" />
+    <Compile Include="Domains\Enum\TipoItem.cs" />
     <Compile Include="Domains\Enum\TipoSituacaoEspecialNFS.cs" />
     <Compile Include="Domains\Enum\TipoTributacaoNFS.cs" />
     <Compile Include="Domains\NoSQL\AvaliacaoApp.cs" />
@@ -137,7 +150,7 @@
     <Compile Include="Domains\Commons\MovimentoEstoque.cs" />
     <Compile Include="Domains\Commons\MovimentoOrdemVenda.cs" />
     <Compile Include="Domains\Commons\Nbs.cs" />
-    <Compile Include="Domains\Commons\Ncm.cs" />
+    <Compile Include="Domains\Commons\Agenda.cs" />
     <Compile Include="Domains\Commons\NFe.cs" />
     <Compile Include="Domains\Commons\NFeProduto.cs" />
     <Compile Include="Domains\Commons\NFSe.cs" />

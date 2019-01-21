@@ -18,6 +18,7 @@ using Fly01.Core.Helpers.Attribute;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Presentation;
 using Fly01.uiJS.Enums;
+using System.Data;
 
 namespace Fly01.Estoque.Controllers
 {
@@ -239,14 +240,16 @@ namespace Fly01.Estoque.Controllers
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
             var param = JQueryDataTableParams.CreateFromQueryString(Request.QueryString);
+            var fileType = (Request.QueryString.AllKeys.Contains("fileType")) ? Request.QueryString.Get("fileType") : "";
 
             try
             {
                 var gridParams = new Dictionary<string, string>();
                 gridParams.AddParam("$count", "true");
 
-                if (param.Length > 0)
-                    gridParams.AddParam("$top", param.Length.ToString());
+                if (string.IsNullOrWhiteSpace(fileType))
+                    if (param.Length > 0)
+                        gridParams.AddParam("$top", param.Length.ToString());
 
                 if (param.Order != null)
                 {
@@ -332,9 +335,9 @@ namespace Fly01.Estoque.Controllers
                         }
                     }
                 }
-
-                if (param.Start > 0)
-                    gridParams.AddParam("$skip", param.Start.ToString());
+                if (string.IsNullOrWhiteSpace(fileType))
+                    if (param.Start > 0)
+                        gridParams.AddParam("$skip", param.Start.ToString());
 
                 if (filters != null && filters.Any())
                 {
@@ -353,6 +356,30 @@ namespace Fly01.Estoque.Controllers
                 }
 
                 var responseGrid = RestHelper.ExecuteGetRequest<ResultBase<InventarioVM>>(ResourceName, gridParams);
+                if (!string.IsNullOrWhiteSpace(fileType))
+                {
+                    if (responseGrid.Total.Equals(0))
+                        throw new Exception("Não existem registros para exportar");
+                    DataTable dataTable = GridToDataTable(responseGrid, param);
+                    switch (fileType.ToLower())
+                    {
+                        case "pdf":
+                            GridToPDF(dataTable);
+                            break;
+                        case "doc":
+                            GridToDOC(dataTable);
+                            break;
+                        case "xls":
+                            GridToXLS(dataTable);
+                            break;
+                        case "csv":
+                            GridToCSV(dataTable);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
                 return Json(new
                 {
                     recordsTotal = responseGrid.Total,

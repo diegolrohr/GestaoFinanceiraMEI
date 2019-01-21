@@ -1,18 +1,18 @@
-﻿using System;
-using Fly01.Core;
+﻿using Fly01.Core;
+using Fly01.Core.Helpers;
+using Fly01.Core.Mensageria;
+using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels.Presentation;
+using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.Financeiro.ViewModel;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using Fly01.Core.Rest;
-using Fly01.Core.Helpers;
-using Fly01.Core.Presentation;
-using Fly01.Financeiro.ViewModel;
-using System.Collections.Generic;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Fly01.Core.ViewModels.Presentation;
-using Fly01.Core.Mensageria;
-using System.IO;
-using Fly01.Core.Presentation.Commons;
-using Newtonsoft.Json;
 
 namespace Fly01.Financeiro.Controllers.Base
 {
@@ -25,7 +25,10 @@ namespace Fly01.Financeiro.Controllers.Base
                 { "contaReceberId", contaReceberId.ToString() }, { "contaBancariaId", contaBancariaId.ToString() }
             });
 
-            if (boletoBancario == null) throw new Exception("Não foi possível gerar boleto.");
+            if (boletoBancario == null)
+            {
+                throw new Exception("Não foi possível gerar boleto.");
+            }
 
             return boletoBancario;
         }
@@ -42,7 +45,7 @@ namespace Fly01.Financeiro.Controllers.Base
             }
             catch (Exception ex)
             {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);                
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
                 return JsonResponseStatus.GetFailure(error.Message.Replace("\r\n", " "));
             }
         }
@@ -105,7 +108,9 @@ namespace Fly01.Financeiro.Controllers.Base
             if (cnab.Count > 0)
             {
                 if (cnab.Any(x => x.ContaBancariaCedente.BancoId != bancoId))
+                {
                     boletoTemVinculo = true;
+                }
             }
 
             return Json(new { success = boletoTemVinculo, data = arquivoRemessaId }, JsonRequestBehavior.AllowGet);
@@ -125,7 +130,9 @@ namespace Fly01.Financeiro.Controllers.Base
 
                 var restResponse = RestHelper.ExecuteGetRequest<CnabVM>("cnab", queryString);
                 if (restResponse != null)
+                {
                     listaCnab.Add(restResponse);
+                }
             }
 
             return listaCnab;
@@ -140,6 +147,43 @@ namespace Fly01.Financeiro.Controllers.Base
             var boletos = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString);
 
             return boletos.Data;
+        }
+
+        [OperationRole(NotApply = true)]
+        [HttpGet]
+        public JsonResult VerificarBoletosPessoa(string id)
+        {
+            var guids = new List<Guid> { new Guid(id) };
+            
+            try
+            {
+                var cnab = GetCnab(guids);
+                var idPessoa = cnab.FirstOrDefault().PessoaId;
+                var restResponse = new List<CnabVM>();
+
+                if (idPessoa != null )
+                {
+                    var queryString = new Dictionary<string, string>
+                    {
+                        { "IdPessoa", idPessoa.ToString()},
+                        { "pageSize", "10"}
+                    };
+
+                    restResponse = RestHelper.ExecuteGetRequest<ResultBase<CnabVM>>("cnab", queryString).Data;
+
+                    if (restResponse.Count == 1)
+                        restResponse = null;
+                    
+                }
+
+                return Json(new { success = true, data = restResponse ?? null }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message.Replace("\r\n", " "));
+            }
+
         }
 
         protected List<DadosArquivoRemessaVM> GetListaBoletos(List<Guid> idsCnabToSave)

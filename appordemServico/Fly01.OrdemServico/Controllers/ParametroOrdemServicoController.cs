@@ -127,7 +127,7 @@ namespace Fly01.OrdemServico.Controllers
                 DataUrl = Url.Action("Vendedor", "AutoComplete"),
                 LabelId = "responsavelPadraoNome",
                 LabelName = "responsavelPadraoNome"
-            }, ResourceHashConst.OrdemServicoCadastroResponsaveis));
+            }, ResourceHashConst.OrdemServicoCadastrosResponsaveis));
 
             #region Helpers 
             config.Helpers.Add(new TooltipUI

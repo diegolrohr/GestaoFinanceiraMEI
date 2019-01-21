@@ -177,7 +177,7 @@ namespace Fly01.Financeiro.Controllers
 
         public ContentResult ListBoletos(string gridLoad = "GridLoad")
         {
-            var buttonLabel = "Mostrar todas os boletos";
+            var buttonLabel = "Mostrar todos os boletos";
             var buttonOnClick = "fnRemoveFilter";
 
             if (Request.QueryString["action"] == "GridLoadNoFilter")
@@ -251,7 +251,8 @@ namespace Fly01.Financeiro.Controllers
                 {
                     Select = new { style = "multi" },
                     OrderColumn = 2,
-                    OrderDir = "asc"
+                    OrderDir = "asc",
+                    NoExportButtons = true
                 },
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -285,7 +286,7 @@ namespace Fly01.Financeiro.Controllers
             return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Default), "application/json");
         }
 
-        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "")
+        public ContentResult ModalConfigEmail(string email = "", string contaReceberId = "", string contaBancariaId = "", string ids = "")
         {
             ModalUIForm config = new ModalUIForm()
             {
@@ -303,7 +304,7 @@ namespace Fly01.Financeiro.Controllers
                 ReadyFn = "fnFormReadyModal"
             };
 
-            config.Elements.Add(new InputHiddenUI { Id = "ids" });
+            config.Elements.Add(new InputHiddenUI { Id = "ids" , Value = ids });
             config.Elements.Add(new InputHiddenUI { Id = "idContaReceber", Value = contaReceberId });
             config.Elements.Add(new InputHiddenUI { Id = "idContaBancaria", Value = contaBancariaId });
             config.Elements.Add(new InputTextUI { Id = "email", Class = "col s12 l12", Label = "E-mail", Value = email, Required = true, MaxLength = 50 });

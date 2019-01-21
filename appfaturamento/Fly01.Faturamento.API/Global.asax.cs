@@ -52,6 +52,8 @@ namespace Fly01.Faturamento.API
             builder.EntitySet<EnquadramentoLegalIPI>("enquadramentolegalipi");
             builder.EntitySet<NotaFiscalCartaCorrecao>("notafiscalcartacorrecao");
             builder.EntitySet<Iss>("iss");
+            builder.EntitySet<Kit>("kit");
+            builder.EntitySet<KitItem>("kititem");
 
             builder.EnableLowerCamelCase();
 
@@ -74,6 +76,7 @@ namespace Fly01.Faturamento.API
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlEstoqueApi = ConfigurationManager.AppSettings["UrlEstoqueApi"];
             AppDefaults.UrlFinanceiroApi = ConfigurationManager.AppSettings["UrlFinanceiroApi"];
+            AppDefaults.UrlApiGatewayNew = ConfigurationManager.AppSettings["UrlGatewayNew"];
 
             base.SetAppDefaults();
         }

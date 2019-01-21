@@ -322,7 +322,7 @@ namespace Fly01.Compras.BL
 
                         detalhe.Imposto.ICMS = new ICMSPai()
                         {
-                            OrigemMercadoria = OrigemMercadoria.Nacional,
+                            OrigemMercadoria = item.Produto.OrigemMercadoria,
                             CodigoSituacaoOperacao = item.GrupoTributario.TipoTributacaoICMS != null ? item.GrupoTributario.TipoTributacaoICMS.Value : TipoTributacaoICMS.TributadaSemPermissaoDeCredito,
                             AliquotaAplicavelCalculoCreditoSN = Math.Round(((item.ValorCreditoICMS / (item.Quantidade * item.Valor)) * 100), 2),
                             ValorCreditoICMS = Math.Round(item.ValorCreditoICMS, 2),
@@ -528,7 +528,7 @@ namespace Fly01.Compras.BL
                     {
                         itemTransmissao.InformacoesAdicionais = new InformacoesAdicionais()
                         {
-                            InformacoesComplementares = entity.MensagemPadraoNota
+                            InformacoesComplementares = entity.Observacao + " | " + entity.MensagemPadraoNota
                         };
                     }
 
@@ -660,8 +660,7 @@ namespace Fly01.Compras.BL
         }
 
         public override void Insert(NFeEntrada entity)
-        {
-            entity.Fail(entity.Status != StatusNotaFiscal.NaoTransmitida, new Error("Uma nova NF-e só pode estar com status 'Não Transmitida'", "status"));
+        {             
             base.Insert(entity);
         }
 

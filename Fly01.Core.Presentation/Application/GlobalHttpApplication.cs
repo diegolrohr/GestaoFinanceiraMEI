@@ -45,7 +45,7 @@ namespace Fly01.Core.Presentation.Application
                 string platformUser = cookieUserData.UserName;
                 string platformUrl = cookieUserData.Fly01Url;
 
-                var userData = new UserDataVM
+                var userData = new UserDataVM()
                 {
                     PlatformUser = platformUser,
                     PlatformUrl = platformUrl
@@ -61,7 +61,7 @@ namespace Fly01.Core.Presentation.Application
                     userData.TokenData = tokenData;
                     userData.TokenData.Username = cookieUserData.Name;
                     userData.Permissions = GetPermissionsByUser(platformUrl, platformUser);
-
+                    
                     SessionManager.Current.UserData = userData;
                     return true;
                 }
@@ -119,6 +119,7 @@ namespace Fly01.Core.Presentation.Application
             AppDefaults.MashupUser = ConfigurationManager.AppSettings["MashupUser"];
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlApiGateway = String.Format("{0}{1}", AppDefaults.UrlGateway, ConfigurationManager.AppSettings["GatewayAppApi"]);
+            AppDefaults.UrlApiGatewayNew = ConfigurationManager.AppSettings["UrlGatewayNew"];
             AppDefaults.GatewayUserName = ConfigurationManager.AppSettings["GatewayUserName"];
             AppDefaults.GatewayPassword = ConfigurationManager.AppSettings["GatewayPassword"];
             AppDefaults.GatewayVerificationKeyPassword = ConfigurationManager.AppSettings["GatewayVerificationKeyPassword"];

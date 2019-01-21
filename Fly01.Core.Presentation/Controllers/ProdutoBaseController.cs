@@ -3,6 +3,7 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
 using Fly01.uiJS.Classes.Helpers;
@@ -48,6 +49,7 @@ namespace Fly01.Core.Presentation.Controllers
             var customFilters = base.GetQueryStringDefaultGridLoad();
             customFilters.AddParam("$expand", ExpandProperties);
             customFilters.AddParam("$select", SelectProperties);
+            customFilters.AddParam("$filter", $"objetoDeManutencao eq {AppDefaults.APIEnumResourceName}ObjetoDeManutencao'Nao'");
 
             return customFilters;
         }
@@ -152,6 +154,14 @@ namespace Fly01.Core.Presentation.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "id" });
             config.Elements.Add(new InputHiddenUI { Id = "saldoProduto", Value = "0" });
 
+            config.Elements.Add(new InputFileUI
+            {
+                Id = "imageProduto",
+                Class = "col s12 m3",
+                Label = "Imagem",
+                Accept = "image/png",
+                Image = true
+            });
             config.Elements.Add(new InputTextUI { Id = "descricao", Class = "col s12 m9", Label = "Descrição", Required = true });
             config.Elements.Add(new InputTextUI { Id = "codigoProduto", Class = "col s12 m3", Label = "Código" });
 
@@ -188,16 +198,6 @@ namespace Fly01.Core.Presentation.Controllers
                 DataUrl = @Url.Action("UnidadeMedida", "AutoComplete"),
                 LabelId = "unidadeMedidaDescricao"
             });
-
-            config.Elements.Add(new AutoCompleteUI
-            {
-                Id = "ncmId",
-                Class = "col s12 m9",
-                Label = "NCM",
-                DataUrl = @Url.Action("Ncm", "AutoComplete"),
-                LabelId = "ncmDescricao",
-                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
-            });
             config.Elements.Add(new InputCustommaskUI
             {
                 Id = "aliquotaIpi",
@@ -209,21 +209,22 @@ namespace Fly01.Core.Presentation.Controllers
 
             config.Elements.Add(new AutoCompleteUI
             {
+                Id = "ncmId",
+                Class = "col s12 m12",
+                Label = "NCM",
+                DataUrl = @Url.Action("Ncm", "AutoComplete"),
+                LabelId = "ncmDescricao",
+                DomEvents = new List<DomEventUI> { new DomEventUI { DomEvent = "autocompleteselect", Function = "fnChangeNCM" } }
+            });
+
+            config.Elements.Add(new AutoCompleteUI
+            {
                 Id = "cestId",
                 Class = "col s12",
                 Label = "CEST (Escolha um NCM antes)",
                 DataUrl = @Url.Action("Cest", "AutoComplete"),
                 LabelId = "cestDescricao",
                 PreFilter = "ncmId"
-            });
-
-            config.Elements.Add(new AutoCompleteUI()
-            {
-                Id = "enquadramentoLegalIPIId",
-                Class = "col s12",
-                Label = "Enquadramento Legal do IPI",
-                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
-                LabelId = "enquadramentoLegalIPIDescricao"
             });
 
             config.Elements.Add(new InputFloatUI { Id = "saldoMinimo", Class = "col s12 m3", Label = "Saldo Mínimo", Digits = 3 });
@@ -239,6 +240,24 @@ namespace Fly01.Core.Presentation.Controllers
             });
             config.Elements.Add(new InputCurrencyUI { Id = "valorCusto", Class = "col s12 m3", Label = "Valor Custo" });
             config.Elements.Add(new InputCurrencyUI { Id = "valorVenda", Class = "col s12 m3", Label = "Valor Venda" });
+
+            config.Elements.Add(new AutoCompleteUI()
+            {
+                Id = "enquadramentoLegalIPIId",
+                Class = "col s12",
+                Label = "Enquadramento Legal do IPI",
+                DataUrl = @Url.Action("EnquadramentoLegalIPI", "AutoComplete"),
+                LabelId = "enquadramentoLegalIPIDescricao"
+            });
+
+            config.Elements.Add(new SelectUI
+            {
+                Id = "origemMercadoria",
+                Class = "col s12",
+                Label = "Origem Mercadoria",
+                Required = true,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(OrigemMercadoria)))
+            });
 
             config.Elements.Add(new TextAreaUI { Id = "observacao", Class = "col s12", Label = "Observação", MaxLength = 200 });
 
@@ -323,8 +342,17 @@ namespace Fly01.Core.Presentation.Controllers
 
         public JsonResult ImportaArquivo(string pConteudo)
         {
-            var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
-            return JsonResponseStatus.GetJson(arquivoVM);
+            try
+            {
+                var arquivoVM = ImportacaoArquivoHelper.ImportaProduto($"Cadastro de Produtos", pConteudo);
+                return JsonResponseStatus.GetJson(arquivoVM);
+
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
 
         public virtual ActionResult ImportarProduto()
@@ -399,7 +427,6 @@ namespace Fly01.Core.Presentation.Controllers
                 Id = "grupoProdutoId",
                 Class = "col s12 m7",
                 Label = "Grupo",
-                Required = true,
                 DataUrl = @Url.Action("GrupoProduto", "AutoComplete"),
                 DataUrlPost = @Url.Action("NovoGrupoProduto"),
                 LabelId = "grupoProdutoDescricao",
@@ -413,8 +440,7 @@ namespace Fly01.Core.Presentation.Controllers
                 Class = "col s12 m2",
                 Label = "Saldo atual",
                 Value = "0",
-                Digits = 3,
-                Required = true
+                Digits = 3
             });
 
             config.Elements.Add(new AutoCompleteUI

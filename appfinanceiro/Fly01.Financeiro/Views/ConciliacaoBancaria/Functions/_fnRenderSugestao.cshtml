@@ -1,7 +1,7 @@
 ﻿<script>
     function fnRenderSugestao(data, type, row, meta) {
         if (row.conciliacaoBancariaItemContasFinanceiras != null && row.conciliacaoBancariaItemContasFinanceiras.length) {
-            var selectElement = createElem("div", { "id": "contaFinanceiraIdField", "class": "input-field col s12" }, [
+            var selectElement = createElem("div", { "id": "contaFinanceiraIdField", "class": "input-field visible col s12" }, [
               createElem("select", { "class": "", "id": "contaFinanceiraId", "name": "contaFinanceiraId" }, row.conciliacaoBancariaItemContasFinanceiras.reduce(function (prev, curr) {
                   var optAttr = { "value": curr.contaFinanceiraId || "" };
                   if (curr.selected) optAttr.selected = "selected";

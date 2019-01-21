@@ -48,6 +48,7 @@
     <Compile Include="CidadeBL.cs" />
     <Compile Include="CondicaoParcelamentoBL.cs" />
     <Compile Include="EnquadramentoLegalIPIBL.cs" />
+    <Compile Include="KitBL.cs" />
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="MonitorNFSBL.cs" />
     <Compile Include="MonitorNFBL.cs" />
     <Compile Include="ISSBL.cs" />
+    <Compile Include="KitItemBL.cs" />
     <Compile Include="NotaFiscalItemBL.cs" />
     <Compile Include="NotaFiscalCartaCorrecaoBL.cs" />
     <Compile Include="NotaFiscalItemTributacaoBL.cs" />

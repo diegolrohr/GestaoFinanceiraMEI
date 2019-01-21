@@ -1,4 +1,4 @@
-﻿<script>
+<script>
     @Html.Partial("Functions/_fnMain");
 
     var justSaveOrdemToGoStepProdutos = false;
@@ -193,7 +193,10 @@
     }
 
     function fnFormReadyOrdemServico() {
+        $$$.fn.updateActiveMenu("/OrdemServico/List");
         if (isCreate()) {
+            $('#andamento').hide();
+            $('#concluido').hide();
             $('#btnNormal').click();
             var today = new Date();
             $$$._.dataEmissao.set(today);
@@ -228,6 +231,8 @@
         };
         $('#stepServicos > div.step-content > div.step-actions > button.btn.next-step').click(function () { finalizarPreenchmento(); });
         $('li#stepFinalizar div.step-title').click(function () { finalizarPreenchmento(); });
-    }
 
+        if ($('#status').val() == "EmAndamento")
+            $('#andamento').hide();
+    }
 </script>

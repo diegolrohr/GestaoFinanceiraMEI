@@ -55,8 +55,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Api\AgendaController.cs" />
     <Compile Include="Controllers\Api\ApiDomainController.cs" />
     <Compile Include="Controllers\Api\ApiPlataformaController.cs" />
+    <Compile Include="Controllers\Api\ArquivoController.cs" />
     <Compile Include="Controllers\Api\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\Api\CalculaTotalOrdemServicoController.cs" />
     <Compile Include="Controllers\Api\CidadeController.cs" />
@@ -65,6 +67,10 @@
     <Compile Include="Controllers\Api\GrupoProdutoController.cs" />
     <Compile Include="Controllers\Api\HelloController.cs" />
     <Compile Include="Controllers\Api\ISSController.cs" />
+    <Compile Include="Controllers\Api\KitOrdemServicoController.cs" />
+    <Compile Include="Controllers\Api\KitItemController.cs" />
+    <Compile Include="Controllers\Api\KitController.cs" />
+    <Compile Include="Controllers\Api\MinhaContaController.cs" />
     <Compile Include="Controllers\Api\NBSController.cs" />
     <Compile Include="Controllers\Api\NCMController.cs" />
     <Compile Include="Controllers\Api\OrdemServicoController.cs" />
@@ -73,6 +79,7 @@
     <Compile Include="Controllers\Api\OrdemServicoItemServicoController.cs" />
     <Compile Include="Controllers\Api\PessoaController.cs" />
     <Compile Include="Controllers\Api\ParametroOrdemServicoController.cs" />
+    <Compile Include="Controllers\Api\ProdutoServicoController.cs" />
     <Compile Include="Controllers\Api\ServicoController.cs" />
     <Compile Include="Controllers\Api\ProdutoController.cs" />
     <Compile Include="Controllers\Api\UnidadeMedidaController.cs" />

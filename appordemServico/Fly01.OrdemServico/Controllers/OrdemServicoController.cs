@@ -454,6 +454,7 @@ namespace Fly01.OrdemServico.Controllers
 
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
             config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
+            config.Elements.Add(new InputTimeUI { Id = "horaEntrega", Class = "col s12 m3", Label = "Horário da Entrega", Required = true, });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
@@ -810,6 +811,7 @@ namespace Fly01.OrdemServico.Controllers
                     ClienteEmail = OrdemServico.Cliente?.Email,
                     DataEmissao = OrdemServico.DataEmissao,
                     DataEntrega = OrdemServico.DataEntrega,
+                    HoraEntrega = OrdemServico.HoraEntrega,
                     Status = OrdemServico.Status.ToString(),
                     Numero = OrdemServico.Numero.ToString(),
                     Descricao = OrdemServico.Descricao,

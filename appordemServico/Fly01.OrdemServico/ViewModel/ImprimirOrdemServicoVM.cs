@@ -8,6 +8,7 @@ namespace Fly01.OrdemServico.ViewModel
         public string ClienteNome { get; internal set; }
         public DateTime? DataEmissao { get; internal set; }
         public DateTime? DataEntrega { get; internal set; }
+        public TimeSpan? HoraEntrega { get; internal set; }
         public string Status { get; internal set; }
         public string Numero { get; internal set; }
         public string Descricao { get; internal set; }

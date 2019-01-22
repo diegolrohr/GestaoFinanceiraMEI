@@ -23,6 +23,12 @@ namespace Fly01.OrdemServico.ViewModel
         [JsonProperty("dataEntrega")]
         public DateTime DataEntrega { get; set; }
 
+        [JsonProperty("horaEntrega")]
+        public TimeSpan HoraEntrega { get; set; }
+
+        [JsonProperty("duracao")]
+        public TimeSpan Duracao { get; set; }
+
         [JsonProperty("responsavelId")]
         public Guid? ResponsavelId { get; set; }
 

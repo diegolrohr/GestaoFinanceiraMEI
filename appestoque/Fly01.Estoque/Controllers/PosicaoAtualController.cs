@@ -70,7 +70,7 @@ namespace Fly01.Estoque.Controllers
                 Id = "fly01dtprodutos",
                 UrlGridLoad = Url.Action("GridLoadPos", "Produto"),
                 UrlFunctions = Url.Action("Functions", "Produto", null, Request.Url.Scheme) + "?fns=",
-                Options = new DataTableUIConfig { PageLength = 30 }
+                Options = new DataTableUIConfig { PageLength = 30, NoExportButtons = true }
 
             };
 

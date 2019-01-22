@@ -28,7 +28,7 @@ namespace Fly01.OrdemServico.DAL.Migrations
             //new CidadeDataInitializer7().Initialize(context, ufs);
             //new CestDataInitializer().Initialize(context);
             //new EnquadramentoLegalIPIDataInitializer().Initialize(context);
-            new ISSDataInitializer().Initialize(context);
+            //new ISSDataInitializer().Initialize(context);
         }
     }
 }

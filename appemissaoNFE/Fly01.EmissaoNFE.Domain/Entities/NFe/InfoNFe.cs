@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -8,18 +9,21 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// ID da nota
         /// </summary>
+        [JsonProperty("id")]
         [XmlAttribute(AttributeName = "Id")]
         public string NotaId { get; set; }
 
         /// <summary>
         /// Versão de NFe utilizada pelo cliente
         /// </summary>
+        [JsonProperty("versao")]
         [XmlAttribute(AttributeName = "versao")]
         public string Versao { get; set; }
 
         /// <summary>
         /// Identificador
         /// </summary>
+        [JsonProperty("ide")]
         [XmlElement(ElementName = "ide")]
         public Identificador Identificador { get; set; }
 

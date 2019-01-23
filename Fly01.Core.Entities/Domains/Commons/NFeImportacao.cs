@@ -65,6 +65,9 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool NovoPedido { get; set; }
 
+        /// <summary>
+        /// One-to-Zero-or-One Relationship
+        /// </summary>
         [ForeignKey("Pedido")]
         public Guid? PedidoId { get; set; }
 

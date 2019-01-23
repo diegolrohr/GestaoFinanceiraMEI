@@ -68,6 +68,7 @@ namespace Fly01.Compras.DAL
                 .Map(m => m.ToTable("NotaFiscalItemEntrada"))
                 .Map<NFeProdutoEntrada>(m => m.ToTable("NFeProdutoEntrada"));
 
+            #region One-to-Zero-or-One Relationship Two way FK
             builder.Entity<NFeImportacao>()
               .HasOptional(s => s.Pedido)
               .WithMany()
@@ -75,7 +76,6 @@ namespace Fly01.Compras.DAL
 
             builder.Entity<NFeImportacaoProduto>()
               .HasOptional(s => s.PedidoItem)
-              //.WithRequired(ad => ad.NFeImportacaoProduto);
               .WithMany()
               .HasForeignKey(s => s.PedidoItemId);
 
@@ -85,10 +85,10 @@ namespace Fly01.Compras.DAL
               .HasForeignKey(s => s.NFeImportacaoId);
 
             builder.Entity<PedidoItem>()
-              .HasOptional(s => s.NFeImportacaoProduto)
-              //.WithRequired(ad => ad.NFeImportacaoProduto);
+              .HasOptional(s => s.NFeImportacaoProduto)              
               .WithMany()
               .HasForeignKey(s => s.NFeImportacaoProdutoId);
+            #endregion
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

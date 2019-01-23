@@ -19,7 +19,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(32)]
         public string XmlMd5 { get; set; }
 
-        public TipoVenda Tipo { get; set; }
+        public TipoCompraVenda Tipo { get; set; }
 
         public Status Status { get; set; }
 

@@ -31,7 +31,7 @@ namespace Fly01.Estoque.BL
             else if(entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd || entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar)
             {
                 //complemento de imposto não movimenta estoque
-                if (entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
+                if (entity.TipoVenda == TipoCompraVenda.Normal || (entity.TipoVenda == TipoCompraVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
                 {
                     var diferenca = produto.SaldoProduto - entity.Quantidade;
                     //se vai ficar negativo, dar entrada automática da diferenca antes
@@ -52,7 +52,7 @@ namespace Fly01.Estoque.BL
                 //venda normal/complementar normal é saída, devolução/complementar devolucao é entrada
                 MovimentoEstoque movimentoBaixa = new MovimentoEstoque()
                 {
-                    QuantidadeMovimento = (entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
+                    QuantidadeMovimento = (entity.TipoVenda == TipoCompraVenda.Normal || (entity.TipoVenda == TipoCompraVenda.Complementar && !entity.NFeRefComplementarIsDevolucao))
                         ? -entity.Quantidade
                         : entity.Quantidade,
                     ProdutoId = entity.ProdutoId,

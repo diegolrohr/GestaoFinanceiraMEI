@@ -100,5 +100,7 @@ namespace Fly01.Compras.DAL
         public DbSet<Nbs> Nbss { get; set; }
         public DbSet<Kit> Kits { get; set; }
         public DbSet<KitItem> KitItens { get; set; }
+        public DbSet<NFeImportacao> NFeImportacoes { get; set; }
+        public DbSet<NFeImportacaoProduto> NFeImportacaoProdutos { get; set; }
     }
 }

@@ -137,7 +137,7 @@ namespace Fly01.OrdemServico.BL
                 ClienteId = entity.ClienteId,
                 Data = entity.DataEntrega,
                 TipoOrdemVenda = TipoOrdemVenda.Pedido,
-                TipoVenda = TipoVenda.Normal,
+                TipoVenda = TipoCompraVenda.Normal,
                 Status = Status.Aberto,
                 TipoFrete = TipoFrete.SemFrete,
                 TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,

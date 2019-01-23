@@ -338,9 +338,9 @@ namespace Fly01.Faturamento.Controllers
                 statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
                 tipoVenda = x.TipoVenda,
-                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
-                tipoVendaValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoVenda),
+                tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoVenda),
+                tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoVenda),
+                tipoVendaValue = EnumHelper.GetValue(typeof(TipoCompraVenda), x.TipoVenda),
                 cliente_nome = x.Cliente.Nome,
                 geraNotaFiscal = x.GeraNotaFiscal
             };
@@ -478,7 +478,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "tipoVenda",
                 DisplayName = "Finalidade",
                 Priority = 4,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
                 RenderFn = "fnRenderEnum(full.tipoVendaCssClass, full.tipoVendaDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 5 });
@@ -556,7 +556,7 @@ namespace Fly01.Faturamento.Controllers
                 Label = "Tipo Venda",
                 Value = "Normal",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda)).
                 ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "data", Class = "col s12 m6 l2", Label = "Data", Disabled = true });

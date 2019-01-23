@@ -198,6 +198,7 @@ namespace Fly01.OrdemServico.Controllers
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "andamento", Label = "Executar", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;

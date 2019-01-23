@@ -21,7 +21,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         public string TipoEspecie { get; set; }
 
         [Required]
-        public TipoVenda TipoCompra { get; set; }
+        public TipoCompraVenda TipoCompra { get; set; }
         public double? ValorFrete { get; set; }
 
         public double? PesoBruto { get; set; }

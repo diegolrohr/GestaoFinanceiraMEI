@@ -10,7 +10,7 @@ namespace Fly01.Faturamento.API.Controllers.Api
     {
         public IHttpActionResult Get()
         {
-            return Ok(EnumHelper.GetDataEnumValues(typeof(TipoVenda)));
+            return Ok(EnumHelper.GetDataEnumValues(typeof(TipoCompraVenda)));
         }
     }
 }

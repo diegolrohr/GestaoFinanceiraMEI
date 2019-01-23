@@ -300,6 +300,10 @@
     <Compile Include="Migrations\201901152008316_AlterDescricaoGrupoProdutoTributario.Designer.cs">
       <DependentUpon>201901152008316_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901231954447_CreateNFeImportacao.cs" />
+    <Compile Include="Migrations\201901231954447_CreateNFeImportacao.Designer.cs">
+      <DependentUpon>201901231954447_CreateNFeImportacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -534,6 +538,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901152008316_AlterDescricaoGrupoProdutoTributario.resx">
       <DependentUpon>201901152008316_AlterDescricaoGrupoProdutoTributario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901231954447_CreateNFeImportacao.resx">
+      <DependentUpon>201901231954447_CreateNFeImportacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

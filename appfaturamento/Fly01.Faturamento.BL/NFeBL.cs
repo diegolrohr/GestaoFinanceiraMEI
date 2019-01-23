@@ -246,11 +246,11 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = 0.0;
             if (produtos != null)
             {
-                if (nfe.TipoVenda == TipoVenda.Normal || nfe.TipoVenda == TipoVenda.Devolucao)
+                if (nfe.TipoVenda == TipoCompraVenda.Normal || nfe.TipoVenda == TipoCompraVenda.Devolucao)
                 {
                     totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                 }
-                else if (nfe.TipoVenda == TipoVenda.Complementar)
+                else if (nfe.TipoVenda == TipoCompraVenda.Complementar)
                 {
                     totalProdutos = +produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                     totalProdutos = +produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
@@ -264,8 +264,8 @@ namespace Fly01.Faturamento.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool calculaFrete = (
-                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoVenda.Normal) ||
-                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoVenda.Devolucao)
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoVenda == TipoCompraVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoVenda == TipoCompraVenda.Devolucao)
             );
 
             var result = new TotalPedidoNotaFiscal()

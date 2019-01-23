@@ -57,7 +57,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m6 l3",
                 Label = "Tipo Compra",
                 Disabled = true,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda)).
                 ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
             });
             config.Elements.Add(new SelectUI
@@ -257,7 +257,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Tipo Compra",
                 Disabled = true,
                 Name = "tipoCompra",
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda)).
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda)).
                 ToList().FindAll(x => "Normal,Devolucao,Complementar".Contains(x.Value)))
             });
             config.Elements.Add(new InputDateUI { Id = "dataNFe", Class = "col s12 m6", Label = "Data", Disabled = true, Name = "data" });

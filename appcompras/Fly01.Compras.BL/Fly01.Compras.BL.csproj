@@ -59,6 +59,8 @@
     <Compile Include="EstadoBL.cs" />
     <Compile Include="FormaPagamentoBL.cs" />
     <Compile Include="GrupoProdutoBL.cs" />
+    <Compile Include="NFeImportacaoProdutoBL.cs" />
+    <Compile Include="NFeImportacaoBL.cs" />
     <Compile Include="NFeEntradaBL.cs" />
     <Compile Include="NFeProdutoEntradaBL.cs" />
     <Compile Include="NotaFiscalEntradaBL.cs" />

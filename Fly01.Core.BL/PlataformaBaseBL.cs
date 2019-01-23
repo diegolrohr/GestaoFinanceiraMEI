@@ -110,7 +110,6 @@ namespace Fly01.Core.BL
                 entity.DataExclusao = DateTime.Now;
             }
 
-
             ValidaModel(entity);
         }
 

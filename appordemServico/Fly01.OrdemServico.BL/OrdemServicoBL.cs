@@ -138,7 +138,7 @@ namespace Fly01.OrdemServico.BL
                 Data = entity.DataEntrega,
                 TipoOrdemVenda = TipoOrdemVenda.Pedido,
                 TipoVenda = TipoVenda.Normal,
-                Status = StatusOrdemVenda.Aberto,
+                Status = Status.Aberto,
                 TipoFrete = TipoFrete.SemFrete,
                 TipoNfeComplementar = TipoNfeComplementar.NaoComplementar,
                 Observacao = $"Pedido gerado a partir da Ordem de Serviço número {entity.Numero}",

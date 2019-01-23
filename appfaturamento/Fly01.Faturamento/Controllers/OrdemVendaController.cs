@@ -334,9 +334,9 @@ namespace Fly01.Faturamento.Controllers
                 tipoOrdemVendaValue = EnumHelper.GetValue(typeof(TipoOrdemVenda), x.TipoOrdemVenda),
                 data = x.Data.ToString("dd/MM/yyyy"),
                 status = x.Status,
-                statusDescription = EnumHelper.GetDescription(typeof(StatusOrdemVenda), x.Status),
-                statusCssClass = EnumHelper.GetCSS(typeof(StatusOrdemVenda), x.Status),
-                statusValue = EnumHelper.GetValue(typeof(StatusOrdemVenda), x.Status),
+                statusDescription = EnumHelper.GetDescription(typeof(Status), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
                 tipoVenda = x.TipoVenda,
                 tipoVendaDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoVenda),
                 tipoVendaCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoVenda),
@@ -462,7 +462,7 @@ namespace Fly01.Faturamento.Controllers
                 DataField = "status",
                 DisplayName = "Status",
                 Priority = 2,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(StatusOrdemVenda))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn

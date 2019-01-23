@@ -30,7 +30,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             {
                 ValidarDetalhePagamento(item, entity, nItem);
 
-                var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar;
+                var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Complementar;
                 var valorTotalNF = item.Total.ICMSTotal.ValorTotalNF;
                 var somaPagamentos = item.Pagamento.DetalhesPagamentos.Sum(x => x.ValorPagamento);
                 var troco = item.Pagamento.ValorTroco.HasValue ? item.Pagamento.ValorTroco : 0;
@@ -53,7 +53,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
             var nItemPagamento = 1;
             foreach (var detalhePagamento in item.Pagamento.DetalhesPagamentos)
             {
-                var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar;
+                var isSemPagamento = item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Ajuste || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Complementar;
                 entity.Fail(detalhePagamento.ValorPagamento <= 0 && !isSemPagamento, new Error("O valor do pagamento deve ser maior que zero. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].ValorPagamento."));
                 entity.Fail(isSemPagamento && detalhePagamento.TipoFormaPagamento != TipoFormaPagamento.SemPagamento, new Error("Nota de ajuste ou devolução, somente forma de pagamento do tipo Sem Pagamento. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));
                 entity.Fail(detalhePagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia, new Error("Forma de pagamento do tipo Transferência inválido, informe o tipo Outros. Item[" + nItem + "].Pagamento.DetalhesPagamentos[" + (nItemPagamento) + "].TipoFormaPagamento."));

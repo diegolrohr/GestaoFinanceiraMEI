@@ -171,7 +171,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [Required]
         [XmlElement(ElementName = "finNFe")]
-        public TipoVenda FinalidadeEmissaoNFe { get; set; }
+        public TipoCompraVenda FinalidadeEmissaoNFe { get; set; }
 
         /// <summary>
         /// informar o indicador de operação com Consumidor final:
@@ -221,7 +221,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeNFReferenciada()
         {
-            return (FinalidadeEmissaoNFe == TipoVenda.Devolucao || FinalidadeEmissaoNFe == TipoVenda.Complementar) && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
+            return (FinalidadeEmissaoNFe == TipoCompraVenda.Devolucao || FinalidadeEmissaoNFe == TipoCompraVenda.Complementar) && NFReferenciada != null && !string.IsNullOrEmpty(NFReferenciada.ChaveNFeReferenciada);
         }
     }
 }

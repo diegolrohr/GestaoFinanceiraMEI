@@ -42,14 +42,14 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                     new Error("Tamanho da chave da nota fiscal referenciada deve conter 44 caracteres.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
                 entity.Fail(String.IsNullOrEmpty(item.Identificador.NFReferenciada.ChaveNFeReferenciada),
                     new Error("Informe a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada.ChaveNFeReferenciada"));
-                entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Ajuste,
+                entity.Fail(item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Normal || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Ajuste,
                     new Error("A chave da nota fiscal referenciada não deve ser informada para esse tipo de nota.", "Item.Identificador.NFReferenciada"));
             }
         }
 
         private static void ValidarChaveNotaFiscalReferenciada(ItemTransmissaoVM item, TransmissaoVM entity)
         {
-            entity.Fail(((item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar) && item.Identificador.NFReferenciada == null),
+            entity.Fail(((item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Devolucao || item.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Complementar) && item.Identificador.NFReferenciada == null),
                                 new Error("Finalidade de devolução/complementar é necessário informar a chave da nota fiscal referenciada.", "Item.Identificador.NFReferenciada"));
         }
 

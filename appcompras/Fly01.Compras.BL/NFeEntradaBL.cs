@@ -185,7 +185,7 @@ namespace Fly01.Compras.BL
                         NumeroDocumentoFiscal = entity.NumNotaFiscal.Value,
                         Emissao = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
                         EntradaSaida = TimeZoneHelper.GetDateTimeNow(isLocal, utcId),
-                        TipoDocumentoFiscal = entity.TipoCompra == TipoVenda.Devolucao ? TipoNota.Saida : TipoNota.Entrada,
+                        TipoDocumentoFiscal = entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoNota.Saida : TipoNota.Entrada,
                         DestinoOperacao = destinoOperacao,
                         CodigoMunicipio = empresa.Cidade != null ? empresa.Cidade.CodigoIbge : null,
                         ImpressaoDANFE = TipoImpressaoDanfe.Retrato,
@@ -199,7 +199,7 @@ namespace Fly01.Compras.BL
                         FormaEmissao = parametros.TipoModalidade,
                         CodigoProcessoEmissaoNFe = 0
                     };
-                    if (entity.TipoCompra == TipoVenda.Devolucao)
+                    if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                     {
                         itemTransmissao.Identificador.NFReferenciada = new NFReferenciada()
                         {
@@ -285,7 +285,7 @@ namespace Fly01.Compras.BL
                             x.CestId == item.Produto.CestId.Value &
                             x.EstadoOrigem.Sigla == UFSiglaEmpresa &
                             x.EstadoDestinoId == fornecedor.EstadoId &
-                            x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
+                            x.TipoSubstituicaoTributaria == (entity.TipoCompra == TipoCompraVenda.Devolucao ? TipoSubstituicaoTributaria.Saida : TipoSubstituicaoTributaria.Entrada)
                             ).FirstOrDefault();
                         var CST = item.GrupoTributario.TipoTributacaoPIS.HasValue ? item.GrupoTributario.TipoTributacaoPIS.Value.ToString() : "";
                         var itemTributacao = new NotaFiscalItemTributacaoEntrada();
@@ -498,7 +498,7 @@ namespace Fly01.Compras.BL
                         //Transferência não existe para o SEFAZ
                         tipoFormaPagamento = formaPagamento.TipoFormaPagamento == TipoFormaPagamento.Transferencia ? TipoFormaPagamento.Outros : formaPagamento.TipoFormaPagamento;
                     }
-                    if (entity.TipoCompra == TipoVenda.Devolucao)
+                    if (entity.TipoCompra == TipoCompraVenda.Devolucao)
                     {
                         tipoFormaPagamento = TipoFormaPagamento.SemPagamento;
                     }
@@ -707,8 +707,8 @@ namespace Fly01.Compras.BL
             var totalImpostosProdutos = nfe.TotalImpostosProdutos;
             var totalImpostosProdutosNaoAgrega = nfe.TotalImpostosProdutosNaoAgrega;
             bool calculaFrete = (
-                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoVenda.Normal) ||
-                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoVenda.Devolucao)
+                ((nfe.TipoFrete == TipoFrete.FOB || nfe.TipoFrete == TipoFrete.Destinatario) && nfe.TipoCompra == TipoCompraVenda.Normal) ||
+                ((nfe.TipoFrete == TipoFrete.CIF || nfe.TipoFrete == TipoFrete.Remetente) && nfe.TipoCompra == TipoCompraVenda.Devolucao)
             );
 
             var result = new TotalPedidoNotaFiscal()

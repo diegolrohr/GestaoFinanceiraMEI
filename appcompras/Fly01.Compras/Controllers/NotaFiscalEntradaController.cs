@@ -42,9 +42,9 @@ namespace Fly01.Compras.Controllers
                 fornecedor_nome = x.Fornecedor.Nome,
                 ordemCompraOrigem_numero = x.OrdemCompraOrigem.Numero.ToString(),
                 tipoCompra = x.TipoCompra,
-                tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoVenda), x.TipoCompra),
-                tipoCompraCssClass = EnumHelper.GetCSS(typeof(TipoVenda), x.TipoCompra),
-                tipoCompraValue = EnumHelper.GetValue(typeof(TipoVenda), x.TipoCompra),
+                tipoCompraDescription = EnumHelper.GetDescription(typeof(TipoCompraVenda), x.TipoCompra),
+                tipoCompraCssClass = EnumHelper.GetCSS(typeof(TipoCompraVenda), x.TipoCompra),
+                tipoCompraValue = EnumHelper.GetValue(typeof(TipoCompraVenda), x.TipoCompra),
                 categoria_descricao = x.Categoria != null ? x.Categoria.Descricao : "",
                 numNotaFiscal = x.NumNotaFiscal,
                 serieNotaFiscal_serie = x.SerieNotaFiscal != null ? x.SerieNotaFiscal.Serie : ""
@@ -188,7 +188,7 @@ namespace Fly01.Compras.Controllers
                 DataField = "tipoCompra",
                 DisplayName = "Finalidade",
                 Priority = 5,
-                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoVenda))),
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(TipoCompraVenda))),
                 RenderFn = "fnRenderEnum(full.tipoCompraCssClass, full.tipoCompraDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 6 });

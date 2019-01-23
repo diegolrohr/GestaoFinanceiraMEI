@@ -110,7 +110,7 @@ namespace Fly01.EmissaoNFE.BL
         {
             foreach (var nota in entity.Item.Where(x => x.Identificador != null &&
                 (
-                    (x.Identificador.FinalidadeEmissaoNFe == TipoVenda.Normal || x.Identificador.FinalidadeEmissaoNFe == TipoVenda.Complementar) &&
+                    (x.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Normal || x.Identificador.FinalidadeEmissaoNFe == TipoCompraVenda.Complementar) &&
                     x.Identificador.TipoDocumentoFiscal == TipoNota.Saida)
                 ))
             {

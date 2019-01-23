@@ -27,10 +27,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         public TipoOrdemVenda TipoOrdemVenda { get; set; }
 
         [Required]
-        public TipoVenda TipoVenda { get; set; }
+        public TipoCompraVenda TipoVenda { get; set; }
 
         [Required]
-        public StatusOrdemVenda Status { get; set; }
+        public Status Status { get; set; }
 
         [Required]
         [Column(TypeName = "date")]

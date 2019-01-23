@@ -52,7 +52,7 @@ namespace Fly01.Faturamento.BL
             if (!string.IsNullOrEmpty(entity.MensagemPadraoNota))
                 entity.Fail(entity.MensagemPadraoNota.Length > 4000, new Error("O SEFAZ permite até 4000 caracteres."));
 
-            if (entity.TipoVenda == TipoVenda.Complementar)
+            if (entity.TipoVenda == TipoCompraVenda.Complementar)
             {
                 entity.TipoFrete = TipoFrete.SemFrete;
                 entity.ValorFrete = 0.0;
@@ -73,18 +73,18 @@ namespace Fly01.Faturamento.BL
             entity.Fail(entity.Observacao != null && entity.Observacao.Length > MaxLengthObservacao, new Error($"A observacao não poder ter mais de {MaxLengthObservacao} caracteres", "observacao"));
             entity.Fail(entity.Numero < 1, new Error("O número do orçamento/pedido é inválido"));
             entity.Fail(All.Any(x => x.Numero == entity.Numero && x.Id != entity.Id && x.Ativo), new Error("O número do orçamento/pedido já foi utilizado"));
-            entity.Fail((entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
-            entity.Fail((entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
+            entity.Fail((entity.TipoVenda == TipoCompraVenda.Devolucao || entity.TipoVenda == TipoCompraVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.ChaveNFeReferenciada.Length != 44, new Error("A chave da nota fiscal referenciada deve conter 44 caracteres"));
+            entity.Fail((entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.NaoComplementar), new Error("Tipo do complemento inválido para pedido complementar.", "tipoNfeComplementar"));
 
-            if (entity.Status == StatusOrdemVenda.Finalizado)
+            if (entity.Status == Status.Finalizado)
             {
                 var produtos = OrdemVendaProdutoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var servicos = OrdemVendaServicoBL.All.AsNoTracking().Where(x => x.OrdemVendaId == entity.Id).ToList();
                 var hasEstoqueNegativo = VerificaEstoqueNegativo(entity.Id, entity.TipoVenda.ToString(), entity.TipoNfeComplementar.ToString(), entity.NFeRefComplementarIsDevolucao).Any();
 
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
                 );
                 entity.Fail(pagaFrete && (entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)), new Error("Se configurou o frete por conta da sua empresa, informe a transportadora"));
 
@@ -102,15 +102,15 @@ namespace Fly01.Faturamento.BL
                     }
 
                     entity.Fail(entity.TipoNfeComplementar != TipoNfeComplementar.ComplIcms && entity.FormaPagamentoId == null && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a forma de pagamento"));
-                    entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
-                    entity.Fail(entity.TipoVenda == TipoVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Devolucao && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de devolução que gera nota fiscal, informe a chave da nota fiscal referenciada"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && string.IsNullOrEmpty(entity.ChaveNFeReferenciada), new Error("Para finalizar o pedido de complemento que gera nota fiscal, informe a chave da nota fiscal referenciada a ser complementada"));
                 }
 
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao) && produtos.Any(), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemVenda == TipoOrdemVenda.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any() && !servicos.Any(), new Error("Para finalizar a venda é necessário ao menos ter adicionado um produto ou um serviço"));
-                entity.Fail(entity.TipoVenda != TipoVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
+                entity.Fail(entity.TipoVenda != TipoCompraVenda.Normal && servicos.Any(), new Error("Somente finalidade normal, pode conter serviços"));
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
                     new Error("Venda que gera financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria e data vencimento")
@@ -144,7 +144,7 @@ namespace Fly01.Faturamento.BL
                 notaFiscal = new NFSe();
             }
 
-            if (entity.TipoVenda == TipoVenda.Complementar)
+            if (entity.TipoVenda == TipoCompraVenda.Complementar)
             {
                 var NFeComplementar = NFeBL.All.AsNoTracking().Where(x => x.SefazId.ToUpper() == entity.ChaveNFeReferenciada.ToUpper()).FirstOrDefault();
 
@@ -196,7 +196,7 @@ namespace Fly01.Faturamento.BL
         protected void GeraNotasFiscais(OrdemVenda entity)
         {
             //antes de gerar a nota fiscal tira os itens zerados Qtd =0 e Preço=0
-            if (entity.TipoVenda == TipoVenda.Complementar)
+            if (entity.TipoVenda == TipoCompraVenda.Complementar)
             {
                 var produtosSemQtdValor = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo && e.Quantidade == 0 && e.Valor == 0).ToList();
                 if (produtosSemQtdValor != null)
@@ -426,8 +426,8 @@ namespace Fly01.Faturamento.BL
 
                     #region Copia os dados do pedido de origem da nota fiscal referenciada
                     var clienteReferenciado = TotalTributacaoBL.GetPessoa(pedidoReferenciado.ClienteId);
-                    entity.Fail(entity.TipoVenda == TipoVenda.Devolucao && pedidoReferenciado.TipoVenda == TipoVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoVenda"));
-                    entity.Fail(entity.TipoVenda == TipoVenda.Complementar && pedidoReferenciado.TipoVenda == TipoVenda.Complementar, new Error("Não é possível realizar complemento de uma nota fiscal complementar. Referencie outra nota fiscal.", "tipoVenda"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Devolucao && pedidoReferenciado.TipoVenda == TipoCompraVenda.Devolucao, new Error("Não é possível realizar devolução de uma nota fiscal de devolução. Referencie outra nota fiscal.", "tipoVenda"));
+                    entity.Fail(entity.TipoVenda == TipoCompraVenda.Complementar && pedidoReferenciado.TipoVenda == TipoCompraVenda.Complementar, new Error("Não é possível realizar complemento de uma nota fiscal complementar. Referencie outra nota fiscal.", "tipoVenda"));
                     entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
 
                     if (entity.IsValid())
@@ -438,9 +438,9 @@ namespace Fly01.Faturamento.BL
                         entity.Data = previousData;
                         entity.TipoVenda = previousTipoVenda;
                         entity.TipoNfeComplementar = previousTipoNfeComplementar;
-                        entity.NFeRefComplementarIsDevolucao = pedidoReferenciado.TipoVenda == TipoVenda.Devolucao;
+                        entity.NFeRefComplementarIsDevolucao = pedidoReferenciado.TipoVenda == TipoCompraVenda.Devolucao;
 
-                        if (entity.TipoVenda == TipoVenda.Devolucao)
+                        if (entity.TipoVenda == TipoCompraVenda.Devolucao)
                         {
                             entity.NaturezaOperacao = null;
                             entity.GrupoTributarioPadraoId = previousGrupoTributarioPadraoId;
@@ -448,7 +448,7 @@ namespace Fly01.Faturamento.BL
                         }
 
                         entity.ClienteId = (clienteReferenciado != null && clienteReferenciado.Ativo == true) ? pedidoReferenciado.ClienteId : previousClienteId;
-                        entity.Status = StatusOrdemVenda.Aberto;
+                        entity.Status = Status.Aberto;
                         entity.ChaveNFeReferenciada = previousChaveNFeReferenciada;
                         entity.TipoVenda = previousTipoVenda;
 
@@ -462,12 +462,12 @@ namespace Fly01.Faturamento.BL
                                 produto.CopyProperties<OrdemVendaProduto>(produtoClonado);
                                 produtoClonado.Id = default(Guid);
                                 produtoClonado.OrdemVendaId = entity.Id;
-                                if (entity.TipoVenda == TipoVenda.Devolucao)
+                                if (entity.TipoVenda == TipoCompraVenda.Devolucao)
                                 {
                                     //na devolucao o grupo tributarioPadrão informado é setado, pois os de origem são CFOP venda e teria que entrar um por um para alterar
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
                                 }
-                                else if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                                else if (entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
                                 {
                                     //na nfe de complemento de preço zeramos os valores para que o usuário possa informar apenas os valores a serem complementados
                                     produtoClonado.GrupoTributarioId = entity.GrupoTributarioPadraoId.HasValue ? entity.GrupoTributarioPadraoId.Value : produtoClonado.GrupoTributarioId;
@@ -488,7 +488,7 @@ namespace Fly01.Faturamento.BL
                 entity.Fail((clienteReferenciado == null || clienteReferenciado.Ativo == false), new Error("Informe um cliente ativo. Cliente da nota fiscal referenciada inexistente ou excluído.", "clienteId"));
             }
 
-            if (entity.TipoVenda == TipoVenda.Complementar)
+            if (entity.TipoVenda == TipoCompraVenda.Complementar)
             {
                 entity.TipoFrete = TipoFrete.SemFrete;//regra sefaz
                 entity.ValorFrete = 0.00;
@@ -528,14 +528,14 @@ namespace Fly01.Faturamento.BL
 
             ValidaModel(entity);
 
-            if (entity.Status == StatusOrdemVenda.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && (entity.TipoVenda == TipoVenda.Devolucao || entity.TipoVenda == TipoVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
+            if (entity.Status == Status.Aberto && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && (entity.TipoVenda == TipoCompraVenda.Devolucao || entity.TipoVenda == TipoCompraVenda.Complementar) && !string.IsNullOrEmpty(entity.ChaveNFeReferenciada) && entity.IsValid())
             {
                 CopiaDadosNFeReferenciada(entity);
             }
 
-            if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
+            if (entity.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
-                if (entity.TipoVenda == TipoVenda.Complementar)
+                if (entity.TipoVenda == TipoCompraVenda.Complementar)
                 {
                     var produtosSemQtdValor = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo && e.Quantidade == 0 && e.Valor == 0).ToList();
                     if (produtosSemQtdValor != null)
@@ -554,13 +554,13 @@ namespace Fly01.Faturamento.BL
         public override void Update(OrdemVenda entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            entity.Fail(previous.Status != StatusOrdemVenda.Aberto && entity.Status != StatusOrdemVenda.Aberto, new Error("Somente venda em aberto pode ser alterada", "status"));
+            entity.Fail(previous.Status != Status.Aberto && entity.Status != Status.Aberto, new Error("Somente venda em aberto pode ser alterada", "status"));
 
             ValidaModel(entity);
 
             GeraIdContaFinanceiraRecuperarDadosParcela(entity);
 
-            if (entity.Status == StatusOrdemVenda.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
+            if (entity.Status == Status.Finalizado && entity.TipoOrdemVenda == TipoOrdemVenda.Pedido && entity.GeraNotaFiscal && entity.IsValid())
             {
                 GeraNotasFiscais(entity);
             }
@@ -585,7 +585,7 @@ namespace Fly01.Faturamento.BL
 
         public override void Delete(OrdemVenda entityToDelete)
         {
-            entityToDelete.Fail(entityToDelete.Status != StatusOrdemVenda.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
+            entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente venda em aberto pode ser deletada", "status"));
 
             if (!entityToDelete.IsValid())
                 throw new BusinessException(entityToDelete.Notification.Get());
@@ -595,7 +595,7 @@ namespace Fly01.Faturamento.BL
 
         public override void AfterSave(OrdemVenda entity)
         {
-            if (entity.Status != StatusOrdemVenda.Finalizado || entity.TipoOrdemVenda != TipoOrdemVenda.Pedido)
+            if (entity.Status != Status.Finalizado || entity.TipoOrdemVenda != TipoOrdemVenda.Pedido)
                 return;
 
             var produtos = OrdemVendaProdutoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
@@ -603,19 +603,19 @@ namespace Fly01.Faturamento.BL
             if (entity.GeraFinanceiro)
             {
                 bool pagaFrete = (
-                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoVenda.Normal) ||
-                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoVenda.Devolucao)
+                    ((entity.TipoFrete == TipoFrete.CIF || entity.TipoFrete == TipoFrete.Remetente) && entity.TipoVenda == TipoCompraVenda.Normal) ||
+                    ((entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario) && entity.TipoVenda == TipoCompraVenda.Devolucao)
                 );
 
                 var servicos = OrdemVendaServicoBL.All.Where(e => e.OrdemVendaId == entity.Id && e.Ativo).ToList();
                 var totalProdutos = 0.0;
                 if (produtos != null)
                 {
-                    if (entity.TipoVenda == TipoVenda.Normal || entity.TipoVenda == TipoVenda.Devolucao)
+                    if (entity.TipoVenda == TipoCompraVenda.Normal || entity.TipoVenda == TipoCompraVenda.Devolucao)
                     {
                         totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                     }
-                    else if (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                    else if (entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
                     {
                         totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                         totalProdutos += produtos.Where(x => x.Quantidade == 0 && x.Valor != 0).Sum(x => (x.Valor - x.Desconto));
@@ -626,7 +626,7 @@ namespace Fly01.Faturamento.BL
                 double totalOutrasRetencoesServicos = 0.0;
                 if (servicos != null)
                 {
-                    if (entity.TipoVenda == TipoVenda.Normal)
+                    if (entity.TipoVenda == TipoCompraVenda.Normal)
                     {
                         totalServicos = servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                         totalOutrasRetencoesServicos = servicos.Sum(x => x.ValorOutrasRetencoes);
@@ -658,7 +658,7 @@ namespace Fly01.Faturamento.BL
                     Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagarTransp, RabbitConfig.EnHttpVerb.POST);
                 }
 
-                if ((entity.TipoVenda == TipoVenda.Normal || (entity.TipoVenda == TipoVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))
+                if ((entity.TipoVenda == TipoCompraVenda.Normal || (entity.TipoVenda == TipoCompraVenda.Complementar && !entity.NFeRefComplementarIsDevolucao)))
                 {
                     if (valorPrevistoProdutos > 0)
                     {
@@ -669,7 +669,7 @@ namespace Fly01.Faturamento.BL
                         GeraContaReceber(TipoItem.Servico, valorPrevistoServicos, entity);
                     }
                 }
-                else if ((entity.TipoVenda == TipoVenda.Devolucao || (entity.TipoVenda == TipoVenda.Complementar && entity.NFeRefComplementarIsDevolucao)))
+                else if ((entity.TipoVenda == TipoCompraVenda.Devolucao || (entity.TipoVenda == TipoCompraVenda.Complementar && entity.NFeRefComplementarIsDevolucao)))
                 {
                     if (valorPrevistoProdutos > 0)
                     {
@@ -683,9 +683,9 @@ namespace Fly01.Faturamento.BL
             }
 
             if (entity.MovimentaEstoque &&
-                (entity.TipoVenda == TipoVenda.Normal
-                 || entity.TipoVenda == TipoVenda.Devolucao
-                 || (entity.TipoVenda == TipoVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
+                (entity.TipoVenda == TipoCompraVenda.Normal
+                 || entity.TipoVenda == TipoCompraVenda.Devolucao
+                 || (entity.TipoVenda == TipoCompraVenda.Complementar && entity.TipoNfeComplementar == TipoNfeComplementar.ComplPrecoQtd)
                 ))
             {
                 var movimentos = (from ordemVendaProduto in produtos
@@ -816,7 +816,7 @@ namespace Fly01.Faturamento.BL
             var tipoNfeComplementarEnum = (TipoNfeComplementar)Enum.Parse(typeof(TipoNfeComplementar), tipoNfeComplementar, true);
 
             var ordemVenda = All.Where(x => x.Id == ordemVendaId).FirstOrDefault();
-            if (geraNotaFiscal && ordemVenda.Status != StatusOrdemVenda.Finalizado)
+            if (geraNotaFiscal && ordemVenda.Status != Status.Finalizado)
             {
                 TotalTributacaoBL.DadosValidosCalculoTributario(ordemVenda, clienteId, onList);
             }
@@ -825,11 +825,11 @@ namespace Fly01.Faturamento.BL
             var totalProdutos = 0.0;
             if (produtos != null)
             {
-                if (ordemVenda.TipoVenda == TipoVenda.Normal || ordemVenda.TipoVenda == TipoVenda.Devolucao)
+                if (ordemVenda.TipoVenda == TipoCompraVenda.Normal || ordemVenda.TipoVenda == TipoCompraVenda.Devolucao)
                 {
                     totalProdutos = produtos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
                 }
-                else if (ordemVenda.TipoVenda == TipoVenda.Complementar && tipoNfeComplementarEnum == TipoNfeComplementar.ComplPrecoQtd)
+                else if (ordemVenda.TipoVenda == TipoCompraVenda.Complementar && tipoNfeComplementarEnum == TipoNfeComplementar.ComplPrecoQtd)
                 {
                     //quando complemento de impostos, não considerar o totalProdutos
                     totalProdutos += produtos.Where(x => x.Quantidade != 0 && x.Valor != 0).Sum(x => ((x.Quantidade * x.Valor) - x.Desconto));
@@ -841,21 +841,21 @@ namespace Fly01.Faturamento.BL
                 //}
             }
             //se esta salvo não recalcula
-            var totalImpostosProdutos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
+            var totalImpostosProdutos = (ordemVenda.Status == Status.Finalizado && ordemVenda.TotalImpostosProdutos.HasValue) ? ordemVenda.TotalImpostosProdutos.Value
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutos(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
-            var totalImpostosProdutosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
+            var totalImpostosProdutosNaoAgrega = ordemVenda.Status == Status.Finalizado ? ordemVenda.TotalImpostosProdutosNaoAgrega
                 : (produtos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaProdutosNaoAgrega(produtos, clienteId, ordemVenda.TipoVenda, tipoNfeComplementarEnum, tipoFreteEnum, ordemVenda.NFeRefComplementarIsDevolucao, valorFrete) : 0.0);
 
             var servicos = OrdemVendaServicoBL.AllIncluding(y => y.GrupoTributario, y => y.Servico).Where(x => x.OrdemVendaId == ordemVendaId).ToList();
             var totalServicos = servicos != null ? servicos.Sum(x => ((x.Quantidade * x.Valor) - x.Desconto)) : 0.0;
             var totalOutrasRetencoesServicos = (servicos != null && geraNotaFiscal) ? servicos.Sum(x => x.ValorOutrasRetencoes) : 0.0;
 
-            var totalRetencoesServicos = (ordemVenda.Status == StatusOrdemVenda.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
+            var totalRetencoesServicos = (ordemVenda.Status == Status.Finalizado && ordemVenda.TotalRetencoesServicos.HasValue) ? ordemVenda.TotalRetencoesServicos.Value
                 : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaRetencaoOrdemVendaServicos(servicos, clienteId) : 0.0);
 
             totalRetencoesServicos += totalOutrasRetencoesServicos;
 
-            var totalImpostosServicosNaoAgrega = ordemVenda.Status == StatusOrdemVenda.Finalizado ? ordemVenda.TotalImpostosServicosNaoAgrega
+            var totalImpostosServicosNaoAgrega = ordemVenda.Status == Status.Finalizado ? ordemVenda.TotalImpostosServicosNaoAgrega
                 : (servicos != null && geraNotaFiscal ? TotalTributacaoBL.TotalSomaOrdemVendaServicosNaoAgrega(servicos, clienteId) : 0.0);
 
             var result = new TotalPedidoNotaFiscal()

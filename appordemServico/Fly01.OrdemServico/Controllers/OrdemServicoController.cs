@@ -198,6 +198,7 @@ namespace Fly01.OrdemServico.Controllers
                 target.Add(new HtmlUIButton { Id = "cancel", Label = "Cancelar", OnClickFn = "fnCancelarNovaOrdem", Position = HtmlUIButtonPosition.Main });
                 target.Add(new HtmlUIButton { Id = "andamento", Label = "Executar", OnClickFn = "fnAlterarStatusAndamento", Position = HtmlUIButtonPosition.Out });
                 target.Add(new HtmlUIButton { Id = "concluido", Label = "Concluir", OnClickFn = "fnAlterarStatusConcluido", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "save", Label = "Salvar", OnClickFn = "fnSalvar", Position = HtmlUIButtonPosition.Out });
             }
 
             return target;
@@ -374,12 +375,11 @@ namespace Fly01.OrdemServico.Controllers
             Mail.Send(empresa.NomeFantasia, ordem.Cliente.Email, tituloEmail, conteudoEmail, arquivoAnexo.FileStream);
         }
 
-        public ContentResult FormOrdemServico(bool isEdit = false)
-            => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+        public ContentResult FormOrdemServico(bool isEdit = false, string dataEntrega = "", string horarioEntrega = "")
+            => Content(JsonConvert.SerializeObject(FormOrdemServicoJson(isEdit, dataEntrega, horarioEntrega), JsonSerializerSetting.Front), "application/json");
 
-        public ContentUI FormOrdemServicoJson(bool isEdit = false)
+        public ContentUI FormOrdemServicoJson(bool isEdit, string dataEntrega, string horarioEntrega)
         {
-
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
@@ -452,8 +452,8 @@ namespace Fly01.OrdemServico.Controllers
             config.Elements.Add(new InputHiddenUI { Id = "status" });
             config.Elements.Add(new InputNumbersUI { Id = "numero", Class = "col s12 m2", Label = "Número OS", Readonly = true });
             config.Elements.Add(new InputDateUI { Id = "dataEmissao", Class = "col s12 m3", Label = "Data de Emissão", Required = true });
-            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true });
-            config.Elements.Add(new InputTimeUI { Id = "horaEntrega", Class = "col s12 m2", Label = "Horário Entrega", Required = true, });
+            config.Elements.Add(new InputDateUI { Id = "dataEntrega", Class = "col s12 m3", Label = "Data de Entrega", Required = true, Value = dataEntrega });
+            config.Elements.Add(new InputTimeUI { Id = "horaEntrega", Class = "col s12 m2", Label = "Horário Entrega", Required = true, Value = horarioEntrega });
             config.Elements.Add(new InputTimeUI { Id = "duracao", Class = "col s12 m2", Label = "Duração", Required = true, Value = "01:00" });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -574,7 +574,7 @@ namespace Fly01.OrdemServico.Controllers
         }
 
         protected override ContentUI FormJson()
-            => FormOrdemServicoJson();
+            => FormOrdemServicoJson(false, "", "");
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {

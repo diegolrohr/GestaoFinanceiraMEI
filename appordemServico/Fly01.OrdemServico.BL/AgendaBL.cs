@@ -21,23 +21,54 @@ namespace Fly01.OrdemServico.BL
 
         public List<AgendaVM> GetCalendar(DateTime dataFinal, DateTime dataInicial)
         {
-            List<AgendaVM> listaResult = new List<AgendaVM>();
-
-            var response = OrdemServicoBL.AllIncluding(x => x.Cliente).Where(x => x.DataEntrega >= dataFinal && x.DataEntrega <= dataInicial).ToList();
-
-            foreach (var item in response)
+            if (dataFinal == (dataInicial.AddDays(-1)))
             {
-                listaResult.Add(new AgendaVM
-                {
-                    ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
-                    Title = item.Cliente?.Nome,
-                    Start = item.DataEntrega + (item.HoraEntrega - new TimeSpan(2, 0, 0)),
-                    End = item.DataEntrega + (item.HoraEntrega + (item.Duracao - new TimeSpan(2, 0, 0))),
-                    Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado)?"": $"OrdemServico/Edit/{item.Id.ToString()}"
-                });
-            }
+                List<AgendaVM> listaResult = new List<AgendaVM>();
+                var response = OrdemServicoBL.AllIncluding(x => x.Cliente).Where(x => x.DataEntrega >= dataFinal && x.DataEntrega <= dataInicial).ToList();
 
-            return listaResult;
+                foreach (var item in response)
+                {
+                    TimeSpan horaFinal = item.HoraEntrega + item.Duracao;
+                    TimeSpan horaEntrega = (item.HoraEntrega - new TimeSpan(2, 0, 0));
+                    TimeSpan duracao = item.Duracao;
+
+                    var formatHoraInicial = string.Format("{0:00}:{1:00}", item.HoraEntrega.Hours, item.HoraEntrega.Minutes);
+                    var formatHoraFinal = string.Format("{0:00}:{1:00}", horaFinal.Hours, horaFinal.Minutes);
+
+                    listaResult.Add(new AgendaVM
+                    {
+                        ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
+                        Title = item.Cliente?.Nome + " - " + formatHoraInicial + "h às "+ formatHoraFinal + "h",
+                        Start = item.DataEntrega + horaEntrega,
+                        End = item.DataEntrega + (horaFinal - new TimeSpan(2, 0, 0)),
+                        Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado) ? "" : $"OrdemServico/Edit/{item.Id.ToString()}"
+                    });
+                }
+                return listaResult;
+            }
+            else
+            {
+                List<AgendaVM> listaResult = new List<AgendaVM>();
+
+                var response = OrdemServicoBL.AllIncluding(x => x.Cliente).Where(x => x.DataEntrega >= dataFinal && x.DataEntrega <= dataInicial).ToList();
+
+                foreach (var item in response)
+                {
+                    TimeSpan horaFinal = item.HoraEntrega + item.Duracao;
+                    TimeSpan horaEntrega = (item.HoraEntrega - new TimeSpan(2, 0, 0));
+                    TimeSpan duracao = (item.Duracao - new TimeSpan(2, 0, 0));
+                    listaResult.Add(new AgendaVM
+                    {
+                        ClassName = EnumHelper.GetCSS(typeof(StatusOrdemServico), item.Status.ToString()),
+                        Title = item.Cliente?.Nome,
+                        Start = item.DataEntrega + horaEntrega,
+                        End = item.DataEntrega + (horaFinal - new TimeSpan(2, 0, 0)),
+                        Url = item.Status.Equals(StatusOrdemServico.Concluido) || item.Status.Equals(StatusOrdemServico.Cancelado) ? "" : $"OrdemServico/Edit/{item.Id.ToString()}"
+                    });
+                }
+
+                return listaResult;
+            }
         }
     }
 }

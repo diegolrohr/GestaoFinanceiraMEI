@@ -67,6 +67,7 @@
     <Compile Include="Domains\Commons\Kit.cs" />
     <Compile Include="Domains\Commons\Ncm.cs" />
     <Compile Include="Domains\Commons\NFeImportada.cs" />
+    <Compile Include="Domains\Commons\NFeImportadaProduto.cs" />
     <Compile Include="Domains\Commons\ResponseDadosBancariosStone.cs" />
     <Compile Include="Domains\Commons\ResponseConfiguracaoStone.cs" />
     <Compile Include="Domains\Commons\ResponseConsultaTotalStone.cs" />
@@ -86,6 +87,8 @@
     <Compile Include="Domains\Commons\TotalOrdemServico.cs" />
     <Compile Include="Domains\Enum\ObjetoDeManutencao.cs" />
     <Compile Include="Domains\Enum\OrigemMercadoria.cs" />
+    <Compile Include="Domains\Enum\TipoAtualizacaoValor.cs" />
+    <Compile Include="Domains\Enum\TipoFatorConversao.cs" />
     <Compile Include="Domains\Enum\StatusOrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServico.cs" />
     <Compile Include="Domains\Commons\OrdemServicoManutencao.cs" />

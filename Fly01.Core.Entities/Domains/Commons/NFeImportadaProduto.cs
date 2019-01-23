@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class NFeImportadaProduto : PlataformaBase
+    public class NFeImportacaoProduto : PlataformaBase
     {
         [Required]
         public Guid NFeImportadaId { get; set; }
@@ -37,7 +37,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoAtualizacaoValor TipoValorVenda { get; set; }
 
-        public virtual NFeImportada NFeImportada { get; set; }
+        public virtual NFeImportacao NFeImportacao { get; set; }
         public virtual Produto Produto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
     }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
-    public class NFeImportada : PlataformaBase
+    public class NFeImportacao : PlataformaBase
     {
         [Column(TypeName = "varchar(MAX)")]
         [MaxLength(int.MaxValue)]
@@ -19,7 +19,7 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(32)]
         public string XmlMd5 { get; set; }
 
-        public TipoNfeComplementar TipoNfeComplementar { get; set; }
+        public TipoVenda Tipo { get; set; }
 
         public Status Status { get; set; }
 

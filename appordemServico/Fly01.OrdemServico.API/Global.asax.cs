@@ -26,6 +26,7 @@ namespace Fly01.OrdemServico.API
             builder.EntitySet<Nbs>("nbs");
             builder.EntitySet<Core.Entities.Domains.Commons.OrdemServico>("ordemservico");
             builder.EntityType<Core.Entities.Domains.Commons.OrdemServico>().Property(c => c.HoraEntrega).AsTimeOfDay();
+            builder.EntityType<Core.Entities.Domains.Commons.OrdemServico>().Property(c => c.Duracao).AsTimeOfDay();
             builder.EntitySet<OrdemServicoItemProduto>("ordemservicoitemproduto");
             builder.EntitySet<OrdemServicoItemServico>("ordemservicoitemservico");
             builder.EntitySet<OrdemServicoManutencao>("ordemservicomanutencao");

@@ -144,6 +144,10 @@
     <Compile Include="Migrations\201901181940575_AlteraTipoData.Designer.cs">
       <DependentUpon>201901181940575_AlteraTipoData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901221554269_AlterOS.cs" />
+    <Compile Include="Migrations\201901221554269_AlterOS.Designer.cs">
+      <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DataInitializer\CestDataInitializer.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer1.cs" />
@@ -265,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901181940575_AlteraTipoData.resx">
       <DependentUpon>201901181940575_AlteraTipoData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901221554269_AlterOS.resx">
+      <DependentUpon>201901221554269_AlterOS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

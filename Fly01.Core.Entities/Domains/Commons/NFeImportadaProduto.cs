@@ -13,6 +13,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string Codigo { get; set; }
 
+        public string CodigoBarras { get; set; }
+
         public string Descricao { get; set; }
 
         public string Quantidade { get; set; }

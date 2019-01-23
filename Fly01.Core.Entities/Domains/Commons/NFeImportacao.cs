@@ -65,6 +65,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool NovoPedido { get; set; }
 
+        [ForeignKey("Pedido")]
         public Guid? PedidoId { get; set; }
 
         #region FKS

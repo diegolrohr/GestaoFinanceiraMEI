@@ -13,6 +13,8 @@ namespace Fly01.Core.Config
         }
         public TokenDataVM TokenData { get; set; }
 
+        public string ClientToken { get; set; }
+
         public string PlatformUrl { get; set; }
 
         public StoneDataVM Stone { get; set; }

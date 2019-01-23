@@ -28,7 +28,7 @@ namespace Fly01.Core.API
                         { "posicao", entity.Posicao}
                     };
                                 
-                var boletos = RestHelper.ExecuteGetRequest<MinhaContaResponseVM>(AppDefaults.UrlApiGatewayNew, "boletos/consulta", queryString);
+                var boletos = RestHelper.ExecuteGetRequest<MinhaContaResponseVM>(AppDefaults.UrlGatewayNew, "boletos/consulta", queryString);
 
                 return Ok(boletos.Data.OrderBy(x => x.Vencimento));
 

@@ -202,7 +202,10 @@
             var today = new Date();
             $$$._.dataEmissao.set(today);
 
-            retornaDataEntregaParametro();
+
+            if ($('#dataEntrega').val() == "")
+                retornaDataEntregaParametro();
+                      
             retornaResponsavelPadraoParametro();
 
             $$$.fn.updateTextFields();

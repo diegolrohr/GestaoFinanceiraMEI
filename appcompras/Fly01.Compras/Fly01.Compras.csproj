@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\AvaliacaoAppController.cs" />
     <Compile Include="Controllers\CartaCorrecaoController.cs" />
+    <Compile Include="Controllers\NFeImportacaoController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CertificadoDigitalController.cs" />
     <Compile Include="Controllers\MinhaContaController.cs" />
@@ -362,6 +363,7 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

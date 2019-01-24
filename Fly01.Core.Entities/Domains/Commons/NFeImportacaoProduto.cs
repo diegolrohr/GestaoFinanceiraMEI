@@ -1,13 +1,16 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.Entities.Domains.Commons
 {
     public class NFeImportacaoProduto : PlataformaBase
     {
         [Required]
-        public Guid NFeImportadaId { get; set; }
+        public Guid NFeImportacaoId { get; set; }
+
+        public bool NovoProduto { get; set; }
 
         public Guid? ProdutoId { get; set; }
 
@@ -39,8 +42,12 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public TipoAtualizacaoValor TipoValorVenda { get; set; }
 
+        [ForeignKey("PedidoItem")]
+        public Guid? PedidoItemId { get; set; }
+
         public virtual NFeImportacao NFeImportacao { get; set; }
         public virtual Produto Produto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }
+        public virtual PedidoItem PedidoItem { get; set; }
     }
 }

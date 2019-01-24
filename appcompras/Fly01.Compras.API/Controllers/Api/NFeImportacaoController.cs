@@ -7,5 +7,9 @@ namespace Fly01.Compras.API.Controllers.Api
     [ODataRoutePrefix("nfeimportacao")]
     public class NFeImportacaoController : ApiPlataformaController<NFeImportacao, NFeImportacaoBL>
     {
+        public NFeImportacaoController()
+        {
+            MustExecuteAfterSave = true;
+        }
     }
 }

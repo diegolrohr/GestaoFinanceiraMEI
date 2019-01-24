@@ -1,0 +1,151 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnBindOverrideSubmit() {
+        $("form#fly01frm").off("submit");
+        $("form#fly01frm").on("submit", function (e) {
+            e.preventDefault();
+            $$$.loading.start();
+
+            if (isCreate()) {
+                if (!window.FileReader) return; // Browser is not compatible
+                if ($("#arquivoXML")[0].files[0] == null) {
+                    $$$.loading.stop();
+                    $$$.toast('Selecione um arquivo de xml para importação', 'error');
+                    return;
+                }
+                var reader = new FileReader();
+                // Read file into memory as UTF-8
+                reader.readAsText($("#arquivoXML")[0].files[0]);
+                var tipo = ($("#arquivoXML")[0].files[0].type);
+                if (tipo === "text/xml") {
+                    reader.onload = processData;
+                    reader.onerror = errorHandler;
+                }
+                else {
+                    $$$.loading.stop();
+                    $$$.toast("Não foi possível ler o arquivo! Verifique o tipo do arquivo", "error");
+                }
+            }
+            else {
+                if (!$(this).valid()) return false;
+                var jsonData = $(this).serializeObject();
+
+                //if ($('input#finalizarPedido:checked').val() === "true") {
+                //    jsonData.status = "Finalizado";
+                //}
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: "POST",
+                    url: "@Url.Action("Edit", "NFeImportacao")",
+                    data: JSON.stringify({ 'entityVM': jsonData }),
+                    success: function success(data) {
+                        if (data.success) {
+                            $$$.loading.stop();
+                            var strMsg = "Cadastrado com sucesso.";
+                            $$$.toast(strMsg, "success");
+                            $$$.go("@Url.Action("List","NFeImpotacao")");
+                        } else {
+                            $$$.loading.stop();
+                            $$$.fn.submitErrorHandler(null, data.message);
+                        }
+                    },
+                    error: function error(jXHR, textStatus) {
+                        $$$.toast(textStatus, "error");
+                        $$$.loading.stop();
+                    }
+                });
+            }
+        });
+    }
+
+    function processData(event) {
+        var xmlImportado = event.target.result;
+        debugger;
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ImportaArquivoXML", "NFeImportacao")",
+            data: { conteudo: xmlImportado},
+            success: function (data) {
+                if (data.success) {
+                    $$$.loading.stop();
+                    var strMsg = "Importado com sucesso.";
+                    $("form#fly01frm input#id").val(data.id);
+
+                    //TODO: refresh dos dois dataTables
+                    // $$$._.dtPedidoItens.refresh();
+
+                    var url = window.location.href.replace('/Create', '/Edit/' + data.id);
+                    window.history.pushState({}, document.title, url);
+                    $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
+
+                    if (jsonData.tipoFrete === "SemFrete") {
+                        $('#stepFornecedor').hide();
+                    }
+                    $$$.toast(strMsg, "success");
+                    return true;
+                } else {
+                    $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').click();
+                    $$$.loading.stop();
+                    $$$.fn.submitErrorHandler(null, data.message);
+                }
+            },
+            error: function error(jXHR, textStatus) {
+                $$$.toast(textStatus, "error");
+                $$$.loading.stop();
+            }
+        });
+    }
+
+    function errorHandler(evt) {
+        if (evt.target.error.name == "NotReadableError") {
+            alert("Não foi possível ler o arquivo!");
+        }
+    }
+
+    function isCreate() {
+        var id = $("form#fly01frm input#id").val();
+
+        if (id.length === 0)
+            return true;
+
+        return false;
+    }
+
+    function fnBindStepsWizard() {
+        function saveArquivo() {
+            if (isCreate() && ($("li#stepImportarArquivo").hasClass("active"))) {
+                return $("form#fly01frm").submit();
+            }
+        }
+        $('li#stepFornecedor div.step-title').click(function () {
+            saveArquivo();
+        });
+        $('#stepImportarArquivo > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            saveArquivo();
+        });
+    }
+
+    function fnFormReady() {
+        debugger;
+        if (isCreate()) {
+            var today = new Date();
+            //$("input#geraFinanceiro").prop("checked", true);
+            //$("input#movimentaEstoque").prop("checked", true);
+            //$("input#geraNotaFiscal").prop("checked", true);
+            //$$$._.dataVencimento.set(today);
+            //$$$._.data.set(today);
+            $$$.fn.updateTextFields();
+            fnBindStepsWizard();
+        } else {
+            $('#stepImportacaoArquivo').hide();
+        }
+
+        fnBindOverrideSubmit();
+
+    }
+
+
+</script>

@@ -363,7 +363,7 @@
     <Content Include="Views\MinhaConta\Functions\_fnRenderBoletos.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderSituacao.cshtml" />
     <Content Include="Views\MinhaConta\Functions\_fnRenderVencimento.cshtml" />
-    <Content Include="Views\NFeImportacao\Functions\_fnImportarXML.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReady.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -21,7 +21,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string Status { get; set; }
 
         [JsonProperty("fornecedorId")]
-        public Guid FornecedorId { get; set; }
+        public Guid? FornecedorId { get; set; }
 
         [JsonProperty("atualizaDadosFornecedor")]
         public bool AtualizaDadosFornecedor { get; set; }

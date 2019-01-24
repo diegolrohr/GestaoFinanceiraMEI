@@ -1,8 +1,10 @@
-﻿using Fly01.Core.Defaults;
+﻿using Fly01.Core;
+using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
@@ -36,10 +38,9 @@ namespace Fly01.Compras.Controllers
         {
             var target = new List<HtmlUIButton>();
 
-            //if (UserCanWrite)
+            //if TODO: (UserCanWrite)
             //{
-            target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-            target.Add(new HtmlUIButton { Id = "import", Label = $"Importar XMl", OnClickFn = "fnImportarXML", Position = HtmlUIButtonPosition.Out });
+                target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
             //}
 
             return target;
@@ -90,12 +91,6 @@ namespace Fly01.Compras.Controllers
 
         protected override ContentUI FormJson()
         {
-            throw new NotImplementedException();
-        }
-
-        public ContentResult FormImportacaoXML()
-        {
-
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory
@@ -114,6 +109,7 @@ namespace Fly01.Compras.Controllers
             var config = new FormWizardUI
             {
                 Id = "fly01frm",
+
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
@@ -122,7 +118,7 @@ namespace Fly01.Compras.Controllers
                     List = @Url.Action("List")
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                //ReadyFn = "fnFormReadyPedido",
+                ReadyFn = "fnFormReady",
                 //Functions = new List<string> { "fnChangeEstado" },
                 Steps = new List<FormWizardUIStep>()
                 {
@@ -130,7 +126,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Importar arquivo",
                         Id = "stepImportarArquivo",
-                        Quantity = 1,
+                        Quantity = 2,
                     },
                     new FormWizardUIStep()
                     {
@@ -146,7 +142,7 @@ namespace Fly01.Compras.Controllers
                     },
                     new FormWizardUIStep()
                     {
-                        Title = "Produtos Pendentes",
+                        Title = "Pendências",
                         Id = "stepProdutosPendentes",
                         Quantity = 5,
                     },
@@ -158,8 +154,8 @@ namespace Fly01.Compras.Controllers
                     },
                     new FormWizardUIStep()
                     {
-                        Title = "Resulmo/Finalizar",
-                        Id = "stepResulmoFinalizar",
+                        Title = "Resumo/Finalizar",
+                        Id = "stepResumoFinalizar",
                         Quantity = 15,
                     }
                 },
@@ -167,13 +163,14 @@ namespace Fly01.Compras.Controllers
             };
 
             #region stepImportação
-            config.Elements.Add(new InputFileUI { Id = "arquivoXML", Class = "col s12", Label = "Arquivo de importação (.xml)", Required = false, Accept = ".xml" });
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputFileUI { Id = "arquivoXML", Class = "col s12 m12", Label = "Arquivo de importação (.xml)", Required = true, Accept = ".xml" });
             #endregion
 
             #region step Fornecedor
             config.Elements.Add(new InputTextUI
             {
-                Id = "fornecedor-match",
+                Id = "fornecedorMatch",
                 Class = "col s12 m7",
                 Label = "Fornecedor Importado",
                 DomEvents = new List<DomEventUI>
@@ -216,7 +213,29 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             cfg.Content.Add(config);
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;// Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ImportaArquivoXML(string conteudo)
+        {
+            try
+            {
+                var nota = new NFeImportacaoVM
+                {
+                    XML = Base64Helper.CodificaBase64(conteudo),
+                    XmlMd5 = Base64Helper.CalculaMD5Hash(conteudo),
+                    Status = Status.Aberto.ToString()
+                };
+                return Create(nota);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -13,6 +14,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o código da UF do emitente do Documento Fiscal, utilizar a codificação do IBGE (Ex. SP->35, RS->43, etc.)
         /// </summary>
+        
         [XmlElement(ElementName = "cUF")]
         public int CodigoUF { get; set; }
 
@@ -94,6 +96,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 0 - entrada;
         /// 1 - saída.
         /// </summary>
+        [JsonProperty("tpNF")]
         [XmlElement(ElementName = "tpNF")]
         public TipoNota TipoDocumentoFiscal { get; set; }
 

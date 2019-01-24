@@ -37,6 +37,7 @@ namespace Fly01.Compras.BL
         public override void Insert(NFeImportacao entity)
         {
             entity.Status = Status.Aberto;
+            entity.Id = new Guid();//para vincular já vincular os produtos
             entity.Fail(string.IsNullOrEmpty(entity.Xml), new Error("Envie um xml em base64", "xml"));
             entity.Fail(string.IsNullOrEmpty(entity.XmlMd5) || entity.XmlMd5?.Length != 32, new Error("MD5 do xml inválido", "xmlMd5"));
             if(!All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
@@ -55,7 +56,7 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status == Status.Finalizado)
             {
-                VerificarPendencias(entity);
+                VerificarPendenciasFinalizacao(entity);
                 ValidaModel(entity);
                 if (entity.IsValid())
                 {
@@ -71,7 +72,6 @@ namespace Fly01.Compras.BL
             var NFe = JsonConvert.DeserializeObject<NFeVM>(Base64Helper.DecodificaBase64(entity.Json));
             if (NFe != null)
             {
-
                 if (entity.NovoFornecedor)
                 {
                     entity.FornecedorId = new Guid();
@@ -101,11 +101,21 @@ namespace Fly01.Compras.BL
             }
         }
 
-        private void VerificarPendencias(NFeImportacao entity)
+        private void VerificarPendenciasFinalizacao(NFeImportacao entity)
         {
-            throw new NotImplementedException();
-        }
+            if(entity.Status == Status.Finalizado)
+            {
+                entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
 
+                //TODO confirmar com Fraga
+                var pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
+                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && entity.GeraFinanceiro), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
+                entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
+                    new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
+
+                entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid))), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
+            }
+        }
 
         public override void AfterSave(NFeImportacao entity)
         {
@@ -131,7 +141,18 @@ namespace Fly01.Compras.BL
 
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
-            throw new NotImplementedException();
+            //TODO:
+            //entity.Json = utilizar micro servico
+            var NFe = JsonConvert.DeserializeObject<NFeVM>(Base64Helper.DecodificaBase64(entity.Json));
+            if (NFe != null)
+            {
+                var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
+                    //produtos
+            }
+            else
+            {
+                entity.Fail(true, new Error("Erro ao ler dados do XMl", "json"));
+            }
         }
     }
 }

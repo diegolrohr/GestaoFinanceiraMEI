@@ -53,6 +53,7 @@ namespace Fly01.Estoque.API
         {
             AppDefaults.UrlGateway = ConfigurationManager.AppSettings["UrlGateway"];
             AppDefaults.UrlGatewayNew = $"{ConfigurationManager.AppSettings["UrlGatewayNew"]}api/";
+            AppDefaults.UrlManager = $"{AppDefaults.UrlGatewayNew}manager/";
 
             base.SetAppDefaults();
         }

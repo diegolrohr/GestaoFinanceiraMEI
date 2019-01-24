@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {

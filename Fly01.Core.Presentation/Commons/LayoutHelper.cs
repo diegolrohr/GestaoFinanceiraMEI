@@ -5,13 +5,13 @@ namespace Fly01.Core.Presentation.Commons
 {
     public static class LayoutHelper
     {
-        private static string cdnVersion = "0.1.4"; /*
+        private static string cdnVersion = "0.1.6"; /*
         private static string cdnVersion = "stage"; /* */
         private static string libName = "mpnui";
 
         private static string serverUrl = $"https://mpn.azureedge.net/lib/{cdnVersion}"; /*
-        private static string serverUrl = $"http://10.51.5.55:3000/{cdnVersion}"; /* */
-    
+        private static string serverUrl = $"http://10.51.4.29:3000/{cdnVersion}"; /* */
+
         private static string cssUrl = $"{serverUrl}/{libName}.css";
         private static string jsUrl = $"{serverUrl}/{libName}.js";
         private static string vendorJsUrl = $"{serverUrl}/vendors.{libName}.js";

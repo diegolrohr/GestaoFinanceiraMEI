@@ -323,8 +323,8 @@ namespace Fly01.OrdemServico.Controllers
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
             config.Columns.Add(new DataTableUIColumn { DataField = "cliente_nome", DisplayName = "Cliente", Priority = 3 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data de Emissão", Priority = 4, Type = "date", Visible = false });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEntrega", DisplayName = "Data de Entrega", Priority = 5, Type = "date"});
 
             cfg.Content.Add(cfgForm);
             cfg.Content.Add(config);
@@ -578,17 +578,14 @@ namespace Fly01.OrdemServico.Controllers
 
         public override JsonResult GridLoad(Dictionary<string, string> filters = null)
         {
+
             if (filters == null)
                 filters = new Dictionary<string, string>();
-            if (Request.QueryString["dataFinal"] != "" && Request.QueryString["dtFinal"] != "")
-                filters.Add("dataEntrega le ", Request.QueryString["dataFinal"]);
-            else
-                filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
 
-            if (Request.QueryString["dataInicial"] != "" && Request.QueryString["dtFinal"] != "")
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("dataEntrega le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
                 filters.Add(" and dataEntrega ge ", Request.QueryString["dataInicial"]);
-            else
-            filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
 
             return base.GridLoad(filters);
         }

@@ -1,5 +1,6 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
@@ -13,6 +14,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o código do produto ou serviço. Preencher com CFOP, caso se trate de itens não relacionados 
         /// com mercadorias/produtos e que o contribuinte não possua codificação própria. Formato ”CFOP9999”.
         /// </summary>
+        /// 
+        [JsonProperty("cProd")]
         [XmlElement(ElementName = "cProd")]
         public string Codigo { get; set; }
 
@@ -22,6 +25,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o GTIN (Global Trade Item Number) do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12, GTIN-13 ou GTIN-14 
         /// (antigos códigos EAN, UPC e DUN-14), se não possuem código de barras com GTIN, deve ser informado o literal “SEM GTIN”
         /// </summary>
+        /// 
+        [JsonProperty("cEAN")]
         [XmlElement(ElementName = "cEAN")]
         public string GTIN { get; set; }
 
@@ -30,6 +35,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a descrição do produto ou serviço.
         /// </summary>
+        /// 
+        [JsonProperty("xProd")]
         [XmlElement(ElementName = "xProd")]
         public string Descricao { get; set; }
 
@@ -39,9 +46,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o Código NCM com 8 dígitos; informar a posição do capítulo do NCM (as duas primeiras posições do NCM) quando a operação não for de comércio exterior
         /// (importação/ exportação) ou o produto não seja tributado pelo IPI; se for serviços, informar 00.
         /// </summary>
+        /// 
+        [JsonProperty("NCM")]
         [XmlElement(ElementName = "NCM")]
         public string NCM { get; set; }
-        
+
+        [JsonProperty("CEST")]
         [XmlElement(ElementName = "CEST")]
         public string CEST { get; set; }
 
@@ -49,6 +59,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar de acordo com o código EX da TIPI se houver para o NCM do produto.
         /// </summary>
+        /// 
+        [JsonProperty("EXTIPI")]
         [XmlElement(ElementName = "EXTIPI")]
         public string EXTIPI { get; set; }
 
@@ -56,6 +68,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o CFOP - Código Fiscal de Operações e Prestações.
         /// </summary>
+        /// 
+        [JsonProperty("CFOP")]
         [XmlElement(ElementName = "CFOP")]
         public int? CFOP { get; set; }
 
@@ -64,6 +78,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a unidade de comercialização do produto (Ex. pc, und, dz, kg, etc.).
         /// </summary>
+        /// 
+        [JsonProperty("uCom")]
         [XmlElement(ElementName = "uCom")]
         public string UnidadeMedida { get; set; }
 
@@ -72,8 +88,10 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a quantidade de comercialização do produto já formatado com ponto decimal. A quantidade de casas decimais pode variar de 0 a 4.
         /// </summary>
+        /// 
         public double Quantidade { get; set; }
 
+        [JsonProperty("qCom")]
         [XmlElement(ElementName = "qCom")]
         public string QuantidadeString
         {
@@ -89,6 +107,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         public double ValorUnitario { get; set; }
 
+        [JsonProperty("vUnCom")]
         [XmlElement(ElementName = "vUnCom")]
         public string ValorUnitarioString
         {
@@ -103,6 +122,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double ValorBruto { get; set; }
 
+        [JsonProperty("vProd")]
         [XmlElement(ElementName = "vProd")]
         public string ValorBrutoString
         {
@@ -116,6 +136,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o GTIN (Global Trade Item Number) do produto, antigo código EAN ou código de barras. Preencher com o código GTIN-8, GTIN-12, GTIN-13 ou GTIN-14 
         /// (antigos códigos EAN, UPC e DUN-14), se não possuem código de barras com GTIN, deve ser informado o literal “SEM GTIN”
         /// </summary>
+        /// 
+        [JsonProperty("cEANTrib")]
         [XmlElement(ElementName = "cEANTrib")]
         public string GTIN_UnidadeMedidaTributada { get; set; }
 
@@ -124,6 +146,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a unidade de tributação do produto (Ex. pc, und, dz, kg, etc.).
         /// </summary>
+        /// 
+        [JsonProperty("uTrib")]
         [XmlElement(ElementName = "uTrib")]
         public string UnidadeMedidaTributada { get; set; }
 
@@ -134,6 +158,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         public double QuantidadeTributada { get; set; }
 
+        [JsonProperty("qTrib")]
         [XmlElement(ElementName = "qTrib")]
         public string QuantidadeTributadaString
         {
@@ -149,6 +174,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         public double ValorUnitarioTributado { get; set; }
 
+        [JsonProperty("vUnTrib")]
         [XmlElement(ElementName = "vUnTrib")]
         public string ValorUnitarioTributadoString
         {
@@ -159,6 +185,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorFrete { get; set; }
 
+        [JsonProperty("vFrete")]
         [XmlElement(ElementName = "vFrete", IsNullable = true)]
         public string ValorFreteString
         {
@@ -171,6 +198,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             return ValorFrete.HasValue & ValorFrete > 0;
         }
 
+        [JsonProperty("vSeg")]
         [XmlElement(ElementName = "vSeg", IsNullable = true)]
         public double? ValorSeguro { get; set; }
 
@@ -185,6 +213,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorDesconto { get; set; }
 
+        [JsonProperty("vDesc")]
         [XmlElement(ElementName = "vDesc")]
         public string ValorDescontoString
         {
@@ -197,6 +226,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             return ValorDesconto.HasValue & ValorDesconto > 0;
         }
 
+        [JsonProperty("vOutro")]
         [XmlElement(ElementName = "vOutro", IsNullable = true)]
         public double? ValorOutrasDespesas { get; set; }
 
@@ -206,6 +236,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         }
 
         [Required]
+        [JsonProperty("indTot")]
         [XmlElement(ElementName = "indTot")]
         public CompoemValorTotal AgregaTotalNota { get; set; }
 

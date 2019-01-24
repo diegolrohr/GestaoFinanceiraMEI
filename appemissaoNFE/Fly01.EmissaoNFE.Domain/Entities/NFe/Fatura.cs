@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -8,6 +9,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o número da fatura
         /// </summary>
+        /// 
+        [JsonProperty("nFat")]
         [XmlElement(ElementName = "nFat")]
         public string NumeroFatura { get; set; }
 
@@ -17,6 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorOriginario { get; set; }
 
+        [JsonProperty("vOrig")]
         [XmlElement(ElementName = "vOrig")]
         public string ValorOriginarioString
         {
@@ -35,6 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorDesconto { get; set; }
 
+        [JsonProperty("vDesc")]
         [XmlElement(ElementName = "vDesc")]
         public string ValorDescontoString
         {
@@ -53,6 +58,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorLiquido { get; set; }
 
+        [JsonProperty("vLiq")]
         [XmlElement(ElementName = "vLiq")]
         public string ValorLiquidoString
         {

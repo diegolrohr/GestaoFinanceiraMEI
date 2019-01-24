@@ -1,4 +1,5 @@
 ﻿using Fly01.EmissaoNFE.Domain.Enums;
+using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -6,9 +7,11 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
     [XmlRoot("transp")]
     public class Transporte
     {
+        [JsonProperty("modFrete")]
         [XmlElement("modFrete")]
         public ModalidadeFrete ModalidadeFrete { get; set; }
 
+        [JsonProperty("transporta")]
         [XmlElement(ElementName = "transporta", IsNullable = true)]
         public Transportadora Transportadora { get; set; }
 
@@ -17,6 +20,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             return Transportadora != null;
         }
 
+        [JsonProperty("veicTransp")]
         [XmlElement(ElementName = "veicTransp", IsNullable = true)]
         public Veiculo Veiculo { get; set; }
 
@@ -25,6 +29,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
             return Veiculo != null;
         }
 
+        [JsonProperty("vol")]
         [XmlElement(ElementName = "vol", IsNullable = true)]
         public Volume Volume { get; set; }
 

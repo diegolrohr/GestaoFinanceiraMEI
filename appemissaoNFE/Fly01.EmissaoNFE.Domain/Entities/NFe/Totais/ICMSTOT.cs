@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
 {
@@ -74,6 +75,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             return TotalTributosAproxString != "0.00";
         }
 
+        [JsonProperty("vBC")]
         [XmlElement("vBC")]
         public string SomatorioBCString
         {
@@ -81,6 +83,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioBC = double.Parse(value.Replace(".", ","));  }
         }
 
+        [JsonProperty("vICMS")]
         [XmlElement("vICMS")]
         public string SomatorioICMSString
         {
@@ -88,6 +91,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioICMS = double.Parse(value.Replace(".",",")); }
         }
 
+        [JsonProperty("vICMSDeson")]
         [XmlElement("vICMSDeson")]
         public string SomatorioICMSDesoneradoString
         {
@@ -96,6 +100,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        [JsonProperty("vFCP")]
         [XmlElement("vFCP")]
         public string SomatorioFCPString
         {
@@ -103,6 +108,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioFCP = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vBCST")]
         [XmlElement("vBCST")]
         public string SomatorioBCSTString
         {
@@ -110,6 +116,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioBCST = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vST")]
         [XmlElement("vST")]
         public string SomatorioICMSSTString
         {
@@ -118,6 +125,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        [JsonProperty("vFCPST")]
         [XmlElement("vFCPST")]
         public string SomatorioFCPSTString
         {
@@ -126,6 +134,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
         }
 
         //OBRIGATÓRIO APENAS PARA A VERSÃO 4.0
+        [JsonProperty("vFCPSTRet")]
         [XmlElement("vFCPSTRet")]
         public string SomatorioFCPSTRetidoString
         {
@@ -133,6 +142,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioFCPSTRetido = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vProd")]
         [XmlElement("vProd")]
         public string SomatorioProdutosString
         {
@@ -140,13 +150,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioProdutos = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vFrete")]
         [XmlElement("vFrete")]
         public string ValorFreteString
         {
             get { return ValorFrete.ToString("0.00").Replace(",", "."); }
             set { ValorFrete = double.Parse(value.Replace(".", ",")); }
         }
-        
+
+        [JsonProperty("vSeg")]
         [XmlElement("vSeg")]
         public string ValorSeguroString
         {
@@ -154,6 +166,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { ValorSeguro = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vDesc")]
         [XmlElement("vDesc")]
         public string SomatorioDescontoString
         {
@@ -161,6 +174,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioDesconto = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vII")]
         [XmlElement("vII")]
         public string SomatorioIIString
         {
@@ -168,6 +182,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioII = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vIPI")]
         [XmlElement("vIPI")]
         public string SomatorioIPIString
         {
@@ -175,6 +190,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioIPI = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vIPIDevol")]
         [XmlElement("vIPIDevol")]
         public string SomatorioIPIDevolucaoString
         {
@@ -182,6 +198,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioIPIDevolucao = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vPIS")]
         [XmlElement("vPIS")]
         public string SomatorioPisString
         {
@@ -189,6 +206,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioPis = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vCOFINS")]
         [XmlElement("vCOFINS")]
         public string SomatorioCofinsString
         {
@@ -196,6 +214,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioCofins = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vOutro")]
         [XmlElement("vOutro")]
         public string SomatorioOutroString
         {
@@ -203,6 +222,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { SomatorioOutro = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vNF")]
         [XmlElement("vNF")]
         public string ValorTotalNFString
         {
@@ -210,6 +230,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.Totais
             set { ValorTotalNF = double.Parse(value.Replace(".", ",")); }
         }
 
+        [JsonProperty("vTotTrib")]
         [XmlElement("vTotTrib")]
         public string TotalTributosAproxString
         {

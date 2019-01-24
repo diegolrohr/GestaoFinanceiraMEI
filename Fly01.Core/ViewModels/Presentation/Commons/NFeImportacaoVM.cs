@@ -17,11 +17,11 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("xmlMd5")]
         public string XmlMd5 { get; set; }
 
+        [JsonProperty("tipo")]
+        public string Tipo { get; set; }
+
         [JsonProperty("status")]
         public string Status { get; set; }
-
-        [JsonProperty("fornecedorId")]
-        public Guid? FornecedorId { get; set; }
 
         [JsonProperty("atualizaDadosFornecedor")]
         public bool AtualizaDadosFornecedor { get; set; }
@@ -29,17 +29,17 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("novoFornecedor")]
         public bool NovoFornecedor { get; set; }
 
+        [JsonProperty("fornecedorId")]
+        public Guid? FornecedorId { get; set; }
+
+        [JsonProperty("tipoFrete")]
+        public string TipoFrete { get; set; }
+
         [JsonProperty("atualizaDadosTransportadora")]
         public bool AtualizaDadosTransportadora { get; set; }
 
         [JsonProperty("novaTransportadora")]
         public bool NovaTransportadora { get; set; }
-
-        [JsonProperty("tipo")]
-        public string Tipo { get; set; }
-
-        [JsonProperty("tipoFrete")]
-        public string TipoFrete { get; set; }
 
         [JsonProperty("transportadoraId")]
         public Guid? TransportadoraId { get; set; }
@@ -56,8 +56,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("categoriaId")]
         public Guid? CategoriaId { get; set; }
 
-        [JsonProperty("pedidoId")]
-        public Guid? PedidoId { get; set; }
+        [JsonProperty("dataVencimento")]
+        public DateTime DataVencimento { get; set; }
 
         [JsonProperty("valorTota")]
         public double ValorTota { get; set; }
@@ -77,22 +77,22 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("somatorioDesconto")]
         public double SomatorioDesconto { get; set; }
 
-        [JsonProperty("dataVencimento")]
-        public DateTime DataVencimento { get; set; }
-
         [JsonProperty("contaFinanceiraPaiId")]
         public Guid? ContaFinanceiraPaiId { get; set; }
 
         [JsonProperty("novoPedido")]
         public bool NovoPedido { get; set; }
 
+        [JsonProperty("pedidoId")]
+        public Guid? PedidoId { get; set; }
+
         #region navigations
+        public virtual Pedido Pedido { get; set; }
         public virtual Pessoa Fornecedor { get; set; }
         public virtual Pessoa Transportadora { get; set; }
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
         public virtual FormaPagamento FormaPagamento { get; set; }
         public virtual Categoria Categoria { get; set; }
-        public virtual Pedido Pedido { get; set; }
         #endregion
 
 

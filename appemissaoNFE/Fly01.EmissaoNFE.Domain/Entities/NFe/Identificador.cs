@@ -14,7 +14,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o código da UF do emitente do Documento Fiscal, utilizar a codificação do IBGE (Ex. SP->35, RS->43, etc.)
         /// </summary>
-        
+        [JsonProperty("cUF")]
         [XmlElement(ElementName = "cUF")]
         public int CodigoUF { get; set; }
 
@@ -22,6 +22,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o código numérico que compõe a Chave de Acesso. Número aleatório gerado pelo emitente para cada NF-e para evitar acessos indevidos da NF-e.
         /// </summary>
+        [JsonProperty("cNF")]
         [XmlElement(ElementName = "cNF")]
         public string CodigoNF { get; set; }
 
@@ -30,6 +31,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar a natureza da operação de que decorrer a saída ou a entrada, tais como: venda, compra, transferência, devolução, importação, consignação, 
         /// remessa (para fins de demonstração, de industrialização outra), conforme previsto na alínea 'i', inciso I, art. 19 do CONVÊNIO S/Nº, de 15 de dezembro de 1970.
         /// </summary>
+        [JsonProperty("natOp")]
         [XmlElement(ElementName = "natOp")]
         public string NaturezaOperacao { get; set; }
 
@@ -37,6 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o código do Modelo do Documento Fiscal, código 55 para a NF-e ou código 65 para NFC-e.
         /// </summary>
         [Required]
+        [JsonProperty("mod")]
         [XmlElement(ElementName = "mod")]
         public int ModeloDocumentoFiscal { get; set; }
 
@@ -45,6 +48,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar a série do Documento Fiscal, informar 0 (zero) para série única. A emissão normal pode utilizar série de 0-889, a emissão em contingência 
         /// SCAN deve utilizar série 900-999.
         /// </summary>
+        [JsonProperty("serie")]
         [XmlElement(ElementName = "serie")]
         public int Serie { get; set; }
 
@@ -52,6 +56,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar o Número do Documento Fiscal.
         /// </summary>
+        [JsonProperty("nNF")]
         [XmlElement(ElementName = "nNF")]
         public int NumeroDocumentoFiscal { get; set; }
 
@@ -107,6 +112,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 3 - Operação com exterior
         /// </summary>
         [Required]
+        [JsonProperty("idDest")]
         [XmlElement(ElementName = "idDest")]
         public TipoDestinoOperacao DestinoOperacao { get; set; }
 
@@ -114,6 +120,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// informar o código do Município de Ocorrência do Fato Gerador do ICMS, que é o local onde ocorre a entrada ou saída da mercadoria, utilizar a Tabela do IBGE
         /// </summary>
         [Required]
+        [JsonProperty("cMunFG")]
         [StringLength(7, ErrorMessage = "Código IBGE inválido")]
         [XmlElement(ElementName = "cMunFG")]
         public string CodigoMunicipio { get; set; }
@@ -129,6 +136,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 5 - DANFE NFC-e em mensagem eletrônica(o envio de mensagem eletrônica pode ser feita de forma simultânea com a impressão do DANFE; 
         /// usar o tpImp - 5 quando esta for a única forma de disponibilização do DANFE).
         /// </summary>
+        [JsonProperty("tpImp")]
         [XmlElement(ElementName = "tpImp")]
         public TipoImpressaoDanfe ImpressaoDANFE { get; set; }
 
@@ -145,6 +153,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// Nota 1: Para a NFC-e somente estão disponíveis e são válidas as opções de contingência 5 e 9.
         /// Nota 2: SVC-AN e SVC-RS substituem o SCAN - NT 2013/007.
         /// </summary>
+        [JsonProperty("tpEmis")]
         [XmlElement(ElementName = "tpEmis")]
         public TipoModalidade FormaEmissao { get; set; }
 
@@ -153,6 +162,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// módulo 11 (base 2,9) da Chave de Acesso.
         /// </summary>
         [Required]
+        [JsonProperty("cDV")]
         [XmlElement(ElementName = "cDV")]
         public int ChaveAcessoDV { get; set; }
 
@@ -162,6 +172,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 1 - Produção;
         /// 2 - Homologação
         /// </summary>
+        [JsonProperty("tpAmb")]
         [XmlElement(ElementName = "tpAmb")]
         public TipoAmbiente Ambiente { get; set; }
 
@@ -173,6 +184,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 4 - Devolução
         /// </summary>
         [Required]
+        [JsonProperty("finNFe")]
         [XmlElement(ElementName = "finNFe")]
         public TipoCompraVenda FinalidadeEmissaoNFe { get; set; }
 
@@ -182,6 +194,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 1 - Consumidor final;
         /// </summary>
         [Required]
+        [JsonProperty("indFinal")]
         [XmlElement(ElementName = "indFinal")]
         public int ConsumidorFinal { get; set; }
 
@@ -195,6 +208,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 4 - NFC-e em operação com entrega a domicílio;
         /// 9 - Operação não presencial, outros.
         /// </summary>
+        [JsonProperty("indPres")]
         [XmlElement(ElementName = "indPres")]
         public TipoPresencaComprador PresencaComprador { get; set; }
 
@@ -206,6 +220,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// 3 - emissão NF-e pelo contribuinte com aplicativo fornecido pelo Fisco.
         /// </summary>
         [Required]
+        [JsonProperty("procEmi")]
         [XmlElement(ElementName = "procEmi")]
         public int CodigoProcessoEmissaoNFe { get; set; }
 
@@ -213,12 +228,15 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// informar a versão do processo de emissão da NF-e utilizada (aplicativo emissor de NF-e).
         /// </summary>
+        [JsonProperty("verProc")]
         [XmlElement(ElementName = "verProc")]
         public string Versao { get; set; }
 
         /// <summary>
         /// Informar quando a legislação exigir a referência de uma NF-e, como é o caso de uma NF-e complementar, NF-e de devolução, NF-e de retorno, etc.
         /// </summary>
+        /// 
+        [JsonProperty("NFref")]
         [XmlElement(ElementName = "NFref")]
         public NFReferenciada NFReferenciada { get; set; }
 

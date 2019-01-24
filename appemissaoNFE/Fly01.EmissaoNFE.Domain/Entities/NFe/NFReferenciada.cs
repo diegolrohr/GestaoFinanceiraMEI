@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -7,6 +8,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Informar a chave de acesso da NF-e referenciada
         /// </summary>
+        /// 
+        [JsonProperty("refNFe")]
         [XmlElement(ElementName = "refNFe")]
         public string ChaveNFeReferenciada { get; set; }
 

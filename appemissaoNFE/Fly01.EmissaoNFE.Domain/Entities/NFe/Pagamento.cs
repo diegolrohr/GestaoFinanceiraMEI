@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
@@ -9,6 +10,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// Detalhes dos pagamentos
         /// </summary>
+        /// 
+        [JsonProperty("detPag")]
         [XmlElement(ElementName = "detPag")]
         public List<DetalhePagamento> DetalhesPagamentos { get; set; }
 
@@ -20,6 +23,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorTroco { get; set; }
 
+        [JsonProperty("vTroco_Opc")]
         [XmlElement(ElementName = "vTroco_Opc")]
         public string ValorTrocoString
         {

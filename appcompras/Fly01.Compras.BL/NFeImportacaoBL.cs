@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.ServiceBus;
+using System.Xml;
 
 namespace Fly01.Compras.BL
 {
@@ -21,13 +22,14 @@ namespace Fly01.Compras.BL
         protected PedidoBL PedidoBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
 
-        public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL, PedidoItemBL pedidoItemBL) : base(context)
+        public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL) : base(context)
+        //, PedidoBL pedidoBL, PedidoItemBL pedidoItemBL
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
             ProdutoBL = produtoBL;
-            PedidoBL = pedidoBL;
-            PedidoItemBL = pedidoItemBL;
+            //PedidoBL = pedidoBL;
+            //PedidoItemBL = pedidoItemBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -38,7 +40,7 @@ namespace Fly01.Compras.BL
         public override void Insert(NFeImportacao entity)
         {
             entity.Status = Status.Aberto;
-            entity.Id = new Guid();//para vincular já vincular os produtos
+            entity.Id = Guid.NewGuid();//para vincular já vincular os produtos
             entity.Fail(string.IsNullOrEmpty(entity.Xml), new Error("Envie um xml em base64", "xml"));
             entity.Fail(string.IsNullOrEmpty(entity.XmlMd5) || entity.XmlMd5?.Length != 32, new Error("MD5 do xml inválido", "xmlMd5"));
             if(!All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
@@ -132,11 +134,37 @@ namespace Fly01.Compras.BL
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
             //TODO:
-            //entity.Json = utilizar micro servico
-            var NFe = JsonConvert.DeserializeObject<NFeVM>(Base64Helper.DecodificaBase64(entity.Json));
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(Base64Helper.DecodificaBase64(entity.Xml));
+
+            XmlElement xelRoot = doc.DocumentElement;
+            XmlNode infNFe = xelRoot.FirstChild;
+
+            doc.LoadXml(infNFe.OuterXml);
+
+            //foreach (XmlNode child in nfeProc.ChildNodes)
+            //{
+            //    if (nfeProc.FirstChild != child)
+            //        nfeProc.FirstChild.AppendChild(child);
+            //}
+            //nfeProc.ParentNode.RemoveChild(nfeProc);
+
+            //var nodeNfe = doc.LastChild;
+            //foreach (XmlNode child in nodeNfe.ChildNodes)
+            //{
+            //    //nodeNfe.ParentNode.AppendChild(child);
+            //    if (nodeNfe.FirstChild != child)
+            //        nodeNfe.FirstChild.AppendChild(child);
+            //}
+            //nodeNfe.ParentNode.RemoveChild(nodeNfe);
+
+            string json = JsonConvert.SerializeXmlNode(doc);
+
+            var NFe = JsonConvert.DeserializeObject<NFeVM>(json);
             if (NFe != null)
             {
                 var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
+                //transportadora
                 //produtos
             }
             else

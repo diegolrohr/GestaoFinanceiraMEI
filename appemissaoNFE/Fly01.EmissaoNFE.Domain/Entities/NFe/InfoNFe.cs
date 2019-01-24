@@ -9,14 +9,14 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// <summary>
         /// ID da nota
         /// </summary>
-        [JsonProperty("id")]
+        [JsonProperty("@id")]
         [XmlAttribute(AttributeName = "Id")]
         public string NotaId { get; set; }
 
         /// <summary>
         /// Versão de NFe utilizada pelo cliente
         /// </summary>
-        [JsonProperty("versao")]
+        [JsonProperty("@versao")]
         [XmlAttribute(AttributeName = "versao")]
         public string Versao { get; set; }
 

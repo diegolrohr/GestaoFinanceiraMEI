@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
+    [JsonObject(Id = "NFe")]
     [XmlRoot(ElementName = "NFe", Namespace = "http://www.portalfiscal.inf.br/nfe")]
     public class NFeVM
     {

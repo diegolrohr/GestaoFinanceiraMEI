@@ -69,6 +69,7 @@
             url: "@Url.Action("ImportaArquivoXML", "NFeImportacao")",
             data: { conteudo: xmlImportado},
             success: function (data) {
+                console.log(data.success)
                 if (data.success) {
                     $$$.loading.stop();
                     var strMsg = "Importado com sucesso.";
@@ -87,12 +88,15 @@
                     $$$.toast(strMsg, "success");
                     return true;
                 } else {
+                    
+                    console.log('voltar');
                     $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').click();
                     $$$.loading.stop();
                     $$$.fn.submitErrorHandler(null, data.message);
                 }
             },
             error: function error(jXHR, textStatus) {
+                console.log('errrrrro');
                 $$$.toast(textStatus, "error");
                 $$$.loading.stop();
             }

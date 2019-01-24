@@ -213,7 +213,7 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             cfg.Content.Add(config);
-            return cfg;// Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         [HttpPost]

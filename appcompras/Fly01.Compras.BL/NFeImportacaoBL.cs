@@ -9,6 +9,7 @@ using Fly01.Core.ViewModels.Presentation.Commons;
 using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
+using Fly01.Core.ServiceBus;
 
 namespace Fly01.Compras.BL
 {
@@ -87,6 +88,7 @@ namespace Fly01.Compras.BL
                     if (fornecedor != null)
                     {
                         fornecedor.NomeComercial = "";
+                        PessoaBL.Update(fornecedor);
                     }
                     else
                     {
@@ -117,18 +119,6 @@ namespace Fly01.Compras.BL
             }
         }
 
-        public override void AfterSave(NFeImportacao entity)
-        {
-            //VerificarPendencias(entity); referencia acho que não precisa novamente
-            if (entity.IsValid() && (entity.Id != default(Guid) && entity.Id != null) && entity.Status == Status.Finalizado)
-            {
-                if(entity.FornecedorId != null)
-                {
-
-                }
-            }            
-        }
-
         public override void Delete(NFeImportacao entityToDelete)
         {
             entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente importação em aberto pode ser deletada", "status"));
@@ -147,11 +137,11 @@ namespace Fly01.Compras.BL
             if (NFe != null)
             {
                 var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
-                    //produtos
+                //produtos
             }
             else
             {
-                entity.Fail(true, new Error("Erro ao ler dados do XMl", "json"));
+                entity.Fail(true, new Error("Erro ao ler dados do XMl(Json)", "json"));
             }
         }
     }

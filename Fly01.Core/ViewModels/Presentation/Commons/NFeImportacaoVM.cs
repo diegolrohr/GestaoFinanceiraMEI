@@ -11,9 +11,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("xml")]
         public string XML{ get; set; }
 
-        [JsonProperty("json")]
-        public string Json { get; set; }
-
         [JsonProperty("xmlMd5")]
         public string XmlMd5 { get; set; }
 

@@ -160,6 +160,7 @@ namespace Fly01.Compras.BL
                             var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Transporte.Transportadora.CNPJ.ToUpper());
                             entity.FornecedorId = transportadora?.Id;
                             entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
+                            var x = "teste";
                         }
                     }
                     else

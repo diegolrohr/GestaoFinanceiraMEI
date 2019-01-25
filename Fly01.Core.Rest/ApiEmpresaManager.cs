@@ -8,10 +8,7 @@ namespace Fly01.Core.Rest
     {
         public static ManagerEmpresaVM GetEmpresa(string plataformaUrl)
         {
-            return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}",
-                $"company/{plataformaUrl}",
-                RestUtils.GetAuthHeader($"{SessionManager.Current.UserData.TokenData.TokenType} {SessionManager.Current.UserData.TokenData.AccessToken}"),
-                new Dictionary<string, string>());
+            return RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlManager}", $"company/{plataformaUrl}");
         }
     }
 }

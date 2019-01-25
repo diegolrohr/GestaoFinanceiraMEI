@@ -1,4 +1,5 @@
-﻿using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.EmissaoNFE.Domain.Enums;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 
@@ -9,7 +10,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
     {
         [JsonProperty("modFrete")]
         [XmlElement("modFrete")]
-        public ModalidadeFrete ModalidadeFrete { get; set; }
+        public TipoFrete ModalidadeFrete { get; set; }
 
         [JsonProperty("transporta")]
         [XmlElement(ElementName = "transporta", IsNullable = true)]
@@ -35,7 +36,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 
         public bool ShouldSerializeVolume()
         {
-            return Volume != null && ModalidadeFrete != ModalidadeFrete.SemFrete;
+            return Volume != null && ModalidadeFrete != TipoFrete.SemFrete;
         }
 
     }

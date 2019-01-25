@@ -364,7 +364,7 @@ namespace Fly01.Faturamento.BL.Helpers.Factory
                 Destinatario = ObterDestinatario(),
                 Transporte = new Transporte()
                 {
-                    ModalidadeFrete = (ModalidadeFrete)Enum.Parse(typeof(ModalidadeFrete), NFe.TipoFrete.ToString()),
+                    ModalidadeFrete = NFe.TipoFrete,
                 }
             };
         }

@@ -5,12 +5,13 @@ using System;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Notifications;
-using Fly01.Core.ViewModels.Presentation.Commons;
-using Newtonsoft.Json;
 using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using Fly01.Core.ServiceBus;
 using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.Rest;
 
 namespace Fly01.Compras.BL
 {
@@ -40,10 +41,15 @@ namespace Fly01.Compras.BL
         public override void Insert(NFeImportacao entity)
         {
             entity.Status = Status.Aberto;
+            entity.GeraFinanceiro = true;
+            entity.NovoPedido = true;
+            entity.NovoFornecedor = true;
+            entity.NovaTransportadora = true;
+
             entity.Id = Guid.NewGuid();//para vincular já vincular os produtos
             entity.Fail(string.IsNullOrEmpty(entity.Xml), new Error("Envie um xml em base64", "xml"));
             entity.Fail(string.IsNullOrEmpty(entity.XmlMd5) || entity.XmlMd5?.Length != 32, new Error("MD5 do xml inválido", "xmlMd5"));
-            if(!All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
+            if (entity.IsValid() && !All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
             {
                 LerXmlEPopularDados(entity);
             }
@@ -63,17 +69,17 @@ namespace Fly01.Compras.BL
                 ValidaModel(entity);
                 if (entity.IsValid())
                 {
-                    CriarRegistrosEAtualizarDados(entity);
+                    FinalizarESalvarDados(entity);
                 }
             }
 
             base.Update(entity);
         }
 
-        private void CriarRegistrosEAtualizarDados(NFeImportacao entity)
+        private void FinalizarESalvarDados(NFeImportacao entity)
         {
-            var NFe = JsonConvert.DeserializeObject<NFeVM>(Base64Helper.DecodificaBase64(entity.Json));
-            if (NFe != null)
+            var NFe = DeserializeXMlToNFe(entity.Xml);
+            if (NotaValida(NFe))
             {
                 if (entity.NovoFornecedor)
                 {
@@ -97,17 +103,55 @@ namespace Fly01.Compras.BL
                         throw new BusinessException("Fornecor não localizado para atualização dos dados");
                     }
                 }
-
             }
             else
             {
-                throw new BusinessException("Não foi possível recuperar os dados do XML(Json) da nota, para atualização dos dados");
+                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados");
+            }
+        }
+
+        private bool NotaValida(NFeVM nfe)
+        {
+            return (
+                nfe != null &&
+                nfe.InfoNFe != null &&
+                nfe.InfoNFe.Identificador != null &&
+                nfe.InfoNFe.Destinatario != null &&
+                nfe.InfoNFe.Emitente != null &&
+                nfe.InfoNFe.Total != null &&
+                nfe.InfoNFe.Total.ICMSTotal != null &&
+                nfe.InfoNFe.Detalhes != null &&
+                !nfe.InfoNFe.Detalhes.Any(x => x.Produto == null)
+            );
+        }
+
+        private NFeVM DeserializeXMlToNFe(string xml)
+        {
+            try
+            {
+                var NFe = new NFeVM();
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(Base64Helper.DecodificaBase64(xml));
+
+                XmlElement xelRoot = doc.DocumentElement;
+                XmlNode tagNFe = xelRoot.FirstChild;
+                if (tagNFe.Name == "NFe")
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
+                    StringReader sr = new StringReader(tagNFe.OuterXml);
+                    NFe = (NFeVM)ser.Deserialize(sr);
+                }
+                return NFe;
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessException("Erro ao deserializar o XML: " + ex.Message);
             }
         }
 
         private void VerificarPendenciasFinalizacao(NFeImportacao entity)
         {
-            if(entity.Status == Status.Finalizado)
+            if (entity.Status == Status.Finalizado)
             {
                 entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
 
@@ -133,43 +177,43 @@ namespace Fly01.Compras.BL
 
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
-            //TODO:
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(Base64Helper.DecodificaBase64(entity.Xml));
-
-            XmlElement xelRoot = doc.DocumentElement;
-            XmlNode infNFe = xelRoot.FirstChild;
-
-            doc.LoadXml(infNFe.OuterXml);
-
-            //foreach (XmlNode child in nfeProc.ChildNodes)
-            //{
-            //    if (nfeProc.FirstChild != child)
-            //        nfeProc.FirstChild.AppendChild(child);
-            //}
-            //nfeProc.ParentNode.RemoveChild(nfeProc);
-
-            //var nodeNfe = doc.LastChild;
-            //foreach (XmlNode child in nodeNfe.ChildNodes)
-            //{
-            //    //nodeNfe.ParentNode.AppendChild(child);
-            //    if (nodeNfe.FirstChild != child)
-            //        nodeNfe.FirstChild.AppendChild(child);
-            //}
-            //nodeNfe.ParentNode.RemoveChild(nodeNfe);
-
-            string json = JsonConvert.SerializeXmlNode(doc);
-
-            var NFe = JsonConvert.DeserializeObject<NFeVM>(json);
-            if (NFe != null)
+            var NFe = DeserializeXMlToNFe(entity.Xml);
+            if (NotaValida(NFe))
             {
-                var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
-                //transportadora
-                //produtos
+                //TODO: var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+
+                //entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("Cnpj do destinatário da nota fiscal não é para o seu cnpj", "cnpj"));
+                entity.Fail(NFe.InfoNFe.Identificador.TipoDocumentoFiscal != TipoNota.Saida, new Error("Só é possível importar nota fiscal do tipo saída"));
+                entity.Fail(NFe.InfoNFe.Versao != "4.00", new Error("Só é possível importar nota fiscal da versão 4.00"));
+                entity.Fail(NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Normal && NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Complementar, new Error("Só é possível importar nota fiscal com finalidade normal/complementar"));
+
+                if (entity.IsValid())
+                {
+                    entity.Tipo = NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe;
+                    var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
+                    entity.FornecedorId = fornecedor?.Id;
+                    entity.NovoFornecedor = (fornecedor == null);//TODO: confirmar
+
+                    var transpCnpj = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.ToUpper();
+
+                    var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == transpCnpj);
+                    entity.TransportadoraId = transportadora?.Id;
+                    entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
+                    entity.NovaTransportadora = (transportadora == null);
+
+                    entity.DataEmissao = NFe.InfoNFe.Identificador.Emissao;
+                    entity.ValorFrete = NFe.InfoNFe.Total.ICMSTotal.ValorFrete;
+                    entity.ValorTotal = NFe.InfoNFe.Total.ICMSTotal.ValorTotalNF;
+                    entity.SomatorioDesconto = NFe.InfoNFe.Total.ICMSTotal.SomatorioDesconto;
+                    entity.SomatorioICMSST = NFe.InfoNFe.Total.ICMSTotal.SomatorioICMSST;
+                    entity.SomatorioIPI = NFe.InfoNFe.Total.ICMSTotal.SomatorioIPI;
+                    entity.SomatorioFCPST = NFe.InfoNFe.Total.ICMSTotal.SomatorioFCPST;
+                    entity.SomatorioProduto = NFe.InfoNFe.Total.ICMSTotal.SomatorioProdutos;
+                }
             }
             else
             {
-                entity.Fail(true, new Error("Erro ao ler dados do XMl(Json)", "json"));
+                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para inclusão dos dados");
             }
         }
     }

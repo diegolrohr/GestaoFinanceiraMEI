@@ -1,0 +1,14 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function fnChangeFornecedor() {
+        debugger;
+        if ($("#fornecedorNome").val() === "") {
+            $("#atualizarFornecedorField").hide();
+            $("#criarNovoFornecedorField").show();
+        } else {
+            $("#atualizarFornecedorField").show();
+            $("#criarNovoFornecedorField").hide();
+        }
+    }
+</script>

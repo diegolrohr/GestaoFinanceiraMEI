@@ -8,11 +8,16 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
 using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
+using System.Xml;
+using System.Xml.Serialization;
+using Fly01.EmissaoNFE.Domain.Entities.NFe;
 
 namespace Fly01.Compras.Controllers
 {
@@ -116,6 +121,7 @@ namespace Fly01.Compras.Controllers
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
+
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReady",
@@ -132,7 +138,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Fornecedor",
                         Id = "stepFornecedor",
-                        Quantity = 4,
+                        Quantity = 11,
                     },
                     new FormWizardUIStep()
                     {
@@ -164,56 +170,94 @@ namespace Fly01.Compras.Controllers
 
             #region stepImportação
             config.Elements.Add(new InputHiddenUI { Id = "id" });
-            config.Elements.Add(new InputFileUI { Id = "arquivoXML", Class = "col s12 m12", Label = "Arquivo de importação (.xml)", Required = true, Accept = ".xml" });
+            config.Elements.Add(new InputFileUI { Id = "arquivoXML", Class = "col s12 m12", Label = "Arquivo de importação (.xml)", Required = false, Accept = ".xml" });
             #endregion
 
             #region step Fornecedor
-            config.Elements.Add(new InputTextUI
-            {
-                Id = "fornecedorMatch",
-                Class = "col s12 m7",
-                Label = "Fornecedor Importado",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "" }
-                }
-            });
-
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "atualizarFornecedor",
-                Class = "col s12 m5",
-                Label = "Atualizar dados do fornecedor encontrado",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "" }
-                }
-            });
-
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "vincularFornecedor",
-                Class = "col s12 m5",
-                Label = "Vincular com um existente",
-                DomEvents = new List<DomEventUI>
-                {
-                    new DomEventUI { DomEvent = "change", Function = "" }
-                }
-            });
 
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "fornecedorId",
-                Class = "col s12 m8",
+                Class = "col s12 m6",
                 Label = "Fornecedor",
                 DataUrl = Url.Action("Fornecedor", "AutoComplete"),
                 LabelId = "fornecedorNome",
-                DataUrlPost = Url.Action("PostFornecedor")
-            }, null ));
+                DataUrlPost = Url.Action("PostFornecedor"),
+                Required = true
+            }, null));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "atualizarFornecedor",
+                Class = "col s12 m6",
+                Label = "Atualizar dados do fornecedor encontrado.",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "atualizarFornecedor",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Marque a opção, caso deseje atualizar o fornecedor existente com os dados da importação."
+                }
+            });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "criarNovoFornecedor",
+                Class = "col s12 m6",
+                Label = "Cadastrar novo fornecedor ao fim do processo.",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XMl" });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorNome", Class = "col s12 m6", Label = "Nome", MaxLength = 60 , Readonly = true});
+            config.Elements.Add(new InputTextUI { Id = "fornecedorCnpj", Class = "col s12 m6", Label = "Cnpj", MaxLength = 60 , Readonly = true});
+            config.Elements.Add(new InputTextUI { Id = "inscEstadual", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "razaoSocial", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "cnpj", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
+                                                                                   
             #endregion
 
             cfg.Content.Add(config);
             return cfg;
+        }
+
+        public override ContentResult Json(Guid id)
+        {
+            try
+            {
+                NFeImportacaoVM entity = Get(id);
+
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(Base64Helper.DecodificaBase64(entity.XML));
+
+                XmlElement xelRoot = doc.DocumentElement;
+                XmlNode tagNFe = xelRoot.FirstChild;
+                if (tagNFe.Name == "NFe")
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
+                    StringReader sr = new StringReader(tagNFe.OuterXml);
+                    var NFe = (NFeVM)ser.Deserialize(sr);
+                    if(NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Emitente != null)
+                    {
+                        entity.FornecedorNome = NFe.InfoNFe.Emitente.NomeFantasia;
+                        entity.FornecedorCnpj = NFe.InfoNFe.Emitente.Cnpj;
+                    }
+                }
+
+                var x = Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
+                return x;
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return Content(JsonConvert.SerializeObject(JsonResponseStatus.GetFailure(error.Message).Data), "application/json");
+            }
         }
 
         [HttpPost]

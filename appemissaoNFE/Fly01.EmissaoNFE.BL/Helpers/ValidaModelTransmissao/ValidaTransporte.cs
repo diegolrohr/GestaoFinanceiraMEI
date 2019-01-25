@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Helpers;
 using Fly01.Core.Notifications;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.EmissaoNFE.Domain.ViewModel;
@@ -12,7 +13,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
 
         public static void ExecutarValidaTransporte(ItemTransmissaoVM item, EntitiesBLToValidate entitiesBLToValidate, TransmissaoVM entity)
         {
-            var modFrete = EnumHelper.GetDataEnumValues(typeof(ModalidadeFrete));
+            var modFrete = EnumHelper.GetDataEnumValues(typeof(TipoFrete));
 
             ValidarModalidadeFrete(item, entity, modFrete);
             ValidarTransportadora(item, entitiesBLToValidate, entity);
@@ -24,7 +25,7 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             if (item.Transporte.Volume != null)
             {
-                if (item.Transporte.ModalidadeFrete != ModalidadeFrete.SemFrete)
+                if (item.Transporte.ModalidadeFrete != TipoFrete.SemFrete)
                 {
                     entity.Fail(item.Transporte.Volume.Quantidade < 0,
                                     new Error("Quantidade de volumes inválida", "Item.Transporte.Volume.Quantidade"));

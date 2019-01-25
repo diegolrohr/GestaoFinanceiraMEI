@@ -85,6 +85,9 @@
                     if (jsonData.tipoFrete === "SemFrete") {
                         $('#stepFornecedor').hide();
                     }
+                    $('#stepImportarArquivo').hide();
+                    $$$._.fly01frm.refresh(data.id);
+
                     $$$.toast(strMsg, "success");
                     return true;
                 } else {
@@ -134,6 +137,7 @@
     }
 
     function fnFormReady() {
+        //$("input#criarNovoFornecedor").rules("add", { required: true });
         if (isCreate()) {
             var today = new Date();
             //$("input#geraFinanceiro").prop("checked", true);
@@ -147,9 +151,47 @@
             $('#stepImportacaoArquivo').hide();
         }
 
+        fnRegrasStepFornecedor();
         fnBindOverrideSubmit();
-
     }
 
+    function fnRegrasStepFornecedor() {
+        if ($("#fornecedorNome").val() === "") {
+            $("#atualizarFornecedorField").hide();
+            $("#criarNovoFornecedorField").show();
+        } else {
+            $("#atualizarFornecedorField").show();
+            $("#criarNovoFornecedorField").hide();
+        }
 
+        $("#fornecedorNome").on("blur", function () {
+            if ($("#fornecedorNome").val() === "") {
+                $("#atualizarFornecedorField").hide();
+                $("#criarNovoFornecedorField").show();
+            } else {
+                $("#atualizarFornecedorField").show();
+                $("#criarNovoFornecedorField").hide();
+            }
+        });
+
+        function fnNoCheckedSaveFornecedor() {
+        } 
+
+        $('#criarNovoFornecedor').on("click", function () {
+            if ($("input#criarNovoFornecedor").attr("checked") === "checked") {
+                $('input#fornecedorNome').removeClass("invalid");
+                $("input#fornecedorNome").rules("remove", "required");
+            }
+            else {
+                $("input#fornecedorNome").rules("add", { required: true });
+            }
+        });
+        $('li#stepFornecedor div.step-title').click(function () {
+            fnNoCheckedSaveFornecedor();
+        });
+        $('#stepImportarArquivo > div.step-content > div.step-actions > button.btn.next-step').click(function () {
+            fnNoCheckedSaveFornecedor();
+        });
+
+    };
 </script>

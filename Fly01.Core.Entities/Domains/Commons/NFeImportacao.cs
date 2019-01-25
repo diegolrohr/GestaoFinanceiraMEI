@@ -11,13 +11,13 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(int.MaxValue)]
         public string Xml { get; set; }
 
-        [Column(TypeName = "varchar(MAX)")]
-        [MaxLength(int.MaxValue)]
-        public string Json { get; set; }
-
         [Required]
         [MaxLength(32)]
         public string XmlMd5 { get; set; }
+
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime DataEmissao { get; set; }
 
         public TipoCompraVenda Tipo { get; set; }
 
@@ -60,6 +60,8 @@ namespace Fly01.Core.Entities.Domains.Commons
         public double SomatorioFCPST { get; set; }
 
         public double SomatorioDesconto { get; set; }
+
+        public double SomatorioProduto { get; set; }
 
         public Guid? ContaFinanceiraPaiId { get; set; }
 

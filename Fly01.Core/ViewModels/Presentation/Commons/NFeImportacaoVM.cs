@@ -11,11 +11,11 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("xml")]
         public string XML{ get; set; }
 
-        [JsonProperty("json")]
-        public string Json { get; set; }
-
         [JsonProperty("xmlMd5")]
         public string XmlMd5 { get; set; }
+
+        [JsonProperty("dataEmissao")]
+        public string DataEmissao { get; set; }
 
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
@@ -85,6 +85,17 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("pedidoId")]
         public Guid? PedidoId { get; set; }
+
+        #region Informações XML
+        [JsonProperty("fornecedorNome")]
+        public string FornecedorNome { get; set; }
+
+        [JsonProperty("fornecedorCnpj")]
+        public string FornecedorCnpj { get; set; }
+
+        [JsonProperty("transportadoraNome")]
+        public string TransportadoraNome { get; set; }
+        #endregion
 
         #region navigations
         public virtual Pedido Pedido { get; set; }

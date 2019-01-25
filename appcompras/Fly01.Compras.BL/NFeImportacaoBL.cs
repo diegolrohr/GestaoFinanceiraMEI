@@ -133,7 +133,6 @@ namespace Fly01.Compras.BL
 
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
-            //TODO:
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(Base64Helper.DecodificaBase64(entity.Xml));
 

@@ -39,7 +39,7 @@ namespace Fly01.Faturamento.BL
             SubstituicaoTributariaBL = substituicaoTributariaBL;
             ParametroTributarioBL = parametroTributarioBL;
             CertificadoDigitalBL = certificadoDigitalBL;
-            empresa = RestHelper.ExecuteGetRequest<ManagerEmpresaVM>($"{AppDefaults.UrlGateway}v2/", $"Empresa/{PlataformaUrl}");
+            empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
             empresaUF = empresa.Cidade != null ? (empresa.Cidade.Estado != null ? empresa.Cidade.Estado.Sigla : string.Empty) : string.Empty;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
             OrdemVendaServicoBL = ordemVendaServicoBL;

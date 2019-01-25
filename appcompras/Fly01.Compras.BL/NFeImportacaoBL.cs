@@ -121,7 +121,7 @@ namespace Fly01.Compras.BL
                 nfe.InfoNFe.Total != null &&
                 nfe.InfoNFe.Total.ICMSTotal != null &&
                 nfe.InfoNFe.Detalhes != null &&
-                nfe.InfoNFe.Detalhes.Any(x => x.Produto == null)
+                !nfe.InfoNFe.Detalhes.Any(x => x.Produto == null)
             );
         }
 
@@ -180,20 +180,23 @@ namespace Fly01.Compras.BL
             var NFe = DeserializeXMlToNFe(entity.Xml);
             if (NotaValida(NFe))
             {
-                var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                //TODO: var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
 
-                entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa.CNPJ.ToUpper(), new Error("Cnpj do destinatário da nota fiscal não é para o seu cnpj", "cnpj"));
+                //entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("Cnpj do destinatário da nota fiscal não é para o seu cnpj", "cnpj"));
                 entity.Fail(NFe.InfoNFe.Identificador.TipoDocumentoFiscal != TipoNota.Saida, new Error("Só é possível importar nota fiscal do tipo saída"));
                 entity.Fail(NFe.InfoNFe.Versao != "4.00", new Error("Só é possível importar nota fiscal da versão 4.00"));
-                entity.Fail(entity.Tipo != TipoCompraVenda.Normal && entity.Tipo != TipoCompraVenda.Complementar, new Error("Só é possível importar nota fiscal com finalidade normal/complementar"));
+                entity.Fail(NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Normal && NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Complementar, new Error("Só é possível importar nota fiscal com finalidade normal/complementar"));
 
                 if (entity.IsValid())
                 {
+                    entity.Tipo = NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe;
                     var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
                     entity.FornecedorId = fornecedor?.Id;
                     entity.NovoFornecedor = (fornecedor == null);//TODO: confirmar
 
-                    var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Transporte.Transportadora.CNPJ.ToUpper());
+                    var transpCnpj = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.ToUpper();
+
+                    var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == transpCnpj);
                     entity.TransportadoraId = transportadora?.Id;
                     entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
                     entity.NovaTransportadora = (transportadora == null);

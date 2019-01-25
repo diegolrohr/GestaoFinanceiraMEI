@@ -15,6 +15,10 @@ namespace Fly01.Core.Entities.Domains.Commons
         [MaxLength(32)]
         public string XmlMd5 { get; set; }
 
+        [Required]
+        [Column(TypeName = "date")]
+        public DateTime DataEmissao { get; set; }
+
         public TipoCompraVenda Tipo { get; set; }
 
         public Status Status { get; set; }

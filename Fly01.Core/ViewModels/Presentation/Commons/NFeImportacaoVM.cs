@@ -83,6 +83,17 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("pedidoId")]
         public Guid? PedidoId { get; set; }
 
+        #region Informações XML
+        [JsonProperty("fornecedorNome")]
+        public string FornecedorNome { get; set; }
+
+        [JsonProperty("fornecedorCnpj")]
+        public string FornecedorCnpj { get; set; }
+
+        [JsonProperty("transportadoraNome")]
+        public string TransportadoraNome { get; set; }
+        #endregion
+
         #region navigations
         public virtual Pedido Pedido { get; set; }
         public virtual Pessoa Fornecedor { get; set; }

@@ -72,6 +72,8 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         /// </summary>
         [XmlIgnore]
         public DateTime Emissao { get; set; }
+
+        [JsonProperty("dhEmi")]
         [XmlElement("dhEmi")]
         public string EmissaoString
         {
@@ -86,6 +88,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public DateTime EntradaSaida { get; set; }
 
+        [JsonProperty("dhSaiEnt")]
         [XmlElement("dhSaiEnt")]
         public string EntradaSaidaString
         {

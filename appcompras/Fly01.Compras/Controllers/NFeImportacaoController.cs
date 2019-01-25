@@ -24,7 +24,7 @@ namespace Fly01.Compras.Controllers
             return x => new
             {
                 id = x.Id,
-                fornecedor_nome = x.Fornecedor.Nome,
+                fornecedor_nome = x.Fornecedor?.Nome,
                 data = x.DataVencimento.ToString("dd/MM/yyyy"),
                 status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(StatusNotaFiscal), x.Status),

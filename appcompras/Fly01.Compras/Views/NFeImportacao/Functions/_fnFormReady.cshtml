@@ -62,14 +62,14 @@
     }
 
     function processData(event) {
+        var resultData = true;
         var xmlImportado = event.target.result;
-        debugger;
         $.ajax({
             type: "POST",
             url: "@Url.Action("ImportaArquivoXML", "NFeImportacao")",
             data: { conteudo: xmlImportado},
             success: function (data) {
-                console.log(data.success)
+                console.log(data.success);
                 if (data.success) {
                     $$$.loading.stop();
                     var strMsg = "Importado com sucesso.";
@@ -88,9 +88,8 @@
                     $$$.toast(strMsg, "success");
                     return true;
                 } else {
-                    
+                    resultData = data.success;
                     console.log('voltar');
-                    $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').click();
                     $$$.loading.stop();
                     $$$.fn.submitErrorHandler(null, data.message);
                 }
@@ -101,10 +100,12 @@
                 $$$.loading.stop();
             }
         });
+        if (!resultData)
+            $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').click();
     }
 
     function errorHandler(evt) {
-        if (evt.target.error.name == "NotReadableError") {
+        if (evt.target.error.name === "NotReadableError") {
             alert("Não foi possível ler o arquivo!");
         }
     }
@@ -133,7 +134,6 @@
     }
 
     function fnFormReady() {
-        debugger;
         if (isCreate()) {
             var today = new Date();
             //$("input#geraFinanceiro").prop("checked", true);

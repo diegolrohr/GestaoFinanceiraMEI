@@ -201,6 +201,7 @@ namespace Fly01.Compras.BL
                     entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
                     entity.NovaTransportadora = (transportadora == null);
 
+                    entity.DataEmissao = NFe.InfoNFe.Identificador.Emissao;
                     entity.ValorFrete = NFe.InfoNFe.Total.ICMSTotal.ValorFrete;
                     entity.ValorTotal = NFe.InfoNFe.Total.ICMSTotal.ValorTotalNF;
                     entity.SomatorioDesconto = NFe.InfoNFe.Total.ICMSTotal.SomatorioDesconto;

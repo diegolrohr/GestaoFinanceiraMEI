@@ -11,6 +11,9 @@ using Fly01.Core.Helpers;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.ServiceBus;
 using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using Fly01.EmissaoNFE.Domain.Enums;
 
 namespace Fly01.Compras.BL
 {
@@ -43,7 +46,7 @@ namespace Fly01.Compras.BL
             entity.Id = Guid.NewGuid();//para vincular já vincular os produtos
             entity.Fail(string.IsNullOrEmpty(entity.Xml), new Error("Envie um xml em base64", "xml"));
             entity.Fail(string.IsNullOrEmpty(entity.XmlMd5) || entity.XmlMd5?.Length != 32, new Error("MD5 do xml inválido", "xmlMd5"));
-            if(!All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
+            if (!All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))
             {
                 LerXmlEPopularDados(entity);
             }
@@ -107,7 +110,7 @@ namespace Fly01.Compras.BL
 
         private void VerificarPendenciasFinalizacao(NFeImportacao entity)
         {
-            if(entity.Status == Status.Finalizado)
+            if (entity.Status == Status.Finalizado)
             {
                 entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
 
@@ -133,42 +136,45 @@ namespace Fly01.Compras.BL
 
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(Base64Helper.DecodificaBase64(entity.Xml));
-
-            XmlElement xelRoot = doc.DocumentElement;
-            XmlNode infNFe = xelRoot.FirstChild;
-
-            doc.LoadXml(infNFe.OuterXml);
-
-            //foreach (XmlNode child in nfeProc.ChildNodes)
-            //{
-            //    if (nfeProc.FirstChild != child)
-            //        nfeProc.FirstChild.AppendChild(child);
-            //}
-            //nfeProc.ParentNode.RemoveChild(nfeProc);
-
-            //var nodeNfe = doc.LastChild;
-            //foreach (XmlNode child in nodeNfe.ChildNodes)
-            //{
-            //    //nodeNfe.ParentNode.AppendChild(child);
-            //    if (nodeNfe.FirstChild != child)
-            //        nodeNfe.FirstChild.AppendChild(child);
-            //}
-            //nodeNfe.ParentNode.RemoveChild(nodeNfe);
-
-            string json = JsonConvert.SerializeXmlNode(doc);
-
-            var NFe = JsonConvert.DeserializeObject<NFeVM>(json);
-            if (NFe != null)
+            try
             {
-                var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
-                //transportadora
-                //produtos
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(Base64Helper.DecodificaBase64(entity.Xml));
+
+                XmlElement xelRoot = doc.DocumentElement;
+                XmlNode tagNFe = xelRoot.FirstChild;
+                if (tagNFe.Name == "NFe")
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
+                    StringReader sr = new StringReader(tagNFe.OuterXml);
+                    var NFe = (NFeVM)ser.Deserialize(sr);
+                    if (NFe != null)
+                    {
+                        if(NFe.InfoNFe != null && NFe.InfoNFe.Emitente != null)
+                        {
+                            var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
+                            entity.FornecedorId = fornecedor?.Id;
+                        }
+                        if (NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.ModalidadeFrete != TipoFrete.SemFrete)
+                        {
+                            var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Transporte.Transportadora.CNPJ.ToUpper());
+                            entity.FornecedorId = transportadora?.Id;
+                            entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
+                        }
+                    }
+                    else
+                    {
+                        entity.Fail(true, new Error("Erro ao ler dados do XMl", "xml"));
+                    }
+                }
+                else
+                {
+                    entity.Fail(true, new Error("Erro ao ler dados do XMl, tag <NFe> não localizada", "xml"));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                entity.Fail(true, new Error("Erro ao ler dados do XMl(Json)", "json"));
+                throw new BusinessException(ex.Message);
             }
         }
     }

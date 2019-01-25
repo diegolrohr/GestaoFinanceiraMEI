@@ -256,7 +256,7 @@ namespace Fly01.Compras.BL
                     #region Transporte
                     itemTransmissao.Transporte = new Transporte()
                     {
-                        ModalidadeFrete = (ModalidadeFrete)System.Enum.Parse(typeof(ModalidadeFrete), entity.TipoFrete.ToString())
+                        ModalidadeFrete = entity.TipoFrete
                     };
                     if (transportadora != null)
                     {

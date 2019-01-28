@@ -21,7 +21,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 
 namespace Fly01.Compras.Controllers
 {
-    //  [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNFeImportada)]
+    //TODO:  [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNFeImportada)]
     public class NFeImportacaoController : BaseController<NFeImportacaoVM>
     {
         public override Func<NFeImportacaoVM, object> GetDisplayData()
@@ -30,12 +30,12 @@ namespace Fly01.Compras.Controllers
             {
                 id = x.Id,
                 fornecedor_nome = x.Fornecedor?.Nome,
-                data = x.DataVencimento.ToString("dd/MM/yyyy"),
                 status = x.Status,
-                statusDescription = EnumHelper.GetDescription(typeof(StatusNotaFiscal), x.Status),
-                statusCssClass = EnumHelper.GetCSS(typeof(StatusNotaFiscal), x.Status),
-                statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
-                valorTotal = x.ValorTota
+                statusDescription = EnumHelper.GetDescription(typeof(Status), x.Status),
+                statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
+                statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
+                valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
             };
         }
 
@@ -85,9 +85,16 @@ namespace Fly01.Compras.Controllers
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "data", DisplayName = "Data", Priority = 2 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "status", DisplayName = "Status", Priority = 3, Type = "tel" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 3, Type = "tel" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn
+            {
+                DataField = "status",
+                DisplayName = "Status",
+                Priority = 3,
+                Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
+                RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
+            });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 4, Type = "tel" });
 
             cfg.Content.Add(config);
 
@@ -95,6 +102,9 @@ namespace Fly01.Compras.Controllers
         }
 
         protected override ContentUI FormJson()
+            => FormNFeImportacaoJson();
+
+        protected ContentUI FormNFeImportacaoJson(bool isEdit = false)
         {
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
@@ -143,7 +153,7 @@ namespace Fly01.Compras.Controllers
                     new FormWizardUIStep()
                     {
                         Title = "Transportadora",
-                        Id = "steptransportadora",
+                        Id = "stepTransportadora",
                         Quantity = 3,
                     },
                     new FormWizardUIStep()
@@ -165,7 +175,8 @@ namespace Fly01.Compras.Controllers
                         Quantity = 15,
                     }
                 },
-                ShowStepNumbers = true
+                Rule = isEdit ? "parallel" : "linear",
+                ShowStepNumbers = true,
             };
 
             #region stepImportação
@@ -227,6 +238,9 @@ namespace Fly01.Compras.Controllers
             return cfg;
         }
 
+        public ContentResult FormNFeImportacao(bool isEdit = false)
+            => Content(JsonConvert.SerializeObject(FormNFeImportacaoJson(isEdit), JsonSerializerSetting.Front), "application/json");
+
         public override ContentResult Json(Guid id)
         {
             try
@@ -281,5 +295,24 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        [HttpPost]
+        public override JsonResult Create(NFeImportacaoVM entityVM)
+        {
+            try
+            {
+                var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                NFeImportacaoVM postResult = JsonConvert.DeserializeObject<NFeImportacaoVM>(postResponse);
+                var response = new JsonResult
+                {
+                    Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), tipoFrete = postResult.TipoFrete.ToString() }
+                };
+                return (response);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
     }
 }

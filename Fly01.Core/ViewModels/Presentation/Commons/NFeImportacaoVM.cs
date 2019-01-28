@@ -15,7 +15,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string XmlMd5 { get; set; }
 
         [JsonProperty("dataEmissao")]
-        public string DataEmissao { get; set; }
+        public DateTime DataEmissao { get; set; }
 
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
@@ -59,8 +59,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
 
-        [JsonProperty("valorTota")]
-        public double ValorTota { get; set; }
+        [JsonProperty("valorTotal")]
+        public double ValorTotal { get; set; }
 
         [JsonProperty("valorFrete")]
         public double ValorFrete { get; set; }

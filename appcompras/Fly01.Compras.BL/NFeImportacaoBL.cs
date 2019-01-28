@@ -192,7 +192,7 @@ namespace Fly01.Compras.BL
                     entity.Tipo = NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe;
                     var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
                     entity.FornecedorId = fornecedor?.Id;
-                    entity.NovoFornecedor = (fornecedor == null);//TODO: confirmar
+                    entity.NovoFornecedor = (fornecedor == null);
 
                     var transpCnpj = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.ToUpper();
 

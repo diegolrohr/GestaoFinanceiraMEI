@@ -142,7 +142,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ApplicationInsights.config" />
-    <None Include="Properties\PublishProfiles\mpn-compras-web-stage - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Resources\Microsoft.ReportViewer.ProcessingObjectModel.dll" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -367,6 +367,11 @@
     <Content Include="Views\NFeImportacao\Functions\_fnChangeFornecedor.cshtml" />
     <Content Include="Views\NFeImportacao\Edit.cshtml" />
     <Content Include="Views\NFeImportacao\Create.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnBaixarXML.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRemoveFilter.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAddFilter.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnUpdateDataFinal.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnChangeInput.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

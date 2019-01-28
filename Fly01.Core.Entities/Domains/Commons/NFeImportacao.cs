@@ -19,6 +19,12 @@ namespace Fly01.Core.Entities.Domains.Commons
         [Column(TypeName = "date")]
         public DateTime DataEmissao { get; set; }
 
+        [Required]
+        [MaxLength(3)]
+        public string Serie { get; set; }
+
+        public int Numero { get; set; }
+
         public TipoCompraVenda Tipo { get; set; }
 
         public Status Status { get; set; }

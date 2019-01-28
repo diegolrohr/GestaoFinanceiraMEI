@@ -183,9 +183,8 @@ namespace Fly01.Compras.BL
             var NFe = DeserializeXMlToNFe(entity.Xml);
             if (NotaValida(NFe))
             {
-                //TODO: var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
-
-                //entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("Cnpj do destinatário da nota fiscal não é para o seu cnpj", "cnpj"));
+                var empresa = ApiEmpresaManager.GetEmpresa(PlataformaUrl);
+                entity.Fail(NFe.InfoNFe.Destinatario.Cnpj.ToUpper() != empresa?.CNPJ.ToUpper(), new Error("CNPJ do destinatário da nota fiscal não corresponde aos dados da sua empresa", "cnpj"));
                 entity.Fail(NFe.InfoNFe.Identificador.TipoDocumentoFiscal != TipoNota.Saida, new Error("Só é possível importar nota fiscal do tipo saída"));
                 entity.Fail(NFe.InfoNFe.Versao != "4.00", new Error("Só é possível importar nota fiscal da versão 4.00"));
                 entity.Fail(NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Normal && NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe != TipoCompraVenda.Complementar, new Error("Só é possível importar nota fiscal com finalidade normal/complementar"));
@@ -205,6 +204,8 @@ namespace Fly01.Compras.BL
                     entity.NovaTransportadora = (transportadora == null);
 
                     entity.DataEmissao = NFe.InfoNFe.Identificador.Emissao;
+                    entity.Serie = NFe.InfoNFe.Identificador.Serie.ToString();
+                    entity.Numero = NFe.InfoNFe.Identificador.NumeroDocumentoFiscal;
                     entity.ValorFrete = NFe.InfoNFe.Total.ICMSTotal.ValorFrete;
                     entity.ValorTotal = NFe.InfoNFe.Total.ICMSTotal.ValorTotalNF;
                     entity.SomatorioDesconto = NFe.InfoNFe.Total.ICMSTotal.SomatorioDesconto;

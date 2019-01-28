@@ -11,11 +11,11 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("xml")]
         public string XML{ get; set; }
 
-        [JsonProperty("json")]
-        public string Json { get; set; }
-
         [JsonProperty("xmlMd5")]
         public string XmlMd5 { get; set; }
+
+        [JsonProperty("dataEmissao")]
+        public DateTime DataEmissao { get; set; }
 
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
@@ -59,8 +59,8 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
 
-        [JsonProperty("valorTota")]
-        public double ValorTota { get; set; }
+        [JsonProperty("valorTotal")]
+        public double ValorTotal { get; set; }
 
         [JsonProperty("valorFrete")]
         public double ValorFrete { get; set; }
@@ -92,6 +92,12 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("fornecedorCnpj")]
         public string FornecedorCnpj { get; set; }
+
+        [JsonProperty("fornecedorInscEstadual")]
+        public string FornecedorInscEstadual { get; set; }
+
+        [JsonProperty("fornecedorRazaoSocial")]
+        public string FornecedorRazaoSocial { get; set; }
 
         [JsonProperty("transportadoraNome")]
         public string TransportadoraNome { get; set; }

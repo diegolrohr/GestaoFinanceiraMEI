@@ -69,12 +69,9 @@
             url: "@Url.Action("ImportaArquivoXML", "NFeImportacao")",
             data: { conteudo: xmlImportado},
             success: function (data) {
-                console.log(data.success);
                 if (data.success) {
-                    $$$.loading.stop();
                     var strMsg = "Importado com sucesso.";
                     $("form#fly01frm input#id").val(data.id);
-
                     //TODO: refresh dos dois dataTables
                     // $$$._.dtPedidoItens.refresh();
 
@@ -82,17 +79,18 @@
                     window.history.pushState({}, document.title, url);
                     $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
 
-                    if (jsonData.tipoFrete === "SemFrete") {
-                        $('#stepFornecedor').hide();
+                    if (data.tipoFrete === "SemFrete") {
+                        $('#stepTransportadora').hide();
                     }
                     $('#stepImportarArquivo').hide();
                     $$$._.fly01frm.refresh(data.id);
+                    console.log('fly01frm.refresh');
 
+                    $$$.loading.stop();
                     $$$.toast(strMsg, "success");
                     return true;
                 } else {
                     resultData = data.success;
-                    console.log('voltar');
                     $$$.loading.stop();
                     $$$.fn.submitErrorHandler(null, data.message);
                 }
@@ -144,7 +142,6 @@
             //$("input#movimentaEstoque").prop("checked", true);
             //$("input#geraNotaFiscal").prop("checked", true);
             //$$$._.dataVencimento.set(today);
-            //$$$._.data.set(today);
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
         } else {

@@ -230,9 +230,12 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputTextUI { Id = "fornecedorCnpj", Class = "col s12 m6", Label = "Cnpj", MaxLength = 60 , Readonly = true});
             config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadual", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocial", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
-                                                                                   
+
             #endregion
 
+            #region step Tansportador
+
+            #endregion
             cfg.Content.Add(config);
             return cfg;
         }

@@ -367,6 +367,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnChangeFornecedor.cshtml" />
     <Content Include="Views\NFeImportacao\Edit.cshtml" />
     <Content Include="Views\NFeImportacao\Create.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnBaixarXML.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

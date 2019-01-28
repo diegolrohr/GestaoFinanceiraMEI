@@ -18,24 +18,32 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Serialization;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.Controllers
 {
     [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNFeImportacao)]
     public class NFeImportacaoController : BaseController<NFeImportacaoVM>
     {
+        public NFeImportacaoController()
+        {
+            ExpandProperties = "fornecedor($select=nome)";
+        }
+
         public override Func<NFeImportacaoVM, object> GetDisplayData()
         {
             return x => new
             {
                 id = x.Id,
-                fornecedor_nome = x.Fornecedor?.Nome,
                 status = x.Status,
                 statusDescription = EnumHelper.GetDescription(typeof(Status), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(Status), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(Status), x.Status),
                 valorTotal = x.ValorTotal.ToString("C", AppDefaults.CultureInfoDefault),
-                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy")
+                dataEmissao = x.DataEmissao.ToString("dd/MM/yyyy"),
+                fornecedor_nome = (x.Fornecedor != null ? x.Fornecedor.Nome : "Vinculação pendente"),
+                serie = x.Serie,
+                numero = x.Numero
             };
         }
 
@@ -82,20 +90,22 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" },
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Baixar XML" }
+                new DataTableUIAction { OnClickFn = "fnBaixarXML", Label = "Baixar XML" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data", Priority = 2 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data", Priority = 2, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 4 });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 3,
+                Priority = 5,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 4, Type = "tel" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 6, Type = "tel" });
 
             cfg.Content.Add(config);
 
@@ -314,5 +324,27 @@ namespace Fly01.Compras.Controllers
                 return JsonResponseStatus.GetFailure(error.Message);
             }
         }
+
+        [OperationRole(PermissionValue = EPermissionValue.Read)]
+        public ActionResult BaixarXML(Guid id)
+        {
+            try
+            {
+                var NFeImportacao = Get(id);
+
+                string fileName = "NFeEntrada" + NFeImportacao.Numero.ToString() + ".xml";
+                string xml = Base64Helper.DecodificaBase64(NFeImportacao.XML);
+                xml = xml.Replace("\\", "");
+                Session.Add(fileName, xml);
+
+                return JsonResponseStatus.GetJson(new { downloadAddress = Url.Action("DownloadXMLString", new { fileName = fileName }) });
+            }
+            catch (Exception ex)
+            {
+                ErrorInfo error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
     }
 }

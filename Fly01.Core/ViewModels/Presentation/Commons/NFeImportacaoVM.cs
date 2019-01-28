@@ -1,8 +1,6 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
@@ -16,6 +14,15 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("dataEmissao")]
         public DateTime DataEmissao { get; set; }
+
+        [JsonProperty("serie")]
+        public string Serie { get; set; }
+
+        [JsonProperty("numero")]
+        public int Numero { get; set; }
+
+        [JsonProperty("numNotaFisca")]
+        public string NumNotaFisca { get; set; }
 
         [JsonProperty("tipo")]
         public string Tipo { get; set; }

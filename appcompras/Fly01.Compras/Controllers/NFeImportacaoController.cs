@@ -69,6 +69,7 @@ namespace Fly01.Compras.Controllers
                 Id = "fly01dt",
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string>() { "fnRenderEnum" },
                 Options = new DataTableUIConfig
                 {
                     OrderColumn = 0,

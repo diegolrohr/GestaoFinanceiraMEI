@@ -83,6 +83,7 @@
                         $('#stepTransportadora').hide();
                     }
                     $('#stepImportarArquivo').hide();
+                    $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
                     $$$._.fly01frm.refresh(data.id);
                     console.log('fly01frm.refresh');
 
@@ -145,7 +146,9 @@
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
         } else {
-            $('#stepImportacaoArquivo').hide();
+            $('#stepImportarArquivo').hide();
+            $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
+            $('li#stepFornecedor div.step-title').click();
         }
 
         fnRegrasStepFornecedor();

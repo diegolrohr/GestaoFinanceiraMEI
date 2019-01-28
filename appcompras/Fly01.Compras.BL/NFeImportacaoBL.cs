@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using System.IO;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.Rest;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
@@ -22,15 +23,17 @@ namespace Fly01.Compras.BL
         protected ProdutoBL ProdutoBL { get; set; }
         protected PedidoBL PedidoBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
+        protected UnidadeMedidaBL UnidadeMedidaBL { get; set; }
 
-        public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL) : base(context)
-        //, PedidoBL pedidoBL, PedidoItemBL pedidoItemBL
+        public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
             ProdutoBL = produtoBL;
-            //PedidoBL = pedidoBL;
-            //PedidoItemBL = pedidoItemBL;
+            PedidoBL = pedidoBL;
+            PedidoItemBL = pedidoItemBL;
+            UnidadeMedidaBL = unidadeMedidaBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -209,6 +212,40 @@ namespace Fly01.Compras.BL
                     entity.SomatorioIPI = NFe.InfoNFe.Total.ICMSTotal.SomatorioIPI;
                     entity.SomatorioFCPST = NFe.InfoNFe.Total.ICMSTotal.SomatorioFCPST;
                     entity.SomatorioProduto = NFe.InfoNFe.Total.ICMSTotal.SomatorioProdutos;
+
+                    #region Vincular produtos
+                    var unPadraoId = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN")?.Id;
+                    foreach (var item in NFe.InfoNFe.Detalhes.Select(x => x.Produto))
+                    {
+                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                        var unidadeMedida = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == item.UnidadeMedida.ToUpper());
+                        var NFeImportacaoProduto = new NFeImportacaoProduto()
+                        {
+                            NFeImportacaoId = entity.Id,
+                            NovoProduto = true,
+                            Codigo = item.Codigo,
+                            CodigoBarras = item.GTIN,
+                            Quantidade = item.Quantidade,
+                            Valor = item.ValorUnitario, 
+                            UnidadeMedidaId = unidadeMedida != null ? unidadeMedida.Id : unPadraoId.Value,
+                            FatorConversao = 1.00,
+                            TipoFatorConversao = TipoFatorConversao.Multiplicar,
+                            MovimentaEstoque = true,
+                            AtualizaDadosProduto = true,
+                            AtualizaValorCompra = true,
+                            AtualizaValorVenda = true,
+                            ValorVenda = 0.00,
+                            TipoValorVenda = TipoAtualizacaoValor.Percentual
+                        };
+
+                        if (produto != null)
+                        {
+                            NFeImportacaoProduto.ProdutoId = produto.Id;
+                            NFeImportacaoProduto.NovoProduto = false;
+                        }
+                        NFeImportacaoProdutoBL.Insert(NFeImportacaoProduto);
+                    }
+                    #endregion
                 }
             }
             else

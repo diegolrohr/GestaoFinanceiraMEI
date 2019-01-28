@@ -35,7 +35,10 @@ namespace Fly01.Compras.Controllers
                 statusDescription = EnumHelper.GetDescription(typeof(StatusNotaFiscal), x.Status),
                 statusCssClass = EnumHelper.GetCSS(typeof(StatusNotaFiscal), x.Status),
                 statusValue = EnumHelper.GetValue(typeof(StatusNotaFiscal), x.Status),
-                valorTotal = x.ValorTota
+                valorTotal = x.ValorTota ,
+                fornecedorCnpj = x.FornecedorCnpj,
+                transportatoraRazaoSocial = x.TransportadoraRazaoSocial,
+                transportadoraInscEstadual = x.TransportadoraInscEstadual
             };
         }
 
@@ -217,9 +220,8 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XMl" });
             config.Elements.Add(new InputTextUI { Id = "fornecedorNome", Class = "col s12 m6", Label = "Nome", MaxLength = 60 , Readonly = true});
             config.Elements.Add(new InputTextUI { Id = "fornecedorCnpj", Class = "col s12 m6", Label = "Cnpj", MaxLength = 60 , Readonly = true});
-            config.Elements.Add(new InputTextUI { Id = "inscEstadual", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
-            config.Elements.Add(new InputTextUI { Id = "razaoSocial", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
-            config.Elements.Add(new InputTextUI { Id = "cnpj", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadual", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportatoraRazaoSocial", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
                                                                                    
             #endregion
 
@@ -247,6 +249,8 @@ namespace Fly01.Compras.Controllers
                     {
                         entity.FornecedorNome = NFe.InfoNFe.Emitente.NomeFantasia;
                         entity.FornecedorCnpj = NFe.InfoNFe.Emitente.Cnpj;
+                        entity.TransportadoraRazaoSocial = NFe.InfoNFe.Emitente.NomeFantasia;
+                        entity.TransportadoraInscEstadual = NFe.InfoNFe.Emitente.InscricaoEstadual;
                     }
                 }
 

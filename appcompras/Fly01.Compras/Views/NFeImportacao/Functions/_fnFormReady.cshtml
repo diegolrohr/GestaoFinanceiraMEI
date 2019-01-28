@@ -159,18 +159,22 @@
         if ($("#fornecedorNome").val() === "") {
             $("#atualizarFornecedorField").hide();
             $("#criarNovoFornecedorField").show();
+            $('#criarNovoFornecedor').prop('checked', true);
         } else {
             $("#atualizarFornecedorField").show();
             $("#criarNovoFornecedorField").hide();
+            $('#criarNovoFornecedor').prop('checked', false);
         }
 
         $("#fornecedorNome").on("blur", function () {
             if ($("#fornecedorNome").val() === "") {
                 $("#atualizarFornecedorField").hide();
                 $("#criarNovoFornecedorField").show();
+                $('#criarNovoFornecedor').prop('checked', true);
             } else {
                 $("#atualizarFornecedorField").show();
                 $("#criarNovoFornecedorField").hide();
+                $('#criarNovoFornecedor').prop('checked', false);
             }
         });
 

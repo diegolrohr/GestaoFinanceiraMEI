@@ -95,6 +95,12 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("transportadoraNome")]
         public string TransportadoraNome { get; set; }
+
+        [JsonProperty("transportadoraRazaoSocial")]
+        public string TransportadoraRazaoSocial { get; set; }
+
+        [JsonProperty("transportadoraInscEstadual ")]
+        public string TransportadoraInscEstadual { get; set; }
         #endregion
 
         #region navigations

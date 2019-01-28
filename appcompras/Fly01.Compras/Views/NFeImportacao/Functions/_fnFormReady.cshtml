@@ -151,51 +151,46 @@
             $('li#stepFornecedor div.step-title').click();
         }
 
-        fnRegrasStepFornecedor();
+        fnRegras("#fornecedorNome", "#atualizarFornecedor", "#criarNovoFornecedor");
+        fnRegras("#transportadoraNome", "#atualizaTransportadora", "#criarTransportadora");
         fnBindOverrideSubmit();
     }
 
-    function fnRegrasStepFornecedor() {
-        if ($("#fornecedorNome").val() === "") {
-            $("#atualizarFornecedorField").hide();
-            $("#criarNovoFornecedorField").show();
-            $('#criarNovoFornecedor').prop('checked', true);
+    function fnRegras(idComplete, idAtualizar, idNovo) {
+        if ($(idComplete).val() === "") {
+            $(idAtualizar+"Field").hide();
+            $(idNovo+"Field").show();
+            $(idNovo).prop('checked', true);
         } else {
-            $("#atualizarFornecedorField").show();
-            $("#criarNovoFornecedorField").hide();
-            $('#criarNovoFornecedor').prop('checked', false);
+            $(idAtualizar+"Field").show();
+            $(idNovo + "Field").hide();
+            $(idNovo).prop('checked', false);
         }
 
-        $("#fornecedorNome").on("blur", function () {
-            if ($("#fornecedorNome").val() === "") {
-                $("#atualizarFornecedorField").hide();
-                $("#criarNovoFornecedorField").show();
-                $('#criarNovoFornecedor').prop('checked', true);
+        $(idComplete).on("blur", function () {
+            if ($(idComplete).val() === "") {
+                $(idAtualizar + "Field").hide();
+                $(idNovo + "Field").show();
+                $(idNovo).attr('checked', 'checked');
+                $("input" + idComplete).removeClass("invalid");
+                $("input" + idComplete).rules("remove", "required");
+
             } else {
-                $("#atualizarFornecedorField").show();
-                $("#criarNovoFornecedorField").hide();
-                $('#criarNovoFornecedor').prop('checked', false);
+                $(idAtualizar + "Field").show();
+                $(idNovo + "Field").hide();
+                $(idNovo).removeAttr('checked');
+                $("input" + idComplete).rules("add", { required: true });
             }
         });
 
-        function fnNoCheckedSaveFornecedor() {
-        } 
-
-        $('#criarNovoFornecedor').on("click", function () {
-            if ($("input#criarNovoFornecedor").attr("checked") === "checked") {
-                $('input#fornecedorNome').removeClass("invalid");
-                $("input#fornecedorNome").rules("remove", "required");
+        $(idNovo).on("click", function (e) {
+            if (e.target.checked === true) {
+                $("input"+idComplete).removeClass("invalid");
+                $("input" + idComplete).rules("remove", "required");
             }
             else {
-                $("input#fornecedorNome").rules("add", { required: true });
+                $("input" + idComplete).rules("add", { required: true });
             }
         });
-        $('li#stepFornecedor div.step-title').click(function () {
-            fnNoCheckedSaveFornecedor();
-        });
-        $('#stepImportarArquivo > div.step-content > div.step-actions > button.btn.next-step').click(function () {
-            fnNoCheckedSaveFornecedor();
-        });
-
     };
 </script>

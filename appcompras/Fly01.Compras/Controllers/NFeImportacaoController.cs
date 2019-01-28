@@ -148,13 +148,13 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Fornecedor",
                         Id = "stepFornecedor",
-                        Quantity = 9,
+                        Quantity = 8,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Transportadora",
                         Id = "stepTransportadora",
-                        Quantity = 3,
+                        Quantity = 8,
                     },
                     new FormWizardUIStep()
                     {
@@ -225,17 +225,65 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "change", Function = "" }
                 }
             });
-            config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XMl" });
-            config.Elements.Add(new InputTextUI { Id = "fornecedorNome", Class = "col s12 m6", Label = "Nome", MaxLength = 60 , Readonly = true});
-            config.Elements.Add(new InputTextUI { Id = "fornecedorCnpj", Class = "col s12 m6", Label = "Cnpj", MaxLength = 60 , Readonly = true});
-            config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadual", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
-            config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocial", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60 , Readonly = true});
+            config.Elements.Add(new InputTextUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 , Readonly = true});
+            config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
 
             #endregion
 
             #region step Tansportador
 
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "transportadoraId",
+                Class = "col s12 m6",
+                Label = "Transportadora",
+                DataUrl = Url.Action("Transportadora", "AutoComplete"),
+                LabelId = "transportadoraNome",
+                DataUrlPost = Url.Action("PostTransportadora"),
+                Required = false 
+            }, null));
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "atualizaTransportadora",
+                Class = "col s12 m6",
+                Label = "Atualizar dados da transportadora encontrada.",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "criarTransportadora",
+                Class = "col s12 m6",
+                Label = "Cadastrar dados do fornecedor encontrado.",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "" }
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "criarTransportadora",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Marque a opção, caso deseje atualizar a transportadora existente com os dados da importação."
+                }
+            });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transpotadora XML" });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadualXml", Class = "col s12 m6", Label = "Inscrição Estadual", Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraUFXml", Class = "col s12 m6", Label = "UF", Readonly = true });
+
             #endregion
+
             cfg.Content.Add(config);
             return cfg;
         }
@@ -261,10 +309,14 @@ namespace Fly01.Compras.Controllers
                     var NFe = (NFeVM)ser.Deserialize(sr);
                     if(NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Emitente != null)
                     {
-                        entity.FornecedorNome = NFe.InfoNFe.Emitente.NomeFantasia;
-                        entity.FornecedorCnpj = NFe.InfoNFe.Emitente.Cnpj;
-                        entity.FornecedorRazaoSocial = NFe.InfoNFe.Emitente.NomeFantasia;
-                        entity.FornecedorInscEstadual = NFe.InfoNFe.Emitente.InscricaoEstadual;
+                        entity.FornecedorNomeXml = NFe.InfoNFe.Emitente.NomeFantasia;
+                        entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente.Cnpj;
+                        entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente.NomeFantasia;
+                        entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente.InscricaoEstadual;
+                        entity.TransportadoraRazaoSocialXml = NFe.InfoNFe.Transporte.Transportadora.RazaoSocial;
+                        entity.TransportadorCNPJXml = NFe.InfoNFe.Transporte.Transportadora.CNPJ;
+                        entity.TransportadoraInscEstadualXml = NFe.InfoNFe.Transporte.Transportadora.IE;
+                        entity.TransportadoraUFXml = NFe.InfoNFe.Transporte.Transportadora.UF;
                     }
                 }
 

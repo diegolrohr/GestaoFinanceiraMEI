@@ -21,7 +21,7 @@ using Fly01.EmissaoNFE.Domain.Entities.NFe;
 
 namespace Fly01.Compras.Controllers
 {
-    //TODO:  [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNFeImportada)]
+    [OperationRole(ResourceKey = ResourceHashConst.ComprasComprasNFeImportacao)]
     public class NFeImportacaoController : BaseController<NFeImportacaoVM>
     {
         public override Func<NFeImportacaoVM, object> GetDisplayData()
@@ -58,7 +58,7 @@ namespace Fly01.Compras.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Importação de notas fiscais de entrada",
+                    Title = "Importação XML de entrada",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -79,10 +79,10 @@ namespace Fly01.Compras.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir", ShowIf = "row.registroFixo == 0" },
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Baixar XML", ShowIf = "row.registroFixo == 0" }
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Baixar XML" }
             }));
 
             config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 1 });
@@ -136,7 +136,6 @@ namespace Fly01.Compras.Controllers
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReady",
-                //Functions = new List<string> { "fnChangeEstado" },
                 Steps = new List<FormWizardUIStep>()
                 {
                     new FormWizardUIStep()

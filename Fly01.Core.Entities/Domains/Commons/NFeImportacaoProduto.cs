@@ -20,7 +20,7 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public string Descricao { get; set; }
 
-        public string Quantidade { get; set; }
+        public double Quantidade { get; set; }
 
         public double Valor { get; set; }
 

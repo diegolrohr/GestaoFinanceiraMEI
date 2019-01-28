@@ -94,14 +94,32 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public Guid? PedidoId { get; set; }
 
         #region Informações XML
-        [JsonProperty("fornecedorNome")]
-        public string FornecedorNome { get; set; }
+        [JsonProperty("fornecedorNomeXml")]
+        public string FornecedorNomeXml { get; set; }
 
-        [JsonProperty("fornecedorCnpj")]
-        public string FornecedorCnpj { get; set; }
+        [JsonProperty("fornecedorCnpjXml")]
+        public string FornecedorCnpjXml { get; set; }
 
-        [JsonProperty("transportadoraNome")]
-        public string TransportadoraNome { get; set; }
+        [JsonProperty("fornecedorInscEstadualXml")]
+        public string FornecedorInscEstadualXml { get; set; }
+
+        [JsonProperty("fornecedorRazaoSocialXml")]
+        public string FornecedorRazaoSocialXml { get; set; }
+
+        [JsonProperty("transportadoraXml")]
+        public string TransportadoraXml { get; set; }
+
+        [JsonProperty("transportadorCNPJXml")]
+        public string TransportadorCNPJXml { get; set; }
+
+        [JsonProperty("transportadoraRazaoSocialXml")]
+        public string TransportadoraRazaoSocialXml { get; set; }
+
+        [JsonProperty("transportadoraInscEstadualXml")]
+        public string TransportadoraInscEstadualXml { get; set; }
+
+        [JsonProperty("transportadoraUFXml")]
+        public string TransportadoraUFXml { get; set; }
         #endregion
 
         #region navigations

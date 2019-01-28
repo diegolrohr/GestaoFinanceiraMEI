@@ -58,7 +58,7 @@ namespace Fly01.Compras.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Importação de notas fiscais de entrada",
+                    Title = "Importação XML de entrada",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -80,7 +80,7 @@ namespace Fly01.Compras.Controllers
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Visualizar" },
+                new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" },
                 new DataTableUIAction { OnClickFn = "fnEditar", Label = "Baixar XML" }
             }));

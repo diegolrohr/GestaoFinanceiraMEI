@@ -46,7 +46,7 @@
                             $$$.loading.stop();
                             var strMsg = "Cadastrado com sucesso.";
                             $$$.toast(strMsg, "success");
-                            $$$.go("@Url.Action("List","NFeImpotacao")");
+                            $$$.go("@Url.Action("List","NFeImportacao")");
                         } else {
                             $$$.loading.stop();
                             $$$.fn.submitErrorHandler(null, data.message);
@@ -84,6 +84,7 @@
                     }
                     $('#stepImportarArquivo').hide();
                     $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
+                    $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
 
                     $$$.loading.stop();
@@ -135,7 +136,7 @@
     }
 
     function fnFormReady() {
-        //$("input#criarNovoFornecedor").rules("add", { required: true });
+        $$$.loading.start();
         if (isCreate()) {
             var today = new Date();
             //$("input#geraFinanceiro").prop("checked", true);
@@ -145,14 +146,18 @@
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
         } else {
+            if ($('#tipoFrete').val() === "SemFrete") {
+                $('#stepTransportadora').hide();
+            }
             $('#stepImportarArquivo').hide();
             $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
             $('li#stepFornecedor div.step-title').click();
         }
 
-        fnRegras("#fornecedorNome", "#atualizarFornecedor", "#criarNovoFornecedor");
-        fnRegras("#transportadoraNome", "#atualizaTransportadora", "#criarTransportadora");
+        fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");
+        fnRegras("#transportadoraNome", "#atualizaDadosTransportadora", "#novaTransportadora");
         fnBindOverrideSubmit();
+        $$$.loading.stop();
     }
 
     function fnRegras(idComplete, idAtualizar, idNovo) {
@@ -160,24 +165,27 @@
             $(idAtualizar+"Field").hide();
             $(idNovo+"Field").show();
             $(idNovo).prop('checked', true);
+            $("input" + idComplete).removeClass("invalid");
+            $("input" + idComplete).rules("remove", "required");
         } else {
             $(idAtualizar+"Field").show();
             $(idNovo + "Field").hide();
             $(idNovo).prop('checked', false);
+            $("input" + idComplete).rules("add", { required: true });
         }
 
         $(idComplete).on("blur", function () {
             if ($(idComplete).val() === "") {
                 $(idAtualizar + "Field").hide();
                 $(idNovo + "Field").show();
-                $(idNovo).attr('checked', 'checked');
+                $(idNovo).prop("checked", true);
                 $("input" + idComplete).removeClass("invalid");
                 $("input" + idComplete).rules("remove", "required");
 
             } else {
                 $(idAtualizar + "Field").show();
                 $(idNovo + "Field").hide();
-                $(idNovo).removeAttr('checked');
+                $(idNovo).prop("checked", false);
                 $("input" + idComplete).rules("add", { required: true });
             }
         });

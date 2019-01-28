@@ -19,6 +19,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Fly01.EmissaoNFE.Domain.Entities.NFe;
 using Fly01.Core.ViewModels;
+using System.Dynamic;
 
 namespace Fly01.Compras.Controllers
 {
@@ -62,18 +63,16 @@ namespace Fly01.Compras.Controllers
         }
 
         public override ContentResult List()
-                => Content(JsonConvert.SerializeObject(ListNFeImportacaoJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
+                => ListNFeImportacao();
 
-        public ContentResult ListNFeImportacao()
-            => Content(JsonConvert.SerializeObject(ListNFeImportacaoJson(Url, Request.Url.Scheme, gridLoad: "GridLoadNoFilter"), JsonSerializerSetting.Front), "application/json");
-
-        protected ContentUI ListNFeImportacaoJson(UrlHelper url, string scheme, string gridLoad = "GridLoad")
+        public ContentResult ListNFeImportacao(string gridLoad = "GridLoad")
         {
             var buttonLabel = "Mostrar todas as importações";
             var buttonOnClick = "fnRemoveFilter";
 
-            if (gridLoad == "GridLoadNoFilter")
+            if (Request.QueryString["action"] == "GridLoadNoFilter")
             {
+                gridLoad = Request.QueryString["action"];
                 buttonLabel = "Mostrar importações do mês atual";
                 buttonOnClick = "fnAddFilter";
             }
@@ -83,7 +82,7 @@ namespace Fly01.Compras.Controllers
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
-                    Title = "Importação XML de entrada",
+                    Title = "Importação XML",
                     Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
@@ -92,7 +91,7 @@ namespace Fly01.Compras.Controllers
             var cfgForm = new FormUI
             {
                 Id = "fly01frm",
-                UrlFunctions = url.Action("Functions", "NFeImportacao") + "?fns=",
+                UrlFunctions = Url.Action("Functions", "NFeImportacao") + "?fns=",
                 ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
                 Elements = new List<BaseUI>()
                 {
@@ -173,7 +172,7 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
 
-            return cfg;
+            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
         }
 
         protected override ContentUI FormJson()
@@ -216,7 +215,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Importar arquivo",
                         Id = "stepImportarArquivo",
-                        Quantity = 2,
+                        Quantity = 8,
                     },
                     new FormWizardUIStep()
                     {
@@ -255,6 +254,12 @@ namespace Fly01.Compras.Controllers
 
             #region stepImportação
             config.Elements.Add(new InputHiddenUI { Id = "id" });
+            config.Elements.Add(new InputHiddenUI { Id = "serie" });
+            config.Elements.Add(new InputHiddenUI { Id = "numero" });
+            config.Elements.Add(new InputHiddenUI { Id = "dataEmissao" });
+            config.Elements.Add(new InputHiddenUI { Id = "status" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipo" });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoFrete" });
             config.Elements.Add(new InputFileUI { Id = "arquivoXML", Class = "col s12 m12", Label = "Arquivo de importação (.xml)", Required = true, Accept = ".xml" });
             #endregion
 
@@ -273,9 +278,9 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "atualizarFornecedor",
+                Id = "atualizaDadosFornecedor",
                 Class = "col s12 m6",
-                Label = "Atualizar dados do fornecedor encontrado.",
+                Label = "Atualizar dados do fornecedor encontrado",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "" }
@@ -283,7 +288,7 @@ namespace Fly01.Compras.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "atualizarFornecedor",
+                Id = "atualizaDadosFornecedor",
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Marque a opção, caso deseje atualizar o fornecedor existente com os dados da importação."
@@ -291,24 +296,23 @@ namespace Fly01.Compras.Controllers
             });
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "criarNovoFornecedor",
+                Id = "novoFornecedor",
                 Class = "col s12 m6",
-                Label = "Cadastrar novo fornecedor ao fim do processo.",
+                Label = "Cadastrar novo fornecedor ao fim do processo",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "" }
                 }
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
-            config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60 , Readonly = true});
-            config.Elements.Add(new InputTextUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 , Readonly = true});
-            config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60 , Readonly = true });
-            config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60 , Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60, Readonly = true });
 
             #endregion
 
-            #region step Tansportador
-
+            #region step Tansportadora
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "transportadoraId",
@@ -317,14 +321,14 @@ namespace Fly01.Compras.Controllers
                 DataUrl = Url.Action("TransportadoraXML", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora"),
-                Required = false 
+                Required = false
             }, null));
 
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "atualizaTransportadora",
+                Id = "atualizaDadosTransportadora",
                 Class = "col s12 m6",
-                Label = "Atualizar dados da transportadora encontrada.",
+                Label = "Atualizar dados da transportadora encontrada",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "" }
@@ -333,9 +337,9 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputCheckboxUI
             {
-                Id = "criarTransportadora",
+                Id = "novaTransportadora",
                 Class = "col s12 m6",
-                Label = "Cadastrar dados do fornecedor encontrado.",
+                Label = "Cadastrar nova transportadora ao fim do processo",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "change", Function = "" }
@@ -343,7 +347,7 @@ namespace Fly01.Compras.Controllers
             });
             config.Helpers.Add(new TooltipUI
             {
-                Id = "criarTransportadora",
+                Id = "novaTransportadora",
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Marque a opção, caso deseje atualizar a transportadora existente com os dados da importação."
@@ -365,11 +369,29 @@ namespace Fly01.Compras.Controllers
         public ContentResult FormNFeImportacao(bool isEdit = false)
             => Content(JsonConvert.SerializeObject(FormNFeImportacaoJson(isEdit), JsonSerializerSetting.Front), "application/json");
 
+        protected NFeImportacaoFormVM GetNFeImportacaoForm(Guid id)
+        {
+            string resourceName = ResourceName;
+            string resourceById = String.Format("{0}/{1}", ResourceName, id);
+
+            if (string.IsNullOrEmpty(ExpandProperties))
+            {
+                return RestHelper.ExecuteGetRequest<NFeImportacaoFormVM>(resourceById);
+            }
+            else
+            {
+                var queryString = new Dictionary<string, string> {
+                    { "$expand", ExpandProperties }
+                };
+                return RestHelper.ExecuteGetRequest<NFeImportacaoFormVM>(resourceById, queryString);
+            }
+        }
+
         public override ContentResult Json(Guid id)
         {
             try
             {
-                NFeImportacaoVM entity = Get(id);
+                var entity = GetNFeImportacaoForm(id);
 
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(Base64Helper.DecodificaBase64(entity.XML));
@@ -381,19 +403,24 @@ namespace Fly01.Compras.Controllers
                     XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
                     StringReader sr = new StringReader(tagNFe.OuterXml);
                     var NFe = (NFeVM)ser.Deserialize(sr);
-                    if(NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Emitente != null)
+                    if (NFe != null && NFe.InfoNFe != null)
                     {
-                        entity.FornecedorNomeXml = NFe.InfoNFe.Emitente.NomeFantasia;
-                        entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente.Cnpj;
-                        entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente.NomeFantasia;
-                        entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente.InscricaoEstadual;
-                        entity.TransportadoraRazaoSocialXml = NFe.InfoNFe.Transporte.Transportadora.RazaoSocial;
-                        entity.TransportadorCNPJXml = NFe.InfoNFe.Transporte.Transportadora.CNPJ;
-                        entity.TransportadoraInscEstadualXml = NFe.InfoNFe.Transporte.Transportadora.IE;
-                        entity.TransportadoraUFXml = NFe.InfoNFe.Transporte.Transportadora.UF;
+                        if (NFe.InfoNFe.Emitente != null)
+                        {
+                            entity.FornecedorNomeXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                            entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente?.Cnpj;
+                            entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                            entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente?.InscricaoEstadual;
+                        }
+                        if (NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null)
+                        {
+                            entity.TransportadoraRazaoSocialXml = NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial;
+                            entity.TransportadorCNPJXml = NFe.InfoNFe.Transporte.Transportadora?.CNPJ;
+                            entity.TransportadoraInscEstadualXml = NFe.InfoNFe.Transporte.Transportadora?.IE;
+                            entity.TransportadoraUFXml = NFe.InfoNFe.Transporte.Transportadora?.UF;
+                        }
                     }
                 }
-
                 var x = Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
                 return x;
             }
@@ -411,33 +438,18 @@ namespace Fly01.Compras.Controllers
         {
             try
             {
-                var nota = new NFeImportacaoVM
-                {
-                    XML = Base64Helper.CodificaBase64(conteudo),
-                    XmlMd5 = Base64Helper.CalculaMD5Hash(conteudo),
-                    Status = Status.Aberto.ToString()
-                };
-                return Create(nota);
-            }
-            catch (Exception ex)
-            {
-                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
-                return JsonResponseStatus.GetFailure(error.Message);
-            }
-        }
+                dynamic nfeImportacao = new ExpandoObject();
+                nfeImportacao.xml = Base64Helper.CodificaBase64(conteudo);
+                nfeImportacao.xmlMd5 = Base64Helper.CalculaMD5Hash(conteudo);
+                nfeImportacao.status = Status.Aberto.ToString();
 
-        [HttpPost]
-        public override JsonResult Create(NFeImportacaoVM entityVM)
-        {
-            try
-            {
-                var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(entityVM, JsonSerializerSetting.Default));
+                var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(nfeImportacao, JsonSerializerSetting.Default));
                 NFeImportacaoVM postResult = JsonConvert.DeserializeObject<NFeImportacaoVM>(postResponse);
                 var response = new JsonResult
                 {
                     Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), tipoFrete = postResult.TipoFrete.ToString() }
                 };
-                return (response);
+                return response;
             }
             catch (Exception ex)
             {
@@ -451,7 +463,7 @@ namespace Fly01.Compras.Controllers
         {
             try
             {
-                var NFeImportacao = Get(id);
+                var NFeImportacao = GetNFeImportacaoForm(id);
 
                 string fileName = "NFeEntrada" + NFeImportacao.Numero.ToString() + ".xml";
                 string xml = Base64Helper.DecodificaBase64(NFeImportacao.XML);

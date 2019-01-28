@@ -27,7 +27,8 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoController()
         {
-            ExpandProperties = "fornecedor($select=nome)";
+            //TODO: Select properties
+            ExpandProperties = "fornecedor($select=nome),pedido,transportadora,condicaoParcelamento,formaPagamento,categoria";
         }
 
         public override Func<NFeImportacaoVM, object> GetDisplayData()
@@ -47,30 +48,88 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        public override List<HtmlUIButton> GetListButtonsOnHeader()
+        public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
         {
             var target = new List<HtmlUIButton>();
 
-            //if TODO: (UserCanWrite)
-            //{
+            if (UserCanWrite)
+            {
                 target.Add(new HtmlUIButton { Id = "new", Label = "Novo", OnClickFn = "fnNovo", Position = HtmlUIButtonPosition.Main });
-            //}
+                target.Add(new HtmlUIButton { Id = "filterGrid", Label = buttonLabel, OnClickFn = buttonOnClick, Position = HtmlUIButtonPosition.In });
+            }
 
             return target;
         }
 
         public override ContentResult List()
+                => Content(JsonConvert.SerializeObject(ListNFeImportacaoJson(Url, Request.Url.Scheme), JsonSerializerSetting.Front), "application/json");
+
+        public ContentResult ListNFeImportacao()
+            => Content(JsonConvert.SerializeObject(ListNFeImportacaoJson(Url, Request.Url.Scheme, gridLoad: "GridLoadNoFilter"), JsonSerializerSetting.Front), "application/json");
+
+        protected ContentUI ListNFeImportacaoJson(UrlHelper url, string scheme, string gridLoad = "GridLoad")
         {
+            var buttonLabel = "Mostrar todas as importações";
+            var buttonOnClick = "fnRemoveFilter";
+
+            if (gridLoad == "GridLoadNoFilter")
+            {
+                buttonLabel = "Mostrar importações do mês atual";
+                buttonOnClick = "fnAddFilter";
+            }
+
             var cfg = new ContentUIBase(Url.Action("Sidebar", "Home"))
             {
                 History = new ContentUIHistory { Default = Url.Action("Index") },
                 Header = new HtmlUIHeader
                 {
                     Title = "Importação XML de entrada",
-                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeader())
+                    Buttons = new List<HtmlUIButton>(GetListButtonsOnHeaderCustom(buttonLabel, buttonOnClick))
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns="
             };
+
+            var cfgForm = new FormUI
+            {
+                Id = "fly01frm",
+                UrlFunctions = url.Action("Functions", "NFeImportacao") + "?fns=",
+                ReadyFn = gridLoad == "GridLoad" ? "" : "fnChangeInput",
+                Elements = new List<BaseUI>()
+                {
+                    new InputHiddenUI()
+                    {
+                        Id = "dataFinal",
+                        Name = "dataFinal"
+                    },
+                    new InputHiddenUI()
+                    {
+                        Id = "dataInicial",
+                        Name = "dataInicial"
+                    }
+                }
+            };
+
+            if (gridLoad == "GridLoad")
+            {
+                cfgForm.Elements.Add(new PeriodPickerUI()
+                {
+                    Label = "Selecione o período",
+                    Id = "mesPicker",
+                    Name = "mesPicker",
+                    Class = "col s12 m6 offset-m3 l4 offset-l4",
+                    DomEvents = new List<DomEventUI>()
+                    {
+                        new DomEventUI()
+                        {
+                            DomEvent = "change",
+                            Function = "fnUpdateDataFinal"
+                        }
+                    }
+                });
+                cfgForm.ReadyFn = "fnUpdateDataFinal";
+            }
+
+            cfg.Content.Add(cfgForm);
 
             var config = new DataTableUI
             {
@@ -78,10 +137,15 @@ namespace Fly01.Compras.Controllers
                 UrlGridLoad = Url.Action("GridLoad"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Functions = new List<string>() { "fnRenderEnum" },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter() {Id = "dataInicial", Required = (gridLoad == "GridLoad") },
+                    new DataTableUIParameter() {Id = "dataFinal", Required = (gridLoad == "GridLoad") }
+                },
                 Options = new DataTableUIConfig
                 {
                     OrderColumn = 0,
-                    OrderDir = "asc"
+                    OrderDir = "desc"
                 }
             };
 
@@ -93,23 +157,23 @@ namespace Fly01.Compras.Controllers
                 new DataTableUIAction { OnClickFn = "fnBaixarXML", Label = "Baixar XML" }
             }));
 
-            config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 1 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data", Priority = 2, Type = "date" });
-            config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 3 });
-            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 4 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "dataEmissao", DisplayName = "Data Emissão", Priority = 1, Type = "date" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "fornecedor_nome", DisplayName = "Fornecedor", Priority = 3 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "serie", DisplayName = "Série", Priority = 6 });
+            config.Columns.Add(new DataTableUIColumn { DataField = "numero", DisplayName = "Número", Priority = 5 });
             config.Columns.Add(new DataTableUIColumn
             {
                 DataField = "status",
                 DisplayName = "Status",
-                Priority = 5,
+                Priority = 4,
                 Options = new List<SelectOptionUI>(SystemValueHelper.GetUIElementBase(typeof(Status))),
                 RenderFn = "fnRenderEnum(full.statusCssClass, full.statusDescription)"
             });
-            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total", Priority = 6, Type = "tel" });
+            config.Columns.Add(new DataTableUIColumn { DataField = "valorTotal", DisplayName = "Valor Total Nota", Priority = 2 });
 
             cfg.Content.Add(config);
 
-            return Content(JsonConvert.SerializeObject(cfg, JsonSerializerSetting.Front), "application/json");
+            return cfg;
         }
 
         protected override ContentUI FormJson()
@@ -284,6 +348,7 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        //estava bloqueando como conteúdo desconhecido
         [HttpPost]
         [ValidateInput(false)]
         public JsonResult ImportaArquivoXML(string conteudo)
@@ -346,5 +411,22 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        public override JsonResult GridLoad(Dictionary<string, string> filters = null)
+        {
+            if (filters == null)
+                filters = new Dictionary<string, string>();
+
+            if (Request.QueryString["dataFinal"] != "")
+                filters.Add("dataEmissao le ", Request.QueryString["dataFinal"]);
+            if (Request.QueryString["dataInicial"] != "")
+                filters.Add(" and dataEmissao ge ", Request.QueryString["dataInicial"]);
+
+            return base.GridLoad(filters);
+        }
+
+        public JsonResult GridLoadNoFilter()
+        {
+            return GridLoad();
+        }
     }
 }

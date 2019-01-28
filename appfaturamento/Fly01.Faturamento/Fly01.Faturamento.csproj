@@ -148,7 +148,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\mpn-faturamento-web-stage - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\HomologacaoStage.pubxml" />
     <None Include="Properties\PublishProfiles\Producao.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -265,7 +265,7 @@ namespace Fly01.Compras.Controllers
                 Id = "fornecedorId",
                 Class = "col s12 m6",
                 Label = "Fornecedor",
-                DataUrl = Url.Action("Fornecedor", "AutoComplete"),
+                DataUrl = Url.Action("FornecedorXML", "AutoComplete"),
                 LabelId = "fornecedorNome",
                 DataUrlPost = Url.Action("PostFornecedor"),
                 Required = true
@@ -314,7 +314,7 @@ namespace Fly01.Compras.Controllers
                 Id = "transportadoraId",
                 Class = "col s12 m6",
                 Label = "Transportadora",
-                DataUrl = Url.Action("Transportadora", "AutoComplete"),
+                DataUrl = Url.Action("TransportadoraXML", "AutoComplete"),
                 LabelId = "transportadoraNome",
                 DataUrlPost = Url.Action("PostTransportadora"),
                 Required = false 

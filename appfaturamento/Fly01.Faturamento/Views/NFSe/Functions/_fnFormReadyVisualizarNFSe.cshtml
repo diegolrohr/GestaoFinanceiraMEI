@@ -1,10 +1,6 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
-    function noComma(e) {
-        return e.replace(',', '.');
-    }
-
     function calculaTotalNFSeVisualizar() {
         var idNFSe = $("form#fly01mdlfrmVisualizarNFSe input#id").val();
         $$$.loading.start();

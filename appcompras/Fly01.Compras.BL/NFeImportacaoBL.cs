@@ -223,6 +223,7 @@ namespace Fly01.Compras.BL
                         var NFeImportacaoProduto = new NFeImportacaoProduto()
                         {
                             NFeImportacaoId = entity.Id,
+                            Descricao = item.Descricao,
                             NovoProduto = true,
                             Codigo = item.Codigo,
                             CodigoBarras = item.GTIN,

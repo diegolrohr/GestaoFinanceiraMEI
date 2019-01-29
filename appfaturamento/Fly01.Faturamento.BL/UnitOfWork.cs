@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.BL
         public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private OrdemVendaBL ordemVendaBL;
-        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL));
+        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL, EstadoBL));
 
         private OrdemVendaProdutoBL ordemVendaProdutoBL;
         public OrdemVendaProdutoBL OrdemVendaProdutoBL => ordemVendaProdutoBL ?? (ordemVendaProdutoBL = new OrdemVendaProdutoBL(Context));
@@ -105,7 +105,7 @@ namespace Fly01.Faturamento.BL
         public NotaFiscalItemBL NotaFiscalItemBL => notaFiscalItemBL ?? (notaFiscalItemBL = new NotaFiscalItemBL(Context));
 
         private NFeBL nfeBL;
-        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL, EstadoBL));
 
         private NFeProdutoBL nfeProdutoBL;
         public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));

@@ -68,6 +68,8 @@ namespace Fly01.Faturamento.DAL
             builder.Entity<Servico>().Ignore(m => m.CodigoIss);
             builder.Entity<Servico>().Ignore(m => m.CodigoNbs);
             builder.Entity<Servico>().Ignore(m => m.AbreviacaoUnidadeMedida);
+            builder.Entity<NotaFiscal>().Ignore(m => m.EstadoCodigoIbge);
+            builder.Entity<OrdemVenda>().Ignore(m => m.EstadoCodigoIbge);
 
         }
 

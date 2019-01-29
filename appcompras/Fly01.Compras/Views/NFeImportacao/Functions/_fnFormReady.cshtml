@@ -72,8 +72,6 @@
                 if (data.success) {
                     var strMsg = "Importado com sucesso.";
                     $("form#fly01frm input#id").val(data.id);
-                    //TODO: refresh dos dois dataTables
-                    // $$$._.dtPedidoItens.refresh();
 
                     var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                     window.history.pushState({}, document.title, url);

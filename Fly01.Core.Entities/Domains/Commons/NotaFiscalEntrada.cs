@@ -47,6 +47,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? EstadoPlacaVeiculoId { get; set; }
 
+        public string EstadoCodigoIbge { get; set; }
+
         public double? ValorFrete { get; set; }
 
         public double? PesoBruto { get; set; }

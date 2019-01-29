@@ -232,7 +232,7 @@ namespace Fly01.Compras.Controllers
                     new FormWizardUIStep()
                     {
                         Title = "Pendências",
-                        Id = "stepProdutosPendentes",
+                        Id = "stepProdutosPendencias",
                         Quantity = 1,
                     },
                     new FormWizardUIStep()
@@ -530,21 +530,26 @@ namespace Fly01.Compras.Controllers
                 Id = "dtProdutosPendencias",
                 UrlGridLoad = Url.Action("GetNFeImportacaoProdutosPendencia", "NFeImportacaoProduto"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
+                Options = new DataTableUIConfig
+                {
+                    PageLength = -1
+                },
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 },
-                //Callbacks = new DataTableUICallbacks()
-                //{
-                //    FooterCallback = "fnFooterCallbackEstoqueNegativo"
-                //},
-                //Functions = new List<string>() { "fnFooterCallbackEstoqueNegativo" }
+                Callbacks = new DataTableUICallbacks()
+                {
+                    FooterCallback = "fnFooterCallbackProdutosPendencias",
+                    DrawCallback = "fnHidePaginate"
+                },
+                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnHidePaginate" }
             };
 
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidadeString", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorString", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 4, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "codigoBarras", DisplayName = "GTIN", Priority = 1 });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quantidade", Priority = 2, Type = "float" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "float" });
 
             return dtProdutosPendenciasCfg;
         }

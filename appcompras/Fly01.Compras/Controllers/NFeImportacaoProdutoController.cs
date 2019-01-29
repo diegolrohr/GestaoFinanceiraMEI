@@ -29,7 +29,7 @@ namespace Fly01.Compras.Controllers
         public NFeImportacaoProdutoController()
         {
             //TODO: Select properties
-            ExpandProperties = "produto,unidadeMedida";
+            ExpandProperties = "produto($expand=unidadeMedida),unidadeMedida";
         }
 
         public override Func<NFeImportacaoProdutoVM, object> GetDisplayData()
@@ -90,9 +90,11 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
-                { " and produtoId eq", "null" }
+                { "(nFeImportacaoId eq", (string.IsNullOrEmpty(id) ? new Guid().ToString() : id)+")" },
+                { " and ((produtoId eq", "null)" },
+                { " or (produto ne null and produto/unidadeMedida/abreviacao ne", "unidadeMedida/abreviacao))" },
             };
+            //$expand = produto($expand = unidadeMedida),unidadeMedida &$filter = ((produtoId eq null) or(produto ne null and produto / unidadeMedida / abreviacao ne unidadeMedida / abreviacao))
             return GridLoad(filters);
         }
     }

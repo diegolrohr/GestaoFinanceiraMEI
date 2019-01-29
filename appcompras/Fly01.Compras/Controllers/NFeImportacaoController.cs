@@ -520,9 +520,10 @@ namespace Fly01.Compras.Controllers
                 },
                 Callbacks = new DataTableUICallbacks()
                 {
-                    FooterCallback = "fnFooterCallbackProdutosPendencias"
+                    FooterCallback = "fnFooterCallbackProdutosPendencias",
+                    DrawCallback = "fnHidePaginate"
                 },
-                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias" }
+                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnHidePaginate" }
             };
 
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });

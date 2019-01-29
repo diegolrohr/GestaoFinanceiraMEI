@@ -376,6 +376,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnEditar.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutosPendencias.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnHidePaginate.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

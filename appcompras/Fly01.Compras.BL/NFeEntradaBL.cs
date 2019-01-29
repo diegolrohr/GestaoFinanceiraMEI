@@ -36,6 +36,7 @@ namespace Fly01.Compras.BL
         protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         protected CertificadoDigitalBL CertificadoDigitalBL { get; set; }
         protected NotaFiscalInutilizadaBL NotaFiscalInutilizadaBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
         public NFeEntradaBL(AppDataContext context,
                      SerieNotaFiscalBL serieNotaFiscalBL,
@@ -47,7 +48,8 @@ namespace Fly01.Compras.BL
                      SubstituicaoTributariaBL substituicaoTributariaBL,
                      NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL,
                      FormaPagamentoBL formaPagamentoBL,
-                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL)
+                     NotaFiscalInutilizadaBL notaFiscalInutilizadaBL,
+                     EstadoBL estadoBL)
             : base(context)
         {
             SerieNotaFiscalBL = serieNotaFiscalBL;
@@ -60,6 +62,7 @@ namespace Fly01.Compras.BL
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             FormaPagamentoBL = formaPagamentoBL;
             NotaFiscalInutilizadaBL = notaFiscalInutilizadaBL;
+            EstadoBL = estadoBL;
         }
 
         public IQueryable<NFeEntrada> Everything => repository.All.Where(x => x.Ativo);
@@ -660,8 +663,21 @@ namespace Fly01.Compras.BL
         }
 
         public override void Insert(NFeEntrada entity)
-        {             
+        {
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(NFeEntrada entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(NFeEntrada entity)

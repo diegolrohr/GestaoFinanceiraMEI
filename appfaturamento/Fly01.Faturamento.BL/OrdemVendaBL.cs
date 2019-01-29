@@ -25,6 +25,7 @@ namespace Fly01.Faturamento.BL
         protected NFSeServicoBL NFSeServicoBL { get; set; }
         protected TotalTributacaoBL TotalTributacaoBL { get; set; }
         protected NotaFiscalItemTributacaoBL NotaFiscalItemTributacaoBL { get; set; }
+        protected EstadoBL EstadoBL;
         protected KitItemBL KitItemBL { get; set; }
 
         private readonly string descricaoVenda = @"Venda nº: {0} de {1}";
@@ -33,7 +34,7 @@ namespace Fly01.Faturamento.BL
         private readonly string routePrefixNameContaPagar = @"ContaPagar";
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
-        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL, KitItemBL kitItemBl) : base(context)
+        public OrdemVendaBL(AppDataContextBase context, OrdemVendaProdutoBL ordemVendaProdutoBL, OrdemVendaServicoBL ordemVendaServicoBL, NFeBL nfeBL, NFSeBL nfseBL, NFeProdutoBL nfeProdutoBL, NFSeServicoBL nfseServicoBL, TotalTributacaoBL totalTributacaoBL, NotaFiscalItemTributacaoBL notaFiscalItemTributacaoBL, KitItemBL kitItemBl, EstadoBL estadoBL) : base(context)
         {
             MustConsumeMessageServiceBus = true;
             OrdemVendaProdutoBL = ordemVendaProdutoBL;
@@ -44,6 +45,7 @@ namespace Fly01.Faturamento.BL
             NFSeServicoBL = nfseServicoBL;
             TotalTributacaoBL = totalTributacaoBL;
             NotaFiscalItemTributacaoBL = notaFiscalItemTributacaoBL;
+            EstadoBL = estadoBL;
             KitItemBL = kitItemBl;
         }
 
@@ -548,7 +550,20 @@ namespace Fly01.Faturamento.BL
                 }
                 GeraNotasFiscais(entity);
             }
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(OrdemVenda entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(OrdemVenda entity)

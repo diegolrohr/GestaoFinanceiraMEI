@@ -30,6 +30,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public Guid? EstadoPlacaVeiculoId { get; set; }
 
+        public string EstadoCodigoIbge { get; set; }
+
         public Guid? FormaPagamentoId { get; set; }
 
         public Guid? CondicaoParcelamentoId { get; set; }

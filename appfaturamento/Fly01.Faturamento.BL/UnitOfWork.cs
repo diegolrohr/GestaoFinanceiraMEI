@@ -105,7 +105,7 @@ namespace Fly01.Faturamento.BL
         public NotaFiscalItemBL NotaFiscalItemBL => notaFiscalItemBL ?? (notaFiscalItemBL = new NotaFiscalItemBL(Context));
 
         private NFeBL nfeBL;
-        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+        public NFeBL NFeBL => nfeBL ?? (nfeBL = new NFeBL(Context, SerieNotaFiscalBL, NFeProdutoBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoBL, FormaPagamentoBL, NotaFiscalInutilizadaBL, EstadoBL));
 
         private NFeProdutoBL nfeProdutoBL;
         public NFeProdutoBL NFeProdutoBL => nfeProdutoBL ?? (nfeProdutoBL = new NFeProdutoBL(Context));

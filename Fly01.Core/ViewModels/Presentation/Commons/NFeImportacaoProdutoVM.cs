@@ -1,14 +1,11 @@
 ﻿using Fly01.Core.Entities.Domains.Commons;
 using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class NFeImportacaoProdutoVM : DomainBaseVM
     {
-
         [JsonProperty("nfeImportacaoId")]
         public Guid NFeImportacaoId { get; set; }
 
@@ -28,7 +25,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         public string Descricao { get; set; }
 
         [JsonProperty("quantidade")]
-        public string Quantidade { get; set; }
+        public double Quantidade { get; set; }
 
         [JsonProperty("valor")]
         public double Valor { get; set; }
@@ -57,13 +54,13 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("valorVenda")]
         public double ValorVenda { get; set; }
 
-        [JsonProperty("tipoAtualizacaoValor")]
+        [JsonProperty("tipoValorVenda")]
         public string TipoValorVenda { get; set; }
 
         [JsonProperty("pedidoItemId")]
         public Guid? PedidoItemId { get; set; }
 
-        [JsonProperty("nFeImportacao")]
+        [JsonProperty("nfeImportacao")]
         public virtual NFeImportacao NFeImportacao { get; set; }
         [JsonProperty("produto")]
         public virtual Produto Produto { get; set; }

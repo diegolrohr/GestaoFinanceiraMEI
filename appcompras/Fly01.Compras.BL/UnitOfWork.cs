@@ -72,13 +72,13 @@ namespace Fly01.Compras.BL
         public OrdemCompraItemBL OrdemCompraItemBL => ordemCompraItemBL ?? (ordemCompraItemBL = new OrdemCompraItemBL(Context));
 
         private PedidoBL pedidoBL;
-        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL, KitItemBL));
+        public PedidoBL PedidoBL => pedidoBL ?? (pedidoBL = new PedidoBL(Context, PedidoItemBL, OrdemCompraBL, NFeEntradaBL, NFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL, TotalTributacaoBL, KitItemBL, EstadoBL));
 
         private PedidoItemBL pedidoItemBL;
         public PedidoItemBL PedidoItemBL => pedidoItemBL ?? (pedidoItemBL = new PedidoItemBL(Context));
 
         private OrcamentoBL orcamentoBL;
-        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL, OrdemCompraBL, KitItemBL));
+        public OrcamentoBL OrcamentoBL => orcamentoBL ?? (orcamentoBL = new OrcamentoBL(Context, PedidoBL, OrcamentoItemBL, PedidoItemBL, OrdemCompraBL, KitItemBL, EstadoBL));
 
         private OrcamentoItemBL orcamentoItemBL;
         public OrcamentoItemBL OrcamentoItemBL => orcamentoItemBL ?? (orcamentoItemBL = new OrcamentoItemBL(Context));
@@ -117,7 +117,7 @@ namespace Fly01.Compras.BL
         public NotaFiscalEntradaBL NotaFiscalEntradaBL => notaFiscalEntradaBL ?? (notaFiscalEntradaBL = new NotaFiscalEntradaBL(Context, NFeEntradaBL, CertificadoDigitalBL, TotalTributacaoBL, SerieNotaFiscalBL, NotaFiscalInutilizadaBL));
 
         private NFeEntradaBL nfeEntradaBL;
-        public NFeEntradaBL NFeEntradaBL => nfeEntradaBL ?? (nfeEntradaBL = new NFeEntradaBL(Context, SerieNotaFiscalBL, NFeProdutoEntradaBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoEntradaBL, FormaPagamentoBL, NotaFiscalInutilizadaBL));
+        public NFeEntradaBL NFeEntradaBL => nfeEntradaBL ?? (nfeEntradaBL = new NFeEntradaBL(Context, SerieNotaFiscalBL, NFeProdutoEntradaBL, TotalTributacaoBL, CertificadoDigitalBL, PessoaBL, CondicaoParcelamentoBL, SubstituicaoTributariaBL, NotaFiscalItemTributacaoEntradaBL, FormaPagamentoBL, NotaFiscalInutilizadaBL, EstadoBL));
 
         private NFeProdutoEntradaBL nfeProdutoEntradaBL;
         public NFeProdutoEntradaBL NFeProdutoEntradaBL => nfeProdutoEntradaBL ?? (nfeProdutoEntradaBL = new NFeProdutoEntradaBL(Context));

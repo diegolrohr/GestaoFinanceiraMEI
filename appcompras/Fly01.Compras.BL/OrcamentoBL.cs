@@ -19,14 +19,16 @@ namespace Fly01.Compras.BL
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected OrdemCompraBL OrdemCompraBL { get; set; }
         protected KitItemBL KitItemBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
-        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, KitItemBL kitItemBL) : base(context)
+        public OrcamentoBL(AppDataContext context, PedidoBL pedidoBL, OrcamentoItemBL orcamentoItemBL, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, KitItemBL kitItemBL, EstadoBL estadoBL) : base(context)
         {
             PedidoBL = pedidoBL;
             OrcamentoItemBL = orcamentoItemBL;
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
             KitItemBL = kitItemBL;
+            EstadoBL = estadoBL;
         }
 
         public override void ValidaModel(Orcamento entity)
@@ -119,7 +121,20 @@ namespace Fly01.Compras.BL
                 GeraPedidos(entity);
             }
 
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(Orcamento entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(Orcamento entity)

@@ -59,6 +59,8 @@ namespace Fly01.Compras.DAL
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.EstadoDestinoCodigoIbge);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoNcm);
             builder.Entity<SubstituicaoTributaria>().Ignore(m => m.CodigoCest);
+            builder.Entity<NotaFiscalEntrada>().Ignore(m => m.EstadoCodigoIbge);
+            builder.Entity<OrdemCompra>().Ignore(m => m.EstadoCodigoIbge);
 
             builder.Entity<NotaFiscalEntrada>()
                 .Map(m => m.ToTable("NotaFiscalEntrada"))

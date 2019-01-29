@@ -21,6 +21,7 @@ namespace Fly01.Compras.BL
         protected NotaFiscalItemTributacaoEntradaBL NotaFiscalItemTributacaoEntradaBL { get; set; }
         public const int MaxLengthObservacao = 200;
         protected KitItemBL KitItemBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
 
         protected OrdemCompraBL OrdemCompraBL { get; set; }
 
@@ -31,7 +32,7 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNameContaReceber = @"ContaReceber";
 
 
-        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL) : base(context)
+        public PedidoBL(AppDataContextBase context, PedidoItemBL pedidoItemBL, OrdemCompraBL ordemCompraBL, NFeEntradaBL nFeEntradaBL, NFeProdutoEntradaBL nFeProdutoEntradaBL, NotaFiscalItemTributacaoEntradaBL notaFiscalItemTributacaoEntradaBL, TotalTributacaoBL totalTributacaoBL, KitItemBL kitItemBL, EstadoBL estadoBL) : base(context)
         {
             PedidoItemBL = pedidoItemBL;
             OrdemCompraBL = ordemCompraBL;
@@ -40,6 +41,7 @@ namespace Fly01.Compras.BL
             NotaFiscalItemTributacaoEntradaBL = notaFiscalItemTributacaoEntradaBL;
             TotalTributacaoBL = totalTributacaoBL;
             KitItemBL = kitItemBL;
+            EstadoBL = estadoBL;
         }
 
         public override void ValidaModel(Pedido entity)
@@ -313,7 +315,20 @@ namespace Fly01.Compras.BL
                 GeraNotasFiscais(entity);
             }
 
+            GetIdPlacaEstado(entity);
             base.Insert(entity);
+        }
+
+        public void GetIdPlacaEstado(Pedido entity)
+        {
+            if (!entity.EstadoPlacaVeiculoId.HasValue && !string.IsNullOrEmpty(entity.EstadoCodigoIbge))
+            {
+                var dadosEstado = EstadoBL.All.FirstOrDefault(x => x.CodigoIbge == entity.EstadoCodigoIbge);
+                if (dadosEstado != null)
+                {
+                    entity.EstadoPlacaVeiculoId = dadosEstado.Id;
+                }
+            }
         }
 
         public override void Update(Pedido entity)

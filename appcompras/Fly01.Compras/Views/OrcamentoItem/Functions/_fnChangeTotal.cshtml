@@ -1,11 +1,9 @@
 ﻿<script>
-    function noComma(e) {
-        return e.replace(',', '.');
-    }
+    @Html.Partial("Functions/_fnMain");
 
     function handleNegativeValues() {
         var formOrcamento = 'form#fly01mdlfrmOrcamentoItem ';
-        
+
         if (parseFloat($(formOrcamento + 'input#valor').val()) < 0) {
             $(formOrcamento + 'input#valor').val(function () { return (parseFloat(noComma(this.value)) * -1) });
         }
@@ -39,9 +37,9 @@
             $(formOrcamento + 'input#total').val("");
             return;
         }
-        
+
         var total = (parseFloat(quantidade) * parseFloat(valor));
-        var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));      
+        var totalDescontado = total - (!desconto ? 0 : parseFloat(desconto));
 
         if (totalDescontado >= 0) {
             totalDescontado = totalDescontado.formatMoneyMask(2, 3, '', ',');
@@ -51,6 +49,6 @@
             total = total.formatMoneyMask(2, 3, '', ',');
             errTotalNegativo(total);
         }
-            
+
     }
 </script>

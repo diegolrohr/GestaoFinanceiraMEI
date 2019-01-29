@@ -86,6 +86,7 @@
                     $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
                     $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
+                    $$$._.dtProdutosPendencias.refresh();
 
                     $$$.loading.stop();
                     $$$.toast(strMsg, "success");
@@ -152,6 +153,7 @@
             $('#stepImportarArquivo').hide();
             $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
             $('li#stepFornecedor div.step-title').click();
+            $$$._.dtProdutosPendencias.refresh();
         }
 
         fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");

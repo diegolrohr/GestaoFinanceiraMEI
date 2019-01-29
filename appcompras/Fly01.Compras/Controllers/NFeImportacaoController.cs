@@ -233,19 +233,19 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Pendências",
                         Id = "stepProdutosPendentes",
-                        Quantity = 5,
+                        Quantity = 1,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 11,
+                        Quantity = 3,
                     },
                     new FormWizardUIStep()
                     {
                         Title = "Resumo/Finalizar",
                         Id = "stepResumoFinalizar",
-                        Quantity = 15,
+                        Quantity = 3,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -362,7 +362,12 @@ namespace Fly01.Compras.Controllers
 
             #endregion
 
+            #region step Produtos Pendências
+            config.Elements.Add(new DivElementUI { Id = "produtosPendencias", Class = "col s12 visible" });
+            #endregion
+
             cfg.Content.Add(config);
+            cfg.Content.Add(GetDtProdutosPendenciasCfg());
             return cfg;
         }
 
@@ -495,6 +500,33 @@ namespace Fly01.Compras.Controllers
         public JsonResult GridLoadNoFilter()
         {
             return GridLoad();
+        }
+
+        protected DataTableUI GetDtProdutosPendenciasCfg()
+        {
+            DataTableUI dtProdutosPendenciasCfg = new DataTableUI
+            {
+                Parent = "produtosPendenciasField",
+                Id = "dtProdutosPendencias",
+                UrlGridLoad = Url.Action("GetNFeImportacaoProdutosPendencia", "NFeImportacaoProduto"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                },
+                //Callbacks = new DataTableUICallbacks()
+                //{
+                //    FooterCallback = "fnFooterCallbackEstoqueNegativo"
+                //},
+                //Functions = new List<string>() { "fnFooterCallbackEstoqueNegativo" }
+            };
+
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidadeString", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorString", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 4, Type = "float", Searchable = false, Orderable = false });
+
+            return dtProdutosPendenciasCfg;
         }
     }
 }

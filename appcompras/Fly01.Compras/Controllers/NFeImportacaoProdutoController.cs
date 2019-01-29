@@ -48,6 +48,7 @@ namespace Fly01.Compras.Controllers
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 valorCurrency = x.Valor,
                 unidadeMedida_abreviacao = x.UnidadeMedida.Abreviacao,
+                produto_unidadeMedida_abreviacao = x.Produto?.UnidadeMedida.Abreviacao,
                 fatorConversao = x.Valor.ToString("R", AppDefaults.CultureInfoDefault),
                 fatorConversaoCurrency = x.FatorConversao,
                 tipoFatorConversao = x.TipoFatorConversao,

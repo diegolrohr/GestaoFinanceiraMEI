@@ -1,0 +1,13 @@
+﻿<script>
+    function createBtnExcluirProdutoPendencia(row) {
+        var formAttr = {
+            "class": "valign-wrapper right col s12 btn btn-narrow valid",
+            "id": "btnExcluirProdutoPendencia"
+        };
+        return createElem("button", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "delete_forever")]);
+    }
+
+    function fnRenderExcluirProdutoPendencia(data, type, row, meta) {
+        return createBtnExcluirProdutoPendencia(row).outerHTML;
+    }
+</script>

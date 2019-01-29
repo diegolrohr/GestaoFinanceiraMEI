@@ -6,12 +6,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 {
     public class NFeImportacaoVM : DomainBaseVM
     {
-        [JsonProperty("xml")]
-        public string XML{ get; set; }
-
-        [JsonProperty("xmlMd5")]
-        public string XmlMd5 { get; set; }
-
         [JsonProperty("dataEmissao")]
         public DateTime DataEmissao { get; set; }
 
@@ -20,9 +14,6 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("numero")]
         public int Numero { get; set; }
-
-        [JsonProperty("numNotaFisca")]
-        public string NumNotaFisca { get; set; }
 
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
@@ -93,41 +84,18 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("pedidoId")]
         public Guid? PedidoId { get; set; }
 
-        #region Informações XML
-        [JsonProperty("fornecedorNomeXml")]
-        public string FornecedorNomeXml { get; set; }
-
-        [JsonProperty("fornecedorCnpjXml")]
-        public string FornecedorCnpjXml { get; set; }
-
-        [JsonProperty("fornecedorInscEstadualXml")]
-        public string FornecedorInscEstadualXml { get; set; }
-
-        [JsonProperty("fornecedorRazaoSocialXml")]
-        public string FornecedorRazaoSocialXml { get; set; }
-
-        [JsonProperty("transportadoraXml")]
-        public string TransportadoraXml { get; set; }
-
-        [JsonProperty("transportadorCNPJXml")]
-        public string TransportadorCNPJXml { get; set; }
-
-        [JsonProperty("transportadoraRazaoSocialXml")]
-        public string TransportadoraRazaoSocialXml { get; set; }
-
-        [JsonProperty("transportadoraInscEstadualXml")]
-        public string TransportadoraInscEstadualXml { get; set; }
-
-        [JsonProperty("transportadoraUFXml")]
-        public string TransportadoraUFXml { get; set; }
-        #endregion
-
         #region navigations
+        [JsonProperty("pedido")]
         public virtual Pedido Pedido { get; set; }
+        [JsonProperty("fornecedor")]
         public virtual Pessoa Fornecedor { get; set; }
+        [JsonProperty("transportadora")]
         public virtual Pessoa Transportadora { get; set; }
+        [JsonProperty("condicaoParcelamento")]
         public virtual CondicaoParcelamento CondicaoParcelamento { get; set; }
+        [JsonProperty("formaPagamento")]
         public virtual FormaPagamento FormaPagamento { get; set; }
+        [JsonProperty("categoria")]
         public virtual Categoria Categoria { get; set; }
         #endregion
 

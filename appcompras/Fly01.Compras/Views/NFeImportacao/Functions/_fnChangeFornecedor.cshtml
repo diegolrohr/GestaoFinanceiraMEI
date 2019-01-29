@@ -2,13 +2,12 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnChangeFornecedor() {
-        debugger;
         if ($("#fornecedorNome").val() === "") {
-            $("#atualizarFornecedorField").hide();
-            $("#criarNovoFornecedorField").show();
+            $("#atualizaDadosFornecedorField").hide();
+            $("#novoFornecedorField").show();
         } else {
-            $("#atualizarFornecedorField").show();
-            $("#criarNovoFornecedorField").hide();
+            $("#atualizaDadosFornecedorField").show();
+            $("#novoFornecedorField").hide();
         }
     }
 </script>

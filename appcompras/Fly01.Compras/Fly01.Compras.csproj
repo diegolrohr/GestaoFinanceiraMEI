@@ -373,6 +373,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnAddFilter.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnChangeInput.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnEditar.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

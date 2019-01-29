@@ -239,7 +239,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Produtos",
                         Id = "stepProdutos",
-                        Quantity = 3,
+                        Quantity = 2,
                     },
                     new FormWizardUIStep()
                     {
@@ -366,8 +366,28 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new DivElementUI { Id = "produtosPendencias", Class = "col s12 visible" });
             #endregion
 
+            #region step Produtos
+
+            config.Elements.Add(new ButtonUI
+            {
+                Id = "alterarSelecionados",                
+                Class = "col s12 m3 right",
+                ClassBtn = "btn-narrow",
+                Label = "",
+                Value = "Alterar Selecionados",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "click", Function = "fnModalAlterarProdutos" }
+                }
+            });
+
+            config.Elements.Add(new DivElementUI { Id = "produtosResolvidos", Class = "col s12 visible" });
+
+            #endregion
+
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtProdutosPendenciasCfg());
+            cfg.Content.Add(GetDtProdutosResolvidosfg());
             return cfg;
         }
 
@@ -527,6 +547,81 @@ namespace Fly01.Compras.Controllers
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 4, Type = "float", Searchable = false, Orderable = false });
 
             return dtProdutosPendenciasCfg;
+        }
+
+        protected DataTableUI GetDtProdutosResolvidosfg()
+        {
+            DataTableUI dtProdutosResolvidosCfg = new DataTableUI
+            {
+                Parent = "produtosResolvidosField",
+                Id = "dtProdutosResolvidos",
+                UrlGridLoad = Url.Action("GetNFeImportacaoProdutos", "NFeImportacaoProduto"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Functions = new List<string> { "fnRenderCheck", "fnRenderButton", "fnRenderText" },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                },
+            };
+
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidadeString", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorString", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 5, Type = "float", Searchable = false, Orderable = false });
+
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 6,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 8, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
+
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "excluirItem", DisplayName = "", Priority = 9, Searchable = false, Orderable = false, RenderFn = "fnRenderButton", Class = "dt-center" });
+
+
+            
+            return dtProdutosResolvidosCfg;
+        }
+
+        public ContentResult ModalAlterarProdutos()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Alterar valor de venda",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/"
+                },
+                Id = "fly01mdlfrmProdutoValorVendas",
+                //ReadyFn = "fnFormReadyModalKitItens"
+            };
+
+            config.Elements.Add(new ButtonGroupUI()
+            {
+                Id = "fly01btngrpFinalidade",
+                Class = "col s12 m12",
+                OnClickFn = "fnChangeFinalidade",
+                Label = "Tipo do pedido",
+                Options = new List<ButtonGroupOptionUI>
+                {
+                    new ButtonGroupOptionUI { Id = "btnPercent", Label = "% Percentual"},
+                    new ButtonGroupOptionUI { Id = "btnValor", Label = "Valor"},
+                }
+            });
+
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "quantidade",
+                Class = "col s12 m2",
+                Label = "Quantidade",
+                Value = "1",
+                Required = true
+            });
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }
 }

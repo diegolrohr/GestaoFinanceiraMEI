@@ -81,7 +81,8 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
+                //{ " and produtoId ne", "null" }
             };
             return GridLoad(filters);
         }

@@ -1,0 +1,14 @@
+﻿<script>
+    function fnRenderText(row, type) {
+        let attr = { "type": "text", "id": `${type}${row.id}` };
+        if (row.parentId) attr["data-parentId"] = row.parentId;
+        if (type) attr["data-type"] = type;
+        if (row.id) attr["data-id"] = row.id;
+        if (row[type]) attr.checked = "checked";
+
+        return createElem("div", null, [
+            createElem("input", attr),
+            createElem("label", { "for": `${type}${row.id}` })
+        ]).outerHTML;
+    }
+</script>

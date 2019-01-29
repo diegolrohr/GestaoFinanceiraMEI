@@ -87,6 +87,7 @@
                     $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
                     $$$._.dtProdutosPendencias.refresh();
+                    $$$._.dtProdutosResolvidos.refresh();
 
                     $$$.loading.stop();
                     $$$.toast(strMsg, "success");
@@ -154,6 +155,7 @@
             $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
             $('li#stepFornecedor div.step-title').click();
             $$$._.dtProdutosPendencias.refresh();
+            $$$._.dtProdutosResolvidos.refresh();
         }
 
         fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");

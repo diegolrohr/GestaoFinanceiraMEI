@@ -1,7 +1,5 @@
 ﻿<script>
-    function noComma(e) {
-        return e.replace(',', '.');
-    }
+    @Html.Partial("Functions/_fnMain");
 
     function fnChangeFrete() {
         fnEnableInput();
@@ -21,7 +19,7 @@
             if (tipoFrete == "SemFrete") {
                 fnDisableInput();
             }
-            
+
             $$$.fn.updateTextFields();
         }
     }

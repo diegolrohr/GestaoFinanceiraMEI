@@ -1,14 +1,12 @@
 ﻿<script>
+        @Html.Partial("Functions/_fnMain");
+
     function fnChangeManutencao(event, data) {
         $('form#fly01mdlfrmOrdemServicoManutencao input#produtoManutencaoId').val(data.item.id);
         fnChangeTotalManutencao();
     }
 
-    function noComma(e) {
-        return e.replace(',', '.');
-    }
-
-    function handleNegativeValuesManutencao() {        
+    function handleNegativeValuesManutencao() {
         var formOrdemServico = 'form#fly01mdlfrmOrdemServicoManutencao ';
 
         if (parseFloat($(formOrdemServico + 'input#quantidade').val()) < 0) {

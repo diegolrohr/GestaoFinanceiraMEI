@@ -69,7 +69,7 @@ namespace Fly01.Faturamento.BL
         public GrupoTributarioBL GrupoTributarioBL => grupoTributarioBL ?? (grupoTributarioBL = new GrupoTributarioBL(Context, CfopBL));
 
         private OrdemVendaBL ordemVendaBL;
-        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL));
+        public OrdemVendaBL OrdemVendaBL => ordemVendaBL ?? (ordemVendaBL = new OrdemVendaBL(Context, OrdemVendaProdutoBL, OrdemVendaServicoBL, NFeBL, NFSeBL, NFeProdutoBL, NFSeServicoBL, TotalTributacaoBL, NotaFiscalItemTributacaoBL, KitItemBL, EstadoBL));
 
         private OrdemVendaProdutoBL ordemVendaProdutoBL;
         public OrdemVendaProdutoBL OrdemVendaProdutoBL => ordemVendaProdutoBL ?? (ordemVendaProdutoBL = new OrdemVendaProdutoBL(Context));

@@ -582,22 +582,29 @@ namespace Fly01.Compras.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 },
+                Callbacks = new DataTableUICallbacks
+                {
+                    DrawCallback = "fnDrawCallback"
+                },
+                Options = new DataTableUIConfig
+                {
+                    WithoutRowMenu = true,
+                    PageLength = -1,
+                    NoExportButtons = true
+                }
             };
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidadeString", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorString", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 5, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Searchable = false, Orderable = false, Priority = 0 });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quant.", Priority = 1, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 6,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 8, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 4,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "excluirItem", DisplayName = "", Priority = 9, Searchable = false, Orderable = false, RenderFn = "fnRenderButton", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "excluirItem", DisplayName = "", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnRenderButton", Class = "dt-center" });
 
-
-            
             return dtProdutosResolvidosCfg;
         }
 
@@ -607,23 +614,24 @@ namespace Fly01.Compras.Controllers
             {
                 Title = "Alterar valor de venda",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
+                //ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnSalvarProduto" },
+                ConfirmAction = new ModalUIAction() { Label = "Salvar" , OnClickFn = "fnSalvarProduto" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {
-                    Create = @Url.Action("Create"),
-                    Edit = @Url.Action("Edit"),
+                    //Create = @Url.Action("PostProdutos"),
+                    //Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/"
                 },
                 Id = "fly01mdlfrmProdutoValorVendas",
-                //ReadyFn = "fnFormReadyModalKitItens"
+                ReadyFn = "fnFormReadyModal",
             };
 
             config.Elements.Add(new ButtonGroupUI()
             {
                 Id = "fly01btngrpFinalidade",
                 Class = "col s12 m12",
-                OnClickFn = "fnChangeFinalidade",
+                OnClickFn = "",
                 Label = "Tipo do pedido",
                 Options = new List<ButtonGroupOptionUI>
                 {
@@ -632,16 +640,22 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.Elements.Add(new InputFloatUI
+            config.Elements.Add(new InputCustommaskUI
             {
-                Id = "quantidade",
-                Class = "col s12 m2",
-                Label = "Quantidade",
-                Value = "1",
-                Required = true
+                Id = "percentualId",
+                Class = "col s12 m6",
+                Label = "Percentual",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorId",
+                Class = "col s12 m6",
+                Label = "Valor"
+            });
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
     }
 }

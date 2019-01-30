@@ -2,7 +2,11 @@
 
     function inputsPendencias(row) {
         var inputs = [];
-        inputs.push(inputHiddenId("fatorConversao"+`${row.id}`, "fatorConversao", row.fatorConversaoCurrency));
+        inputs.push(inputHiddenId("unidadeXml" + `${row.id}`, "unidadeXml", row.unidadeMedida_abreviacao));
+        inputs.push(inputHiddenId("unidadeCadastro" + `${row.id}`, "unidadeCadastro", row.produto_unidadeMedida_abreviacao));
+        inputs.push(inputHiddenId("quantidade" + `${row.id}`, "quantidade", row.quantidadeCurrency));
+        inputs.push(inputHiddenId("valor" + `${row.id}`, "valor", row.valorCurrency));
+        inputs.push(inputHiddenId("fatorConversao" + `${row.id}`, "fatorConversao", row.fatorConversaoCurrency));
         inputs.push(inputHiddenId("tipoFatorConversao" + `${row.id}`, "tipoFatorConversao", row.tipoFatorConversao));
         inputs.push(inputHiddenId("unidadeCadastro" + `${row.id}`, "unidadeCadastro", row.produto_unidadeMedida_abreviacao));
 
@@ -29,28 +33,33 @@
               createElem("i", {"class":"material-icons"}, "save")
             );
     };
-    function fatorConversaoButton(row) {
-        var fnClickParametros = "fnModalFatorConversao(" + "'" + row.id + "'"
-            + "," + `${row.unidadeMedida_abreviacao}`
-            + "," + $("#unidadeCadastro" + `${row.id}`).val()
-            + "," + `${row.quantidadeCurrency}`
-            + "," + `${row.valorCurrency}`
-            + "," + $("#fatorConversao" + `${row.id}`).val()
-            + "," + $("#tipoFatorConversao" + `${row.id}`).val()
-            + ")";
 
+    function fatorConversaoButton(row) {
         var formAttr = {
             "class": "btn btn-narrow valid",
             "id": "btnFatorconversao"+`${row.id}`,
-            "onClick": fnClickParametros,
+            "onClick": "fnModalFatorConversao(" + "'" + row.id + "'" + ")",
         };
         return createElem("a", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "compare_arrows")]);
+    }
+
+    function fnModalFatorConversao(id) {
+        var baseModalUrl = "@Url.Action("ModalFatorConversao", "NFeImportacaoProduto")";
+
+        baseModalUrl += "?id=" + id;
+        baseModalUrl += "&unidadeXml=" + $("#unidadeXml" + `${id}`).val();;
+        baseModalUrl += "&unidadeCadastro=" + $("#unidadeCadastro" + `${id}`).val();
+        baseModalUrl += "&valor=" + $("#valor" + `${id}`).val();
+        baseModalUrl += "&quantidade=" + $("#quantidade" + `${id}`).val();
+        baseModalUrl += "&fatorConversao=" + $("#fatorConversao" + `${id}`).val();
+        baseModalUrl += "&tipoFatorConversao=" + $("#tipoFatorConversao" + `${id}`).val();
+        $$$.modal(baseModalUrl);
     }
 
     function createForm(row) {
         var action = "@Url.Action("SalvarProdutoPendencia", "NFeImportacaoProduto")";
 
-        var formAttr = { 
+        var formAttr = {
             "method": "POST", "action": action,
             "class": "produtoPendenciaForm valign-wrapper right col s12",
             "style": "padding-left: 0;"
@@ -79,9 +88,9 @@
         }
         else {
             var formData = that.serializeObject();
-            
+
             formData.fatorConversao = parseFloat(formData.fatorConversao);
-            
+
             if (formData.fatorConversao <= 0) {
                 $$$.toast("Fator de conversão deve ser superior a zero.", "error");
                 that.loading("stop");

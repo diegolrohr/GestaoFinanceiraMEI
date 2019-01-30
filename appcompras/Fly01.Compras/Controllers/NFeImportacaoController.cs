@@ -570,8 +570,8 @@ namespace Fly01.Compras.Controllers
             };
 
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Priority = 1 });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidadeString", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorString", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "unidadeMedidaAbreviacao", DisplayName = "Saldo Estoque", Priority = 5, Type = "float", Searchable = false, Orderable = false });
 
@@ -581,8 +581,6 @@ namespace Fly01.Compras.Controllers
 
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "excluirItem", DisplayName = "", Priority = 9, Searchable = false, Orderable = false, RenderFn = "fnRenderButton", Class = "dt-center" });
 
-
-            
             return dtProdutosResolvidosCfg;
         }
 
@@ -601,14 +599,14 @@ namespace Fly01.Compras.Controllers
                     Get = @Url.Action("Json") + "/"
                 },
                 Id = "fly01mdlfrmProdutoValorVendas",
-                //ReadyFn = "fnFormReadyModalKitItens"
+                ReadyFn = "fnFormReadyModal"
             };
 
             config.Elements.Add(new ButtonGroupUI()
             {
                 Id = "fly01btngrpFinalidade",
                 Class = "col s12 m12",
-                OnClickFn = "fnChangeFinalidade",
+                OnClickFn = "",
                 Label = "Tipo do pedido",
                 Options = new List<ButtonGroupOptionUI>
                 {
@@ -617,15 +615,20 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.Elements.Add(new InputFloatUI
+            config.Elements.Add(new InputCustommaskUI
             {
-                Id = "quantidade",
-                Class = "col s12 m2",
-                Label = "Quantidade",
-                Value = "1",
-                Required = true
+                Id = "percentualId",
+                Class = "col s12 m6",
+                Label = "Percentual",
+                Data = new { inputmask = "'mask': '9{1,3}[,9{1,2}] %', 'alias': 'decimal', 'autoUnmask': true, 'suffix': ' %', 'radixPoint': ',' " }
             });
 
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorId",
+                Class = "col s12 m6",
+                Label = "Valor"
+            });
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
     }

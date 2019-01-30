@@ -1,0 +1,15 @@
+﻿<script>
+    function fnFormReadyModal() {
+        $("#btnValor").addEventListener("click", function () {
+            $('#valorId').show();
+            $('#percentualId').hide();
+        });
+
+        document.getElementById("btnPercent").addEventListener("click", function () {
+            $('#valorId').hide();
+            $('#percentualId').show();
+        });
+
+        $('#btnPercent').click();
+    }
+</script>

@@ -385,6 +385,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnRenderButton.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

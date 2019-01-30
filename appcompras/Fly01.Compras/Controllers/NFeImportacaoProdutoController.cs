@@ -1,25 +1,12 @@
 ﻿using Fly01.Core;
-using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
-using Fly01.Core.Presentation.Commons;
-using Fly01.Core.Rest;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.uiJS.Enums;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Web.Mvc;
-using System.Xml;
-using System.Xml.Serialization;
-using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using Fly01.Core.ViewModels;
-using System.Dynamic;
 
 namespace Fly01.Compras.Controllers
 {
@@ -28,7 +15,7 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoProdutoController()
         {
-            //TODO: Select properties
+            //TODO:diego Select properties
             ExpandProperties = "produto($expand=unidadeMedida),unidadeMedida";
         }
 

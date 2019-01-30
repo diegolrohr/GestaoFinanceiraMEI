@@ -1,29 +1,30 @@
 ﻿<script>
 
-    function inputSaldoInventariado(value) {
-        var attr = { "type": "text", "id": "saldoInventariado", "name": "saldoInventariado", "value": value, "style": "margin-right: 11px", "class": "numbers" };
+    function inputsPendencias(row) {
+        var inputs = [];
 
-        if ($('input#inventarioStatus').val() === "Finalizado") {
-            $('a.fly01-dt-menu').parent().hide();
-            attr.disabled = 'disabled';
+        if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
+        {
+            //AutoComplete
+            //Check Novo
+            inputs.push(fnRenderCheck(row, "novoProduto"));
         }
-            
-
-        return createElem("input", attr);
+        else {
+            //Fator
+            inputs.push(createElem("label", { "html": "Fator Conversão", "style": "margin-right: 11px" }));
+            inputs.push(createElem("input", { "type": "text", "id": "fatorConversao", "name": "fatorConversao", "value": 1.0, "style": "margin-right: 11px", "class": "numbers" }));
+            //Tipo
+        }
+        return createElem("div", { "class": `right col s12` }, inputs);
     };
 
     function inputHiddenId(id, value) {
         var attr = { "type": "hidden", "id": id, "name": id, "value": value };
-
         return createElem("input", attr);
     };
 
     function submitButton() {
         var attr = { "type": "submit", "class": "btn btn-narrow valid", "id": "" }
-
-        if ($('input#inventarioStatus').val() === "Finalizado")
-            attr.disabled = 'disabled';
-
         return createElem("button", attr,
               createElem("i", {"class":"material-icons"}, "save")
             );
@@ -34,25 +35,23 @@
 
         var formAttr = { 
             "method": "POST", "action": action,
-            "class": "saldoInventariadoForm valign-wrapper right col s12",
+            "class": "produtoPendenciaForm valign-wrapper right col s12",
             "style": "padding-left: 0;"
         }
 
         return createElem("form", formAttr,[ //Inner Content
-                    inputHiddenId("produtoId", row.produtoIdRow),
-                    inputHiddenId("inventarioId", row.inventarioIdRow),
-                    inputSaldoInventariado(row.saldoInventariado),
+                    inputHiddenId("id", row.id),
+                    inputsPendencias(row),
                     submitButton()
                 ]);
     };
 
     function fnRenderSalvarProdutoPendencia(data, type, row, meta) {
-        
         return createForm(row).outerHTML;
     };
 
-    $(document).off("submit", "form.saldoInventariadoForm");
-    $(document).on("submit", "form.saldoInventariadoForm", function (e) {
+    $(document).off("submit", "form.produtoPendenciaForm");
+    $(document).on("submit", "form.produtoPendenciaForm", function (e) {
         var that = $(this);
         that.loading("start");
         e.preventDefault();

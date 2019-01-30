@@ -81,7 +81,6 @@ namespace Fly01.Core.Presentation
             if (UserCanWrite)
                 return customWriteActions;
 
-            //TODO: Visualizar verificar
             return new List<DataTableUIAction> { new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" } };
         }
 

@@ -1,6 +1,6 @@
 ﻿<script>
     function fnRenderCheck(row, type) {
-        let attr = { "type": "checkbox", "class": "permchk", "id": `${type}${row.id}` };
+        let attr = { "type": "checkbox", "class": "permchk", "id": `${type}` };
         if (row.parentId) attr["data-parentId"] = row.parentId;
         if (type) attr["data-type"] = type;
         if (row.id) attr["data-id"] = row.id;

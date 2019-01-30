@@ -385,7 +385,6 @@
     <Content Include="Views\NFeImportacao\Functions\_fnRenderButton.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
-    <Content Include="Views\NFeImportacao\Functions\_fnCheckNovoProduto.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnRenderExcluirProdutoPendencia.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnRenderSalvarProdutoPendencia.cshtml" />
     <None Include="Web.Homologacao.config">

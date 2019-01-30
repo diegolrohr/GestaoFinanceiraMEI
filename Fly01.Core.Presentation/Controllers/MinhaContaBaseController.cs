@@ -123,8 +123,8 @@ namespace Fly01.Core.Presentation.Controllers
 
                 var configuracao = new MinhaContaConfiguracaoVM()
                 {
-                    CodigoMaxime = "T94517",//TODO: SessionManager.Current.UserData.TokenData.CodigoMaxime
-                    //CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
+                    //CodigoMaxime = "T94517",
+                    CodigoMaxime = SessionManager.Current.UserData.TokenData.CodigoMaxime,
                     VencimentoInicial = dataInicial,
                     VencimentoFinal = dataFinal,
                     Posicao = "TODOS"

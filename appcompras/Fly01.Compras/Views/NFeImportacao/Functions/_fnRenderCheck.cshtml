@@ -1,14 +1,20 @@
 ﻿<script>
-    function fnRenderCheck(row, type) {
+    function fnRenderCheck(row, type, ignoreOuterHTML) {
         let attr = { "type": "checkbox", "class": "permchk", "id": `${type}` };
         if (row.parentId) attr["data-parentId"] = row.parentId;
         if (type) attr["data-type"] = type;
         if (row.id) attr["data-id"] = row.id;
         if (row[type]) attr.checked = "checked";
 
-        return createElem("div", null, [
+        var element = createElem("div", null, [
             createElem("input", attr),
             createElem("label", { "for": `${type}${row.id}` })
-        ]).outerHTML;
+        ])
+
+        //if (ignoreOuterHTML)
+        //    return element;
+
+        return element.outerHTML;
+        
     }
 </script>

@@ -1,9 +1,14 @@
 ﻿using Fly01.Core;
+using Fly01.Core.Defaults;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
+using Fly01.Core.Presentation.Commons;
+using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -85,6 +90,30 @@ namespace Fly01.Compras.Controllers
             };
             //$expand = produto($expand = unidadeMedida),unidadeMedida &$filter = ((produtoId eq null) or(produto ne null and produto / unidadeMedida / abreviacao ne unidadeMedida / abreviacao))
             return GridLoad(filters);
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public virtual JsonResult SalvarProdutoPendencia(NFeImportacaoProdutoVM entityVM)
+        {
+            try
+            {
+                var NFeImportacaoProduto = Get(entityVM.Id);
+                NFeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
+                NFeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
+                NFeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
+                NFeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(NFeImportacaoProduto, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit, entityVM.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
     }
 }

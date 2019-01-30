@@ -5,7 +5,7 @@
             "id": "btnExcluirProdutoPendencia",
             "onClick": "fnExcluirProdutoPendencia(" + "'" + row.id + "'" + ")",
         };
-        return createElem("button", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "delete_forever")]);
+        return createElem("a", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "delete_forever")]);
     }
 
     function fnRenderExcluirProdutoPendencia(data, type, row, meta) {
@@ -13,30 +13,30 @@
     }
 
     function fnExcluirProdutoPendencia(idRecord) {
-        $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir e ignorar a vinculação?", "fnExcluirProdutoPendenciaConfirmed(\""+idRecord+"\")");
+        $$$.confirm("Confirmar Exclusão", "Deseja realmente excluir e ignorar a vinculação?", "fnExcluirProdutoPendenciaConfirmed(\"" + idRecord + "\")");
     }
     function fnExcluirProdutoPendenciaConfirmed(idRecord) {
-        $('body').removeClass('loaded');
+        $('#dtProdutosPendencias').loading('start');
         if (idRecord) {
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Delete", "NFeImportacaoProduto")",
                 data: { id: idRecord },
                 success: function (data) {
-                $('body').addClass('loaded');
-                if (data.success) {
-                    $$$.toast("Excluído com sucesso.", "success");
-                    $("input[value=\"" + idRecord + "\"]").parent().parent().remove();
+                    $('#dtProdutosPendencias').loading('stop');
+                    if (data.success) {
+                        $$$.toast("Excluído com sucesso.", "success");
+                        $("input[value=\"" + idRecord + "\"]").parent().parent().remove();
+                    }
+                    else {
+                        $$$.fn.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function (jXHR, textStatus, errorThrown) {
+                    $('#dtProdutosPendencias').loading('stop');
+                    $$$.toast(textStatus, "error");
                 }
-                else {
-                    $$$.fn.submitErrorHandler(null, data.message);
-                }
-            },
-            error: function (jXHR, textStatus, errorThrown) {
-                $('body').addClass('loaded');
-                $$$.toast(textStatus, "error");
-            }
-        });
-    }
+            });
+        }
     }
 </script>

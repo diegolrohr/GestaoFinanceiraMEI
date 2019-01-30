@@ -5,12 +5,15 @@
 
         if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
         {
-            //AutoComplete
-            //Check Novo
-            inputs.push(fnRenderCheck(row, "novoProduto"));
+            inputHiddenId("fatorConversao", row.fatorConversao),
+            inputHiddenId("tipoFatorConversao", row.tipoFatorConversao),
+            //AutoComplete produtoId
+            inputs.push(fnRenderCheck(row, "novoProduto", true));
         }
         else {
             //Fator
+            inputHiddenId("produtoId", row.produtoId),
+            inputHiddenId("novoProduto", row.novoProduto),
             inputs.push(createElem("label", { "html": "Fator Conversão", "style": "margin-right: 11px" }));
             inputs.push(createElem("input", { "type": "text", "id": "fatorConversao", "name": "fatorConversao", "value": 1.0, "style": "margin-right: 11px", "class": "numbers" }));
             //Tipo
@@ -31,7 +34,7 @@
     };
 
     function createForm(row) {
-        var action = "@Url.Action("Edit", "InventarioItem")" + "/{" + row.id + "}";
+        var action = "@Url.Action("SalvarProdutoPendencia", "NFeImportacaoProduto")";
 
         var formAttr = { 
             "method": "POST", "action": action,
@@ -62,10 +65,10 @@
         else {
             var formData = that.serializeObject();
             
-            formData.saldoInventariado = parseFloat(formData.saldoInventariado);
+            formData.fatorConversao = parseFloat(formData.fatorConversao);
             
-            if (formData.saldoInventariado < 0) {
-                $$$.toast("Novo Saldo não pode ser negativo.", "error");
+            if (formData.fatorConversao <= 0) {
+                $$$.toast("Fator de conversão deve ser superior a zero.", "error");
                 that.loading("stop");
                 return false;
             }
@@ -78,12 +81,13 @@
                 data: JSON.stringify(formData),
                 success: function success(data) {
                     if (data.success) {
-                        var strMsg = "Saldo atualizado com sucesso.";
+                        var strMsg = "Atualizado com sucesso.";
                         if (data.message !== "")
                             strMsg = data.message;
                         $$$.toast(strMsg, "success");
                         that.loading("stop");
-                        $$$._.dtInventarioItem.refresh();
+                        //$$$._.dtInventarioItem.refresh();
+                        $("input[value=\"" + data.id + "\"]").parent().parent().remove();
                     } else {
                         that.loading("stop");
                         $$$.fn.submitErrorHandler(null, data.message);

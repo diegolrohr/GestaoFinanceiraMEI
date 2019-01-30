@@ -41,7 +41,7 @@ namespace Fly01.Compras.Controllers
                 valorCurrency = x.Valor,
                 unidadeMedida_abreviacao = x.UnidadeMedida.Abreviacao,
                 produto_unidadeMedida_abreviacao = x.Produto?.UnidadeMedida.Abreviacao,
-                fatorConversao = x.Valor.ToString("R", AppDefaults.CultureInfoDefault),
+                fatorConversao = x.FatorConversao.ToString("R", AppDefaults.CultureInfoDefault),
                 fatorConversaoCurrency = x.FatorConversao,
                 tipoFatorConversao = x.TipoFatorConversao,
                 tipoFatorConversaoDescription = EnumHelper.GetDescription(typeof(TipoFatorConversao), x.TipoFatorConversao),

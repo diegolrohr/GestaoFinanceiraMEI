@@ -1,14 +1,21 @@
 ﻿<script>
+
     function fnRenderText(row, type) {
-        let attr = { "type": "text", "id": `${type}${row.id}` };
+        let attr = { "type": "text", "class": "mask currency",  "id": `${type}${row.id}` };
         if (row.parentId) attr["data-parentId"] = row.parentId;
         if (type) attr["data-type"] = type;
         if (row.id) attr["data-id"] = row.id;
-        if (row[type]) attr.checked = "checked";
 
         return createElem("div", null, [
             createElem("input", attr),
-            createElem("label", { "for": `${type}${row.id}` })
+            createElem("label", { "for": `${type}${row.id}` }),
+            createElem("input", { "type": "hidden", "id": `valor${row.id}`, "value": row.valorCurrency, "data-type": "valor", "data-id": row.id })
         ]).outerHTML;
+    }
+
+    function fnDrawCallback() {
+        $$$.fn.maskFields();
+        $('#dtProdutosResolvidos_paginate').hide();
+        $(`#dtProdutosResolvidos`).loading("stop");
     }
 </script>

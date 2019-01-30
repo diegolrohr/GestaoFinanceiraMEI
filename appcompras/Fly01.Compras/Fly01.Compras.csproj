@@ -382,7 +382,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnRenderCheck.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnAtualizaVlCompras.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnRenderText.cshtml" />
-    <Content Include="Views\NFeImportacao\Functions\_fnRenderButton.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderButtonExcluirProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />

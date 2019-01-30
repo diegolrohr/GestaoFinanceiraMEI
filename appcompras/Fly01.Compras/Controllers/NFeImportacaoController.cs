@@ -577,7 +577,7 @@ namespace Fly01.Compras.Controllers
                 Id = "dtProdutosResolvidos",
                 UrlGridLoad = Url.Action("GetNFeImportacaoProdutos", "NFeImportacaoProduto"),
                 UrlFunctions = Url.Action("Functions") + "?fns=",
-                Functions = new List<string> { "fnRenderCheck", "fnRenderButton", "fnRenderText" },
+                Functions = new List<string> { "fnRenderCheck", "fnRenderButtonExcluirProdutos", "fnRenderText" },
                 Parameters = new List<DataTableUIParameter>
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
@@ -594,16 +594,16 @@ namespace Fly01.Compras.Controllers
                 }
             };
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Searchable = false, Orderable = false, Priority = 0 });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quant.", Priority = 1, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 2, Type = "float", Searchable = false, Orderable = false });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Searchable = false, Orderable = false, Priority = 1});
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 4,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 5,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "excluirItem", DisplayName = "", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnRenderButton", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() {  DisplayName = "Ignorar", Priority = 8, Searchable = false, Orderable = false, RenderFn = "fnRenderButtonExcluirProdutos", Class = "dt-center" });
 
             return dtProdutosResolvidosCfg;
         }

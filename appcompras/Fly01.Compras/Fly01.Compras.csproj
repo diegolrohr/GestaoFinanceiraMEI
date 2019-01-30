@@ -387,6 +387,8 @@
     <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnHidePaginate.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderExcluirProdutoPendencia.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderSalvarProdutoPendencia.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

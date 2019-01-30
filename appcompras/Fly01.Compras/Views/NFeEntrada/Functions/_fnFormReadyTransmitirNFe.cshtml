@@ -1,10 +1,6 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
 
-    function noComma(e) {
-        return e.replace(',', '.');
-    }
-
     function calculaTotalNFeTransmitir() {
         var idNFe = $("form#fly01mdlfrmTransmitirNFe input#idNFe").val();
         $$$.loading.start();

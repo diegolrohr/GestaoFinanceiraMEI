@@ -138,7 +138,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputFloatUI
             {
                 Id = "quantidadeXml",
-                Class = "col s12 l4 numeric",
+                Class = "col s12 l3 numeric",
                 Label = "Quantidade",
                 Digits = 2,
                 Value = quantidade.ToString(),
@@ -153,13 +153,12 @@ namespace Fly01.Compras.Controllers
                 Value = valor.ToString(),
                 Disabled = true
             });
-            config.Elements.Add(new InputFloatUI
+            config.Elements.Add(new InputCurrencyUI
             {
-                Id = "quantidadeFinalXml",
-                Class = "col s12 l3 numeric",
-                Label = "Quantidade Final",
-                Digits = 2,
-                Value = quantidade.ToString(),
+                Id = "valorTotalXml",
+                Class = "col s12 l4 numeric",
+                Label = "Valor Total",
+                Value = (quantidade * valor).ToString(),
                 Disabled = true
             });
 
@@ -172,12 +171,26 @@ namespace Fly01.Compras.Controllers
                 Value = unidadeCadastro,
                 Disabled = true
             });
-
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "quantidadeConvertida",
+                Class = "col s12 l3 numeric",
+                Label = "Quantidade Convertida",
+                Digits = 2,
+                Disabled = true
+            });
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorConvertido",
+                Class = "col s12 l3 numeric",
+                Label = "Valor Unitário Convertido",
+                Disabled = true
+            });
             config.Elements.Add(new InputFloatUI
             {
                 Id = "fatorConversao",
                 Class = "col s12 l4 numeric",
-                Label = "Fator Conversão",
+                Label = "Fator de Conversão",
                 Digits = 2,
                 Value = fatorConversao.ToString(),
                 Required = true,
@@ -189,21 +202,6 @@ namespace Fly01.Compras.Controllers
                         Function = "fnChangeFatorConversao"
                     }
                 }
-            });
-            config.Elements.Add(new InputCurrencyUI
-            {
-                Id = "valorConvertido",
-                Class = "col s12 l3 numeric",
-                Label = "Valor Unitário Final",
-                Disabled = true
-            });
-            config.Elements.Add(new InputFloatUI
-            {
-                Id = "quantidadeConvertida",
-                Class = "col s12 l3 numeric",
-                Label = "Quantidade Final",
-                Digits = 2,
-                Disabled = true
             });
 
             #region Helpers 
@@ -221,6 +219,22 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Fator de conversão a ser utilizado para movimentar estoque e atualizar o valor de compra/venda no cadastro do produto."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "quantidadeConvertida",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Quantidade final convertida pelo fator de conversão."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorConvertido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor unitário final convertido pelo fator de conversão."
                 }
             });
             #endregion

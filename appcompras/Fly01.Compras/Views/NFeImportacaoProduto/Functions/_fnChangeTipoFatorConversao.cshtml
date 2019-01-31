@@ -2,8 +2,9 @@
     @Html.Partial("Functions/_fnMain");
 
     function fnChangeTipoFatorConversao(tipo) {
-        $('form#fly01mdlfrmFatorConversao #tipoFatorconversao').val(tipo);
+        $('form#fly01mdlfrmFatorConversao #tipoFatorConversao').val(tipo);
         calculaFatorConversao(tipo);
+        //$('div#fly01mdlfrmFatorConversao').remove();
     }
 
     function calculaFatorConversao(tipo) {
@@ -15,16 +16,15 @@
             $$$.toast("Fator de conversão deve ser superior a zero.", 'error');
             return;
         }
-
         if (tipo == "Multiplicar") {
             var quantFinal = (quant * fator);
             $('form#fly01mdlfrmFatorConversao #quantidadeConvertida').val(quantFinal);
-            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor / quantFinal);
+            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor / fator);
         }
         else {
             var quantFinal = (quant / fator);
             $('form#fly01mdlfrmFatorConversao #quantidadeConvertida').val(quantFinal);
-            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor * quantFinal);
+            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor * fator);
         }
         $$$.fn.updateTextFields();
     }

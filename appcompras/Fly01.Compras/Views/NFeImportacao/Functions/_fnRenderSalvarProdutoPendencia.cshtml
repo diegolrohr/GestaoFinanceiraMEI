@@ -6,9 +6,8 @@
         inputs.push(inputHiddenId("unidadeCadastro" + `${row.id}`, "unidadeCadastro", row.produto_unidadeMedida_abreviacao));
         inputs.push(inputHiddenId("quantidade" + `${row.id}`, "quantidade", row.quantidadeCurrency));
         inputs.push(inputHiddenId("valor" + `${row.id}`, "valor", row.valorCurrency));
-        inputs.push(inputHiddenId("fatorConversao" + `${row.id}`, "fatorConversao", row.fatorConversaoCurrency));
+        inputs.push(inputHiddenId("fatorConversao" + `${row.id}`, "fatorConversao", 1.00));
         inputs.push(inputHiddenId("tipoFatorConversao" + `${row.id}`, "tipoFatorConversao", row.tipoFatorConversao));
-        inputs.push(inputHiddenId("unidadeCadastro" + `${row.id}`, "unidadeCadastro", row.produto_unidadeMedida_abreviacao));
 
         if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
         {
@@ -44,16 +43,22 @@
     };
 
     function submitButton(row) {
-        var attr = { "type": "submit", "class": "btn btn-narrow valid", "id": "submit" + `${row.id}`, "alt": "Salvar" }
-        return createElem("button", attr,
-              createElem("i", {"class":"material-icons"}, "save")
-            );
+        //var attr = { "type": "submit", "class": "btn btn-narrow valid", "id": "submit" + `${row.id}`, "alt": "Salvar" }
+        //return createElem("button", attr,
+        //      createElem("i", {"class":"material-icons"}, "save")
+        //    );
+        var attr = {
+            "class": "btn btn-narrow valid",
+            "id": "btnSalvarPendencia" + `${row.id}`,
+            "onClick": "fnSubmitForm(" + "'" + row.id + "'" + ")",
+        };
+        return createElem("a", attr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "save")]);
     };
 
     function fatorConversaoButton(row) {
         var formAttr = {
-            "class": "btn btn-narrow valid",
-            "id": "btnFatorconversao"+`${row.id}`,
+            "class": "btn btn-narrow valid hide",
+            "id": "btnFatorConversao"+`${row.id}`,
             "onClick": "fnModalFatorConversao(" + "'" + row.id + "'" + ")",
         };
         return createElem("a", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "compare_arrows")]);
@@ -67,7 +72,7 @@
         baseModalUrl += "&unidadeCadastro=" + $("#unidadeCadastro" + `${id}`).val();
         baseModalUrl += "&valor=" + $("#valor" + `${id}`).val();
         baseModalUrl += "&quantidade=" + $("#quantidade" + `${id}`).val();
-        baseModalUrl += "&fatorConversao=" + $("#fatorConversao" + `${id}`).val();
+        baseModalUrl += "&fatorConversao=" + parseFloat(noComma($("#fatorConversao" + `${id}`).val()));
         baseModalUrl += "&tipoFatorConversao=" + $("#tipoFatorConversao" + `${id}`).val();
         $$$.modal(baseModalUrl);
     }
@@ -76,12 +81,13 @@
         var action = "@Url.Action("SalvarProdutoPendencia", "NFeImportacaoProduto")";
 
         var formAttr = {
+            "id": "produtoPendencia"+`${row.id}`,
             "method": "POST", "action": action,
             "class": "produtoPendenciaForm valign-wrapper right col s12",
             "style": "padding-left: 0;"
         }
 
-        return createElem("form", formAttr,[ //Inner Content
+        return createElem("form", formAttr,[
                     inputHiddenId("id"+`${row.id}`, "id", row.id),
                     inputsPendencias(row),
                     fatorConversaoButton(row),
@@ -93,11 +99,12 @@
         return createForm(row).outerHTML;
     };
 
-    $(document).off("submit", "form.produtoPendenciaForm");
-    $(document).on("submit", "form.produtoPendenciaForm", function (e) {
-        var that = $(this);
+    $(document).off("submit", ".produtoPendenciaForm");
+
+    function fnSubmitForm(id) {
+        var formId = "#produtoPendencia" + id;
+        var that = $(formId);
         that.loading("start");
-        e.preventDefault();
         if (!that.valid()) {
             that.loading("stop");
             return false;
@@ -106,9 +113,13 @@
             var formData = that.serializeObject();
 
             formData.fatorConversao = parseFloat(formData.fatorConversao);
-
             if (formData.fatorConversao <= 0) {
                 $$$.toast("Fator de conversão deve ser superior a zero.", "error");
+                that.loading("stop");
+                return false;
+            }
+            if ((formData.produtoId == null || formData.produtoId == "" || formData.produtoId == undefined) && !formData.novoProduto) {
+                $$$.toast("Vincule a um produto existente ou marque para criar um novo produto.", "error");
                 that.loading("stop");
                 return false;
             }
@@ -126,8 +137,8 @@
                             strMsg = data.message;
                         $$$.toast(strMsg, "success");
                         that.loading("stop");
-                        //$$$._.dtInventarioItem.refresh();
                         $("input[value=\"" + data.id + "\"]").parent().parent().remove();
+                        $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
                     } else {
                         that.loading("stop");
                         $$$.fn.submitErrorHandler(null, data.message);
@@ -140,6 +151,7 @@
                 }
             });
         }
-    });
+    }
+    //);
 
 </script>

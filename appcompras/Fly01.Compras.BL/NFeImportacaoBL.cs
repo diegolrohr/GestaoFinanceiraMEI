@@ -230,7 +230,7 @@ namespace Fly01.Compras.BL
                             Quantidade = item.Quantidade,
                             Valor = item.ValorUnitario, 
                             UnidadeMedidaId = unidadeMedida != null ? unidadeMedida.Id : unPadraoId.Value,
-                            FatorConversao = 1.00,
+                            FatorConversao = 0.00,//para saber que não foi atualizado
                             TipoFatorConversao = TipoFatorConversao.Multiplicar,
                             MovimentaEstoque = true,
                             AtualizaDadosProduto = true,

@@ -17,7 +17,7 @@
                     $.ajax({
                         url: that.data("url"),
                         data: request,
-                        success: function success(data) {                           
+                        success: function success(data) {
                             response(data);
                         }
                     });
@@ -31,22 +31,41 @@
                         $(`#${that.attr("id")}`).val("");
                         $(`#${that.data("target")}`).val("");
                     }
+                    //update hidden
+                    if (ui.item == null) {
+                        $("#unidadeCadastro" + `${that.data("id")}`).val("");
+                        $("#btnFatorConversao" + `${that.data("id")}`).addClass('hide');
+                        $("#fatorConversao" + `${that.data("id")}`).val(1.00);
+                        $("#tipoFatorConversao" + `${that.data("id")}`).val("Multiplicar");
+                    }
+                    else {
+                        $("#unidadeCadastro" + `${that.data("id")}`).val(ui.item.unidadeSigla);
+                        $("#fatorConversao" + `${that.data("id")}`).val(1.00);
+                        $("#tipoFatorConversao" + `${that.data("id")}`).val("Multiplicar");
+
+                        if ($("#unidadeXml" + `${that.data("id")}`).val() != ui.item.unidadeSigla) {
+                            $("#btnFatorConversao" + `${that.data("id")}`).removeClass('hide');
+                        }
+                        else {
+                            $("#btnFatorConversao" + `${that.data("id")}`).addClass('hide');
+                        }
+                    }
+                    
                     return false;
                 },
                 select: (event, ui) => {
                     $(`#${that.attr("id")}`).val(ui.item.label);
                     $(`#${that.data("target")}`).val(ui.item.id);
-
+                    //update hidden
                     $("#unidadeCadastro" + `${that.data("id")}`).val(ui.item.unidadeSigla);
                     if ($("#unidadeXml" + `${that.data("id")}`).val() != ui.item.unidadeSigla) {
-                        $("#btnFatorconversao" + `${that.data("id")}`).show();
+                        $("#btnFatorConversao" + `${that.data("id")}`).removeClass('hide');
                     }
                     else {
-                        //$("#btnFatorconversao" + `${that.data("id")}`).hide();
+                        $("#btnFatorConversao" + `${that.data("id")}`).addClass('hide');
                         $("#fatorConversao" + `${that.data("id")}`).val(1.00);
                         $("#tipoFatorConversao" + `${that.data("id")}`).val("Multiplicar");
                     }
-
                     return false;
                 },
                 messages: { noResults: "", results() { } }

@@ -77,8 +77,7 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
-                //{ " and produtoId ne", "null" }
+                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
             };
             return GridLoad(filters);
         }
@@ -88,6 +87,7 @@ namespace Fly01.Compras.Controllers
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
                 { "(nFeImportacaoId eq", (string.IsNullOrEmpty(id) ? new Guid().ToString() : id)+")" },
+                { " and (fatorConversao eq", "0)" },
                 { " and ((produtoId eq", "null)" },
                 { " or (produto ne null and produto/unidadeMedida/abreviacao ne", "unidadeMedida/abreviacao))" },
             };
@@ -106,6 +106,10 @@ namespace Fly01.Compras.Controllers
                 CancelAction = new ModalUIAction() { Label = "Cancelar", OnClickFn = "fnCancelarModalFatorConversao" },
                 Action = new FormUIAction
                 {
+                    Create = @Url.Action("SalvarProdutoPendencia"),
+                    Edit = @Url.Action("SalvarProdutoPendencia"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NFeImportacao")
                 },
                 Id = "fly01mdlfrmFatorConversao",
                 ReadyFn = "fnFormReadyFatorConversao",
@@ -250,10 +254,11 @@ namespace Fly01.Compras.Controllers
             try
             {
                 dynamic nfeImportacaoProduto = new ExpandoObject();
-                nfeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
-                nfeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
-                nfeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
-                nfeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
+                nfeImportacaoProduto.id = entityVM.Id;
+                nfeImportacaoProduto.produtoId = entityVM.ProdutoId.Value;
+                nfeImportacaoProduto.novoProduto = entityVM.NovoProduto;
+                nfeImportacaoProduto.fatorConversao = entityVM.FatorConversao;
+                nfeImportacaoProduto.tipoFatorConversao = entityVM.TipoFatorConversao;
 
                 var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));

@@ -1,0 +1,120 @@
+﻿<script>
+
+    function inputsPendencias(row) {
+        var inputs = [];
+        inputs.push(inputHiddenId("fatorConversao"+`${row.id}`, "fatorConversao", row.fatorConversaoCurrency));
+        inputs.push(inputHiddenId("tipoFatorConversao" + `${row.id}`, "tipoFatorConversao", row.tipoFatorConversao));
+        inputs.push(inputHiddenId("unidadeCadastro" + `${row.id}`, "unidadeCadastro", row.produto_unidadeMedida_abreviacao));
+
+        if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
+        {
+            //AutoComplete produtoId
+            inputs.push(fnRenderCheck(row, "novoProduto", true));
+        }
+        else {
+            inputs.push(inputHiddenId("produtoId" + `${row.id}`, "produtoId", row.produtoId));
+            inputs.push(inputHiddenId("novoProduto" + `${row.id}`, "novoProduto", row.novoProduto));
+        }
+        return createElem("div", { "class": `right col s12` }, inputs);
+    };
+
+    function inputHiddenId(id, name, value) {
+        var attr = { "type": "hidden", "id": id, "name": (name != undefined ? name : id), "value": value };
+        return createElem("input", attr);
+    };
+
+    function submitButton(row) {
+        var attr = { "type": "submit", "class": "btn btn-narrow valid", "id": "submit" + `${row.id}`, "alt": "Salvar" }
+        return createElem("button", attr,
+              createElem("i", {"class":"material-icons"}, "save")
+            );
+    };
+    function fatorConversaoButton(row) {
+        var fnClickParametros = "fnModalFatorConversao(" + "'" + row.id + "'"
+            + "," + `${row.unidadeMedida_abreviacao}`
+            + "," + $("#unidadeCadastro" + `${row.id}`).val()
+            + "," + `${row.quantidadeCurrency}`
+            + "," + `${row.valorCurrency}`
+            + "," + $("#fatorConversao" + `${row.id}`).val()
+            + "," + $("#tipoFatorConversao" + `${row.id}`).val()
+            + ")";
+
+        var formAttr = {
+            "class": "btn btn-narrow valid",
+            "id": "btnFatorconversao"+`${row.id}`,
+            "onClick": fnClickParametros,
+        };
+        return createElem("a", formAttr, [createElem("i", { "class": "valign-wrapper material-icons center", "style": "margin:0px;position:inherit;background-color:#fafafb00;color:#fafafb;" }, "compare_arrows")]);
+    }
+
+    function createForm(row) {
+        var action = "@Url.Action("SalvarProdutoPendencia", "NFeImportacaoProduto")";
+
+        var formAttr = { 
+            "method": "POST", "action": action,
+            "class": "produtoPendenciaForm valign-wrapper right col s12",
+            "style": "padding-left: 0;"
+        }
+
+        return createElem("form", formAttr,[ //Inner Content
+                    inputHiddenId("id"+`${row.id}`, "id", row.id),
+                    inputsPendencias(row),
+                    fatorConversaoButton(row),
+                    submitButton(row)
+                ]);
+    };
+
+    function fnRenderSalvarProdutoPendencia(data, type, row, meta) {
+        return createForm(row).outerHTML;
+    };
+
+    $(document).off("submit", "form.produtoPendenciaForm");
+    $(document).on("submit", "form.produtoPendenciaForm", function (e) {
+        var that = $(this);
+        that.loading("start");
+        e.preventDefault();
+        if (!that.valid()) {
+            that.loading("stop");
+            return false;
+        }
+        else {
+            var formData = that.serializeObject();
+            
+            formData.fatorConversao = parseFloat(formData.fatorConversao);
+            
+            if (formData.fatorConversao <= 0) {
+                $$$.toast("Fator de conversão deve ser superior a zero.", "error");
+                that.loading("stop");
+                return false;
+            }
+
+            $.ajax({
+                url: that.attr("action"),
+                type: that.attr("method"),
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(formData),
+                success: function success(data) {
+                    if (data.success) {
+                        var strMsg = "Atualizado com sucesso.";
+                        if (data.message !== "")
+                            strMsg = data.message;
+                        $$$.toast(strMsg, "success");
+                        that.loading("stop");
+                        //$$$._.dtInventarioItem.refresh();
+                        $("input[value=\"" + data.id + "\"]").parent().parent().remove();
+                    } else {
+                        that.loading("stop");
+                        $$$.fn.submitErrorHandler(null, data.message);
+                    }
+                    that.loading("stop");
+                },
+                error: function error(jXHR, textStatus) {
+                    $$$.toast(textStatus, "error");
+                    that.loading("stop");
+                }
+            });
+        }
+    });
+
+</script>

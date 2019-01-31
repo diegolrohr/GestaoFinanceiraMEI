@@ -375,6 +375,20 @@
     <Content Include="Views\NFeImportacao\Functions\_fnUpdateDataFinal.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnChangeInput.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnEditar.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutosPendencias.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnSalvarProduto.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnMovimentaEstoque.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAtualizaProduto.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderCheck.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnAtualizaVlCompras.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderText.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderButtonExcluirProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnHidePaginate.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderExcluirProdutoPendencia.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnRenderSalvarProdutoPendencia.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

@@ -72,8 +72,6 @@
                 if (data.success) {
                     var strMsg = "Importado com sucesso.";
                     $("form#fly01frm input#id").val(data.id);
-                    //TODO: refresh dos dois dataTables
-                    // $$$._.dtPedidoItens.refresh();
 
                     var url = window.location.href.replace('/Create', '/Edit/' + data.id);
                     window.history.pushState({}, document.title, url);
@@ -86,6 +84,8 @@
                     $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
                     $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
+                    $$$._.dtProdutosPendencias.refresh();
+                    $$$._.dtProdutosResolvidos.refresh();
 
                     $$$.loading.stop();
                     $$$.toast(strMsg, "success");
@@ -139,10 +139,6 @@
         $$$.loading.start();
         if (isCreate()) {
             var today = new Date();
-            //$("input#geraFinanceiro").prop("checked", true);
-            //$("input#movimentaEstoque").prop("checked", true);
-            //$("input#geraNotaFiscal").prop("checked", true);
-            //$$$._.dataVencimento.set(today);
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
         } else {
@@ -152,12 +148,15 @@
             $('#stepImportarArquivo').hide();
             $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
             $('li#stepFornecedor div.step-title').click();
+            $$$._.dtProdutosPendencias.refresh();
+            $$$._.dtProdutosResolvidos.refresh();
         }
 
         fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");
         fnRegras("#transportadoraNome", "#atualizaDadosTransportadora", "#novaTransportadora");
         fnBindOverrideSubmit();
         $$$.loading.stop();
+        fnRegrasProdutos();
     }
 
     function fnRegras(idComplete, idAtualizar, idNovo) {
@@ -199,5 +198,59 @@
                 $("input" + idComplete).rules("add", { required: true });
             }
         });
-    };
+    }
+
+    function fnRegrasProdutos() {
+        function testeProdutoActive(e) {
+            if ($('#stepProdutos')[0].className === "step active" && e.currentTarget.innerHTML !== "Produtos") {
+                fnBindOverrideSubmitProduto();
+            }
+        }
+
+        $('#fly01frm div.step-title').click(function (e) {
+            testeProdutoActive(e);
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.next-step').click(function (e) {
+            fnBindOverrideSubmitProduto();
+        });
+
+        $('#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click(function (e) {
+            fnBindOverrideSubmitProduto();
+        });
+    }
+
+    function fnBindOverrideSubmitProduto() {
+        $$$._.dtProdutosResolvidos.data().each(function (row) {
+
+            $$$.loading.start();
+
+            row.atualizaDadosProduto = $('#atualizaDadosProduto' + row.id).prop('checked');
+            row.movimentaEstoque = $('#movimentaEstoque' + row.id).prop('checked');
+            row.atualizaValorVenda = $('#atualizaValorVenda' + row.id).prop('checked');
+            row.valorVenda = $('input#valorVenda' + row.id).val();
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: "POST",
+                url: "@Url.Action("EditProdutoImportacao", "NFeImportacaoProduto")",
+                data: JSON.stringify({ 'entityVM': row }),
+                success: function success(data) {
+                    if (data.success) {
+                        $$$.loading.stop();
+                        $$$.toast(strMsg, "success");
+                    } else {
+                        $$$.loading.stop();
+                        $$$.fn.submitErrorHandler(null, data.message);
+                    }
+                },
+                error: function error(jXHR, textStatus) {
+                    $$$.toast(textStatus, "error");
+                    $$$.loading.stop();
+                }
+            });
+        });
+        $$$.loading.stop();
+    }
 </script>

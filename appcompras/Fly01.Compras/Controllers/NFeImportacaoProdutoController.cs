@@ -5,21 +5,14 @@ using Fly01.Core.Helpers;
 using Fly01.Core.Presentation;
 using Fly01.Core.Presentation.Commons;
 using Fly01.Core.Rest;
+using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
-using Fly01.uiJS.Classes.Elements;
-using Fly01.uiJS.Classes.Helpers;
-using Fly01.uiJS.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Web.Mvc;
-using System.Xml;
-using System.Xml.Serialization;
-using Fly01.EmissaoNFE.Domain.Entities.NFe;
-using Fly01.Core.ViewModels;
 using System.Dynamic;
+using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
 {
@@ -28,8 +21,8 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoProdutoController()
         {
-            //TODO: Select properties
-            ExpandProperties = "produto($select=nome),unidadeMedia";
+            //TODO:diego Select properties
+            ExpandProperties = "produto($expand=unidadeMedida),unidadeMedida";
         }
 
         public override Func<NFeImportacaoProdutoVM, object> GetDisplayData()
@@ -43,27 +36,23 @@ namespace Fly01.Compras.Controllers
                 codigo = x.Codigo,
                 codigoBarras = x.CodigoBarras,
                 descricao = x.Descricao,
-                quantidadeString = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
-                quantidade = x.Quantidade,
-                valorString = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
-                valor = x.Valor,
+                quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
+                quantidadeCurrency = x.Quantidade,
+                valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
+                valorCurrency = x.Valor,
                 unidadeMedida_abreviacao = x.UnidadeMedida.Abreviacao,
-                fatorConversaoString = x.Valor.ToString("R", AppDefaults.CultureInfoDefault),
-                fatorConversao = x.FatorConversao,
+                produto_unidadeMedida_abreviacao = x.Produto?.UnidadeMedida.Abreviacao,
+                fatorConversao = x.FatorConversao.ToString("R", AppDefaults.CultureInfoDefault),
+                fatorConversaoCurrency = x.FatorConversao,
                 tipoFatorConversao = x.TipoFatorConversao,
                 tipoFatorConversaoDescription = EnumHelper.GetDescription(typeof(TipoFatorConversao), x.TipoFatorConversao),
                 tipoFatorConversaoCssClass = EnumHelper.GetCSS(typeof(TipoFatorConversao), x.TipoFatorConversao),
                 tipoFatorConversaoValue = EnumHelper.GetValue(typeof(TipoFatorConversao), x.TipoFatorConversao),
                 movimentaEstoque = x.MovimentaEstoque,
                 atualizaDadosProduto = x.AtualizaDadosProduto,
-                atualizaValorCompra = x.AtualizaValorCompra,
                 atualizaValorVenda = x.AtualizaValorVenda,
-                valorVendaString = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault),
-                valorVenda = x.ValorVenda,
-                tipoValorVenda = x.TipoValorVenda,
-                tipoValorVendaDescription = EnumHelper.GetDescription(typeof(TipoAtualizacaoValor), x.TipoValorVenda),
-                tipoValorVendaCssClass = EnumHelper.GetCSS(typeof(TipoAtualizacaoValor), x.TipoValorVenda),
-                tipoValorVendaValue = EnumHelper.GetValue(typeof(TipoAtualizacaoValor), x.TipoValorVenda)
+                valorVenda = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault),
+                valorVendaCurrency = x.ValorVenda
             };
         }
 
@@ -81,7 +70,8 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nfeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
+                //{ " and produtoId ne", "null" }
             };
             return GridLoad(filters);
         }
@@ -90,10 +80,60 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nfeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
-                { "and produtoId eq", "null" }
+                { "(nFeImportacaoId eq", (string.IsNullOrEmpty(id) ? new Guid().ToString() : id)+")" },
+                { " and ((produtoId eq", "null)" },
+                { " or (produto ne null and produto/unidadeMedida/abreviacao ne", "unidadeMedida/abreviacao))" },
             };
+            //$expand = produto($expand = unidadeMedida),unidadeMedida &$filter = ((produtoId eq null) or(produto ne null and produto / unidadeMedida / abreviacao ne unidadeMedida / abreviacao))
             return GridLoad(filters);
+        }
+
+        [OperationRole(PermissionValue = EPermissionValue.Write)]
+        [HttpPost]
+        public virtual JsonResult SalvarProdutoPendencia(NFeImportacaoProdutoVM entityVM)
+        {
+            try
+            {
+                var NFeImportacaoProduto = Get(entityVM.Id);
+                NFeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
+                NFeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
+                NFeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
+                NFeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(NFeImportacaoProduto, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit, entityVM.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult EditProdutoImportacao(NFeImportacaoProdutoVM entityVM)
+        {
+            try
+            {
+                dynamic nfeImportacaoProduto = new ExpandoObject();
+                nfeImportacaoProduto.atualizaDadosProduto = entityVM.AtualizaDadosProduto;
+                nfeImportacaoProduto.movimentaEstoque = entityVM.MovimentaEstoque;
+                nfeImportacaoProduto.atualizaValorVenda = entityVM.AtualizaValorVenda;
+                nfeImportacaoProduto.valorVenda = entityVM.ValorVenda;
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
         }
     }
 }

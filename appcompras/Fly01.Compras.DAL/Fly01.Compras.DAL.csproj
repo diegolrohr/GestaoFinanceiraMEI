@@ -320,6 +320,10 @@
     <Compile Include="Migrations\201901281643294_AlterNFeImportacaoAddSerieNumero.Designer.cs">
       <DependentUpon>201901281643294_AlterNFeImportacaoAddSerieNumero.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901311926194_AlterTableNFeImportacaoProduto.cs" />
+    <Compile Include="Migrations\201901311926194_AlterTableNFeImportacaoProduto.Designer.cs">
+      <DependentUpon>201901311926194_AlterTableNFeImportacaoProduto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -569,6 +573,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901281643294_AlterNFeImportacaoAddSerieNumero.resx">
       <DependentUpon>201901281643294_AlterNFeImportacaoAddSerieNumero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901311926194_AlterTableNFeImportacaoProduto.resx">
+      <DependentUpon>201901311926194_AlterTableNFeImportacaoProduto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

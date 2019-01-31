@@ -218,11 +218,12 @@ namespace Fly01.Compras.BL
                     var unPadraoId = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN")?.Id;
                     foreach (var item in NFe.InfoNFe.Detalhes.Select(x => x.Produto))
                     {
-                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
                         var unidadeMedida = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == item.UnidadeMedida.ToUpper());
                         var NFeImportacaoProduto = new NFeImportacaoProduto()
                         {
                             NFeImportacaoId = entity.Id,
+                            Descricao = item.Descricao,
                             NovoProduto = true,
                             Codigo = item.Codigo,
                             CodigoBarras = item.GTIN,
@@ -233,10 +234,8 @@ namespace Fly01.Compras.BL
                             TipoFatorConversao = TipoFatorConversao.Multiplicar,
                             MovimentaEstoque = true,
                             AtualizaDadosProduto = true,
-                            AtualizaValorCompra = true,
                             AtualizaValorVenda = true,
                             ValorVenda = 0.00,
-                            TipoValorVenda = TipoAtualizacaoValor.Percentual
                         };
 
                         if (produto != null)

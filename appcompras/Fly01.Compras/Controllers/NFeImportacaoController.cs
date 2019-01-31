@@ -563,8 +563,8 @@ namespace Fly01.Compras.Controllers
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quantidade", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Unidade xml" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 7, Searchable = false, Orderable = false, DisplayName = "Salvar Dados", RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 9, Searchable = false, Orderable = false, DisplayName = "Ignorar", RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 9, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
 
             return dtProdutosPendenciasCfg;
         }

@@ -28,8 +28,8 @@
             inputs.push(createElem("label", { "class": "truncate", "for": labelId }, "Produto"));
             inputs.push(createElem("input", { "type": "hidden", "name": "produtoId", "id": inputId }));
             inputs.push(createElem("input", inputAttr));
-            //inputs.push(createElem("input", { "type": "checkbox", "class": "permchk", "id": `novoProduto${row.id}`, "name": `novoProduto` }));
-            //inputs.push(createElem("label", { "for": `novoProduto${row.id}` }, "Novo"));
+            inputs.push(createElem("input", { "type": "checkbox", "class": "permchk", "id": `novoProduto${row.id}`, "name": `novoProduto` }));
+            inputs.push(createElem("label", { "for": `novoProduto${row.id}` }, "Novo"));
         }
         else {
             inputs.push(inputHiddenId("produtoId" + `${row.id}`, "produtoId", row.produtoId));

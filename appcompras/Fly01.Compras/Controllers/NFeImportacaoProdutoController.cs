@@ -13,6 +13,7 @@ using Fly01.uiJS.Classes.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Web.Mvc;
 
 namespace Fly01.Compras.Controllers
@@ -248,14 +249,14 @@ namespace Fly01.Compras.Controllers
         {
             try
             {
-                var NFeImportacaoProduto = Get(entityVM.Id);
-                NFeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
-                NFeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
-                NFeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
-                NFeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
+                dynamic nfeImportacaoProduto = new ExpandoObject();
+                nfeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
+                nfeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
+                nfeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
+                nfeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
 
                 var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(NFeImportacaoProduto, JsonSerializerSetting.Edit));
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit, entityVM.Id);
             }

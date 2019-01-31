@@ -234,10 +234,8 @@ namespace Fly01.Compras.BL
                             TipoFatorConversao = TipoFatorConversao.Multiplicar,
                             MovimentaEstoque = true,
                             AtualizaDadosProduto = true,
-                            AtualizaValorCompra = true,
                             AtualizaValorVenda = true,
                             ValorVenda = 0.00,
-                            TipoValorVenda = TipoAtualizacaoValor.Percentual
                         };
 
                         if (produto != null)

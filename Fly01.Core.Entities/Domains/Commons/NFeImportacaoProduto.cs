@@ -34,13 +34,9 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool AtualizaDadosProduto { get; set; }
 
-        public bool AtualizaValorCompra { get; set; }
-
         public bool AtualizaValorVenda { get; set; }
 
         public double ValorVenda { get; set; }
-
-        public TipoAtualizacaoValor TipoValorVenda { get; set; }
 
         [ForeignKey("PedidoItem")]
         public Guid? PedidoItemId { get; set; }

@@ -386,7 +386,7 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 m3 right",
                 ClassBtn = "btn-narrow",
                 Label = "",
-                Value = "Alterar Selecionados",
+                Value = "Alterar valor venda",
                 DomEvents = new List<DomEventUI>
                 {
                     new DomEventUI { DomEvent = "click", Function = "fnModalAlterarProdutos" }

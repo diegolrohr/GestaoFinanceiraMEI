@@ -553,9 +553,9 @@ namespace Fly01.Compras.Controllers
                 Callbacks = new DataTableUICallbacks()
                 {
                     FooterCallback = "fnFooterCallbackProdutosPendencias",
-                    DrawCallback = "fnHidePaginate"
+                    DrawCallback = "fnDrawCallbackProdutosPendencias"
                 },
-                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnHidePaginate" }
+                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnDrawCallbackProdutosPendencias" }
             };
             //TODO:Diego Remover paginação
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 1, Searchable = false, Orderable = false, DataField = "descricao", DisplayName = "Produto" });

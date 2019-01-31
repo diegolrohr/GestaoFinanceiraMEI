@@ -12,14 +12,30 @@
 
         if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
         {
-            //AutoComplete produtoId
-            inputs.push(fnRenderCheck(row, "novoProduto", true));
+            let labelId = "produtoDescricao" + `${row.id}`;
+            let inputId = "produtoId" + `${row.id}`;
+
+            const inputAttr = {
+                "type": "text",
+                "class": "autocomplete col s8",
+                "id": labelId,
+                "name": labelId,
+                "data-url": "@Url.Action("Produto", "AutoComplete")",
+                "data-target": inputId,
+                "data-id": row.id
+            };
+
+            inputs.push(createElem("label", { "class": "truncate", "for": labelId }, "Produto"));
+            inputs.push(createElem("input", { "type": "hidden", "name": "produtoId", "id": inputId }));
+            inputs.push(createElem("input", inputAttr));
+            //inputs.push(createElem("input", { "type": "checkbox", "class": "permchk", "id": `novoProduto${row.id}`, "name": `novoProduto` }));
+            //inputs.push(createElem("label", { "for": `novoProduto${row.id}` }, "Novo"));
         }
         else {
             inputs.push(inputHiddenId("produtoId" + `${row.id}`, "produtoId", row.produtoId));
             inputs.push(inputHiddenId("novoProduto" + `${row.id}`, "novoProduto", row.novoProduto));
         }
-        return createElem("div", { "class": `right col s12` }, inputs);
+        return createElem("div", { "class": `input-field visible right col s12` }, inputs);
     };
 
     function inputHiddenId(id, name, value) {
@@ -70,7 +86,7 @@
                     inputsPendencias(row),
                     fatorConversaoButton(row),
                     submitButton(row)
-                ]);
+        ]);
     };
 
     function fnRenderSalvarProdutoPendencia(data, type, row, meta) {

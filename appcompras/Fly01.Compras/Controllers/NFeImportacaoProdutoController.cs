@@ -96,7 +96,7 @@ namespace Fly01.Compras.Controllers
 
         [HttpGet]
         public ContentResult ModalFatorConversao(string id, string unidadeXml, string unidadeCadastro, double valor, double quantidade, double fatorConversao, string tipoFatorConversao)
-        { 
+        {
             ModalUIForm config = new ModalUIForm()
             {
                 Title = "Fator de Conversão",
@@ -107,21 +107,22 @@ namespace Fly01.Compras.Controllers
                 {
                 },
                 Id = "fly01mdlfrmFatorConversao",
-                //ReadyFn = "fnFormReadyFatorConversao",
-                //Functions = new List<string>() { "fnChangeFatorConversao" }
+                ReadyFn = "fnFormReadyFatorConversao",
+                Functions = new List<string>() { "fnChangeTipoFatorConversao" }
             };
 
             config.Elements.Add(new InputHiddenUI { Id = "id", Value = id });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoFatorConversao", Value = tipoFatorConversao });
             config.Elements.Add(new ButtonGroupUI()
             {
                 Id = "fly01btngrpTipoFatorConversao",
                 Class = "col s12 m12",
-                //OnClickFn = "fnChangeTipoFatorConversao",
+                OnClickFn = "fnChangeTipoFatorConversao",
                 Label = "Tipo do fator de conversão",
                 Options = new List<ButtonGroupOptionUI>
                 {
-                    new ButtonGroupOptionUI { Id = "btnMultiplicar", Label = "Multiplicar (X)"},
-                    new ButtonGroupOptionUI { Id = "btnDividir", Label = "Dividir (/)"},
+                    new ButtonGroupOptionUI { Id = "btnMultiplicar", Value = "Multiplicar", Label = "Multiplicar (X)"},
+                    new ButtonGroupOptionUI { Id = "btnDividir", Value = "Dividir", Label = "Dividir (/)"},
                 }
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetXml", Label = "Dados do xml" });
@@ -136,7 +137,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new InputFloatUI
             {
-                Id = "quantidade",
+                Id = "quantidadeXml",
                 Class = "col s12 l4 numeric",
                 Label = "Quantidade",
                 Digits = 2,
@@ -144,22 +145,21 @@ namespace Fly01.Compras.Controllers
                 Disabled = true
             });
 
-            config.Elements.Add(new InputFloatUI
+            config.Elements.Add(new InputCurrencyUI
             {
-                Id = "valor",
+                Id = "valorXml",
                 Class = "col s12 l3 numeric",
                 Label = "Valor Unitário",
-                Digits = 2,
                 Value = valor.ToString(),
                 Disabled = true
             });
             config.Elements.Add(new InputFloatUI
             {
-                Id = "quantidadeConvertida",
+                Id = "quantidadeFinalXml",
                 Class = "col s12 l3 numeric",
                 Label = "Quantidade Final",
                 Digits = 2,
-                Value = valor.ToString(),
+                Value = quantidade.ToString(),
                 Disabled = true
             });
 
@@ -172,23 +172,29 @@ namespace Fly01.Compras.Controllers
                 Value = unidadeCadastro,
                 Disabled = true
             });
-                        
+
             config.Elements.Add(new InputFloatUI
             {
                 Id = "fatorConversao",
                 Class = "col s12 l4 numeric",
                 Label = "Fator Conversão",
                 Digits = 2,
-                Value = valor.ToString(),
-                Required = true
+                Value = fatorConversao.ToString(),
+                Required = true,
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI()
+                    {
+                        DomEvent = "change",
+                        Function = "fnChangeFatorConversao"
+                    }
+                }
             });
-            config.Elements.Add(new InputFloatUI
+            config.Elements.Add(new InputCurrencyUI
             {
                 Id = "valorConvertido",
                 Class = "col s12 l3 numeric",
                 Label = "Valor Unitário Final",
-                Digits = 2,
-                Value = valor.ToString(),
                 Disabled = true
             });
             config.Elements.Add(new InputFloatUI
@@ -197,7 +203,6 @@ namespace Fly01.Compras.Controllers
                 Class = "col s12 l3 numeric",
                 Label = "Quantidade Final",
                 Digits = 2,
-                Value = valor.ToString(),
                 Disabled = true
             });
 

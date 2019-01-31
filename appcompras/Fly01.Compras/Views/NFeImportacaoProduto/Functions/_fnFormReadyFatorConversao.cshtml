@@ -1,0 +1,10 @@
+﻿<script>
+    function fnFormReadyFatorConversao() {
+        if($('form#fly01mdlfrmFatorConversao #tipoFatorConversao').val() == "Multiplicar")
+            $('form#fly01mdlfrmFatorConversao #btnMultiplicar').click();
+        else
+            $('form#fly01mdlfrmFatorConversao #btnDividir').click();
+
+        //override submit
+    }
+</script>

@@ -101,8 +101,8 @@ namespace Fly01.Compras.Controllers
             {
                 Title = "Fator de Conversão",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                ConfirmAction = new ModalUIAction() { Label = "Salvar" },
-                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnSalvarModalFatorConversao" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar", OnClickFn = "fnCancelarModalFatorConversao" },
                 Action = new FormUIAction
                 {
                 },

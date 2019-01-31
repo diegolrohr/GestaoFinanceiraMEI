@@ -392,6 +392,8 @@
     <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeTipoFatorConversao.cshtml" />
     <Content Include="Views\NFeImportacaoProduto\Functions\_fnFormReadyFatorConversao.cshtml" />
     <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnSalvarModalFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnCancelarModalFatorConversao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

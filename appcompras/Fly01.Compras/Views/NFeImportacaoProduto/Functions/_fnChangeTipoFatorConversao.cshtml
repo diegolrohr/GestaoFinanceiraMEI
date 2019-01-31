@@ -1,10 +1,13 @@
 ﻿<script>
-    @Html.Partial("Functions/_fnMain");
-
     function fnChangeTipoFatorConversao(tipo) {
         $('form#fly01mdlfrmFatorConversao #tipoFatorConversao').val(tipo);
         calculaFatorConversao(tipo);
-        //$('div#fly01mdlfrmFatorConversao').remove();
+    }
+
+    function validaQuantidadeValorFinal(quantFinal, valorFinal) {
+        if (quantFinal <= 0.0 || valorFinal <= 0.0) {
+            $$$.toast("Quantidade e/ou valor unitário convertido, devem ser superior a zero. Altere o fator de conversão.", 'error');
+        }
     }
 
     function calculaFatorConversao(tipo) {
@@ -14,17 +17,22 @@
         var totalXml = quant * valor;
         if (fator <= 0.0) {
             $$$.toast("Fator de conversão deve ser superior a zero.", 'error');
-            return;
+            $('form#fly01mdlfrmFatorConversao #fatorConversao').val(1.00);
         }
+
         if (tipo == "Multiplicar") {
-            var quantFinal = (quant * fator);
+            var quantFinal = parseFloat((quant * fator)).toFixed(2);
+            var valorFinal = parseFloat((valor / fator)).toFixed(2);
             $('form#fly01mdlfrmFatorConversao #quantidadeConvertida').val(quantFinal);
-            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor / fator);
+            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valorFinal);
+            validaQuantidadeValorFinal(quantFinal, valorFinal);
         }
         else {
-            var quantFinal = (quant / fator);
+            var quantFinal = parseFloat((quant / fator)).toFixed(2);
+            var valorFinal = parseFloat((valor * fator)).toFixed(2);
             $('form#fly01mdlfrmFatorConversao #quantidadeConvertida').val(quantFinal);
-            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valor * fator);
+            $('form#fly01mdlfrmFatorConversao #valorConvertido').val(valorFinal);
+            validaQuantidadeValorFinal(quantFinal, valorFinal);
         }
         $$$.fn.updateTextFields();
     }

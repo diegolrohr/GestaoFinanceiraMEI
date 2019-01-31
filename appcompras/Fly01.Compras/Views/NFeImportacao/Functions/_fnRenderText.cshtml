@@ -1,7 +1,7 @@
 ﻿<script>
 
     function fnRenderText(row, type) {
-        let attr = { "type": "text", "class": "mask currency",  "id": `${type}${row.id}` };
+        let attr = { "type": "text", "class": "mask currency", "style":"height:1.5rem;padding:8 4 8 4;margin:0;" , "id": `${type}${row.id}` };
         if (row.parentId) attr["data-parentId"] = row.parentId;
         if (type) attr["data-type"] = type;
         if (row.id) attr["data-id"] = row.id;

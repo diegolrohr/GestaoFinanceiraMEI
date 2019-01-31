@@ -52,14 +52,9 @@ namespace Fly01.Compras.Controllers
                 tipoFatorConversaoValue = EnumHelper.GetValue(typeof(TipoFatorConversao), x.TipoFatorConversao),
                 movimentaEstoque = x.MovimentaEstoque,
                 atualizaDadosProduto = x.AtualizaDadosProduto,
-                atualizaValorCompra = x.AtualizaValorCompra,
                 atualizaValorVenda = x.AtualizaValorVenda,
                 valorVenda = x.ValorVenda.ToString("C", AppDefaults.CultureInfoDefault),
-                valorVendaCurrency = x.ValorVenda,
-                tipoValorVenda = x.TipoValorVenda,
-                tipoValorVendaDescription = EnumHelper.GetDescription(typeof(TipoAtualizacaoValor), x.TipoValorVenda),
-                tipoValorVendaCssClass = EnumHelper.GetCSS(typeof(TipoAtualizacaoValor), x.TipoValorVenda),
-                tipoValorVendaValue = EnumHelper.GetValue(typeof(TipoAtualizacaoValor), x.TipoValorVenda)
+                valorVendaCurrency = x.ValorVenda
             };
         }
 
@@ -264,6 +259,30 @@ namespace Fly01.Compras.Controllers
                 RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit, entityVM.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult EditProdutoImportacao(NFeImportacaoProdutoVM entityVM)
+        {
+            try
+            {
+                dynamic nfeImportacaoProduto = new ExpandoObject();
+                nfeImportacaoProduto.atualizaDadosProduto = entityVM.AtualizaDadosProduto;
+                nfeImportacaoProduto.movimentaEstoque = entityVM.MovimentaEstoque;
+                nfeImportacaoProduto.atualizaValorVenda = entityVM.AtualizaValorVenda;
+                nfeImportacaoProduto.valorVenda = entityVM.ValorVenda;
+
+                var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));
+
+                return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit);
             }
             catch (Exception ex)
             {

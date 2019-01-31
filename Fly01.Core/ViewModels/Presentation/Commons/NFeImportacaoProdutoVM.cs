@@ -45,17 +45,11 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("atualizaDadosProduto")]
         public bool AtualizaDadosProduto { get; set; }
 
-        [JsonProperty("atualizaValorCompra")]
-        public bool AtualizaValorCompra { get; set; }
-
         [JsonProperty("atualizaValorVenda")]
         public bool AtualizaValorVenda { get; set; }
 
         [JsonProperty("valorVenda")]
         public double ValorVenda { get; set; }
-
-        [JsonProperty("tipoValorVenda")]
-        public string TipoValorVenda { get; set; }
 
         [JsonProperty("pedidoItemId")]
         public Guid? PedidoItemId { get; set; }

@@ -28,12 +28,15 @@
                 }
             }
             else {
-                if (!$(this).valid()) return false;
+                if (!$(this).valid()) {
+                    $$$.loading.stop();
+                    return false;
+                }
                 var jsonData = $(this).serializeObject();
 
-                //if ($('input#finalizarPedido:checked').val() === "true") {
-                //    jsonData.status = "Finalizado";
-                //}
+                if ($('input#finalizarImportacao:checked').val() === "true") {
+                    jsonData.status = "Finalizado";
+                }
 
                 $.ajax({
                     contentType: 'application/json; charset=utf-8',

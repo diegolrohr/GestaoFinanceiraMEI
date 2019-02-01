@@ -1,8 +1,22 @@
 ﻿<script>
     function fnDrawCallbackProdutosPendencias() {
+        $(document).off("submit", ".produtoPendenciaForm");
         $('#dtProdutosPendencias_paginate').hide();
         //TODO: diego ver tooltip
         //$(document).tooltip();
+
+        verificaPendencias();
+
+        $('.permchk[name="novoProduto"]').click(function () {
+            if ($(this).prop('checked') == true) {
+                var id = $(this).data("id");
+                $("#produtoDescricao" + id).val("");
+                $("#produtoId" + id).val("");
+                $("#btnFatorConversao" + id).addClass('hide');
+                $("#fatorConversao" + id).val(1.00);
+                $("#tipoFatorConversao" + id).val("Multiplicar");
+            }
+        })
 
         $("input.autocomplete").each((i, it) => {
             let that = $(it);
@@ -31,6 +45,8 @@
                         $(`#${that.attr("id")}`).val("");
                         $(`#${that.data("target")}`).val("");
                     }
+                    $("input#novoProduto" + `${that.data("id")}`).prop("checked", false);
+
                     //update hidden
                     if (ui.item == null) {
                         $("#unidadeCadastro" + `${that.data("id")}`).val("");
@@ -50,12 +66,14 @@
                             $("#btnFatorConversao" + `${that.data("id")}`).addClass('hide');
                         }
                     }
-                    
                     return false;
                 },
                 select: (event, ui) => {
                     $(`#${that.attr("id")}`).val(ui.item.label);
                     $(`#${that.data("target")}`).val(ui.item.id);
+
+                    $("input#novoProduto"+`${that.data("id")}`).prop("checked", false);
+
                     //update hidden
                     $("#unidadeCadastro" + `${that.data("id")}`).val(ui.item.unidadeSigla);
                     if ($("#unidadeXml" + `${that.data("id")}`).val() != ui.item.unidadeSigla) {

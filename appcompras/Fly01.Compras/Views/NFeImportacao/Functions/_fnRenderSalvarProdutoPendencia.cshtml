@@ -21,20 +21,19 @@
                 "name": labelId,
                 "data-url": "@Url.Action("Produto", "AutoComplete")",
                 "data-target": inputId,
-                "data-id": row.id
-            };
-
-            inputs.push(createElem("label", { "class": "truncate", "for": labelId }, "Produto"));
+                "data-id": row.id,
+                "style": "margin-right:5px"
+            };            
             inputs.push(createElem("input", { "type": "hidden", "name": "produtoId", "id": inputId }));
             inputs.push(createElem("input", inputAttr));
-            inputs.push(createElem("input", { "type": "checkbox", "class": "permchk", "id": `novoProduto${row.id}`, "name": `novoProduto` }));
             inputs.push(createElem("label", { "for": `novoProduto${row.id}` }, "Novo"));
+            inputs.push(fnRenderCheck(row, `novoProduto`, true));
         }
         else {
             inputs.push(inputHiddenId("produtoId" + `${row.id}`, "produtoId", row.produtoId));
             inputs.push(inputHiddenId("novoProduto" + `${row.id}`, "novoProduto", row.novoProduto));
         }
-        return createElem("div", { "class": `input-field visible right col s12` }, inputs);
+        return createElem("div", { "class": `right col s12` }, inputs);
     };
 
     function inputHiddenId(id, name, value) {
@@ -43,10 +42,6 @@
     };
 
     function submitButton(row) {
-        //var attr = { "type": "submit", "class": "btn btn-narrow valid", "id": "submit" + `${row.id}`, "alt": "Salvar" }
-        //return createElem("button", attr,
-        //      createElem("i", {"class":"material-icons"}, "save")
-        //    );
         var attr = {
             "class": "btn btn-narrow valid",
             "id": "btnSalvarPendencia" + `${row.id}`,
@@ -99,8 +94,6 @@
         return createForm(row).outerHTML;
     };
 
-    $(document).off("submit", ".produtoPendenciaForm");
-
     function fnSubmitForm(id) {
         var formId = "#produtoPendencia" + id;
         var that = $(formId);
@@ -111,8 +104,14 @@
         }
         else {
             var formData = that.serializeObject();
-
             formData.fatorConversao = parseFloat(formData.fatorConversao);
+            if (formData.novoProduto && formData.novoProduto == "on") {
+                formData.novoProduto = true
+            }
+            else {
+                formData.novoProduto = false
+            }
+
             if (formData.fatorConversao <= 0) {
                 $$$.toast("Fator de conversão deve ser superior a zero.", "error");
                 that.loading("stop");
@@ -137,8 +136,12 @@
                             strMsg = data.message;
                         $$$.toast(strMsg, "success");
                         that.loading("stop");
-                        $("input[value=\"" + data.id + "\"]").parent().parent().remove();
+                        $(`#btnSalvarPendencia${data.id}`).parent().parent().parent().remove();
                         $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
+                        if (!verificaPendencias()) {
+                            $('#stepProdutosPendencias').hide();
+                            $('li#stepProdutos div.step-title').click();
+                        }
                     } else {
                         that.loading("stop");
                         $$$.fn.submitErrorHandler(null, data.message);
@@ -152,6 +155,4 @@
             });
         }
     }
-    //);
-
 </script>

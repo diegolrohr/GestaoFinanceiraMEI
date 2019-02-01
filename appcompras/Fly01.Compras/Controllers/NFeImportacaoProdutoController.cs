@@ -37,7 +37,7 @@ namespace Fly01.Compras.Controllers
                 produtoId = x.ProdutoId,
                 codigo = x.Codigo,
                 codigoBarras = x.CodigoBarras,
-                descricao = x.Descricao,
+                descricao = x.Descricao.Substring(0, x.Descricao.Length > 30 ? 30 : x.Descricao.Length),
                 quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 quantidadeCurrency = x.Quantidade,
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
@@ -250,7 +250,8 @@ namespace Fly01.Compras.Controllers
             {
                 dynamic nfeImportacaoProduto = new ExpandoObject();
                 nfeImportacaoProduto.id = entityVM.Id;
-                nfeImportacaoProduto.produtoId = entityVM.ProdutoId.Value;
+                if(entityVM.ProdutoId != null)
+                    nfeImportacaoProduto.produtoId = entityVM.ProdutoId.Value;
                 nfeImportacaoProduto.novoProduto = entityVM.NovoProduto;
                 nfeImportacaoProduto.fatorConversao = entityVM.FatorConversao;
                 nfeImportacaoProduto.tipoFatorConversao = entityVM.TipoFatorConversao;

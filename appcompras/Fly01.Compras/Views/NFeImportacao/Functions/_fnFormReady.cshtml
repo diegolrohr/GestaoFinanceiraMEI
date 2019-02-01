@@ -134,12 +134,38 @@
         });
     }
 
+    function verificaPendencias() {
+        if ($$$._.dtProdutosPendencias.ajax.json().recordsTotal > 0) {
+            $('#stepProdutos').hide();
+            //TODO:check finalizar remove disabled
+            return true;
+        }
+        else {
+            $('#stepProdutos').show();
+            //TODO:check finalizar disabled and false
+            return false;
+        }
+    }
+
+    function fnSetInformacoesPendencias() {
+        $("#infoProdutosPendenciasField").append(
+            "Abaixo está listado os produtos importados do xml, que não foram vinculados com nenhum código de barras existente em seu cadastro de produtos. " +
+            "Escolha entre excluir a vinculação, criar um novo produto com base nas informações do xml ou ainda vincular a um produto existente. " +
+            "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, você pode especificar o fator de conversão. " +
+            "Salve sua solução de pendência escolhida, para cada produto importado. " +
+            "A criação dos novos produtos, ocorre na finalização da importação."
+        );
+        $("#infoProdutosPendenciasField").css("white-space", "normal");
+    }
+
     function fnFormReady() {
         $$$.loading.start();
+        fnSetInformacoesPendencias();
         if (isCreate()) {
             var today = new Date();
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
+            $('#stepProdutos').hide();
         } else {
             if ($('#tipoFrete').val() === "SemFrete") {
                 $('#stepTransportadora').hide();
@@ -238,7 +264,6 @@
                 success: function success(data) {
                     if (data.success) {
                         $$$.loading.stop();
-                        $$$.toast(strMsg, "success");
                     } else {
                         $$$.loading.stop();
                         $$$.fn.submitErrorHandler(null, data.message);

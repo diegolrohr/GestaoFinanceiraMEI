@@ -28,7 +28,7 @@
                     $('#dtProdutosResolvidos').loading('stop');
                     if (data.success) {
                         $$$.toast("Excluído com sucesso.", "success");
-                        $(`#btnExcluirResolvidos${idRecord}`).parent().parent().remove();                        
+                        $(`#btnExcluirResolvidos${idRecord}`).parent().parent().remove();
                     }
                     else {
                         $$$.fn.submitErrorHandler(null, data.message);

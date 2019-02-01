@@ -386,9 +386,14 @@
     <Content Include="Views\NFeImportacao\Functions\_fnValorVenda.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnModalAlterarProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyModal.cshtml" />
-    <Content Include="Views\NFeImportacao\Functions\_fnHidePaginate.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnDrawCallbackProdutosPendencias.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnRenderExcluirProdutoPendencia.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnRenderSalvarProdutoPendencia.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeTipoFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnFormReadyFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnChangeFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnSalvarModalFatorConversao.cshtml" />
+    <Content Include="Views\NFeImportacaoProduto\Functions\_fnCancelarModalFatorConversao.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>

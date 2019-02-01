@@ -104,7 +104,7 @@
         }
         else {
             var formData = that.serializeObject();
-            formData.fatorConversao = parseFloat(formData.fatorConversao);
+            formData.fatorConversao = parseFloat(noComma(formData.fatorConversao));
             if (formData.novoProduto && formData.novoProduto == "on") {
                 formData.novoProduto = true
             }
@@ -122,6 +122,7 @@
                 that.loading("stop");
                 return false;
             }
+            console.log(JSON.stringify(formData));
 
             $.ajax({
                 url: that.attr("action"),

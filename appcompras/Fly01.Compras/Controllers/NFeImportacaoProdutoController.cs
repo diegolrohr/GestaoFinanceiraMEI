@@ -23,7 +23,6 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoProdutoController()
         {
-            //TODO:diego Select properties
             ExpandProperties = "produto($expand=unidadeMedida),unidadeMedida";
         }
 

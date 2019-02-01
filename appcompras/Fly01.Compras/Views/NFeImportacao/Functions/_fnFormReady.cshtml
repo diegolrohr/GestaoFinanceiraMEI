@@ -140,12 +140,13 @@
     function verificaPendencias() {
         if ($$$._.dtProdutosPendencias.ajax.json().recordsTotal > 0) {
             $('#stepProdutos').hide();
-            //TODO:check finalizar remove disabled
+            $('input#finalizarImportacao').attr('disabled', 'disabled');
+            $("input#finalizarImportacao").prop("checked", false);
             return true;
         }
         else {
             $('#stepProdutos').show();
-            //TODO:check finalizar disabled and false
+            $('input#finalizarImportacao').removeAttr('disabled');
             return false;
         }
     }

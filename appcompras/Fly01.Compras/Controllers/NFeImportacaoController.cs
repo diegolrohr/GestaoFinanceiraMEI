@@ -257,7 +257,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Resumo/Finalizar",
                         Id = "stepResumoFinalizar",
-                        Quantity = 3,
+                        Quantity = 15, 
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -395,6 +395,88 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new DivElementUI { Id = "produtosResolvidos", Class = "col s12 visible" });
 
+            #endregion
+
+            #region step Finalizar
+
+            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioDesconto", Class = "col s12 m4", Label = "Descontos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorTotal", Class = "col s12 m4", Label = "Valor Total", Readonly = true });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "novoPedido",
+                Class = "col s12 m4 l4",
+                Label = "Incluir novo pedido",
+                DomEvents = new List<DomEventUI>
+                {
+                    //new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
+                }
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "finalizarImportacao", Class = "col s12 m4", Label = "Salvar e Finalizar" });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelImpostos", Class = "col s12", Label = "Impostos" });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioICMSST", Class = "col s12 m4", Label = "ICMSST", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioIPI", Class = "col s12 m4", Label = "IPI", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioFCPST", Class = "col s12 m4", Label = "FCPST", Readonly = true });
+
+
+            config.Elements.Add(new LabelSetUI { Id = "labelFinanceiro", Class = "col s12", Label = "Financeiro" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "geraFinanceiro",
+                Class = "col s12 m6 l3",
+                Label = "Gerar financeiro",
+                DomEvents = new List<DomEventUI>
+                {
+                    new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
+                }
+            });
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "formaPagamentoId",
+                Class = "col s12 m6",
+                Label = "Forma Pagamento",
+                DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
+                LabelId = "formaPagamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 m6",
+                Label = "Condição Parcelamento",
+                DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
+                LabelId = "condicaoParcelamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
+                DataPostField = "descricao"
+            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "categoriaId",
+                Class = "col s12 m6",
+                Label = "Categoria",
+                PreFilter = "tipoCarteira",
+                DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                LabelId = "categoriaDescricao",
+                DataUrlPost = @Url.Action("NovaCategoriaDespesa")
+            }, ResourceHashConst.ComprasCadastrosCategoria));
+            #endregion
+
+
+            #region Helpers
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "novoPedido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Se marcar Incluir novo Pedido, será gerado um novo Pedido com o status de Finalizado."
+                }
+            });
             #endregion
 
             cfg.Content.Add(config);

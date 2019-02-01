@@ -8,6 +8,8 @@ using Fly01.Core.Rest;
 using Fly01.Core.ViewModels;
 using Fly01.Core.ViewModels.Presentation.Commons;
 using Fly01.uiJS.Classes;
+using Fly01.uiJS.Classes.Elements;
+using Fly01.uiJS.Classes.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +23,6 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoProdutoController()
         {
-            //TODO:diego Select properties
             ExpandProperties = "produto($expand=unidadeMedida),unidadeMedida";
         }
 
@@ -35,7 +36,7 @@ namespace Fly01.Compras.Controllers
                 produtoId = x.ProdutoId,
                 codigo = x.Codigo,
                 codigoBarras = x.CodigoBarras,
-                descricao = x.Descricao,
+                descricao = x.Descricao.Substring(0, x.Descricao.Length > 30 ? 30 : x.Descricao.Length),
                 quantidade = x.Quantidade.ToString("R", AppDefaults.CultureInfoDefault),
                 quantidadeCurrency = x.Quantidade,
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
@@ -70,8 +71,7 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id },
-                //{ " and produtoId ne", "null" }
+                { "nFeImportacaoId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
             };
             return GridLoad(filters);
         }
@@ -81,11 +81,164 @@ namespace Fly01.Compras.Controllers
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
                 { "(nFeImportacaoId eq", (string.IsNullOrEmpty(id) ? new Guid().ToString() : id)+")" },
+                { " and (fatorConversao eq", "0)" },
                 { " and ((produtoId eq", "null)" },
                 { " or (produto ne null and produto/unidadeMedida/abreviacao ne", "unidadeMedida/abreviacao))" },
             };
             //$expand = produto($expand = unidadeMedida),unidadeMedida &$filter = ((produtoId eq null) or(produto ne null and produto / unidadeMedida / abreviacao ne unidadeMedida / abreviacao))
             return GridLoad(filters);
+        }
+
+        [HttpGet]
+        public ContentResult ModalFatorConversao(string id, string unidadeXml, string unidadeCadastro, double valor, double quantidade, double fatorConversao, string tipoFatorConversao)
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Fator de Conversão",
+                UrlFunctions = @Url.Action("Functions") + "?fns=",
+                ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnSalvarModalFatorConversao" },
+                CancelAction = new ModalUIAction() { Label = "Cancelar", OnClickFn = "fnCancelarModalFatorConversao" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("SalvarProdutoPendencia"),
+                    Edit = @Url.Action("SalvarProdutoPendencia"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List", "NFeImportacao")
+                },
+                Id = "fly01mdlfrmFatorConversao",
+                ReadyFn = "fnFormReadyFatorConversao",
+                Functions = new List<string>() { "fnChangeTipoFatorConversao" }
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id", Value = id });
+            config.Elements.Add(new InputHiddenUI { Id = "tipoFatorConversao", Value = tipoFatorConversao });
+            config.Elements.Add(new ButtonGroupUI()
+            {
+                Id = "fly01btngrpTipoFatorConversao",
+                Class = "col s12 m12",
+                OnClickFn = "fnChangeTipoFatorConversao",
+                Label = "Tipo do fator de conversão",
+                Options = new List<ButtonGroupOptionUI>
+                {
+                    new ButtonGroupOptionUI { Id = "btnMultiplicar", Value = "Multiplicar", Label = "Multiplicar (X)"},
+                    new ButtonGroupOptionUI { Id = "btnDividir", Value = "Dividir", Label = "Dividir (/)"},
+                }
+            });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetXml", Label = "Dados do xml" });
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "unidadeXml",
+                Class = "col s12 l2",
+                Label = "Unidade Xml",
+                Value = unidadeXml,
+                Disabled = true
+            });
+
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "quantidadeXml",
+                Class = "col s12 l3 numeric",
+                Label = "Quantidade",
+                Digits = 2,
+                Value = quantidade.ToString(),
+                Disabled = true
+            });
+
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorXml",
+                Class = "col s12 l3 numeric",
+                Label = "Valor Unitário",
+                Value = valor.ToString(),
+                Disabled = true
+            });
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorTotalXml",
+                Class = "col s12 l4 numeric",
+                Label = "Valor Total",
+                Value = (quantidade * valor).ToString(),
+                Disabled = true
+            });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelSetXml", Label = "Dados para cadastro" });
+            config.Elements.Add(new InputTextUI
+            {
+                Id = "unidadeCadastro",
+                Class = "col s12 l2",
+                Label = "Unidade Cadastro",
+                Value = unidadeCadastro,
+                Disabled = true
+            });
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "quantidadeConvertida",
+                Class = "col s12 l3 numeric",
+                Label = "Quantidade Convertida",
+                Digits = 2,
+                Disabled = true
+            });
+            config.Elements.Add(new InputCurrencyUI
+            {
+                Id = "valorConvertido",
+                Class = "col s12 l3 numeric",
+                Label = "Valor Unitário Convertido",
+                Disabled = true
+            });
+            config.Elements.Add(new InputFloatUI
+            {
+                Id = "fatorConversao",
+                Class = "col s12 l4 numeric",
+                Label = "Fator de Conversão",
+                Digits = 2,
+                Value = fatorConversao.ToString(),
+                Required = true,
+                DomEvents = new List<DomEventUI>()
+                {
+                    new DomEventUI()
+                    {
+                        DomEvent = "change",
+                        Function = "fnChangeFatorConversao"
+                    }
+                }
+            });
+
+            #region Helpers 
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "unidadeCadastro",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Unidade de medida cadastrada no produto vinculado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "fatorConversao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Fator de conversão a ser utilizado para movimentar estoque e atualizar o valor de compra/venda no cadastro do produto."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "quantidadeConvertida",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Quantidade final convertida pelo fator de conversão."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "valorConvertido",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Valor unitário final convertido pelo fator de conversão."
+                }
+            });
+            #endregion
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
 
         [OperationRole(PermissionValue = EPermissionValue.Write)]
@@ -94,14 +247,16 @@ namespace Fly01.Compras.Controllers
         {
             try
             {
-                var NFeImportacaoProduto = Get(entityVM.Id);
-                NFeImportacaoProduto.ProdutoId = entityVM.ProdutoId.Value;
-                NFeImportacaoProduto.NovoProduto = entityVM.NovoProduto;
-                NFeImportacaoProduto.FatorConversao = entityVM.FatorConversao;
-                NFeImportacaoProduto.TipoFatorConversao = entityVM.TipoFatorConversao;
+                dynamic nfeImportacaoProduto = new ExpandoObject();
+                nfeImportacaoProduto.id = entityVM.Id;
+                if(entityVM.ProdutoId != null)
+                    nfeImportacaoProduto.produtoId = entityVM.ProdutoId.Value;
+                nfeImportacaoProduto.novoProduto = entityVM.NovoProduto;
+                nfeImportacaoProduto.fatorConversao = entityVM.FatorConversao;
+                nfeImportacaoProduto.tipoFatorConversao = entityVM.TipoFatorConversao;
 
                 var resourceNamePut = $"{ResourceName}/{entityVM.Id}";
-                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(NFeImportacaoProduto, JsonSerializerSetting.Edit));
+                RestHelper.ExecutePutRequest(resourceNamePut, JsonConvert.SerializeObject(nfeImportacaoProduto, JsonSerializerSetting.Edit));
 
                 return JsonResponseStatus.Get(new ErrorInfo { HasError = false }, Operation.Edit, entityVM.Id);
             }

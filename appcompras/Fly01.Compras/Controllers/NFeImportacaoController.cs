@@ -184,7 +184,7 @@ namespace Fly01.Compras.Controllers
 
             if (UserCanWrite)
             {
-                target.Add(new HtmlUIButton { Id = "btnCancelar", Label = "Cancelar", OnClickFn = "fnCancelar", Position = HtmlUIButtonPosition.Main });
+                target.Add(new HtmlUIButton { Id = "btnCancelar", Label = "Cancelar", OnClickFn = "fnCancelar" });
             }
 
             return target;
@@ -245,7 +245,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Pendências",
                         Id = "stepProdutosPendencias",
-                        Quantity = 1,
+                        Quantity = 2,
                     },
                     new FormWizardUIStep()
                     {
@@ -366,7 +366,7 @@ namespace Fly01.Compras.Controllers
                 }
             });
 
-            config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transpotadora XML" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transportadora XML" });
             config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadualXml", Class = "col s12 m6", Label = "Inscrição Estadual", Readonly = true });
@@ -375,6 +375,7 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Produtos Pendências
+            config.Elements.Add(new DivElementUI { Id = "infoProdutosPendencias", Class = "col s12 text-justify visible", Label = "Informações" });
             config.Elements.Add(new DivElementUI { Id = "produtosPendencias", Class = "col s12 visible" });
             #endregion
 
@@ -622,7 +623,9 @@ namespace Fly01.Compras.Controllers
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 Options = new DataTableUIConfig
                 {
-                    PageLength = -1
+                    WithoutRowMenu = true,
+                    PageLength = -1,
+                    NoExportButtons = true
                 },
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -631,18 +634,17 @@ namespace Fly01.Compras.Controllers
                 Callbacks = new DataTableUICallbacks()
                 {
                     FooterCallback = "fnFooterCallbackProdutosPendencias",
-                    DrawCallback = "fnHidePaginate"
+                    DrawCallback = "fnDrawCallbackProdutosPendencias"
                 },
-                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnHidePaginate" }
+                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnDrawCallbackProdutosPendencias" }
             };
-            //TODO:Diego Remover paginação
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 1, Searchable = false, Orderable = false, DataField = "descricao", DisplayName = "Produto" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, DataField = "codigoBarras", DisplayName = "GTIN" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quantidade", Type = "float" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quant.", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Unidade xml" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 7, Searchable = false, Orderable = false, DisplayName = "Salvar Dados", RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center" });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 9, Searchable = false, Orderable = false, DisplayName = "Excluir", RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 6, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Un." });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center", Width = "35%" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
 
             return dtProdutosPendenciasCfg;
         }

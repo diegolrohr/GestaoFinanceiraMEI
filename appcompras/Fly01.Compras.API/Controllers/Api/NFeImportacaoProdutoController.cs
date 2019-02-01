@@ -13,7 +13,7 @@ namespace Fly01.Compras.API.Controllers.Api
         [EnableQuery(PageSize = 1000, MaxTop = 1000, MaxExpansionDepth = 10)]
         public override IHttpActionResult Get()
         {
-            return Ok(All().AsQueryable());
+            return Ok(All().OrderBy(x => x.Descricao).AsQueryable());
         }
     }
 }

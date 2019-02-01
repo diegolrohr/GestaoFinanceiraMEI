@@ -27,7 +27,8 @@
                     $('#dtProdutosPendencias').loading('stop');
                     if (data.success) {
                         $$$.toast("Excluído com sucesso.", "success");
-                        $("input[value=\"" + idRecord + "\"]").parent().parent().remove();
+                        $(`#btnExcluirProdutoPendencia${idRecord}`).parent().parent().remove();
+                        $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
                     }
                     else {
                         $$$.fn.submitErrorHandler(null, data.message);

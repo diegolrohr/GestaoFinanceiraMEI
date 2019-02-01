@@ -407,11 +407,7 @@ namespace Fly01.Compras.Controllers
             {
                 Id = "novoPedido",
                 Class = "col s12 m4 l4",
-                Label = "Incluir novo pedido",
-                DomEvents = new List<DomEventUI>
-                {
-                    //new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
-                }
+                Label = "Incluir novo pedido"
             });
             config.Elements.Add(new InputCheckboxUI { Id = "finalizarImportacao", Class = "col s12 m4", Label = "Salvar e Finalizar" });
 

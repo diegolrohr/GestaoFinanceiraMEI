@@ -45,6 +45,8 @@ namespace Fly01.Core.Entities.Domains.Commons
 
         public bool GeraFinanceiro { get; set; }
 
+        public bool GeraContasXml { get; set; }
+
         public Guid? CondicaoParcelamentoId { get; set; }
 
         public Guid? FormaPagamentoId { get; set; }

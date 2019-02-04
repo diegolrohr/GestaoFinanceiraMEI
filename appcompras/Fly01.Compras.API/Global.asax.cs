@@ -56,6 +56,7 @@ namespace Fly01.Compras.API
             builder.EntitySet<KitItem>("nbs");
             builder.EntitySet<NFeImportacao>("nfeimportacao");
             builder.EntitySet<NFeImportacaoProduto>("nfeimportacaoproduto");
+            builder.EntitySet<NFeImportacaoCobranca>("nfeimportacaocobranca");
 
             builder.EnableLowerCamelCase();
             return builder.GetEdmModel();

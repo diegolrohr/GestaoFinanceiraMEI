@@ -9,11 +9,10 @@
         inputs.push(inputHiddenId("fatorConversao" + `${row.id}`, "fatorConversao", 1.00));
         inputs.push(inputHiddenId("tipoFatorConversao" + `${row.id}`, "tipoFatorConversao", row.tipoFatorConversao));
 
-        if (row.produtoId == null || row.produtoId == undefined || row.produtoId == "")
+        if ((row.produtoId == null || row.produtoId == undefined || row.produtoId == "") || (row.produtoId != null && row.fatorConversao == 0.0))
         {
             let labelId = "produtoDescricao" + `${row.id}`;
             let inputId = "produtoId" + `${row.id}`;
-
             const inputAttr = {
                 "type": "text",
                 "class": "autocomplete col s8",
@@ -22,9 +21,10 @@
                 "data-url": "@Url.Action("Produto", "AutoComplete")",
                 "data-target": inputId,
                 "data-id": row.id,
-                "style": "margin-right:5px"
-            };            
-            inputs.push(createElem("input", { "type": "hidden", "name": "produtoId", "id": inputId }));
+                "style": "margin-right:5px",
+                "value": row.produto_descricao
+            };
+            inputs.push(createElem("input", { "type": "hidden", "name": "produtoId", "id": inputId, "value": row.produtoId }));
             inputs.push(createElem("input", inputAttr));
             inputs.push(createElem("label", { "for": `novoProduto${row.id}` }, "Novo"));
             inputs.push(fnRenderCheck(row, `novoProduto`, true));
@@ -51,8 +51,12 @@
     };
 
     function fatorConversaoButton(row) {
+        var classes = "btn btn-narrow valid";
+        if (row.produtoId == null || ((row.produtoId != null && row.produto_unidadeMedida_abreviacao != null) && (row.produto_unidadeMedida_abreviacao == row.unidadeMedida_abreviacao)))
+            classes += " hide";
+
         var formAttr = {
-            "class": "btn btn-narrow valid hide",
+            "class": classes,
             "id": "btnFatorConversao"+`${row.id}`,
             "onClick": "fnModalFatorConversao(" + "'" + row.id + "'" + ")",
         };

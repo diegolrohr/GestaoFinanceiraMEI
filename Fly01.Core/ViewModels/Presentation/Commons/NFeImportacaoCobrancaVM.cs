@@ -23,7 +23,5 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
 
         [JsonProperty("nfeImportacao")]
         public virtual NFeImportacao NFeImportacao { get; set; }
-        [JsonProperty("contaFinanceira")]
-        public virtual ContaFinanceira ContaFinanceira { get; set; }
     }
 }

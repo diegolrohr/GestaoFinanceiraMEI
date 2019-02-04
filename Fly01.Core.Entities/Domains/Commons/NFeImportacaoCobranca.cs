@@ -18,6 +18,5 @@ namespace Fly01.Core.Entities.Domains.Commons
         public Guid? ContaFinanceiraId { get; set; }
 
         public virtual NFeImportacao NFeImportacao { get; set; }
-        public virtual ContaFinanceira ContaFinanceira { get; set; }
     }
 }

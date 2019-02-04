@@ -80,7 +80,7 @@
                     window.history.pushState({}, document.title, url);
                     $("form#fly01frm").data("action", "@Url.Action("Edit", "Pedido")");
 
-                    if (data.tipoFrete === "SemFrete") {
+                    if (data.tipoFrete === "SemFrete" || !data.hasTagTransportadora) {
                         $('#stepTransportadora').hide();
                     }
                     $('#stepImportarArquivo').hide();
@@ -88,7 +88,6 @@
                     $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
                     $$$._.dtProdutosPendencias.refresh();
-                    $$$._.dtProdutosResolvidos.refresh();
 
                     $$$.loading.stop();
                     $$$.toast(strMsg, "success");
@@ -145,13 +144,14 @@
             return true;
         }
         else {
+            $$$._.dtProdutosResolvidos.refresh();
             $('#stepProdutos').show();
             $('input#finalizarImportacao').removeAttr('disabled');
             return false;
         }
     }
 
-    function fnSetInformacoesPendencias() {
+    function fnSetInformacoes() {
         $("#infoProdutosPendenciasField").append(
             "Abaixo está listado os produtos importados do xml, que não foram vinculados com nenhum código de barras existente em seu cadastro de produtos. " +
             "Escolha entre excluir a vinculação, criar um novo produto com base nas informações do xml ou ainda vincular a um produto existente. " +
@@ -160,25 +160,35 @@
             "A criação dos novos produtos, ocorre na finalização da importação."
         );
         $("#infoProdutosPendenciasField").css("white-space", "normal");
+        $("#infoProdutosField").append(
+            "Abaixo está listado os produtos importados do xml, que não foram excluídos na revisão de pendências. " +
+            "Escolha as operações que deseja realizar para cada produto. " +
+            "Se marcar Movimentar Estoque, será realizada a movimentação de entrada da quantidade total dos produtos. " +
+            "Se marcar Atualizar Produto, serão atualizados os dados no seu cadastro de produto, com base nas informações do xml: descrição, código de barras, valor de custo, ncm e cest. " +
+            "Se marcar Atualizar Valor Venda, ao clicar em Alterar Valor Venda, será aplicado a configuração de valor, a todos os marcados, resultado final visível na coluna Valor Venda " +
+            "ou se desejar informe um valor específico para cada produto. O valor será atualizado no cadastro do produto. " +
+            "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, será considerado o fator de conversão especificado na etapa das pendências. " +
+            "Todas as operações escolhidas, são efetivadas na finalização da importação."
+        );
+        $("#infoProdutosField").css("white-space", "normal");
     }
 
     function fnFormReady() {
         $$$.loading.start();
-        fnSetInformacoesPendencias();
+        fnSetInformacoes();
         if (isCreate()) {
             var today = new Date();
             $$$.fn.updateTextFields();
             fnBindStepsWizard();
             $('#stepProdutos').hide();
         } else {
-            if ($('#tipoFrete').val() === "SemFrete") {
+            if ($('#tipoFrete').val() === "SemFrete" || $('#transportadoraRazaoSocialXml').val().length === 0){
                 $('#stepTransportadora').hide();
             }
             $('#stepImportarArquivo').hide();
             $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
             $('li#stepFornecedor div.step-title').click();
             $$$._.dtProdutosPendencias.refresh();
-            $$$._.dtProdutosResolvidos.refresh();
         }
 
         fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");

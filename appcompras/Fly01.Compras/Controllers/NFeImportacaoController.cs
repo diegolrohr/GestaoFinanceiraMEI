@@ -28,8 +28,7 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoController()
         {
-            //TODO:diego Select properties
-            ExpandProperties = "fornecedor($select=nome),pedido,transportadora,condicaoParcelamento,formaPagamento,categoria";
+            ExpandProperties = "fornecedor($select=nome),pedido($select=numero),transportadora($select=nome),condicaoParcelamento,formaPagamento,categoria";
         }
 
         public override Func<NFeImportacaoVM, object> GetDisplayData()
@@ -257,7 +256,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Resumo/Finalizar",
                         Id = "stepResumoFinalizar",
-                        Quantity = 15, 
+                        Quantity = 15,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -383,7 +382,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new ButtonUI
             {
-                Id = "alterarSelecionados",                
+                Id = "alterarSelecionados",
                 Class = "col s12 m3 right",
                 ClassBtn = "btn-narrow",
                 Label = "",
@@ -503,38 +502,44 @@ namespace Fly01.Compras.Controllers
             }
         }
 
+        protected NFeVM DeserializeXmlToNFe(string xml)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(Base64Helper.DecodificaBase64(xml));
+
+            XmlElement xelRoot = doc.DocumentElement;
+            XmlNode tagNFe = xelRoot.FirstChild;
+            if (tagNFe.Name == "NFe")
+            {
+                XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
+                StringReader sr = new StringReader(tagNFe.OuterXml);
+                return (NFeVM)ser.Deserialize(sr);
+            }
+            return null;
+        }
+
         public override ContentResult Json(Guid id)
         {
             try
             {
                 var entity = GetNFeImportacaoForm(id);
 
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(Base64Helper.DecodificaBase64(entity.XML));
-
-                XmlElement xelRoot = doc.DocumentElement;
-                XmlNode tagNFe = xelRoot.FirstChild;
-                if (tagNFe.Name == "NFe")
+                var NFe = DeserializeXmlToNFe(entity.XML);
+                if (NFe != null && NFe.InfoNFe != null)
                 {
-                    XmlSerializer ser = new XmlSerializer(typeof(NFeVM));
-                    StringReader sr = new StringReader(tagNFe.OuterXml);
-                    var NFe = (NFeVM)ser.Deserialize(sr);
-                    if (NFe != null && NFe.InfoNFe != null)
+                    if (NFe.InfoNFe.Emitente != null)
                     {
-                        if (NFe.InfoNFe.Emitente != null)
-                        {
-                            entity.FornecedorNomeXml = NFe.InfoNFe.Emitente?.NomeFantasia;
-                            entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente?.Cnpj;
-                            entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente?.NomeFantasia;
-                            entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                        }
-                        if (NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null)
-                        {
-                            entity.TransportadoraRazaoSocialXml = NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial;
-                            entity.TransportadorCNPJXml = NFe.InfoNFe.Transporte.Transportadora?.CNPJ;
-                            entity.TransportadoraInscEstadualXml = NFe.InfoNFe.Transporte.Transportadora?.IE;
-                            entity.TransportadoraUFXml = NFe.InfoNFe.Transporte.Transportadora?.UF;
-                        }
+                        entity.FornecedorNomeXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                        entity.FornecedorCnpjXml = NFe.InfoNFe.Emitente?.Cnpj;
+                        entity.FornecedorRazaoSocialXml = NFe.InfoNFe.Emitente?.NomeFantasia;
+                        entity.FornecedorInscEstadualXml = NFe.InfoNFe.Emitente?.InscricaoEstadual;
+                    }
+                    if (NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null)
+                    {
+                        entity.TransportadoraRazaoSocialXml = NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial;
+                        entity.TransportadorCNPJXml = NFe.InfoNFe.Transporte.Transportadora?.CNPJ;
+                        entity.TransportadoraInscEstadualXml = NFe.InfoNFe.Transporte.Transportadora?.IE;
+                        entity.TransportadoraUFXml = NFe.InfoNFe.Transporte.Transportadora?.UF;
                     }
                 }
                 var x = Content(JsonConvert.SerializeObject(entity, JsonSerializerSetting.Front), "application/json");
@@ -560,10 +565,13 @@ namespace Fly01.Compras.Controllers
                 nfeImportacao.status = Status.Aberto.ToString();
 
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(nfeImportacao, JsonSerializerSetting.Default));
-                NFeImportacaoVM postResult = JsonConvert.DeserializeObject<NFeImportacaoVM>(postResponse);
+                NFeImportacaoFormVM postResult = JsonConvert.DeserializeObject<NFeImportacaoFormVM>(postResponse);
+                var NFe = DeserializeXmlToNFe(postResult.XML);
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null);                
+
                 var response = new JsonResult
                 {
-                    Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), tipoFrete = postResult.TipoFrete.ToString() }
+                    Data = new { success = true, message = AppDefaults.EditSuccessMessage, id = postResult.Id.ToString(), tipoFrete = postResult.TipoFrete.ToString(), hasTagTransportadora = hasTagTransportadora }
                 };
                 return response;
             }
@@ -674,16 +682,16 @@ namespace Fly01.Compras.Controllers
                 }
             };
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Searchable = false, Orderable = false, Priority = 1});
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "descricao", DisplayName = "Produto", Searchable = false, Orderable = false, Priority = 1 });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "quantidade", DisplayName = "Quant.", Priority = 2, Type = "float", Searchable = false, Orderable = false });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 3, Type = "float", Searchable = false, Orderable = false });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "valorVenda", DisplayName = "Valor Venda", Priority = 4, Searchable = false, Orderable = false, RenderFn = "fnValorVenda", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 5,  Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "movimentaEstoque", DisplayName = "Movimentar Estoque", Priority = 5, Searchable = false, Orderable = false, RenderFn = "fnMovimentaEstoque", Class = "dt-center" });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaDadosProduto", DisplayName = "Atualizar Produto", Priority = 6, Searchable = false, Orderable = false, RenderFn = "fnAtualizaProduto", Class = "dt-center" });
             dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DataField = "atualizaValorVenda", DisplayName = "Atualizar Valor Venda", Priority = 7, Searchable = false, Orderable = false, RenderFn = "fnAtualizaVlCompras", Class = "dt-center" });
 
-            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() {  DisplayName = "Ignorar", Priority = 8, Searchable = false, Orderable = false, RenderFn = "fnRenderButtonExcluirProdutos", Class = "dt-center" });
+            dtProdutosResolvidosCfg.Columns.Add(new DataTableUIColumn() { DisplayName = "Ignorar", Priority = 8, Searchable = false, Orderable = false, RenderFn = "fnRenderButtonExcluirProdutos", Class = "dt-center" });
 
             return dtProdutosResolvidosCfg;
         }
@@ -694,8 +702,7 @@ namespace Fly01.Compras.Controllers
             {
                 Title = "Alterar valor de venda",
                 UrlFunctions = @Url.Action("Functions") + "?fns=",
-                //ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnSalvarProduto" },
-                ConfirmAction = new ModalUIAction() { Label = "Salvar" , OnClickFn = "fnSalvarProduto" },
+                ConfirmAction = new ModalUIAction() { Label = "Salvar", OnClickFn = "fnSalvarProduto" },
                 CancelAction = new ModalUIAction() { Label = "Cancelar" },
                 Action = new FormUIAction
                 {

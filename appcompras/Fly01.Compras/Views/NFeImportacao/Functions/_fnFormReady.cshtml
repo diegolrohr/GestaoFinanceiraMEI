@@ -152,7 +152,7 @@
     }
 
     function fnSetInformacoes() {
-        $("#infoProdutosPendenciasField").append(
+        $("#infoProdutosPendenciasField").text(
             "Abaixo está listado os produtos importados do xml, que não foram vinculados com nenhum código de barras existente em seu cadastro de produtos. " +
             "Escolha entre excluir a vinculação, criar um novo produto com base nas informações do xml ou ainda vincular a um produto existente. " +
             "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, você pode especificar o fator de conversão. " +
@@ -160,7 +160,7 @@
             "A criação dos novos produtos, ocorre na finalização da importação."
         );
         $("#infoProdutosPendenciasField").css("white-space", "normal");
-        $("#infoProdutosField").append(
+        $("#infoProdutosField").text(
             "Abaixo está listado os produtos importados do xml, que não foram excluídos na revisão de pendências. " +
             "Escolha as operações que deseja realizar para cada produto. " +
             "Se marcar Movimentar Estoque, será realizada a movimentação de entrada da quantidade total dos produtos. " +

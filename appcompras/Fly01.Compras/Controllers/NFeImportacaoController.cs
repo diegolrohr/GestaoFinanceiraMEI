@@ -48,7 +48,7 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        public override Func<Duplicata, object> GetDisplayDataDuplicata()
+        public Func<Duplicata, object> GetDisplayDataDuplicata()
         {
             return x => new
             {

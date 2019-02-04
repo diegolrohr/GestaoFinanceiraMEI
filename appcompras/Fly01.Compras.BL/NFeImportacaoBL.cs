@@ -256,6 +256,53 @@ namespace Fly01.Compras.BL
             base.Delete(entityToDelete);
         }
 
+        protected void TryGetFornecedorIdFromXml(NFeImportacao entity, string cnpj)
+        {
+            var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper() && x.Fornecedor);
+            entity.FornecedorId = fornecedor?.Id;
+            entity.NovoFornecedor = (fornecedor == null);
+        }
+
+        protected void TryGetTransportadoraIdFromXml(NFeImportacao entity, string cnpj)
+        {
+            var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == cnpj.ToUpper() && x.Transportadora);
+            entity.TransportadoraId = transportadora?.Id;
+            entity.NovaTransportadora = (transportadora == null);
+        }
+
+        public void AtualizarVinculacoes(Guid id)
+        {
+            var NFeImportacao = All.Where(x => x.Id == id).FirstOrDefault();
+            var NFe = DeserializeXMlToNFe(NFeImportacao.Xml);
+
+            if (NFeImportacao.FornecedorId == null || NFeImportacao.FornecedorId == default(Guid))
+                TryGetFornecedorIdFromXml(NFeImportacao, NFe.InfoNFe.Emitente.Cnpj);
+            if (NFeImportacao.TransportadoraId == null || NFeImportacao.TransportadoraId == default(Guid))
+            {
+                var transpCnpj = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.ToUpper();
+                TryGetTransportadoraIdFromXml(NFeImportacao, transpCnpj);
+            }
+
+            Update(NFeImportacao);
+            TryGetProdutoIdFromXml(id);
+        }
+
+        private void TryGetProdutoIdFromXml(Guid id)
+        {
+            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == id && x.ProdutoId == null))
+            {
+                var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.CodigoBarras.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                if (produto != null)
+                {
+                    item.ProdutoId = produto.Id;
+                    item.NovoProduto = false;
+                    item.FatorConversao = 0.0;
+                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;                    
+                }
+                NFeImportacaoProdutoBL.Update(item);
+            }
+        }
+
         private void LerXmlEPopularDados(NFeImportacao entity)
         {
             var NFe = DeserializeXMlToNFe(entity.Xml);
@@ -270,16 +317,11 @@ namespace Fly01.Compras.BL
                 if (entity.IsValid())
                 {
                     entity.Tipo = NFe.InfoNFe.Identificador.FinalidadeEmissaoNFe;
-                    var fornecedor = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == NFe.InfoNFe.Emitente.Cnpj.ToUpper());
-                    entity.FornecedorId = fornecedor?.Id;
-                    entity.NovoFornecedor = (fornecedor == null);
+                    TryGetFornecedorIdFromXml(entity, NFe.InfoNFe.Emitente.Cnpj);
 
                     var transpCnpj = NFe.InfoNFe?.Transporte?.Transportadora?.CNPJ?.ToUpper();
-
-                    var transportadora = PessoaBL.All.FirstOrDefault(x => x.CPFCNPJ.ToUpper() == transpCnpj);
-                    entity.TransportadoraId = transportadora?.Id;
                     entity.TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete;
-                    entity.NovaTransportadora = (transportadora == null);
+                    TryGetTransportadoraIdFromXml(entity, transpCnpj);
 
                     entity.DataEmissao = NFe.InfoNFe.Identificador.Emissao;
                     entity.Serie = NFe.InfoNFe.Identificador.Serie.ToString();

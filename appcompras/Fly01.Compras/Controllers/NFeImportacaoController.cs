@@ -503,20 +503,11 @@ namespace Fly01.Compras.Controllers
 
         protected NFeImportacaoFormVM GetNFeImportacaoForm(Guid id)
         {
-            string resourceName = ResourceName;
-            string resourceById = String.Format("{0}/{1}", ResourceName, id);
+            string resourceName = "nfeimportacaovinculacao";
+            string resourceById = String.Format("{0}?id={1}", resourceName, id);
 
-            if (string.IsNullOrEmpty(ExpandProperties))
-            {
-                return RestHelper.ExecuteGetRequest<NFeImportacaoFormVM>(resourceById);
-            }
-            else
-            {
-                var queryString = new Dictionary<string, string> {
-                    { "$expand", ExpandProperties }
-                };
-                return RestHelper.ExecuteGetRequest<NFeImportacaoFormVM>(resourceById, queryString);
-            }
+            var response = RestHelper.ExecuteGetRequest<NFeImportacaoFormVM>(resourceById);
+            return response;
         }
 
         protected NFeVM DeserializeXmlToNFe(string xml)

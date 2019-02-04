@@ -48,16 +48,6 @@ namespace Fly01.Compras.Controllers
             };
         }
 
-        public Func<Duplicata, object> GetDisplayDataDuplicata()
-        {
-            return x => new
-            {
-                valorTotal = x.ValorDuplicata.ToString("C", AppDefaults.CultureInfoDefault),
-                dataEmissao = x.Vencimento.ToString("dd/MM/yyyy"),
-                numero = x.Numero
-            };
-        }
-
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
         {
             var target = new List<HtmlUIButton>();

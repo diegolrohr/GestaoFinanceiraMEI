@@ -68,20 +68,20 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status == Status.Finalizado)
             {
-                VerificarPendenciasFinalizacao(entity);
+                var NFe = DeserializeXMlToNFe(entity.Xml);
+                VerificarPendenciasFinalizacao(entity, NFe);
                 ValidaModel(entity);
                 if (entity.IsValid())
                 {
-                    FinalizarESalvarDados(entity);
+                    FinalizarESalvarDados(entity, NFe);
                 }
             }
 
             base.Update(entity);
         }
 
-        private void FinalizarESalvarDados(NFeImportacao entity)
+        private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
         {
-            var NFe = DeserializeXMlToNFe(entity.Xml);
             if (NotaValida(NFe))
             {
                 if (entity.NovoFornecedor)
@@ -90,7 +90,10 @@ namespace Fly01.Compras.BL
                     PessoaBL.Insert(new Pessoa()
                     {
                         Id = entity.FornecedorId.Value,
+                        Nome = NFe.InfoNFe.Emitente?.Nome,
                     });
+                    //producer post
+
                 }
                 else if (entity.AtualizaDadosFornecedor)
                 {
@@ -100,6 +103,7 @@ namespace Fly01.Compras.BL
                     {
                         fornecedor.NomeComercial = "";
                         PessoaBL.Update(fornecedor);
+                        //producer put
                     }
                     else
                     {
@@ -152,15 +156,15 @@ namespace Fly01.Compras.BL
             }
         }
 
-        private void VerificarPendenciasFinalizacao(NFeImportacao entity)
+        private void VerificarPendenciasFinalizacao(NFeImportacao entity, NFeVM NFe)
         {
             if (entity.Status == Status.Finalizado)
             {
                 entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
-
-                //TODO confirmar com Fraga
                 var pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
-                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && entity.GeraFinanceiro), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+
+                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
                 entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
                     new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
 

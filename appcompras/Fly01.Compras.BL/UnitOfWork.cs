@@ -157,6 +157,9 @@ namespace Fly01.Compras.BL
 
         private NFeImportacaoProdutoBL nfeImportacaoProdutoBL;
         public NFeImportacaoProdutoBL NFeImportacaoProdutoBL => nfeImportacaoProdutoBL ?? (nfeImportacaoProdutoBL = new NFeImportacaoProdutoBL(Context));
+
+        private NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL;
+        public NFeImportacaoCobrancaBL NFeImportacaoCobrancaBL => nfeImportacaoCobrancaBL ?? (nfeImportacaoCobrancaBL = new NFeImportacaoCobrancaBL(Context));
         #endregion
     }
 }

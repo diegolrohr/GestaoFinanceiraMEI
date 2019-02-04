@@ -13,6 +13,7 @@ using System.IO;
 using Fly01.EmissaoNFE.Domain.Enums;
 using Fly01.Core.Rest;
 using System.Data.Entity;
+using Fly01.Core.ServiceBus;
 
 namespace Fly01.Compras.BL
 {
@@ -24,9 +25,13 @@ namespace Fly01.Compras.BL
         protected PedidoBL PedidoBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected UnidadeMedidaBL UnidadeMedidaBL { get; set; }
+        protected CidadeBL CidadeBL { get; set; }
+        protected EstadoBL EstadoBL { get; set; }
+
+        private readonly string routePrefixNamePessoa = @"Pessoa";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
-          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL) : base(context)
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -34,6 +39,8 @@ namespace Fly01.Compras.BL
             PedidoBL = pedidoBL;
             PedidoItemBL = pedidoItemBL;
             UnidadeMedidaBL = unidadeMedidaBL;
+            CidadeBL = cidadeBL;
+            EstadoBL = estadoBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -68,29 +75,47 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status == Status.Finalizado)
             {
-                VerificarPendenciasFinalizacao(entity);
+                var NFe = DeserializeXMlToNFe(entity.Xml);
+                VerificarPendenciasFinalizacao(entity, NFe);
                 ValidaModel(entity);
                 if (entity.IsValid())
                 {
-                    FinalizarESalvarDados(entity);
+                    FinalizarESalvarDados(entity, NFe);
                 }
             }
 
             base.Update(entity);
         }
 
-        private void FinalizarESalvarDados(NFeImportacao entity)
+        private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
         {
-            var NFe = DeserializeXMlToNFe(entity.Xml);
             if (NotaValida(NFe))
             {
+                var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
+                var cidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
+
                 if (entity.NovoFornecedor)
                 {
                     entity.FornecedorId = new Guid();
-                    PessoaBL.Insert(new Pessoa()
+
+                    var fornecedor = new Pessoa()
                     {
                         Id = entity.FornecedorId.Value,
-                    });
+                        Nome = NFe.InfoNFe.Emitente?.Nome,
+                        CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
+                        NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia,
+                        Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
+                        Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero,
+                        Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero,
+                        Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro,
+                        CidadeId = cidade?.Id,
+                        EstadoId = cidade?.EstadoId,
+                        CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep,
+                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual
+                    };
+                    PessoaBL.Insert(fornecedor);
+                    Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.POST);
+
                 }
                 else if (entity.AtualizaDadosFornecedor)
                 {
@@ -98,18 +123,71 @@ namespace Fly01.Compras.BL
                     var fornecedor = PessoaBL.Find(entity.FornecedorId);
                     if (fornecedor != null)
                     {
-                        fornecedor.NomeComercial = "";
+                        fornecedor.Nome = NFe.InfoNFe.Emitente?.Nome;
+                        fornecedor.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
+                        fornecedor.NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia;
+                        fornecedor.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
+                        fornecedor.Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero;
+                        fornecedor.Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero;
+                        fornecedor.Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro;
+                        fornecedor.CidadeId = cidade?.Id;
+                        fornecedor.EstadoId = cidade?.EstadoId;
+                        fornecedor.CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep;
+                        fornecedor.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
                         PessoaBL.Update(fornecedor);
+                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.PUT);
+
                     }
                     else
                     {
-                        throw new BusinessException("Fornecor não localizado para atualização dos dados");
+                        throw new BusinessException("Fornecedor não localizado para atualização dos dados.");
+                    }
+                }
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+                if (entity.NovaTransportadora)
+                {
+                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+                    {
+                        entity.TransportadoraId = new Guid();
+
+                        var transportadora = new Pessoa()
+                        {
+                            Id = entity.TransportadoraId.Value,
+                            CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
+                            Nome = NFe.InfoNFe.Emitente?.Nome,
+                            InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
+                            Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
+                            CidadeId = cidade?.Id,
+                            EstadoId = cidade?.EstadoId
+                        };
+                        PessoaBL.Insert(transportadora);
+                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.POST);
+                    }
+                }
+                else if (entity.AtualizaDadosTransportadora)
+                {
+                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+                    {
+                        entity.NovaTransportadora = false;
+                        var transportadora = PessoaBL.Find(entity.TransportadoraId);
+                        if (transportadora != null)
+                        {
+                            transportadora.Id = entity.TransportadoraId.Value;
+                            transportadora.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
+                            transportadora.Nome = NFe.InfoNFe.Emitente?.Nome;
+                            transportadora.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
+                            transportadora.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
+                            transportadora.CidadeId = cidade?.Id;
+                            transportadora.EstadoId = cidade?.EstadoId;
+                            PessoaBL.Update(transportadora);
+                            Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
+                        }
                     }
                 }
             }
             else
             {
-                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados");
+                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
             }
         }
 
@@ -152,15 +230,15 @@ namespace Fly01.Compras.BL
             }
         }
 
-        private void VerificarPendenciasFinalizacao(NFeImportacao entity)
+        private void VerificarPendenciasFinalizacao(NFeImportacao entity, NFeVM NFe)
         {
             if (entity.Status == Status.Finalizado)
             {
                 entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
-
-                //TODO confirmar com Fraga
                 var pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
-                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && entity.GeraFinanceiro), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+
+                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
                 entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
                     new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
 
@@ -228,7 +306,7 @@ namespace Fly01.Compras.BL
                             Codigo = item.Codigo,
                             CodigoBarras = item.GTIN,
                             Quantidade = item.Quantidade,
-                            Valor = item.ValorUnitario, 
+                            Valor = item.ValorUnitario,
                             UnidadeMedidaId = unidadeMedida != null ? unidadeMedida.Id : unPadraoId.Value,
                             FatorConversao = 0.00,//para saber que não foi atualizado
                             TipoFatorConversao = TipoFatorConversao.Multiplicar,

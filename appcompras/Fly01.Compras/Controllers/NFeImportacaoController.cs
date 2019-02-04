@@ -48,6 +48,16 @@ namespace Fly01.Compras.Controllers
             };
         }
 
+        public override Func<Duplicata, object> GetDisplayDataDuplicata()
+        {
+            return x => new
+            {
+                valorTotal = x.ValorDuplicata.ToString("C", AppDefaults.CultureInfoDefault),
+                dataEmissao = x.Vencimento.ToString("dd/MM/yyyy"),
+                numero = x.Numero
+            };
+        }
+
         public List<HtmlUIButton> GetListButtonsOnHeaderCustom(string buttonLabel, string buttonOnClick)
         {
             var target = new List<HtmlUIButton>();
@@ -254,9 +264,15 @@ namespace Fly01.Compras.Controllers
                     },
                     new FormWizardUIStep()
                     {
+                        Title = "Financeiro",
+                        Id = "stepFinanceiro",
+                        Quantity = 6,
+                    },
+                    new FormWizardUIStep()
+                    {
                         Title = "Resumo/Finalizar",
                         Id = "stepResumoFinalizar",
-                        Quantity = 15,
+                        Quantity = 9,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -397,27 +413,7 @@ namespace Fly01.Compras.Controllers
 
             #endregion
 
-            #region step Finalizar
-
-            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "somatorioDesconto", Class = "col s12 m4", Label = "Descontos", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "valorTotal", Class = "col s12 m4", Label = "Valor Total", Readonly = true });
-
-            config.Elements.Add(new InputCheckboxUI
-            {
-                Id = "novoPedido",
-                Class = "col s12 m4 l4",
-                Label = "Incluir novo pedido"
-            });
-            config.Elements.Add(new InputCheckboxUI { Id = "finalizarImportacao", Class = "col s12 m4", Label = "Salvar e Finalizar" });
-
-            config.Elements.Add(new LabelSetUI { Id = "labelImpostos", Class = "col s12", Label = "Impostos" });
-            config.Elements.Add(new InputCurrencyUI { Id = "somatorioICMSST", Class = "col s12 m4", Label = "ICMSST", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "somatorioIPI", Class = "col s12 m4", Label = "IPI", Readonly = true });
-            config.Elements.Add(new InputCurrencyUI { Id = "somatorioFCPST", Class = "col s12 m4", Label = "FCPST", Readonly = true });
-
-
-            config.Elements.Add(new LabelSetUI { Id = "labelFinanceiro", Class = "col s12", Label = "Financeiro" });
+            #region step Financeiro
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraFinanceiro",
@@ -428,7 +424,16 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiro" }
                 }
             });
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "geraContasXml",
+                Class = "col s12 m6 l3",
+                Label = "Gerar contas xml",
+                DomEvents = new List<DomEventUI>
+                {
+                    //TODO: new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiroXml" }
+                }
+            });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
@@ -461,8 +466,30 @@ namespace Fly01.Compras.Controllers
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.ComprasCadastrosCategoria));
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
             #endregion
 
+            #region step Finalizar
+
+            config.Elements.Add(new LabelSetUI { Id = "labelImpostos", Class = "col s12", Label = "Impostos" });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioICMSST", Class = "col s12 m4", Label = "ICMSST", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioIPI", Class = "col s12 m4", Label = "IPI", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioFCPST", Class = "col s12 m4", Label = "FCPST", Readonly = true });
+
+            config.Elements.Add(new LabelSetUI { Id = "labelValores", Class = "col s12", Label = "Valores" });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorFrete", Class = "col s12 m4", Label = "Valor Frete", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "somatorioDesconto", Class = "col s12 m4", Label = "Descontos", Readonly = true });
+            config.Elements.Add(new InputCurrencyUI { Id = "valorTotal", Class = "col s12 m4", Label = "Valor Total", Readonly = true });
+
+            config.Elements.Add(new InputCheckboxUI
+            {
+                Id = "novoPedido",
+                Class = "col s12 m4 l4",
+                Label = "Incluir novo pedido"
+            });
+            config.Elements.Add(new InputCheckboxUI { Id = "finalizarImportacao", Class = "col s12 m4", Label = "Salvar e Finalizar" });
+
+            #endregion
 
             #region Helpers
             config.Helpers.Add(new TooltipUI
@@ -567,7 +594,7 @@ namespace Fly01.Compras.Controllers
                 var postResponse = RestHelper.ExecutePostRequest(ResourceName, JsonConvert.SerializeObject(nfeImportacao, JsonSerializerSetting.Default));
                 NFeImportacaoFormVM postResult = JsonConvert.DeserializeObject<NFeImportacaoFormVM>(postResponse);
                 var NFe = DeserializeXmlToNFe(postResult.XML);
-                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null);                
+                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
 
                 var response = new JsonResult
                 {

@@ -76,6 +76,7 @@
     <Compile Include="Controllers\Api\MonitorNFController.cs" />
     <Compile Include="Controllers\Api\MonitorNFInutilizadaController.cs" />
     <Compile Include="Controllers\Api\NBSController.cs" />
+    <Compile Include="Controllers\Api\NFeImportacaoCobrancaController.cs" />
     <Compile Include="Controllers\Api\NFeImportacaoProdutoController.cs" />
     <Compile Include="Controllers\Api\NFeImportacaoController.cs" />
     <Compile Include="Controllers\Api\NFeEntradaController.cs" />

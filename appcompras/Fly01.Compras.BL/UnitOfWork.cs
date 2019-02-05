@@ -153,10 +153,13 @@ namespace Fly01.Compras.BL
         public KitItemBL KitItemBL => kitItemBL ?? (kitItemBL = new KitItemBL(Context, KitBL, ProdutoBL, ServicoBL));
 
         private NFeImportacaoBL nfeImportacaoBL;
-        public NFeImportacaoBL NFeImportacaoBL => nfeImportacaoBL ?? (nfeImportacaoBL = new NFeImportacaoBL(Context, NFeImportacaoProdutoBL, PessoaBL, ProdutoBL, PedidoBL, PedidoItemBL, UnidadeMedidaBL, CidadeBL , EstadoBL));
+        public NFeImportacaoBL NFeImportacaoBL => nfeImportacaoBL ?? (nfeImportacaoBL = new NFeImportacaoBL(Context, NFeImportacaoProdutoBL, PessoaBL, ProdutoBL, PedidoBL, PedidoItemBL, UnidadeMedidaBL, CidadeBL , EstadoBL, NFeImportacaoCobrancaBL));
 
         private NFeImportacaoProdutoBL nfeImportacaoProdutoBL;
         public NFeImportacaoProdutoBL NFeImportacaoProdutoBL => nfeImportacaoProdutoBL ?? (nfeImportacaoProdutoBL = new NFeImportacaoProdutoBL(Context));
+
+        private NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL;
+        public NFeImportacaoCobrancaBL NFeImportacaoCobrancaBL => nfeImportacaoCobrancaBL ?? (nfeImportacaoCobrancaBL = new NFeImportacaoCobrancaBL(Context));
         #endregion
     }
 }

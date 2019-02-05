@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using Fly01.Financeiro.BL;
 using Fly01.Core.API;
+using Fly01.Core.Entities.Domains.Enum;
 
 namespace Fly01.Financeiro.API.Controllers.Api
 {
@@ -23,7 +24,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     ).Where(x =>
                         (x.DataAlteracao ?? x.DataInclusao) >= dataInicial &&
                         (x.DataAlteracao ?? x.DataInclusao) <= dataFinal &&
-                        (x.ValorPago > 0)
+                        (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.Pago)
                         ).Union(
                     unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
                         x => x.Categoria,
@@ -37,7 +38,7 @@ namespace Fly01.Financeiro.API.Controllers.Api
                     ).Where(x =>
                         (x.DataAlteracao ?? x.DataInclusao) >= dataInicial &&
                         (x.DataAlteracao ?? x.DataInclusao) <= dataFinal &&
-                        (x.ValorPago > 0)
+                        (x.StatusContaBancaria == StatusContaBancaria.EmAberto || x.StatusContaBancaria == StatusContaBancaria.Pago)
                         ).Union(
                     unitOfWork.ContaPagarBL.AllWithInactiveIncluding(
                         x => x.Categoria,

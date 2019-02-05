@@ -728,13 +728,12 @@ namespace Fly01.Compras.Controllers
                 },
                 Options = new DataTableUIConfig
                 {
-                    WithoutRowMenu = true,
                     PageLength = -1,
                     NoExportButtons = true
                 }
             };
 
-            dtCobrancasCfg.Actions.Add(new DataTableUIAction() { Label = "Excluir", OnClickFn = "fnExcluir" });
+            dtCobrancasCfg.Actions.Add(new DataTableUIAction() { Label = "Excluir", OnClickFn = "fnExcluirCobranca" });
 
             dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "numero", DisplayName = "Número", Searchable = false, Orderable = false, Priority = 3 });
             dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 1, Type = "float", Searchable = false, Orderable = false });

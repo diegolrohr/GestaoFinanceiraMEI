@@ -421,7 +421,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Gerar contas xml",
                 DomEvents = new List<DomEventUI>
                 {
-                    //TODO: new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiroXml" }
+                    new DomEventUI { DomEvent = "change", Function = "fnChkGeraContasXml" }
                 }
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -720,7 +720,7 @@ namespace Fly01.Compras.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 },
-                Functions = new List<string> { "fnFooterCallbackCobrancas" },
+                Functions = new List<string> { "fnFooterCallbackCobrancas", "fnDrawCallbackCobrancas" },
                 Callbacks = new DataTableUICallbacks
                 {
                     FooterCallback = "fnFooterCallbackCobrancas",

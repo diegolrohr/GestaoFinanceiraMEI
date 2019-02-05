@@ -256,7 +256,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Financeiro",
                         Id = "stepFinanceiro",
-                        Quantity = 6,
+                        Quantity = 8,
                     },
                     new FormWizardUIStep()
                     {
@@ -407,7 +407,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraFinanceiro",
-                Class = "col s12 m6 l3",
+                Class = "col s12 m4",
                 Label = "Gerar financeiro",
                 DomEvents = new List<DomEventUI>
                 {
@@ -417,7 +417,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(new InputCheckboxUI
             {
                 Id = "geraContasXml",
-                Class = "col s12 m6 l3",
+                Class = "col s12 m4",
                 Label = "Gerar contas xml",
                 DomEvents = new List<DomEventUI>
                 {
@@ -427,7 +427,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Forma Pagamento",
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao",
@@ -438,7 +438,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "condicaoParcelamentoId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Condição Parcelamento",
                 DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
                 LabelId = "condicaoParcelamentoDescricao",
@@ -449,14 +449,16 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "categoriaId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Categoria",
                 PreFilter = "tipoCarteira",
                 DataUrl = @Url.Action("Categoria", "AutoComplete"),
                 LabelId = "categoriaDescricao",
                 DataUrlPost = @Url.Action("NovaCategoriaDespesa")
             }, ResourceHashConst.ComprasCadastrosCategoria));
-            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m6 l3", Label = "Data Vencimento" });
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento" });
+            config.Elements.Add(new LabelSetUI { Id = "labelSetCobrancas", Label = "Cobranças importadas XML", Class = "col s12" });
+            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });
             #endregion
 
             #region step Finalizar
@@ -494,7 +496,8 @@ namespace Fly01.Compras.Controllers
 
             cfg.Content.Add(config);
             cfg.Content.Add(GetDtProdutosPendenciasCfg());
-            cfg.Content.Add(GetDtProdutosResolvidosfg());
+            cfg.Content.Add(GetDtProdutosResolvidosCfg());
+            cfg.Content.Add(GetDtCobrancasCfg());
             return cfg;
         }
 
@@ -641,7 +644,7 @@ namespace Fly01.Compras.Controllers
                 {
                     WithoutRowMenu = true,
                     PageLength = -1,
-                    NoExportButtons = true
+                    NoExportButtons = true, 
                 },
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -665,7 +668,7 @@ namespace Fly01.Compras.Controllers
             return dtProdutosPendenciasCfg;
         }
 
-        protected DataTableUI GetDtProdutosResolvidosfg()
+        protected DataTableUI GetDtProdutosResolvidosCfg()
         {
             DataTableUI dtProdutosResolvidosCfg = new DataTableUI
             {
@@ -705,7 +708,7 @@ namespace Fly01.Compras.Controllers
             return dtProdutosResolvidosCfg;
         }
 
-        protected DataTableUI GetDtCobrancaCfg()
+        protected DataTableUI GetDtCobrancasCfg()
         {
             DataTableUI dtCobrancasCfg = new DataTableUI
             {
@@ -717,8 +720,10 @@ namespace Fly01.Compras.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 },
+                Functions = new List<string> { "fnFooterCallbackCobrancas" },
                 Callbacks = new DataTableUICallbacks
                 {
+                    FooterCallback = "fnFooterCallbackCobrancas",
                     DrawCallback = "fnDrawCallbackCobrancas"
                 },
                 Options = new DataTableUIConfig

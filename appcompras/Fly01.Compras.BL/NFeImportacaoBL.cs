@@ -368,11 +368,28 @@ namespace Fly01.Compras.BL
                         NFeImportacaoProdutoBL.Insert(NFeImportacaoProduto);
                     }
                     #endregion
+
+                    #region Dados de Cobrança
+                    if(NFe.InfoNFe.Cobranca != null && NFe.InfoNFe.Cobranca.Duplicatas != null && NFe.InfoNFe.Cobranca.Duplicatas.Any())
+                    {
+                        entity.GeraContasXml = true;
+                        foreach (var item in NFe.InfoNFe?.Cobranca?.Duplicatas)
+                        {
+                            NFeImportacaoCobrancaBL.Insert(new NFeImportacaoCobranca()
+                            {
+                                DataVencimento = item.Vencimento,
+                                Numero = item.Numero,
+                                Valor = item.ValorDuplicata,
+                                NFeImportacaoId = entity.Id
+                            });
+                        }
+                    }
+                    #endregion
                 }
             }
             else
             {
-                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para inclusão dos dados");
+                throw new BusinessException("Não foi possível recuperar os dados das tags(nfeProc > NFe > infNFe) do XML da nota. Verifique se a nota esta autorizada e em formato válido.");
             }
         }
     }

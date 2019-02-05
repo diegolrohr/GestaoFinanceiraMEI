@@ -29,7 +29,9 @@
                         $$$.toast("Excluído com sucesso.", "success");
                         $(`#btnExcluirProdutoPendencia${idRecord}`).parent().parent().remove();
                         $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
+                        debugger;
                         if (!verificaPendencias()) {
+                            debugger;
                             $('#stepProdutosPendencias').hide();
                             $('li#stepProdutos div.step-title').click();
                         }

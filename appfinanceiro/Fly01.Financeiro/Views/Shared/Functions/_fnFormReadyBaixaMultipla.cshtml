@@ -24,7 +24,7 @@
                 });
 
                 fnAtualizaCountSelecionados(rowsCount);
-                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                $('input#somaValoresSelecionados').val(parseFloat(valorAcumulado.toFixed(2)));
                 $('input#contasFinanceirasGuids').val($$$._.dtContasExistentes.selected);
             }
         }).on('deselect', function (e, dt, type, indexes) {
@@ -48,7 +48,7 @@
                     valorAcumulado = 0.0;
                 }
                 fnAtualizaCountSelecionados(-rowsCount);
-                $('input#somaValoresSelecionados').val(valorAcumulado.toFixed(2));
+                $('input#somaValoresSelecionados').val(parseFloat(valorAcumulado.toFixed(2)));
                 $('input#contasFinanceirasGuids').val($$$._.dtContasExistentes.selected);
             }
         });

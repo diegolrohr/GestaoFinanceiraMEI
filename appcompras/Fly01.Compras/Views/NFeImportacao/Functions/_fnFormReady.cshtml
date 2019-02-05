@@ -194,8 +194,9 @@
         fnRegras("#fornecedorNome", "#atualizaDadosFornecedor", "#novoFornecedor");
         fnRegras("#transportadoraNome", "#atualizaDadosTransportadora", "#novaTransportadora");
         fnBindOverrideSubmit();
-        $$$.loading.stop();
+        $$$._.dtCobrancas.refresh();
         fnRegrasProdutos();
+        $$$.loading.stop();
     }
 
     function fnRegras(idComplete, idAtualizar, idNovo) {

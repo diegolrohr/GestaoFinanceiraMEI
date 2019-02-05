@@ -15,7 +15,7 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("valor")]
         public double Valor { get; set; }
 
-        [JsonProperty("dataVencimento ")]
+        [JsonProperty("dataVencimento")]
         public DateTime DataVencimento { get; set; }
 
         [JsonProperty("contaFinanceiraId")]

@@ -396,6 +396,8 @@
     <Content Include="Views\NFeImportacaoProduto\Functions\_fnSalvarModalFatorConversao.cshtml" />
     <Content Include="Views\NFeImportacaoProduto\Functions\_fnCancelarModalFatorConversao.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackCobrancas.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnDrawCallbackCobrancas.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

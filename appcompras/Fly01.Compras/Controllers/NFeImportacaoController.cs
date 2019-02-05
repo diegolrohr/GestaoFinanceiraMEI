@@ -720,7 +720,7 @@ namespace Fly01.Compras.Controllers
                 {
                     new DataTableUIParameter { Id = "id", Required = true }
                 },
-                Functions = new List<string> { "fnFooterCallbackCobrancas" },
+                Functions = new List<string> { "fnFooterCallbackCobrancas", "fnDrawCallbackCobrancas" },
                 Callbacks = new DataTableUICallbacks
                 {
                     FooterCallback = "fnFooterCallbackCobrancas",

@@ -714,6 +714,39 @@ namespace Fly01.Compras.Controllers
             return dtProdutosResolvidosCfg;
         }
 
+        protected DataTableUI GetDtCobrancaCfg()
+        {
+            DataTableUI dtCobrancasCfg = new DataTableUI
+            {
+                Parent = "cobrancasField",
+                Id = "dtCobrancas",
+                UrlGridLoad = Url.Action("GetNFeImportacaoCobrancas", "NFeImportacaocobranca"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                },
+                Callbacks = new DataTableUICallbacks
+                {
+                    DrawCallback = "fnDrawCallbackCobrancas"
+                },
+                Options = new DataTableUIConfig
+                {
+                    WithoutRowMenu = true,
+                    PageLength = -1,
+                    NoExportButtons = true
+                }
+            };
+
+            dtCobrancasCfg.Actions.Add(new DataTableUIAction() { Label = "Excluir", OnClickFn = "fnExcluir" });
+
+            dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "numero", DisplayName = "Número", Searchable = false, Orderable = false, Priority = 3 });
+            dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 1, Type = "float", Searchable = false, Orderable = false });
+            dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "dataVencimento", DisplayName = "Vencimento", Searchable = false, Orderable = false, Priority = 2, Type = "date" });
+
+            return dtCobrancasCfg;
+        }
+
         public ContentResult ModalAlterarProdutos()
         {
             ModalUIForm config = new ModalUIForm()

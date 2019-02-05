@@ -20,6 +20,7 @@ namespace Fly01.Compras.BL
     public class NFeImportacaoBL : PlataformaBaseBL<NFeImportacao>
     {
         protected NFeImportacaoProdutoBL NFeImportacaoProdutoBL { get; set; }
+        protected NFeImportacaoCobrancaBL NFeImportacaoCobrancaBL { get; set; }
         protected PessoaBL PessoaBL { get; set; }
         protected ProdutoBL ProdutoBL { get; set; }
         protected PedidoBL PedidoBL { get; set; }
@@ -31,7 +32,7 @@ namespace Fly01.Compras.BL
         private readonly string routePrefixNamePessoa = @"Pessoa";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
-          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL) : base(context)
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -41,6 +42,7 @@ namespace Fly01.Compras.BL
             UnidadeMedidaBL = unidadeMedidaBL;
             CidadeBL = cidadeBL;
             EstadoBL = estadoBL;
+            NFeImportacaoCobrancaBL = nfeImportacaoCobrancaBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -56,7 +58,7 @@ namespace Fly01.Compras.BL
             entity.NovoFornecedor = true;
             entity.NovaTransportadora = true;
 
-            entity.Id = Guid.NewGuid();//para vincular já vincular os produtos
+            entity.Id = Guid.NewGuid();
             entity.Fail(string.IsNullOrEmpty(entity.Xml), new Error("Envie um xml em base64", "xml"));
             entity.Fail(string.IsNullOrEmpty(entity.XmlMd5) || entity.XmlMd5?.Length != 32, new Error("MD5 do xml inválido", "xmlMd5"));
             if (entity.IsValid() && !All.Any(x => x.XmlMd5.ToUpper() == entity.XmlMd5.ToUpper()))

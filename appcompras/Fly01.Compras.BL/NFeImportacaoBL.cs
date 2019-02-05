@@ -28,11 +28,15 @@ namespace Fly01.Compras.BL
         protected UnidadeMedidaBL UnidadeMedidaBL { get; set; }
         protected CidadeBL CidadeBL { get; set; }
         protected EstadoBL EstadoBL { get; set; }
+        protected NCMBL NCMBL { get; set; }
+        protected CestBL CestBL { get; set; }
 
         private readonly string routePrefixNamePessoa = @"Pessoa";
+        private readonly string routePrefixNameProduto = @"Produto";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
-          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL) : base(context)
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL
+          , NCMBL nCMBL, CestBL cestBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -43,6 +47,8 @@ namespace Fly01.Compras.BL
             CidadeBL = cidadeBL;
             EstadoBL = estadoBL;
             NFeImportacaoCobrancaBL = nfeImportacaoCobrancaBL;
+            NCMBL = nCMBL;
+            CestBL = cestBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -113,7 +119,8 @@ namespace Fly01.Compras.BL
                         CidadeId = cidade?.Id,
                         EstadoId = cidade?.EstadoId,
                         CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep,
-                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual
+                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
+                        Fornecedor = true
                     };
                     PessoaBL.Insert(fornecedor);
                     Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.POST);
@@ -160,7 +167,8 @@ namespace Fly01.Compras.BL
                             InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
                             Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
                             CidadeId = cidade?.Id,
-                            EstadoId = cidade?.EstadoId
+                            EstadoId = cidade?.EstadoId,
+                            Transportadora = true
                         };
                         PessoaBL.Insert(transportadora);
                         Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.POST);
@@ -168,7 +176,7 @@ namespace Fly01.Compras.BL
                 }
                 else if (entity.AtualizaDadosTransportadora)
                 {
-                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+                    if (hasTagTransportadora)
                     {
                         entity.NovaTransportadora = false;
                         var transportadora = PessoaBL.Find(entity.TransportadoraId);
@@ -184,6 +192,91 @@ namespace Fly01.Compras.BL
                             PessoaBL.Update(transportadora);
                             Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
                         }
+                    }
+                }
+
+                foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                {
+                    var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
+
+                    if (item.NovoProduto)
+                    {
+                        item.ProdutoId = new Guid();
+                        var novoproduto = new Core.Entities.Domains.Commons.Produto()
+                        {
+                            Id = item.ProdutoId.Value,
+                            Descricao = item.Descricao,
+                            CodigoBarras = item.CodigoBarras,
+                            ValorCusto = 0,//resolver
+                            ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
+                            NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
+                            CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
+                        };
+                        ProdutoBL.Insert(novoproduto);
+                        Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, novoproduto, RabbitConfig.EnHttpVerb.POST);
+                        NFeImportacaoProdutoBL.Update(item);
+                    }
+
+                    else if (item.AtualizaDadosProduto)
+                    {
+                        var produto = ProdutoBL.Find(item.ProdutoId);
+                        if (produto != null)
+                        {
+                            produto.Id = item.ProdutoId.Value;
+                            produto.Descricao = item.Descricao;
+                            produto.CodigoBarras = item.CodigoBarras;
+                            produto.ValorCusto = 0;//resolver
+                            produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
+                            produto.NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
+                            produto.CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
+                            ProdutoBL.Update(produto);
+                            Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, produto, RabbitConfig.EnHttpVerb.PUT);
+                        }
+                    }
+                }
+
+
+                if (entity.NovoPedido)
+                {
+                    entity.PedidoId = new Guid();
+
+                    var pedido = new Pedido()
+                    {
+                        Id = entity.PedidoId.Value,
+                        TipoOrdemCompra = TipoOrdemCompra.Pedido,
+                        FornecedorId = entity.FornecedorId.Value,
+                        TransportadoraId = entity.TransportadoraId,
+                        NFeImportacaoId = entity.Id,
+                        TipoCompra = entity.Tipo,
+                        Status = StatusOrdemCompra.Finalizado,
+                        Data = NFe.InfoNFe.Identificador.Emissao,
+                        Total = entity.ValorTotal,
+                        TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete,
+                        Marca = NFe.InfoNFe.Transporte?.Volume?.Marca,
+                        PlacaVeiculo = NFe.InfoNFe?.Transporte?.Veiculo?.Placa,
+                        TipoEspecie = NFe.InfoNFe.Transporte?.Volume?.Especie,
+                        ValorFrete = entity.ValorFrete,
+                        PesoBruto = NFe.InfoNFe.Transporte?.Volume?.PesoBruto,
+                        PesoLiquido = NFe.InfoNFe.Transporte?.Volume?.PesoLiquido,
+                        QuantidadeVolumes = NFe.InfoNFe.Transporte?.Volume?.Quantidade,
+                        FormaPagamentoId = entity.FormaPagamentoId,
+                        CategoriaId = entity.CategoriaId,
+                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId,
+                        DataVencimento = entity.DataVencimento,
+                        Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
+                    };
+                    PedidoBL.Insert(pedido);
+
+                    foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                    {
+                        PedidoItemBL.Insert(new PedidoItem()
+                        {
+                            PedidoId = entity.PedidoId.Value,
+                            NFeImportacaoProdutoId = item.Id,
+                            ProdutoId = item.ProdutoId.Value,
+                            Quantidade = item.Quantidade,
+                            Valor = item.Valor
+                        });
                     }
                 }
             }
@@ -299,7 +392,7 @@ namespace Fly01.Compras.BL
                     item.ProdutoId = produto.Id;
                     item.NovoProduto = false;
                     item.FatorConversao = 0.0;
-                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;                    
+                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;
                 }
                 NFeImportacaoProdutoBL.Update(item);
             }
@@ -370,7 +463,7 @@ namespace Fly01.Compras.BL
                     #endregion
 
                     #region Dados de Cobrança
-                    if(NFe.InfoNFe.Cobranca != null && NFe.InfoNFe.Cobranca.Duplicatas != null && NFe.InfoNFe.Cobranca.Duplicatas.Any())
+                    if (NFe.InfoNFe.Cobranca != null && NFe.InfoNFe.Cobranca.Duplicatas != null && NFe.InfoNFe.Cobranca.Duplicatas.Any())
                     {
                         entity.GeraContasXml = true;
                         foreach (var item in NFe.InfoNFe?.Cobranca?.Duplicatas)

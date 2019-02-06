@@ -323,7 +323,7 @@ namespace Fly01.Compras.Controllers
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
             config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60, Readonly = true });
-            config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60, Readonly = true });
 
@@ -373,7 +373,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transportadora XML" });
             config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
-            config.Elements.Add(new InputCpfcnpjUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadualXml", Class = "col s12 m6", Label = "Inscrição Estadual", Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadoraUFXml", Class = "col s12 m6", Label = "UF", Readonly = true });
 
@@ -385,7 +385,6 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Produtos
-            config.Elements.Add(new DivElementUI { Id = "infoProdutos", Class = "col s12 text-justify visible", Label = "Informações" });
             config.Elements.Add(new ButtonUI
             {
                 Id = "alterarSelecionados",
@@ -398,6 +397,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalAlterarProdutos" }
                 }
             });
+            config.Elements.Add(new DivElementUI { Id = "infoProdutos" });
 
             config.Elements.Add(new DivElementUI { Id = "produtosResolvidos", Class = "col s12 visible" });
 

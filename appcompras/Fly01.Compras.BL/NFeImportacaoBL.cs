@@ -344,7 +344,6 @@ namespace Fly01.Compras.BL
                             var novacondicao = new CondicaoParcelamento()
                             {
                                 Id = condicacaoparcelamento,
-                                CondicoesParcelamento = "0",
                                 QtdParcelas = 1,
                                 Descricao = "Avista"
                             };

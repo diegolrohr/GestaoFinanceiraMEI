@@ -15,6 +15,7 @@ namespace Fly01.Compras.Controllers
         {
             return x => new
             {
+                id = x.Id,
                 valor = x.Valor.ToString("C", AppDefaults.CultureInfoDefault),
                 dataVencimento = x.DataVencimento.ToString("dd/MM/yyyy"),
                 numero = x.Numero

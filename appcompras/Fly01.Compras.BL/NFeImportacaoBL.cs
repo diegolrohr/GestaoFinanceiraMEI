@@ -33,6 +33,7 @@ namespace Fly01.Compras.BL
 
         private readonly string routePrefixNamePessoa = @"Pessoa";
         private readonly string routePrefixNameProduto = @"Produto";
+        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
           , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL
@@ -99,6 +100,8 @@ namespace Fly01.Compras.BL
         {
             if (NotaValida(NFe))
             {
+                #region Fornecedor
+
                 var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
                 var cidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
 
@@ -152,6 +155,10 @@ namespace Fly01.Compras.BL
                         throw new BusinessException("Fornecedor não localizado para atualização dos dados.");
                     }
                 }
+                #endregion
+
+                #region Transportadora
+
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
                 if (entity.NovaTransportadora)
                 {
@@ -194,7 +201,9 @@ namespace Fly01.Compras.BL
                         }
                     }
                 }
+                #endregion
 
+                #region Produto
                 foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                 {
                     var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
@@ -207,35 +216,74 @@ namespace Fly01.Compras.BL
                             Id = item.ProdutoId.Value,
                             Descricao = item.Descricao,
                             CodigoBarras = item.CodigoBarras,
-                            ValorCusto = 0,//resolver
+                            ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao),
                             ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
                             NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
                             CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
+                            SaldoProduto = item.MovimentaEstoque ? FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao) : 0
                         };
+
                         ProdutoBL.Insert(novoproduto);
                         Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, novoproduto, RabbitConfig.EnHttpVerb.POST);
                         NFeImportacaoProdutoBL.Update(item);
                     }
-
-                    else if (item.AtualizaDadosProduto)
+                    else if (item.AtualizaDadosProduto || item.AtualizaValorVenda)
                     {
                         var produto = ProdutoBL.Find(item.ProdutoId);
                         if (produto != null)
                         {
-                            produto.Id = item.ProdutoId.Value;
-                            produto.Descricao = item.Descricao;
-                            produto.CodigoBarras = item.CodigoBarras;
-                            produto.ValorCusto = 0;//resolver
-                            produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
-                            produto.NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
-                            produto.CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
+                            if (item.AtualizaDadosProduto)
+                            {
+
+                                produto.Descricao = item.Descricao;
+                                produto.CodigoBarras = item.CodigoBarras;
+                                produto.ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
+                                produto.NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
+                                produto.CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
+                            }
+                            else
+                            {
+                                produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
+                            }
+
                             ProdutoBL.Update(produto);
                             Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, produto, RabbitConfig.EnHttpVerb.PUT);
                         }
                     }
                 }
+                #endregion
 
+                #region MovimentaEstoque
 
+                foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto))
+
+                {
+                    var movimentos = (from nfeimportacaoproduto in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto)
+                                      group nfeimportacaoproduto by nfeimportacaoproduto.ProdutoId into groupResult
+                                      select new
+                                      {
+                                          ProdutoId = groupResult.Key,
+                                          Total = groupResult.Sum(f => FatorConversaoQuantidade(f.FatorConversao, f.Quantidade, f.TipoFatorConversao))
+                                      })
+                        .Select(x => new MovimentoPedidoCompra
+                        {
+                            Quantidade = (x.Total),
+                            ProdutoId = x.ProdutoId.Value,
+                            UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
+                            TipoCompra = entity.Tipo,
+                            PlataformaId = PlataformaUrl,
+                            Serie = entity.Serie,
+                            Numero = entity.Numero,
+                            IsNFeImportacao = true
+                        }).ToList();
+
+                    foreach (var movimento in movimentos)
+                        Producer<MovimentoPedidoCompra>.Send(routePrefixNameMovimentoPedidoCompra, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
+                }
+
+                #endregion
+
+                #region Pedido
                 if (entity.NovoPedido)
                 {
                     entity.PedidoId = new Guid();
@@ -279,10 +327,39 @@ namespace Fly01.Compras.BL
                         });
                     }
                 }
+                #endregion
+
+                #region Financeiro
+
+                #endregion
             }
             else
             {
                 throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
+            }
+        }
+
+        protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
+        {
+            if (tipo == TipoFatorConversao.Multiplicar)
+            {
+                return Math.Round((valor / fator), 2, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                return Math.Round((valor * fator), 2, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        protected double FatorConversaoQuantidade(double fator, double quantidade, TipoFatorConversao tipo)
+        {
+            if (tipo == TipoFatorConversao.Multiplicar)
+            {
+                return Math.Round((quantidade * fator), 2, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                return Math.Round((quantidade / fator), 2, MidpointRounding.AwayFromZero);
             }
         }
 

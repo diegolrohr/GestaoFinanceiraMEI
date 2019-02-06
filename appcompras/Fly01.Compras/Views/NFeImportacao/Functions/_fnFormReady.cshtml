@@ -262,35 +262,39 @@
     }
 
     function fnBindOverrideSubmitProduto() {
-        $$$._.dtProdutosResolvidos.data().each(function (row) {
+        if ($$$._.dtProdutosResolvidos.ajax.json() !== undefined) {
+            if ($$$._.dtProdutosResolvidos.ajax.json().recordsTotal > 0) {
+                $$$._.dtProdutosResolvidos.data().each(function (row) {
 
-            $$$.loading.start();
+                    $$$.loading.start();
 
-            row.atualizaDadosProduto = $('#atualizaDadosProduto' + row.id).prop('checked');
-            row.movimentaEstoque = $('#movimentaEstoque' + row.id).prop('checked');
-            row.atualizaValorVenda = $('#atualizaValorVenda' + row.id).prop('checked');
-            row.valorVenda = $('input#valorVenda' + row.id).val();
+                    row.atualizaDadosProduto = $('#atualizaDadosProduto' + row.id).prop('checked');
+                    row.movimentaEstoque = $('#movimentaEstoque' + row.id).prop('checked');
+                    row.atualizaValorVenda = $('#atualizaValorVenda' + row.id).prop('checked');
+                    row.valorVenda = $('input#valorVenda' + row.id).val();
 
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: "POST",
-                url: "@Url.Action("EditProdutoImportacao", "NFeImportacaoProduto")",
-                data: JSON.stringify({ 'entityVM': row }),
-                success: function success(data) {
-                    if (data.success) {
-                        $$$.loading.stop();
-                    } else {
-                        $$$.loading.stop();
-                        $$$.fn.submitErrorHandler(null, data.message);
-                    }
-                },
-                error: function error(jXHR, textStatus) {
-                    $$$.toast(textStatus, "error");
-                    $$$.loading.stop();
-                }
-            });
-        });
-        $$$.loading.stop();
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "@Url.Action("EditProdutoImportacao", "NFeImportacaoProduto")",
+                        data: JSON.stringify({ 'entityVM': row }),
+                        success: function success(data) {
+                            if (data.success) {
+                                $$$.loading.stop();
+                            } else {
+                                $$$.loading.stop();
+                                $$$.fn.submitErrorHandler(null, data.message);
+                            }
+                        },
+                        error: function error(jXHR, textStatus) {
+                            $$$.toast(textStatus, "error");
+                            $$$.loading.stop();
+                        }
+                    });
+                });
+                $$$.loading.stop();
+            }
+        }
     }
 </script>

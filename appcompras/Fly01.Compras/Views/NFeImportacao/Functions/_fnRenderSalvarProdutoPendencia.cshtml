@@ -143,8 +143,9 @@
                         $(`#btnSalvarPendencia${data.id}`).parent().parent().parent().remove();
                         $$$._.dtProdutosPendencias.ajax.json().recordsTotal -= 1;
                         if (!verificaPendencias()) {
+                            debugger;
                             $('#stepProdutosPendencias').hide();
-                            $('li#stepProdutos div.step-title').click();
+                            $('li#stepProdutos > div.step-content > div.step-actions > button.btn.previous-step').click();
                         }
                     } else {
                         that.loading("stop");

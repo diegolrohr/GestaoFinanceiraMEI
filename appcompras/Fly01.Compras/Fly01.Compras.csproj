@@ -398,6 +398,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnValidaCamposGeraFinanceiro.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackCobrancas.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnDrawCallbackCobrancas.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnChkGeraContasXml.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnExcluirCobranca.cshtml" />
     <None Include="Web.Homologacao.config">

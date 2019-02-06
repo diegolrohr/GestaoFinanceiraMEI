@@ -88,7 +88,13 @@
                     $('#stepFornecedor > div.step-content > div.step-actions > button.btn.previous-step').hide();
                     $('li#stepFornecedor div.step-title').click();
                     $$$._.fly01frm.refresh(data.id);
+                    $("input#geraFinanceiro").prop("checked", true);
+                    $("input#geraContasXml").prop("checked", true);
+                    fnValidaCamposGeraFinanceiro();
+                    fnChkGeraContasXml();
+
                     $$$._.dtProdutosPendencias.refresh();
+                    $$$._.dtCobrancas.refresh();
 
                     $$$.loading.stop();
                     $$$.toast(strMsg, "success");
@@ -177,6 +183,8 @@
     function fnFormReady() {
         $$$.loading.start();
         fnSetInformacoes();
+        fnValidaCamposGeraFinanceiro();
+        fnChkGeraContasXml();
         if (isCreate()) {
             var today = new Date();
             $$$.fn.updateTextFields();

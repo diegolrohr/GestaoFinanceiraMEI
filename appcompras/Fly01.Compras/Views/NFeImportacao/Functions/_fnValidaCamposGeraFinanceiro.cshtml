@@ -7,6 +7,9 @@
             $("#dataVencimento").rules("add", { required: true });
         }
         else {
+            $("input#geraContasXml").prop("checked", false);
+            fnChkGeraContasXml();
+
             $("#formaPagamentoDescricao").rules("remove", "required");
             $('#formaPagamentoDescricao').removeClass("invalid")
 

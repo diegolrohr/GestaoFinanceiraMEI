@@ -262,7 +262,7 @@ namespace Fly01.Compras.Controllers
                     {
                         Title = "Resumo/Finalizar",
                         Id = "stepResumoFinalizar",
-                        Quantity = 9,
+                        Quantity = 10,
                     }
                 },
                 Rule = isEdit ? "parallel" : "linear",
@@ -421,7 +421,7 @@ namespace Fly01.Compras.Controllers
                 Label = "Gerar contas xml",
                 DomEvents = new List<DomEventUI>
                 {
-                    //TODO: new DomEventUI { DomEvent = "change", Function = "fnValidaCamposGeraFinanceiroXml" }
+                    new DomEventUI { DomEvent = "change", Function = "fnChkGeraContasXml" }
                 }
             });
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
@@ -458,7 +458,7 @@ namespace Fly01.Compras.Controllers
             }, ResourceHashConst.ComprasCadastrosCategoria));
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento" });
             config.Elements.Add(new LabelSetUI { Id = "labelSetCobrancas", Label = "Cobranças importadas XML", Class = "col s12" });
-            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });
+            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });            
             #endregion
 
             #region step Finalizar
@@ -490,6 +490,14 @@ namespace Fly01.Compras.Controllers
                 Tooltip = new HelperUITooltip()
                 {
                     Text = "Se marcar Incluir novo Pedido, será gerado um novo Pedido com o status de Finalizado."
+                }
+            });
+            config.Helpers.Add(new TooltipUI
+            {
+                Id = "finalizarImportacao",
+                Tooltip = new HelperUITooltip()
+                {
+                    Text = "Resolva todas as pendências para finalizar a importação. Ao finalizar serão efetivadas as opções marcadas (Gerar financeiro, movimentar estoque, novo fornecedor/transportadora, atualização dos dados dos cadastros). Não será mais possível editar."
                 }
             });
             #endregion
@@ -662,7 +670,7 @@ namespace Fly01.Compras.Controllers
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quant.", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 6, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Un." });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center", Width = "35%" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", DisplayName ="Vincular Produtos", Class = "dt-center", Width = "35%" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
 
             return dtProdutosPendenciasCfg;
@@ -729,13 +737,12 @@ namespace Fly01.Compras.Controllers
                 },
                 Options = new DataTableUIConfig
                 {
-                    WithoutRowMenu = true,
                     PageLength = -1,
                     NoExportButtons = true
                 }
             };
 
-            dtCobrancasCfg.Actions.Add(new DataTableUIAction() { Label = "Excluir", OnClickFn = "fnExcluir" });
+            dtCobrancasCfg.Actions.Add(new DataTableUIAction() { Label = "Excluir", OnClickFn = "fnExcluirCobranca" });
 
             dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "numero", DisplayName = "Número", Searchable = false, Orderable = false, Priority = 3 });
             dtCobrancasCfg.Columns.Add(new DataTableUIColumn() { DataField = "valor", DisplayName = "Valor", Priority = 1, Type = "float", Searchable = false, Orderable = false });

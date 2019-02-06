@@ -45,6 +45,9 @@ namespace Fly01.Core.ViewModels.Presentation.Commons
         [JsonProperty("geraFinanceiro")]
         public bool GeraFinanceiro { get; set; }
 
+        [JsonProperty("geraContasXml")]
+        public bool GeraContasXml { get; set; }
+
         [JsonProperty("condicaoParcelamentoId")]
         public Guid? CondicaoParcelamentoId { get; set; }
 

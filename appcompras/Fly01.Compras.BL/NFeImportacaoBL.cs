@@ -30,14 +30,16 @@ namespace Fly01.Compras.BL
         protected EstadoBL EstadoBL { get; set; }
         protected NCMBL NCMBL { get; set; }
         protected CestBL CestBL { get; set; }
+        protected CondicaoParcelamentoBL CondicaoParcelamentoBL { get; set; }
 
         private readonly string routePrefixNamePessoa = @"Pessoa";
         private readonly string routePrefixNameProduto = @"Produto";
         private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
+        private readonly string routePrefixNameContaPagar = @"ContaPagar";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
           , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL
-          , NCMBL nCMBL, CestBL cestBL) : base(context)
+          , NCMBL nCMBL, CestBL cestBL, CondicaoParcelamentoBL condicaoParcelamentoBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -50,6 +52,7 @@ namespace Fly01.Compras.BL
             NFeImportacaoCobrancaBL = nfeImportacaoCobrancaBL;
             NCMBL = nCMBL;
             CestBL = cestBL;
+            CondicaoParcelamentoBL = condicaoParcelamentoBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)
@@ -330,7 +333,58 @@ namespace Fly01.Compras.BL
                 #endregion
 
                 #region Financeiro
+                if (entity.GeraFinanceiro)
+                {
+                    if (entity.GeraContasXml && NFeImportacaoCobrancaBL.All.Any(x => x.NFeImportacaoId == entity.Id))
+                    {
+                        var condicacaoparcelamento = CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 0 || x.CondicoesParcelamento == "0").Id;
+                        if (condicacaoparcelamento == null)
+                        {
+                            condicacaoparcelamento = new Guid();
+                            var novacondicao = new CondicaoParcelamento()
+                            {
+                                Id = condicacaoparcelamento,
+                                CondicoesParcelamento = "0",
+                                QtdParcelas = 1,
+                                Descricao = "Avista"
+                            };
+                            Producer<CondicaoParcelamento>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, novacondicao, RabbitConfig.EnHttpVerb.POST);
+                        }
+                        foreach (var item in NFeImportacaoCobrancaBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                        {
 
+                            var contaPagar = new ContaPagar()
+                            {
+                                ValorPrevisto = item.Valor,
+                                CategoriaId = entity.CategoriaId.Value,
+                                CondicaoParcelamentoId = condicacaoparcelamento,
+                                PessoaId = entity.FornecedorId.Value,
+                                DataEmissao = DateTime.Now,
+                                DataVencimento = item.DataVencimento,
+                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
+                                Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
+                                FormaPagamentoId = entity.FormaPagamentoId.Value,
+                            };
+                            Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                        }
+                    }
+                    else
+                    {
+                        var contaPagar = new ContaPagar()
+                        {
+                            ValorPrevisto = entity.ValorTotal,
+                            CategoriaId = entity.CategoriaId.Value,
+                            CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                            PessoaId = entity.FornecedorId.Value,
+                            DataEmissao = DateTime.Now,
+                            DataVencimento = entity.DataVencimento,
+                            Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
+                            Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
+                            FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        };
+                        Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                    }
+                }
                 #endregion
             }
             else

@@ -1,0 +1,9 @@
+﻿<script>
+    function fnFooterCallbackProdutos(tfoot, data, start, end, display) {
+        if ($$$._.dtProdutosResolvidos.ajax.json().recordsTotal <= 0)
+        {
+            $('#stepProdutos').hide();
+            $('li#stepFinanceiro > div.step-content > div.step-actions > button.btn.previous-step').click();
+        }
+    }
+</script>

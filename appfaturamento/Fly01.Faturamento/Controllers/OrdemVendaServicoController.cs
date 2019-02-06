@@ -164,7 +164,7 @@ namespace Fly01.Faturamento.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "ordemVendaId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "ordemVendaId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

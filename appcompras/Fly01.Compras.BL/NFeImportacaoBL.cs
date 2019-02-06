@@ -90,307 +90,84 @@ namespace Fly01.Compras.BL
                 var NFe = DeserializeXMlToNFe(entity.Xml);
                 VerificarPendenciasFinalizacao(entity, NFe);
                 ValidaModel(entity);
-                if (entity.IsValid())
-                {
-                    FinalizarESalvarDados(entity, NFe);
-                }
+                //if (entity.IsValid())
+                //{
+                //    FinalizarESalvarDados(entity, NFe);
+                //}
             }
 
             base.Update(entity);
         }
 
-        private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
-        {
-            if (NotaValida(NFe))
-            {
-                #region Fornecedor
+        //private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
+        //{
+        //    if (NotaValida(NFe))
+        //    {
+        //        try
+        //        {
+        //            #region Fornecedor
 
-                var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
-                var cidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
 
-                if (entity.NovoFornecedor)
-                {
-                    entity.FornecedorId = new Guid();
+        //            if (entity.NovoFornecedor)
+        //            {
+        //                entity.FornecedorId = Guid.NewGuid();      
+        //            }
+        //            else if (entity.AtualizaDadosFornecedor)
+        //            {
+        //                entity.NovoFornecedor = false;                       
+        //            }
+        //            #endregion
 
-                    var fornecedor = new Pessoa()
-                    {
-                        Id = entity.FornecedorId.Value,
-                        Nome = NFe.InfoNFe.Emitente?.Nome,
-                        CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                        NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia,
-                        Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                        Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro,
-                        CidadeId = cidade?.Id,
-                        EstadoId = cidade?.EstadoId,
-                        CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep,
-                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
-                        Fornecedor = true
-                    };
-                    PessoaBL.Insert(fornecedor);
-                    Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.POST);
+        //            #region Transportadora
 
-                }
-                else if (entity.AtualizaDadosFornecedor)
-                {
-                    entity.NovoFornecedor = false;
-                    var fornecedor = PessoaBL.Find(entity.FornecedorId);
-                    if (fornecedor != null)
-                    {
-                        fornecedor.Nome = NFe.InfoNFe.Emitente?.Nome;
-                        fornecedor.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                        fornecedor.NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia;
-                        fornecedor.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                        fornecedor.Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro;
-                        fornecedor.CidadeId = cidade?.Id;
-                        fornecedor.EstadoId = cidade?.EstadoId;
-                        fornecedor.CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep;
-                        fornecedor.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                        PessoaBL.Update(fornecedor);
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.PUT);
+        //            var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+        //            if (entity.NovaTransportadora)
+        //            {
+        //                if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+        //                {
+        //                    entity.TransportadoraId = Guid.NewGuid();
+        //                }
+        //            }
+        //            else if (entity.AtualizaDadosTransportadora)
+        //            {
+        //                if (hasTagTransportadora)
+        //                {
+        //                    entity.NovaTransportadora = false;                         
+        //                }
+        //            }
+        //            #endregion
 
-                    }
-                    else
-                    {
-                        throw new BusinessException("Fornecedor não localizado para atualização dos dados.");
-                    }
-                }
-                #endregion
+        //            #region Produto
+        //            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+        //            {
+        //                var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
 
-                #region Transportadora
+        //                if (item.NovoProduto)
+        //                {
+        //                    item.ProdutoId = Guid.NewGuid();                           
+        //                    NFeImportacaoProdutoBL.Update(item);
+        //                }
+        //            }
+        //            #endregion
+                   
+        //            #region Pedido
+        //            if (entity.NovoPedido)
+        //            {
+        //                entity.PedidoId = Guid.NewGuid();                       
+        //            }
+        //            #endregion
 
-                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
-                if (entity.NovaTransportadora)
-                {
-                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
-                    {
-                        entity.TransportadoraId = new Guid();
-
-                        var transportadora = new Pessoa()
-                        {
-                            Id = entity.TransportadoraId.Value,
-                            CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                            Nome = NFe.InfoNFe.Emitente?.Nome,
-                            InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
-                            Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                            CidadeId = cidade?.Id,
-                            EstadoId = cidade?.EstadoId,
-                            Transportadora = true
-                        };
-                        PessoaBL.Insert(transportadora);
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.POST);
-                    }
-                }
-                else if (entity.AtualizaDadosTransportadora)
-                {
-                    if (hasTagTransportadora)
-                    {
-                        entity.NovaTransportadora = false;
-                        var transportadora = PessoaBL.Find(entity.TransportadoraId);
-                        if (transportadora != null)
-                        {
-                            transportadora.Id = entity.TransportadoraId.Value;
-                            transportadora.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                            transportadora.Nome = NFe.InfoNFe.Emitente?.Nome;
-                            transportadora.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                            transportadora.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                            transportadora.CidadeId = cidade?.Id;
-                            transportadora.EstadoId = cidade?.EstadoId;
-                            PessoaBL.Update(transportadora);
-                            Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
-                        }
-                    }
-                }
-                #endregion
-
-                #region Produto
-                foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-                {
-                    var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
-
-                    if (item.NovoProduto)
-                    {
-                        item.ProdutoId = new Guid();
-                        var novoproduto = new Core.Entities.Domains.Commons.Produto()
-                        {
-                            Id = item.ProdutoId.Value,
-                            Descricao = item.Descricao,
-                            CodigoBarras = item.CodigoBarras,
-                            ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao),
-                            ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
-                            NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
-                            CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
-                            SaldoProduto = item.MovimentaEstoque ? FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao) : 0
-                        };
-
-                        ProdutoBL.Insert(novoproduto);
-                        Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, novoproduto, RabbitConfig.EnHttpVerb.POST);
-                        NFeImportacaoProdutoBL.Update(item);
-                    }
-                    else if (item.AtualizaDadosProduto || item.AtualizaValorVenda)
-                    {
-                        var produto = ProdutoBL.Find(item.ProdutoId);
-                        if (produto != null)
-                        {
-                            if (item.AtualizaDadosProduto)
-                            {
-
-                                produto.Descricao = item.Descricao;
-                                produto.CodigoBarras = item.CodigoBarras;
-                                produto.ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
-                                produto.NcmId = NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
-                                produto.CestId = CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
-                            }
-                            else
-                            {
-                                produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
-                            }
-
-                            ProdutoBL.Update(produto);
-                            Producer<Core.Entities.Domains.Commons.Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, produto, RabbitConfig.EnHttpVerb.PUT);
-                        }
-                    }
-                }
-                #endregion
-
-                #region MovimentaEstoque
-
-                foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto))
-
-                {
-                    var movimentos = (from nfeimportacaoproduto in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto)
-                                      group nfeimportacaoproduto by nfeimportacaoproduto.ProdutoId into groupResult
-                                      select new
-                                      {
-                                          ProdutoId = groupResult.Key,
-                                          Total = groupResult.Sum(f => FatorConversaoQuantidade(f.FatorConversao, f.Quantidade, f.TipoFatorConversao))
-                                      })
-                        .Select(x => new MovimentoPedidoCompra
-                        {
-                            Quantidade = (x.Total),
-                            ProdutoId = x.ProdutoId.Value,
-                            UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
-                            TipoCompra = entity.Tipo,
-                            PlataformaId = PlataformaUrl,
-                            Serie = entity.Serie,
-                            Numero = entity.Numero,
-                            IsNFeImportacao = true
-                        }).ToList();
-
-                    foreach (var movimento in movimentos)
-                        Producer<MovimentoPedidoCompra>.Send(routePrefixNameMovimentoPedidoCompra, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
-                }
-
-                #endregion
-
-                #region Pedido
-                if (entity.NovoPedido)
-                {
-                    entity.PedidoId = new Guid();
-
-                    var pedido = new Pedido()
-                    {
-                        Id = entity.PedidoId.Value,
-                        TipoOrdemCompra = TipoOrdemCompra.Pedido,
-                        FornecedorId = entity.FornecedorId.Value,
-                        TransportadoraId = entity.TransportadoraId,
-                        NFeImportacaoId = entity.Id,
-                        TipoCompra = entity.Tipo,
-                        Status = StatusOrdemCompra.Finalizado,
-                        Data = NFe.InfoNFe.Identificador.Emissao,
-                        Total = entity.ValorTotal,
-                        TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete,
-                        Marca = NFe.InfoNFe.Transporte?.Volume?.Marca,
-                        PlacaVeiculo = NFe.InfoNFe?.Transporte?.Veiculo?.Placa,
-                        TipoEspecie = NFe.InfoNFe.Transporte?.Volume?.Especie,
-                        ValorFrete = entity.ValorFrete,
-                        PesoBruto = NFe.InfoNFe.Transporte?.Volume?.PesoBruto,
-                        PesoLiquido = NFe.InfoNFe.Transporte?.Volume?.PesoLiquido,
-                        QuantidadeVolumes = NFe.InfoNFe.Transporte?.Volume?.Quantidade,
-                        FormaPagamentoId = entity.FormaPagamentoId,
-                        CategoriaId = entity.CategoriaId,
-                        CondicaoParcelamentoId = entity.CondicaoParcelamentoId,
-                        DataVencimento = entity.DataVencimento,
-                        Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
-                    };
-                    PedidoBL.Insert(pedido);
-
-                    foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-                    {
-                        PedidoItemBL.Insert(new PedidoItem()
-                        {
-                            PedidoId = entity.PedidoId.Value,
-                            NFeImportacaoProdutoId = item.Id,
-                            ProdutoId = item.ProdutoId.Value,
-                            Quantidade = item.Quantidade,
-                            Valor = item.Valor
-                        });
-                    }
-                }
-                #endregion
-
-                #region Financeiro
-                if (entity.GeraFinanceiro)
-                {
-                    if (entity.GeraContasXml && NFeImportacaoCobrancaBL.All.Any(x => x.NFeImportacaoId == entity.Id))
-                    {
-                        var condicacaoparcelamento = CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 0 || x.CondicoesParcelamento == "0").Id;
-                        if (condicacaoparcelamento == null)
-                        {
-                            condicacaoparcelamento = new Guid();
-                            var novacondicao = new CondicaoParcelamento()
-                            {
-                                Id = condicacaoparcelamento,
-                                QtdParcelas = 1,
-                                Descricao = "Avista"
-                            };
-                            Producer<CondicaoParcelamento>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, novacondicao, RabbitConfig.EnHttpVerb.POST);
-                        }
-                        foreach (var item in NFeImportacaoCobrancaBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-                        {
-
-                            var contaPagar = new ContaPagar()
-                            {
-                                ValorPrevisto = item.Valor,
-                                CategoriaId = entity.CategoriaId.Value,
-                                CondicaoParcelamentoId = condicacaoparcelamento,
-                                PessoaId = entity.FornecedorId.Value,
-                                DataEmissao = DateTime.Now,
-                                DataVencimento = item.DataVencimento,
-                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
-                                Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
-                                FormaPagamentoId = entity.FormaPagamentoId.Value,
-                            };
-                            Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
-                        }
-                    }
-                    else
-                    {
-                        var contaPagar = new ContaPagar()
-                        {
-                            ValorPrevisto = entity.ValorTotal,
-                            CategoriaId = entity.CategoriaId.Value,
-                            CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                            PessoaId = entity.FornecedorId.Value,
-                            DataEmissao = DateTime.Now,
-                            DataVencimento = entity.DataVencimento,
-                            Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
-                            Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
-                            FormaPagamentoId = entity.FormaPagamentoId.Value,
-                        };
-                        Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
-                    }
-                }
-                #endregion
-            }
-            else
-            {
-                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
-            }
-        }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new BusinessException(ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
+        //    }
+        //}
 
         protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
         {
@@ -431,7 +208,7 @@ namespace Fly01.Compras.BL
             );
         }
 
-        private NFeVM DeserializeXMlToNFe(string xml)
+        public NFeVM DeserializeXMlToNFe(string xml)
         {
             try
             {
@@ -449,9 +226,9 @@ namespace Fly01.Compras.BL
                 }
                 return NFe;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new BusinessException("Erro ao deserializar o XML: Verifique o arquivo para identificar possiveis erros de formatação.");
+                throw new BusinessException("Erro ao deserializar o XML: " + ex.Message);
             }
         }
 
@@ -459,15 +236,15 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status == Status.Finalizado)
             {
-                entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
+                entity.Fail(((entity.FornecedorId == null || entity.FornecedorId == default(Guid)) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
                 var pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
 
-                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
+                entity.Fail(((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
                 entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
                     new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
 
-                entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid))), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
+                entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid)) && !x.NovoProduto), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
             }
         }
 

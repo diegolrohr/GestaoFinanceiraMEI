@@ -156,6 +156,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\appemissaoNFE\Fly01.EmissaoNFE.Domain\Fly01.EmissaoNFE.Domain.csproj">
+      <Project>{279b3a0c-4549-4b8c-9ef9-90e35a5255d6}</Project>
+      <Name>Fly01.EmissaoNFE.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Fly01.Core.API\Fly01.Core.API.csproj">
       <Project>{24148D87-4211-43B6-9C02-CD6E0D03EE0A}</Project>
       <Name>Fly01.Core.API</Name>

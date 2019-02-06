@@ -230,7 +230,7 @@ namespace Fly01.Financeiro.Controllers
             {
                 Dictionary<string, string> queryString = new Dictionary<string, string>
                 {
-                    { "conciliacaoBancariaId", string.IsNullOrWhiteSpace(id) ? new Guid().ToString() : id },
+                    { "conciliacaoBancariaId", string.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString() : id },
                     { "pageNo", pageNo.ToString() },
                     { "pageSize", "20" }
                 };

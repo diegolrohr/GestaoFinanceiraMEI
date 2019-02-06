@@ -1,5 +1,13 @@
 ﻿<script>
     function fnDrawCallbackCobrancas(tfoot, data, start, end, display) {        
-        $('#dtCobrancas_paginate').hide();
+        var dtId = "#dtCobrancas";
+        $(`${dtId}`+'_paginate').hide();
+        $(`${dtId}`+' .fly01-dt-menu.dropdown-button').dropdown({ alignment: "right" });
+
+        $(`${dtId}`+' tbody tr').each(function () {
+            $(this).find("td").attr("nowrap", "nowrap");
+        });
+
+        $(`${dtId}`).loading("stop");
     }
 </script>

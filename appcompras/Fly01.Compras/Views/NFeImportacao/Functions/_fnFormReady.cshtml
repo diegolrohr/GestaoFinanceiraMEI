@@ -159,6 +159,9 @@
     }
 
     function fnSetInformacoes() {
+        $("#infoProdutosPendenciasField")[0].innerText = "";
+        $("#infoProdutosField")[0].innerText = "";
+
         var textPendencias = [
             createElem("span", null, "Abaixo está listado os produtos importados do xml, que não foram vinculado com nenhum código de barras existente em seu cadastro de produtos."),
             createElem("br"),
@@ -178,7 +181,7 @@
             createElem("br"),
             createElem("span", null, "Se marcar Movimentar Estoque, será realizada a movimentação de entrada da quantidade total dos produtos. "),
             createElem("br"),
-            createElem("span", null, "Se marcar Atualizar Produto, serão atualizados os dados no seu cadastro de produto, com base nas informações do xml: descrição, código de barras, valor de custo, ncm e cest. "),
+            createElem("span", null, "Se marcar Atualizar Produto, serão atualizados os dados no seu cadastro de produto, com base nas informações do xml(descrição, código de barras, valor de custo, ncm e cest). "),
             createElem("br"),
             createElem("span", null, "Se marcar Atualizar Valor Venda, ao clicar em Alterar Valor Venda, será aplicado a configuração de valor, a todos os marcados, resultado final visível na coluna Valor Venda " ),
             createElem("br"),
@@ -207,7 +210,6 @@
     }
 
     function fnFormReady() {
-
         $$$.loading.start();
         fnSetInformacoes();
         $('.collapsible').collapsible();

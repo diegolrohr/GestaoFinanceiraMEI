@@ -2,7 +2,6 @@
     @Html.Partial("Functions/_fnMain");
 
     function listProdutos() {
-        debugger;
         var t = $('#fly01mdlfrmVisualizarImportacao #id').val();
         $.ajax({
             type: "GET",
@@ -11,7 +10,6 @@
             contentType: "application/json",
             success: function (response) {
                 if (response) {
-                    debugger
                     $("#produtosImportacaoDataTable").DataTable().destroy();
 
                     var table = $("#produtosImportacaoDataTable").DataTable({
@@ -28,11 +26,12 @@
                             { title: "Un.", data: "unidadeMedida_abreviacao" },
                             { title: "Valor", data: "valor" },
                             { title: "Valor Venda", data: "valorVenda" },
-                            { title: "Movimenta Estoque", data: "movimentaEstoque" },
-                            { title: "Atualiza Produto", data: "atualizaDadosProduto" },
-                            { title: "Atualiza Valor Venda", data: "atualizaValorVenda" }
+                            { title: "Mov. Estoque", data: "movimentaEstoque" },
+                            { title: "At. Produto", data: "atualizaDadosProduto" },
+                            { title: "At. Valor Venda", data: "atualizaValorVenda" }
                         ]
                     });
+                    fixFields();
                 } else {
                     $$$.toast(response.message, 'error');
                 }
@@ -45,6 +44,14 @@
 
     function fnFormReadyVisualizarImportacao() {
         listProdutos();
-        debugger;
+    }
+
+    function fixFields() {
+        for (var i = 0; i < $("#produtosImportacaoDataTable td").length; i++) {
+            if ($("#produtosImportacaoDataTable td")[i].innerText == "true")
+                $("#produtosImportacaoDataTable td")[i].innerText = "Sim"
+            else if ($("#produtosImportacaoDataTable td")[i].innerText == "false")
+                $("#produtosImportacaoDataTable td")[i].innerText = "Não"
+        }
     }
 </script>

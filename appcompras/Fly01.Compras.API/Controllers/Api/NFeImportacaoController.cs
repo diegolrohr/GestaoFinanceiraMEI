@@ -12,6 +12,7 @@ using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
 using Fly01.Core.Entities.Domains;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
@@ -196,8 +197,8 @@ namespace Fly01.Compras.API.Controllers.Api
                             UnidadeMedidaId = item.UnidadeMedidaId,
                             ValorCusto = valorFator,
                             ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
-                            NcmId = UnitOfWork.NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
-                            CestId = UnitOfWork.CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
+                            NcmId = UnitOfWork.NCMBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
+                            CestId = UnitOfWork.CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
                             SaldoProduto = item.MovimentaEstoque ? saldoFator : 0,
                             TipoProduto = TipoProduto.Insumo
                         };
@@ -216,12 +217,12 @@ namespace Fly01.Compras.API.Controllers.Api
                                 produto.Descricao = item.Descricao;
                                 produto.CodigoBarras = item.CodigoBarras;
                                 produto.ValorCusto = valorFator;
-                                produto.NcmId = UnitOfWork.NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
-                                produto.CestId = UnitOfWork.CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
+                                produto.NcmId = UnitOfWork.NCMBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
+                                produto.CestId = UnitOfWork.CestBL.All.AsNoTracking().FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
                             }
-                            else if (item.AtualizaValorVenda)
+                            if (item.AtualizaValorVenda)
                             {
-                                produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
+                                produto.ValorVenda = item.ValorVenda;
                             }
 
                             UnitOfWork.ProdutoBL.Update(produto);

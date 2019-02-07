@@ -323,7 +323,7 @@ namespace Fly01.Compras.Controllers
             });
             config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
             config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60, Readonly = true });
-            config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60, Readonly = true });
 
@@ -373,7 +373,7 @@ namespace Fly01.Compras.Controllers
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transportadora XML" });
             config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
-            config.Elements.Add(new InputCpfcnpjUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60 });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadualXml", Class = "col s12 m6", Label = "Inscrição Estadual", Readonly = true });
             config.Elements.Add(new InputTextUI { Id = "transportadoraUFXml", Class = "col s12 m6", Label = "UF", Readonly = true });
 
@@ -385,7 +385,6 @@ namespace Fly01.Compras.Controllers
             #endregion
 
             #region step Produtos
-            config.Elements.Add(new DivElementUI { Id = "infoProdutos", Class = "col s12 text-justify visible", Label = "Informações" });
             config.Elements.Add(new ButtonUI
             {
                 Id = "alterarSelecionados",
@@ -398,6 +397,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "click", Function = "fnModalAlterarProdutos" }
                 }
             });
+            config.Elements.Add(new DivElementUI { Id = "infoProdutos" });
 
             config.Elements.Add(new DivElementUI { Id = "produtosResolvidos", Class = "col s12 visible" });
 
@@ -670,7 +670,7 @@ namespace Fly01.Compras.Controllers
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quant.", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 6, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Un." });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", Class = "dt-center", Width = "35%" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", DisplayName ="Vincular Produtos", Class = "dt-center", Width = "35%" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
 
             return dtProdutosPendenciasCfg;

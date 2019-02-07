@@ -49,6 +49,7 @@ namespace Fly01.Compras.API.Controllers.Api
                     entity.Status = Status.Aberto;
                     await FinalizarESalvarDados(entity, listProducers);
                     entity.Status = Status.Finalizado;
+                    UnitOfWork.NFeImportacaoBL.Update(entity);
                     await UnitSave();
                     ProcessProducers(listProducers);
                 }

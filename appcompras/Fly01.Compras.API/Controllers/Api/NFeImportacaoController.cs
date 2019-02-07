@@ -198,7 +198,8 @@ namespace Fly01.Compras.API.Controllers.Api
                             ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
                             NcmId = UnitOfWork.NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
                             CestId = UnitOfWork.CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
-                            SaldoProduto = item.MovimentaEstoque ? saldoFator : 0
+                            SaldoProduto = item.MovimentaEstoque ? saldoFator : 0,
+                            TipoProduto = TipoProduto.Insumo
                         };
                         UnitOfWork.ProdutoBL.Insert(novoproduto);
                         UnitOfWork.NFeImportacaoProdutoBL.Update(item);
@@ -393,11 +394,6 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 throw new BusinessException(ex.Message);
             }
-            //else
-            //{
-            //    throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
-            //}
-
         }
 
         protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)

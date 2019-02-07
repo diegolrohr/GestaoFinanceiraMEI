@@ -425,7 +425,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m6",
+                Class = "col s12 m4",
                 Label = "Forma Pagamento",
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao",

@@ -74,84 +74,10 @@ namespace Fly01.Compras.BL
                 var NFe = DeserializeXMlToNFe(entity.Xml);
                 VerificarPendenciasFinalizacao(entity, NFe);
                 ValidaModel(entity);
-                //if (entity.IsValid())
-                //{
-                //    FinalizarESalvarDados(entity, NFe);
-                //}
             }
 
             base.Update(entity);
         }
-
-        //private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
-        //{
-        //    if (NotaValida(NFe))
-        //    {
-        //        try
-        //        {
-        //            #region Fornecedor
-
-
-        //            if (entity.NovoFornecedor)
-        //            {
-        //                entity.FornecedorId = Guid.NewGuid();      
-        //            }
-        //            else if (entity.AtualizaDadosFornecedor)
-        //            {
-        //                entity.NovoFornecedor = false;                       
-        //            }
-        //            #endregion
-
-        //            #region Transportadora
-
-        //            var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
-        //            if (entity.NovaTransportadora)
-        //            {
-        //                if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
-        //                {
-        //                    entity.TransportadoraId = Guid.NewGuid();
-        //                }
-        //            }
-        //            else if (entity.AtualizaDadosTransportadora)
-        //            {
-        //                if (hasTagTransportadora)
-        //                {
-        //                    entity.NovaTransportadora = false;                         
-        //                }
-        //            }
-        //            #endregion
-
-        //            #region Produto
-        //            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-        //            {
-        //                var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
-
-        //                if (item.NovoProduto)
-        //                {
-        //                    item.ProdutoId = Guid.NewGuid();                           
-        //                    NFeImportacaoProdutoBL.Update(item);
-        //                }
-        //            }
-        //            #endregion
-                   
-        //            #region Pedido
-        //            if (entity.NovoPedido)
-        //            {
-        //                entity.PedidoId = Guid.NewGuid();                       
-        //            }
-        //            #endregion
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new BusinessException(ex.Message);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
-        //    }
-        //}
 
         protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
         {

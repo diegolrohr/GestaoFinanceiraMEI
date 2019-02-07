@@ -132,7 +132,7 @@ namespace Fly01.Compras.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "orcamentoId eq", string.IsNullOrWhiteSpace(id) ? new Guid().ToString() : id }
+                { "orcamentoId eq", string.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

@@ -39,7 +39,7 @@ namespace Fly01.Estoque.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "inventarioId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "inventarioId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

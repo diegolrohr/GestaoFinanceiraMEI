@@ -26,13 +26,9 @@ namespace Fly01.Compras.BL
         protected PedidoBL PedidoBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected UnidadeMedidaBL UnidadeMedidaBL { get; set; }
-        protected CidadeBL CidadeBL { get; set; }
-        protected EstadoBL EstadoBL { get; set; }
-
-        private readonly string routePrefixNamePessoa = @"Pessoa";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
-          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL) : base(context)
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -40,8 +36,6 @@ namespace Fly01.Compras.BL
             PedidoBL = pedidoBL;
             PedidoItemBL = pedidoItemBL;
             UnidadeMedidaBL = unidadeMedidaBL;
-            CidadeBL = cidadeBL;
-            EstadoBL = estadoBL;
             NFeImportacaoCobrancaBL = nfeImportacaoCobrancaBL;
         }
 
@@ -80,116 +74,106 @@ namespace Fly01.Compras.BL
                 var NFe = DeserializeXMlToNFe(entity.Xml);
                 VerificarPendenciasFinalizacao(entity, NFe);
                 ValidaModel(entity);
-                if (entity.IsValid())
-                {
-                    FinalizarESalvarDados(entity, NFe);
-                }
+                //if (entity.IsValid())
+                //{
+                //    FinalizarESalvarDados(entity, NFe);
+                //}
             }
 
             base.Update(entity);
         }
 
-        private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
+        //private void FinalizarESalvarDados(NFeImportacao entity, NFeVM NFe)
+        //{
+        //    if (NotaValida(NFe))
+        //    {
+        //        try
+        //        {
+        //            #region Fornecedor
+
+
+        //            if (entity.NovoFornecedor)
+        //            {
+        //                entity.FornecedorId = Guid.NewGuid();      
+        //            }
+        //            else if (entity.AtualizaDadosFornecedor)
+        //            {
+        //                entity.NovoFornecedor = false;                       
+        //            }
+        //            #endregion
+
+        //            #region Transportadora
+
+        //            var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
+        //            if (entity.NovaTransportadora)
+        //            {
+        //                if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+        //                {
+        //                    entity.TransportadoraId = Guid.NewGuid();
+        //                }
+        //            }
+        //            else if (entity.AtualizaDadosTransportadora)
+        //            {
+        //                if (hasTagTransportadora)
+        //                {
+        //                    entity.NovaTransportadora = false;                         
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region Produto
+        //            foreach (var item in NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+        //            {
+        //                var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
+
+        //                if (item.NovoProduto)
+        //                {
+        //                    item.ProdutoId = Guid.NewGuid();                           
+        //                    NFeImportacaoProdutoBL.Update(item);
+        //                }
+        //            }
+        //            #endregion
+                   
+        //            #region Pedido
+        //            if (entity.NovoPedido)
+        //            {
+        //                entity.PedidoId = Guid.NewGuid();                       
+        //            }
+        //            #endregion
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new BusinessException(ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
+        //    }
+        //}
+
+        protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
         {
-            if (NotaValida(NFe))
+            if (tipo == TipoFatorConversao.Multiplicar)
             {
-                var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
-                var cidade = CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
-
-                if (entity.NovoFornecedor)
-                {
-                    entity.FornecedorId = new Guid();
-
-                    var fornecedor = new Pessoa()
-                    {
-                        Id = entity.FornecedorId.Value,
-                        Nome = NFe.InfoNFe.Emitente?.Nome,
-                        CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                        NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia,
-                        Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                        Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero,
-                        Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro,
-                        CidadeId = cidade?.Id,
-                        EstadoId = cidade?.EstadoId,
-                        CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep,
-                        InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual
-                    };
-                    PessoaBL.Insert(fornecedor);
-                    Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.POST);
-
-                }
-                else if (entity.AtualizaDadosFornecedor)
-                {
-                    entity.NovoFornecedor = false;
-                    var fornecedor = PessoaBL.Find(entity.FornecedorId);
-                    if (fornecedor != null)
-                    {
-                        fornecedor.Nome = NFe.InfoNFe.Emitente?.Nome;
-                        fornecedor.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                        fornecedor.NomeComercial = NFe.InfoNFe.Emitente?.NomeFantasia;
-                        fornecedor.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                        fornecedor.Numero = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Complemento = NFe.InfoNFe.Emitente?.Endereco?.Numero;
-                        fornecedor.Bairro = NFe.InfoNFe.Emitente?.Endereco?.Bairro;
-                        fornecedor.CidadeId = cidade?.Id;
-                        fornecedor.EstadoId = cidade?.EstadoId;
-                        fornecedor.CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep;
-                        fornecedor.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                        PessoaBL.Update(fornecedor);
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.PUT);
-
-                    }
-                    else
-                    {
-                        throw new BusinessException("Fornecedor não localizado para atualização dos dados.");
-                    }
-                }
-                var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
-                if (entity.NovaTransportadora)
-                {
-                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
-                    {
-                        entity.TransportadoraId = new Guid();
-
-                        var transportadora = new Pessoa()
-                        {
-                            Id = entity.TransportadoraId.Value,
-                            CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null,
-                            Nome = NFe.InfoNFe.Emitente?.Nome,
-                            InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual,
-                            Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro,
-                            CidadeId = cidade?.Id,
-                            EstadoId = cidade?.EstadoId
-                        };
-                        PessoaBL.Insert(transportadora);
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.POST);
-                    }
-                }
-                else if (entity.AtualizaDadosTransportadora)
-                {
-                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
-                    {
-                        entity.NovaTransportadora = false;
-                        var transportadora = PessoaBL.Find(entity.TransportadoraId);
-                        if (transportadora != null)
-                        {
-                            transportadora.Id = entity.TransportadoraId.Value;
-                            transportadora.CPFCNPJ = NFe.InfoNFe.Emitente?.Cnpj != null ? NFe.InfoNFe.Emitente?.Cnpj : NFe.InfoNFe.Emitente?.Cpf != null ? NFe.InfoNFe.Emitente?.Cpf : null;
-                            transportadora.Nome = NFe.InfoNFe.Emitente?.Nome;
-                            transportadora.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
-                            transportadora.Endereco = NFe.InfoNFe.Emitente?.Endereco?.Logradouro;
-                            transportadora.CidadeId = cidade?.Id;
-                            transportadora.EstadoId = cidade?.EstadoId;
-                            PessoaBL.Update(transportadora);
-                            Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
-                        }
-                    }
-                }
+                return Math.Round((valor / fator), 2, MidpointRounding.AwayFromZero);
             }
             else
             {
-                throw new BusinessException("Não foi possível recuperar os dados do XML da nota, para atualização dos dados.");
+                return Math.Round((valor * fator), 2, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        protected double FatorConversaoQuantidade(double fator, double quantidade, TipoFatorConversao tipo)
+        {
+            if (tipo == TipoFatorConversao.Multiplicar)
+            {
+                return Math.Round((quantidade * fator), 2, MidpointRounding.AwayFromZero);
+            }
+            else
+            {
+                return Math.Round((quantidade / fator), 2, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -208,7 +192,7 @@ namespace Fly01.Compras.BL
             );
         }
 
-        private NFeVM DeserializeXMlToNFe(string xml)
+        public NFeVM DeserializeXMlToNFe(string xml)
         {
             try
             {
@@ -236,15 +220,15 @@ namespace Fly01.Compras.BL
         {
             if (entity.Status == Status.Finalizado)
             {
-                entity.Fail((entity.FornecedorId == null || entity.FornecedorId == default(Guid) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
+                entity.Fail(((entity.FornecedorId == null || entity.FornecedorId == default(Guid)) && !entity.NovoFornecedor), new Error("Vincule o fornecedor ou marque para adicionar um novo", "fornecedorId"));
                 var pagaFrete = (entity.TipoFrete == TipoFrete.FOB || entity.TipoFrete == TipoFrete.Destinatario);
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
 
-                entity.Fail((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
+                entity.Fail(((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
                 entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
                     new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
 
-                entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid))), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
+                entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid)) && !x.NovoProduto), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
             }
         }
 
@@ -299,7 +283,7 @@ namespace Fly01.Compras.BL
                     item.ProdutoId = produto.Id;
                     item.NovoProduto = false;
                     item.FatorConversao = 0.0;
-                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;                    
+                    item.TipoFatorConversao = TipoFatorConversao.Multiplicar;
                 }
                 NFeImportacaoProdutoBL.Update(item);
             }
@@ -370,7 +354,7 @@ namespace Fly01.Compras.BL
                     #endregion
 
                     #region Dados de Cobrança
-                    if(NFe.InfoNFe.Cobranca != null && NFe.InfoNFe.Cobranca.Duplicatas != null && NFe.InfoNFe.Cobranca.Duplicatas.Any())
+                    if (NFe.InfoNFe.Cobranca != null && NFe.InfoNFe.Cobranca.Duplicatas != null && NFe.InfoNFe.Cobranca.Duplicatas.Any())
                     {
                         entity.GeraContasXml = true;
                         foreach (var item in NFe.InfoNFe?.Cobranca?.Duplicatas)

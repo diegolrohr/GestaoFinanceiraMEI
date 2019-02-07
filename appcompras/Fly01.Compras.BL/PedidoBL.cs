@@ -79,7 +79,7 @@ namespace Fly01.Compras.BL
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
                 entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
-                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid) ) && entity.GeraNotaFiscal == true , new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
+                entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid)) && entity.GeraNotaFiscal == true, new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(
                     (entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null)),
@@ -95,7 +95,7 @@ namespace Fly01.Compras.BL
         protected dynamic GetNotaFiscal(Pedido entity, TipoNotaFiscal tipo)
         {
             dynamic notaFiscal;
-            
+
             notaFiscal = new NFeEntrada();
 
             notaFiscal.Id = Guid.NewGuid();
@@ -334,8 +334,8 @@ namespace Fly01.Compras.BL
         public override void Update(Pedido entity)
         {
             var previous = All.AsNoTracking().FirstOrDefault(e => e.Id == entity.Id);
-            entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser alterada", "status"));
-
+            if (previous != null)
+                entity.Fail(previous.Status != StatusOrdemCompra.Aberto && entity.Status != StatusOrdemCompra.Aberto, new Error("Somente compra em aberto pode ser alterada", "status"));
             ValidaModel(entity);
 
             GeraIdContaFinanceiraRecuperarDadosParcela(entity);
@@ -497,7 +497,7 @@ namespace Fly01.Compras.BL
             var tipoFreteEnum = (TipoFrete)Enum.Parse(typeof(TipoFrete), tipoFrete, true);
 
             var ordemCompra = All.Where(x => x.Id == ordemCompraId).FirstOrDefault();
-            if (geraNotaFiscal && ordemCompra.Status !=  StatusOrdemCompra.Finalizado)
+            if (geraNotaFiscal && ordemCompra.Status != StatusOrdemCompra.Finalizado)
             {
                 TotalTributacaoBL.DadosValidosCalculoTributario(ordemCompra, fornecedorId, onList);
             }

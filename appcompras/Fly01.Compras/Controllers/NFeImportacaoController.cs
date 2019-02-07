@@ -759,6 +759,19 @@ namespace Fly01.Compras.Controllers
             }, ResourceHashConst.ComprasCadastrosCategoria));
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento", Readonly = true, Disabled = true });
             config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });
+
+            config.Elements.Add(new TableUI
+            {
+                Id = "cobrancasImportacaoDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Número", Value = "0"},
+                    new OptionUI { Label = "Valor.", Value = "1"},
+                    new OptionUI { Label = "Vencimento", Value = "1"},
+                }
+            });
             #endregion
 
 

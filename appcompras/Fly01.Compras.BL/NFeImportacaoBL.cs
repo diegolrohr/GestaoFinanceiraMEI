@@ -151,21 +151,14 @@ namespace Fly01.Compras.BL
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
 
                 entity.Fail(((entity.TransportadoraId == null || entity.TransportadoraId == default(Guid)) && !entity.NovaTransportadora && hasTagTransportadora), new Error("Vincule a transportadora ou marque para adicionar uma nova", "transportadoraId"));
-                entity.Fail((entity.GeraFinanceiro && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
+                entity.Fail((entity.GeraFinanceiro && !entity.GeraContasXml && (entity.FormaPagamentoId == null || entity.CondicaoParcelamentoId == null || entity.CategoriaId == null || entity.DataVencimento == null || entity.ValorTotal <= 0.0)),
                     new Error("Para gerar financeiro é necessário informar forma de pagamento, condição de parcelamento, categoria, valor e data vencimento"));
+
+                entity.Fail((entity.GeraFinanceiro && entity.GeraContasXml && (entity.FormaPagamentoId == null || entity.CategoriaId == null)),
+                    new Error("Para gerar financeiro das cobranças importadas é necessário informar forma de pagamento e categoria."));
 
                 entity.Fail(NFeImportacaoProdutoBL.All.Any(x => x.NFeImportacaoId == entity.Id && (x.ProdutoId == null || x.ProdutoId == default(Guid)) && !x.NovoProduto), new Error("Vincule todos produtos, exclua ou marque para adicionar um novo", "produtoId"));
             }
-        }
-
-        public override void Delete(NFeImportacao entityToDelete)
-        {
-            entityToDelete.Fail(entityToDelete.Status != Status.Aberto, new Error("Somente importação em aberto pode ser deletada", "status"));
-
-            if (!entityToDelete.IsValid())
-                throw new BusinessException(entityToDelete.Notification.Get());
-
-            base.Delete(entityToDelete);
         }
 
         protected void TryGetFornecedorIdFromXml(NFeImportacao entity, string cnpj)

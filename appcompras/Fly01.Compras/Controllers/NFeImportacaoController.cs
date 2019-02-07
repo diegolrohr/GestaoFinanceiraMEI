@@ -149,7 +149,7 @@ namespace Fly01.Compras.Controllers
 
             config.Actions.AddRange(GetActionsInGrid(new List<DataTableUIAction>()
             {
-                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" },
+                new DataTableUIAction { OnClickFn = "fnEditar", Label = "Editar" , ShowIf = "(row.status != 'Finalizado')" },
                 new DataTableUIAction { OnClickFn = "fnVisualizar", Label = "Visualizar" },
                 new DataTableUIAction { OnClickFn = "fnExcluir", Label = "Excluir" },
                 new DataTableUIAction { OnClickFn = "fnBaixarXML", Label = "Baixar XML" }
@@ -209,14 +209,12 @@ namespace Fly01.Compras.Controllers
             var config = new FormWizardUI
             {
                 Id = "fly01frm",
-
                 Action = new FormUIAction
                 {
                     Create = @Url.Action("Create"),
                     Edit = @Url.Action("Edit"),
                     Get = @Url.Action("Json") + "/",
                     List = @Url.Action("List")
-
                 },
                 UrlFunctions = Url.Action("Functions") + "?fns=",
                 ReadyFn = "fnFormReady",
@@ -427,7 +425,7 @@ namespace Fly01.Compras.Controllers
             config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
             {
                 Id = "formaPagamentoId",
-                Class = "col s12 m4",
+                Class = "col s12 m6",
                 Label = "Forma Pagamento",
                 DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
                 LabelId = "formaPagamentoDescricao",
@@ -798,6 +796,31 @@ namespace Fly01.Compras.Controllers
             });
             return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
         }
+
+        #region OnDemand
+
+        [HttpPost]
+        public JsonResult NovaCategoriaDespesa(string term)
+        {
+            try
+            {
+                var resourceName = AppDefaults.GetResourceName(typeof(CategoriaVM));
+                var data = RestHelper.ExecutePostRequest<CategoriaVM>(
+                    resourceName,
+                    new CategoriaVM { Descricao = term, TipoCarteira = "2" },
+                    AppDefaults.GetQueryStringDefault()
+                );
+
+                return JsonResponseStatus.Get(new ErrorInfo() { HasError = false }, Operation.Create, data.Id);
+            }
+            catch (Exception ex)
+            {
+                var error = JsonConvert.DeserializeObject<ErrorInfo>(ex.Message);
+                return JsonResponseStatus.GetFailure(error.Message);
+            }
+        }
+
+        #endregion
 
     }
 }

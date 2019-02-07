@@ -48,10 +48,13 @@ namespace Fly01.Compras.API.Controllers.Api
 
             try
             {
-                var listProducers = new List<NFeImportacaoFinalizarProducer>();
-                await FinalizarESalvarDados(entity, listProducers);
-                await UnitSave();
-                ProcessProducers(listProducers);
+                if (entity.Status == Status.Finalizado)
+                {
+                    var listProducers = new List<NFeImportacaoFinalizarProducer>();
+                    await FinalizarESalvarDados(entity, listProducers);
+                    await UnitSave();
+                    ProcessProducers(listProducers);
+                }
             }
             catch (Exception ex)
             {
@@ -262,7 +265,7 @@ namespace Fly01.Compras.API.Controllers.Api
                                 PessoaId = entity.FornecedorId.Value,
                                 DataEmissao = entity.DataEmissao,
                                 DataVencimento = item.DataVencimento,
-                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
+                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1} - Nº Duplicata: {2}, aplicativo Bemacash Compras", entity.Serie, entity.Numero, item.Numero),
                                 Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
                                 FormaPagamentoId = entity.FormaPagamentoId.Value,
                             };

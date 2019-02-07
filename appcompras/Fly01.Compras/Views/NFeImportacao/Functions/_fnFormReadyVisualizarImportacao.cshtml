@@ -12,6 +12,8 @@
                 if (response) {
                     $("#produtosImportacaoDataTable").DataTable().destroy();
 
+                    response.data = fixFields(response.data);
+
                     var table = $("#produtosImportacaoDataTable").DataTable({
                         bSort: false,
                         paging: false,
@@ -31,7 +33,6 @@
                             { title: "At. Valor Venda", data: "atualizaValorVenda" }
                         ]
                     });
-                    fixFields();
                 } else {
                     $$$.toast(response.message, 'error');
                 }
@@ -46,12 +47,23 @@
         listProdutos();
     }
 
-    function fixFields() {
-        for (var i = 0; i < $("#produtosImportacaoDataTable td").length; i++) {
-            if ($("#produtosImportacaoDataTable td")[i].innerText == "true")
-                $("#produtosImportacaoDataTable td")[i].innerText = "Sim"
-            else if ($("#produtosImportacaoDataTable td")[i].innerText == "false")
-                $("#produtosImportacaoDataTable td")[i].innerText = "Não"
+    function fixFields(data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].movimentaEstoque)
+                data[i].movimentaEstoque = "Sim";
+            else
+                data[i].movimentaEstoque = "Não";
+
+            if (data[i].atualizaDadosProduto)
+                data[i].atualizaDadosProduto = "Sim";
+            else
+                data[i].atualizaDadosProduto = "Não";
+
+            if (data[i].atualizaValorVenda)
+                data[i].atualizaValorVenda = "Sim";
+            else
+                data[i].atualizaValorVenda = "Não";
         }
+        return data;
     }
 </script>

@@ -43,7 +43,7 @@ namespace Fly01.Core.Presentation.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "kitId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "kitId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

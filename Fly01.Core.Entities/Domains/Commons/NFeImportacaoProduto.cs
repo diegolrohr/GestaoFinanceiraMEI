@@ -41,6 +41,17 @@ namespace Fly01.Core.Entities.Domains.Commons
         [ForeignKey("PedidoItem")]
         public Guid? PedidoItemId { get; set; }
 
+        [NotMapped]
+        public double Total
+        {
+            get
+            {
+                return Math.Round((Quantidade * Valor), 2, MidpointRounding.AwayFromZero);
+           }
+            set
+            { }
+        }
+
         public virtual NFeImportacao NFeImportacao { get; set; }
         public virtual Produto Produto { get; set; }
         public virtual UnidadeMedida UnidadeMedida { get; set; }

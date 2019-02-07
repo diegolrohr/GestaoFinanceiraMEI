@@ -38,7 +38,7 @@ namespace Fly01.Faturamento.Controllers
         {
             Dictionary<string, string> filters = new Dictionary<string, string>
             {
-                { "notaFiscalId eq", string.IsNullOrEmpty(id) ? new Guid().ToString() : id }
+                { "notaFiscalId eq", string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id }
             };
             return GridLoad(filters);
         }

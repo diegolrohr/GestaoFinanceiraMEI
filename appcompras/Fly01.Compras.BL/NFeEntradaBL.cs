@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Fly01.EmissaoNFE.Domain.Enums;
+using Fly01.Core.ViewModels;
 
 namespace Fly01.Compras.BL
 {

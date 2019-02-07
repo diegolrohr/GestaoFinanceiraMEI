@@ -58,7 +58,7 @@ namespace Fly01.Compras.API.Controllers.Api
             }
             catch (Exception ex)
             {
-                throw new BusinessException("Erro ao finalizar a importação: " + ex.Message);
+                throw new BusinessException(ex.Message);
             }
             return Ok();
         }
@@ -383,13 +383,13 @@ namespace Fly01.Compras.API.Controllers.Api
                                     newUnitOfWork.PedidoBL.Delete(pedidoSalvo);
                                     await newUnitOfWork.Save();
                                 }
-                                throw new BusinessException("Erro ao tentar salvar os produtos do novo pedido: " + ex.Message);
+                                throw new BusinessException(ex.Message);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        throw new BusinessException("Erro ao tentar salvar o novo pedido: " + ex.Message);
+                        throw new BusinessException(ex.Message);
                     }
                 }
                 #endregion

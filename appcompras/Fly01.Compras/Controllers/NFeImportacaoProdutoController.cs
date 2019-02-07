@@ -292,16 +292,5 @@ namespace Fly01.Compras.Controllers
             }
         }
 
-
-        [HttpPost]
-        public JsonResult GetProdutosTeste(string id)
-        {
-            Dictionary<string, string> filters = new Dictionary<string, string>
-            {
-                { "nfeImportacaoId eq", string.IsNullOrEmpty(id.ToString()) ? new Guid().ToString() : id.ToString() }
-            };
-            return GridLoad(filters);
-        }
-
     }
 }

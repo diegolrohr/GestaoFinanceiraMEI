@@ -78,7 +78,7 @@ namespace Fly01.Compras.BL
                 entity.Fail(entity.MovimentaEstoque && hasEstoqueNegativo & !entity.AjusteEstoqueAutomatico, new Error("Para finalizar o pedido o estoque não poderá ficar negativo, realize os ajustes de entrada ou marque para gerar as movimentações de entrada automáticas"));
                 entity.Fail(entity.GeraNotaFiscal && string.IsNullOrEmpty(entity.NaturezaOperacao), new Error("Para finalizar o pedido que gera nota fiscal, informe a natureza de operação"));
                 entity.Fail(entity.TipoOrdemCompra == TipoOrdemCompra.Orcamento, new Error("Orçamento não pode ser finalizado. Converta em pedido para finalizar"));
-                entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
+                //entity.Fail(!produtos.Any(), new Error("Para finalizar a compra é necessário ao menos ter adicionado um produto."));
                 entity.Fail(produtos.Any(x => x.GrupoTributarioId == default(Guid)) && entity.GeraNotaFiscal == true, new Error("Para finalizar o pedido que gera nota fiscal, informe o grupo tributário nos produtos."));
 
                 entity.Fail(

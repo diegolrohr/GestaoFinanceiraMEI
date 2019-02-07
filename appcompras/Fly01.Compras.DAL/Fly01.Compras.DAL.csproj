@@ -328,6 +328,10 @@
     <Compile Include="Migrations\201902041804017_AddNFeImportacaoCobranca.Designer.cs">
       <DependentUpon>201902041804017_AddNFeImportacaoCobranca.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902072123469_AlterFKNFeImportacaoPedido.cs" />
+    <Compile Include="Migrations\201902072123469_AlterFKNFeImportacaoPedido.Designer.cs">
+      <DependentUpon>201902072123469_AlterFKNFeImportacaoPedido.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer7.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer6.cs" />
     <Compile Include="Migrations\DataInitializer\CidadeDataInitializer5.cs" />
@@ -583,6 +587,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902041804017_AddNFeImportacaoCobranca.resx">
       <DependentUpon>201902041804017_AddNFeImportacaoCobranca.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902072123469_AlterFKNFeImportacaoPedido.resx">
+      <DependentUpon>201902072123469_AlterFKNFeImportacaoPedido.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

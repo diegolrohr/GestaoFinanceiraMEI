@@ -128,7 +128,7 @@ namespace Fly01.OrdemServico.BL
         }
 
         public static Error DescricaoEmBranco = new Error("Descrição não foi informada.", "descricao");
-        public static Error DescricaoDuplicada = new Error("Descrição já utilizada anteriormente.", "descricao");
+        public static Error DescricaoDuplicada = new Error("Descrição do produto já utilizada anteriormente.", "descricao");
         public static Error UnidadeMedidaInvalida = new Error("Unidade de medida não foi informada.", "unidadeMedidaId");
         public static Error CodigoProdutoDuplicado = new Error("Código do produto já utilizado anteriormente.", "codigoProduto");
         public static Error TipoProdutoDiferente = new Error("Tipo do produto é diferente do tipo do grupo de produto.", "tipoProduto");

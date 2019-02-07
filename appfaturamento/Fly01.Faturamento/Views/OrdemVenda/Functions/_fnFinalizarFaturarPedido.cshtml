@@ -6,7 +6,7 @@
         $$$.loading.start();
         $.ajax({
             type: "POST",
-            url: '@Url.Action("FinalizarPedido", "Pedido")',
+            url: "@Url.Action("FinalizarPedido", "Pedido")",
             dataType: 'json',
             data: { id: idRecord, faturar: true },
             success: function (data) {

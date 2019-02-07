@@ -40,8 +40,8 @@
 
     function listServicos() {
         $.ajax({
-            type: "POST",
-            url: "@Url.Action("GetOrdemVendaServicos", "OrdemVendaServico")?id=" + $('#fly01mdlfrmVisualizarOrdemVenda #id').val(),
+            type: "GET",
+            url: "@Url.Action("GetNFeImportacaoProdutos", "OrdemVendaServico")?id=" + $('#fly01mdlfrmVisualizarOrdemVenda #id').val(),
             dataType: "json",
             contentType: "application/json",
             success: function (response) {

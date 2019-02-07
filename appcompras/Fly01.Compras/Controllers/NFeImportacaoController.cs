@@ -321,6 +321,7 @@ namespace Fly01.Compras.Controllers
                     new DomEventUI { DomEvent = "change", Function = "" }
                 }
             });
+
             config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
             config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60, Readonly = true });
             config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
@@ -370,6 +371,7 @@ namespace Fly01.Compras.Controllers
                     Text = "Marque a opção, caso deseje atualizar a transportadora existente com os dados da importação."
                 }
             });
+
 
             config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transportadora XML" });
             config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
@@ -458,7 +460,7 @@ namespace Fly01.Compras.Controllers
             }, ResourceHashConst.ComprasCadastrosCategoria));
             config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento" });
             config.Elements.Add(new LabelSetUI { Id = "labelSetCobrancas", Label = "Cobranças importadas XML", Class = "col s12" });
-            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });            
+            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });
             #endregion
 
             #region step Finalizar
@@ -640,6 +642,131 @@ namespace Fly01.Compras.Controllers
             return GridLoad();
         }
 
+        public ContentResult Visualizar()
+        {
+            ModalUIForm config = new ModalUIForm()
+            {
+                Title = "Visualizar",
+                UrlFunctions = @Url.Action("Functions", "NFeImportacao") + "?fns=",
+                CancelAction = new ModalUIAction() { Label = "Cancelar" },
+                Action = new FormUIAction
+                {
+                    Create = @Url.Action("Create"),
+                    Edit = @Url.Action("Edit"),
+                    Get = @Url.Action("Json") + "/",
+                    List = @Url.Action("List")
+                },
+                Functions = new List<string>{ "fnFormReadyVisualizarImportacao" },
+                ReadyFn = "fnFormReadyVisualizarImportacao",
+                Id = "fly01mdlfrmVisualizarImportacao"
+            };
+
+            config.Elements.Add(new InputHiddenUI { Id = "id" });
+
+            #region Fornecedor
+            config.Elements.Add(new LabelSetUI { Id = "labelSetFornecedor", Class = "col s12", Label = "Dados Fornecedor XML" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "fornecedorId",
+                Class = "col s12 m6",
+                Label = "Fornecedor",
+                DataUrl = Url.Action("FornecedorXML", "AutoComplete"),
+                LabelId = "fornecedorNome",
+                DataUrlPost = Url.Action("PostFornecedor"),
+                Readonly = true
+            }, null));
+            config.Elements.Add(new InputTextUI { Id = "fornecedorNomeXml", Class = "col s12 m6", Label = "Nome", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "fornecedorCnpjXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorInscEstadualXml", Class = "col s12 m6", Label = "Inscrição estadual", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "fornecedorRazaoSocialXml", Class = "col s12 m6", Label = "Razão social", MaxLength = 60, Readonly = true });
+            #endregion
+
+            #region Transportadora
+            config.Elements.Add(new LabelSetUI { Id = "labelSetTransportadora", Class = "col s12", Label = "Dados Transportadora XML" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "transportadoraId",
+                Class = "col s12 m6",
+                Label = "Transportadora",
+                DataUrl = Url.Action("TransportadoraXML", "AutoComplete"),
+                LabelId = "transportadoraNome",
+                DataUrlPost = Url.Action("PostTransportadora"),
+                Readonly = true
+            }, null));
+
+            config.Elements.Add(new InputTextUI { Id = "transportadoraRazaoSocialXml", Class = "col s12 m6", Label = "Nome", Readonly = true });
+            config.Elements.Add(new InputCpfcnpjUI { Id = "transportadorCNPJXml", Class = "col s12 m6", Label = "CNPJ", MaxLength = 60, Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraInscEstadualXml", Class = "col s12 m6", Label = "Inscrição Estadual", Readonly = true });
+            config.Elements.Add(new InputTextUI { Id = "transportadoraUFXml", Class = "col s12 m6", Label = "UF", Readonly = true });
+            #endregion
+
+            #region Produtos
+
+            config.Elements.Add(new TableUI
+            {
+                Id = "produtosImportacaoDataTable",
+                Class = "col s12",
+                Disabled = true,
+                Options = new List<OptionUI>
+                {
+                    new OptionUI { Label = "Produto", Value = "0"},
+                    new OptionUI { Label = "Quant.", Value = "1"},
+                    new OptionUI { Label = "Un.", Value = "1"},
+                    new OptionUI { Label = "Valor",Value = "2"},
+                    new OptionUI { Label = "Valor Venda" ,Value = "2"},
+                    new OptionUI { Label = "Movimenta Estoque",Value = "3"},
+                    new OptionUI { Label = "Atualiza Produto",Value = "5"},
+                    new OptionUI { Label = "Atualiza Valor Venda",Value = "4"},
+                }
+            });
+
+            #endregion
+
+            #region Financeiro
+            config.Elements.Add(new LabelSetUI { Id = "labelSetCobrancas", Label = "Cobranças importadas XML", Class = "col s12" });
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "formaPagamentoId",
+                Class = "col s12 m4",
+                Label = "Forma Pagamento",
+                DataUrl = Url.Action("FormaPagamento", "AutoComplete"),
+                LabelId = "formaPagamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "FormaPagamento"),
+                DataPostField = "descricao",
+                Readonly = true
+            }, ResourceHashConst.ComprasCadastrosFormaPagamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "condicaoParcelamentoId",
+                Class = "col s12 m4",
+                Label = "Condição Parcelamento",
+                DataUrl = Url.Action("CondicaoParcelamento", "AutoComplete"),
+                LabelId = "condicaoParcelamentoDescricao",
+                DataUrlPostModal = Url.Action("FormModal", "CondicaoParcelamento"),
+                DataPostField = "descricao",
+                Readonly = true
+            }, ResourceHashConst.ComprasCadastrosCondicoesParcelamento));
+
+            config.Elements.Add(ElementUIHelper.GetAutoComplete(new AutoCompleteUI
+            {
+                Id = "categoriaId",
+                Class = "col s12 m4",
+                Label = "Categoria",
+                PreFilter = "tipoCarteira",
+                DataUrl = @Url.Action("Categoria", "AutoComplete"),
+                LabelId = "categoriaDescricao",
+                DataUrlPost = @Url.Action("NovaCategoriaDespesa"),
+                Readonly = true
+            }, ResourceHashConst.ComprasCadastrosCategoria));
+            config.Elements.Add(new InputDateUI { Id = "dataVencimento", Class = "col s12 m4", Label = "Data Vencimento", Readonly = true, Disabled = true });
+            config.Elements.Add(new DivElementUI { Id = "cobrancas", Class = "col s12 visible" });
+            #endregion
+
+
+            return Content(JsonConvert.SerializeObject(config, JsonSerializerSetting.Front), "application/json");
+        }
+
         protected DataTableUI GetDtProdutosPendenciasCfg()
         {
             DataTableUI dtProdutosPendenciasCfg = new DataTableUI
@@ -652,7 +779,7 @@ namespace Fly01.Compras.Controllers
                 {
                     WithoutRowMenu = true,
                     PageLength = -1,
-                    NoExportButtons = true, 
+                    NoExportButtons = true,
                 },
                 Parameters = new List<DataTableUIParameter>
                 {
@@ -670,7 +797,43 @@ namespace Fly01.Compras.Controllers
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quant.", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 6, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Un." });
-            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", DisplayName ="Vincular Produtos", Class = "dt-center", Width = "35%" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", DisplayName = "Vincular Produtos", Class = "dt-center", Width = "35%" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
+
+            return dtProdutosPendenciasCfg;
+        }
+
+        protected DataTableUI GetDtProdutosPendenciasConfig()
+        {
+            DataTableUI dtProdutosPendenciasCfg = new DataTableUI
+            {
+                Parent = "produtosPendenciasField",
+                Id = "dtProdutosPendencias",
+                UrlGridLoad = Url.Action("GetNFeImportacaoProdutosPendencia", "NFeImportacaoProduto"),
+                UrlFunctions = Url.Action("Functions") + "?fns=",
+                Options = new DataTableUIConfig
+                {
+                    WithoutRowMenu = true,
+                    PageLength = -1,
+                    NoExportButtons = true,
+                },
+                Parameters = new List<DataTableUIParameter>
+                {
+                    new DataTableUIParameter { Id = "id", Required = true }
+                },
+                Callbacks = new DataTableUICallbacks()
+                {
+                    FooterCallback = "fnFooterCallbackProdutosPendencias",
+                    DrawCallback = "fnDrawCallbackProdutosPendencias"
+                },
+                Functions = new List<string>() { "fnFooterCallbackProdutosPendencias", "fnDrawCallbackProdutosPendencias" }
+            };
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 1, Searchable = false, Orderable = false, DataField = "descricao", DisplayName = "Produto" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, DataField = "codigoBarras", DisplayName = "GTIN" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 5, Searchable = false, Orderable = false, DataField = "quantidade", DisplayName = "Quant.", Type = "float" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 4, Searchable = false, Orderable = false, DataField = "valor", DisplayName = "Valor", Type = "float" });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 6, Searchable = false, Orderable = false, DataField = "unidadeMedida_abreviacao", DisplayName = "Un." });
+            dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 2, Searchable = false, Orderable = false, RenderFn = "fnRenderSalvarProdutoPendencia", DisplayName = "Vincular Produtos", Class = "dt-center", Width = "35%" });
             dtProdutosPendenciasCfg.Columns.Add(new DataTableUIColumn() { Priority = 3, Searchable = false, Orderable = false, RenderFn = "fnRenderExcluirProdutoPendencia", Class = "dt-center" });
 
             return dtProdutosPendenciasCfg;

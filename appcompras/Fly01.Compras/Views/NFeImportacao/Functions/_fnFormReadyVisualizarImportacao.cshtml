@@ -1,0 +1,50 @@
+﻿<script>
+    @Html.Partial("Functions/_fnMain");
+
+    function listProdutos() {
+        debugger;
+        var t = $('#fly01mdlfrmVisualizarImportacao #id').val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetNFeImportacaoProdutos", "NFeImportacaoProduto")?id=' + t ,
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    debugger
+                    $("#produtosImportacaoDataTable").DataTable().destroy();
+
+                    var table = $("#produtosImportacaoDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Produto", data: "descricao" },
+                            { title: "Quant.", data: "quantidade" },
+                            { title: "Un.", data: "unidadeMedida_abreviacao" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Valor Venda", data: "valorVenda" },
+                            { title: "Movimenta Estoque", data: "movimentaEstoque" },
+                            { title: "Atualiza Produto", data: "atualizaDadosProduto" },
+                            { title: "Atualiza Valor Venda", data: "atualizaValorVenda" }
+                        ]
+                    });
+                } else {
+                    $$$.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $$$.toast(errorThrown, 'error');
+            }
+        });
+    }
+
+    function fnFormReadyVisualizarImportacao() {
+        listProdutos();
+        debugger;
+    }
+</script>

@@ -1,5 +1,6 @@
 ﻿<script>
     @Html.Partial("Functions/_fnMain");
+    var tss = 0;
 
     function fnBindOverrideSubmit() {
         $("form#fly01frm").off("submit");
@@ -158,30 +159,61 @@
     }
 
     function fnSetInformacoes() {
-        $("#infoProdutosPendenciasField").text(
-            "Abaixo está listado os produtos importados do xml, que não foram vinculados com nenhum código de barras existente em seu cadastro de produtos. " +
-            "Escolha entre excluir a vinculação, criar um novo produto com base nas informações do xml ou ainda vincular a um produto existente. " +
-            "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, você pode especificar o fator de conversão. " +
-            "Salve sua solução de pendência escolhida, para cada produto importado. " +
-            "A criação dos novos produtos, ocorre na finalização da importação."
-        );
-        $("#infoProdutosPendenciasField").css("white-space", "normal");
-        $("#infoProdutosField").text(
-            "Abaixo está listado os produtos importados do xml, que não foram excluídos na revisão de pendências. " +
-            "Escolha as operações que deseja realizar para cada produto. " +
-            "Se marcar Movimentar Estoque, será realizada a movimentação de entrada da quantidade total dos produtos. " +
-            "Se marcar Atualizar Produto, serão atualizados os dados no seu cadastro de produto, com base nas informações do xml: descrição, código de barras, valor de custo, ncm e cest. " +
-            "Se marcar Atualizar Valor Venda, ao clicar em Alterar Valor Venda, será aplicado a configuração de valor, a todos os marcados, resultado final visível na coluna Valor Venda " +
-            "ou se desejar informe um valor específico para cada produto. O valor será atualizado no cadastro do produto. " +
-            "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, será considerado o fator de conversão especificado na etapa das pendências. " +
-            "Todas as operações escolhidas, são efetivadas na finalização da importação."
-        );
-        $("#infoProdutosField").css("white-space", "normal");
+        $("#infoProdutosPendenciasField")[0].innerText = "";
+        $("#infoProdutosField")[0].innerText = "";
+
+        var textPendencias = [
+            createElem("span", null, "Abaixo está listado os produtos importados do xml, que não foram vinculado com nenhum código de barras existente em seu cadastro de produtos."),
+            createElem("br"),
+            createElem("span", null, "Escolha entre excluir a vinculação, criar um novo produto com base nas informações do xml ou ainda vincular a um produto existente."),
+            createElem("br"),
+            createElem("span", null, "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, você pode especificar o fator de conversão."),
+            createElem("br"),
+            createElem("span", null, "Salve sua solução de pendência escolhida, para cada produto importado."),
+            createElem("br"),
+            createElem("span", null, "A criação dos novos produtos, ocorre na finalização da importação.")
+        ];
+
+        var textProdutos = [
+            createElem("span", null, "Abaixo está listado os produtos importados do xml, que não foram excluídos na revisão de pendências."),
+            createElem("br"),
+            createElem("span",null, "Escolha as operações que deseja realizar para cada produto. "),
+            createElem("br"),
+            createElem("span", null, "Se marcar Movimentar Estoque, será realizada a movimentação de entrada da quantidade total dos produtos. "),
+            createElem("br"),
+            createElem("span", null, "Se marcar Atualizar Produto, serão atualizados os dados no seu cadastro de produto, com base nas informações do xml(descrição, código de barras, valor de custo, ncm e cest). "),
+            createElem("br"),
+            createElem("span", null, "Se marcar Atualizar Valor Venda, ao clicar em Alterar Valor Venda, será aplicado a configuração de valor, a todos os marcados, resultado final visível na coluna Valor Venda " ),
+            createElem("br"),
+            createElem("span", null, "ou se desejar informe um valor específico para cada produto. O valor será atualizado no cadastro do produto. "),
+            createElem("br"),
+            createElem("span", null, "Caso a unidade de medida do xml e a unidade de medida do produto selecionado seja distinta, será considerado o fator de conversão especificado na etapa das pendências. "),
+            createElem("br"),
+            createElem("span", null, "Todas as operações escolhidas, são efetivadas na finalização da importação.")
+         ];
+
+        $("#infoProdutosPendenciasField").append(createElem("ul",
+            { "class": "collapsible", "data-collapsible": "accordion" },
+            createElem("li", null, [
+                createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light"}, "Mais informações")),
+                createElem("div", { "class": "collapsible-body" }, textPendencias)
+            ])
+        ));
+
+        $("#infoProdutosField").append(createElem("ul",
+            { "class": "collapsible", "data-collapsible": "accordion" },
+            createElem("li", null, [
+                createElem("div", { "class": "collapsible-header" }, createElem("h6", { "class": "orange-text light" }, "Mais informações")),
+                createElem("div", { "class": "collapsible-body" }, createElem("span", { "class": "text-justify" }, textProdutos))
+            ])
+        ));
     }
 
     function fnFormReady() {
         $$$.loading.start();
         fnSetInformacoes();
+        $('.collapsible').collapsible();
+
         fnValidaCamposGeraFinanceiro();
         fnChkGeraContasXml();
         if (isCreate()) {
@@ -269,35 +301,39 @@
     }
 
     function fnBindOverrideSubmitProduto() {
-        $$$._.dtProdutosResolvidos.data().each(function (row) {
+        if ($$$._.dtProdutosResolvidos.ajax.json() !== undefined) {
+            if ($$$._.dtProdutosResolvidos.ajax.json().recordsTotal > 0) {
+                $$$._.dtProdutosResolvidos.data().each(function (row) {
 
-            $$$.loading.start();
+                    $$$.loading.start();
 
-            row.atualizaDadosProduto = $('#atualizaDadosProduto' + row.id).prop('checked');
-            row.movimentaEstoque = $('#movimentaEstoque' + row.id).prop('checked');
-            row.atualizaValorVenda = $('#atualizaValorVenda' + row.id).prop('checked');
-            row.valorVenda = $('input#valorVenda' + row.id).val();
+                    row.atualizaDadosProduto = $('#atualizaDadosProduto' + row.id).prop('checked');
+                    row.movimentaEstoque = $('#movimentaEstoque' + row.id).prop('checked');
+                    row.atualizaValorVenda = $('#atualizaValorVenda' + row.id).prop('checked');
+                    row.valorVenda = $('input#valorVenda' + row.id).val();
 
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: "POST",
-                url: "@Url.Action("EditProdutoImportacao", "NFeImportacaoProduto")",
-                data: JSON.stringify({ 'entityVM': row }),
-                success: function success(data) {
-                    if (data.success) {
-                        $$$.loading.stop();
-                    } else {
-                        $$$.loading.stop();
-                        $$$.fn.submitErrorHandler(null, data.message);
-                    }
-                },
-                error: function error(jXHR, textStatus) {
-                    $$$.toast(textStatus, "error");
-                    $$$.loading.stop();
-                }
-            });
-        });
-        $$$.loading.stop();
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "@Url.Action("EditProdutoImportacao", "NFeImportacaoProduto")",
+                        data: JSON.stringify({ 'entityVM': row }),
+                        success: function success(data) {
+                            if (data.success) {
+                                $$$.loading.stop();
+                            } else {
+                                $$$.loading.stop();
+                                $$$.fn.submitErrorHandler(null, data.message);
+                            }
+                        },
+                        error: function error(jXHR, textStatus) {
+                            $$$.toast(textStatus, "error");
+                            $$$.loading.stop();
+                        }
+                    });
+                });
+                $$$.loading.stop();
+            }
+        }
     }
 </script>

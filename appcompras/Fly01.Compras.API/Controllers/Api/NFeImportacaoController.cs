@@ -19,11 +19,6 @@ namespace Fly01.Compras.API.Controllers.Api
     [ODataRoutePrefix("nfeimportacao")]
     public class NFeImportacaoController : ApiPlataformaController<NFeImportacao, NFeImportacaoBL>
     {
-        public NFeImportacaoController()
-        {
-            //TODO: diego MustExecuteAfterSave = true;
-        }
-
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<NFeImportacao> model)
         {
             if (model == null || key == default(Guid) || key == null)
@@ -46,18 +41,28 @@ namespace Fly01.Compras.API.Controllers.Api
             if (!ModelState.IsValid)
                 AddErrorModelState(ModelState);
 
+            var listProducers = new List<NFeImportacaoFinalizarProducer>();
             try
             {
                 if (entity.Status == Status.Finalizado)
                 {
-                    var listProducers = new List<NFeImportacaoFinalizarProducer>();
+                    entity.Status = Status.Aberto;
                     await FinalizarESalvarDados(entity, listProducers);
+                    entity.Status = Status.Finalizado;
                     await UnitSave();
                     ProcessProducers(listProducers);
                 }
             }
             catch (Exception ex)
             {
+                var condicaoJaSalva = UnitOfWork.CondicaoParcelamentoBL.Find(listProducers.Where(x => x.Entity.GetType().Name == "CondicaoParcelamento").FirstOrDefault()?.Entity.Id);
+                if (condicaoJaSalva != null)
+                {
+                    UnitOfWork.CondicaoParcelamentoBL.Delete(condicaoJaSalva);
+                    entity.CondicaoParcelamentoId = null;
+                    await UnitOfWork.Save();
+                }
+
                 throw new BusinessException(ex.Message);
             }
             return Ok();
@@ -65,6 +70,10 @@ namespace Fly01.Compras.API.Controllers.Api
 
         private void ProcessProducers(List<NFeImportacaoFinalizarProducer> listProducers)
         {
+            foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "CondicaoParcelamento"))
+            {
+                Producer<CondicaoParcelamento>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (CondicaoParcelamento)item.Entity, item.Verbo);
+            }
             foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "Pessoa"))
             {
                 Producer<Pessoa>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (Pessoa)item.Entity, item.Verbo);
@@ -88,6 +97,25 @@ namespace Fly01.Compras.API.Controllers.Api
             var NFe = UnitOfWork.NFeImportacaoBL.DeserializeXMlToNFe(entity.Xml);
             try
             {
+                var condicacaoAVistaId = UnitOfWork.CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 1 || x.CondicoesParcelamento == "0")?.Id;
+                if (entity.GeraFinanceiro && entity.GeraContasXml)
+                {
+                    if (condicacaoAVistaId == null || condicacaoAVistaId == default(Guid))
+                    {
+                        condicacaoAVistaId = Guid.NewGuid();
+                        var novacondicaoAVista = new CondicaoParcelamento()
+                        {
+                            Id = condicacaoAVistaId.Value,
+                            QtdParcelas = 1,
+                            Descricao = "Avista"
+                        };
+                        UnitOfWork.CondicaoParcelamentoBL.Insert(novacondicaoAVista);
+                        await UnitOfWork.Save();
+                        entity.CondicaoParcelamentoId = novacondicaoAVista.Id;
+                        listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = novacondicaoAVista, Verbo = RabbitConfig.EnHttpVerb.POST });
+                    }
+                }
+
                 #region Fornecedor
                 var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
                 var cidade = UnitOfWork.CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
@@ -188,13 +216,12 @@ namespace Fly01.Compras.API.Controllers.Api
                 {
                     var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
                     if (item.NovoProduto)
-                    {
-                        item.ProdutoId = Guid.NewGuid();
+                    {                        
                         var saldoFator = FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao);
                         var valorFator = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
                         var novoproduto = new Produto()
                         {
-                            Id = item.ProdutoId.Value,
+                            Id = Guid.NewGuid(),
                             Descricao = item.Descricao,
                             CodigoBarras = item.CodigoBarras,
                             UnidadeMedidaId = item.UnidadeMedidaId,
@@ -205,6 +232,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             SaldoProduto = item.MovimentaEstoque ? saldoFator : 0,
                             TipoProduto = TipoProduto.Insumo
                         };
+                        item.ProdutoId = novoproduto.Id;
                         UnitOfWork.ProdutoBL.Insert(novoproduto);
                         UnitOfWork.NFeImportacaoProdutoBL.Update(item);
                         listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = novoproduto, Verbo = RabbitConfig.EnHttpVerb.POST });
@@ -240,19 +268,6 @@ namespace Fly01.Compras.API.Controllers.Api
                 {
                     if (entity.GeraContasXml && UnitOfWork.NFeImportacaoCobrancaBL.All.Any(x => x.NFeImportacaoId == entity.Id))
                     {
-                        var condicacaoAVistaId = UnitOfWork.CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 1 || x.CondicoesParcelamento == "0")?.Id;
-                        if (condicacaoAVistaId == null || condicacaoAVistaId == default(Guid))
-                        {
-                            condicacaoAVistaId = Guid.NewGuid();
-                            var novacondicaoAVista = new CondicaoParcelamento()
-                            {
-                                Id = condicacaoAVistaId.Value,
-                                QtdParcelas = 1,
-                                Descricao = "Avista"
-                            };
-                            UnitOfWork.CondicaoParcelamentoBL.Insert(novacondicaoAVista);
-                            listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = novacondicaoAVista, Verbo = RabbitConfig.EnHttpVerb.POST });
-                        }
                         foreach (var item in UnitOfWork.NFeImportacaoCobrancaBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                         {
                             item.ContaFinanceiraId = Guid.NewGuid();
@@ -348,49 +363,51 @@ namespace Fly01.Compras.API.Controllers.Api
                         Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
                     };
 
-                    try
+                    //try
+                    //{
+                    using (UnitOfWork newUnitOfWork = new UnitOfWork(ContextInitialize))
                     {
-                        using (UnitOfWork newUnitOfWork = new UnitOfWork(ContextInitialize))
+                        UnitOfWork.PedidoBL.Insert(pedido);
+                        //newUnitOfWork.PedidoBL.Insert(pedido);
+                        //await newUnitOfWork.Save();
+                        //try
+                        //{
+                        //Atente a UnitOfWork != newUnitOfWork
+                        foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                         {
-                            newUnitOfWork.PedidoBL.Insert(pedido);
-                            await newUnitOfWork.Save();
-                            try
+                            item.PedidoItemId = Guid.NewGuid();
+                            UnitOfWork.PedidoItemBL.Insert(new PedidoItem()
                             {
-                                //Atente a UnitOfWork != newUnitOfWork
-                                foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-                                {
-                                    item.PedidoItemId = Guid.NewGuid();
-                                    newUnitOfWork.PedidoItemBL.Insert(new PedidoItem()
-                                    {
-                                        Id = item.PedidoItemId.Value,
-                                        PedidoId = entity.PedidoId.Value,
-                                        NFeImportacaoProdutoId = item.Id,
-                                        ProdutoId = item.ProdutoId.Value,
-                                        Quantidade = item.Quantidade,
-                                        Valor = item.Valor
-                                    });
-                                    UnitOfWork.NFeImportacaoProdutoBL.Update(item);
-                                }
-                                pedido.Status = StatusOrdemCompra.Finalizado;
-                                newUnitOfWork.PedidoBL.Update(pedido);
-                                await newUnitOfWork.Save();
-                            }
-                            catch (Exception ex)
-                            {
-                                var pedidoSalvo = newUnitOfWork.PedidoBL.All.Where(x => x.Id == pedido.Id).FirstOrDefault();
-                                if (pedido != null)
-                                {
-                                    newUnitOfWork.PedidoBL.Delete(pedidoSalvo);
-                                    await newUnitOfWork.Save();
-                                }
-                                throw new BusinessException(ex.Message);
-                            }
+                                Id = item.PedidoItemId.Value,
+                                PedidoId = entity.PedidoId.Value,
+                                NFeImportacaoProdutoId = item.Id,
+                                ProdutoId = item.ProdutoId.Value,
+                                Quantidade = item.Quantidade,
+                                Valor = item.Valor
+                            });
+                            UnitOfWork.NFeImportacaoProdutoBL.Update(item);
                         }
+                        pedido.Status = StatusOrdemCompra.Finalizado;
+                        //newUnitOfWork.PedidoBL.Update(pedido);
+                        UnitOfWork.PedidoBL.Update(pedido);
+                        //await newUnitOfWork.Save();
+                        //        }
+                        //        catch (Exception ex)
+                        //        {
+                        //            //var pedidoSalvo = newUnitOfWork.PedidoBL.All.Where(x => x.Id == pedido.Id).FirstOrDefault();
+                        //            //if (pedido != null)
+                        //            //{
+                        //            //    newUnitOfWork.PedidoBL.Delete(pedidoSalvo);
+                        //            //    await newUnitOfWork.Save();
+                        //            //}
+                        //            throw new BusinessException(ex.Message);
+                        //        }
                     }
-                    catch (Exception ex)
-                    {
-                        throw new BusinessException(ex.Message);
-                    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    throw new BusinessException(ex.Message);
+                    //}
                 }
                 #endregion
             }

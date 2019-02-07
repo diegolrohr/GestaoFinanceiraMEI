@@ -28,7 +28,7 @@ namespace Fly01.Compras.Controllers
     {
         public NFeImportacaoController()
         {
-            ExpandProperties = "fornecedor($select=nome),pedido($select=numero),transportadora($select=nome),condicaoParcelamento,formaPagamento,categoria";
+            ExpandProperties = "fornecedor($select=nome),transportadora($select=nome),condicaoParcelamento,formaPagamento,categoria";
         }
 
         public override Func<NFeImportacaoVM, object> GetDisplayData()

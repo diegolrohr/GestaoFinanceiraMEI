@@ -243,7 +243,11 @@ namespace Fly01.Compras.BL
                     var unPadraoId = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == "UN")?.Id;
                     foreach (var item in NFe.InfoNFe.Detalhes.Select(x => x.Produto))
                     {
-                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x => (x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() && x.CodigoBarras != "SEM GTIN") || x.CodigoProduto.ToUpper() == item.Codigo.ToUpper());
+                        var produto = ProdutoBL.All.AsNoTracking().FirstOrDefault(x =>
+                            (x.CodigoBarras.ToUpper() == item.GTIN.ToUpper() && x.CodigoBarras != "SEM GTIN") ||
+                            (x.CodigoProduto.ToUpper() == item.Codigo.ToUpper()) ||
+                            (x.Descricao.ToUpper() == item.Descricao.ToUpper())
+                        );
                         var unidadeMedida = UnidadeMedidaBL.All.AsNoTracking().FirstOrDefault(x => x.Abreviacao.ToUpper() == item.UnidadeMedida.ToUpper());
                         var NFeImportacaoProduto = new NFeImportacaoProduto()
                         {

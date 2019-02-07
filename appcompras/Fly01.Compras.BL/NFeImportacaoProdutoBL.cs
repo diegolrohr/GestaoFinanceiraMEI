@@ -3,14 +3,19 @@ using Fly01.Compras.DAL;
 using Fly01.Core.Entities.Domains.Commons;
 using Fly01.Core.Notifications;
 using System;
+using System.Linq;
+using System.Data.Entity;
 
 namespace Fly01.Compras.BL
 {
     public class NFeImportacaoProdutoBL : PlataformaBaseBL<NFeImportacaoProduto>
     {
-        public NFeImportacaoProdutoBL(AppDataContext context) : base(context)
+        protected ProdutoBL ProdutoBL; 
+        public NFeImportacaoProdutoBL(AppDataContext context, ProdutoBL produtoBL) : base(context)
         {
+            ProdutoBL = produtoBL;
         }
+
         public override void ValidaModel(NFeImportacaoProduto entity)
         {
             entity.Fail(entity.Valor < 0, new Error("Valor não pode ser negativo", "valor"));

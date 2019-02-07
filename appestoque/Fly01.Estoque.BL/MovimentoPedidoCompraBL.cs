@@ -48,9 +48,8 @@ namespace Fly01.Estoque.BL
                     }
                 }
                 //compra normal é entrada
-                if (entity.TipoCompra == TipoCompraVenda.Normal)
+                if (entity.TipoCompra == TipoCompraVenda.Normal || entity.TipoCompra == TipoCompraVenda.Complementar)
                 {
-
                     var observacao = string.Format("Movimentação do estoque gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero);
 
                     MovimentoEstoque movimentoEntrada = new MovimentoEstoque()

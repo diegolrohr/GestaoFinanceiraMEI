@@ -26,20 +26,9 @@ namespace Fly01.Compras.BL
         protected PedidoBL PedidoBL { get; set; }
         protected PedidoItemBL PedidoItemBL { get; set; }
         protected UnidadeMedidaBL UnidadeMedidaBL { get; set; }
-        protected CidadeBL CidadeBL { get; set; }
-        protected EstadoBL EstadoBL { get; set; }
-        protected NCMBL NCMBL { get; set; }
-        protected CestBL CestBL { get; set; }
-        protected CondicaoParcelamentoBL CondicaoParcelamentoBL { get; set; }
-
-        private readonly string routePrefixNamePessoa = @"Pessoa";
-        private readonly string routePrefixNameProduto = @"Produto";
-        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
-        private readonly string routePrefixNameContaPagar = @"ContaPagar";
 
         public NFeImportacaoBL(AppDataContext context, NFeImportacaoProdutoBL nfeImportacaoProdutoBL, PessoaBL pessoaBL, ProdutoBL produtoBL, PedidoBL pedidoBL
-          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, CidadeBL cidadeBL, EstadoBL estadoBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL
-          , NCMBL nCMBL, CestBL cestBL, CondicaoParcelamentoBL condicaoParcelamentoBL) : base(context)
+          , PedidoItemBL pedidoItemBL, UnidadeMedidaBL unidadeMedidaBL, NFeImportacaoCobrancaBL nfeImportacaoCobrancaBL) : base(context)
         {
             NFeImportacaoProdutoBL = nfeImportacaoProdutoBL;
             PessoaBL = pessoaBL;
@@ -47,12 +36,7 @@ namespace Fly01.Compras.BL
             PedidoBL = pedidoBL;
             PedidoItemBL = pedidoItemBL;
             UnidadeMedidaBL = unidadeMedidaBL;
-            CidadeBL = cidadeBL;
-            EstadoBL = estadoBL;
             NFeImportacaoCobrancaBL = nfeImportacaoCobrancaBL;
-            NCMBL = nCMBL;
-            CestBL = cestBL;
-            CondicaoParcelamentoBL = condicaoParcelamentoBL;
         }
 
         public override void ValidaModel(NFeImportacao entity)

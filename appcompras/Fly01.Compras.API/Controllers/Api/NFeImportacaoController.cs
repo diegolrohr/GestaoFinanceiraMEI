@@ -10,22 +10,18 @@ using Fly01.Core.ServiceBus;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using Fly01.Core.Entities.Domains.Enum;
+using Fly01.Core.Entities.Domains;
+using System.Collections.Generic;
 
 namespace Fly01.Compras.API.Controllers.Api
 {
     [ODataRoutePrefix("nfeimportacao")]
     public class NFeImportacaoController : ApiPlataformaController<NFeImportacao, NFeImportacaoBL>
     {
-        private readonly string routePrefixNamePessoa = @"Pessoa";
-        private readonly string routePrefixNameProduto = @"Produto";
-        private readonly string routePrefixNameMovimentoPedidoCompra = @"MovimentoPedidoCompra";
-        private readonly string routePrefixNameContaPagar = @"ContaPagar";
-
         public NFeImportacaoController()
         {
             //TODO: diego MustExecuteAfterSave = true;
         }
-
 
         public override async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<NFeImportacao> model)
         {
@@ -51,33 +47,51 @@ namespace Fly01.Compras.API.Controllers.Api
 
             try
             {
+                var listProducers = new List<NFeImportacaoFinalizarProducer>();
+                await FinalizarESalvarDados(entity, listProducers);
                 await UnitSave();
-                await FinalizarESalvarDados(entity);
+                ProcessProducers(listProducers);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!Exists(key))
-                    return NotFound();
-                else
-                    throw;
+                throw new BusinessException("Erro ao finalizar a importação: " + ex.Message);
             }
-
             return Ok();
         }
 
-        private async Task FinalizarESalvarDados(NFeImportacao entity)
+        private void ProcessProducers(List<NFeImportacaoFinalizarProducer> listProducers)
         {
-            var NFe = UnitOfWork.NFeImportacaoBL.DeserializeXMlToNFe(entity.Xml);           
+            foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "Pessoa"))
+            {
+                Producer<Pessoa>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (Pessoa)item.Entity, item.Verbo);
+            }
+            foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "Produto"))
+            {
+                Producer<Produto>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (Produto)item.Entity, item.Verbo);
+            }
+            foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "ContaPagar"))
+            {
+                Producer<ContaPagar>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (ContaPagar)item.Entity, item.Verbo);
+            }
+            foreach (var item in listProducers.Where(x => x.Entity.GetType().Name == "MovimentoPedidoCompra"))
+            {
+                Producer<MovimentoPedidoCompra>.Send(item.Entity.GetType().Name, AppUser, PlataformaUrl, (MovimentoPedidoCompra)item.Entity, item.Verbo);
+            }
+        }
+
+        private async Task FinalizarESalvarDados(NFeImportacao entity, List<NFeImportacaoFinalizarProducer> listProducers)
+        {
+            var NFe = UnitOfWork.NFeImportacaoBL.DeserializeXMlToNFe(entity.Xml);
             try
             {
                 #region Fornecedor
-
                 var ibge = NFe.InfoNFe.Emitente?.Endereco?.CodigoMunicipio;
                 var cidade = UnitOfWork.CidadeBL.All.FirstOrDefault(x => x.CodigoIbge == ibge);
 
                 if (entity.NovoFornecedor)
                 {
                     entity.FornecedorId = Guid.NewGuid();
+                    entity.AtualizaDadosFornecedor = false;
                     var fornecedor = new Pessoa()
                     {
                         Id = entity.FornecedorId.Value,
@@ -96,9 +110,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         Fornecedor = true
                     };
                     UnitOfWork.PessoaBL.Insert(fornecedor);
-                    await UnitSave();
-                    Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.POST);
-
+                    listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = fornecedor, Verbo = RabbitConfig.EnHttpVerb.POST });
                 }
                 else if (entity.AtualizaDadosFornecedor)
                 {
@@ -117,13 +129,9 @@ namespace Fly01.Compras.API.Controllers.Api
                         fornecedor.EstadoId = cidade?.EstadoId;
                         fornecedor.CEP = NFe.InfoNFe.Emitente?.Endereco?.Cep;
                         fornecedor.InscricaoEstadual = NFe.InfoNFe.Emitente?.InscricaoEstadual;
+
                         UnitOfWork.PessoaBL.Update(fornecedor);
-                        await UnitSave();
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, fornecedor, RabbitConfig.EnHttpVerb.PUT);
-                    }
-                    else
-                    {
-                        throw new BusinessException("Fornecedor não localizado para atualização dos dados.");
+                        listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = fornecedor, Verbo = RabbitConfig.EnHttpVerb.PUT });
                     }
                 }
                 #endregion
@@ -131,9 +139,9 @@ namespace Fly01.Compras.API.Controllers.Api
                 #region Transportadora
 
                 var hasTagTransportadora = (NFe != null && NFe.InfoNFe != null && NFe.InfoNFe.Transporte != null && NFe.InfoNFe.Transporte.Transportadora != null && NFe.InfoNFe.Transporte.Transportadora?.RazaoSocial != null);
-                if (entity.NovaTransportadora)
+                if (hasTagTransportadora)
                 {
-                    if (hasTagTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
+                    if (entity.NovaTransportadora && entity.TipoFrete != TipoFrete.SemFrete)
                     {
                         entity.TransportadoraId = Guid.NewGuid();
                         var transportadora = new Pessoa()
@@ -149,13 +157,9 @@ namespace Fly01.Compras.API.Controllers.Api
                             Transportadora = true
                         };
                         UnitOfWork.PessoaBL.Insert(transportadora);
-                        await UnitSave();
-                        Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.POST);
+                        listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = transportadora, Verbo = RabbitConfig.EnHttpVerb.POST });
                     }
-                }
-                else if (entity.AtualizaDadosTransportadora)
-                {
-                    if (hasTagTransportadora)
+                    else if (entity.AtualizaDadosTransportadora)
                     {
                         entity.NovaTransportadora = false;
                         var transportadora = UnitOfWork.PessoaBL.Find(entity.TransportadoraId);
@@ -169,8 +173,7 @@ namespace Fly01.Compras.API.Controllers.Api
                             transportadora.CidadeId = cidade?.Id;
                             transportadora.EstadoId = cidade?.EstadoId;
                             UnitOfWork.PessoaBL.Update(transportadora);
-                            await UnitSave();
-                            Producer<Pessoa>.Send(routePrefixNamePessoa, AppUser, PlataformaUrl, transportadora, RabbitConfig.EnHttpVerb.PUT);
+                            listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = transportadora, Verbo = RabbitConfig.EnHttpVerb.PUT });
                         }
                     }
                 }
@@ -180,28 +183,26 @@ namespace Fly01.Compras.API.Controllers.Api
                 foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
                 {
                     var nfeproduto = NFe.InfoNFe.Detalhes.Where(x => x.Produto.GTIN == item.CodigoBarras).Select(x => x.Produto).FirstOrDefault();
-
                     if (item.NovoProduto)
                     {
                         item.ProdutoId = Guid.NewGuid();
+                        var saldoFator = FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao);
+                        var valorFator = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
                         var novoproduto = new Produto()
                         {
                             Id = item.ProdutoId.Value,
                             Descricao = item.Descricao,
                             CodigoBarras = item.CodigoBarras,
                             UnidadeMedidaId = item.UnidadeMedidaId,
-                            ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao),
+                            ValorCusto = valorFator,
                             ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : 0,
                             NcmId = UnitOfWork.NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id,
                             CestId = UnitOfWork.CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id,
-                            SaldoProduto = item.MovimentaEstoque ? FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao) : 0
+                            SaldoProduto = item.MovimentaEstoque ? saldoFator : 0
                         };
-
                         UnitOfWork.ProdutoBL.Insert(novoproduto);
-                        await UnitSave();
-                        Producer<Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, novoproduto, RabbitConfig.EnHttpVerb.POST);
                         UnitOfWork.NFeImportacaoProdutoBL.Update(item);
-                        await UnitSave();
+                        listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = novoproduto, Verbo = RabbitConfig.EnHttpVerb.POST });
                     }
                     else if (item.AtualizaDadosProduto || item.AtualizaValorVenda)
                     {
@@ -210,52 +211,104 @@ namespace Fly01.Compras.API.Controllers.Api
                         {
                             if (item.AtualizaDadosProduto)
                             {
-
+                                var valorFator = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
                                 produto.Descricao = item.Descricao;
                                 produto.CodigoBarras = item.CodigoBarras;
-                                produto.ValorCusto = FatorConversaoValor(item.FatorConversao, item.Valor, item.TipoFatorConversao);
+                                produto.ValorCusto = valorFator;
                                 produto.NcmId = UnitOfWork.NCMBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.NCM)?.Id;
                                 produto.CestId = UnitOfWork.CestBL.All.FirstOrDefault(x => x.Codigo == nfeproduto.CEST)?.Id;
                             }
-                            else
+                            else if (item.AtualizaValorVenda)
                             {
                                 produto.ValorVenda = item.AtualizaValorVenda ? item.ValorVenda : produto.ValorVenda;
                             }
 
                             UnitOfWork.ProdutoBL.Update(produto);
-                            await UnitSave();
-                            Producer<Produto>.Send(routePrefixNameProduto, AppUser, PlataformaUrl, produto, RabbitConfig.EnHttpVerb.PUT);
+                            listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = produto, Verbo = RabbitConfig.EnHttpVerb.PUT });
                         }
                     }
                 }
                 #endregion
 
-                #region MovimentaEstoque
-
-                foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto))
-
+                #region Financeiro
+                if (entity.GeraFinanceiro)
                 {
-                    var movimentos = (from nfeimportacaoproduto in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto)
-                                      group nfeimportacaoproduto by nfeimportacaoproduto.ProdutoId into groupResult
-                                      select new
-                                      {
-                                          ProdutoId = groupResult.Key,
-                                          Total = groupResult.Sum(f => FatorConversaoQuantidade(f.FatorConversao, f.Quantidade, f.TipoFatorConversao))
-                                      })
-                        .Select(x => new MovimentoPedidoCompra
+                    if (entity.GeraContasXml && UnitOfWork.NFeImportacaoCobrancaBL.All.Any(x => x.NFeImportacaoId == entity.Id))
+                    {
+                        var condicacaoAVistaId = UnitOfWork.CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 1 || x.CondicoesParcelamento == "0")?.Id;
+                        if (condicacaoAVistaId == null || condicacaoAVistaId == default(Guid))
                         {
-                            Quantidade = (x.Total),
-                            ProdutoId = x.ProdutoId.Value,
+                            condicacaoAVistaId = Guid.NewGuid();
+                            var novacondicaoAVista = new CondicaoParcelamento()
+                            {
+                                Id = condicacaoAVistaId.Value,
+                                QtdParcelas = 1,
+                                Descricao = "Avista"
+                            };
+                            UnitOfWork.CondicaoParcelamentoBL.Insert(novacondicaoAVista);
+                            listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = novacondicaoAVista, Verbo = RabbitConfig.EnHttpVerb.POST });
+                        }
+                        foreach (var item in UnitOfWork.NFeImportacaoCobrancaBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                        {
+                            item.ContaFinanceiraId = Guid.NewGuid();
+                            var contaPagar = new ContaPagar()
+                            {
+                                Id = item.ContaFinanceiraId.Value,
+                                ValorPrevisto = item.Valor,
+                                CategoriaId = entity.CategoriaId.Value,
+                                CondicaoParcelamentoId = condicacaoAVistaId.Value,
+                                PessoaId = entity.FornecedorId.Value,
+                                DataEmissao = entity.DataEmissao,
+                                DataVencimento = item.DataVencimento,
+                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
+                                Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
+                                FormaPagamentoId = entity.FormaPagamentoId.Value,
+                            };
+                            UnitOfWork.NFeImportacaoCobrancaBL.Update(item);
+                            listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
+                        }
+                    }
+                    else
+                    {
+                        entity.ContaFinanceiraPaiId = Guid.NewGuid();
+                        var contaPagar = new ContaPagar()
+                        {
+                            Id = entity.ContaFinanceiraPaiId.Value,
+                            ValorPrevisto = entity.ValorTotal,
+                            CategoriaId = entity.CategoriaId.Value,
+                            CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
+                            PessoaId = entity.FornecedorId.Value,
+                            DataEmissao = entity.DataEmissao,
+                            DataVencimento = entity.DataVencimento,
+                            Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
+                            Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
+                            FormaPagamentoId = entity.FormaPagamentoId.Value,
+                        };
+                        listProducers.Add(new NFeImportacaoFinalizarProducer() { Entity = contaPagar, Verbo = RabbitConfig.EnHttpVerb.POST });
+                    }
+                }
+                #endregion
+
+                #region MovimentaEstoque
+                foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id && x.MovimentaEstoque && !x.NovoProduto))
+                {
+                    var quantidadeFator = FatorConversaoQuantidade(item.FatorConversao, item.Quantidade, item.TipoFatorConversao);
+
+                    listProducers.Add(new NFeImportacaoFinalizarProducer()
+                    {
+                        Entity = new MovimentoPedidoCompra
+                        {
+                            Quantidade = quantidadeFator,
+                            ProdutoId = item.ProdutoId.Value,
                             UsuarioInclusao = entity.UsuarioAlteracao ?? entity.UsuarioInclusao,
                             TipoCompra = entity.Tipo,
                             PlataformaId = PlataformaUrl,
                             Serie = entity.Serie,
                             Numero = entity.Numero,
                             IsNFeImportacao = true
-                        }).ToList();
-
-                    foreach (var movimento in movimentos)
-                        Producer<MovimentoPedidoCompra>.Send(routePrefixNameMovimentoPedidoCompra, AppUser, PlataformaUrl, movimento, RabbitConfig.EnHttpVerb.POST);
+                        },
+                        Verbo = RabbitConfig.EnHttpVerb.POST
+                    });
                 }
 
                 #endregion
@@ -273,7 +326,7 @@ namespace Fly01.Compras.API.Controllers.Api
                         NFeImportacaoId = entity.Id,
                         TipoCompra = entity.Tipo,
                         Status = StatusOrdemCompra.Aberto,
-                        Data = DateTime.Now,//NFe.InfoNFe.Identificador.Emissao,
+                        Data = entity.DataEmissao,
                         Total = entity.ValorTotal,
                         TipoFrete = NFe.InfoNFe.Transporte.ModalidadeFrete,
                         Marca = NFe.InfoNFe.Transporte?.Volume?.Marca,
@@ -290,85 +343,51 @@ namespace Fly01.Compras.API.Controllers.Api
                         Observacao = string.Format("Pedido gerado através da importação do XML da nota {0} - {1}.", entity.Serie, entity.Numero)
                     };
 
-                    UnitOfWork.PedidoBL.Insert(pedido);
-                    await UnitSave();
-
-                    foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                    try
                     {
-                        item.PedidoItemId = Guid.NewGuid();
-                        UnitOfWork.PedidoItemBL.Insert(new PedidoItem()
+                        using (UnitOfWork newUnitOfWork = new UnitOfWork(ContextInitialize))
                         {
-                            Id = item.PedidoItemId.Value,
-                            PedidoId = entity.PedidoId.Value,
-                            NFeImportacaoProdutoId = item.Id,
-                            ProdutoId = item.ProdutoId.Value,
-                            Quantidade = item.Quantidade,
-                            Valor = item.Valor
-                        });
-                        UnitOfWork.NFeImportacaoProdutoBL.Update(item);
-                    }
-                    pedido.Status = StatusOrdemCompra.Finalizado;
-                    UnitOfWork.PedidoBL.Update(pedido);
-                    await UnitSave();
-                }
-                #endregion
-
-                #region Financeiro
-                if (entity.GeraFinanceiro)
-                {
-                    if (entity.GeraContasXml && UnitOfWork.NFeImportacaoCobrancaBL.All.Any(x => x.NFeImportacaoId == entity.Id))
-                    {
-                        var condicacaoparcelamento = UnitOfWork.CondicaoParcelamentoBL.All.FirstOrDefault(x => x.QtdParcelas == 0 || x.CondicoesParcelamento == "0").Id;
-                        if (condicacaoparcelamento == null)
-                        {
-                            condicacaoparcelamento = Guid.NewGuid();
-                            var novacondicao = new CondicaoParcelamento()
+                            newUnitOfWork.PedidoBL.Insert(pedido);
+                            await newUnitOfWork.Save();
+                            try
                             {
-                                Id = condicacaoparcelamento,
-                                QtdParcelas = 1,
-                                Descricao = "Avista"
-                            };
-                            UnitOfWork.CondicaoParcelamentoBL.Update(novacondicao);
-                            Producer<CondicaoParcelamento>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, novacondicao, RabbitConfig.EnHttpVerb.POST);
-                        }
-                        foreach (var item in UnitOfWork.NFeImportacaoCobrancaBL.All.Where(x => x.NFeImportacaoId == entity.Id))
-                        {
-
-                            var contaPagar = new ContaPagar()
+                                //Atente a UnitOfWork != newUnitOfWork
+                                foreach (var item in UnitOfWork.NFeImportacaoProdutoBL.All.Where(x => x.NFeImportacaoId == entity.Id))
+                                {
+                                    item.PedidoItemId = Guid.NewGuid();
+                                    newUnitOfWork.PedidoItemBL.Insert(new PedidoItem()
+                                    {
+                                        Id = item.PedidoItemId.Value,
+                                        PedidoId = entity.PedidoId.Value,
+                                        NFeImportacaoProdutoId = item.Id,
+                                        ProdutoId = item.ProdutoId.Value,
+                                        Quantidade = item.Quantidade,
+                                        Valor = item.Valor
+                                    });
+                                    UnitOfWork.NFeImportacaoProdutoBL.Update(item);
+                                }
+                                pedido.Status = StatusOrdemCompra.Finalizado;
+                                newUnitOfWork.PedidoBL.Update(pedido);
+                                await newUnitOfWork.Save();
+                            }
+                            catch (Exception ex)
                             {
-                                ValorPrevisto = item.Valor,
-                                CategoriaId = entity.CategoriaId.Value,
-                                CondicaoParcelamentoId = condicacaoparcelamento,
-                                PessoaId = entity.FornecedorId.Value,
-                                DataEmissao = DateTime.Now,
-                                DataVencimento = item.DataVencimento,
-                                Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
-                                Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
-                                FormaPagamentoId = entity.FormaPagamentoId.Value,
-                            };
-                            Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                                var pedidoSalvo = newUnitOfWork.PedidoBL.All.Where(x => x.Id == pedido.Id).FirstOrDefault();
+                                if (pedido != null)
+                                {
+                                    newUnitOfWork.PedidoBL.Delete(pedidoSalvo);
+                                    await newUnitOfWork.Save();
+                                }
+                                throw new BusinessException("Erro ao tentar salvar os produtos do novo pedido: " + ex.Message);
+                            }
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        var contaPagar = new ContaPagar()
-                        {
-                            ValorPrevisto = entity.ValorTotal,
-                            CategoriaId = entity.CategoriaId.Value,
-                            CondicaoParcelamentoId = entity.CondicaoParcelamentoId.Value,
-                            PessoaId = entity.FornecedorId.Value,
-                            DataEmissao = DateTime.Now,
-                            DataVencimento = entity.DataVencimento,
-                            Descricao = string.Format("Importação do XML, nota {0} - {1}", entity.Serie, entity.Numero),
-                            Observacao = string.Format("Conta a Pagar gerada através da importação do XML da nota {0} - {1}, aplicativo Bemacash Compras", entity.Serie, entity.Numero),
-                            FormaPagamentoId = entity.FormaPagamentoId.Value,
-                        };
-                        Producer<ContaPagar>.Send(routePrefixNameContaPagar, AppUser, PlataformaUrl, contaPagar, RabbitConfig.EnHttpVerb.POST);
+                        throw new BusinessException("Erro ao tentar salvar o novo pedido: " + ex.Message);
                     }
                 }
                 #endregion
-                UnitOfWork.NFeImportacaoBL.Update(entity);
-                await UnitSave();
             }
             catch (Exception ex)
             {
@@ -404,7 +423,12 @@ namespace Fly01.Compras.API.Controllers.Api
                 return Math.Round((quantidade / fator), 2, MidpointRounding.AwayFromZero);
             }
         }
+    }
 
+    public class NFeImportacaoFinalizarProducer
+    {
+        public PlataformaBase Entity { get; set; }
 
+        public RabbitConfig.EnHttpVerb Verbo { get; set; }
     }
 }

@@ -43,8 +43,46 @@
         });
     }
 
+    function listCobrancas() {
+        var t = $('#fly01mdlfrmVisualizarImportacao #id').val();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetNFeImportacaoCobrancas", "NFeImportacaocobranca")?id=' + t ,
+            dataType: "json",
+            contentType: "application/json",
+            success: function (response) {
+                if (response) {
+                    $("#cobrancasImportacaoDataTable").DataTable().destroy();
+
+                    response.data = fixFields(response.data);
+
+                    var table = $("#cobrancasImportacaoDataTable").DataTable({
+                        bSort: false,
+                        paging: false,
+                        bLengthChange: false,
+                        searching: false,
+                        ordering: false,
+                        info: false,
+                        data: response.data,
+                        columns: [
+                            { title: "Número", data: "numero" },
+                            { title: "Valor", data: "valor" },
+                            { title: "Vencimento", data: "dataVencimento" },
+                        ]
+                    });
+                } else {
+                    $$$.toast(response.message, 'error');
+                }
+            },
+            error: function (jXHR, textStatus, errorThrown) {
+                $$$.toast(errorThrown, 'error');
+            }
+        });
+    }
+
     function fnFormReadyVisualizarImportacao() {
         listProdutos();
+        listCobrancas();
     }
 
     function fixFields(data) {

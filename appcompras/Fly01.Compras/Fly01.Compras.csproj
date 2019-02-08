@@ -404,6 +404,7 @@
     <Content Include="Views\NFeImportacao\Functions\_fnFooterCallbackProdutos.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnVisualizar.cshtml" />
     <Content Include="Views\NFeImportacao\Functions\_fnFormReadyVisualizarImportacao.cshtml" />
+    <Content Include="Views\NFeImportacao\Functions\_fnExcluirNFeImportacao.cshtml" />
     <None Include="Web.Homologacao.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

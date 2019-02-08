@@ -275,7 +275,7 @@ namespace Fly01.Compras.Controllers
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasDashboard, Label = "Dashboard", OnClick = @Url.Action("List", "Home")},
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasOrcamentoPedido, Label = "Orçamentos/Pedidos", OnClick = @Url.Action("List", "OrdemCompra")},
                         new LinkUI() { Class = ResourceHashConst.ComprasComprasNotasFiscais, Label = "Notas Fiscais", OnClick = @Url.Action("List", "NotaFiscalEntrada")},
-                        new LinkUI() { Class = ResourceHashConst.ComprasComprasNFeImportacao, Label = "Importação XML", OnClick = @Url.Action("List", "NFeImportacao")}
+                        //new LinkUI() { Class = ResourceHashConst.ComprasComprasNFeImportacao, Label = "Importação XML", OnClick = @Url.Action("List", "NFeImportacao")}
                     }
                 },
                 new SidebarUIMenu()

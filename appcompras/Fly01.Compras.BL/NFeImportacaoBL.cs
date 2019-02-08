@@ -178,7 +178,7 @@ namespace Fly01.Compras.BL
                 if (produto != null)
                 {
                     item.ProdutoId = produto.Id;
-                    item.NovoProduto = false;                    
+                    item.NovoProduto = false;
                 }
                 NFeImportacaoProdutoBL.Update(item);
             }
@@ -250,7 +250,7 @@ namespace Fly01.Compras.BL
                             {
                                 NFeImportacaoProduto.FatorConversao = 1.0;
                             }
-                            
+
                             NFeImportacaoProduto.ProdutoId = produto.Id;
                             NFeImportacaoProduto.NovoProduto = false;
                         }

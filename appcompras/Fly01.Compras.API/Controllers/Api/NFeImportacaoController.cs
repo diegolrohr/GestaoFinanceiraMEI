@@ -397,11 +397,10 @@ namespace Fly01.Compras.API.Controllers.Api
 
         protected double FatorConversaoValor(double fator, double valor, TipoFatorConversao tipo)
         {
-            if(fator <= 0)
+            if (fator <= 0)
             {
                 fator = 1.0;
             }
-
             if (tipo == TipoFatorConversao.Multiplicar)
             {
                 return Math.Round((valor / fator), 2, MidpointRounding.AwayFromZero);
@@ -418,7 +417,6 @@ namespace Fly01.Compras.API.Controllers.Api
             {
                 fator = 1.0;
             }
-
             if (tipo == TipoFatorConversao.Multiplicar)
             {
                 return Math.Round((quantidade * fator), 2, MidpointRounding.AwayFromZero);

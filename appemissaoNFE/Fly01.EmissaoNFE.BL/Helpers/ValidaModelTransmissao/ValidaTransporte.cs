@@ -15,7 +15,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
         {
             var modFrete = EnumHelper.GetDataEnumValues(typeof(TipoFrete));
 
-            ValidarModalidadeFrete(item, entity, modFrete);
             ValidarTransportadora(item, entitiesBLToValidate, entity);
             ValidarVeiculo(item, entitiesBLToValidate, entity);
             ValidarVolume(item, entity);
@@ -105,12 +104,6 @@ namespace Fly01.EmissaoNFE.BL.Helpers.ValidaModelTransmissao
                     }
                 }
             }
-        }
-
-        private static void ValidarModalidadeFrete(ItemTransmissaoVM item, TransmissaoVM entity, System.Collections.Generic.List<Core.Helpers.Attribute.SubtitleAttribute> modFrete)
-        {
-            entity.Fail(!modFrete.Any(x => x.Value == ((int)item.Transporte.ModalidadeFrete).ToString()),
-                            new Error("Modalidade de frete inválida", "Item.Transporte.ModalidadeFrete"));
         }
     }
 }

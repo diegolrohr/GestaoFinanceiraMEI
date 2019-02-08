@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFS
 {
@@ -11,7 +12,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ISSString
         {
             get { return ISS.ToString("0.00").Replace(",", "."); }
-            set { ISS = double.Parse(value.Replace(".", ",")); }
+            set { ISS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -21,7 +22,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ISSRetidoString
         {
             get { return ISSRetido.ToString("0.00").Replace(",", "."); }
-            set { ISSRetido = double.Parse(value.Replace(".", ",")); }
+            set { ISSRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -31,7 +32,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string OutrasRetencoesString
         {
             get { return OutrasRetencoes.ToString("0.00").Replace(",", "."); }
-            set { OutrasRetencoes = double.Parse(value.Replace(".", ",")); }
+            set { OutrasRetencoes = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -41,7 +42,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string PISString
         {
             get { return PIS.ToString("0.00").Replace(",", "."); }
-            set { PIS = double.Parse(value.Replace(".", ",")); }
+            set { PIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -51,7 +52,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string COFINString
         {
             get { return COFINS.ToString("0.00").Replace(",", "."); }
-            set { COFINS = double.Parse(value.Replace(".", ",")); }
+            set { COFINS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -61,7 +62,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string INSSString
         {
             get { return INSS.ToString("0.00").Replace(",", "."); }
-            set { INSS = double.Parse(value.Replace(".", ",")); }
+            set { INSS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -71,7 +72,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string IRString
         {
             get { return IR.ToString("0.00").Replace(",", "."); }
-            set { IR = double.Parse(value.Replace(".", ",")); }
+            set { IR = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -81,7 +82,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string CSLLString
         {
             get { return CSLL.ToString("0.00").Replace(",", "."); }
-            set { CSLL = double.Parse(value.Replace(".", ",")); }
+            set { CSLL = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -91,7 +92,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasISSString
         {
             get { return AliquotasISS.ToString("0.00").Replace(",", "."); }
-            set { AliquotasISS = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasISS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -101,7 +102,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasPISString
         {
             get { return AliquotasPIS.ToString("0.00").Replace(",", "."); }
-            set { AliquotasPIS = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasPIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -111,7 +112,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasCOFINSString
         {
             get { return AliquotasCOFINS.ToString("0.00").Replace(",", "."); }
-            set { AliquotasCOFINS = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasCOFINS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -121,7 +122,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasINSSString
         {
             get { return AliquotasINSS.ToString("0.00").Replace(",", "."); }
-            set { AliquotasINSS = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasINSS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -131,7 +132,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasIRString
         {
             get { return AliquotasIR.ToString("0.00").Replace(",", "."); }
-            set { AliquotasIR = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasIR = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -141,7 +142,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string AliquotasCSLLString
         {
             get { return AliquotasCSLL.ToString("0.00").Replace(",", "."); }
-            set { AliquotasCSLL = double.Parse(value.Replace(".", ",")); }
+            set { AliquotasCSLL = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -151,7 +152,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorTotalDocumentoString
         {
             get { return ValorTotalDocumento.ToString("0.00").Replace(",", "."); }
-            set { ValorTotalDocumento = double.Parse(value.Replace(".", ",")); }
+            set { ValorTotalDocumento = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -161,7 +162,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFS
         public string ValorCarTributacaoString
         {
             get { return ValorCarTributacao.ToString("0.00").Replace(",", "."); }
-            set { ValorCarTributacao = double.Parse(value.Replace(".", ",")); }
+            set { ValorCarTributacao = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlElement(ElementName = "valpercartri")]

@@ -1,6 +1,7 @@
 ﻿using Fly01.Core.Entities.Domains.Enum;
 using Fly01.EmissaoNFE.Domain.Enums;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
 {
@@ -35,7 +36,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return PercentualReducaoBC.HasValue ? PercentualReducaoBC.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { PercentualReducaoBC = double.Parse(value.Replace(".", ",")); }
+            set { PercentualReducaoBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializePercentualReducaoBCString()
@@ -53,7 +54,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBC.HasValue && ValorBC > 0 ? ValorBC.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorBC = double.Parse(value.Replace(".", ",")); }
+            set { ValorBC = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -249,7 +250,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBCSTRetido.HasValue && ValorBCSTRetido > 0 ? ValorBCSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorBCSTRetido = double.Parse(value.Replace(".", ",")); }
+            set { ValorBCSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorBCSTRetidoString()
@@ -267,7 +268,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorICMSSTRetido.HasValue && ValorICMSSTRetido > 0 ? ValorICMSSTRetido.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ",")); }
+            set { ValorICMSSTRetido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorICMSSTRetidoString()
@@ -285,7 +286,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorBCSTDestino.HasValue && ValorBCSTDestino > 0 ? ValorBCSTDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorBCSTDestino = double.Parse(value.Replace(".", ",")); }
+            set { ValorBCSTDestino = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorBCSTDestinoString()
@@ -303,7 +304,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorICMSSTUFDestino.HasValue && ValorICMSSTUFDestino > 0 ? ValorICMSSTUFDestino.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { ValorICMSSTUFDestino = double.Parse(value.Replace(".", ",")); }
+            set { ValorICMSSTUFDestino = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorICMSSTUFDestinoString()
@@ -329,7 +330,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return PercentualBCop.HasValue && PercentualBCop > 0 ? PercentualBCop.Value.ToString("0.00").Replace(",", ".") : "0.00";
             }
-            set { PercentualBCop = double.Parse(value.Replace(".", ",")); }
+            set { PercentualBCop = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializePercentualBCopString()

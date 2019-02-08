@@ -1,5 +1,5 @@
-﻿using Fly01.Core.Entities.Domains.Enum;
-using Fly01.EmissaoNFE.Domain.Enums;
+﻿using Fly01.Core;
+using Fly01.Core.Entities.Domains.Enum;
 using System.Xml.Serialization;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
@@ -26,7 +26,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return AliquotaAplicavelCalculoCreditoSN.ToString("0.00").Replace(",", ".");
             }
-            set { AliquotaAplicavelCalculoCreditoSN = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaAplicavelCalculoCreditoSN = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -39,7 +39,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.ICMS
             {
                 return ValorCreditoICMS.ToString("0.00").Replace(",", ".");
             }
-            set { ValorCreditoICMS = double.Parse(value.Replace(".", ",")); }
+            set { ValorCreditoICMS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

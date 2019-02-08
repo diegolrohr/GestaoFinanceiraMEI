@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe
 {
@@ -45,7 +46,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string PesoLiquidoString
         {
             get { return PesoLiquido.ToString("0.000").Replace(",", "."); }
-            set { PesoLiquido = double.Parse(value.Replace(".", ",")); }
+            set { PesoLiquido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         [XmlIgnore]
@@ -56,7 +57,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string PesoBrutoString
         {
             get { return PesoBruto.ToString("0.000").Replace(",", "."); }
-            set { PesoBruto = double.Parse(value.Replace(".", ",")); }
+            set { PesoBruto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

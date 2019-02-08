@@ -1,4 +1,5 @@
-﻿using Fly01.Core.Helpers;
+﻿using Fly01.Core;
+using Fly01.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Xml.Serialization;
@@ -45,7 +46,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorDuplicataString
         {
             get { return ValorDuplicata.ToString("0.00").Replace(",", "."); }
-            set { ValorDuplicata = double.Parse(value.Replace(".", ",")); }
+            set { ValorDuplicata = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
     }
 }

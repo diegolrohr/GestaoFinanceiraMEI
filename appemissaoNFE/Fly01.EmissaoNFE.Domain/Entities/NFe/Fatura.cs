@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Fly01.Core;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Xml.Serialization;
 
@@ -21,14 +22,12 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         [XmlIgnore]
         public double? ValorOriginario { get; set; }
 
-        CultureInfo cultures = new CultureInfo("pt-BR");
-
         [JsonProperty("vOrig")]
         [XmlElement(ElementName = "vOrig")]
         public string ValorOriginarioString
         {
             get { return ValorOriginario.HasValue ? ValorOriginario.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorOriginario = double.Parse(value.Replace(".", ","), cultures); }
+            set { ValorOriginario = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorOiriginarioString()
@@ -47,7 +46,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorDescontoString
         {
             get { return ValorDesconto.HasValue ? ValorDesconto.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorDesconto = double.Parse(value.Replace(".", ",")); }
+            set { ValorDesconto = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorDescontoString()
@@ -66,7 +65,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe
         public string ValorLiquidoString
         {
             get { return ValorLiquido.HasValue ? ValorLiquido.Value.ToString("0.00").Replace(",", ".") : null; }
-            set { ValorLiquido = double.Parse(value.Replace(".", ",")); }
+            set { ValorLiquido = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
 
         public bool ShouldSerializeValorLiquidoString()

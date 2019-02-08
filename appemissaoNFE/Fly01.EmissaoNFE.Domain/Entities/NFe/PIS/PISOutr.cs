@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Fly01.Core;
 
 namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
 {
@@ -15,7 +16,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string ValorBCDoPISString
         {
             get { return ValorBCDoPIS.HasValue ? ValorBCDoPIS.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { ValorBCDoPIS = double.Parse(value.Replace(".", ",")); }
+            set { ValorBCDoPIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeValorBCDoPISString()
         {
@@ -28,7 +29,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string PercentualPISString
         {
             get { return PercentualPIS.HasValue ? PercentualPIS.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { PercentualPIS = double.Parse(value.Replace(".", ",")); }
+            set { PercentualPIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializePercentualPISString()
         {
@@ -41,7 +42,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string QuantidadeVendidaString
         {
             get { return QuantidadeVendida.HasValue ? QuantidadeVendida.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { QuantidadeVendida = double.Parse(value.Replace(".", ",")); }
+            set { QuantidadeVendida = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeQuantidadeVendidaString()
         {
@@ -54,7 +55,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string AliquotaPISSTString
         {
             get { return AliquotaPISST.HasValue ? AliquotaPISST.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { AliquotaPISST = double.Parse(value.Replace(".", ",")); }
+            set { AliquotaPISST = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeAliquotaPISSTString()
         {
@@ -68,7 +69,7 @@ namespace Fly01.EmissaoNFE.Domain.Entities.NFe.PIS
         public string ValorPISString
         {
             get { return ValorPIS.HasValue ? ValorPIS.Value.ToString("0.00").Replace(",", ".") : "0.00"; }
-            set { ValorPIS = double.Parse(value.Replace(".", ",")); }
+            set { ValorPIS = double.Parse(value.Replace(".", ","), AppDefaults.CultureInfoDefault); }
         }
         public bool ShouldSerializeValorPISString()
         {
